@@ -1,0 +1,21 @@
+@import 'variables';
+
+html,
+body {
+    width: 100%;
+    margin: 0;
+    font-weight: 400;
+    color: $text-primary;
+    scroll-behavior: smooth;
+}
+
+body * ::-webkit-scrollbar {
+    display: none;
+}
+
+body * {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    box-sizing: border-box;
+    line-height: normal;
+}
