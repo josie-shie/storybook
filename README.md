@@ -27,6 +27,7 @@ turbo build
 -   Turborepo
 -   Turbopack
 -   NextJS ^v13.4
+-   TypeScript
 -   pnpm
 -   Zustand
 -   MUI
