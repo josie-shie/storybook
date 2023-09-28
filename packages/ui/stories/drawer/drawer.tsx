@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import type { ReactElement } from 'react';
-import './drawer.css';
+import style from './drawer.module.scss';
 
 interface DrawerProps {
     /**
@@ -57,7 +57,7 @@ function Drawer({
     }, [isOpen]);
 
     return (
-        <div className={`drawer-container ${!showDrawer ? 'hide-drawer' : ''}`}>
+        <div className={`${style.drawerContainer} ${!showDrawer ? 'hide-drawer' : ''}`}>
             <button
                 className={`cover-closed ${isOpen ? 'cover-opened' : ''}`}
                 onClick={handleClose}
