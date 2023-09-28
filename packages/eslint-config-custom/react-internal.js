@@ -30,6 +30,7 @@ module.exports = {
             {
                 case: 'camelCase'
             }
-        ]
+        ],
+        'import/prefer-default-export': 'off'
     }
 };
