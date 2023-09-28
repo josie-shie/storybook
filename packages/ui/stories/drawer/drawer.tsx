@@ -38,7 +38,6 @@ function Drawer({
     onClose
 }: DrawerProps) {
     const [showDrawer, setShowDrawer] = useState(isOpen);
-
     const handleClose = () => {
         onClose();
     };
@@ -83,4 +82,4 @@ function Drawer({
     );
 }
 
-export default Drawer;
+export { Drawer };
