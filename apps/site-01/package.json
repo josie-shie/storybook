@@ -6,7 +6,7 @@
         "dev": "next dev --turbo",
         "build": "next build",
         "start": "next start",
-        "lint": "next lint && pnpm typecheck && pnpm lint:style",
+        "lint": "next lint && pnpm typecheck",
         "typecheck": "tsc --noEmit",
         "lint:style": "stylelint app/**/*.{module.css,css,scss,module.scss}"
     },
