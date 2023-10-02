@@ -1,22 +1,17 @@
 'use client';
-import { Drawer } from 'ui';
-import { useState } from 'react';
-import style from './home.module.scss';
+import { useUserStore, creatUserStore } from './userStore';
+
+function Tool() {
+    const token = useUserStore.use.token();
+    const add = useUserStore.use.setToken();
+
+    return <div onClick={() => add('3339')}>{token}</div>;
+}
 
 function Home() {
-    const [open, setOpen] = useState(true);
-    return (
-        <div className={style.home}>
-            <Drawer
-                isOpen={open}
-                onClose={() => {
-                    setOpen(false);
-                }}
-            >
-                <div>TEST Drawer</div>
-            </Drawer>
-        </div>
-    );
+    creatUserStore({ token: 'oook' });
+
+    return <Tool />;
 }
 
 export default Home;
