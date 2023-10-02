@@ -5,7 +5,11 @@ function Tool() {
     const token = useUserStore.use.token();
     const add = useUserStore.use.setToken();
 
-    return <div onClick={() => add('3339')}>{token}</div>;
+    const handleAdd = () => {
+        add('3339');
+    };
+
+    return <div onClick={handleAdd}>{token}</div>;
 }
 
 function Home() {

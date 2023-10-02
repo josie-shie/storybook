@@ -1,4 +1,5 @@
-import { initStore, StoreWithSelectors } from '@/lib/store';
+import { initStore } from 'lib';
+import type { StoreWithSelectors } from 'lib';
 
 interface InitState {
     token: string;
@@ -14,7 +15,9 @@ let useUserStore: StoreWithSelectors<UserState>;
 const initialState = (set: (data: Partial<UserState>) => void) => ({
     isLogin: false,
     token: '',
-    setToken: (token: string) => set({ token, isLogin: true })
+    setToken: (token: string) => {
+        set({ token, isLogin: true });
+    }
 });
 
 const creatUserStore = (init: InitState) =>

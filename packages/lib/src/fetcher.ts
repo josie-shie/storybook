@@ -9,6 +9,13 @@ interface Fetcher<TData> {
     timeout?: number;
 }
 
+const handleUnauthorized = () => {
+    setTimeout(() => {
+        Cookies.remove('access');
+        window.location.href = '/login';
+    }, 2000);
+};
+
 export const fetcher = async <TResponse, TData>({
     apiPath,
     method = 'POST',
@@ -17,10 +24,12 @@ export const fetcher = async <TResponse, TData>({
     timeout = 10
 }: Fetcher<TData>): Promise<TResponse> => {
     const controller = new AbortController();
-    setTimeout(() => controller.abort(), timeout * 1000);
+    setTimeout(() => {
+        controller.abort();
+    }, timeout * 1000);
 
     try {
-        const response = await fetch(`${apiPath}` as string, {
+        const response = await fetch(`${apiPath}`, {
             method,
             body: data ? JSON.stringify(data) : undefined,
             headers: {
@@ -36,43 +45,11 @@ export const fetcher = async <TResponse, TData>({
             throw new Error('Unauthorized');
         }
 
-        const responseData = await response.json();
-        if ('errors' in responseData) {
-            console.error(responseData.errors[0].message);
-        }
-        return responseData as TResponse;
+        const responseData: TResponse = (await response.json()) as TResponse;
+
+        return responseData;
     } catch (error) {
         console.error(error);
-        throw error;
-    }
-};
-
-const handleUnauthorized = () => {
-    console.error('登入狀態過期，請重新登入');
-    setTimeout(() => {
-        Cookies.remove('access');
-        window.location.href = '/login';
-    }, 2000);
-};
-
-export const postFile = async (uploadPath: '', file: File) => {
-    try {
-        const response = await fetch(`${uploadPath}`, {
-            method: 'POST',
-            body: file,
-            headers: {
-                'content-type': file.type,
-                Authorization: Cookies.get('access') || ''
-            }
-        });
-
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-
-        return await response.json();
-    } catch (error) {
-        console.error('There was a problem with the fetch operation:', error);
         throw error;
     }
 };

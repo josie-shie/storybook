@@ -37,6 +37,18 @@ module.exports = {
         '@typescript-eslint/no-explicit-any': 'error',
         'no-unused-vars': 'off',
         '@typescript-eslint/no-unused-vars': 'error',
-        'import/no-extraneous-dependencies': 'off'
+        'import/no-extraneous-dependencies': 'off',
+        'no-console': ['error', { allow: ['warn', 'error'] }],
+        'unicorn/filename-case': [
+            'error',
+            {
+                cases: {
+                    camelCase: true
+                }
+            }
+        ],
+        'import/no-mutable-exports': 'off',
+        'jsx-a11y/no-static-element-interactions': 'off',
+        'jsx-a11y/click-events-have-key-events': 'off'
     }
 };
