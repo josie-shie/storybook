@@ -10,19 +10,28 @@
         "typecheck": "tsc --noEmit",
         "lint:style": "stylelint app/**/*.{module.css,css,scss,module.scss}"
     },
+    "commitlint": {
+        "extends": [
+            "@commitlint/config-conventional"
+        ]
+    },
     "dependencies": {
+        "lib": "workspace:*",
         "next": "^13.4.19",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
-        "ui": "workspace:*",
-        "lib": "workspace:*"
+        "ui": "workspace:*"
     },
     "devDependencies": {
+        "@commitlint/cli": "^17.7.2",
+        "@commitlint/config-conventional": "^17.7.0",
         "@next/eslint-plugin-next": "^13.4.19",
         "@types/node": "^17.0.12",
         "@types/react": "^18.0.22",
         "@types/react-dom": "^18.0.7",
         "eslint-config-custom": "workspace:*",
+        "husky": "^8.0.3",
+        "lint-staged": "^14.0.1",
         "sass": "^1.68.0",
         "stylelint": "^15.10.3",
         "stylelint-config-standard-scss": "^11.0.0",
