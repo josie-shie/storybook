@@ -22,6 +22,7 @@
         "@storybook/react-vite": "^7.4.5",
         "@storybook/testing-library": "^0.2.1",
         "@turbo/gen": "^1.10.12",
+        "@types/css-modules": "^1.0.3",
         "@types/node": "^20.5.2",
         "@types/react": "^18.2.0",
         "@types/react-dom": "^18.2.0",
