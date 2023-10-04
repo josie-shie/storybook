@@ -18,24 +18,11 @@ export default meta;
 
 type Story = StoryObj<typeof Drawer>;
 
-// const NormalComponent = () => {
-//     const [openStatus, setOpenStatus] = useState(true);
-
-//     return (
-//         <>
-//             <button onClick={() => setOpenStatus(true)}>Open</button>
-//             <Drawer isOpen={openStatus} onClose={() => setOpenStatus(false)}>
-//                 <div></div>
-//             </Drawer>
-//         </>
-//     );
-// };
-
 export const Normal: Story = {
     args: {
         isOpen: true,
         position: 'right',
-        coverBackground: '#000'
+        coverBackground: '#000',
+        children: <h3>Demo</h3>
     }
-    // render: () => <NormalComponent />
 };
