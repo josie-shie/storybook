@@ -1,4 +1,5 @@
 'use client';
+import Button from '@mui/material/Button';
 import { useUserStore, creatUserStore } from './userStore';
 
 function Tool() {
@@ -15,7 +16,12 @@ function Tool() {
 function Home() {
     creatUserStore({ token: 'oook' });
 
-    return <Tool />;
+    return (
+        <>
+            <Tool />
+            <Button variant="contained">Contained</Button>
+        </>
+    );
 }
 
 export default Home;
