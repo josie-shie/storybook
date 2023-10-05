@@ -13,6 +13,10 @@
             "@commitlint/config-conventional"
         ]
     },
+    "lint-staged": {
+        "*.{css,scss,ts,tsx,module.css,module.scss}": "prettier --check --ignore-unknown",
+        "*.{ts,tsx}": "bash -c \"pnpm lint\""
+    },
     "devDependencies": {
         "@commitlint/cli": "^17.7.2",
         "@commitlint/config-conventional": "^17.7.0",
