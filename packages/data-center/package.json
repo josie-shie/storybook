@@ -1,0 +1,19 @@
+{
+    "name": "data-center",
+    "version": "0.0.1",
+    "main": "./index.ts",
+    "types": "./index.ts",
+    "license": "MIT",
+    "scripts": {
+        "lint": "eslint ."
+    },
+    "dependencies": {
+        "lib": "workspace:*"
+    },
+    "devDependencies": {
+        "@types/js-cookie": "^3.0.3",
+        "eslint-config-custom": "workspace:*",
+        "tsconfig": "workspace:*",
+        "typescript": "^5.1.6"
+    }
+}
