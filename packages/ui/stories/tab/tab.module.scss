@@ -1,0 +1,167 @@
+.tab {
+    width: 100%;
+    max-width: 100%;
+    height: 100vh;
+    // background: #1c1c1d;
+
+    &.center {
+        justify-content: center;
+    }
+
+    &.spaceBetween {
+        justify-content: space-between;
+    }
+
+    &.spaceAround {
+        justify-content: space-around;
+    }
+
+    .tabContentContainer {
+        padding: 10px;
+    }
+}
+
+.tabHeader {
+    position: relative;
+
+    .tabsHeader {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        padding: 8px 8px 0;
+        overflow: auto;
+        white-space: nowrap;
+
+        &::-webkit-scrollbar {
+            width: 0;
+            height: 0;
+        }
+
+        &.center {
+            justify-content: center;
+            gap: 24px;
+        }
+
+        &.spaceBetween {
+            justify-content: space-between;
+        }
+
+        &.spaceAround {
+            justify-content: space-around;
+        }
+
+        &.spaceEvenly {
+            justify-content: space-evenly;
+        }
+
+        &.flexStart {
+            justify-content: flex-start;
+            gap: 24px;
+        }
+
+        &.flexEnd {
+            justify-content: flex-end;
+            gap: 24px;
+        }
+
+        .text {
+            font-family: PingFang TC;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 600;
+            opacity: 0.4;
+            transition: opacity 1.5s cubic-bezier(0.22, 0.94, 0.19, 0.88);
+            cursor: pointer;
+
+            &.active {
+                opacity: 1;
+            }
+        }
+
+        .underline {
+            padding-bottom: 8px;
+            cursor: pointer;
+        }
+
+        .button {
+            position: relative;
+            min-width: 111px;
+            height: 44px;
+            line-height: 44px;
+            text-align: center;
+            border-radius: 24px;
+            // background: #2d2d2d;
+            // color: #fff;
+            cursor: pointer;
+
+            &::before {
+                content: '';
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                border-radius: 24px;
+                box-sizing: border-box;
+                padding: 20px;
+                opacity: 0;
+                transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
+                background: #fff;
+                z-index: -1;
+            }
+
+            &.active {
+                position: relative;
+                color: #2d2d2d !important;
+                z-index: 1;
+
+                &::before {
+                    padding: 22px 56px;
+                    opacity: 1;
+                }
+            }
+        }
+    }
+}
+
+:global .swiper {
+    height: calc(100vh - 47.5px);
+
+    .swiper-slide {
+        padding: 10px;
+        box-sizing: border-box;
+    }
+
+    .swiper-wrapper {
+        transition-timing-function: cubic-bezier(0.22, 0.94, 0.19, 0.88) !important;
+    }
+}
+
+.highlighter {
+    display: block;
+    background: #242429;
+    left: 0;
+    height: 3px;
+    position: absolute;
+    bottom: 0;
+
+    &.firstClassName {
+        transition:
+            left 0.3s 0.2s ease-in-out,
+            right 0.3s 0.1s ease-in-out;
+    }
+
+    &.secondClassName {
+        transition:
+            left 0.3s 0.1s ease-in-out,
+            right 0.3s 0.2s ease-in-out;
+    }
+}
+
+.test {
+    background: #fff;
+    border-radius: 12px;
+    padding: 10px;
+    width: 100%;
+    height: 100vh;
+    box-sizing: border-box;
+}
