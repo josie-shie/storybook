@@ -4,7 +4,6 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import type { Swiper as SwiperCore } from 'swiper';
 import 'swiper/css';
 import style from './tab.module.scss';
-// import Button from '@mui/material/Button';
 
 interface TabProps {
     label: string;
@@ -23,6 +22,11 @@ interface TabsProps {
         | 'spaceEvenly'
         | 'flexStart'
         | 'flexEnd';
+    /**
+     * tab header position gap
+     * tab header 空隙間隔
+     */
+    tabHeaderGap?: number;
     /**
      * tab header style change
      * tab header的樣式顯示方式
@@ -60,6 +64,7 @@ function Tab(props: TabProps) {
 
 function Tabs({
     tabHeaderPosition = 'center',
+    tabHeaderGap = 12,
     tabHeaderStyle = 'text',
     tabsSwiper = true,
     tabBackground = '#1c1c1d',
@@ -69,46 +74,55 @@ function Tabs({
 }: TabsProps) {
     const [activeIndex, setActiveIndex] = useState(0);
     const navRef = useRef<HTMLDivElement>(null);
-    const highlighterRef = useRef<HTMLDivElement>(null);
+    const headerLinerRef = useRef<HTMLDivElement>(null);
     const swiperRef = useRef<SwiperCore | null>(null);
+    const [contentFade, setContentFade] = useState(false);
 
     const handleTabClick = (index: number) => {
-        const highlighter = highlighterRef.current;
-        if (highlighter) {
+        const headerLiner = headerLinerRef.current;
+        if (headerLiner) {
             if (index > activeIndex) {
-                highlighter.classList.remove(style.secondClassName);
-                highlighter.classList.add(style.firstClassName);
+                headerLiner.classList.remove(style.secondClassName);
+                headerLiner.classList.add(style.firstClassName);
             } else if (index < activeIndex) {
-                highlighter.classList.remove(style.firstClassName);
-                highlighter.classList.add(style.secondClassName);
+                headerLiner.classList.remove(style.firstClassName);
+                headerLiner.classList.add(style.secondClassName);
             }
         }
         setActiveIndex(index);
         swiperRef.current?.slideTo(index);
+
+        setContentFade(true);
+
+        setTimeout(() => {
+            setActiveIndex(index);
+            swiperRef.current?.slideTo(index);
+            setContentFade(false);
+        }, 100);
     };
 
     useEffect(() => {
-        const updateHighlighterStyle = (index: number) => {
+        const updateHeaderLinerStyle = (index: number) => {
             const nav = navRef.current;
-            const highlighter = highlighterRef.current;
-            if (nav && highlighter) {
+            const headerLiner = headerLinerRef.current;
+            if (nav && headerLiner) {
                 const elm = nav.children[index] as HTMLElement;
-                highlighter.style.left = `${elm.offsetLeft}px`;
-                highlighter.style.right = `${
+                headerLiner.style.left = `${elm.offsetLeft}px`;
+                headerLiner.style.right = `${
                     nav.offsetWidth - (elm.offsetLeft + elm.offsetWidth)
                 }px`;
-                highlighter.style.minWidth = `${elm.offsetWidth}px`;
+                headerLiner.style.minWidth = `${elm.offsetWidth}px`;
             }
         };
 
-        updateHighlighterStyle(activeIndex);
+        updateHeaderLinerStyle(activeIndex);
 
         window.addEventListener('resize', () => {
-            updateHighlighterStyle(activeIndex);
+            updateHeaderLinerStyle(activeIndex);
         });
         return () => {
             window.removeEventListener('resize', () => {
-                updateHighlighterStyle(activeIndex);
+                updateHeaderLinerStyle(activeIndex);
             });
         };
     }, [activeIndex, tabHeaderPosition, tabHeaderStyle]);
@@ -119,7 +133,11 @@ function Tabs({
             style={{ backgroundColor: tabBackground }}
         >
             <div className={style.tabHeader}>
-                <div className={`${style.tabsHeader} ${style[tabHeaderPosition]}`} ref={navRef}>
+                <div
+                    className={`${style.tabsHeader} ${style[tabHeaderPosition]}`}
+                    ref={navRef}
+                    style={{ gap: tabHeaderGap }}
+                >
                     {Children.map(props.children, (child, index) => {
                         if (isValidElement(child) && child.type === Tab) {
                             const labeledChild = child as React.ReactElement<{
@@ -148,8 +166,8 @@ function Tabs({
                 </div>
                 {tabHeaderStyle === 'underline' && (
                     <div
-                        className={`${style.highlighter}`}
-                        ref={highlighterRef}
+                        className={style.tabHeaderLiner}
+                        ref={headerLinerRef}
                         style={{ backgroundColor: tabHeaderBgColor }}
                     />
                 )}
@@ -176,7 +194,7 @@ function Tabs({
                     })}
                 </Swiper>
             ) : (
-                <div className={style.tabContentContainer}>
+                <div className={`${style.tabContainer} ${contentFade ? style.fade : ''}`}>
                     {Children.toArray(props.children)[activeIndex]}
                 </div>
             )}

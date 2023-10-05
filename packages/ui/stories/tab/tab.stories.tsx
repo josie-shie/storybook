@@ -16,6 +16,7 @@ export default meta;
 export function Default(args: {
     tabHeaderStyle: 'text';
     tabHeaderPosition: 'center';
+    tabHeaderGap: 12;
     tabsSwiper: true;
     tabBackground: '#1c1c1d';
     tabHeaderColor: '#fff';
@@ -26,21 +27,22 @@ export function Default(args: {
             tabBackground={args.tabBackground}
             tabHeaderBgColor={args.tabHeaderBgColor}
             tabHeaderColor={args.tabHeaderColor}
+            tabHeaderGap={args.tabHeaderGap}
             tabHeaderPosition={args.tabHeaderPosition}
             tabHeaderStyle={args.tabHeaderStyle}
             tabsSwiper={args.tabsSwiper}
         >
             <Tab label="Tab 1">
-                <div className={style.test}>Content for Tab 1</div>
+                <div className={style.tabContentForTest}>Content for Tab 1</div>
             </Tab>
             <Tab label="Tab 2">
-                <div className={style.test}>Content for Tab 2</div>
+                <div className={style.tabContentForTest}>Content for Tab 2</div>
             </Tab>
             <Tab label="Tab 3">
-                <div className={style.test}>Content for Tab 3</div>
+                <div className={style.tabContentForTest}>Content for Tab 3</div>
             </Tab>
             <Tab label="Tab 4">
-                <div className={style.test}>Content for Tab 4</div>
+                <div className={style.tabContentForTest}>Content for Tab 4</div>
             </Tab>
         </Tabs>
     );
