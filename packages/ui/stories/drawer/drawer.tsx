@@ -56,23 +56,22 @@ function Drawer({
     }, [isOpen]);
 
     return (
-        <div className={`${style.drawerContainer} ${!showDrawer ? 'hide-drawer' : ''}`}>
-            <button
-                className={`cover-closed ${isOpen ? 'cover-opened' : ''}`}
+        <div className={`${style.drawerContainer} ${!showDrawer ? style.hide : ''}`}>
+            <div
+                className={`${style.coverClosed} ${isOpen ? style.coverOpened : ''}`}
                 onClick={handleClose}
                 style={{ backgroundColor: coverBackground || '#000' }}
-                type="button"
             />
             {position === 'right' ? (
                 <div
-                    className={`drawer-panel-right ${isOpen ? 'drawer-opened-right' : ''}`}
+                    className={`${style.drawerPanelRight} ${isOpen ? style.drawerOpenedRight : ''}`}
                     style={{ padding }}
                 >
                     {children}
                 </div>
             ) : (
                 <div
-                    className={`drawer-panel-left ${isOpen ? 'drawer-opened-left' : ''}`}
+                    className={`${style.drawerPanelLeft} ${isOpen ? style.drawerOpenedLeft : ''}`}
                     style={{ padding }}
                 >
                     {children}

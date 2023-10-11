@@ -42,6 +42,8 @@
         "@mui/icons-material": "^5.14.11",
         "@mui/material": "^5.14.11",
         "@mui/styled-engine": "^5.14.11",
-        "next": "^13.4.19"
+        "next": "^13.4.19",
+        "@tabler/icons-react": "^2.38.0",
+        "swiper": "^9.4.1"
     }
 }
