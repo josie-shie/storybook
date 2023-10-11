@@ -1,7 +1,6 @@
-import type { ReactElement } from 'react';
-import { cloneElement } from 'react';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
+import type { ReactElement, SyntheticEvent } from 'react';
+import { cloneElement, useState } from 'react';
+import Link from 'next/link';
 import style from './footer.module.scss';
 
 interface Menu {
@@ -28,13 +27,9 @@ export interface FooterProps {
      */
     menuList?: Menu[];
     /**
-     * The actived item
+     * Is show footer
      */
-    activedItem: string;
-    /**
-     *  Set current actived item
-     */
-    setActivedItem: (value: string) => void;
+    isShow?: boolean;
 }
 
 function Footer({
@@ -42,10 +37,11 @@ function Footer({
     defaultColor = '#AAAAAA',
     activeColor = '#FFF',
     menuList = [],
-    activedItem = menuList.length ? menuList[0].value : '',
-    setActivedItem
+    isShow = true
 }: FooterProps) {
-    const changeActivedItem = (value: string) => {
+    const [activedItem, setActivedItem] = useState(menuList[0].value);
+
+    const changeActivedItem = (e: SyntheticEvent, value: string) => {
         setActivedItem(value);
     };
 
@@ -56,38 +52,46 @@ function Footer({
     };
 
     return (
-        <div className={style.footerPlaceholder}>
-            <footer className={style.footer}>
-                {menuList.length ? (
-                    <List className={style.menuList}>
-                        {menuList.map(menu => {
-                            return (
-                                <ListItem
-                                    className={`${style.listItem} ${
-                                        activedItem === menu.value ? style.actived : ''
-                                    }`}
-                                    key={menu.value}
-                                    onClick={() => {
-                                        changeActivedItem(menu.value);
-                                    }}
-                                    sx={{ backgroundColor: bgColor }}
-                                >
-                                    {gettIcon(menu.icon, menu.value)}
-                                    <div
-                                        style={{
-                                            color:
-                                                activedItem === menu.value
-                                                    ? activeColor
-                                                    : defaultColor
-                                        }}
-                                    >{`${menu.label}`}</div>
-                                </ListItem>
-                            );
-                        })}
-                    </List>
-                ) : null}
-            </footer>
-        </div>
+        <>
+            {isShow ? (
+                <div className={style.footerPlaceholder}>
+                    <footer className={style.footer}>
+                        {menuList.length ? (
+                            <div className={style.menuList}>
+                                {menuList.map(menu => {
+                                    return (
+                                        <Link
+                                            className={`${style.listItem} ${
+                                                activedItem === menu.value ? style.actived : ''
+                                            }`}
+                                            href={menu.value}
+                                            key={menu.value}
+                                            onClick={event => {
+                                                changeActivedItem(event, menu.value);
+                                            }}
+                                            style={{ backgroundColor: bgColor }}
+                                        >
+                                            <div className={style.icon}>
+                                                {gettIcon(menu.icon, menu.value)}
+                                            </div>
+                                            <div
+                                                className={style.textLabel}
+                                                style={{
+                                                    color:
+                                                        activedItem === menu.value
+                                                            ? activeColor
+                                                            : defaultColor
+                                                }}
+                                            >{`${menu.label}`}</div>
+                                        </Link>
+                                    );
+                                })}
+                            </div>
+                        ) : null}
+                    </footer>
+                </div>
+            ) : null}
+        </>
     );
 }
 
