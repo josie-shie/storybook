@@ -36,12 +36,12 @@ function NormalComponent(args: FooterProps) {
         {
             label: '首頁',
             icon: <CallToActionIcon />,
-            value: '/'
+            value: '/index1'
         },
         {
             label: '首頁',
             icon: <CallToActionIcon />,
-            value: '/'
+            value: '/index2'
         }
     ];
 
