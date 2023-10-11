@@ -8,6 +8,8 @@ import style from './tab.module.scss';
 interface TabProps {
     label: string;
     children: ReactNode;
+    leftSection?: ReactNode; // 左邊的icon
+    rightSection?: ReactNode; // 右邊的icon
 }
 
 interface TabsProps {
@@ -15,43 +17,47 @@ interface TabsProps {
      * tab header position
      * tab header位置的切換
      */
-    tabHeaderPosition?:
-        | 'center'
-        | 'spaceBetween'
-        | 'spaceAround'
-        | 'spaceEvenly'
-        | 'flexStart'
-        | 'flexEnd';
+    position?: 'center' | 'spaceBetween' | 'spaceAround' | 'spaceEvenly' | 'flexStart' | 'flexEnd';
     /**
      * tab header position gap
      * tab header 空隙間隔
      */
-    tabHeaderGap?: number;
+    gap?: number;
     /**
      * tab header style change
      * tab header的樣式顯示方式
      */
-    tabHeaderStyle?: 'text' | 'underline' | 'button';
+    styling?: 'text' | 'underline' | 'button';
     /**
      * tab container swiper change
      * tab內容swiper是否開啟
      */
-    tabsSwiper?: boolean;
+    swiperOpen?: boolean;
     /**
      * tab bg style change
      * tab背景顏色
      */
-    tabBackground?: string;
+    background?: string;
     /**
      * tab header color style change
      * tab header 文字字體顏色
      */
-    tabHeaderColor?: string;
+    textColor?: string;
+    /**
+     * tab header font size change
+     * tab header 文字字體大小
+     */
+    fontSize?: number;
     /**
      * tab header background color style change
      * tab header 背景顏色
      */
-    tabHeaderBgColor?: string;
+    buttonRadius?: number;
+    /**
+     * tab header background color style change
+     * tab header 背景顏色
+     */
+    buttonColor?: string;
     /**
      * control TabContent
      */
@@ -63,13 +69,15 @@ function Tab(props: TabProps) {
 }
 
 function Tabs({
-    tabHeaderPosition = 'center',
-    tabHeaderGap = 12,
-    tabHeaderStyle = 'text',
-    tabsSwiper = true,
-    tabBackground = '#1c1c1d',
-    tabHeaderColor = '#fff',
-    tabHeaderBgColor = '#2d2d2d',
+    position = 'center',
+    gap = 12,
+    styling = 'text',
+    swiperOpen = true,
+    background = '#1c1c1d',
+    textColor = '#fff',
+    fontSize = 14,
+    buttonRadius = 50,
+    buttonColor = '#2d2d2d',
     ...props
 }: TabsProps) {
     const [activeIndex, setActiveIndex] = useState(0);
@@ -125,55 +133,67 @@ function Tabs({
                 updateHeaderLinerStyle(activeIndex);
             });
         };
-    }, [activeIndex, tabHeaderPosition, tabHeaderStyle]);
+    }, [activeIndex, position, gap, styling]);
 
     return (
-        <div
-            className={`${style.tab} ${style[tabHeaderPosition]}`}
-            style={{ backgroundColor: tabBackground }}
-        >
+        <div className={`${style.tab} ${style[position]}`} style={{ backgroundColor: background }}>
             <div className={style.tabHeader}>
                 <div
-                    className={`${style.tabsHeader} ${style[tabHeaderPosition]}`}
+                    className={`${style.tabsHeader} ${style[position]}`}
                     ref={navRef}
-                    style={{ gap: tabHeaderGap }}
+                    style={{ gap }}
                 >
                     {Children.map(props.children, (child, index) => {
                         if (isValidElement(child) && child.type === Tab) {
                             const labeledChild = child as React.ReactElement<{
                                 label: React.ReactNode;
+                                leftSection?: ReactNode;
+                                rightSection?: ReactNode;
                             }>;
                             return (
                                 <div
-                                    className={`${style[tabHeaderStyle]} ${
+                                    className={`${style[styling]} ${
                                         activeIndex === index ? style.active : ''
                                     }`}
                                     onClick={() => {
                                         handleTabClick(index);
                                     }}
                                     style={{
-                                        color: tabHeaderColor,
-                                        backgroundColor:
-                                            tabHeaderStyle === 'button' ? tabHeaderBgColor : ''
+                                        fontSize,
+                                        borderRadius: buttonRadius,
+                                        color: textColor,
+                                        backgroundColor: styling === 'button' ? buttonColor : ''
                                     }}
                                 >
-                                    {labeledChild.props.label}
+                                    {labeledChild.props.leftSection ? (
+                                        <span className={style.tabsHeaderIcon}>
+                                            {labeledChild.props.leftSection}
+                                        </span>
+                                    ) : null}
+                                    <span className={style.tabsHeaderLabel}>
+                                        {labeledChild.props.label}
+                                    </span>
+                                    {labeledChild.props.rightSection ? (
+                                        <span className={style.tabsHeaderIcon}>
+                                            {labeledChild.props.rightSection}
+                                        </span>
+                                    ) : null}
                                 </div>
                             );
                         }
                         return null;
                     })}
                 </div>
-                {tabHeaderStyle === 'underline' && (
+                {styling === 'underline' && (
                     <div
                         className={style.tabHeaderLiner}
                         ref={headerLinerRef}
-                        style={{ backgroundColor: tabHeaderBgColor }}
+                        style={{ backgroundColor: buttonColor }}
                     />
                 )}
             </div>
 
-            {tabsSwiper ? (
+            {swiperOpen ? (
                 <Swiper
                     onSlideChange={swiper => {
                         handleTabClick(swiper.activeIndex);

@@ -130,7 +130,7 @@ importers:
         specifier: ^5.14.11
         version: 5.14.11(@emotion/react@11.11.1)(@types/react@18.2.5)(react-dom@18.2.0)(react@18.2.0)
       '@mui/styled-engine':
-        specifier: ^5.14.10
+        specifier: ^5.14.11
         version: 5.14.11(@emotion/react@11.11.1)(react@18.2.0)
       '@tabler/icons-react':
         specifier: ^2.38.0
