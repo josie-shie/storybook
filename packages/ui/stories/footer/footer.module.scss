@@ -1,0 +1,45 @@
+.footerPlaceholder {
+    height: 50px;
+    width: 100%;
+
+    .footer {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        display: flex;
+        justify-content: space-around;
+        align-items: flex-start;
+        z-index: 9;
+        flex-direction: column;
+
+        .menuList {
+            width: 100%;
+            background-color: transparent;
+            display: flex;
+            flex-direction: row;
+            cursor: pointer;
+            height: 90px;
+
+            .listItem {
+                flex-direction: column;
+
+                &.actived {
+                    animation: FadeEffect 1s;
+                }
+            }
+        }
+    }
+}
+
+@keyframes FadeEffect {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.8;
+    }
+    100% {
+        opacity: 1;
+    }
+}
