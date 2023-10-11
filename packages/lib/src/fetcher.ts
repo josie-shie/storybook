@@ -1,7 +1,6 @@
 import Cookies from 'js-cookie';
 
 interface Fetcher<TData> {
-    apiPath: string;
     url?: string;
     method?: 'GET' | 'POST' | 'PUT' | 'DELETE';
     headers?: Record<string, string>;
@@ -16,13 +15,12 @@ const handleUnauthorized = () => {
     }, 2000);
 };
 
-export const fetcher = async <TResponse, TData>({
-    apiPath,
-    method = 'POST',
-    headers = {},
-    data,
-    timeout = 10
-}: Fetcher<TData>): Promise<TResponse> => {
+const apiPath: string | undefined = process.env.NEXT_PUBLIC_API_PATH;
+
+export const fetcher = async <TResponse, TData>(
+    { method = 'POST', headers = {}, data, timeout = 10 }: Fetcher<TData>,
+    option = {}
+): Promise<TResponse> => {
     const controller = new AbortController();
     setTimeout(() => {
         controller.abort();
@@ -37,7 +35,8 @@ export const fetcher = async <TResponse, TData>({
                 'content-type': 'application/json',
                 ...headers
             },
-            signal: controller.signal
+            signal: controller.signal,
+            ...option
         });
 
         if (response.status === 401) {
@@ -45,7 +44,7 @@ export const fetcher = async <TResponse, TData>({
             throw new Error('Unauthorized');
         }
 
-        const responseData: TResponse = (await response.json()) as TResponse;
+        const responseData = (await response.json()) as TResponse;
 
         return responseData;
     } catch (error) {

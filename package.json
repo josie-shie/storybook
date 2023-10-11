@@ -13,9 +13,14 @@
             "@commitlint/config-conventional"
         ]
     },
+    "lint-staged": {
+        "*.{css,scss,ts,tsx,module.css,module.scss}": "prettier --check --ignore-unknown",
+        "*.{ts,tsx}": "bash -c \"turbo lint\""
+    },
     "devDependencies": {
         "@commitlint/cli": "^17.7.2",
         "@commitlint/config-conventional": "^17.7.0",
+        "@types/node": "^20.8.2",
         "eslint": "^8.48.0",
         "husky": "^8.0.3",
         "lint-staged": "^14.0.1",
