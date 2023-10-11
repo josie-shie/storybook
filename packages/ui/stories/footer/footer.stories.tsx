@@ -1,11 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import CallToActionIcon from '@mui/icons-material/CallToAction';
-import { useState } from 'react';
 import type { FooterProps } from './footer';
 import { Footer } from './footer';
 
 const meta: Meta<typeof Footer> = {
-    title: 'Example/Footer',
+    title: 'site-01/Footer',
     component: Footer,
     tags: ['autodocs'],
     parameters: {
@@ -32,37 +31,19 @@ function NormalComponent(args: FooterProps) {
         {
             label: '首頁',
             icon: <CallToActionIcon />,
-            value: 'index1'
+            value: '/'
         },
         {
             label: '首頁',
             icon: <CallToActionIcon />,
-            value: 'index2'
+            value: '/'
         },
         {
             label: '首頁',
             icon: <CallToActionIcon />,
-            value: 'index3'
-        },
-        {
-            label: '首頁',
-            icon: <CallToActionIcon />,
-            value: 'index4'
-        },
-        {
-            label: '首頁',
-            icon: <CallToActionIcon />,
-            value: 'index5'
+            value: '/'
         }
     ];
-    const [activedItem, setActivedItem] = useState(menuList[0].value);
 
-    return (
-        <Footer
-            {...args}
-            activedItem={activedItem}
-            menuList={menuList}
-            setActivedItem={setActivedItem}
-        />
-    );
+    return <Footer {...args} menuList={menuList} />;
 }

@@ -41,6 +41,7 @@
         "@emotion/styled": "^11.11.0",
         "@mui/icons-material": "^5.14.11",
         "@mui/material": "^5.14.11",
-        "@mui/styled-engine": "^5.14.11"
+        "@mui/styled-engine": "^5.14.11",
+        "next": "^13.4.19"
     }
 }
