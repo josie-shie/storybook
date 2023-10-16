@@ -19,9 +19,11 @@ export function Default(args: {
     position: 'center';
     gap: 12;
     swiperOpen: true;
+    scrolling: false;
     background: '#1c1c1d';
     textColor: '#fff';
     fontSize: 14;
+    fontWeight: 600;
     buttonRadius: 50;
     buttonColor: '#2d2d2d';
 }): JSX.Element {
@@ -31,8 +33,10 @@ export function Default(args: {
             buttonColor={args.buttonColor}
             buttonRadius={args.buttonRadius}
             fontSize={args.fontSize}
+            fontWeight={args.fontWeight}
             gap={args.gap}
             position={args.position}
+            scrolling={args.scrolling}
             styling={args.styling}
             swiperOpen={args.swiperOpen}
             textColor={args.textColor}
@@ -45,6 +49,15 @@ export function Default(args: {
             </Tab>
             <Tab label="Tab 3">
                 <div className={style.tabContentForTest}>Content for Tab 3</div>
+            </Tab>
+            <Tab label="Tab 4">
+                <div className={style.tabContentForTest}>Content for Tab 4</div>
+            </Tab>
+            <Tab label="Tab 4">
+                <div className={style.tabContentForTest}>Content for Tab 4</div>
+            </Tab>
+            <Tab label="Tab 4">
+                <div className={style.tabContentForTest}>Content for Tab 4</div>
             </Tab>
             <Tab label="Tab 4">
                 <div className={style.tabContentForTest}>Content for Tab 4</div>
