@@ -14,7 +14,7 @@ function Tool() {
 }
 
 function Home() {
-    creatUserStore({ token: 'oook' });
+    creatUserStore({ token: 'Test' });
 
     return (
         <>
