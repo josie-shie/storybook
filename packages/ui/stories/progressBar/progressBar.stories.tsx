@@ -19,6 +19,18 @@ export default meta;
 
 type Story = StoryObj<typeof ProgressBar>;
 
-export const Normal: Story = {
-    args: { value: 50, height: 10, radius: true, skewGap: true }
+export const Sample1: Story = {
+    args: {
+        value: 50,
+        height: 10,
+        radius: true,
+        skewGap: true,
+        gapSize: 'large',
+        fill: '#a0e3b8',
+        background: '#75c9ef'
+    }
+};
+
+export const Default: Story = {
+    args: { value: 50, height: 20, radius: false, skewGap: false }
 };
