@@ -1,18 +1,33 @@
 .progressBar {
     position: relative;
-    display: block;
-    background: #aaa;
-    height: 3px;
     overflow: hidden;
+    height: 10px;
 }
 
-.fillPercentage {
+.left {
     position: absolute;
+    display: flex;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    background: #ed3a45;
-    border-right: 2px solid white;
     transition: 0.2s;
+}
+
+.leftContent {
+    flex-grow: 1;
+    background: #ed3a45;
+}
+
+.gap {
+    display: block;
+    height: 100%;
+    width: 10px;
+}
+
+.right {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: skyblue;
 }
