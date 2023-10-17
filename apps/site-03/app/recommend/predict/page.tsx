@@ -1,5 +1,5 @@
 function Page() {
-    return <>Recommend</>;
+    return <>預測</>;
 }
 
 export default Page;

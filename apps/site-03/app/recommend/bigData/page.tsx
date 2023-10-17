@@ -1,5 +1,5 @@
 function Page() {
-    return <>Recommend</>;
+    return <>大數據</>;
 }
 
 export default Page;

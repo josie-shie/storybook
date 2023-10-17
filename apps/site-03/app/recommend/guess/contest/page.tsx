@@ -1,5 +1,5 @@
 function Page() {
-    return <>Recommend</>;
+    return <>賽事競猜</>;
 }
 
 export default Page;
