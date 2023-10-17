@@ -29,6 +29,11 @@ interface TabsProps {
      */
     styling?: 'text' | 'underline' | 'button';
     /**
+     * tab header can scroll
+     * tab header 過多時可以滾動
+     */
+    scrolling?: boolean;
+    /**
      * tab container swiper change
      * tab內容swiper是否開啟
      */
@@ -44,10 +49,15 @@ interface TabsProps {
      */
     textColor?: string;
     /**
+     * tab header font weight change
+     * tab header 文字字體粗細
+     */
+    fontSize?: number;
+    /**
      * tab header font size change
      * tab header 文字字體大小
      */
-    fontSize?: number;
+    fontWeight?: number;
     /**
      * tab header background color style change
      * tab header 背景顏色
@@ -72,10 +82,12 @@ function Tabs({
     position = 'center',
     gap = 12,
     styling = 'text',
+    scrolling = false,
     swiperOpen = true,
     background = '#1c1c1d',
     textColor = '#fff',
     fontSize = 14,
+    fontWeight = 600,
     buttonRadius = 50,
     buttonColor = '#2d2d2d',
     ...props
@@ -133,13 +145,18 @@ function Tabs({
                 updateHeaderLinerStyle(activeIndex);
             });
         };
-    }, [activeIndex, position, gap, styling]);
+    }, [activeIndex, position, gap, styling, scrolling]);
 
     return (
-        <div className={`${style.tab} ${style[position]}`} style={{ backgroundColor: background }}>
-            <div className={style.tabHeader}>
+        <div
+            className={`ui-tab ${style.tab} ${style[position]}`}
+            style={{ backgroundColor: background }}
+        >
+            <div className={`ui-tab-header ${style.tabHeader}`}>
                 <div
-                    className={`${style.tabsHeader} ${style[position]}`}
+                    className={`ui-tabs-header ${style.tabsHeader} ${style[position]} ${
+                        scrolling ? style.scrolling : ''
+                    }`}
                     ref={navRef}
                     style={{ gap }}
                 >
@@ -154,27 +171,34 @@ function Tabs({
                                 <div
                                     className={`${style[styling]} ${
                                         activeIndex === index ? style.active : ''
-                                    }`}
+                                    } ${style[`radius${buttonRadius}`]}`}
                                     onClick={() => {
                                         handleTabClick(index);
                                     }}
                                     style={{
                                         fontSize,
+                                        fontWeight,
                                         borderRadius: buttonRadius,
                                         color: textColor,
                                         backgroundColor: styling === 'button' ? buttonColor : ''
                                     }}
                                 >
                                     {labeledChild.props.leftSection ? (
-                                        <span className={style.tabsHeaderIcon}>
+                                        <span
+                                            className={`ui-tabs-header-icon ${style.tabsHeaderIcon}`}
+                                        >
                                             {labeledChild.props.leftSection}
                                         </span>
                                     ) : null}
-                                    <span className={style.tabsHeaderLabel}>
+                                    <span
+                                        className={`ui-tabs-header-label ${style.tabsHeaderLabel}`}
+                                    >
                                         {labeledChild.props.label}
                                     </span>
                                     {labeledChild.props.rightSection ? (
-                                        <span className={style.tabsHeaderIcon}>
+                                        <span
+                                            className={`ui-tabs-header-icon ${style.tabsHeaderIcon}`}
+                                        >
                                             {labeledChild.props.rightSection}
                                         </span>
                                     ) : null}
@@ -186,7 +210,7 @@ function Tabs({
                 </div>
                 {styling === 'underline' && (
                     <div
-                        className={style.tabHeaderLiner}
+                        className={`ui-tab-header-liner ${style.tabHeaderLiner}`}
                         ref={headerLinerRef}
                         style={{ backgroundColor: buttonColor }}
                     />
@@ -214,7 +238,11 @@ function Tabs({
                     })}
                 </Swiper>
             ) : (
-                <div className={`${style.tabContainer} ${contentFade ? style.fade : ''}`}>
+                <div
+                    className={`ui-tab-container ${style.tabContainer} ${
+                        contentFade ? style.fade : ''
+                    }`}
+                >
                     {Children.toArray(props.children)[activeIndex]}
                 </div>
             )}
