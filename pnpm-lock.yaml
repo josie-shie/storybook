@@ -114,6 +114,9 @@ importers:
       '@mui/system':
         specifier: ^5.11.2
         version: 5.14.11(@emotion/react@11.11.1)(@emotion/styled@11.11.0)(@types/react@18.2.5)(react@18.2.0)
+      '@tabler/icons-react':
+        specifier: ^2.38.0
+        version: 2.39.0(react@18.2.0)
       data-center:
         specifier: workspace:*
         version: link:../../packages/data-center
