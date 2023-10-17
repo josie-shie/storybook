@@ -1,0 +1,50 @@
+@import 'variables';
+
+.recommend {
+    width: 100%;
+    height: 100dvh;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 67px;
+    padding: 15px;
+    background: linear-gradient(96deg, #142d59 -34.83%, #0e5ee6 41.04%, #0d67ff 54.55%);
+
+    .left {
+        display: flex;
+        align-items: center;
+
+        img {
+            width: 24px;
+            height: 24px;
+        }
+    }
+
+    .switch {
+    }
+
+    .star {
+        position: relative;
+        display: flex;
+        align-items: center;
+
+        .number {
+            font-size: 12px;
+            color: #222;
+            padding: 3px 8px 3px 15px;
+            border-radius: 4px;
+            background: rgba(255 255 255 / 80%);
+        }
+
+        img {
+            position: absolute;
+            left: -12px;
+            width: 24px;
+            height: 24px;
+        }
+    }
+}
