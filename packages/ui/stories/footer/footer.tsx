@@ -67,7 +67,6 @@ function Footer({
                                             href={menu.value}
                                             key={menu.value}
                                             onClick={event => {
-                                                event.preventDefault();
                                                 changeActivedItem(event, menu.value);
                                             }}
                                             style={{ backgroundColor: bgColor }}
