@@ -1,5 +1,4 @@
 import { Footer } from 'ui';
-import Image from 'next/image';
 import HomeIcon from './img/HomeIcon.svg';
 import GameIcon from './img/Game.svg';
 import RecommendIcon from './img/Recommend.svg';
@@ -10,27 +9,27 @@ const CategoryList = [
     {
         label: '首頁',
         value: '/',
-        icon: <Image alt="" src={HomeIcon as string} />
+        icon: <HomeIcon />
     },
     {
         label: '賽事',
         value: '/game',
-        icon: <Image alt="" src={GameIcon as string} />
+        icon: <GameIcon />
     },
     {
         label: '推薦',
         value: '/recommedn',
-        icon: <Image alt="" src={RecommendIcon as string} />
+        icon: <RecommendIcon />
     },
     {
         label: '數據',
         value: '/data',
-        icon: <Image alt="" src={DataIcon as string} />
+        icon: <DataIcon />
     },
     {
         label: '消息',
         value: '/message',
-        icon: <Image alt="" src={NewsIcon as string} />
+        icon: <NewsIcon />
     }
 ];
 

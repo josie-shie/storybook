@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import HeaderBg from './img/HeaderBg.png';
 import TotalIcon from './img/TotalIcon.svg';
 import style from './header.module.scss';
@@ -10,11 +9,11 @@ function HeaderComponent() {
         <div className={style.placeholder}>
             <div className={style.header} style={{ backgroundImage: `url(${HeaderBg.src})` }}>
                 <div className={style.logo}>
-                    <Image alt="" src={LogoIcon as string} />
-                    <Image alt="" src={Logo as string} />
+                    <LogoIcon />
+                    <Logo />
                 </div>
                 <div className={style.total}>
-                    <Image alt="" className={style.icon} src={TotalIcon as string} />
+                    <TotalIcon className={style.icon} />
                     <div className={style.totalNumber}>999,999</div>
                 </div>
             </div>

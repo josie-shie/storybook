@@ -1,5 +1,4 @@
 import { Tab, Tabs } from 'ui';
-import Image from 'next/image';
 import NorthBangKokClubIcon from '../../img/NorthBangkokClubIcon.svg';
 import ThaiUniversityClubIcon from '../../img/ThaiUniversityClubIcon.svg';
 import PlayButton from '../../img/PlayButton.svg';
@@ -30,7 +29,7 @@ function StartedComponent() {
     return (
         <div className={`${style.text} ${style.live} ${style.liveText}`}>
             直播中
-            <Image alt="" className={style.playButton} src={PlayButton as string} />
+            <PlayButton className={style.playButton} />
         </div>
     );
 }
@@ -38,7 +37,7 @@ function StartedComponent() {
 function NotStartedComponent({ total }: { total: number }) {
     return (
         <div className={`${style.text} ${style.notStartedText}`}>
-            <Image alt="" src={User as string} />
+            <User />
             <span>{total}</span>
         </div>
     );
@@ -69,9 +68,9 @@ function StartedScore({
 
 function LeagueCard({ match }: MatchProps) {
     const optionList = [
-        { label: '競猜方案', icon: Plan as string },
-        { label: '專家預測', icon: Professional as string },
-        { label: '風向數據分析', icon: Analysis as string }
+        { label: '競猜方案', icon: <Plan className={style.image} /> },
+        { label: '專家預測', icon: <Professional className={style.image} /> },
+        { label: '風向數據分析', icon: <Analysis className={style.image} /> }
     ];
 
     return (
@@ -84,11 +83,7 @@ function LeagueCard({ match }: MatchProps) {
                 </div>
                 <div className={style.clubInfo}>
                     <div className={style.team}>
-                        <Image
-                            alt=""
-                            className={style.image}
-                            src={NorthBangKokClubIcon as string}
-                        />
+                        <NorthBangKokClubIcon className={style.image} />
                         <div className={style.teamName}>北曼谷學院</div>
                     </div>
                     <div className={style.score}>
@@ -103,11 +98,7 @@ function LeagueCard({ match }: MatchProps) {
                         )}
                     </div>
                     <div className={style.team}>
-                        <Image
-                            alt=""
-                            className={style.image}
-                            src={ThaiUniversityClubIcon as string}
-                        />
+                        <ThaiUniversityClubIcon className={style.image} />
                         <div className={style.teamName}>泰国国立法政大学</div>
                     </div>
                 </div>
@@ -116,7 +107,7 @@ function LeagueCard({ match }: MatchProps) {
                 {optionList.map(option => {
                     return (
                         <div className={style.option} key={option.label}>
-                            <Image alt="" className={style.image} src={option.icon} />
+                            {option.icon}
                             <div className={style.text}>{option.label}</div>
                         </div>
                     );
@@ -165,41 +156,39 @@ function LeagueCardList() {
     ];
 
     return (
-        <div className={style.home}>
-            <Tabs
-                background={tabStyle.background}
-                buttonColor={tabStyle.buttonColor}
-                buttonRadius={tabStyle.buttonRadius}
-                fontSize={tabStyle.fontSize}
-                gap={tabStyle.gap}
-                position="center"
-                styling="button"
-                swiperOpen={tabStyle.swiperOpen}
-                textColor={tabStyle.textColor}
-            >
-                <Tab label="英超">
-                    <div className={style.tabContentForTest}>
-                        <div className={style.leagueList}>
-                            {matchList.map(option => {
-                                return <LeagueCard key={option.matchId} match={option} />;
-                            })}
-                        </div>
+        <Tabs
+            background={tabStyle.background}
+            buttonColor={tabStyle.buttonColor}
+            buttonRadius={tabStyle.buttonRadius}
+            fontSize={tabStyle.fontSize}
+            gap={tabStyle.gap}
+            position="center"
+            styling="button"
+            swiperOpen={tabStyle.swiperOpen}
+            textColor={tabStyle.textColor}
+        >
+            <Tab label="英超">
+                <div className={style.tabContentForTest}>
+                    <div className={style.leagueList}>
+                        {matchList.map(option => {
+                            return <LeagueCard key={option.matchId} match={option} />;
+                        })}
                     </div>
-                </Tab>
-                <Tab label="西甲">
-                    <div className={style.tabContentForTest}>Content for Tab 2</div>
-                </Tab>
-                <Tab label="德甲">
-                    <div className={style.tabContentForTest}>Content for Tab 3</div>
-                </Tab>
-                <Tab label="法甲">
-                    <div className={style.tabContentForTest}>Content for Tab 4</div>
-                </Tab>
-                <Tab label="義甲">
-                    <div className={style.tabContentForTest}>Content for Tab 5</div>
-                </Tab>
-            </Tabs>
-        </div>
+                </div>
+            </Tab>
+            <Tab label="西甲">
+                <div className={style.tabContentForTest}>Content for Tab 2</div>
+            </Tab>
+            <Tab label="德甲">
+                <div className={style.tabContentForTest}>Content for Tab 3</div>
+            </Tab>
+            <Tab label="法甲">
+                <div className={style.tabContentForTest}>Content for Tab 4</div>
+            </Tab>
+            <Tab label="義甲">
+                <div className={style.tabContentForTest}>Content for Tab 5</div>
+            </Tab>
+        </Tabs>
     );
 }
 

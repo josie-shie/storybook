@@ -1,17 +1,5 @@
 @import 'variables';
 
-.home {
-    background-color: #f8f8f8;
-    border-radius: 20px;
-    height: 100vh;
-    position: absolute;
-    top: 55px;
-    left: 0;
-    right: 0;
-    font-weight: 500;
-    font-family: PingFang SC;
-}
-
 .leagueList {
     display: flex;
     flex-direction: column;
