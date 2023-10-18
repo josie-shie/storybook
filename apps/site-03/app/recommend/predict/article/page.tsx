@@ -1,5 +1,5 @@
 function Page() {
-    return <>Predict</>;
+    return <>文章</>;
 }
 
 export default Page;

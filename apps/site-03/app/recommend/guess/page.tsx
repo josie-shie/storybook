@@ -1,5 +1,5 @@
 function Page() {
-    return <>Predict</>;
+    return <>Guess</>;
 }
 
 export default Page;

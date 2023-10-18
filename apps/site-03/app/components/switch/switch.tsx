@@ -19,7 +19,7 @@ function Switch({ sports }: Sports) {
             if (activeElement && activeElement instanceof HTMLElement) {
                 setIndicatorStyle({
                     left: `${activeElement.offsetLeft}px`,
-                    width: `${activeElement.offsetWidth + 3}px`
+                    width: `${activeElement.offsetWidth}px`
                 });
             }
         }

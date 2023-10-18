@@ -1,7 +1,19 @@
 @import 'variables';
 
 .layout {
+    position: relative;
+    top: -46px;
     width: 100%;
-    height: calc(100vh - 67px);
+    height: calc(100vh - 54px);
+    padding: 12px 0;
     background: #fff;
+    border-radius: 16px 16px 0 0;
+
+    :global(.tab) {
+        :global(.header) {
+            :global(.tabs) {
+                padding: 0 12px;
+            }
+        }
+    }
 }
