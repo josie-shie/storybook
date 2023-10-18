@@ -328,7 +328,6 @@ export const login = async ({
 
 /**
  * 獲取會員資料
- * - params : {@link GetMemberInfoResult}
  * - returns : {@link GetMemberInfoResponse}
  */
 export const getMemberInfo = async () => {
@@ -440,7 +439,6 @@ export const updateMemberInfo = async ({
 
 /**
  * 取得會員邀請碼
- * - params : {@link GetInvitationCodeResult}
  * - returns string
  */
 export const getInvitationCode = async () => {
