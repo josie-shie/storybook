@@ -12,6 +12,7 @@ interface PropsType {
 function Tag({ icon, text, gradient, color, background }: PropsType) {
     const gradientClass = gradient === 'blue' ? style.gradientBlue : '';
 
+    if (!icon && !text) return null;
     return (
         <div className={`${style.tag} ${gradientClass}`} style={{ background, color }}>
             {icon ? <span className={style.tagIcon}>{icon}</span> : null}
