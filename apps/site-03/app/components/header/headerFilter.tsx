@@ -13,7 +13,7 @@ function HeaderComponent() {
                     <Logo />
                 </div>
                 <div className={style.total}>
-                    <TotalIcon className={style.icon} />
+                    <TotalIcon />
                     <div className={style.totalNumber}>999,999</div>
                 </div>
             </div>
