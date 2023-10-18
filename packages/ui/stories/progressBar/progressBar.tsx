@@ -10,22 +10,68 @@ interface PropType {
      */
     fill?: string;
     /**
+     * Bar height
+     */
+    height?: number;
+    /**
      * Background color
      */
     background?: string;
+    /**
+     * Does the ProgressBar have border radius
+     */
+    radius?: boolean;
+    /**
+     * Gap size setting
+     */
+    gapSize?: 'small' | 'medium' | 'large';
+    /**
+     * Is the gap skew
+     */
+    skewGap?: boolean;
 }
 
+const sizeMap = { small: '2px', medium: '4px', large: '8px' };
+
 function ProgressBar(props: PropType) {
-    const { fill, background, value = 50 } = props;
+    const {
+        fill,
+        background,
+        radius,
+        skewGap,
+        value = 50,
+        height = 10,
+        gapSize = 'medium'
+    } = props;
     const percent = value < 0 || value > 100 ? 50 : 100 - value;
+    const barHeight = height < 0 || height > 50 ? 10 : height;
+    const gapWidth = sizeMap[gapSize];
 
     return (
-        <span className={style.progressBar} style={{ background }}>
+        <div
+            className={style.progressBar}
+            style={{
+                height: `${barHeight}px`,
+                borderRadius: `${radius ? '100px' : '0'}`
+            }}
+        >
             <span
-                className={style.fillPercentage}
-                style={{ background: fill, transform: `translateX(-${percent}%)` }}
+                className={style.left}
+                style={{
+                    transform: `translateX(-${percent}%) ${skewGap ? 'skew(-20deg)' : ''}`
+                }}
+            >
+                <span className={style.leftContent} style={{ background: fill }} />
+                <span className={style.gap} style={{ width: gapWidth }} />
+            </span>
+            <span
+                className={style.right}
+                style={{
+                    background,
+                    transform: `translateX(${value}%) ${skewGap ? 'skew(-20deg)' : ''}`
+                }}
             />
-        </span>
+        </div>
     );
 }
 
