@@ -104,12 +104,18 @@
 
             .underline {
                 padding-bottom: 8px;
+                color: #9b9b9b;
+
+                &.active {
+                    color: #4489ff;
+                }
             }
 
             .button {
                 position: relative;
                 padding: 12px 24px;
                 text-align: center;
+                color: #9b9b9b;
                 overflow: hidden;
 
                 &::before {
@@ -124,13 +130,15 @@
                     transition-duration: 0.2s;
                     transition-property: all;
                     transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
-                    background: #fff;
+                    border: 1px solid #4489ff;
+                    background: #edf3ff;
+                    opacity: 0;
                     z-index: -1;
                 }
 
                 &.active {
                     position: relative;
-                    color: #2d2d2d !important;
+                    color: #4489ff;
                     z-index: 1;
 
                     &::before {
@@ -143,7 +151,7 @@
 
         .tabHeaderLiner {
             display: block;
-            background: #242429;
+            background: #4489ff;
             left: 0;
             height: 3px;
             position: absolute;
