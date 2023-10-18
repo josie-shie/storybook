@@ -1,0 +1,111 @@
+@import 'variables';
+
+.tab {
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 9px;
+
+    .header {
+        position: relative;
+
+        .tabs {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            flex-wrap: wrap;
+
+            .item {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex: 1;
+                a {
+                    text-align: center;
+                    padding: 6px 0;
+                    font-size: 14px;
+                    font-weight: 500;
+                    color: #9b9b9b;
+                    cursor: none;
+                }
+            }
+
+            .underline {
+                &.active {
+                    a {
+                        color: #4489ff;
+                    }
+                }
+            }
+
+            .button {
+                position: relative;
+                // padding: 12px 24px;
+                text-align: center;
+                overflow: hidden;
+
+                a {
+                    text-align: center;
+                    padding: 6px 0;
+                    font-size: 14px;
+                    font-weight: 500;
+                    color: #9b9b9b;
+                    cursor: none;
+                }
+
+                &::before {
+                    content: '';
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    box-sizing: border-box;
+                    width: 100%;
+                    height: 100%;
+                    transform: translate(-50%, -50%) scaleX(0.32);
+                    transition-duration: 0.2s;
+                    transition-property: all;
+                    transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
+                    border: 1px solid #4489ff;
+                    background: #edf3ff;
+                    border-radius: 30px;
+                    z-index: -1;
+                }
+
+                &.active {
+                    position: relative;
+                    z-index: 1;
+
+                    &::before {
+                        transform: translate(-50%, -50%) scaleX(1);
+                        opacity: 1;
+                    }
+
+                    a {
+                        color: #4489ff;
+                    }
+                }
+            }
+        }
+
+        .liner {
+            display: block;
+            background: #4489ff;
+            left: 0;
+            height: 3px;
+            position: absolute;
+            bottom: -1px;
+            border-radius: 10px;
+
+            &.firstClassName {
+                transition:
+                    left 0.3s 0.2s ease-in-out,
+                    right 0.3s 0.1s ease-in-out;
+            }
+
+            &.secondClassName {
+                transition:
+                    left 0.3s 0.1s ease-in-out,
+                    right 0.3s 0.2s ease-in-out;
+            }
+        }
+    }
+}

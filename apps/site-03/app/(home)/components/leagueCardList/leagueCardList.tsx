@@ -157,15 +157,11 @@ function LeagueCardList() {
 
     return (
         <Tabs
-            background={tabStyle.background}
-            buttonColor={tabStyle.buttonColor}
             buttonRadius={tabStyle.buttonRadius}
-            fontSize={tabStyle.fontSize}
             gap={tabStyle.gap}
             position="center"
             styling="button"
             swiperOpen={tabStyle.swiperOpen}
-            textColor={tabStyle.textColor}
         >
             <Tab label="英超">
                 <div className={style.tabContentForTest}>

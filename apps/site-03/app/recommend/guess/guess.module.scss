@@ -1,0 +1,10 @@
+.guess {
+    :global(.tab) {
+        :global(.header) {
+            :global(.tabs) {
+                padding: 0 12px;
+                gap: 4px;
+            }
+        }
+    }
+}

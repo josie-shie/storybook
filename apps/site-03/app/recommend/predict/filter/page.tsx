@@ -1,5 +1,5 @@
 function Page() {
-    return <>Predict</>;
+    return <>賽事篩選</>;
 }
 
 export default Page;
