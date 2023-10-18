@@ -1,0 +1,100 @@
+.header {
+    padding: 0 16px;
+    height: 46px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 9;
+
+    &.headerFixed {
+        position: fixed;
+        top: -46px;
+        left: 0;
+        background-color: #fff;
+        transition: top 0.3s;
+
+        &.show {
+            top: 0;
+        }
+    }
+
+    .scoreBar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        column-gap: 16px;
+
+        .score {
+            color: #000;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .logo {
+            width: 24px;
+            height: 24px;
+        }
+    }
+
+    .scoreboard {
+        width: 160px;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: #fff;
+        font-weight: 500;
+
+        .league {
+            position: absolute;
+            bottom: -26px;
+            background-color: rgb(255 255 255 / 40%);
+            padding: 2px 12px;
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 24px;
+        }
+
+        .createTime {
+            font-size: 14px;
+            font-weight: 500;
+            line-height: normal;
+        }
+    }
+
+    .gameTime {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 2px 6px;
+        margin-bottom: 4px;
+        font-size: 12px;
+        font-weight: 500;
+        color: white;
+        background-color: blue;
+        border-radius: 2px;
+    }
+
+    .notYet {
+        background-color: #9b9b9b;
+    }
+
+    .finish {
+        background-color: #fd9a00;
+    }
+
+    .playOff {
+        background-color: red;
+    }
+
+    .placeholder {
+        width: calc(100% - 36px);
+    }
+
+    .imageHolder {
+        width: 24px;
+        height: 24px;
+    }
+}
