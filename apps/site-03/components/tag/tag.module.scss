@@ -1,3 +1,21 @@
 .tag {
-    width: 20px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    font-weight: 500;
+    color: #fff;
+    gap: 3px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: linear-gradient(90deg, #ff844f 6.1%, #ff5a36 95.12%);
+}
+
+.tagIcon {
+    width: auto;
+    height: auto;
+}
+
+.gradientBlue {
+    background: linear-gradient(90deg, #4489ff 6.1%, #065ff5 95.12%);
 }
