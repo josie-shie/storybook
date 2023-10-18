@@ -44,6 +44,10 @@ export const fetcher = async <TResponse, TData>(
             throw new Error('Unauthorized');
         }
 
+        if (!response.ok) {
+            throw new Error('failed to fetching');
+        }
+
         const responseData = (await response.json()) as TResponse;
 
         return responseData;

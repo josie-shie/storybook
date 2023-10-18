@@ -77,7 +77,7 @@ function LeagueCard({ match }: MatchProps) {
         <div className={style.leagueCard}>
             <div className={style.matchInfo}>
                 <div className={style.leagueInfo}>
-                    <div className={style.text}>{match.leagueChsShort}</div>
+                    <div className={`${style.text} ${style.liveText}`}>{match.leagueChsShort}</div>
                     <div className={style.time}>2023-8-23 11:30</div>
                     {match.state ? <NotStartedComponent total={1199} /> : <StartedComponent />}
                 </div>
@@ -121,11 +121,7 @@ function LeagueCardList() {
     const tabStyle = {
         gap: 8,
         swiperOpen: true,
-        background: '#F8F8F8',
-        textColor: '#8D8D8D',
-        fontSize: 14,
-        buttonRadius: 30,
-        buttonColor: 'transparent'
+        buttonRadius: 30
     };
 
     const matchList: Match[] = [

@@ -12,8 +12,6 @@ export const handleApiError = (error: unknown): { success: false; error: string 
         errorMessage = `<003> ${error.message}`; // 其他後端回來
     }
 
-    console.error(error);
-
     return {
         success: false,
         error: errorMessage
