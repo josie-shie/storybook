@@ -5,7 +5,7 @@ import style from './footer.module.scss';
 
 interface Menu {
     label: string;
-    icon: ReactElement;
+    icon?: ReactElement;
     value: string;
 }
 
@@ -71,9 +71,11 @@ function Footer({
                                             }}
                                             style={{ backgroundColor: bgColor }}
                                         >
-                                            <div className={style.icon}>
-                                                {gettIcon(menu.icon, menu.value)}
-                                            </div>
+                                            {menu.icon ? (
+                                                <div className={style.icon}>
+                                                    {gettIcon(menu.icon, menu.value)}
+                                                </div>
+                                            ) : null}
                                             <div
                                                 className={style.textLabel}
                                                 style={{

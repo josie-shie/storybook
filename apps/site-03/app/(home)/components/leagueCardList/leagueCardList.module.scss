@@ -1,0 +1,147 @@
+@import 'variables';
+
+.leagueList {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    .leagueCard {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+
+        .matchInfo {
+            height: 122px;
+            width: 100%;
+            padding: 12px;
+            align-items: center;
+            text-align: center;
+            background-color: #fff;
+            border-radius: 8px 8px 0 0;
+
+            .time {
+                color: #8d8d8d;
+                font-size: 12px;
+            }
+
+            .liveText {
+                color: #4489ff;
+            }
+
+            .notStartedText {
+                color: #8d8d8d;
+                gap: 2px;
+            }
+
+            .text {
+                min-width: 58px;
+                font-size: 12px;
+                font-weight: 600;
+                display: flex;
+                align-items: center;
+            }
+
+            .live {
+                gap: 6px;
+
+                .playButton {
+                    width: 18px;
+                    height: 14px;
+                }
+            }
+
+            .leagueInfo {
+                display: flex;
+                justify-content: space-between;
+            }
+
+            .clubInfo {
+                display: flex;
+                justify-content: space-between;
+                padding: 6px 20px 16px;
+                align-items: center;
+                text-align: center;
+
+                .team {
+                    width: 84px;
+                    height: 72px;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    gap: 4px;
+
+                    .image {
+                        width: 36px;
+                        height: 36px;
+                    }
+                }
+
+                .versus {
+                    color: #4a4a4a;
+                    text-align: center;
+                    font-family: Vazirmatn;
+                    font-size: 28px;
+                    font-weight: 700;
+                    letter-spacing: 2.8px;
+                }
+
+                .score {
+                    width: 52px;
+                    height: 44px;
+                    color: #cc141d;
+
+                    .scoreNumber {
+                        text-align: center;
+                        font-family: Vazirmatn;
+                        font-size: 28px;
+                        font-style: normal;
+                        font-weight: 700;
+                        line-height: normal;
+                        letter-spacing: 2.8px;
+                    }
+
+                    .timeTotal {
+                        font-size: 12px;
+                        font-weight: 500;
+                    }
+                }
+
+                .teamName {
+                    color: #4a4a4a;
+                    text-align: center;
+                    font-size: 13px;
+                    font-weight: 500;
+                    width: 84px;
+                    height: 32;
+                }
+            }
+        }
+
+        .optionList {
+            display: flex;
+            height: 44px;
+            padding: 0px 12px;
+            justify-content: center;
+            align-items: center;
+            align-content: center;
+            gap: 32px;
+            border-radius: 0 0 8px 8px;
+            background-color: #fff;
+
+            .option {
+                display: flex;
+                align-items: center;
+                width: fit-content;
+                white-space: nowrap;
+                gap: 6px;
+
+                .text {
+                    overflow: hidden;
+                    color: #4a4a4a;
+                    font-size: 13px;
+                    font-weight: 500;
+                }
+            }
+        }
+    }
+}
