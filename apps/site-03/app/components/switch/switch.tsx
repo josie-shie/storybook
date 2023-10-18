@@ -28,7 +28,7 @@ function Switch({ sports }: Sports) {
     useEffect(updateIndicator, [activeSport]);
 
     return (
-        <div className={`ui-switch ${style.switch}`} ref={switchRef}>
+        <div className={`switch ${style.switch}`} ref={switchRef}>
             {sports?.map(sport => (
                 <span
                     className={activeSport === sport ? style.active : ''}
@@ -41,7 +41,7 @@ function Switch({ sports }: Sports) {
                     {sport}
                 </span>
             ))}
-            <div className={`${style.indicator}`} style={indicatorStyle} />
+            <div className={`indicator ${style.indicator}`} style={indicatorStyle} />
         </div>
     );
 }

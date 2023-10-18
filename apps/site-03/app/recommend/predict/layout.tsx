@@ -10,7 +10,7 @@ function PredictLayout({ children }: { children: ReactNode }) {
     const paramName = usePathname();
 
     useEffect(() => {
-        if (paramName === '/recommend/predict' || paramName === '/recommend/predict/page') {
+        if (paramName === '/recommend/predict') {
             router.push('/recommend/predict/article');
         }
     }, [router, paramName]);
