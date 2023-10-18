@@ -145,3 +145,18 @@
         }
     }
 }
+
+:global(.ui-tab) {
+    :global(.ui-tab-header) {
+        padding-bottom: 10px;
+
+        :global(.ui-tabs-header) {
+            padding: 0;
+            word-break: keep-all;
+        }
+    }
+
+    :global(.swiper-slide) {
+        padding: 0 !important;
+    }
+}
