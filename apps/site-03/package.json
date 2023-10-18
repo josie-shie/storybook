@@ -20,7 +20,8 @@
         "@mui/material": "^5.14.3",
         "@mui/system": "^5.11.2",
         "@mui/icons-material": "^5.11.0",
-        "@emotion/styled": "^11.11.0"
+        "@emotion/styled": "^11.11.0",
+        "@tabler/icons-react": "^2.38.0"
     },
     "devDependencies": {
         "@next/eslint-plugin-next": "^13.4.19",
