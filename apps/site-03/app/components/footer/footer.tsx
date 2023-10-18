@@ -1,9 +1,9 @@
 import { Footer } from 'ui';
-import HomeIcon from './img/HomeIcon.svg';
-import GameIcon from './img/Game.svg';
-import RecommendIcon from './img/Recommend.svg';
-import DataIcon from './img/Data.svg';
-import NewsIcon from './img/News.svg';
+import HomeIcon from './img/homeIcon.svg';
+import GameIcon from './img/game.svg';
+import RecommendIcon from './img/recommend.svg';
+import DataIcon from './img/data.svg';
+import NewsIcon from './img/news.svg';
 
 const CategoryList = [
     {

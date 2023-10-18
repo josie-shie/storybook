@@ -1,8 +1,8 @@
-import HeaderBg from './img/HeaderBg.png';
-import TotalIcon from './img/TotalIcon.svg';
+import HeaderBg from './img/headerBg.png';
+import TotalIcon from './img/totalIcon.svg';
 import style from './header.module.scss';
-import LogoIcon from './img/LogoIcon.svg';
-import Logo from './img/Logo.svg';
+import LogoIcon from './img/logoIcon.svg';
+import Logo from './img/logo.svg';
 
 function HeaderComponent() {
     return (

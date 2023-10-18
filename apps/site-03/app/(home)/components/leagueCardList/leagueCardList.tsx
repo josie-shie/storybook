@@ -1,11 +1,11 @@
 import { Tab, Tabs } from 'ui';
-import NorthBangKokClubIcon from '../../img/NorthBangkokClubIcon.svg';
-import ThaiUniversityClubIcon from '../../img/ThaiUniversityClubIcon.svg';
-import PlayButton from '../../img/PlayButton.svg';
-import Plan from '../../img/Plan.svg';
-import Professional from '../../img/Professional.svg';
-import Analysis from '../../img/Analysis.svg';
-import User from '../../img/User.svg';
+import NorthBangKokClubIcon from './img/northBangkokClubIcon.svg';
+import ThaiUniversityClubIcon from './img/thaiUniversityClubIcon.svg';
+import PlayButton from './img/playButton.svg';
+import Plan from './img/plan.svg';
+import Professional from './img/professional.svg';
+import Analysis from './img/analysis.svg';
+import User from './img/user.svg';
 import style from './leagueCardList.module.scss';
 
 interface Match {
