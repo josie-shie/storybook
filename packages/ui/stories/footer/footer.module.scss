@@ -45,9 +45,12 @@
                     animation: FadeEffect 1s;
                 }
 
-                &:first-child,
-                &:last-child {
+                &:first-child {
                     padding-left: 16px;
+                }
+
+                &:last-child {
+                    padding-right: 16px;
                 }
             }
         }

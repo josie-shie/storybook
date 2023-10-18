@@ -20,26 +20,16 @@ export function Default(args: {
     gap: 12;
     swiperOpen: true;
     scrolling: false;
-    background: '#1c1c1d';
-    textColor: '#fff';
-    fontSize: 14;
-    fontWeight: 600;
     buttonRadius: 50;
-    buttonColor: '#2d2d2d';
 }): JSX.Element {
     return (
         <Tabs
-            background={args.background}
-            buttonColor={args.buttonColor}
             buttonRadius={args.buttonRadius}
-            fontSize={args.fontSize}
-            fontWeight={args.fontWeight}
             gap={args.gap}
             position={args.position}
             scrolling={args.scrolling}
             styling={args.styling}
             swiperOpen={args.swiperOpen}
-            textColor={args.textColor}
         >
             <Tab label="Tab 1" leftSection={<IconChevronDown size="1rem" />}>
                 <div className={style.tabContentForTest}>Content for Tab 1</div>

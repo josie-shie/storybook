@@ -39,35 +39,10 @@ interface TabsProps {
      */
     swiperOpen?: boolean;
     /**
-     * tab bg style change
-     * tab背景顏色
-     */
-    background?: string;
-    /**
-     * tab header color style change
-     * tab header 文字字體顏色
-     */
-    textColor?: string;
-    /**
-     * tab header font weight change
-     * tab header 文字字體粗細
-     */
-    fontSize?: number;
-    /**
-     * tab header font size change
-     * tab header 文字字體大小
-     */
-    fontWeight?: number;
-    /**
      * tab header background color style change
      * tab header 背景顏色
      */
     buttonRadius?: number;
-    /**
-     * tab header background color style change
-     * tab header 背景顏色
-     */
-    buttonColor?: string;
     /**
      * control TabContent
      */
@@ -84,12 +59,7 @@ function Tabs({
     styling = 'text',
     scrolling = false,
     swiperOpen = true,
-    background = '#1c1c1d',
-    textColor = '#fff',
-    fontSize = 14,
-    fontWeight = 600,
     buttonRadius = 50,
-    buttonColor = '#2d2d2d',
     ...props
 }: TabsProps) {
     const [activeIndex, setActiveIndex] = useState(0);
@@ -148,10 +118,7 @@ function Tabs({
     }, [activeIndex, position, gap, styling, scrolling]);
 
     return (
-        <div
-            className={`ui-tab ${style.tab} ${style[position]}`}
-            style={{ backgroundColor: background }}
-        >
+        <div className={`ui-tab ${style.tab} ${style[position]}`}>
             <div className={`ui-tab-header ${style.tabHeader}`}>
                 <div
                     className={`ui-tabs-header ${style.tabsHeader} ${style[position]} ${
@@ -176,11 +143,7 @@ function Tabs({
                                         handleTabClick(index);
                                     }}
                                     style={{
-                                        fontSize,
-                                        fontWeight,
-                                        borderRadius: buttonRadius,
-                                        color: textColor,
-                                        backgroundColor: styling === 'button' ? buttonColor : ''
+                                        borderRadius: buttonRadius
                                     }}
                                 >
                                     {labeledChild.props.leftSection ? (
@@ -212,7 +175,6 @@ function Tabs({
                     <div
                         className={`ui-tab-header-liner ${style.tabHeaderLiner}`}
                         ref={headerLinerRef}
-                        style={{ backgroundColor: buttonColor }}
                     />
                 )}
             </div>
