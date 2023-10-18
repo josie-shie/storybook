@@ -1,7 +1,5 @@
-import Recommend from './recommend';
-
 function Page() {
-    return <Recommend />;
+    return <>Recommend</>;
 }
 
 export default Page;
