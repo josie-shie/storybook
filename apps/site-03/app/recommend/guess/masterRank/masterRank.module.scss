@@ -1,0 +1,38 @@
+.masterRank {
+    padding: 14px 12px;
+
+    .control {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 18px;
+
+        .right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+
+            .search {
+                display: flex;
+                align-items: center;
+                gap: 4px;
+                font-family: PingFang SC;
+                font-size: 14px;
+                font-weight: 500;
+                color: #4489ff;
+
+                :global(.tabler-icon-search) {
+                    transform: scaleX(-1);
+                }
+            }
+        }
+    }
+
+    :global(.tab) {
+        :global(.header) {
+            :global(.tabs) {
+                padding: 0 12px;
+            }
+        }
+    }
+}

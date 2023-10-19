@@ -1,5 +1,11 @@
+import Guess from './guess';
+
 function Page() {
-    return <>Guess</>;
+    return (
+        <div className="guess">
+            <Guess />
+        </div>
+    );
 }
 
 export default Page;

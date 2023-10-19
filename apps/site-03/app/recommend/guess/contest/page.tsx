@@ -1,15 +1,9 @@
-import style from './page.module.scss';
+import Contest from './contest';
 
 function Page() {
     return (
-        <div className={style.contest}>
-            <div className={style.control}>
-                <div className={style.right}>
-                    <div className={style.rule}>
-                        <span>規則</span>
-                    </div>
-                </div>
-            </div>
+        <div className="recommendContest">
+            <Contest />
         </div>
     );
 }

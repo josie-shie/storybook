@@ -1,7 +1,11 @@
 import Recommend from './recommend';
 
 function Page() {
-    return <Recommend />;
+    return (
+        <div className="recommend">
+            <Recommend />
+        </div>
+    );
 }
 
 export default Page;
