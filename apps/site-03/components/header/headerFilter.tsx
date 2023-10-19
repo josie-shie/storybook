@@ -1,23 +1,14 @@
-import type { ReactElement } from 'react';
+import type { ReactElement, ReactNode } from 'react';
 import dotBackground from './img/dotBackground.png';
 import style from './header.module.scss';
 import LogoIcon from './img/logoIcon.svg';
-import Profile from './components/profile/profile';
-
-interface Tab {
-    label: string;
-    value: string;
-}
 
 interface HeaderProps {
     logo: ReactElement | string;
-    tabList: Tab[];
-    total: number;
+    children?: ReactNode;
 }
 
-function HeaderComponent({ logo, tabList, total }: HeaderProps) {
-    tabList;
-
+function HeaderComponent({ logo, children }: HeaderProps) {
     return (
         <div className={style.placeholder}>
             <div className={style.header} style={{ backgroundImage: `url(${dotBackground.src})` }}>
@@ -25,7 +16,7 @@ function HeaderComponent({ logo, tabList, total }: HeaderProps) {
                     <LogoIcon />
                     {logo}
                 </div>
-                <Profile total={total} />
+                {children}
             </div>
         </div>
     );
