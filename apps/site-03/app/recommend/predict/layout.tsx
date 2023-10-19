@@ -2,8 +2,8 @@
 import type { ReactNode } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { useEffect } from 'react';
-import { Tabs } from '../../components/tabs/tabs';
 import style from './predict.module.scss';
+import { Tabs } from '@/components/tabs/tabs';
 
 function PredictLayout({ children }: { children: ReactNode }) {
     const router = useRouter();

@@ -3,8 +3,8 @@ import type { ReactNode } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { useEffect } from 'react';
 import Header from '../components/headerSwitch/header';
-import { Tabs } from '../components/tabs/tabs';
 import style from './recommend.module.scss';
+import { Tabs } from '@/components/tabs/tabs';
 
 function RecommendLayout({ children }: { children: ReactNode }) {
     const router = useRouter();

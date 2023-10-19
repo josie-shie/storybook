@@ -1,4 +1,3 @@
-// import { Tabs } from '../../../components/tabs/tabs';
 import style from './page.module.scss';
 
 function Page() {
