@@ -39,13 +39,12 @@
 
             .button {
                 position: relative;
-                // padding: 12px 24px;
                 text-align: center;
                 overflow: hidden;
 
                 a {
                     text-align: center;
-                    padding: 6px 0;
+                    padding: 8px 0;
                     font-size: 14px;
                     font-weight: 500;
                     color: #9b9b9b;
@@ -67,6 +66,7 @@
                     border: 1px solid #4489ff;
                     background: #edf3ff;
                     border-radius: 30px;
+                    opacity: 0;
                     z-index: -1;
                 }
 
