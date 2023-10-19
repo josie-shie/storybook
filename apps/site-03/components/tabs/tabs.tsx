@@ -13,7 +13,7 @@ interface TabsProps {
 
 function Tabs({ labels, paths, styling = 'underline' }: TabsProps) {
     const pathname = usePathname();
-    const defaultActiveIndex = paths.findIndex(path => pathname.startsWith(path));
+    const defaultActiveIndex = paths.indexOf(pathname);
 
     const [activeIndex, setActiveIndex] = useState(
         defaultActiveIndex !== -1 ? defaultActiveIndex : 0
@@ -66,17 +66,18 @@ function Tabs({ labels, paths, styling = 'underline' }: TabsProps) {
             <div className={`header ${style.header}`}>
                 <div className={`tabs ${style.tabs}`} ref={navRef}>
                     {labels.map((label, index) => (
-                        <div
+                        <Link
                             className={`item ${style[styling]} ${style.item} ${
                                 activeIndex === index ? style.active : ''
                             }`}
+                            href={paths[index]}
                             key={label}
                             onClick={() => {
                                 handleTabClick(index);
                             }}
                         >
-                            <Link href={paths[index]}>{label}</Link>
-                        </div>
+                            {label}
+                        </Link>
                     ))}
                 </div>
                 {styling === 'underline' && (
