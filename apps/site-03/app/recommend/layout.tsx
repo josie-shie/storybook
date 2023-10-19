@@ -2,12 +2,11 @@
 import type { ReactNode } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { useEffect } from 'react';
-// import Header from '../components/headerSwitch/header';
-import Header from '../components/header/headerTabs';
-import Footer from '../components/footer/footer';
-import { Tabs } from '../components/tabs/tabs';
-import Logo from '../components/header/img/logo.svg';
 import style from './recommend.module.scss';
+import Logo from './img/logo.svg';
+import Header from '@/components/header/headerTabs';
+import Footer from '@/components/footer/footer';
+import { Tabs } from '@/components/tabs/tabs';
 
 function RecommendLayout({ children }: { children: ReactNode }) {
     const router = useRouter();
@@ -15,11 +14,8 @@ function RecommendLayout({ children }: { children: ReactNode }) {
 
     const headerProps = {
         logo: <Logo />,
-        tabList: [
-            { label: '足球', value: 'football' },
-            { label: '籃球', value: 'basketball' }
-        ],
-        total: 999999
+        total: 999999,
+        tabList: ['足球', '籃球']
     };
 
     useEffect(() => {
