@@ -10,7 +10,7 @@ interface Sports {
 function Switch({ sports }: Sports) {
     const switchRef = useRef<HTMLDivElement | null>(null);
     const [activeSport, setActiveSport] = useState<string>(sports?.[0] || '');
-    const [indicatorStyle, setIndicatorStyle] = useState({ left: '0px', width: '40px' });
+    const [indicatorStyle, setIndicatorStyle] = useState({ left: '0px' });
 
     const updateIndicator = () => {
         const switchElement = switchRef.current;
@@ -18,8 +18,7 @@ function Switch({ sports }: Sports) {
             const activeElement = switchElement.querySelector(`.${style.active}`);
             if (activeElement && activeElement instanceof HTMLElement) {
                 setIndicatorStyle({
-                    left: `${activeElement.offsetLeft}px`,
-                    width: `${activeElement.offsetWidth}px`
+                    left: `${activeElement.offsetLeft}px`
                 });
             }
         }
