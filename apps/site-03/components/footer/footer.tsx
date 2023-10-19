@@ -13,7 +13,7 @@ const CategoryList = [
     },
     {
         label: '賽事',
-        value: '/game',
+        value: '/contest/football',
         icon: <GameIcon />
     },
     {
