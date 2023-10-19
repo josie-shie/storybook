@@ -1,0 +1,93 @@
+.periodListItem {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 12px 0;
+    border-bottom: 1px solid #d9d9d9;
+}
+
+.rankingFlag {
+    font-size: 12px;
+    align-self: flex-start;
+    padding: 2px 12px;
+    border-radius: 0 3px 10px 0;
+    background: #f3f3f3;
+    color: #4489ff;
+}
+
+.avatarContainer {
+    height: 44px;
+    padding: 2px 12px 0 8px;
+}
+
+.content {
+    align-self: flex-start;
+    flex-grow: 1;
+}
+
+.name {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.detail {
+    font-size: 14px;
+    font-weight: 500;
+    color: #8d8d8d;
+    display: flex;
+    gap: 12px;
+}
+
+.victory {
+    color: #f85640;
+}
+
+.winRateBlock {
+    font-weight: 700;
+    display: inline-flex;
+    padding-right: 8px;
+
+    > .icon {
+        margin-right: 4px;
+    }
+
+    > .winRate {
+        font-size: 20px;
+        display: inline-flex;
+        align-items: center;
+        color: #8d8d8d;
+
+        > .percent {
+            font-size: 12px;
+        }
+    }
+
+    > .redFill {
+        color: #ed3a45;
+    }
+}
+
+.ranking1 {
+    background: #ed3a45;
+    color: #fff;
+}
+
+.ranking2 {
+    background: #ff844f;
+    color: #fff;
+}
+
+.ranking3 {
+    background: #ffaf37;
+    color: #fff;
+}
+
+.ranking4 {
+    background: #4489ff;
+    color: #fff;
+}
+
+.ranking5 {
+    background: #979797;
+    color: #fff;
+}
