@@ -1,0 +1,80 @@
+.hotStreakListItem {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 12px 0;
+    border-bottom: 1px solid #d9d9d9;
+}
+
+.rankingFlag {
+    font-size: 12px;
+    align-self: flex-start;
+    padding: 2px 12px;
+    border-radius: 0 3px 10px 0;
+    background: #f3f3f3;
+    color: #4489ff;
+}
+
+.avatarContainer {
+    height: 44px;
+    padding: 2px 12px 0 8px;
+}
+
+.content {
+    align-self: flex-start;
+}
+
+.name {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.streak {
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    gap: 12px;
+
+    .current {
+        color: #ed3a45;
+    }
+
+    .highest {
+        color: #ed3a45;
+    }
+
+    .streakIcon {
+        width: 8px;
+        height: auto;
+        margin-right: 4px;
+    }
+}
+
+.label {
+    color: #8d8d8d;
+}
+
+.ranking1 {
+    background: #ed3a45;
+    color: #fff;
+}
+
+.ranking2 {
+    background: #ff844f;
+    color: #fff;
+}
+
+.ranking3 {
+    background: #ffaf37;
+    color: #fff;
+}
+
+.ranking4 {
+    background: #4489ff;
+    color: #fff;
+}
+
+.ranking5 {
+    background: #979797;
+    color: #fff;
+}

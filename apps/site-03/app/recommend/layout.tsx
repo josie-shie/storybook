@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 import style from './recommend.module.scss';
 import Logo from './img/logo.svg';
 import Header from '@/components/header/headerTabs';
+import Footer from '@/components/footer/footer';
 import { Tabs } from '@/components/tabs/tabs';
 
 function RecommendLayout({ children }: { children: ReactNode }) {
@@ -37,6 +38,7 @@ function RecommendLayout({ children }: { children: ReactNode }) {
                 />
                 {children}
             </div>
+            <Footer />
         </>
     );
 }

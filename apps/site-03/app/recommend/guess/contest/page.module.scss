@@ -1,0 +1,48 @@
+.contest {
+    padding: 0 12px;
+
+    .control {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        margin-bottom: 18px;
+
+        .left,
+        .right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+
+            span {
+                font-family: PingFang SC;
+                font-size: 14px;
+                font-weight: 500;
+            }
+
+            .text {
+                color: #999;
+            }
+
+            .search {
+                display: flex;
+                align-items: center;
+                gap: 4px;
+                color: #4489ff;
+
+                :global(.tabler-icon-search) {
+                    transform: scaleX(-1);
+                }
+            }
+
+            .rule {
+                display: flex;
+                align-items: center;
+                color: #4489ff;
+            }
+        }
+
+        .right {
+            gap: 16px;
+        }
+    }
+}

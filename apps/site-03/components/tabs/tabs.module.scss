@@ -19,38 +19,30 @@
                 align-items: center;
                 justify-content: center;
                 flex: 1;
-                a {
-                    text-align: center;
-                    padding: 6px 0;
-                    font-size: 14px;
-                    font-weight: 500;
-                    color: #9b9b9b;
-                    cursor: none;
-                }
+                text-align: center;
+                padding: 6px 0;
+                font-size: 14px;
+                font-weight: 500;
+                color: #9b9b9b;
+                cursor: none;
             }
 
             .underline {
                 &.active {
-                    a {
-                        color: #4489ff;
-                    }
+                    color: #4489ff;
                 }
             }
 
             .button {
                 position: relative;
-                // padding: 12px 24px;
                 text-align: center;
                 overflow: hidden;
-
-                a {
-                    text-align: center;
-                    padding: 6px 0;
-                    font-size: 14px;
-                    font-weight: 500;
-                    color: #9b9b9b;
-                    cursor: none;
-                }
+                text-align: center;
+                padding: 8px 0;
+                font-size: 14px;
+                font-weight: 500;
+                color: #9b9b9b;
+                cursor: none;
 
                 &::before {
                     content: '';
@@ -67,20 +59,18 @@
                     border: 1px solid #4489ff;
                     background: #edf3ff;
                     border-radius: 30px;
+                    opacity: 0;
                     z-index: -1;
                 }
 
                 &.active {
                     position: relative;
+                    color: #4489ff;
                     z-index: 1;
 
                     &::before {
                         transform: translate(-50%, -50%) scaleX(1);
                         opacity: 1;
-                    }
-
-                    a {
-                        color: #4489ff;
                     }
                 }
             }
