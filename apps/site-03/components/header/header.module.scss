@@ -7,9 +7,12 @@
     width: 100%;
     height: 68px;
     padding: 16px;
+    padding-bottom: 28px;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    background-color: #136aff;
+    background-repeat: no-repeat;
 
     .title {
         display: flex;
@@ -29,5 +32,6 @@
         gap: 4px;
         display: flex;
         align-items: center;
+        min-width: 96px;
     }
 }
