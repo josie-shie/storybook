@@ -1,11 +1,10 @@
-.liveBar {
+.liveBox {
     position: relative;
     width: 100%;
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
     color: #fff;
-    aspect-ratio: 390 / 245;
 }
 
 .scoreboard {
@@ -16,65 +15,47 @@
     align-items: center;
     font-weight: 500;
 
-    .gameTime {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 2px 6px;
-        margin-bottom: 4px;
-        font-size: 12px;
-        font-weight: 500;
-        border-radius: 2px;
-    }
-
-    .notYet {
-        background-color: #9b9b9b;
-    }
-
-    .finish {
-        background-color: red;
-    }
-
-    .playOff {
-        background-color: #fd9a00;
-    }
-
-    .placeholder {
-        width: calc(100% - 36px);
-    }
-
-    .vsText {
-        font-size: 24px;
-        font-weight: 600;
-    }
-
-    .imageHolder {
-        width: 40px;
-        height: 40px;
-        margin-bottom: 6px;
-    }
-
     .gameInfo {
         width: 100%;
         display: flex;
         justify-content: space-between;
-        align-items: center;
-        padding: 12px 20px;
+        padding: 12px 18px;
 
         .team {
-            width: calc(100% / 3);
-            min-height: 80px;
-            text-align: center;
+            width: 100px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             font-size: 0;
 
-            img {
-                margin-bottom: 6px;
+            .circleBg {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 64px;
+                height: 64px;
+                margin-bottom: 8px;
+                background-color: #ffffff40;
+                border-radius: 50%;
+
+                img {
+                    width: 40px;
+                }
             }
 
             .teamName {
-                font-size: 12px;
+                height: 40px;
+                font-size: 14px;
                 font-weight: 500;
             }
+        }
+
+        .liveScore {
+            letter-spacing: -7px;
+            font-size: 46px;
+            font-family: Vazirmatn, sans-serif;
+            font-weight: 800;
         }
 
         .score {
@@ -100,8 +81,47 @@
         }
     }
 
-    .liveBtn {
+    .gameTime {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0 6px;
+        margin-bottom: 4px;
+        font-size: 12px;
+        font-weight: 500;
+        border-radius: 4px;
+    }
+
+    .notYet {
+        background-color: #bfbfbf;
+        color: #4a4a4a;
+    }
+
+    .finish {
+        background-color: red;
+    }
+
+    .playOff {
+        background-color: #fd9a00;
+    }
+
+    .placeholder {
+        width: calc(100% - 36px);
+    }
+
+    .vsText {
+        font-size: 32px;
+        font-weight: 500;
+        font-family: Vazirmatn, sans-serif;
+    }
+
+    .imageHolder {
         width: 44px;
+        height: 40px;
+        margin-bottom: 6px;
+    }
+
+    .liveBtn {
         height: 30px;
         background-color: #0008;
         padding: 0 8px;
@@ -109,7 +129,7 @@
         font-size: 12px;
         font-weight: 400;
         border-radius: 20px;
-        margin-bottom: 16px;
+        margin-bottom: 24px;
 
         .icon {
             margin-right: 6px;
