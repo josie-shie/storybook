@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import style from './header.module.scss';
 import BackIcon from './img/back.svg';
-import SettingIcon from './img/setting.png';
+import SettingIcon from './img/setting.svg';
 import DefaultTeamLogoIcon from './img/defaultTeamLogo.png';
 
 function GameStatus() {
@@ -55,7 +55,7 @@ function Header({ liveVisible }: { liveVisible: boolean }) {
                         {matchData.kind === 2 && ` ${matchData.roundCn} ${matchData.grouping}`}
                     </p>
                 </div>
-                <Image alt="" height={24} src={SettingIcon} width={24} />
+                <SettingIcon />
             </header>
 
             <header
@@ -69,7 +69,7 @@ function Header({ liveVisible }: { liveVisible: boolean }) {
                     <p className={style.score}>10</p>
                     <Image alt="" height={24} src={DefaultTeamLogoIcon} width={24} />
                 </div>
-                <Image alt="" height={24} src={SettingIcon} width={24} />
+                <SettingIcon />
             </header>
         </>
     );

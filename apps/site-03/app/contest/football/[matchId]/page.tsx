@@ -1,17 +1,12 @@
 import type { Metadata } from 'next';
-import LiveBox from './liveBox';
+import ContestDetail from './contestDetail';
 
 export const metadata: Metadata = {
     title: '賽事 | Sport'
 };
 
-function ContestInfo({ params }: { params: { matchId: number } }) {
-    return (
-        <>
-            <LiveBox />
-            <p>matchId:{params.matchId}</p>
-        </>
-    );
+function Page({ params }: { params: { matchId: number } }) {
+    return <ContestDetail params={params} />;
 }
 
-export default ContestInfo;
+export default Page;

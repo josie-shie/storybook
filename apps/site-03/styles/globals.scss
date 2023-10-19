@@ -1,11 +1,12 @@
 @import 'variables';
+@import 'https://fonts.googleapis.com/css2?family=Vazirmatn:wght@500;700;800&display=swap';
 
 html,
 body {
     width: 100%;
     margin: 0;
     font-weight: 400;
-    font-family: 'PingFang SC', sans-serif !important;
+    font-family: 'PingFang SC', sans-serif;
     scroll-behavior: smooth;
 }
 
