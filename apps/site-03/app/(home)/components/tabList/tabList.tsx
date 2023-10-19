@@ -1,18 +1,8 @@
+import { Tabs } from 'ui';
 import type { ReactNode } from 'react';
-import { Tab, Tabs } from 'ui';
 import style from './tabList.module.scss';
 
-interface Tab {
-    label: string;
-    value: string;
-    content: ReactNode;
-}
-
-interface TabListProps {
-    tabList: Tab[];
-}
-
-function TabList({ tabList }: TabListProps) {
+function TabList({ children }: { children: ReactNode }) {
     const tabStyle = {
         gap: 8,
         swiperOpen: true,
@@ -28,13 +18,7 @@ function TabList({ tabList }: TabListProps) {
                 styling="underline"
                 swiperOpen={tabStyle.swiperOpen}
             >
-                {tabList.map(tab => {
-                    return (
-                        <Tab key={tab.value} label={tab.label}>
-                            {tab.content}
-                        </Tab>
-                    );
-                })}
+                {children}
             </Tabs>
         </div>
     );

@@ -1,8 +1,7 @@
 'use client';
-import LeagueCardList from './components/leagueCardList/leagueCardList';
 
 function Home() {
-    return <LeagueCardList />;
+    return <>熱門</>;
 }
 
 export default Home;
