@@ -1,27 +1,45 @@
 import { initStore } from 'lib';
 import type { StoreWithSelectors } from 'lib';
 
-interface Banner {
+interface Slide {
+    id: number;
     image: string;
-    tag: string;
+    leagueChs: string;
     title: string;
 }
 
+interface News {
+    id: number;
+    image: string;
+    title: string;
+    time: string;
+}
+
 interface InitState {
-    bannerList: Banner[];
+    slideList: Slide[];
+    newsList: News[];
+    marqueeList: string[];
 }
 
 interface NewsState extends InitState {
-    marquee: string[];
+    loading: boolean;
 }
 
 let useNewsStore: StoreWithSelectors<NewsState>;
 
 const initialState = (set: (data: Partial<NewsState>) => void) => ({
-    bannerList: [],
-    marquee: [],
-    setBannerList: (bannerList: Banner[]) => {
-        set({ bannerList });
+    slideList: [],
+    marqueeList: [],
+    newsList: [],
+    loading: false,
+    setSlideList: (slideList: Slide[]) => {
+        set({ slideList });
+    },
+    setNewsList: (newsList: News[]) => {
+        set({ newsList });
+    },
+    setMarqueeList: (marqueeList: string[]) => {
+        set({ marqueeList });
     }
 });
 

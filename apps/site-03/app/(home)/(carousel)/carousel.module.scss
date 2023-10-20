@@ -82,6 +82,10 @@
                 width: 6px;
                 height: 6px;
             }
+
+            :global(.swiper-pagination-bullet-active) {
+                background-color: #4489ff;
+            }
         }
     }
 }
