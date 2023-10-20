@@ -101,6 +101,6 @@ export const getMatchPosts = async (input: GetMatchPostsRequest) => {
             data: data.getMatchPosts.posts
         };
     } catch (error) {
-        handleApiError(error);
+        return handleApiError(error);
     }
 };

@@ -258,6 +258,6 @@ export const getExponent = async (matchId: number, companyId: number) => {
             data: { handicapsData, totalGoalData, winLoseData }
         };
     } catch (error) {
-        handleApiError(error);
+        return handleApiError(error);
     }
 };

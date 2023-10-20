@@ -436,7 +436,7 @@ export const getSingleMatch = async (matchId: number) => {
             data: data.getSingleMatch
         };
     } catch (error) {
-        handleApiError(error);
+        return handleApiError(error);
     }
 };
 
@@ -530,7 +530,7 @@ export const getDetailStatus = async (matchId: number) => {
             }
         };
     } catch (error) {
-        handleApiError(error);
+        return handleApiError(error);
     }
 };
 
@@ -588,7 +588,7 @@ export const getLiveText = async (matchId: number) => {
             data: liveTextList
         };
     } catch (error) {
-        handleApiError(error);
+        return handleApiError(error);
     }
 };
 
@@ -654,6 +654,6 @@ export const getCompanyLiveOddsDetail = async (matchId: number, companyId: numbe
             data: data.getCompanyLiveOdds
         };
     } catch (error) {
-        handleApiError(error);
+        return handleApiError(error);
     }
 };

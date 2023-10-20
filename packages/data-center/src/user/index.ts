@@ -202,7 +202,7 @@ export const register = async ({
             data: access
         };
     } catch (error) {
-        handleApiError(error);
+        return handleApiError(error);
     }
 };
 
@@ -244,7 +244,7 @@ export const sendVerificationCode = async ({
             data: captcha
         };
     } catch (error) {
-        handleApiError(error);
+        return handleApiError(error);
     }
 };
 
@@ -281,7 +281,7 @@ export const sendVerificationCodeInLogged = async ({
             data: captcha
         };
     } catch (error) {
-        handleApiError(error);
+        return handleApiError(error);
     }
 };
 
@@ -322,7 +322,7 @@ export const login = async ({
             data: access
         };
     } catch (error) {
-        handleApiError(error);
+        return handleApiError(error);
     }
 };
 
@@ -344,7 +344,7 @@ export const getMemberInfo = async () => {
             data: data.getMemberInfo
         };
     } catch (error) {
-        handleApiError(error);
+        return handleApiError(error);
     }
 };
 
@@ -374,7 +374,7 @@ export const forgetPasswordReset = async ({
         });
         return { success: true, data: res.data };
     } catch (error) {
-        handleApiError(error);
+        return handleApiError(error);
     }
 };
 
@@ -402,7 +402,7 @@ export const updatePassword = async ({
         });
         return { success: true, data: res.data };
     } catch (error) {
-        handleApiError(error);
+        return handleApiError(error);
     }
 };
 
@@ -433,7 +433,7 @@ export const updateMemberInfo = async ({
         UpdateMemberInfoResponseSchema.parse(data);
         return { success: true, data: data.updateMemberInfo };
     } catch (error) {
-        handleApiError(error);
+        return handleApiError(error);
     }
 };
 
@@ -461,6 +461,6 @@ export const getInvitationCode = async () => {
             data: invitationCode
         };
     } catch (error) {
-        handleApiError(error);
+        return handleApiError(error);
     }
 };
