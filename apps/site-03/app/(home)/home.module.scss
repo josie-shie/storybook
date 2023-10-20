@@ -5,7 +5,37 @@
     border-top-left-radius: 12px;
     border-top-right-radius: 12px;
     margin-top: -12px;
-    padding: 12px;
     font-weight: 500;
-    font-family: PingFang SC;
+
+    .slideImage {
+        object-fit: contain;
+        width: 100%;
+        height: 100%;
+        background-repeat: no-repeat;
+    }
+
+    :global(.tab) {
+        padding: 12px 12px 0 12px;
+        border-top-left-radius: 12px;
+        border-top-right-radius: 12px;
+        background-color: #fff;
+        margin-bottom: 0;
+    }
+
+    :global(.swiper) {
+        height: 238px;
+
+        :global(.swiper-pagination) {
+            height: 16px;
+            justify-content: center;
+            display: flex;
+            align-items: center;
+            bottom: 0;
+
+            :global(.swiper-pagination-bullet) {
+                width: 6px;
+                height: 6px;
+            }
+        }
+    }
 }

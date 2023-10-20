@@ -136,7 +136,7 @@ function Tabs({
                             }>;
                             return (
                                 <div
-                                    className={`${style[styling]} ${
+                                    className={`ui-button ${style[styling]} ${
                                         activeIndex === index ? style.active : ''
                                     } ${style[`radius${buttonRadius}`]}`}
                                     onClick={() => {
