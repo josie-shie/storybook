@@ -1,3 +1,62 @@
+@import 'variables';
+
 .gameCard {
     padding: 12px;
+
+    .topArea {
+        display: flex;
+        justify-content: space-between;
+
+        .left {
+            display: flex;
+            line-height: 16px;
+            width: 80px;
+
+            .league {
+                color: #f85640;
+                font-size: 12px;
+                font-weight: 600;
+                margin-right: 12px;
+            }
+
+            .time {
+                color: #8d8d8d;
+                font-size: 12px;
+                font-weight: 500;
+            }
+        }
+
+        .mid {
+            display: flex;
+            align-items: flex-end;
+
+            .corner {
+                color: #8d8d8d;
+                font-size: 12px;
+                font-weight: 500;
+            }
+
+            .status {
+                color: $score;
+                background-color: #f3f3f3;
+                border-radius: 4px;
+                padding: 2px 6px;
+                font-weight: 500;
+                margin: 0 16px;
+            }
+        }
+
+        .video {
+            width: 80px;
+
+            .videoIcon {
+                width: 18px;
+                float: right;
+            }
+        }
+    }
+
+    .teamInfo {
+        display: flex;
+    }
 }

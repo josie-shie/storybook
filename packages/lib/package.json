@@ -1,6 +1,6 @@
 {
     "name": "lib",
-    "version": "0.0.0",
+    "version": "0.0.1",
     "main": "./index.ts",
     "types": "./index.ts",
     "license": "MIT",
@@ -8,6 +8,7 @@
         "lint": "eslint ."
     },
     "dependencies": {
+        "dayjs": "^1.11.10",
         "js-cookie": "^3.0.5",
         "zustand": "^4.4.1"
     },

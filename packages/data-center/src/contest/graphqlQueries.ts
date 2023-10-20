@@ -1,0 +1,106 @@
+export const GET_CONTEST_LIST_QUERY = `
+    query getTodayMatch($input) {
+        getTodayMatch(input: $input) {
+            match {
+                matchId
+                color
+                kind
+                leagueId
+                leagueEn
+                leagueEnShort
+                leagueChsShort
+                leagueChtShort
+                subLeagueId
+                subLeagueEn
+                subLeagueChs
+                subLeagueCht
+                matchTime
+                startTime
+                homeEn
+                homeChs
+                homeCht
+                awayEn
+                awayChs
+                awayCht
+                homeId
+                awayId
+                state
+                homeScore
+                awayScore
+                homeHalfScore
+                awayHalfScore
+                homeRed
+                awayRed
+                homeYellow
+                awayYellow
+                homeCorner
+                awayCorner
+                homeRankEn
+                homeRankCn
+                awayRankEn
+                awayRankCn
+                isNeutral
+                hasLineup
+                season
+                groupId
+                roundEn
+                roundCn
+                grouping
+                locationEn
+                locationCn
+                weatherEn
+                weatherCn
+                temp
+                explainEn
+                explainCn
+                extraExplain
+                isHidden
+                injuryTime
+                updateTime
+                countryCn
+            }
+        }
+    }
+`;
+
+export const GET_MATCH_POSTS_QUERY = `
+    query getMatchPosts($input) {
+        getMatchPosts(input: $input) {
+            posts {
+                id
+                matchId
+                leagueId
+                leagueName
+                homeTeamId
+                homeTeamName
+                awayTeamId
+                awayTeamName
+                homeTeamScore
+                awayTeamScore
+                handicap
+                homeTeamOdds
+                awayTeamOdds
+                overUnder
+                overOdds
+                underOdds
+                mentorId
+                mentorName
+                predictedPlay
+                analysisTitle
+                price
+                predictionResult
+                matchTime
+                createdBy
+                createdAt
+                updatedBy
+                updatedAt
+                avatarPath
+                mentorLevel
+                lastTenAnalysisResult
+                weekHitRate
+                shortAnalysisContent
+            }
+            total_page_count
+        }
+    }
+`;
