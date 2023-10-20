@@ -1,6 +1,6 @@
 'use client';
 import type { ReactNode } from 'react';
-import style from './recommend.module.scss';
+import style from './layout.module.scss';
 import Logo from './img/logo.svg';
 import Header from '@/components/header/headerTabs';
 import Footer from '@/components/footer/footer';

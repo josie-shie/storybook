@@ -1,9 +1,9 @@
-import Recommend from './recommend';
+import Guess from './guess/page';
 
 function Page() {
     return (
         <div className="recommend">
-            <Recommend />
+            <Guess />
         </div>
     );
 }

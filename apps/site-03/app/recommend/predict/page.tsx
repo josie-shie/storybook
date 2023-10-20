@@ -1,5 +1,11 @@
+import Predict from './predict';
+
 function Page() {
-    return <>Predict</>;
+    return (
+        <div className="recommendPredict">
+            <Predict />
+        </div>
+    );
 }
 
 export default Page;

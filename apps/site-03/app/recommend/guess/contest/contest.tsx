@@ -1,4 +1,5 @@
 import Rule from '../components/rule/rule';
+import ContestList from '../components/contestList/contestList';
 import style from './contest.module.scss';
 
 function Contest() {
@@ -9,6 +10,7 @@ function Contest() {
                     <Rule />
                 </div>
             </div>
+            <ContestList />
         </div>
     );
 }

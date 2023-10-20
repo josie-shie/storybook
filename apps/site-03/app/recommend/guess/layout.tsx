@@ -9,7 +9,7 @@ function GuessLayout({ children }: { children: ReactNode }) {
             <Tabs
                 labels={['賽事競猜', '週榜', '月榜', '季榜', '連紅榜']}
                 paths={[
-                    '/recommend/guess/contest',
+                    '/recommend/guess',
                     '/recommend/guess/rank?status=week',
                     '/recommend/guess/rank?status=month',
                     '/recommend/guess/rank?status=season',
