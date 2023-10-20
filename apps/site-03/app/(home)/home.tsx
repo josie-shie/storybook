@@ -1,8 +1,13 @@
 'use client';
-import LeagueCardList from './components/leagueCardList/leagueCardList';
+import React from 'react';
+import 'swiper/css';
+import 'swiper/css/effect-creative';
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
+import Carousel from './(carousel)/carousel';
 
 function Home() {
-    return <LeagueCardList />;
+    return <Carousel />;
 }
 
 export default Home;

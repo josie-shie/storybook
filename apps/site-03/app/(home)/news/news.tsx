@@ -1,3 +1,4 @@
+'use client';
 import { creatNewsStore } from './newsStore';
 import NewsBanner from './newsBanner';
 import NewsMarquee from './newsMarquee';
@@ -15,6 +16,7 @@ function News() {
     });
     return (
         <>
+            <div className="news">新聞</div>
             <NewsBanner />
             <NewsMarquee />
             <NewsList />
