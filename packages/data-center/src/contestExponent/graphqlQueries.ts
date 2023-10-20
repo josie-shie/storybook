@@ -1,0 +1,112 @@
+export const GET_COMPANY_ODDS_DETAIL_QUERY = `
+    query getCompanyOddsDetail($input) {
+        getCompanyOddsDetail(input:$input) {
+            matchId
+            homeTeam
+            awayTeam
+            homeScore
+            awayScore
+            startTime
+            companyOdds {
+                companyId
+                companyName
+                fullHandicap {
+                    matchId
+                    companyId
+                    initialHandicap
+                    homeInitialOdds
+                    awayInitialOdds
+                    currentHandicap
+                    homeCurrentOdds
+                    awayCurrentOdds
+                    oddsChangeTime
+                    oddsType
+                    state
+                    homeScore
+                    awayScore
+                    isClosed
+                }
+                halfHandicap {
+                    matchId
+                    companyId
+                    initialHandicap
+                    homeInitialOdds
+                    awayInitialOdds
+                    currentHandicap
+                    homeCurrentOdds
+                    awayCurrentOdds
+                    oddsChangeTime
+                    oddsType
+                    state
+                    homeScore
+                    awayScore
+                    isClosed
+                }
+                fullTotalGoal {
+                    matchId
+                    companyId
+                    initialTotalGoals
+                    overInitialOdds
+                    underInitialOdds
+                    currentTotalGoals
+                    overCurrentOdds
+                    underCurrentOdds
+                    oddsChangeTime
+                    oddsType
+                    state
+                    homeScore
+                    awayScore
+                    isClosed
+                }
+                halfTotalGoal {
+                    matchId
+                    companyId
+                    initialTotalGoals
+                    overInitialOdds
+                    underInitialOdds
+                    currentTotalGoals
+                    overCurrentOdds
+                    underCurrentOdds
+                    oddsChangeTime
+                    oddsType
+                    state
+                    homeScore
+                    awayScore
+                    isClosed
+                }
+                fullWinDrawLose {
+                    matchId
+                    companyId
+                    initialHomeOdds
+                    initialDrawOdds
+                    initialAwayOdds
+                    currentHomeOdds
+                    currentDrawOdds
+                    currentAwayOdds
+                    oddsChangeTime
+                    isClosed
+                    oddsType
+                    state
+                    homeScore
+                    awayScore
+                }
+                halfWinDrawLose {
+                    matchId
+                    companyId
+                    initialHomeOdds
+                    initialDrawOdds
+                    initialAwayOdds
+                    currentHomeOdds
+                    currentDrawOdds
+                    currentAwayOdds
+                    oddsChangeTime
+                    isClosed
+                    oddsType
+                    state
+                    homeScore
+                    awayScore
+                }
+            }
+        }
+    }
+`;

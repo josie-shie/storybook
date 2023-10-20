@@ -52,7 +52,6 @@ export const fetcher = async <TResponse, TData>(
 
         return responseData;
     } catch (error) {
-        console.error(error);
-        throw error;
+        throw new Error(error as string | undefined);
     }
 };

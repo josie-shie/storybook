@@ -2,6 +2,7 @@ import { fetcher } from 'lib';
 import { z } from 'zod';
 import { handleApiError } from '../common';
 import { GET_CONTEST_LIST_QUERY } from './graphqlQueries';
+import * as fakeData from './fakeData.json';
 
 const ContestInfoSchema = z.object({
     leagueChsShort: z.string(),
@@ -56,6 +57,11 @@ export interface GetContestListResponse {
  */
 export const getContestList = async (dateTime: string) => {
     try {
+        // 回傳假資料
+        return {
+            success: true,
+            data: fakeData as GetContestListResponse
+        };
         const { data }: { data: GetContestListResult } = await fetcher(
             {
                 data: {
@@ -72,7 +78,6 @@ export const getContestList = async (dateTime: string) => {
         );
 
         GetContestListResultSchema.parse(data);
-
         const contestList: ContestListType = [];
         const contestInfo: ContestInfoType = {};
 
@@ -85,6 +90,6 @@ export const getContestList = async (dateTime: string) => {
             data: { contestList, contestInfo }
         };
     } catch (error) {
-        handleApiError(error);
+        return handleApiError(error);
     }
 };
