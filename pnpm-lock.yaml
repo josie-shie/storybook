@@ -175,6 +175,9 @@ importers:
 
   packages/data-center:
     dependencies:
+      js-cookie:
+        specifier: ^3.0.5
+        version: 3.0.5
       lib:
         specifier: workspace:*
         version: link:../lib

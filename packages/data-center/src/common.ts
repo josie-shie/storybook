@@ -9,7 +9,7 @@ export const handleApiError = (error: unknown): { success: false; error: string 
             errorMessage += `\n${subError.message}`;
         }
     } else if (error instanceof Error) {
-        errorMessage = `<003> ${error.message}`; // 其他後端回來
+        errorMessage = `<003> ${error.message}`; // 其他
     }
 
     return {
