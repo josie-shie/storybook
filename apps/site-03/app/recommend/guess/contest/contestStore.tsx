@@ -1,7 +1,7 @@
 import { initStore } from 'lib';
 import type { StoreWithSelectors } from 'lib';
 
-interface Banner {
+interface Contest {
     sport: string;
     time: string;
     homeTeam: string;
@@ -9,28 +9,26 @@ interface Banner {
     member: number;
     plan: boolean;
     odds: number;
-    oddss: number;
 }
 
 interface InitState {
-    bannerList: Banner[];
+    contestList: Contest[];
 }
 
-interface NewsState extends InitState {
-    marquee: string[];
+interface ContestState extends InitState {
+    setContestList?: (contestList: Contest[]) => void;
 }
 
-let useNewsStore: StoreWithSelectors<NewsState>;
+let useContestStore: StoreWithSelectors<ContestState>;
 
-const initialState = (set: (data: Partial<NewsState>) => void) => ({
-    bannerList: [],
-    marquee: [],
-    setBannerList: (bannerList: Banner[]) => {
-        set({ bannerList });
+const initialState = (set: (data: Partial<ContestState>) => void) => ({
+    contestList: [],
+    setContestList: (contestList: Contest[]) => {
+        set({ contestList });
     }
 });
 
 const creatNewsStore = (init: InitState) =>
-    (useNewsStore = initStore<NewsState>(initialState, init));
+    (useContestStore = initStore<ContestState>(initialState, init));
 
-export { creatNewsStore, useNewsStore };
+export { creatNewsStore, useContestStore };
