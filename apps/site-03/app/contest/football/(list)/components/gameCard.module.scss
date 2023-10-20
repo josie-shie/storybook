@@ -2,10 +2,16 @@
 
 .gameCard {
     padding: 12px;
+    border-bottom: 1px solid #f3f3f3;
+
+    &:nth-last-child(1) {
+        border-bottom: none;
+    }
 
     .topArea {
         display: flex;
         justify-content: space-between;
+        margin-bottom: 6px;
 
         .left {
             display: flex;
@@ -34,6 +40,11 @@
                 color: #8d8d8d;
                 font-size: 12px;
                 font-weight: 500;
+                display: flex;
+
+                .ratio {
+                    margin-left: 4px;
+                }
             }
 
             .status {
@@ -58,5 +69,97 @@
 
     .teamInfo {
         display: flex;
+        color: #222;
+        width: 100%;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 14px;
+        font-weight: 500;
+        margin-bottom: 6px;
+
+        .team {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            .cards {
+                display: flex;
+                justify-content: space-between;
+                color: #fff;
+                font-size: 12px;
+
+                .card {
+                    border-radius: 2px;
+                    padding: 0 2px;
+                    min-width: 14px;
+                    text-align: center;
+                }
+
+                .redCard {
+                    background-color: $score;
+                    margin-right: 6px;
+                }
+
+                .yellowCard {
+                    background-color: $tip;
+                }
+            }
+        }
+
+        .homeTeam {
+            text-align: right;
+        }
+
+        .score {
+            color: $score;
+            letter-spacing: 2px;
+            width: 64px;
+            font-size: 16px;
+            font-weight: 700;
+            text-align: center;
+        }
+    }
+
+    .oddsInfo {
+        display: flex;
+        margin-bottom: 6px;
+        justify-content: center;
+        font-weight: 500;
+        color: $text-secondary;
+
+        .left {
+            justify-content: end;
+        }
+
+        .mid {
+            margin: 0 12px;
+            text-align: center;
+            justify-content: center;
+        }
+
+        .odd {
+            display: flex;
+            flex: 1;
+        }
+
+        p {
+            margin: 0 2px;
+        }
+
+        .blue {
+            color: $primary;
+        }
+    }
+
+    .extraInfo {
+        background-color: #f3f3f3;
+        border-radius: 8px;
+        padding: 4px;
+        text-align: center;
+        width: 100%;
+        color: $text-secondary;
+        font-weight: 600;
+        font-size: 14px;
     }
 }
