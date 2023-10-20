@@ -136,7 +136,7 @@ function Tabs({
                             }>;
                             return (
                                 <div
-                                    className={`${style[styling]} ${
+                                    className={`ui-button ${style[styling]} ${
                                         activeIndex === index ? style.active : ''
                                     } ${style[`radius${buttonRadius}`]}`}
                                     onClick={() => {
@@ -181,6 +181,7 @@ function Tabs({
 
             {swiperOpen ? (
                 <Swiper
+                    autoHeight
                     onSlideChange={swiper => {
                         handleTabClick(swiper.activeIndex);
                         setActiveIndex(swiper.activeIndex);

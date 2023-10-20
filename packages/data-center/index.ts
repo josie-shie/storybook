@@ -1,2 +1,5 @@
 export * from './src/example';
 export * from './src/user';
+export * from './src/contestDetail';
+export * from './src/contest';
+export * from './src/contestPrediction';

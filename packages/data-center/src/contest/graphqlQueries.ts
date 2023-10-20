@@ -1,0 +1,64 @@
+export const GET_CONTEST_LIST_QUERY = `
+    query getTodayMatch($input) {
+        getTodayMatch(input: $input) {
+            match {
+                matchId
+                color
+                kind
+                leagueId
+                leagueEn
+                leagueEnShort
+                leagueChsShort
+                leagueChtShort
+                subLeagueId
+                subLeagueEn
+                subLeagueChs
+                subLeagueCht
+                matchTime
+                startTime
+                homeEn
+                homeChs
+                homeCht
+                awayEn
+                awayChs
+                awayCht
+                homeId
+                awayId
+                state
+                homeScore
+                awayScore
+                homeHalfScore
+                awayHalfScore
+                homeRed
+                awayRed
+                homeYellow
+                awayYellow
+                homeCorner
+                awayCorner
+                homeRankEn
+                homeRankCn
+                awayRankEn
+                awayRankCn
+                isNeutral
+                hasLineup
+                season
+                groupId
+                roundEn
+                roundCn
+                grouping
+                locationEn
+                locationCn
+                weatherEn
+                weatherCn
+                temp
+                explainEn
+                explainCn
+                extraExplain
+                isHidden
+                injuryTime
+                updateTime
+                countryCn
+            }
+        }
+    }
+`;

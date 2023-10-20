@@ -2,8 +2,10 @@
 import type { ReactNode } from 'react';
 import Logo from './img/logo.svg';
 import style from './home.module.scss';
+import LeagueCardList from './components/leagueCardList/leagueCardList';
 import Header from '@/components/header/headerLogo';
 import Footer from '@/components/footer/footer';
+import { Tabs } from '@/components/tabs/tabs';
 
 function HomeLayout({ children }: { children: ReactNode }) {
     const headerProps = {
@@ -15,7 +17,9 @@ function HomeLayout({ children }: { children: ReactNode }) {
         <>
             <Header logo={headerProps.logo} total={headerProps.total} />
             <div className={style.home}>
-                <div>{children}</div>
+                <Tabs labels={['熱門', '快訊']} paths={['/', '/news']} />
+                {children}
+                <LeagueCardList />
             </div>
             <Footer />
         </>

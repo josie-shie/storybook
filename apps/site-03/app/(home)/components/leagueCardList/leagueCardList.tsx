@@ -1,11 +1,10 @@
 import { Tab, Tabs } from 'ui';
+import { useHomeStore } from '../../homeStore';
 import NorthBangKokClubIcon from './img/northBangkokClubIcon.svg';
 import ThaiUniversityClubIcon from './img/thaiUniversityClubIcon.svg';
 import PlayButton from './img/playButton.svg';
 import Plan from './img/plan.svg';
 import Professional from './img/professional.svg';
-import Analysis from './img/analysis.svg';
-import User from './img/user.svg';
 import style from './leagueCardList.module.scss';
 
 interface Match {
@@ -15,7 +14,7 @@ interface Match {
     state: number;
     homeChs: string;
     awayChs: string;
-    matchTime: number | null;
+    matchTime: number;
     onlineTotal: number;
     homeScore: number;
     awayScore: number;
@@ -25,20 +24,15 @@ interface MatchProps {
     match: Match;
 }
 
-function StartedComponent() {
+function StateComponent({ state }: { state: number }) {
     return (
         <div className={`${style.text} ${style.live} ${style.liveText}`}>
-            直播中
-            <PlayButton className={style.playButton} />
-        </div>
-    );
-}
-
-function NotStartedComponent({ total }: { total: number }) {
-    return (
-        <div className={`${style.text} ${style.notStartedText}`}>
-            <User />
-            <span>{total}</span>
+            {state ? null : (
+                <>
+                    直播中
+                    <PlayButton className={style.playButton} />
+                </>
+            )}
         </div>
     );
 }
@@ -69,8 +63,7 @@ function StartedScore({
 function LeagueCard({ match }: MatchProps) {
     const optionList = [
         { label: '競猜方案', icon: <Plan className={style.image} /> },
-        { label: '專家預測', icon: <Professional className={style.image} /> },
-        { label: '風向數據分析', icon: <Analysis className={style.image} /> }
+        { label: '專家預測', icon: <Professional className={style.image} /> }
     ];
 
     return (
@@ -78,13 +71,13 @@ function LeagueCard({ match }: MatchProps) {
             <div className={style.matchInfo}>
                 <div className={style.leagueInfo}>
                     <div className={`${style.text} ${style.liveText}`}>{match.leagueChsShort}</div>
-                    <div className={style.time}>2023-8-23 11:30</div>
-                    {match.state ? <NotStartedComponent total={1199} /> : <StartedComponent />}
+                    <div className={style.time}>{match.startTime}</div>
+                    <StateComponent state={match.state} />
                 </div>
                 <div className={style.clubInfo}>
                     <div className={style.team}>
                         <NorthBangKokClubIcon className={style.image} />
-                        <div className={style.teamName}>北曼谷學院</div>
+                        <div className={style.teamName}>{match.homeChs}</div>
                     </div>
                     <div className={style.score}>
                         {match.state ? (
@@ -99,7 +92,7 @@ function LeagueCard({ match }: MatchProps) {
                     </div>
                     <div className={style.team}>
                         <ThaiUniversityClubIcon className={style.image} />
-                        <div className={style.teamName}>泰国国立法政大学</div>
+                        <div className={style.teamName}>{match.awayChs}</div>
                     </div>
                 </div>
             </div>
@@ -124,63 +117,28 @@ function LeagueCardList() {
         buttonRadius: 30
     };
 
-    const matchList: Match[] = [
-        {
-            matchId: 1,
-            leagueChsShort: '英超',
-            startTime: '2023-8-23 11:30',
-            matchTime: 57,
-            state: 0, // 進行中
-            homeChs: '北曼谷學院',
-            awayChs: '泰国国立法政大学',
-            onlineTotal: 1199,
-            homeScore: 1,
-            awayScore: 1
-        },
-        {
-            matchId: 2,
-            leagueChsShort: '英超',
-            matchTime: null,
-            startTime: '2023-8-23 11:30',
-            state: 1, // 未開始
-            homeChs: '北曼谷學院',
-            awayChs: '泰国国立法政大学',
-            onlineTotal: 1199,
-            homeScore: 1,
-            awayScore: 1
-        }
-    ];
+    const matchList = useHomeStore.use.contestList();
 
     return (
-        <Tabs
-            buttonRadius={tabStyle.buttonRadius}
-            gap={tabStyle.gap}
-            position="center"
-            styling="button"
-            swiperOpen={tabStyle.swiperOpen}
-        >
-            <Tab label="英超">
-                <div className={style.tabContentForTest}>
-                    <div className={style.leagueList}>
-                        {matchList.map(option => {
-                            return <LeagueCard key={option.matchId} match={option} />;
-                        })}
-                    </div>
-                </div>
-            </Tab>
-            <Tab label="西甲">
-                <div className={style.tabContentForTest}>Content for Tab 2</div>
-            </Tab>
-            <Tab label="德甲">
-                <div className={style.tabContentForTest}>Content for Tab 3</div>
-            </Tab>
-            <Tab label="法甲">
-                <div className={style.tabContentForTest}>Content for Tab 4</div>
-            </Tab>
-            <Tab label="義甲">
-                <div className={style.tabContentForTest}>Content for Tab 5</div>
-            </Tab>
-        </Tabs>
+        <div className={style.leagueCardList}>
+            <Tabs
+                buttonRadius={tabStyle.buttonRadius}
+                gap={tabStyle.gap}
+                position="center"
+                styling="button"
+                swiperOpen={tabStyle.swiperOpen}
+            >
+                {Object.keys(matchList).map(leagueName => (
+                    <Tab key={leagueName} label={leagueName}>
+                        <div className={style.leagueList}>
+                            {matchList[leagueName].map(match => {
+                                return <LeagueCard key={match.matchId} match={match} />;
+                            })}
+                        </div>
+                    </Tab>
+                ))}
+            </Tabs>
+        </div>
     );
 }
 
