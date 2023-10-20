@@ -28,11 +28,73 @@
         }
     }
 
+    .userHotStreak {
+        border-radius: 8px;
+        background: #ed3a451a;
+        margin-bottom: 12px;
+        overflow: hidden;
+
+        .ranking {
+            font-size: 14px;
+            width: fit-content;
+            padding: 0 12px;
+            border-radius: 0 3px 10px 0;
+            color: #fff;
+            background: linear-gradient(269deg, #e14e27 0.33%, #e14e27 0.34%, #ff645a 105.97%);
+
+            span {
+                margin-left: 6px;
+                font-size: 12px;
+            }
+        }
+
+        .container {
+            display: flex;
+            padding: 8px 12px 12px;
+        }
+    }
+
     :global(.tab) {
         :global(.header) {
             :global(.tabs) {
                 padding: 0 12px;
             }
         }
+    }
+}
+
+.avatarContainer {
+    margin-right: 12px;
+}
+
+.content {
+    .name {
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+    .streak {
+        font-size: 14px;
+        font-weight: 500;
+        display: flex;
+        gap: 12px;
+
+        .current {
+            color: #ed3a45;
+        }
+
+        .highest {
+            color: #ed3a45;
+        }
+
+        .streakIcon {
+            width: 8px;
+            height: auto;
+            margin-right: 4px;
+        }
+    }
+
+    .label {
+        color: #8d8d8d;
     }
 }
