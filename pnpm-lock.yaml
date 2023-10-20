@@ -117,9 +117,6 @@ importers:
       '@tabler/icons-react':
         specifier: ^2.38.0
         version: 2.39.0(react@18.2.0)
-      Switch:
-        specifier: link:@mui/material/Switch
-        version: link:@mui/material/Switch
       data-center:
         specifier: workspace:*
         version: link:../../packages/data-center
@@ -209,6 +206,9 @@ importers:
 
   packages/lib:
     dependencies:
+      dayjs:
+        specifier: ^1.11.10
+        version: 1.11.10
       js-cookie:
         specifier: ^3.0.5
         version: 3.0.5
@@ -6366,6 +6366,10 @@ packages:
     resolution: {integrity: sha512-a9l6T1qqDogvvnw0nKlfZzqsyikEBZBClF39V3TFoKhDtGBqHu2HkuomJc02j5zft8zrUaXEuoicLeW54RkzPg==}
     engines: {node: '>= 14'}
     dev: true
+
+  /dayjs@1.11.10:
+    resolution: {integrity: sha512-vjAczensTgRcqDERK0SR2XMwsF/tSvnvlv6VcF2GIhg6Sx4yOIt/irsr1RDJsKiIyBzJDpCoXiWWq28MqH2cnQ==}
+    dev: false
 
   /debug@2.6.9:
     resolution: {integrity: sha512-bC7ElrdJaJnPbAP+1EotYvqZsb3ecl5wi6Bfi6BJTUcNowp6cvspg0jXznRTKDjm/E7AdgFBVeAPVMNcKGsHMA==}
