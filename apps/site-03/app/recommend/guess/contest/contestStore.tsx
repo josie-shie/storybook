@@ -2,13 +2,16 @@ import { initStore } from 'lib';
 import type { StoreWithSelectors } from 'lib';
 
 interface Contest {
-    sport: string;
-    time: string;
-    homeTeam: string;
-    awayTeam: string;
-    member: number;
-    plan: boolean;
-    odds: number;
+    matchId?: string;
+    sport?: string;
+    time?: string;
+    homeTeam?: string;
+    awayTeam?: string;
+    member?: number;
+    plan?: boolean;
+    odds?: number;
+    score?: string;
+    status?: number;
 }
 
 interface InitState {
@@ -28,7 +31,7 @@ const initialState = (set: (data: Partial<ContestState>) => void) => ({
     }
 });
 
-const creatNewsStore = (init: InitState) =>
+const creatContestStore = (init: InitState) =>
     (useContestStore = initStore<ContestState>(initialState, init));
 
-export { creatNewsStore, useContestStore };
+export { creatContestStore, useContestStore };
