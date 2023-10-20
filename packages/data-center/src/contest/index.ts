@@ -1,7 +1,8 @@
 import { fetcher } from 'lib';
 import { z } from 'zod';
 import { handleApiError } from '../common';
-import { GET_CONTEST_LIST_QUERY, GET_MATCH_POSTS_QUERY } from './graphqlQueries';
+import { GET_CONTEST_LIST_QUERY } from './graphqlQueries';
+import * as fakeData from './fakeData.json';
 
 const ContestInfoSchema = z.object({
     leagueChsShort: z.string(),
@@ -48,93 +49,19 @@ export interface GetContestListResponse {
     contestInfo: ContestInfoType;
 }
 
-export interface GetMatchPostsRequest {
-    currentPage: number;
-    pageSize: number;
-    matchId: number;
-}
-
-const PredictedPlaySchema = z.union([
-    z.literal('HOME'),
-    z.literal('AWAY'),
-    z.literal('OVER'),
-    z.literal('UNDER')
-]);
-
-const PredictionResultSchema = z.union([
-    z.literal('NONE'),
-    z.literal('WIN'),
-    z.literal('LOSE'),
-    z.literal('DRAW')
-]);
-
-export type PredictedPlay = 'HOME' | 'AWAY' | 'OVER' | 'UNDER';
-export type PredictionResult = 'NONE' | 'WIN' | 'LOSE' | 'DRAW';
-
-const PostsInfoPostResultSchema = z.object({
-    id: z.number(),
-    matchId: z.number(),
-    leagueId: z.number(),
-    leagueName: z.string(),
-    homeTeamId: z.number(),
-    homeTeamName: z.string(),
-    awayTeamId: z.number(),
-    awayTeamName: z.string(),
-    homeTeamScore: z.number(),
-    awayTeamScore: z.number(),
-    handicap: z.number(),
-    homeTeamOdds: z.number(),
-    awayTeamOdds: z.number(),
-    overUnder: z.number(),
-    overOdds: z.number(),
-    underOdds: z.number(),
-    mentorId: z.number(),
-    mentorName: z.string(),
-    predictedPlay: PredictedPlaySchema,
-    analysisTitle: z.string(),
-    price: z.number(),
-    predictionResult: PredictionResultSchema,
-    matchTime: z.number(),
-    createdBy: z.number(),
-    createdAt: z.number(),
-    updatedBy: z.number(),
-    updatedAt: z.number(),
-    avatarPath: z.string(),
-    mentorLevel: z.number(),
-    lastTenAnalysisResult: z.array(PredictionResultSchema),
-    weekHitRate: z.string(),
-    shortAnalysisContent: z.string()
-});
-
-type PostsInfoPost = z.infer<typeof PostsInfoPostResultSchema>;
-
-export interface MatchPostsInfo {
-    posts: PostsInfoPost[];
-    total_page_count: number;
-}
-
-export type GetMatchPost = z.infer<typeof PostsInfoPostResultSchema>;
-export type GetMatchPostsResponse = GetMatchPost[];
-
-const MatchPostsInfoSchema = z.object({
-    posts: z.array(PostsInfoPostResultSchema),
-    total_page_count: z.number()
-});
-
-const GetMatchPostsResultSchema = z.object({
-    getMatchPosts: MatchPostsInfoSchema
-});
-
-type GetMatchPostsResult = z.infer<typeof GetMatchPostsResultSchema>;
-
 /**
- * 取得賽事列表
- * - param (dateTime: string)
+ * 取得當日賽事
+ * - param (dateTime: string) ex: 2023/8/2 12:00:00
  * - returns : {@link GetContestListResponse}
  * - {@link ContestListType} {@link ContestInfoType}
  */
 export const getContestList = async (dateTime: string) => {
     try {
+        // 回傳假資料
+        return {
+            success: true,
+            data: fakeData as GetContestListResponse
+        };
         const { data }: { data: GetContestListResult } = await fetcher(
             {
                 data: {
@@ -151,7 +78,6 @@ export const getContestList = async (dateTime: string) => {
         );
 
         GetContestListResultSchema.parse(data);
-
         const contestList: ContestListType = [];
         const contestInfo: ContestInfoType = {};
 
@@ -164,39 +90,6 @@ export const getContestList = async (dateTime: string) => {
             data: { contestList, contestInfo }
         };
     } catch (error) {
-        handleApiError(error);
-    }
-};
-
-/**
- * 取得賽事文章
- * - param : {@link GetMatchPostsRequest}
- * - returns : {@link GetMatchPostsResponse}
- * - {@link GetMatchPost}
- */
-export const getMatchPosts = async (input: GetMatchPostsRequest) => {
-    try {
-        const { data }: { data: GetMatchPostsResult } = await fetcher(
-            {
-                data: {
-                    query: GET_MATCH_POSTS_QUERY,
-                    variables: {
-                        input: {
-                            current_page: input.currentPage,
-                            page_size: input.pageSize,
-                            match_id: input.matchId
-                        }
-                    }
-                }
-            },
-            { cache: 'no-store' }
-        );
-
-        return {
-            success: true,
-            data: data.getMatchPosts.posts
-        };
-    } catch (error) {
-        handleApiError(error);
+        return handleApiError(error);
     }
 };

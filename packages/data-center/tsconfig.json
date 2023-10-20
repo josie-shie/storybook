@@ -3,6 +3,10 @@
     "include": ["."],
     "exclude": ["dist", "build", "node_modules"],
     "compilerOptions": {
-        "strict": true
+        "strict": true,
+        /** fakeData.json 使用  **/
+        "resolveJsonModule": true,
+        "esModuleInterop": true
+        /** fakeData.json 使用  **/
     }
 }

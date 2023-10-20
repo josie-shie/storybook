@@ -4,9 +4,10 @@ import style from './football.module.scss';
 function Football() {
     return (
         <div className={style.football}>
-            <div>
+            <ul>
                 <GameCard />
-            </div>
+                <GameCard />
+            </ul>
         </div>
     );
 }
