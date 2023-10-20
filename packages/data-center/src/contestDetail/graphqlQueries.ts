@@ -1,5 +1,5 @@
 export const GET_SINGLE_MATCH_QUERY = `
-    query getSingleMatch ($input) {
+    query getSingleMatch ($input: SingleMatchInput!) {
         getSingleMatch(input: $input) {
             matchId
             color
@@ -63,7 +63,7 @@ export const GET_SINGLE_MATCH_QUERY = `
 `;
 
 export const GET_DETAIL_STATUS_QUERY = `
-    query getDetailStatus($input){
+    query getDetailStatus($input: DetailStatusInput!){
         getDetailStatus(input: $input) {
             handicapsFull {
             company{
@@ -285,7 +285,7 @@ export const GET_DETAIL_STATUS_QUERY = `
 `;
 
 export const GET_LIVE_TEXT_QUERY = `
-    query getDetailStatus($input) {
+    query getDetailStatus($input: DetailStatusInput!) {
         getDetailStatus(input: $input }) {
             liveText {
                 id
@@ -297,7 +297,7 @@ export const GET_LIVE_TEXT_QUERY = `
 `;
 
 export const GET_COMPANY_ODDS_DETAIL_QUERY = `
-    query getCompanyOddsDetail($input) {
+    query getCompanyOddsDetail($input: CompanyOddsDetailRequest!) {
         getCompanyOddsDetail(input:$input) {
             matchId
             homeTeam
@@ -410,7 +410,7 @@ export const GET_COMPANY_ODDS_DETAIL_QUERY = `
 `;
 
 export const GET_COMPANY_LIVE_ODDS_DETAIL = `
-    query getCompanyLiveOdds($input) {
+    query getCompanyLiveOdds($input: CompanyLiveOddsRequest) {
         getCompanyLiveOdds(input:$input) {
             matchId
             companyOdds {
