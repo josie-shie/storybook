@@ -1,0 +1,22 @@
+.tool {
+    display: flex;
+}
+
+.mr {
+    margin-right: 8px;
+}
+
+.main {
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    background-color: #fff;
+    margin-top: -12px;
+
+    .tab {
+        padding: 12px;
+
+        :global(.tab) {
+            margin-bottom: 0;
+        }
+    }
+}

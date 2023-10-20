@@ -4,7 +4,7 @@ import style from './header.module.scss';
 import LogoIcon from './img/logoIcon.svg';
 
 interface HeaderProps {
-    logo: ReactElement | string;
+    logo?: ReactElement | string;
     children?: ReactNode;
 }
 
