@@ -1,4 +1,5 @@
 import { Tab, Tabs } from 'ui';
+import { useHomeStore } from '../../homeStore';
 import NorthBangKokClubIcon from './img/northBangkokClubIcon.svg';
 import ThaiUniversityClubIcon from './img/thaiUniversityClubIcon.svg';
 import PlayButton from './img/playButton.svg';
@@ -13,7 +14,7 @@ interface Match {
     state: number;
     homeChs: string;
     awayChs: string;
-    matchTime: number | null;
+    matchTime: number;
     onlineTotal: number;
     homeScore: number;
     awayScore: number;
@@ -116,56 +117,7 @@ function LeagueCardList() {
         buttonRadius: 30
     };
 
-    const matchList: Match[] = [
-        {
-            matchId: 1,
-            leagueChsShort: '英超',
-            startTime: '2023-8-23 11:30',
-            matchTime: 57,
-            state: 0, // 進行中
-            homeChs: '北曼谷學院',
-            awayChs: '泰国国立法政大学',
-            onlineTotal: 1199,
-            homeScore: 1,
-            awayScore: 1
-        },
-        {
-            matchId: 2,
-            leagueChsShort: '英超',
-            matchTime: null,
-            startTime: '2023-8-23 11:30',
-            state: 1, // 未開始
-            homeChs: '北曼谷學院',
-            awayChs: '泰国国立法政大学',
-            onlineTotal: 1199,
-            homeScore: 1,
-            awayScore: 1
-        },
-        {
-            matchId: 3,
-            leagueChsShort: '英超',
-            matchTime: null,
-            startTime: '2023-8-23 11:30',
-            state: 1, // 未開始
-            homeChs: '北曼谷學院',
-            awayChs: '泰国国立法政大学',
-            onlineTotal: 1199,
-            homeScore: 1,
-            awayScore: 1
-        },
-        {
-            matchId: 4,
-            leagueChsShort: '英超',
-            matchTime: null,
-            startTime: '2023-8-23 11:30',
-            state: 1, // 未開始
-            homeChs: '北曼谷學院',
-            awayChs: '泰国国立法政大学',
-            onlineTotal: 1199,
-            homeScore: 1,
-            awayScore: 1
-        }
-    ];
+    const matchList = useHomeStore.use.contestList();
 
     return (
         <div className={style.leagueCardList}>
@@ -176,49 +128,15 @@ function LeagueCardList() {
                 styling="button"
                 swiperOpen={tabStyle.swiperOpen}
             >
-                <Tab label="英超">
-                    <div className={style.leagueList}>
-                        {matchList.map(option => {
-                            return <LeagueCard key={option.matchId} match={option} />;
-                        })}
-                    </div>
-                </Tab>
-                <Tab label="西甲">
-                    <div className={style.tabContentForTest}>
+                {Object.keys(matchList).map(leagueName => (
+                    <Tab key={leagueName} label={leagueName}>
                         <div className={style.leagueList}>
-                            {matchList.map(option => {
-                                return <LeagueCard key={option.matchId} match={option} />;
+                            {matchList[leagueName].map(match => {
+                                return <LeagueCard key={match.matchId} match={match} />;
                             })}
                         </div>
-                    </div>
-                </Tab>
-                <Tab label="德甲">
-                    <div className={style.tabContentForTest}>
-                        <div className={style.leagueList}>
-                            {matchList.map(option => {
-                                return <LeagueCard key={option.matchId} match={option} />;
-                            })}
-                        </div>
-                    </div>
-                </Tab>
-                <Tab label="法甲">
-                    <div className={style.tabContentForTest}>
-                        <div className={style.leagueList}>
-                            {matchList.map(option => {
-                                return <LeagueCard key={option.matchId} match={option} />;
-                            })}
-                        </div>
-                    </div>
-                </Tab>
-                <Tab label="義甲">
-                    <div className={style.tabContentForTest}>
-                        <div className={style.leagueList}>
-                            {matchList.map(option => {
-                                return <LeagueCard key={option.matchId} match={option} />;
-                            })}
-                        </div>
-                    </div>
-                </Tab>
+                    </Tab>
+                ))}
             </Tabs>
         </div>
     );

@@ -5,12 +5,10 @@ import Image from 'next/image';
 import 'swiper/css';
 import 'swiper/css/effect-creative';
 import { Keyboard, Pagination, Navigation, EffectCreative } from 'swiper';
-import liveImg from './img/live.png';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
+import { useHomeStore } from '../homeStore';
 import style from './carousel.module.scss';
-import HomeTeamIcon from './img/homeTeam.png';
-import AwayTeamIcon from './img/awayTeam.png';
 
 interface Slide {
     id: number;
@@ -50,41 +48,7 @@ function LiveSlide({ slideInfo }: { slideInfo: Slide }) {
 }
 
 function Carousel() {
-    const slideList = [
-        {
-            id: 1,
-            image: liveImg.src,
-            leagueChs: '美国职业联赛',
-            homeIcon: HomeTeamIcon.src,
-            awayIcon: AwayTeamIcon.src,
-            homeChs: '欧锦U20A',
-            awayChs: '斯洛文尼亚U20',
-            homeScore: 1,
-            awayScore: 1
-        },
-        {
-            id: 2,
-            image: liveImg.src,
-            leagueChs: '美国职业联赛',
-            homeIcon: HomeTeamIcon.src,
-            awayIcon: AwayTeamIcon.src,
-            homeChs: '欧锦U20A',
-            awayChs: '斯洛文尼亚U20',
-            homeScore: 1,
-            awayScore: 1
-        },
-        {
-            id: 3,
-            image: liveImg.src,
-            leagueChs: '美国职业联赛',
-            homeIcon: HomeTeamIcon.src,
-            awayIcon: AwayTeamIcon.src,
-            homeChs: '欧锦U20A',
-            awayChs: '斯洛文尼亚U20',
-            homeScore: 1,
-            awayScore: 1
-        }
-    ];
+    const slideList = useHomeStore.use.slideList();
 
     return (
         <div className={style.carousel}>
