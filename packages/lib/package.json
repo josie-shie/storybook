@@ -8,6 +8,7 @@
         "lint": "eslint ."
     },
     "dependencies": {
+        "dayjs": "^1.11.10",
         "js-cookie": "^3.0.5",
         "zustand": "^4.4.1"
     },
