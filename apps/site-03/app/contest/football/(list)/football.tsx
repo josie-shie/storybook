@@ -7,6 +7,11 @@ function Football() {
             <ul>
                 <GameCard />
                 <GameCard />
+                <GameCard />
+                <GameCard />
+                <GameCard />
+                <GameCard />
+                <GameCard />
             </ul>
         </div>
     );

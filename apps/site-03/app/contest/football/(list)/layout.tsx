@@ -6,6 +6,7 @@ import SettingIcon from './img/setting.png';
 import Logo from './img/logo.png';
 import { Tabs } from '@/components/tabs/tabs';
 import HeaderFilter from '@/components/header/headerFilter';
+import Footer from '@/components/footer/footer';
 
 function ContestListLayout({ children }: { children: ReactNode }) {
     return (
@@ -32,6 +33,7 @@ function ContestListLayout({ children }: { children: ReactNode }) {
                 </div>
                 <div>{children}</div>
             </div>
+            <Footer />
         </div>
     );
 }

@@ -9,6 +9,7 @@ import HomeTeamIcon from './img/homeTeam.png';
 import AwayTeamIcon from './img/awayTeam.png';
 import liveImg from './img/live.png';
 import { creatHomeStore } from './homeStore';
+import LeagueCardList from './components/leagueCardList/leagueCardList';
 
 function Home() {
     creatHomeStore({
@@ -145,7 +146,12 @@ function Home() {
         }
     });
 
-    return <Carousel />;
+    return (
+        <>
+            <Carousel />
+            <LeagueCardList />
+        </>
+    );
 }
 
 export default Home;

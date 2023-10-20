@@ -1,5 +1,5 @@
 export const GET_MATCH_POSTS_QUERY = `
-    query getMatchPosts($input) {
+    query getMatchPosts($input: MatchPostListRequestInput) {
         getMatchPosts(input: $input) {
             posts {
                 id
