@@ -12,10 +12,12 @@ function HeaderComponent({ logo, children }: HeaderProps) {
     return (
         <div className={style.placeholder}>
             <div className={style.header} style={{ backgroundImage: `url(${dotBackground.src})` }}>
-                <div className={style.logo}>
-                    <LogoIcon />
-                    {logo}
-                </div>
+                <a href="/">
+                    <div className={style.logo}>
+                        <LogoIcon />
+                        {logo}
+                    </div>
+                </a>
                 {children}
             </div>
         </div>
