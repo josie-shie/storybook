@@ -16,8 +16,6 @@
     }
 
     :global(.swiper) {
-        height: calc(100vh - 48px);
-
         :global(.swiper-slide) {
             padding: 10px;
             box-sizing: border-box;

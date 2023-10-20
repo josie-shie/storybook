@@ -181,6 +181,7 @@ function Tabs({
 
             {swiperOpen ? (
                 <Swiper
+                    autoHeight
                     onSlideChange={swiper => {
                         handleTabClick(swiper.activeIndex);
                         setActiveIndex(swiper.activeIndex);

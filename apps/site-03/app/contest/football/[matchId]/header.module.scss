@@ -1,6 +1,7 @@
 .header {
-    padding: 0 16px;
-    height: 46px;
+    padding: 12px;
+    padding-left: 16px;
+    height: 56px;
     width: 100%;
     display: flex;
     justify-content: space-between;
@@ -9,7 +10,7 @@
 
     &.headerFixed {
         position: fixed;
-        top: -46px;
+        top: -56px;
         left: 0;
         background-color: #fff;
         transition: top 0.3s;
@@ -49,7 +50,7 @@
 
         .league {
             position: absolute;
-            bottom: -26px;
+            bottom: -28px;
             background-color: rgb(255 255 255 / 40%);
             padding: 2px 12px;
             font-size: 14px;
