@@ -1,6 +1,20 @@
 @import 'variables';
 @import 'https://fonts.googleapis.com/css2?family=Vazirmatn:wght@500;700;800&display=swap';
 
+@font-face {
+    font-family: 'YouSheBiaoTiHei';
+    src: url('./font/YouSheBiaoTiHei-2.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Staatliches';
+    src: url('./font/Staatliches-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
 html,
 body {
     width: 100%;
