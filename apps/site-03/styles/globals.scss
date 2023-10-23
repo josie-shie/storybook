@@ -20,3 +20,16 @@ body * {
     box-sizing: border-box;
     line-height: normal;
 }
+
+.MuiSwitch-root {
+    .MuiTouchRipple-root {
+        transform: translate(4px, 4px);
+    }
+}
+
+.MuiSwitch-thumb {
+    width: 12px;
+    height: 12px;
+    transform: translate(4px, 4px);
+    box-shadow: none;
+}
