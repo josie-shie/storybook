@@ -1,14 +1,43 @@
+'use client';
 import type { ReactNode } from 'react';
 import Image from 'next/image';
+import { Tab, Tabs } from 'ui';
 import style from './layout.module.scss';
 import FilterIcon from './img/filter.png';
 import SettingIcon from './img/setting.png';
 import Logo from './img/logo.png';
-import { Tabs } from '@/components/tabs/tabs';
+// import { Tabs } from '@/components/tabs/tabs';
 import HeaderFilter from '@/components/header/headerFilter';
 import Footer from '@/components/footer/footer';
 
 function ContestListLayout({ children }: { children: ReactNode }) {
+    const tabStyle = {
+        gap: 8,
+        swiperOpen: true,
+        buttonRadius: 30
+    };
+    const tabList = [
+        {
+            label: '全部',
+            to: '/contest/football'
+        },
+        {
+            label: '已開賽',
+            to: '/contest/football?status=progress'
+        },
+        {
+            label: '未開賽',
+            to: '/contest/football?status=notyet'
+        },
+        {
+            label: '賽程',
+            to: '/contest/football?status=scheule'
+        },
+        {
+            label: '賽果',
+            to: '/contest/football?status=result'
+        }
+    ];
     return (
         <div className="contestListLayout">
             <HeaderFilter logo={<Image alt="logo" height={16} src={Logo} />}>
@@ -18,20 +47,21 @@ function ContestListLayout({ children }: { children: ReactNode }) {
                 </div>
             </HeaderFilter>
             <div className={style.main}>
-                <div className={style.tab}>
-                    <Tabs
-                        labels={['全部', '已開賽', '未開賽', '賽程', '賽果']}
-                        paths={[
-                            '/contest/football',
-                            '/contest/football?status=progress',
-                            '/contest/football?status=notyet',
-                            '/contest/football?status=scheule',
-                            '/contest/football?status=result'
-                        ]}
-                        styling="button"
-                    />
-                </div>
-                <div>{children}</div>
+                <Tabs
+                    buttonRadius={tabStyle.buttonRadius}
+                    gap={tabStyle.gap}
+                    position="center"
+                    styling="button"
+                    swiperOpen={tabStyle.swiperOpen}
+                >
+                    {tabList.map(item => {
+                        return (
+                            <Tab key={item.label} label={item.label} to={item.to}>
+                                {children}
+                            </Tab>
+                        );
+                    })}
+                </Tabs>
             </div>
             <Footer />
         </div>

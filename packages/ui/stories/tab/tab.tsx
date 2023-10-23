@@ -3,10 +3,12 @@ import React, { useState, useEffect, useRef, Children, isValidElement } from 're
 import { Swiper, SwiperSlide } from 'swiper/react';
 import type { Swiper as SwiperCore } from 'swiper';
 import 'swiper/css';
+import Link from 'next/link';
 import style from './tab.module.scss';
 
 interface TabProps {
     label: string;
+    to?: string;
     children: ReactNode;
     leftSection?: ReactNode; // 左邊的icon
     rightSection?: ReactNode; // 右邊的icon
@@ -131,21 +133,12 @@ function Tabs({
                         if (isValidElement(child) && child.type === Tab) {
                             const labeledChild = child as React.ReactElement<{
                                 label: React.ReactNode;
+                                to: string;
                                 leftSection?: ReactNode;
                                 rightSection?: ReactNode;
                             }>;
-                            return (
-                                <div
-                                    className={`ui-button ${style[styling]} ${
-                                        activeIndex === index ? style.active : ''
-                                    } ${style[`radius${buttonRadius}`]}`}
-                                    onClick={() => {
-                                        handleTabClick(index);
-                                    }}
-                                    style={{
-                                        borderRadius: buttonRadius
-                                    }}
-                                >
+                            const content = (
+                                <>
                                     {labeledChild.props.leftSection ? (
                                         <span
                                             className={`ui-tabs-header-icon ${style.tabsHeaderIcon}`}
@@ -153,11 +146,13 @@ function Tabs({
                                             {labeledChild.props.leftSection}
                                         </span>
                                     ) : null}
+
                                     <span
                                         className={`ui-tabs-header-label ${style.tabsHeaderLabel}`}
                                     >
                                         {labeledChild.props.label}
                                     </span>
+
                                     {labeledChild.props.rightSection ? (
                                         <span
                                             className={`ui-tabs-header-icon ${style.tabsHeaderIcon}`}
@@ -165,7 +160,41 @@ function Tabs({
                                             {labeledChild.props.rightSection}
                                         </span>
                                     ) : null}
-                                </div>
+                                </>
+                            );
+                            return (
+                                <>
+                                    {labeledChild.props.to ? (
+                                        <Link
+                                            className={`ui-button ${style[styling]} ${
+                                                activeIndex === index ? style.active : ''
+                                            } ${style[`radius${buttonRadius}`]}`}
+                                            href={labeledChild.props.to}
+                                            onClick={() => {
+                                                handleTabClick(index);
+                                            }}
+                                            style={{
+                                                borderRadius: buttonRadius
+                                            }}
+                                        >
+                                            {content}
+                                        </Link>
+                                    ) : (
+                                        <div
+                                            className={`ui-button ${style[styling]} ${
+                                                activeIndex === index ? style.active : ''
+                                            } ${style[`radius${buttonRadius}`]}`}
+                                            onClick={() => {
+                                                handleTabClick(index);
+                                            }}
+                                            style={{
+                                                borderRadius: buttonRadius
+                                            }}
+                                        >
+                                            {content}
+                                        </div>
+                                    )}
+                                </>
                             );
                         }
                         return null;

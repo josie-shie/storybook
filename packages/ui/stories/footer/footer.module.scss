@@ -1,5 +1,5 @@
 .footerPlaceholder {
-    height: 58px;
+    height: 56px;
     width: 100%;
 
     .footer {
@@ -14,6 +14,7 @@
 
         .menuList {
             width: 100%;
+            height: 56px;
             background-color: transparent;
             display: flex;
             flex-direction: row;
@@ -42,7 +43,7 @@
                 }
 
                 &.actived {
-                    animation: FadeEffect 1s;
+                    animation: fade-effect 1s;
                 }
 
                 &:first-child {
@@ -57,13 +58,15 @@
     }
 }
 
-@keyframes FadeEffect {
+@keyframes fade-effect {
     0% {
         opacity: 1;
     }
+
     50% {
         opacity: 0.8;
     }
+
     100% {
         opacity: 1;
     }
