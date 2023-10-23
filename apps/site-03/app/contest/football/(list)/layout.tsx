@@ -1,16 +1,17 @@
 'use client';
-import type { ReactNode } from 'react';
+import { useState, type ReactNode } from 'react';
 import Image from 'next/image';
 import { Tab, Tabs } from 'ui';
 import style from './layout.module.scss';
 import FilterIcon from './img/filter.png';
 import SettingIcon from './img/setting.png';
 import Logo from './img/logo.png';
-// import { Tabs } from '@/components/tabs/tabs';
+import Setting from './components/setting';
 import HeaderFilter from '@/components/header/headerFilter';
 import Footer from '@/components/footer/footer';
 
 function ContestListLayout({ children }: { children: ReactNode }) {
+    const [showSetting, setShowSetting] = useState(false);
     const tabStyle = {
         gap: 8,
         swiperOpen: true,
@@ -43,7 +44,14 @@ function ContestListLayout({ children }: { children: ReactNode }) {
             <HeaderFilter logo={<Image alt="logo" height={16} src={Logo} />}>
                 <div className={style.tool}>
                     <Image alt="filter" className={style.mr} sizes="32" src={FilterIcon} />
-                    <Image alt="setting" sizes="32" src={SettingIcon} />
+                    <Image
+                        alt="setting"
+                        onClick={() => {
+                            setShowSetting(true);
+                        }}
+                        sizes="32"
+                        src={SettingIcon}
+                    />
                 </div>
             </HeaderFilter>
             <div className={style.main}>
@@ -63,6 +71,15 @@ function ContestListLayout({ children }: { children: ReactNode }) {
                     })}
                 </Tabs>
             </div>
+            <Setting
+                isOpen={showSetting}
+                onClose={() => {
+                    setShowSetting(false);
+                }}
+                onOpen={() => {
+                    setShowSetting(true);
+                }}
+            />
             <Footer />
         </div>
     );
