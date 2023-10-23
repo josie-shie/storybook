@@ -55,6 +55,7 @@ function Contest() {
                 status: 2
             },
             {
+                matchId: '5',
                 sport: '巴西甲',
                 time: '11:30',
                 homeTeam: '泰国国立法政大学',
@@ -66,7 +67,7 @@ function Contest() {
                 status: 2
             },
             {
-                matchId: '5',
+                matchId: '6',
                 sport: '巴西甲',
                 time: '11:30',
                 homeTeam: '泰国国立法政大学',

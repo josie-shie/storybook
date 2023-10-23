@@ -9,7 +9,7 @@ function ContestList() {
     const statusLabel = (status: number) => {
         switch (status) {
             case 0:
-                return null;
+                return <div className={style.status}>未</div>;
             case 1:
                 return <div className={`${style.status} ${style.ing}`}>{`72'`}</div>;
             case 2:
@@ -25,7 +25,7 @@ function ContestList() {
                 return (
                     <Link
                         className={style.contesntListLink}
-                        href={`/recommend/${item.matchId}`}
+                        href={`/recommend/guess/${item.matchId}`}
                         key={item.matchId}
                     >
                         <section className={style.contesntList}>

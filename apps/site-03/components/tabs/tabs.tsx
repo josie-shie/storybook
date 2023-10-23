@@ -14,16 +14,20 @@ interface TabsProps {
 function Tabs({ labels, paths, styling = 'underline' }: TabsProps) {
     const pathname = usePathname();
     const searchParams = useSearchParams();
-
+    const getSearchParams = Array.from(searchParams.entries());
     const defaultActiveIndex = paths.findIndex(path => {
-        if (path.startsWith(pathname)) {
-            const queryString = path.split('?')[1];
-            if (queryString) {
-                const queryKey = queryString.split('=')[0];
-                const queryValue = queryString.split('=')[1];
-                return searchParams.get(queryKey) === queryValue;
+        const [basePath, pathQueryString] = path.split('?');
+
+        if (basePath === pathname) {
+            if (getSearchParams.length > 0) {
+                const [queryKey, queryValue] = getSearchParams[0];
+                if (pathQueryString) {
+                    const [pathQueryKey, pathQueryValue] = pathQueryString.split('=');
+                    return queryKey === pathQueryKey && queryValue === pathQueryValue;
+                }
+            } else {
+                return !pathQueryString;
             }
-            return true;
         }
         return false;
     });
