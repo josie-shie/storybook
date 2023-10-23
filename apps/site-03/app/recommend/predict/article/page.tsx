@@ -1,5 +1,11 @@
+import Article from './article';
+
 function Page() {
-    return <>文章</>;
+    return (
+        <div className="predictArticle">
+            <Article />
+        </div>
+    );
 }
 
 export default Page;
