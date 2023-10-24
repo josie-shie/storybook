@@ -93,7 +93,22 @@ const HandicapsInfoSchema = z.object({
     isClosed: z.boolean()
 });
 
-type HandicapsInfo = z.infer<typeof HandicapsInfoSchema>;
+interface HandicapsInfo {
+    matchId: number;
+    companyId: number;
+    initialHandicap: number;
+    homeInitialOdds: string;
+    awayInitialOdds: string;
+    currentHandicap: number;
+    homeCurrentOdds: string;
+    awayCurrentOdds: string;
+    oddsChangeTime: string;
+    oddsType: number;
+    state: number;
+    homeScore: number;
+    awayScore: number;
+    isClosed: boolean;
+}
 
 const TotalGoalsInfoSchema = z.object({
     matchId: z.number(),
@@ -112,7 +127,22 @@ const TotalGoalsInfoSchema = z.object({
     isClosed: z.boolean()
 });
 
-type TotalGoalsInfo = z.infer<typeof TotalGoalsInfoSchema>;
+interface TotalGoalsInfo {
+    matchId: number;
+    companyId: number;
+    initialTotalGoals: string;
+    overInitialOdds: number;
+    underInitialOdds: number;
+    currentTotalGoals: string;
+    overCurrentOdds: number;
+    underCurrentOdds: number;
+    oddsChangeTime: string;
+    oddsType: number;
+    state: number;
+    homeScore: number;
+    awayScore: number;
+    isClosed: boolean;
+}
 
 const WinDrawLoseTypeSchema = z.object({
     matchId: z.number(),
@@ -470,12 +500,58 @@ export const getDetailStatus = async (matchId: number) => {
 
         if (data.getDetailStatus.handicapsHalf.length > 0) {
             for (const item of data.getDetailStatus.handicapsHalf[0].company) {
-                handicapsData.half[item.id] = item.timePeriods;
+                handicapsData.half[item.id] = {
+                    inProgress: item.timePeriods.inProgress.map(before => {
+                        return {
+                            ...before,
+                            homeInitialOdds: handicapToString(before.homeInitialOdds),
+                            awayInitialOdds: handicapToString(before.awayInitialOdds),
+                            homeCurrentOdds: handicapToString(before.homeCurrentOdds),
+                            awayCurrentOdds: handicapToString(before.awayCurrentOdds),
+                            initialHandicap: truncateFloatingPoint(before.initialHandicap, 2),
+                            currentHandicap: truncateFloatingPoint(before.currentHandicap, 2)
+                        };
+                    }),
+                    notStarted: item.timePeriods.notStarted.map(before => {
+                        return {
+                            ...before,
+                            homeInitialOdds: handicapToString(before.homeInitialOdds),
+                            awayInitialOdds: handicapToString(before.awayInitialOdds),
+                            homeCurrentOdds: handicapToString(before.homeCurrentOdds),
+                            awayCurrentOdds: handicapToString(before.awayCurrentOdds),
+                            initialHandicap: truncateFloatingPoint(before.initialHandicap, 2),
+                            currentHandicap: truncateFloatingPoint(before.currentHandicap, 2)
+                        };
+                    })
+                };
             }
         }
         if (data.getDetailStatus.handicapsFull.length > 0) {
             for (const item of data.getDetailStatus.handicapsFull[0].company) {
-                handicapsData.full[item.id] = item.timePeriods;
+                handicapsData.full[item.id] = {
+                    inProgress: item.timePeriods.inProgress.map(before => {
+                        return {
+                            ...before,
+                            homeInitialOdds: handicapToString(before.homeInitialOdds),
+                            awayInitialOdds: handicapToString(before.awayInitialOdds),
+                            homeCurrentOdds: handicapToString(before.homeCurrentOdds),
+                            awayCurrentOdds: handicapToString(before.awayCurrentOdds),
+                            initialHandicap: truncateFloatingPoint(before.initialHandicap, 2),
+                            currentHandicap: truncateFloatingPoint(before.currentHandicap, 2)
+                        };
+                    }),
+                    notStarted: item.timePeriods.notStarted.map(before => {
+                        return {
+                            ...before,
+                            homeInitialOdds: handicapToString(before.homeInitialOdds),
+                            awayInitialOdds: handicapToString(before.awayInitialOdds),
+                            homeCurrentOdds: handicapToString(before.homeCurrentOdds),
+                            awayCurrentOdds: handicapToString(before.awayCurrentOdds),
+                            initialHandicap: truncateFloatingPoint(before.initialHandicap, 2),
+                            currentHandicap: truncateFloatingPoint(before.currentHandicap, 2)
+                        };
+                    })
+                };
             }
         }
 
@@ -486,12 +562,58 @@ export const getDetailStatus = async (matchId: number) => {
 
         if (data.getDetailStatus.totalGoalsHalf.length > 0) {
             for (const item of data.getDetailStatus.totalGoalsHalf[0].company) {
-                totalGoalsData.half[item.id] = item.timePeriods;
+                totalGoalsData.half[item.id] = {
+                    inProgress: item.timePeriods.inProgress.map(before => {
+                        return {
+                            ...before,
+                            initialTotalGoals: handicapToString(before.initialTotalGoals),
+                            currentTotalGoals: handicapToString(before.currentTotalGoals),
+                            overInitialOdds: truncateFloatingPoint(before.overInitialOdds, 2),
+                            underInitialOdds: truncateFloatingPoint(before.underInitialOdds, 2),
+                            overCurrentOdds: truncateFloatingPoint(before.overCurrentOdds, 2),
+                            underCurrentOdds: truncateFloatingPoint(before.underCurrentOdds, 2)
+                        };
+                    }),
+                    notStarted: item.timePeriods.notStarted.map(before => {
+                        return {
+                            ...before,
+                            initialTotalGoals: handicapToString(before.initialTotalGoals),
+                            currentTotalGoals: handicapToString(before.currentTotalGoals),
+                            overInitialOdds: truncateFloatingPoint(before.overInitialOdds, 2),
+                            underInitialOdds: truncateFloatingPoint(before.underInitialOdds, 2),
+                            overCurrentOdds: truncateFloatingPoint(before.overCurrentOdds, 2),
+                            underCurrentOdds: truncateFloatingPoint(before.underCurrentOdds, 2)
+                        };
+                    })
+                };
             }
         }
         if (data.getDetailStatus.totalGoalsFull.length > 0) {
             for (const item of data.getDetailStatus.totalGoalsFull[0].company) {
-                totalGoalsData.full[item.id] = item.timePeriods;
+                totalGoalsData.full[item.id] = {
+                    inProgress: item.timePeriods.inProgress.map(before => {
+                        return {
+                            ...before,
+                            initialTotalGoals: handicapToString(before.initialTotalGoals),
+                            currentTotalGoals: handicapToString(before.currentTotalGoals),
+                            overInitialOdds: truncateFloatingPoint(before.overInitialOdds, 2),
+                            underInitialOdds: truncateFloatingPoint(before.underInitialOdds, 2),
+                            overCurrentOdds: truncateFloatingPoint(before.overCurrentOdds, 2),
+                            underCurrentOdds: truncateFloatingPoint(before.underCurrentOdds, 2)
+                        };
+                    }),
+                    notStarted: item.timePeriods.notStarted.map(before => {
+                        return {
+                            ...before,
+                            initialTotalGoals: handicapToString(before.initialTotalGoals),
+                            currentTotalGoals: handicapToString(before.currentTotalGoals),
+                            overInitialOdds: truncateFloatingPoint(before.overInitialOdds, 2),
+                            underInitialOdds: truncateFloatingPoint(before.underInitialOdds, 2),
+                            overCurrentOdds: truncateFloatingPoint(before.overCurrentOdds, 2),
+                            underCurrentOdds: truncateFloatingPoint(before.underCurrentOdds, 2)
+                        };
+                    })
+                };
             }
         }
 
