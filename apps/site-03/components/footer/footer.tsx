@@ -19,7 +19,7 @@ const CategoryList = [
     },
     {
         label: '推薦',
-        value: '/recommend/guess/contest',
+        value: '/recommend/guess',
         icon: <RecommendIcon />
     },
     {

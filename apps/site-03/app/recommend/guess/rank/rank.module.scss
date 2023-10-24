@@ -1,0 +1,110 @@
+.rank {
+    padding: 12px;
+
+    > .userRank {
+        border-radius: 8px;
+        background: #e6effe;
+        margin-bottom: 12px;
+        overflow: hidden;
+
+        .ranking {
+            font-size: 14px;
+            width: fit-content;
+            padding: 0 12px;
+            border-radius: 0 3px 10px 0;
+            color: #fff;
+            background: #276ce1;
+
+            span {
+                margin-left: 6px;
+                font-size: 12px;
+            }
+        }
+
+        .container {
+            display: flex;
+            padding: 8px 12px 12px;
+        }
+    }
+
+    :global(.tab) {
+        :global(.header) {
+            :global(.tabs) {
+                padding: 0 12px;
+            }
+        }
+    }
+}
+
+.avatarContainer {
+    height: 44px;
+    padding: 2px 12px 0 0;
+}
+
+.content {
+    align-self: flex-start;
+    flex-grow: 1;
+}
+
+.name {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.detail {
+    font-size: 14px;
+    font-weight: 500;
+    color: #8d8d8d;
+    display: flex;
+    gap: 12px;
+}
+
+.victory {
+    color: #f85640;
+}
+
+.winRateBlock {
+    font-weight: 700;
+    display: inline-flex;
+    align-items: flex-start;
+
+    > .icon {
+        margin-right: 4px;
+    }
+
+    > .winRate {
+        font-size: 20px;
+        display: inline-flex;
+        align-items: center;
+        color: #276ce1;
+
+        > .percent {
+            font-size: 12px;
+        }
+    }
+}
+
+.ranking1 {
+    background: #ed3a45;
+    color: #fff;
+}
+
+.ranking2 {
+    background: #ff844f;
+    color: #fff;
+}
+
+.ranking3 {
+    background: #ffaf37;
+    color: #fff;
+}
+
+.ranking4 {
+    background: #4489ff;
+    color: #fff;
+}
+
+.ranking5 {
+    background: #979797;
+    color: #fff;
+}

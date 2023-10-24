@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 import style from './tabs.module.scss';
 
 interface TabsProps {
@@ -13,7 +13,24 @@ interface TabsProps {
 
 function Tabs({ labels, paths, styling = 'underline' }: TabsProps) {
     const pathname = usePathname();
-    const defaultActiveIndex = paths.indexOf(pathname);
+    const searchParams = useSearchParams();
+    const getSearchParams = Array.from(searchParams.entries());
+    const defaultActiveIndex = paths.findIndex(path => {
+        const [basePath, pathQueryString] = path.split('?');
+
+        if (basePath === pathname) {
+            if (getSearchParams.length > 0) {
+                const [queryKey, queryValue] = getSearchParams[0];
+                if (pathQueryString) {
+                    const [pathQueryKey, pathQueryValue] = pathQueryString.split('=');
+                    return queryKey === pathQueryKey && queryValue === pathQueryValue;
+                }
+            } else {
+                return !pathQueryString;
+            }
+        }
+        return false;
+    });
 
     const [activeIndex, setActiveIndex] = useState(
         defaultActiveIndex !== -1 ? defaultActiveIndex : 0

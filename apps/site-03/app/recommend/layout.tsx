@@ -1,39 +1,30 @@
 'use client';
 import type { ReactNode } from 'react';
-import { useRouter, usePathname } from 'next/navigation';
-import { useEffect } from 'react';
-import style from './recommend.module.scss';
+import { usePathname } from 'next/navigation';
+import style from './layout.module.scss';
 import Logo from './img/logo.svg';
-import Header from '@/components/header/headerTabs';
+import Header from '@/components/header/headerLogo';
 import Footer from '@/components/footer/footer';
 import { Tabs } from '@/components/tabs/tabs';
 
 function RecommendLayout({ children }: { children: ReactNode }) {
-    const router = useRouter();
-    const paramName = usePathname();
-
+    const pathname = usePathname();
+    const isMatchIdRoute = /\/recommend\/guess\/\d+/.test(pathname);
     const headerProps = {
         logo: <Logo />,
-        total: 999999,
-        tabList: ['足球', '籃球']
+        total: 999999
     };
 
-    useEffect(() => {
-        if (paramName === '/recommend') {
-            router.push('/recommend/guess/contest');
-        }
-    }, [router, paramName]);
+    if (isMatchIdRoute) {
+        return <>{children}</>;
+    }
 
     return (
         <>
-            <Header
-                logo={headerProps.logo}
-                tabList={headerProps.tabList}
-                total={headerProps.total}
-            />
+            <Header logo={headerProps.logo} total={headerProps.total} />
             <div className={style.layout}>
                 <Tabs
-                    labels={['競猜', '專家預測', '大數據分析']}
+                    labels={['竟猜', '专家预测', '大数据分析']}
                     paths={['/recommend/guess', '/recommend/predict', '/recommend/bigData']}
                 />
                 {children}
