@@ -1,28 +1,76 @@
 import Image from 'next/image';
+import { ProgressBar } from 'ui/stories/progressBar/progressBar';
 import NorthBangKokClubIcon from './img/northBangkokClubIcon.png';
 import ThaiUniversityClubIcon from './img/thaiUniversityClubIcon.png';
 import style from './vsBox.module.scss';
 
 interface BettingProps {
     play: string;
-    leftType: string;
-    rightType: string;
+    value: number;
+    homeUser: number;
+    homeType: string;
+    awayUser: number;
+    awayType: string;
+    isUnlocked: boolean;
 }
 
-function BettingColumn({ play, leftType, rightType }: BettingProps) {
+interface VsBoxProps {
+    isUnlocked: boolean;
+}
+
+function BettingColumn({
+    play,
+    value,
+    homeUser,
+    homeType,
+    awayUser,
+    awayType,
+    isUnlocked
+}: BettingProps) {
     return (
         <div className={style.column}>
-            <div className={style.button}>{leftType}</div>
-            <div className={style.progress}>
-                <div className={style.play}>{play}</div>
-                <div className={style.line} />
-            </div>
-            <div className={style.button}>{rightType}</div>
+            {isUnlocked ? (
+                <div className={style.unLock}>
+                    <div className={style.button}>
+                        <span className={style.team}>{homeType}</span>
+                        <span className={style.user}>{homeUser}人</span>
+                    </div>
+                    <div className={style.progress}>
+                        <div className={style.play}>
+                            <span className={style.home}>{homeUser}%</span>
+                            <span className={style.ing}>{play}</span>
+                            <span className={style.away}>{awayUser}%</span>
+                        </div>
+                        <ProgressBar
+                            background="rgba(255 255 255 / 50%)"
+                            fill="#73ddff"
+                            gapSize="large"
+                            height={8}
+                            radius
+                            skewGap
+                            value={value}
+                        />
+                    </div>
+                    <div className={style.button}>
+                        <span className={style.team}>{awayType}</span>
+                        <span className={style.user}>{awayUser}人</span>
+                    </div>
+                </div>
+            ) : (
+                <>
+                    <div className={style.button}>{homeType}</div>
+                    <div className={style.progress}>
+                        <div className={style.play}>{play}</div>
+                        <div className={style.line} />
+                    </div>
+                    <div className={style.button}>{awayType}</div>
+                </>
+            )}
         </div>
     );
 }
 
-function VsBox() {
+function VsBox({ isUnlocked }: VsBoxProps) {
     return (
         <div className={style.vsBox}>
             <div className={style.title}>歐錦U20A 7-14 01:00</div>
@@ -41,8 +89,24 @@ function VsBox() {
                 <span className={style.text}>1234人参与競猜，点击预测后查看风向</span>
             </div>
             <div className={style.betting}>
-                <BettingColumn leftType="主" play="一球/球半" rightType="客" />
-                <BettingColumn leftType="大" play="一球/球半" rightType="小" />
+                <BettingColumn
+                    awayType="客"
+                    awayUser={4}
+                    homeType="主"
+                    homeUser={88}
+                    isUnlocked={isUnlocked}
+                    play="一球/球半"
+                    value={88}
+                />
+                <BettingColumn
+                    awayType="小"
+                    awayUser={4}
+                    homeType="大"
+                    homeUser={88}
+                    isUnlocked={isUnlocked}
+                    play="一球/球半"
+                    value={88}
+                />
             </div>
         </div>
     );
