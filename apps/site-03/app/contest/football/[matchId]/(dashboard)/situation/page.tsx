@@ -1,6 +1,6 @@
 import Situation from './situation';
 
-function gameSituation() {
+function Page() {
     const situationData = {
         handicapsData: {
             half: {},
@@ -747,4 +747,4 @@ function gameSituation() {
     return <Situation situationData={situationData} />;
 }
 
-export default gameSituation;
+export default Page;
