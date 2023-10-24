@@ -19,7 +19,7 @@ function BottomDrawer({
             onClose={onClose}
             onOpen={onOpen}
             open={isOpen}
-            transitionDuration={{ enter: 400, exit: 200 }}
+            transitionDuration={{ enter: 300, exit: 200 }}
         >
             <div className={style.topLine} />
             {children}
