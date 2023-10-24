@@ -4,6 +4,7 @@ import GameIcon from './img/game.svg';
 import RecommendIcon from './img/recommend.svg';
 import DataIcon from './img/data.svg';
 import NewsIcon from './img/news.svg';
+import './footer.module.scss';
 
 const CategoryList = [
     {

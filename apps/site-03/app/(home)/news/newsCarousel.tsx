@@ -4,6 +4,7 @@ import { Keyboard, Pagination, Navigation, EffectCreative } from 'swiper';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import Link from 'next/link';
 import style from './news.module.scss';
 import { useNewsStore } from './newsStore';
 
@@ -16,14 +17,19 @@ interface Slide {
 
 function NewsSlide({ slideInfo }: { slideInfo: Slide }) {
     return (
-        <div className={style.slideImage} style={{ backgroundImage: `url(${slideInfo.image})` }}>
-            <div className={style.contestInfo}>
-                <div className={style.newsInfo}>
-                    <div className={style.contestName}>{slideInfo.leagueChs}</div>
-                    <div className={style.newsTitle}>{slideInfo.title}</div>
+        <Link href={`/news/${slideInfo.id}`}>
+            <div
+                className={style.slideImage}
+                style={{ backgroundImage: `url(${slideInfo.image})` }}
+            >
+                <div className={style.contestInfo}>
+                    <div className={style.newsInfo}>
+                        <div className={style.contestName}>{slideInfo.leagueChs}</div>
+                        <div className={style.newsTitle}>{slideInfo.title}</div>
+                    </div>
                 </div>
             </div>
-        </div>
+        </Link>
     );
 }
 

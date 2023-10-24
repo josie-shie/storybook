@@ -1,11 +1,7 @@
 import News from './news';
 
 function Page() {
-    return (
-        <div className="news">
-            <News />
-        </div>
-    );
+    return <News />;
 }
 
 export default Page;
