@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import style from './gameEvent.module.scss';
+import style from './event.module.scss';
 import ClockIcon from './img/clock.png';
 import YellowCardIcon from './img/yellow_card.png';
 import RedCardIcon from './img/red_card.png';

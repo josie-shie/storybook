@@ -3,7 +3,7 @@
 import { Suspense } from 'react';
 import { Tab, Tabs } from 'ui';
 import CircularProgress from '@mui/material/CircularProgress';
-import GameSituation from './(dashboard)/gameSituation/page';
+import Situation from './(dashboard)/situation/page';
 import TextBroadcast from './(dashboard)/textBroadcast/page';
 import style from './dashboard.module.scss';
 
@@ -24,7 +24,7 @@ function Dashboard() {
             >
                 <Tab label="赛况">
                     <Suspense fallback={<CircularProgress />}>
-                        <GameSituation />
+                        <Situation />
                     </Suspense>
                 </Tab>
                 <Tab label="直播">
