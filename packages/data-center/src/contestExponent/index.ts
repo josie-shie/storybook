@@ -140,7 +140,7 @@ export interface GetExponentResponse {
 }
 
 /**
- * 取得指數
+ * 取得賽事指數
  * - params : (matchId: number, companyId: number)
  * - returns : {@link GetExponentResponse}
  */
