@@ -6,7 +6,7 @@ function TextBroadcast({ broadcastList }: { broadcastList: LiveTextListType[] })
         <>
             <h2 className={style.pageTitle}>文字直播</h2>
             {broadcastList.length > 0 ? (
-                <ul className={style.liveText}>
+                <ul className={style.textBroadcast}>
                     {broadcastList.map(broadcast => (
                         <li className={style.list} key={broadcast.id}>
                             <div className={style.top}>
