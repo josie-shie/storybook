@@ -1,7 +1,7 @@
-import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import Switch from '@mui/material/Switch';
 import { useState } from 'react';
 import style from './setting.module.scss';
+import BottomDrawer from '@/components/drawer/bottomDrawer';
 
 function Setting({
     isOpen,
@@ -16,13 +16,7 @@ function Setting({
     const [openSound, setOpenSound] = useState(false);
 
     return (
-        <SwipeableDrawer
-            anchor="bottom"
-            onClose={onClose}
-            onOpen={onOpen}
-            open={isOpen}
-            transitionDuration={{ enter: 400, exit: 200 }}
-        >
+        <BottomDrawer isOpen={isOpen} onClose={onClose} onOpen={onOpen}>
             <div className={style.setting}>
                 <div className={style.topLine} />
                 <h2>比賽設置</h2>
@@ -53,7 +47,7 @@ function Setting({
                     </li>
                 </ul>
             </div>
-        </SwipeableDrawer>
+        </BottomDrawer>
     );
 }
 

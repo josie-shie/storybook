@@ -23,6 +23,8 @@ interface InitState {
 
 interface NewsState extends InitState {
     loading: boolean;
+    currentMarqueeIndex: number;
+    setCurrentMarqueeIndex: (index: number) => void;
 }
 
 let useNewsStore: StoreWithSelectors<NewsState>;
@@ -32,6 +34,7 @@ const initialState = (set: (data: Partial<NewsState>) => void) => ({
     marqueeList: [],
     newsList: [],
     loading: false,
+    currentMarqueeIndex: 0,
     setSlideList: (slideList: Slide[]) => {
         set({ slideList });
     },
@@ -40,6 +43,9 @@ const initialState = (set: (data: Partial<NewsState>) => void) => ({
     },
     setMarqueeList: (marqueeList: string[]) => {
         set({ marqueeList });
+    },
+    setCurrentMarqueeIndex: (currentMarqueeIndex: number) => {
+        set({ currentMarqueeIndex });
     }
 });
 

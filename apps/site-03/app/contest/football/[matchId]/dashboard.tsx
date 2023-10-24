@@ -3,15 +3,18 @@
 import { Suspense } from 'react';
 import { Tab, Tabs } from 'ui';
 import CircularProgress from '@mui/material/CircularProgress';
+import GameSituation from './(dashboard)/gameSituation/page';
+import TextBroadcast from './(dashboard)/textBroadcast/page';
+import style from './dashboard.module.scss';
 
 function Dashboard() {
     const tabStyle = {
-        gap: 8,
+        gap: 0,
         swiperOpen: true,
-        buttonRadius: 30
+        buttonRadius: 0
     };
     return (
-        <div>
+        <div className={style.dashboard}>
             <Tabs
                 buttonRadius={tabStyle.buttonRadius}
                 gap={tabStyle.gap}
@@ -20,10 +23,14 @@ function Dashboard() {
                 swiperOpen={tabStyle.swiperOpen}
             >
                 <Tab label="赛况">
-                    <Suspense fallback={<CircularProgress />}>GameStatus</Suspense>
+                    <Suspense fallback={<CircularProgress />}>
+                        <GameSituation />
+                    </Suspense>
                 </Tab>
                 <Tab label="直播">
-                    <Suspense fallback={<CircularProgress />}>LiveText</Suspense>
+                    <Suspense fallback={<CircularProgress />}>
+                        <TextBroadcast />
+                    </Suspense>
                 </Tab>
                 <Tab label="分析">
                     <Suspense fallback={<CircularProgress />}>Analyze</Suspense>

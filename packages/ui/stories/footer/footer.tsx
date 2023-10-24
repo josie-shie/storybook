@@ -55,7 +55,7 @@ function Footer({
         <>
             {isShow ? (
                 <div className={style.footerPlaceholder}>
-                    <footer className={style.footer}>
+                    <footer className={`ui-footer ${style.footer}`}>
                         {menuList.length ? (
                             <div className={style.menuList}>
                                 {menuList.map(menu => {

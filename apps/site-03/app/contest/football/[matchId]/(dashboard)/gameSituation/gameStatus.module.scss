@@ -1,0 +1,386 @@
+.topBar {
+    height: 40px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    h6 {
+        display: flex;
+        align-items: center;
+        font-size: 14px;
+        font-weight: 500;
+
+        .blueIcon {
+            width: 8px;
+            height: 8px;
+            background-color: #222;
+            margin-right: 4px;
+        }
+    }
+
+    .radioBar {
+        display: flex;
+        align-items: center;
+        column-gap: 6px;
+
+        .label {
+            display: flex;
+            align-items: center;
+            color: #222;
+            font-size: 12px;
+        }
+
+        :global {
+            .MuiButtonBase-root {
+                padding: 3px;
+            }
+
+            .MuiSvgIcon-root {
+                width: 14px;
+                height: 14px;
+                fill: #4a4a4a;
+            }
+
+            .Mui-checked .MuiSvgIcon-root {
+                fill: #4489ff;
+            }
+        }
+    }
+}
+
+.scoreTable {
+    margin-bottom: 10px;
+
+    .tableHead {
+        padding: 6px 0;
+        display: flex;
+        justify-content: center;
+        background-color: #f3f3f3;
+        border: 1px solid #f3f3f3;
+
+        .th {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0 10px;
+            flex: 1;
+            color: #4a4a4a;
+            font-size: 12px;
+            font-weight: 400;
+        }
+
+        &:first-of-type {
+            border-top-left-radius: 6px;
+            border-top-right-radius: 6px;
+        }
+    }
+
+    .tableBody {
+        border-left: 1px solid #f3f3f3;
+        border-bottom-left-radius: 6px;
+
+        .tr {
+            display: flex;
+
+            .td {
+                display: flex;
+                justify-content: space-evenly;
+                align-items: center;
+                flex: 1;
+                padding: 10px;
+                color: #222;
+                font-size: 12px;
+                font-weight: 500;
+                border-right: 1px solid #f3f3f3;
+                border-bottom: 1px solid #f3f3f3;
+            }
+        }
+
+        &:last-of-type {
+            .tr:last-of-type {
+                .td:first-of-type {
+                    border-bottom-left-radius: 6px;
+                }
+
+                .td:last-of-type {
+                    border-bottom-right-radius: 6px;
+                }
+            }
+        }
+    }
+}
+
+.handicap,
+.totalGoals {
+    /* stylelint-disable no-descending-specificity */
+    .tableHead {
+        .th {
+            &:nth-child(3),
+            &:nth-child(4) {
+                flex: 4;
+            }
+        }
+    }
+
+    .tableBody {
+        .tr {
+            .td {
+                &:nth-child(3),
+                &:nth-child(4) {
+                    justify-content: space-between;
+                    flex: 4;
+
+                    p {
+                        display: flex;
+                        align-items: center;
+
+                        &:nth-child(2) {
+                            color: #f85640;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.gameEvent {
+    .scoreTable {
+        .tableHead {
+            padding: 0;
+
+            .th {
+                padding: 0 10px;
+
+                &.icon {
+                    flex: initial;
+                    padding: 0;
+                }
+
+                &.left {
+                    justify-content: flex-start;
+                }
+
+                &.right {
+                    justify-content: flex-end;
+                }
+            }
+        }
+
+        .tableBody {
+            .tr {
+                .td {
+                    flex-direction: column;
+                    width: 100%;
+
+                    .timeLine {
+                        width: 100%;
+                        position: relative;
+
+                        &::after {
+                            content: '';
+                            position: absolute;
+                            top: 0;
+                            left: 50%;
+                            bottom: 0;
+                            width: 1px;
+                            background-color: #4489ff;
+                            transform: translateX(-50%);
+                            z-index: 0;
+                        }
+
+                        .timeEvent {
+                            width: 100%;
+                            position: relative;
+                            display: flex;
+                            align-items: center;
+                            margin-bottom: 10px;
+                            z-index: 1;
+
+                            &:last-child {
+                                margin-bottom: 0;
+                            }
+
+                            .time {
+                                width: 38px;
+                                height: 38px;
+                                margin: 0 6px;
+                                background-color: #f3f3f3;
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                                border-radius: 50%;
+                            }
+
+                            .right,
+                            .left {
+                                display: flex;
+                                align-items: center;
+                                flex: 1;
+                                column-gap: 2px;
+                            }
+
+                            .left {
+                                justify-content: flex-end;
+                                text-align: right;
+                            }
+
+                            .right {
+                                flex-direction: row-reverse;
+                                justify-content: flex-end;
+                            }
+
+                            .swapPlayer {
+                                display: flex;
+                                flex-direction: column;
+
+                                .name {
+                                    font-size: 12px;
+                                    color: #00ac6e;
+                                    font-weight: 500;
+
+                                    &:last-child {
+                                        color: #f85640;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    .caption {
+                        display: flex;
+                        flex-wrap: wrap;
+                        align-items: center;
+                        column-gap: 4px;
+                        row-gap: 10px;
+
+                        .info {
+                            display: flex;
+                            align-items: center;
+                            min-width: 66px;
+
+                            .name {
+                                margin-left: 2px;
+                                color: #4a4a4a;
+                                font-size: 12px;
+                                font-weight: 400;
+                            }
+                        }
+                    }
+                }
+
+                &:last-child {
+                    .td {
+                        background-color: #f3f3f3;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.technical {
+    .tableBody {
+        .tr {
+            .td {
+                &:nth-child(2) {
+                    flex: 0.8;
+                }
+
+                &.win {
+                    color: #f85640;
+                }
+            }
+
+            &:nth-child(2n) {
+                background-color: #f3f3f3;
+            }
+        }
+    }
+}
+
+.lineUp {
+    .scoreTable {
+        margin-bottom: 0;
+
+        .tableHead {
+            .th {
+                padding: 0 10px;
+
+                &.title {
+                    color: #4489ff;
+                    flex: initial;
+                    padding: 0;
+                }
+
+                &.left {
+                    justify-content: flex-start;
+                }
+
+                &.right {
+                    justify-content: flex-end;
+                }
+            }
+        }
+
+        .tableBody {
+            .tr {
+                .td {
+                    width: 50%;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: flex-start;
+                    padding: 0;
+                    border: none;
+
+                    .player {
+                        display: flex;
+                        align-items: center;
+                        width: 100%;
+                        border-right: 1px solid #f3f3f3;
+                        border-bottom: 1px solid #f3f3f3;
+
+                        p {
+                            padding: 10px;
+                        }
+
+                        .number {
+                            width: 38px;
+                            text-align: center;
+                        }
+
+                        .name {
+                            flex: 1;
+                            text-overflow: ellipsis;
+                            white-space: nowrap;
+                            overflow: hidden;
+                        }
+                    }
+                }
+            }
+
+            &:last-of-type {
+                .tr {
+                    .td {
+                        border-bottom: 1px solid #f3f3f3;
+
+                        .player {
+                            &:last-of-type {
+                                border-bottom: none;
+                            }
+                        }
+
+                        &:last-of-type {
+                            border-right: 1px solid #f3f3f3;
+
+                            .player {
+                                border-right: none;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

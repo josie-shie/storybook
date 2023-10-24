@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import LiveBox from './liveBox';
+import GuessBar from './guessBar';
 import Dashboard from './dashboard';
 
 export const metadata: Metadata = {
@@ -7,11 +8,12 @@ export const metadata: Metadata = {
 };
 
 function ContestDetail({ params }: { params: { matchId: number } }) {
+    console.warn(params.matchId);
     return (
         <>
             <LiveBox />
+            <GuessBar />
             <Dashboard />
-            <p>matchId:{params.matchId}</p>
         </>
     );
 }
