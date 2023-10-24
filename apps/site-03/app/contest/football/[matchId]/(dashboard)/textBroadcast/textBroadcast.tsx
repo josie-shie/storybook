@@ -1,5 +1,5 @@
-import type { LiveTextListType } from '../../../../../../types/detailStatus';
 import style from './textBroadcast.module.scss';
+import type { LiveTextListType } from '@/types/detailStatus';
 
 function TextBroadcast({ broadcastList }: { broadcastList: LiveTextListType[] }) {
     return (
