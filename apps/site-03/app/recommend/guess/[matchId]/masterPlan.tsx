@@ -1,73 +1,134 @@
 'use client';
-import { ProgressBar } from 'ui/stories/progressBar/progressBar';
+import { useState } from 'react';
 import Rule from '../components/rule/rule';
+import PaidDialog from './components/paidDialog/paidDialog';
+import GameCard from './gameCard';
+import AnalyzeColumn from './analyze';
 import Title from './img/title.svg';
 import style from './masterPlan.module.scss';
 
-function MasterPlan() {
+interface MasterPlanProps {
+    isUnlocked: boolean;
+    setIsUnlocked: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+function MasterPlan({ isUnlocked, setIsUnlocked }: MasterPlanProps) {
+    const [openPaid, setOpenPaid] = useState(false);
+    const [balance, setBalance] = useState<number>(0);
+    const [amount, setAmount] = useState<number>(0);
+    const [plan, setPlan] = useState(false);
+
+    const handleClickOpen = (newBalance: number, newAmount: number, getPlan: string) => {
+        if (getPlan === 'single') {
+            setPlan(true);
+        } else if (getPlan === 'monthly') {
+            setPlan(false);
+        }
+        setBalance(newBalance);
+        setAmount(newAmount);
+        setOpenPaid(true);
+    };
+
+    const handleClickClose = () => {
+        setOpenPaid(false);
+    };
+
+    const handleConfirm = () => {
+        setIsUnlocked(true);
+        setOpenPaid(false);
+    };
+
     return (
         <div className={style.masterPlan}>
-            <div className={style.title}>
-                <div className={style.name}>
-                    <Title />
-                    <span>近20场高胜率玩家风向</span>
+            <div className={style.area}>
+                <div className={style.title}>
+                    <div className={style.name}>
+                        <Title />
+                        <span>近20场高胜率玩家风向</span>
+                    </div>
+                    <Rule />
                 </div>
-                <Rule />
-            </div>
-            <div className={style.analyze}>
-                <div className={style.column}>
-                    <div className={style.button}>
-                        <span className={style.team}>主</span>
-                        <span className={style.user}>888人</span>
-                    </div>
-                    <div className={style.progress}>
-                        <div className={style.play}>
-                            <span className={style.home}>88%</span>
-                            <span className={style.ing}>一球/球半</span>
-                            <span className={style.away}>4%</span>
+                <div className={style.analyze}>
+                    {!isUnlocked ? (
+                        <div className={style.mask}>
+                            <button
+                                onClick={() => {
+                                    handleClickOpen(100, 10, 'single');
+                                }}
+                                type="button"
+                            >
+                                10 金币解锁本场
+                            </button>
+                            <button
+                                onClick={() => {
+                                    handleClickOpen(100, 200, 'monthly');
+                                }}
+                                type="button"
+                            >
+                                200 金币包月无限看
+                            </button>
                         </div>
-                        <ProgressBar
-                            background="#c3c3c3"
-                            fill="#276ce1"
-                            gapSize="large"
-                            height={10}
-                            radius
-                            skewGap
-                            value={88}
-                        />
-                    </div>
-                    <div className={style.button}>
-                        <span className={style.team}>客</span>
-                        <span className={style.user}>14人</span>
-                    </div>
-                </div>
-                <div className={style.column}>
-                    <div className={style.button}>
-                        <span className={style.team}>大</span>
-                        <span className={style.user}>888人</span>
-                    </div>
-                    <div className={style.progress}>
-                        <div className={style.play}>
-                            <span className={style.home}>88%</span>
-                            <span className={style.ing}>一球/球半</span>
-                            <span className={style.away}>4%</span>
-                        </div>
-                        <ProgressBar
-                            background="#c3c3c3"
-                            fill="#276ce1"
-                            gapSize="large"
-                            height={10}
-                            radius
-                            skewGap
-                            value={88}
-                        />
-                    </div>
-                    <div className={style.button}>
-                        <span className={style.team}>小</span>
-                        <span className={style.user}>14人</span>
-                    </div>
+                    ) : (
+                        <>
+                            <AnalyzeColumn
+                                awayType="客"
+                                awayUser={4}
+                                homeType="主"
+                                homeUser={888}
+                                value={88}
+                            />
+                            <AnalyzeColumn
+                                awayType="小"
+                                awayUser={4}
+                                homeType="大"
+                                homeUser={888}
+                                value={88}
+                            />
+                        </>
+                    )}
                 </div>
             </div>
+
+            <div className={style.area}>
+                <div className={style.planList}>
+                    <div className={style.title}>
+                        <span>同场高手方案</span>
+                        <span>声明</span>
+                    </div>
+                    <GameCard
+                        globalUnlock={isUnlocked}
+                        league="欧锦U20A vs 斯洛文尼亚U20"
+                        name="老梁聊球"
+                        text="9连红"
+                    />
+                    <GameCard
+                        globalUnlock={isUnlocked}
+                        league="欧锦U20A vs 斯洛文尼亚U20"
+                        name="老梁聊球"
+                        text="月榜10"
+                    />
+                    <GameCard
+                        globalUnlock={isUnlocked}
+                        league="欧锦U20A vs 斯洛文尼亚U20"
+                        name="老梁聊球"
+                        text="月榜10"
+                    />
+                    <GameCard
+                        globalUnlock={isUnlocked}
+                        league="欧锦U20A vs 斯洛文尼亚U20"
+                        name="老梁聊球"
+                        text="月榜10"
+                    />
+                </div>
+            </div>
+            <PaidDialog
+                amount={amount}
+                balance={balance}
+                onClose={handleClickClose}
+                onConfirm={handleConfirm}
+                openPaid={openPaid}
+                plan={plan}
+            />
         </div>
     );
 }
