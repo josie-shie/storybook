@@ -1,6 +1,20 @@
 @import 'variables';
 @import 'https://fonts.googleapis.com/css2?family=Vazirmatn:wght@500;700;800&display=swap';
 
+@font-face {
+    font-family: YouSheBiaoTiHei;
+    src: url('./font/YouSheBiaoTiHei-2.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: Staatliches;
+    src: url('./font/Staatliches-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
 html,
 body {
     width: 100%;
@@ -19,4 +33,28 @@ body * {
     scrollbar-width: none;
     box-sizing: border-box;
     line-height: normal;
+}
+
+.MuiSwitch-root {
+    width: 52px !important;
+
+    .MuiTouchRipple-root {
+        transform: translate(4px, 4px);
+    }
+
+    .MuiSwitch-thumb {
+        width: 12px;
+        height: 12px;
+        transform: translate(4px, 4px);
+        background: #fff;
+    }
+
+    .Mui-checked {
+        transform: translateX(14px) !important;
+    }
+
+    .Mui-checked + .MuiSwitch-track {
+        opacity: 1 !important;
+        background-color: #4489ff !important;
+    }
 }

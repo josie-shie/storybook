@@ -11,12 +11,14 @@
     .topArea {
         display: flex;
         justify-content: space-between;
+        align-items: center;
         margin-bottom: 6px;
 
         .left {
             display: flex;
             line-height: 16px;
             width: 80px;
+            align-items: center;
 
             .league {
                 color: #f85640;
@@ -34,7 +36,7 @@
 
         .mid {
             display: flex;
-            align-items: flex-end;
+            align-items: center;
 
             .corner {
                 color: #8d8d8d;

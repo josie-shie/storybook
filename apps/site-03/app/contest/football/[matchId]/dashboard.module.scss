@@ -1,59 +1,12 @@
-.topBar {
-    padding: 12px 10px 10px;
-    border-bottom: 1px solid #d9d9d9;
-
-    .tabList {
-        min-height: initial;
-
-        :global {
-            .MuiButtonBase-root {
-                max-width: initial;
-                min-width: initial;
-                min-height: initial;
-                padding: 0 0 4px;
-                margin: 0 auto;
-                color: #8d8d8d;
-                font-family: 'PingFang SC', sans-serif;
-                font-size: 12px;
-                font-weight: 400;
-
-                &.Mui-selected {
-                    color: #4489ff;
-                }
-            }
-
-            .MuiTabs-indicator {
-                border-radius: 2px;
-                background-color: #4489ff;
-            }
-        }
-    }
-}
-
-.container {
-    :global {
-        .swiper-slide {
-            min-height: calc(100vh - 288px);
+.dashboard {
+    :global .ui-tab {
+        .swiper {
+            height: auto;
+            min-height: calc(100vh - 320px);
         }
 
-        .swiper-scrollbar {
-            top: 0;
-            background: initial;
-            opacity: 1;
+        .underline__tab {
+            border-bottom: 1px solid #9b9b9b;
         }
-
-        .swiper-scrollbar-drag {
-            background: #4489ff;
-            height: 1px;
-            opacity: 1;
-        }
-    }
-
-    .padding {
-        padding: 8px;
-    }
-
-    .message {
-        height: calc(100vh - 238px);
     }
 }

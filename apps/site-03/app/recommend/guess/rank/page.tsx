@@ -1,9 +1,9 @@
-import style from './page.module.scss';
+import Rank from './rank';
 
 function Page() {
     return (
-        <div className={style.rank}>
-            <div>週榜、月榜、季榜、連紅榜，使用 query 分這 4 個</div>
+        <div className="recommendRank">
+            <Rank />
         </div>
     );
 }

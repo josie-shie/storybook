@@ -1,7 +1,11 @@
-import Recommend from './recommend';
+import Guess from './guess/page';
 
 function Page() {
-    return <Recommend />;
+    return (
+        <div className="recommend">
+            <Guess />
+        </div>
+    );
 }
 
 export default Page;

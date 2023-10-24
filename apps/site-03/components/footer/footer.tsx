@@ -1,3 +1,4 @@
+'use client';
 import { Footer } from 'ui';
 import HomeIcon from './img/homeIcon.svg';
 import GameIcon from './img/game.svg';
@@ -19,7 +20,7 @@ const CategoryList = [
     },
     {
         label: '推薦',
-        value: '/recommend/guess/contest',
+        value: '/recommend/guess',
         icon: <RecommendIcon />
     },
     {

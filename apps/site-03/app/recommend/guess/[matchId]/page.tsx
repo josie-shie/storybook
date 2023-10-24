@@ -1,5 +1,12 @@
-function GuessDetail() {
-    return <div>Detail page</div>;
+import type { Metadata } from 'next';
+import GuessDetail from './guessDetail';
+
+export const metadata: Metadata = {
+    title: '推薦'
+};
+
+function Page({ params }: { params: { matchId: number } }) {
+    return <GuessDetail params={params} />;
 }
 
-export default GuessDetail;
+export default Page;

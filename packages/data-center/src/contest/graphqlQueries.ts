@@ -1,5 +1,5 @@
 export const GET_CONTEST_LIST_QUERY = `
-    query getTodayMatch($input) {
+    query getTodayMatch($input: MatchInput!) {
         getTodayMatch(input: $input) {
             match {
                 matchId
