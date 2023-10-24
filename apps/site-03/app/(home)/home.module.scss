@@ -8,7 +8,7 @@
     font-weight: 500;
 
     .slideImage {
-        object-fit: contain;
+        background-size: contain;
         width: 100%;
         height: 100%;
         background-repeat: no-repeat;
@@ -31,11 +31,21 @@
             display: flex;
             align-items: center;
             bottom: 0;
+        }
+    }
+}
 
-            :global(.swiper-pagination-bullet) {
-                width: 6px;
-                height: 6px;
-            }
+:global(.swiper) {
+    :global(.swiper-pagination) {
+        :global(.swiper-pagination-bullet) {
+            width: 6px;
+            height: 6px;
+            background-color: #d9d9d9;
+            opacity: 1;
+        }
+
+        :global(.swiper-pagination-bullet-active) {
+            background-color: #4489ff;
         }
     }
 }
