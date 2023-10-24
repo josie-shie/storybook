@@ -36,14 +36,20 @@ body * {
 }
 
 .MuiSwitch-root {
+    width: 48px;
+
     .MuiTouchRipple-root {
         transform: translate(4px, 4px);
     }
-}
 
-.MuiSwitch-thumb {
-    width: 12px;
-    height: 12px;
-    transform: translate(4px, 4px);
-    box-shadow: none;
+    .MuiSwitch-thumb {
+        width: 12px;
+        height: 12px;
+        transform: translate(4px, 4px);
+        box-shadow: none;
+    }
+
+    .Mui-checked {
+        transform: translateX(10px);
+    }
 }
