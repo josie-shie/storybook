@@ -1,0 +1,10 @@
+@import 'variables';
+
+.topLine {
+    width: 32px;
+    height: 4px;
+    border-radius: 100px;
+    background-color: $text-secondary;
+    margin: auto;
+    margin-top: 12px;
+}
