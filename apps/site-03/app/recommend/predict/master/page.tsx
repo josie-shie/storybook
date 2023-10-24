@@ -1,5 +1,11 @@
+import Master from './master';
+
 function Page() {
-    return <>專家</>;
+    return (
+        <div className="predictMaster">
+            <Master />
+        </div>
+    );
 }
 
 export default Page;
