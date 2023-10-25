@@ -1,7 +1,7 @@
 import { Tab, Tabs } from 'ui';
+import type { StaticImageData } from 'next/image';
+import Image from 'next/image';
 import { useHomeStore } from '../../homeStore';
-import NorthBangKokClubIcon from './img/northBangkokClubIcon.svg';
-import ThaiUniversityClubIcon from './img/thaiUniversityClubIcon.svg';
 import PlayButton from './img/playButton.svg';
 import Plan from './img/plan.svg';
 import Professional from './img/professional.svg';
@@ -18,6 +18,8 @@ interface Match {
     onlineTotal: number;
     homeScore: number;
     awayScore: number;
+    homeIcon: string | StaticImageData;
+    awayIcon: string | StaticImageData;
 }
 
 interface MatchProps {
@@ -76,7 +78,13 @@ function LeagueCard({ match }: MatchProps) {
                 </div>
                 <div className={style.clubInfo}>
                     <div className={style.team}>
-                        <NorthBangKokClubIcon className={style.image} />
+                        <Image
+                            alt=""
+                            className={style.image}
+                            height={40}
+                            src={match.homeIcon}
+                            width={40}
+                        />
                         <div className={style.teamName}>{match.homeChs}</div>
                     </div>
                     <div className={style.score}>
@@ -91,7 +99,13 @@ function LeagueCard({ match }: MatchProps) {
                         )}
                     </div>
                     <div className={style.team}>
-                        <ThaiUniversityClubIcon className={style.image} />
+                        <Image
+                            alt=""
+                            className={style.image}
+                            height={40}
+                            src={match.awayIcon}
+                            width={40}
+                        />
                         <div className={style.teamName}>{match.awayChs}</div>
                     </div>
                 </div>

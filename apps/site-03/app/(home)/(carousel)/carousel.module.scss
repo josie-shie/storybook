@@ -10,19 +10,22 @@
     }
 
     .slideImage {
-        object-fit: contain;
         width: 100%;
         height: 100%;
         background-repeat: no-repeat;
         position: relative;
+        background-size: cover;
+        height: 222px;
+        border-radius: 8px;
 
         .contestInfo {
             width: 100%;
+            height: 64px;
             display: flex;
             flex-direction: row;
             justify-content: space-between;
             position: absolute;
-            bottom: 16px;
+            bottom: 0;
             align-items: center;
             border-radius: 0 0 8px 8px;
             background: linear-gradient(180deg, rgba(0, 0, 0, 0) -6.1%, #000 100%);
