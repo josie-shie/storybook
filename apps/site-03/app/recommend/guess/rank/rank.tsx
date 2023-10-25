@@ -1,5 +1,9 @@
+'use client';
+import { IconSearch } from '@tabler/icons-react';
 import PeriodListItem from '../components/period/periodListItem';
 import Soccer from '../components/period/img/soccerblue.svg';
+import UserSwitch from '../components/userSwitch/userSwitch';
+import Rule from '../components/rule/rule';
 import style from './rank.module.scss';
 import Avatar from '@/components/avatar/avatar';
 
@@ -15,6 +19,16 @@ function Rank() {
 
     return (
         <div className={style.rank}>
+            <div className={style.control}>
+                <UserSwitch />
+                <div className={style.right}>
+                    <div className={style.search}>
+                        <IconSearch size={16} />
+                        <span>搜尋</span>
+                    </div>
+                    <Rule />
+                </div>
+            </div>
             <div className={style.userRank}>
                 <div className={style.ranking}>
                     你排名<span>24</span>

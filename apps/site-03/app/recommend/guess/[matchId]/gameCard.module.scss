@@ -40,8 +40,25 @@
     }
 
     .paid {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
         width: 70px;
-        height: 53px;
+        height: 72px;
+
+        .hit {
+            position: relative;
+            display: flex;
+            align-items: flex-end;
+            justify-content: flex-end;
+            flex-direction: column;
+            height: 100%;
+
+            svg {
+                position: absolute;
+                top: -14px;
+            }
+        }
 
         .play {
             color: #8d8d8d;

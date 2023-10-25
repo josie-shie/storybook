@@ -13,12 +13,14 @@ interface MasterPlanProps {
 }
 
 function MasterPlan({ isUnlocked, setIsUnlocked }: MasterPlanProps) {
+    const [selectedGameId, setSelectedGameId] = useState<string | null>(null);
+    const [unlockedGames, setUnlockedGames] = useState<Set<string>>(new Set());
     const [openPaid, setOpenPaid] = useState(false);
     const [balance, setBalance] = useState<number>(0);
     const [amount, setAmount] = useState<number>(0);
     const [plan, setPlan] = useState(false);
 
-    const handleClickOpen = (newBalance: number, newAmount: number, getPlan: string) => {
+    const handleGlobalClickOpen = (newBalance: number, newAmount: number, getPlan: string) => {
         if (getPlan === 'single') {
             setPlan(true);
         } else if (getPlan === 'monthly') {
@@ -29,12 +31,38 @@ function MasterPlan({ isUnlocked, setIsUnlocked }: MasterPlanProps) {
         setOpenPaid(true);
     };
 
+    const handleLocalClickOpen = (
+        gameId: string,
+        newBalance: number,
+        newAmount: number,
+        getPlan: string
+    ) => {
+        if (getPlan === 'single') {
+            setPlan(true);
+        } else if (getPlan === 'monthly') {
+            setPlan(false);
+        }
+        setSelectedGameId(gameId);
+        setBalance(newBalance);
+        setAmount(newAmount);
+        setOpenPaid(true);
+    };
+
+    const handleGameUnlock = (gameId: string) => {
+        setUnlockedGames(prevState => new Set(prevState).add(gameId));
+    };
+
     const handleClickClose = () => {
         setOpenPaid(false);
     };
 
     const handleConfirm = () => {
-        setIsUnlocked(true);
+        if (selectedGameId) {
+            handleGameUnlock(selectedGameId);
+            setSelectedGameId(null);
+        } else {
+            setIsUnlocked(true);
+        }
         setOpenPaid(false);
     };
 
@@ -53,7 +81,7 @@ function MasterPlan({ isUnlocked, setIsUnlocked }: MasterPlanProps) {
                         <div className={style.mask}>
                             <button
                                 onClick={() => {
-                                    handleClickOpen(100, 10, 'single');
+                                    handleGlobalClickOpen(100, 10, 'single');
                                 }}
                                 type="button"
                             >
@@ -61,7 +89,7 @@ function MasterPlan({ isUnlocked, setIsUnlocked }: MasterPlanProps) {
                             </button>
                             <button
                                 onClick={() => {
-                                    handleClickOpen(100, 200, 'monthly');
+                                    handleGlobalClickOpen(100, 200, 'monthly');
                                 }}
                                 type="button"
                             >
@@ -98,25 +126,41 @@ function MasterPlan({ isUnlocked, setIsUnlocked }: MasterPlanProps) {
                     <GameCard
                         globalUnlock={isUnlocked}
                         league="欧锦U20A vs 斯洛文尼亚U20"
+                        localIsUnlocked={unlockedGames.has('1')}
                         name="老梁聊球"
+                        onOpenPaidDialog={() => {
+                            handleLocalClickOpen('1', 100, 200, 'single');
+                        }}
                         text="9连红"
                     />
                     <GameCard
                         globalUnlock={isUnlocked}
                         league="欧锦U20A vs 斯洛文尼亚U20"
+                        localIsUnlocked={unlockedGames.has('2')}
                         name="老梁聊球"
+                        onOpenPaidDialog={() => {
+                            handleLocalClickOpen('2', 100, 200, 'single');
+                        }}
                         text="月榜10"
                     />
                     <GameCard
                         globalUnlock={isUnlocked}
                         league="欧锦U20A vs 斯洛文尼亚U20"
+                        localIsUnlocked={unlockedGames.has('3')}
                         name="老梁聊球"
+                        onOpenPaidDialog={() => {
+                            handleLocalClickOpen('3', 100, 200, 'single');
+                        }}
                         text="月榜10"
                     />
                     <GameCard
                         globalUnlock={isUnlocked}
                         league="欧锦U20A vs 斯洛文尼亚U20"
+                        localIsUnlocked={unlockedGames.has('4')}
                         name="老梁聊球"
+                        onOpenPaidDialog={() => {
+                            handleLocalClickOpen('4', 100, 200, 'single');
+                        }}
                         text="月榜10"
                     />
                 </div>

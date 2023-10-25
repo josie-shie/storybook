@@ -85,7 +85,7 @@ function Tabs({ labels, paths, styling = 'underline' }: TabsProps) {
                     {labels.map((label, index) => (
                         <Link
                             className={`item ${style[styling]} ${style.item} ${
-                                activeIndex === index ? style.active : ''
+                                activeIndex === index ? `active ${style.active}` : ''
                             }`}
                             href={paths[index]}
                             key={label}
