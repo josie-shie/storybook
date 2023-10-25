@@ -1,5 +1,7 @@
+import Link from 'next/link';
+
 function Page() {
-    return <>賽事篩選</>;
+    return <Link href="/recommend/predict/masterList">123123</Link>;
 }
 
 export default Page;

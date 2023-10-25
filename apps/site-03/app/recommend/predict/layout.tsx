@@ -1,9 +1,18 @@
 'use client';
 import type { ReactNode } from 'react';
+import { usePathname } from 'next/navigation';
 import style from './predict.module.scss';
 import { Tabs } from '@/components/tabs/tabs';
 
 function PredictLayout({ children }: { children: ReactNode }) {
+    const pathname = usePathname();
+    const isMasterListRoute = pathname.includes('masterList');
+    const isPredictMatchIdRoute = /\/recommend\/predict\/\d+/.test(pathname);
+
+    if (isMasterListRoute || isPredictMatchIdRoute) {
+        return <>{children}</>;
+    }
+
     return (
         <div className={style.predict}>
             <Tabs

@@ -77,13 +77,7 @@ function GameCard({
                 ) : (
                     <>
                         <div className={style.play}>一球/球半</div>
-                        <div
-                            className={style.noPaid}
-                            // onClick={() => {
-                            //     setLocalIsUnlocked(true);
-                            // }}
-                            onClick={onOpenPaidDialog}
-                        >
+                        <div className={style.noPaid} onClick={onOpenPaidDialog}>
                             <Star className={style.image} />
                             <span className={style.text}>20元</span>
                         </div>

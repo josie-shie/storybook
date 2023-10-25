@@ -1,0 +1,282 @@
+.articleContent {
+    height: calc(100vh - 137px);
+    margin-top: -30px;
+    border-radius: 16px 16px 0 0;
+    overflow: auto;
+    background: #f8f8f8;
+
+    .container {
+        padding: 12px;
+        background: #fff;
+
+        .time {
+            display: block;
+            padding: 8px 0;
+            color: #979797;
+            font-size: 12px;
+            font-weight: 400;
+            text-align: left;
+        }
+
+        .title {
+            position: relative;
+            display: block;
+            padding-left: 10px;
+            padding-bottom: 39px;
+            font-size: 18px;
+            font-weight: 600;
+            color: #222;
+            text-align: left;
+
+            &::before {
+                content: '';
+                position: absolute;
+                top: 4px;
+                left: 0;
+                width: 4px;
+                height: 16px;
+                background: #4489ff;
+                border-radius: 1px;
+            }
+        }
+
+        .article {
+            padding: 0 12px;
+
+            .start {
+                position: relative;
+                display: block;
+                text-align: center;
+                margin-bottom: 14px;
+                font-size: 14px;
+                font-weight: 600;
+                color: #9b9b9b;
+
+                &::before {
+                    content: '';
+                    position: absolute;
+                    top: 50%;
+                    left: 0;
+                    width: 38%;
+                    height: 1px;
+                    transform: translateY(-50%);
+                    background: #d9d9d9;
+                }
+
+                &::after {
+                    content: '';
+                    position: absolute;
+                    top: 50%;
+                    right: 0;
+                    width: 38%;
+                    height: 1px;
+                    transform: translateY(-50%);
+                    background: #d9d9d9;
+                }
+            }
+
+            .leagueName {
+                display: table;
+                margin: auto;
+                color: #4a4a4a;
+                font-size: 12px;
+                font-weight: 500;
+            }
+
+            .clubInfo {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 0 8px;
+
+                .team {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    width: 100px;
+                    height: 100px;
+                    text-align: center;
+                    gap: 8px;
+
+                    .name {
+                        color: #4a4a4a;
+                        font-size: 14px;
+                        font-weight: 500;
+                    }
+                }
+
+                .fight {
+                    color: #757575;
+                    font-family: 'Vazirmatn', sans-serif;
+                    font-size: 28px;
+                    font-weight: 600;
+                    letter-spacing: 2.8px;
+                }
+            }
+
+            .paidArea {
+                .content {
+                    margin: 24px 0 32px 0;
+                    color: #4a4a4a;
+                    font-size: 14px;
+                    font-weight: 400;
+                }
+
+                .team {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 12px;
+
+                    .table {
+                        position: relative;
+                        display: flex;
+                        flex-direction: column;
+                        flex: 1;
+                        border: 1px solid #f3f3f3;
+                        border-radius: 8px;
+
+                        .header {
+                            padding: 6px 0;
+                            font-size: 12px;
+                            font-weight: 500;
+                            text-align: center;
+                            color: #222;
+                            background: #f3f3f3;
+                            border-radius: 8px 8px 0 0;
+                        }
+
+                        .score {
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            gap: 20px;
+                            padding: 10px 0;
+                            font-size: 12px;
+                            font-weight: 500;
+                            text-align: center;
+                            color: #8d8d8d;
+                        }
+
+                        &.active {
+                            .header {
+                                color: #fff;
+                                background: #4489ff;
+                            }
+
+                            .score {
+                                color: #4a4a4a;
+                            }
+
+                            img {
+                                position: absolute;
+                                top: -21px;
+                                right: 9px;
+                                z-index: 10;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .otherList {
+        margin-top: 8px;
+        background: #fff;
+        padding: 16px 12px;
+
+        .title {
+            color: #222;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .item {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            padding: 16px 10px 12px;
+            border: 1px solid #dadada;
+            border-radius: 8px;
+            margin-bottom: 8px;
+
+            .left {
+                display: flex;
+                flex-direction: column;
+                gap: 6px;
+
+                .time {
+                    color: #979797;
+                    margin-bottom: 4px;
+                    font-size: 12px;
+                    font-weight: 400;
+                }
+
+                .leagueName {
+                    .name {
+                        color: #276ce1;
+                        font-size: 12px;
+                        font-weight: 500;
+                    }
+                    .time {
+                        margin-left: 4px;
+                        color: #9b9b9b;
+                        font-size: 12px;
+                        font-weight: 500;
+                    }
+                }
+
+                .teamName {
+                    .play {
+                        padding: 2px 6px;
+                        color: #4489ff;
+                        font-size: 12px;
+                        font-weight: 500;
+                        border: 1px solid #4489ff;
+                        border-radius: 4px;
+                    }
+
+                    .name {
+                        margin-left: 6px;
+                        color: #757575;
+                        font-size: 14px;
+                        font-weight: 600;
+                    }
+                }
+            }
+
+            .right {
+                display: flex;
+                flex-direction: column;
+                gap: 2px;
+
+                .noPaid {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-evenly;
+                    padding: 4px;
+                    border: 1px solid #4489ff;
+                    border-radius: 30px;
+
+                    .image {
+                        padding-top: 2px;
+                    }
+
+                    .text {
+                        color: #4489ff;
+                        font-size: 14px;
+                        font-weight: 500;
+                    }
+                }
+
+                .unlockMember {
+                    color: #4489ff;
+                    font-size: 12px;
+                    font-weight: 500;
+                }
+            }
+        }
+    }
+}
