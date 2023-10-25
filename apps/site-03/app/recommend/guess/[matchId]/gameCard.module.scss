@@ -1,0 +1,102 @@
+.gameCard {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 24px;
+    padding: 10px 0;
+
+    .detail {
+        display: flex;
+        gap: 12px;
+
+        .details {
+            display: block;
+
+            > span {
+                color: #222;
+                margin-right: 4px;
+                font-size: 14px;
+                font-weight: 500;
+            }
+
+            .league {
+                color: #4a4a4a;
+                margin-top: 4px;
+                font-size: 14px;
+                font-weight: 400;
+            }
+
+            .ballList {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                margin-top: 8px;
+
+                li {
+                    line-height: 0;
+                }
+            }
+        }
+    }
+
+    .paid {
+        width: 70px;
+        height: 53px;
+
+        .play {
+            color: #8d8d8d;
+            font-size: 14px;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .paidContent {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 4px;
+
+            .play {
+                color: #f85640;
+                width: 35px;
+                height: 20px;
+                line-height: 20px;
+                font-size: 14px;
+                font-weight: 500;
+                text-align: center;
+            }
+
+            .result {
+                color: #fff;
+                width: 35px;
+                height: 20px;
+                line-height: 20px;
+                background: #f85640;
+                font-size: 14px;
+                font-weight: 500;
+                border-radius: 4px;
+                text-align: center;
+            }
+        }
+
+        .noPaid {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin-top: 3px;
+            padding: 4px 8px 4px 4px;
+            border: 1px solid #4489ff;
+            border-radius: 30px;
+
+            .image {
+                padding-top: 2px;
+            }
+
+            .text {
+                color: #4489ff;
+                font-size: 14px;
+                font-weight: 500;
+            }
+        }
+    }
+}

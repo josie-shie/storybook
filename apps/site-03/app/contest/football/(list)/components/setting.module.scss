@@ -1,20 +1,5 @@
-@import 'variables';
-
 .setting {
     padding: 12px;
-}
-
-:global(.MuiPaper-elevation) {
-    border-top-left-radius: 16px;
-    border-top-right-radius: 16px;
-}
-
-.topLine {
-    width: 32px;
-    height: 4px;
-    border-radius: 100px;
-    background-color: $text-secondary;
-    margin: auto;
 }
 
 h2 {
@@ -24,7 +9,7 @@ h2 {
 }
 
 .item {
-    margin: 16px auto;
+    margin-top: 8px;
     font-size: 14px;
     color: #4a4a4a;
 }

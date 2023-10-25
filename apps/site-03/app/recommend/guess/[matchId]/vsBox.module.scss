@@ -123,6 +123,80 @@
                     background: rgba(255 255 255 / 15%);
                 }
             }
+
+            .unLock {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                flex: 1;
+
+                .button {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    width: 64px;
+                    height: 54px;
+                    padding: 0;
+                    border: none;
+
+                    .user {
+                        font-size: 12px;
+                        font-weight: 400;
+                    }
+                }
+
+                .progress {
+                    .play {
+                        display: flex;
+                        justify-content: space-between;
+                        width: 100%;
+
+                        .home {
+                            color: #fff;
+                            font-size: 12px;
+                            font-weight: 600;
+                        }
+
+                        .ing {
+                            color: #fff;
+                            font-size: 12px;
+                            font-weight: 500;
+                        }
+
+                        .away {
+                            color: rgba(255 255 255 / 50%);
+                            font-size: 12px;
+                            font-weight: 600;
+                        }
+                    }
+
+                    :global(.ui-progressBar) {
+                        width: 100%;
+                    }
+                }
+            }
+
+            &:first-child {
+                .unLock {
+                    .button {
+                        &:first-child {
+                            background: #fff;
+                            color: #000;
+                        }
+                    }
+                }
+            }
+            &:last-child {
+                .unLock {
+                    .button {
+                        &:last-child {
+                            background: #fff;
+                            color: #000;
+                        }
+                    }
+                }
+            }
         }
     }
 }

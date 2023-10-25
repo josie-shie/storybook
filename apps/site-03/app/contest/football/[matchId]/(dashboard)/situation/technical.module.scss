@@ -1,0 +1,19 @@
+.technical {
+    :global {
+        .dataTable {
+            .tableBody {
+                .tr {
+                    .td {
+                        &:nth-child(2) {
+                            flex: 0.8;
+                        }
+
+                        &.win {
+                            color: #f85640;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

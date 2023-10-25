@@ -7,11 +7,13 @@ import FilterIcon from './img/filter.png';
 import SettingIcon from './img/setting.png';
 import Logo from './img/logo.png';
 import Setting from './components/setting';
+import Filter from './components/filter';
 import HeaderFilter from '@/components/header/headerFilter';
 import Footer from '@/components/footer/footer';
 
 function ContestListLayout({ children }: { children: ReactNode }) {
     const [showSetting, setShowSetting] = useState(false);
+    const [showFilter, setShowFilter] = useState(false);
     const tabStyle = {
         gap: 8,
         swiperOpen: true,
@@ -43,7 +45,15 @@ function ContestListLayout({ children }: { children: ReactNode }) {
         <div className="contestListLayout">
             <HeaderFilter logo={<Image alt="logo" height={16} src={Logo} />}>
                 <div className={style.tool}>
-                    <Image alt="filter" className={style.mr} sizes="32" src={FilterIcon} />
+                    <Image
+                        alt="filter"
+                        className={style.mr}
+                        onClick={() => {
+                            setShowFilter(true);
+                        }}
+                        sizes="32"
+                        src={FilterIcon}
+                    />
                     <Image
                         alt="setting"
                         onClick={() => {
@@ -78,6 +88,15 @@ function ContestListLayout({ children }: { children: ReactNode }) {
                 }}
                 onOpen={() => {
                     setShowSetting(true);
+                }}
+            />
+            <Filter
+                isOpen={showFilter}
+                onClose={() => {
+                    setShowFilter(false);
+                }}
+                onOpen={() => {
+                    setShowFilter(true);
                 }}
             />
             <Footer />

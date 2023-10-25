@@ -49,7 +49,7 @@ function ProgressBar(props: PropType) {
 
     return (
         <div
-            className={style.progressBar}
+            className={`ui-progressBar ${style.progressBar}`}
             style={{
                 height: `${barHeight}px`,
                 borderRadius: `${radius ? '100px' : '0'}`

@@ -8,12 +8,12 @@ export const metadata: Metadata = {
 };
 
 function ContestDetail({ params }: { params: { matchId: number } }) {
+    console.warn(params.matchId);
     return (
         <>
             <LiveBox />
             <GuessBar />
             <Dashboard />
-            <p>matchId:{params.matchId}</p>
         </>
     );
 }

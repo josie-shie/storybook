@@ -2,11 +2,11 @@ import type { Metadata } from 'next';
 import GuessDetail from './guessDetail';
 
 export const metadata: Metadata = {
-    title: '推薦'
+    title: '推薦詳情'
 };
 
-function Page({ params }: { params: { matchId: number } }) {
-    return <GuessDetail params={params} />;
+function Page() {
+    return <GuessDetail />;
 }
 
 export default Page;
