@@ -1,5 +1,11 @@
+import Filter from './filter';
+
 function Page() {
-    return <>賽事篩選</>;
+    return (
+        <div className="gamePredict">
+            <Filter />
+        </div>
+    );
 }
 
 export default Page;
