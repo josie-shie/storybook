@@ -1,0 +1,651 @@
+export const GET_ANALYSIS_QUERY = `
+    query getAnalysis($input: AnalysisInput!) {
+        getSingleMatch(input: $input) {
+            homeEn
+            homeChs
+            homeCht
+            awayEn
+            awayChs
+            awayCht
+            homeId
+            awayId
+        }
+        getAnalysis(input: $input) {
+            statistics {
+                headToHead {
+                    matchId
+                    leagueId
+                    leagueEn
+                    leagueChs
+                    leagueCht
+                    matchTime
+                    matchLocation
+                    homeId
+                    homeEn
+                    homeChs
+                    homeCht
+                    awayId
+                    awayEn
+                    awayChs
+                    awayCht
+                    homeScore
+                    awayScore
+                    homeHalfScore
+                    awayHalfScore
+                    homeRed
+                    awayRed
+                    homeCorner
+                    awayCorner
+                    asiaOdds {
+                        homeInitialOdds
+                        initialHandicap
+                        awayInitialOdds
+                        homeCurrentOdds
+                        currentHandicap
+                        awayCurrentOdds
+                    }
+                    europeOdds {
+                        initialHomeOdds
+                        initialDrawOdds
+                        initialAwayOdds
+                        currentHomeOdds
+                        currentDrawOdds
+                        currentAwayOdds
+                    }
+                    overUnderOdds {
+                        initialHandicap
+                        initialOverOdds
+                        initialUnderOdds
+                        currentHandicap
+                        currentOverOdds
+                        currentUnderOdds
+                    }
+                    winLose
+                    leagueCup
+                } 
+                homeLastMatches {
+                    matchId
+                    leagueId
+                    leagueEn
+                    leagueChs
+                    leagueCht
+                    matchTime
+                    matchLocation
+                    homeId
+                    homeEn
+                    homeChs
+                    homeCht
+                    awayId
+                    awayEn
+                    awayChs
+                    awayCht
+                    homeScore
+                    awayScore
+                    homeHalfScore
+                    awayHalfScore
+                    homeRed
+                    awayRed
+                    homeCorner
+                    awayCorner
+                    asiaOdds {
+                        homeInitialOdds
+                        initialHandicap
+                        awayInitialOdds
+                        homeCurrentOdds
+                        currentHandicap
+                        awayCurrentOdds
+                    }
+                    europeOdds {
+                        initialHomeOdds
+                        initialDrawOdds
+                        initialAwayOdds
+                        currentHomeOdds
+                        currentDrawOdds
+                        currentAwayOdds
+                    }
+                    overUnderOdds {
+                        initialHandicap
+                        initialOverOdds
+                        initialUnderOdds
+                        currentHandicap
+                        currentOverOdds
+                        currentUnderOdds
+                    }
+                    winLose
+                    leagueCup
+                } 
+                awayLastMatches {
+                    matchId
+                    leagueId
+                    leagueEn
+                    leagueChs
+                    leagueCht
+                    matchTime
+                    matchLocation
+                    homeId
+                    homeEn
+                    homeChs
+                    homeCht
+                    awayId
+                    awayEn
+                    awayChs
+                    awayCht
+                    homeScore
+                    awayScore
+                    homeHalfScore
+                    awayHalfScore
+                    homeRed
+                    awayRed
+                    homeCorner
+                    awayCorner
+                    asiaOdds {
+                        homeInitialOdds
+                        initialHandicap
+                        awayInitialOdds
+                        homeCurrentOdds
+                        currentHandicap
+                        awayCurrentOdds
+                    }
+                    europeOdds {
+                        initialHomeOdds
+                        initialDrawOdds
+                        initialAwayOdds
+                        currentHomeOdds
+                        currentDrawOdds
+                        currentAwayOdds
+                    }
+                    overUnderOdds {
+                        initialHandicap
+                        initialOverOdds
+                        initialUnderOdds
+                        currentHandicap
+                        currentOverOdds
+                        currentUnderOdds
+                    }
+                    winLose
+                    leagueCup
+                } 
+                homeOdds {
+                    totalFullTime {
+                        name
+                        played
+                        handicapWin
+                        handicapDraw
+                        handicapLose
+                        HandicapWinRate
+                        overUnderOver
+                        overUnderOverRate
+                        overUnderUnder
+                        overUnderUnderRate
+                    }
+                    homeFullTime {
+                        name
+                        played
+                        handicapWin
+                        handicapDraw
+                        handicapLose
+                        HandicapWinRate
+                        overUnderOver
+                        overUnderOverRate
+                        overUnderUnder
+                        overUnderUnderRate
+                    }
+                    awayFullTime {
+                        name
+                        played
+                        handicapWin
+                        handicapDraw
+                        handicapLose
+                        HandicapWinRate
+                        overUnderOver
+                        overUnderOverRate
+                        overUnderUnder
+                        overUnderUnderRate
+                    }
+                    lastSixResultFullTime {
+                        name
+                        played
+                        handicapResult
+                        handicapWinRate
+                        overUnderResult
+                    }
+                    totalHalfTime {
+                        name
+                        played
+                        handicapWin
+                        handicapDraw
+                        handicapLose
+                        HandicapWinRate
+                        overUnderOver
+                        overUnderOverRate
+                        overUnderUnder
+                        overUnderUnderRate
+                    }
+                    homeHalfTime {
+                        name
+                        played
+                        handicapWin
+                        handicapDraw
+                        handicapLose
+                        HandicapWinRate
+                        overUnderOver
+                        overUnderOverRate
+                        overUnderUnder
+                        overUnderUnderRate
+                    }
+                    awayHalfTime {
+                        name
+                        played
+                        handicapWin
+                        handicapDraw
+                        handicapLose
+                        HandicapWinRate
+                        overUnderOver
+                        overUnderOverRate
+                        overUnderUnder
+                        overUnderUnderRate
+                    }
+                    lastSixResultHalfTime {
+                        name
+                        played
+                        handicapResult
+                        handicapWinRate
+                        overUnderResult
+                    }
+                } 
+                awayOdds {
+                    totalFullTime {
+                        name
+                        played
+                        handicapWin
+                        handicapDraw
+                        handicapLose
+                        HandicapWinRate
+                        overUnderOver
+                        overUnderOverRate
+                        overUnderUnder
+                        overUnderUnderRate
+                    }
+                    homeFullTime {
+                        name
+                        played
+                        handicapWin
+                        handicapDraw
+                        handicapLose
+                        HandicapWinRate
+                        overUnderOver
+                        overUnderOverRate
+                        overUnderUnder
+                        overUnderUnderRate
+                    }
+                    awayFullTime {
+                        name
+                        played
+                        handicapWin
+                        handicapDraw
+                        handicapLose
+                        HandicapWinRate
+                        overUnderOver
+                        overUnderOverRate
+                        overUnderUnder
+                        overUnderUnderRate
+                    }
+                    lastSixResultFullTime {
+                        name
+                        played
+                        handicapResult
+                        handicapWinRate
+                        overUnderResult
+                    }
+                    totalHalfTime {
+                        name
+                        played
+                        handicapWin
+                        handicapDraw
+                        handicapLose
+                        HandicapWinRate
+                        overUnderOver
+                        overUnderOverRate
+                        overUnderUnder
+                        overUnderUnderRate
+                    }
+                    homeHalfTime {
+                        name
+                        played
+                        handicapWin
+                        handicapDraw
+                        handicapLose
+                        HandicapWinRate
+                        overUnderOver
+                        overUnderOverRate
+                        overUnderUnder
+                        overUnderUnderRate
+                    }
+                    awayHalfTime {
+                        name
+                        played
+                        handicapWin
+                        handicapDraw
+                        handicapLose
+                        HandicapWinRate
+                        overUnderOver
+                        overUnderOverRate
+                        overUnderUnder
+                        overUnderUnderRate
+                    }
+                    lastSixResultHalfTime {
+                        name
+                        played
+                        handicapResult
+                        handicapWinRate
+                        overUnderResult
+                    }
+                } 
+                homeHT {
+                    total {
+                        victoryVictory
+                        victoryDraw
+                        victoryDefeat
+                        drawVictory
+                        drawDraw
+                        drawDefeat
+                        defeatVictory
+                        defeatDraw
+                        defeatDefeat
+                    }
+                    home {
+                        victoryVictory
+                        victoryDraw
+                        victoryDefeat
+                        drawVictory
+                        drawDraw
+                        drawDefeat
+                        defeatVictory
+                        defeatDraw
+                        defeatDefeat
+                    }
+                    away {
+                        victoryVictory
+                        victoryDraw
+                        victoryDefeat
+                        drawVictory
+                        drawDraw
+                        drawDefeat
+                        defeatVictory
+                        defeatDraw
+                        defeatDefeat
+                    }
+                } 
+                awayHT {
+                    total {
+                        victoryVictory
+                        victoryDraw
+                        victoryDefeat
+                        drawVictory
+                        drawDraw
+                        drawDefeat
+                        defeatVictory
+                        defeatDraw
+                        defeatDefeat
+                    }
+                    home {
+                        victoryVictory
+                        victoryDraw
+                        victoryDefeat
+                        drawVictory
+                        drawDraw
+                        drawDefeat
+                        defeatVictory
+                        defeatDraw
+                        defeatDefeat
+                    }
+                    away {
+                        victoryVictory
+                        victoryDraw
+                        victoryDefeat
+                        drawVictory
+                        drawDraw
+                        drawDefeat
+                        defeatVictory
+                        defeatDraw
+                        defeatDefeat
+                    }
+                } 
+            }
+        }
+    }
+`;
+
+export const GET_MATCHES_ODDS_DETAIL_QUERY = `
+    query getMatchesOddsDetail($input1: !MatchesOddsDetailInput, $input2: !MatchesOddsDetailInput) {
+        crownResponse: getMatchesOddsDetail(input: $input1) {
+            match {
+                matchId
+                matchTime
+                startTime
+                leagueId
+                leagueEn
+                leagueChs
+                leagueCht
+                homeEn
+                homeChs
+                homeCht
+                awayEn
+                awayChs
+                awayCht
+                homeId
+                awayId
+                homeRank
+                awayRank
+                isNeutral
+                state
+                homeScore
+                awayScore
+                homeRed
+                awayRed
+            }
+            handicap {
+                matchId
+                companyId
+                initialHandicap
+                homeInitialOdds
+                awayInitialOdds
+                currentHandicap
+                homeCurrentOdds
+                awayCurrentOdds
+                isMaintained
+                isInProgress
+                oddsChangeTime
+                isClosed
+                oddsType
+            }
+            overUnder {
+                matchId
+                companyId
+                initialHandicap
+                initialOverOdds
+                initialUnderOdds
+                currentHandicap
+                currentOverOdds
+                currentUnderOdds
+                oddsChangeTime
+                isClosed
+                oddsType
+            }
+            handicapHalf {
+                matchId
+                companyId
+                initialHandicap
+                homeInitialOdds
+                awayInitialOdds
+                currentHandicap
+                homeCurrentOdds
+                awayCurrentOdds
+                oddsChangeTime
+                oddsType
+            }
+            overUnderHalf {
+                matchId
+                companyId
+                initialHandicap
+                initialOverOdds
+                initialUnderOdds
+                currentHandicap
+                currentOverOdds
+                currentUnderOdds
+                oddsChangeTime
+                oddsType
+            }
+        }
+        bet365Response: getMatchesOddsDetail(input: $input2) {
+            match {
+                matchId
+                matchTime
+                startTime
+                leagueId
+                leagueEn
+                leagueChs
+                leagueCht
+                homeEn
+                homeChs
+                homeCht
+                awayEn
+                awayChs
+                awayCht
+                homeId
+                awayId
+                homeRank
+                awayRank
+                isNeutral
+                state
+                homeScore
+                awayScore
+                homeRed
+                awayRed
+            }
+            handicap {
+                matchId
+                companyId
+                initialHandicap
+                homeInitialOdds
+                awayInitialOdds
+                currentHandicap
+                homeCurrentOdds
+                awayCurrentOdds
+                isMaintained
+                isInProgress
+                oddsChangeTime
+                isClosed
+                oddsType
+            }
+            overUnder {
+                matchId
+                companyId
+                initialHandicap
+                initialOverOdds
+                initialUnderOdds
+                currentHandicap
+                currentOverOdds
+                currentUnderOdds
+                oddsChangeTime
+                isClosed
+                oddsType
+            }
+            handicapHalf {
+                matchId
+                companyId
+                initialHandicap
+                homeInitialOdds
+                awayInitialOdds
+                currentHandicap
+                homeCurrentOdds
+                awayCurrentOdds
+                oddsChangeTime
+                oddsType
+            }
+            overUnderHalf {
+                matchId
+                companyId
+                initialHandicap
+                initialOverOdds
+                initialUnderOdds
+                currentHandicap
+                currentOverOdds
+                currentUnderOdds
+                oddsChangeTime
+                oddsType
+            }
+        }
+    }
+`;
+
+export const GET_BEFORE_GAME_INDEX_ANALYZE_QUERY = `
+    query getCompanyOddsDetail($input: CompanyOddsDetailRequest!) {
+        getCompanyOddsDetail(input: $input) {
+            companyOdds {
+                companyId
+                companyName
+                fullHandicap {
+                    matchId
+                    companyId
+                    initialHandicap
+                    homeInitialOdds
+                    awayInitialOdds
+                    currentHandicap
+                    homeCurrentOdds
+                    awayCurrentOdds
+                    oddsChangeTime
+                    oddsType
+                    state
+                    homeScore
+                    awayScore
+                    isClosed
+                }
+                fullTotalGoal {
+                    matchId
+                    companyId
+                    initialTotalGoals
+                    overInitialOdds
+                    underInitialOdds
+                    currentTotalGoals
+                    overCurrentOdds
+                    underCurrentOdds
+                    oddsChangeTime
+                    oddsType
+                    state
+                    homeScore
+                    awayScore
+                    isClosed
+                }
+                fullWinDrawLose {
+                    matchId
+                    companyId
+                    initialHomeOdds
+                    initialDrawOdds
+                    initialAwayOdds
+                    currentHomeOdds
+                    currentDrawOdds
+                    currentAwayOdds
+                    oddsChangeTime
+                    isClosed
+                    oddsType
+                }
+            }
+        }
+    }
+`;
+
+export const GET_SINGLE_MATCH_QUERY = `
+    query getSingleMatch($singleMatchInput: SingleMatchInput!) {
+        getSingleMatch(input: $singleMatchInput) {
+            homeEn
+            homeChs
+            homeCht
+            awayEn
+            awayChs
+            awayCht
+            homeId
+            awayId
+        }
+    }
+`;
