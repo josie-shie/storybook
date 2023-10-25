@@ -12,4 +12,34 @@ h2 {
     margin-top: 8px;
     font-size: 14px;
     color: #4a4a4a;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 500;
+    line-height: 38px;
+    height: 38px;
+
+    .selector {
+        display: flex;
+        align-items: center;
+        color: #4a4a4a;
+    }
+}
+
+h3 {
+    font-size: 12px;
+    font-weight: 500;
+    text-align: center;
+    color: #9b9b9b;
+    padding: 16px 0;
+}
+
+.soundSelector {
+    text-align: center;
+    padding: 16px 0;
+    border-bottom: 1px #dedede solid;
+}
+
+.cancel {
+    color: #f85640;
 }
