@@ -1,5 +1,8 @@
-function MessageBoard() {
-    return <>MessageBoard</>;
+import Image from 'next/image';
+import DemoImage from './img/demo.jpg';
+
+function Page() {
+    return <Image alt="" src={DemoImage} style={{ width: '100%', height: 'auto' }} />;
 }
 
-export default MessageBoard;
+export default Page;

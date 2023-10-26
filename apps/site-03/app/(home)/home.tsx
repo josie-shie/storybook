@@ -10,6 +10,8 @@ import AwayTeamIcon from './img/awayTeam.png';
 import liveImg from './img/live.png';
 import { creatHomeStore } from './homeStore';
 import LeagueCardList from './components/leagueCardList/leagueCardList';
+import northBangKokClubIcon from './img/northBangkokClubIcon.png';
+import thaiUniversityClubIcon from './img/thaiUniversityClubIcon.png';
 
 function Home() {
     creatHomeStore({
@@ -57,7 +59,9 @@ function Home() {
                     matchTime: 57,
                     state: 0, // 進行中
                     homeChs: '北曼谷學院',
+                    homeIcon: northBangKokClubIcon.src,
                     awayChs: '泰国国立法政大学',
+                    awayIcon: thaiUniversityClubIcon.src,
                     onlineTotal: 1199,
                     homeScore: 1,
                     awayScore: 1
@@ -69,7 +73,9 @@ function Home() {
                     startTime: '2023-8-23 11:30',
                     state: 1, // 未開始
                     homeChs: '北曼谷學院',
+                    homeIcon: northBangKokClubIcon.src,
                     awayChs: '泰国国立法政大学',
+                    awayIcon: thaiUniversityClubIcon.src,
                     onlineTotal: 1199,
                     homeScore: 1,
                     awayScore: 1
@@ -81,7 +87,9 @@ function Home() {
                     startTime: '2023-8-23 11:30',
                     state: 1, // 未開始
                     homeChs: '北曼谷學院',
+                    homeIcon: northBangKokClubIcon.src,
                     awayChs: '泰国国立法政大学',
+                    awayIcon: thaiUniversityClubIcon.src,
                     onlineTotal: 1199,
                     homeScore: 1,
                     awayScore: 1
@@ -95,7 +103,9 @@ function Home() {
                     startTime: '2023-8-23 11:30',
                     state: 1, // 未開始
                     homeChs: '北曼谷學院',
+                    homeIcon: northBangKokClubIcon.src,
                     awayChs: '泰国国立法政大学',
+                    awayIcon: thaiUniversityClubIcon.src,
                     onlineTotal: 1199,
                     homeScore: 1,
                     awayScore: 1
@@ -109,7 +119,9 @@ function Home() {
                     startTime: '2023-8-23 11:30',
                     state: 1, // 未開始
                     homeChs: '北曼谷學院',
+                    homeIcon: northBangKokClubIcon.src,
                     awayChs: '泰国国立法政大学',
+                    awayIcon: thaiUniversityClubIcon.src,
                     onlineTotal: 1199,
                     homeScore: 1,
                     awayScore: 1
@@ -123,7 +135,9 @@ function Home() {
                     startTime: '2023-8-23 11:30',
                     state: 1, // 未開始
                     homeChs: '北曼谷學院',
+                    homeIcon: northBangKokClubIcon.src,
                     awayChs: '泰国国立法政大学',
+                    awayIcon: thaiUniversityClubIcon.src,
                     onlineTotal: 1199,
                     homeScore: 1,
                     awayScore: 1
@@ -137,7 +151,9 @@ function Home() {
                     startTime: '2023-8-23 11:30',
                     state: 1, // 未開始
                     homeChs: '北曼谷學院',
+                    homeIcon: northBangKokClubIcon.src,
                     awayChs: '泰国国立法政大学',
+                    awayIcon: thaiUniversityClubIcon.src,
                     onlineTotal: 1199,
                     homeScore: 1,
                     awayScore: 1

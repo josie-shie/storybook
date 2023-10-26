@@ -67,7 +67,7 @@ export interface HandicapsInfo {
     currentHandicap: number;
     homeCurrentOdds: number;
     awayCurrentOdds: number;
-    oddsChangeTime: string;
+    oddsChangeTime: number;
     oddsType: number;
     state: number;
     homeScore: number;
@@ -94,7 +94,7 @@ export interface TotalGoalsInfo {
     currentTotalGoals: number;
     overCurrentOdds: number;
     underCurrentOdds: number;
-    oddsChangeTime: string;
+    oddsChangeTime: number;
     oddsType: number;
     state: number;
     homeScore: number;
@@ -234,7 +234,7 @@ export interface WinDrawLoseType {
     currentHomeOdds: number;
     currentDrawOdds: number;
     currentAwayOdds: number;
-    oddsChangeTime: string;
+    oddsChangeTime: number;
     isClosed: boolean;
     oddsType: number;
     state: number;
@@ -306,7 +306,7 @@ export interface WinLoseInfo {
     currentHomeOdds: number;
     currentDrawOdds: number;
     currentAwayOdds: number;
-    oddsChangeTime: string;
+    oddsChangeTime: number;
     isClosed: boolean;
     oddsType: number;
     state: number;

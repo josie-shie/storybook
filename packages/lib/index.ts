@@ -3,5 +3,6 @@ export { soundList, soundMap, soundSource, soundDefault } from './src/sound/soun
 export type { Sound } from './src/sound/sound';
 export { uploadImage } from './src/uploadImage';
 export { initStore } from './src/store';
-export { truncateFloatingPoint, handicapToString } from './src/formatNumber';
+export { truncateFloatingPoint } from './src/formatNumber';
+export { handicapToString, convertHandicap } from './src/formatHandicap';
 export type { StoreWithSelectors } from './src/store';
