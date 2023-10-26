@@ -27,4 +27,4 @@ function OptionItem<T>({ value, isSelected, onClick, children }: OptionItemProps
     );
 }
 
-export { OptionItem };
+export default OptionItem;
