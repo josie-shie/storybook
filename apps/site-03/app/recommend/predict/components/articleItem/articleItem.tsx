@@ -1,4 +1,5 @@
 import { IconFlame } from '@tabler/icons-react';
+import Link from 'next/link';
 import style from './articleItem.module.scss';
 import Avatar from '@/components/avatar/avatar';
 import Tag from '@/components/tag/tag';
@@ -49,15 +50,17 @@ function ArticleItem({ item }: { item: PropsType }) {
                 </div>
             </div>
             <div className={style.title}>{item.title}</div>
-            <div className={style.game}>
-                <div className={style.detail}>
-                    {item.cupName}
-                    <span className={style.time}> | {item.cupTime}</span>
+            <Link href="/recommend/predict/1">
+                <div className={style.game}>
+                    <div className={style.detail}>
+                        {item.cupName}
+                        <span className={style.time}> | {item.cupTime}</span>
+                    </div>
+                    <div className={style.combination}>
+                        {item.homeTeam} vs {item.awayTeam}
+                    </div>
                 </div>
-                <div className={style.combination}>
-                    {item.homeTeam} vs {item.awayTeam}
-                </div>
-            </div>
+            </Link>
             <div className={style.postTime}>发表于 {item.postTime}</div>
         </div>
     );

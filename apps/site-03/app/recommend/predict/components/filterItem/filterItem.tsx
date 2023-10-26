@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import style from './filterItem.module.scss';
 
 interface PropsType {
@@ -21,9 +22,11 @@ function FilterItem({ item }: { item: PropsType }) {
                 <span className={style.compete}>VS</span>
                 <span className={style.away}>{item.awayTeam}</span>
             </div>
-            <button className={style.article} type="button">
-                {item.articleNumber}篇专家文章
-            </button>
+            <Link href="masterList">
+                <button className={style.article} type="button">
+                    {item.articleNumber}篇专家文章
+                </button>
+            </Link>
         </div>
     );
 }

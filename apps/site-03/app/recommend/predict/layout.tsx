@@ -7,9 +7,10 @@ import { Tabs } from '@/components/tabs/tabs';
 function PredictLayout({ children }: { children: ReactNode }) {
     const pathname = usePathname();
     const isMasterListRoute = pathname.includes('masterList');
+    const isMasterAvatarRoute = pathname.includes('masterAvatar');
     const isPredictMatchIdRoute = /\/recommend\/predict\/\d+/.test(pathname);
 
-    if (isMasterListRoute || isPredictMatchIdRoute) {
+    if (isMasterListRoute || isPredictMatchIdRoute || isMasterAvatarRoute) {
         return <>{children}</>;
     }
 

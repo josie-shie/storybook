@@ -12,12 +12,13 @@ function RecommendLayout({ children }: { children: ReactNode }) {
     const isGuessMatchIdRoute = /\/recommend\/guess\/\d+/.test(pathname);
     const isPredictMatchIdRoute = /\/recommend\/predict\/\d+/.test(pathname);
     const isMasterList = pathname.includes('masterList');
+    const isMasterAvatar = pathname.includes('masterAvatar');
     const headerProps = {
         logo: <Logo />,
         total: 999999
     };
 
-    if (isGuessMatchIdRoute || isPredictMatchIdRoute || isMasterList) {
+    if (isGuessMatchIdRoute || isPredictMatchIdRoute || isMasterList || isMasterAvatar) {
         return <>{children}</>;
     }
 

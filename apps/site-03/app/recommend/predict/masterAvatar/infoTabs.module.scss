@@ -1,0 +1,44 @@
+.infoTabs {
+    height: calc(100vh - 242px);
+    margin-top: -30px;
+    padding: 12px 0 0;
+    border-radius: 16px 16px 0 0;
+    overflow: auto;
+    background: #f8f8f8;
+
+    :global(.ui-tab) {
+        padding: 0 12px;
+
+        :global(.ui-tab-header) {
+            :global(.ui-tabs-header) {
+                padding: 8px 0 0;
+                border-bottom: 1px solid #d9d9d9;
+
+                :global(.ui-button) {
+                    color: #8d8d8d;
+                    font-weight: 500;
+                }
+
+                :global(.ui-active) {
+                    color: #4489ff;
+                }
+            }
+
+            :global(.ui-tab-header-liner) {
+                bottom: -1px;
+            }
+        }
+
+        :global(.swiper) {
+            :global(.swiper-wrapper) {
+                :global(.swiper-slide) {
+                    padding: 0;
+                }
+            }
+        }
+    }
+
+    .tabContest {
+        margin-top: 16px;
+    }
+}
