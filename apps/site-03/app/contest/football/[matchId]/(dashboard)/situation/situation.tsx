@@ -1,5 +1,6 @@
 'use client';
-
+import Handicap from './handicap';
+import TotalGoals from './totalGoals';
 import Event from './event';
 import Technical from './technical';
 import Lineup from './lineup';
@@ -8,6 +9,8 @@ import type { DetailStatusData } from '@/types/detailStatus';
 function Situation({ situationData }: { situationData: DetailStatusData }) {
     return (
         <>
+            <Handicap handicapData={situationData.handicapsData} />
+            <TotalGoals totalGoalsData={situationData.totalGoalsData} />
             <Event eventInfo={situationData.eventInfo} eventList={situationData.eventList} />
             <Technical technicalList={situationData.technical} />
             {situationData.lineupInfo.matchId !== 0 && (
