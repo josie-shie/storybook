@@ -1,48 +1,16 @@
 'use client';
+import { useState } from 'react';
 import Image from 'next/image';
 import NorthBangKokClubIcon from './img/northBangkokClubIcon.png';
 import ThaiUniversityClubIcon from './img/thaiUniversityClubIcon.png';
-import Push from './img/push.png';
+import RecommendationItem from './recommendationItem';
 import Star from './img/star.svg';
+import Push from './img/push.png';
 import style from './articleContent.module.scss';
 
-interface LeagueNameProps {
-    name: string;
-    time: string;
-}
-
-interface RecommendationProps {
-    time: string;
-    leagueName: LeagueNameProps;
-    teamName: string;
-}
-
-function RecommendationItem({ time, leagueName, teamName }: RecommendationProps) {
-    return (
-        <section className={style.item}>
-            <div className={style.left}>
-                <div className={style.time}>{time}</div>
-                <div className={style.leagueName}>
-                    <span className={style.name}>{leagueName.name}</span>
-                    <span className={style.time}>| {leagueName.time}</span>
-                </div>
-                <div className={style.teamName}>
-                    <span className={style.play}>让球</span>
-                    <span className={style.name}>{teamName}</span>
-                </div>
-            </div>
-            <div className={style.right}>
-                <div className={style.noPaid}>
-                    <Star className={style.image} />
-                    <span className={style.text}>20元</span>
-                </div>
-                <div className={style.unlockMember}>已有5人解鎖</div>
-            </div>
-        </section>
-    );
-}
-
 function ArticleContent() {
+    const [isUnlocked, setIsUnlocked] = useState(false);
+
     const recommendations = [
         {
             id: 1,
@@ -83,28 +51,54 @@ function ArticleContent() {
                             <div className={style.name}>北曼谷學院</div>
                         </div>
                     </div>
-                    <div className={style.paidArea}>
-                        <article className={style.content}>
-                            两支球队实力相当，往绩近12次交锋中都处于五五开的局面，目前伊斯洛奇明斯克已经连续3场不胜，竞技状态不佳！戈梅利上一场也是惨遭大败，士气上受到打击！本场数据开出主场作战的伊斯洛奇明斯克做出-0.25力度支持，大小进球2.5的数据。以目前两队的状况来看，小编认为伊斯洛奇明斯克以微弱的主场优势小胜戈梅利。据开出主场作战的伊斯洛奇明斯克做出-0.25力度支持，大小进球2.5的数据。以目前两队的状况来看，小编认为伊斯洛奇明斯克以微弱的主
-                        </article>
-                        <div className={style.team}>
-                            <div className={`${style.table} ${style.active}`}>
-                                <Image alt="" height={24} src={Push} width={26} />
-                                <div className={style.header}>泰国国立法政大学</div>
-                                <div className={style.score}>
-                                    <span>-0.5</span>
-                                    <span>1.925</span>
+
+                    {!isUnlocked && (
+                        <div className={style.paidButton}>
+                            <div className={style.content}>
+                                【推荐分析】赛事前瞻：乌兰巴托FC主队近5场3胜1平1负，台中未来客队近5场2胜2平1负，谁能更胜一筹。
+                            </div>
+                            <div className={style.buttonArea}>
+                                <div className={style.backDrop} />
+                                <div className={style.text}>
+                                    两支球队实力相当，往绩近12次交锋中都处于...
                                 </div>
                             </div>
-                            <div className={style.table}>
-                                <div className={style.header}>北曼谷学院</div>
-                                <div className={style.score}>
-                                    <span>+0.5</span>
-                                    <span>1.775</span>
+                            <div
+                                className={style.button}
+                                onClick={() => {
+                                    setIsUnlocked(true);
+                                }}
+                            >
+                                <Star className={style.image} />
+                                <span className={style.text}>10 金币解锁本场预测</span>
+                            </div>
+                        </div>
+                    )}
+
+                    {isUnlocked ? (
+                        <div className={style.paidArea}>
+                            <article className={style.content}>
+                                两支球队实力相当，往绩近12次交锋中都处于五五开的局面，目前伊斯洛奇明斯克已经连续3场不胜，竞技状态不佳！戈梅利上一场也是惨遭大败，士气上受到打击！本场数据开出主场作战的伊斯洛奇明斯克做出-0.25力度支持，大小进球2.5的数据。以目前两队的状况来看，小编认为伊斯洛奇明斯克以微弱的主场优势小胜戈梅利。据开出主场作战的伊斯洛奇明斯克做出-0.25力度支持，大小进球2.5的数据。以目前两队的状况来看，小编认为伊斯洛奇明斯克以微弱的主
+                            </article>
+                            <div className={style.team}>
+                                <div className={`${style.table} ${style.active}`}>
+                                    <Image alt="" height={24} src={Push} width={26} />
+                                    <div className={style.header}>泰国国立法政大学</div>
+                                    <div className={style.score}>
+                                        <span>-0.5</span>
+                                        <span>1.925</span>
+                                    </div>
+                                </div>
+                                <div className={style.table}>
+                                    <div className={style.header}>北曼谷学院</div>
+                                    <div className={style.score}>
+                                        <span>+0.5</span>
+                                        <span>1.775</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    ) : null}
                 </div>
             </div>
 
