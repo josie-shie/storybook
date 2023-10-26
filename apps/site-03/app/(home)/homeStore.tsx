@@ -1,5 +1,6 @@
 import { initStore } from 'lib';
 import type { StoreWithSelectors } from 'lib';
+import type { StaticImageData } from 'next/image';
 
 interface Slide {
     id: number;
@@ -24,6 +25,8 @@ interface Contest {
     onlineTotal: number;
     homeScore: number;
     awayScore: number;
+    homeIcon: string | StaticImageData;
+    awayIcon: string | StaticImageData;
 }
 
 type ContestList = Record<string, Contest[]>;
