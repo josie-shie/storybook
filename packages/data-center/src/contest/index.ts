@@ -1,6 +1,7 @@
 import { fetcher } from 'lib';
 import { z } from 'zod';
 import { handleApiError } from '../common';
+import type { ReturnData } from '../common';
 import { GET_CONTEST_LIST_QUERY } from './graphqlQueries';
 
 const ContestInfoSchema = z.object({
@@ -17,13 +18,15 @@ const ContestInfoSchema = z.object({
     homeRed: z.number(),
     homeScore: z.number(),
     homeYellow: z.number(),
-    explain: z.string(),
+    // explain: z.string(),
+    explainEn: z.string(),
+    explainCn: z.string(),
     extraExplain: z.string(),
     hasLineup: z.string(),
     injuryTime: z.string(),
     matchId: z.number(),
-    matchTime: z.string(),
-    startTime: z.string(),
+    matchTime: z.number(),
+    startTime: z.number(),
     state: z.number(),
     color: z.string(),
     countryCn: z.string()
@@ -50,11 +53,11 @@ export interface GetContestListResponse {
 
 /**
  * 取得當日賽事
- * - param (dateTime: string) ex: 2023/8/2 12:00:00
+ * - param (dateTime: number) ex: 1692038043
  * - returns : {@link GetContestListResponse}
  * - {@link ContestListType} {@link ContestInfoType}
  */
-export const getContestList = async (dateTime: string) => {
+export const getContestList = async (dateTime: number): ReturnData<GetContestListResponse> => {
     try {
         const { data }: { data: GetContestListResult } = await fetcher(
             {
