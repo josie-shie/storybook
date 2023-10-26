@@ -2,8 +2,8 @@ import type { Meta, StoryObj } from '@storybook/react';
 import type { ComponentProps } from 'react';
 import { useState } from 'react';
 import { IconChevronDown } from '@tabler/icons-react';
-import { SelectDrawer } from './selectDrawer';
-import { OptionItem } from './optionItem';
+import SelectDrawer from './selectDrawer';
+import OptionItem from './optionItem';
 import style from './demo.module.scss';
 
 const meta: Meta<typeof SelectDrawer> = {
@@ -18,9 +18,7 @@ export default meta;
 type Story = StoryObj<typeof SelectDrawer>;
 
 export const Normal: Story = {
-    args: {
-        // value: 5
-    },
+    args: {},
     render: args => <DemoComponent {...args} />
 };
 

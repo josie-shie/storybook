@@ -1,4 +1,4 @@
-import type { ReactElement, SyntheticEvent } from 'react';
+import type { ReactElement } from 'react';
 import { cloneElement, useState } from 'react';
 import Link from 'next/link';
 import style from './footer.module.scss';
@@ -30,6 +30,10 @@ export interface FooterProps {
      * Is show footer
      */
     isShow?: boolean;
+    /**
+     * Current actived Router
+     */
+    activeRouter?: string;
 }
 
 function Footer({
@@ -37,17 +41,23 @@ function Footer({
     defaultColor = '#AAAAAA',
     activeColor = '#FFF',
     menuList = [],
-    isShow = true
+    isShow = true,
+    activeRouter = menuList[0].value
 }: FooterProps) {
-    const [activedItem, setActivedItem] = useState(menuList[0].value);
+    const [activedItem, setActivedItem] = useState(activeRouter);
+    const [isFirstActived, setIsFirstActived] = useState(true);
 
-    const changeActivedItem = (e: SyntheticEvent, value: string) => {
+    const changeActivedItem = (value: string) => {
+        if (isFirstActived) {
+            setIsFirstActived(false);
+        }
+
         setActivedItem(value);
     };
 
     const gettIcon = (icon: ReactElement, value: string) => {
         return cloneElement(icon, {
-            style: { color: activedItem === value ? activeColor : defaultColor }
+            fill: activedItem === value ? activeColor : defaultColor
         });
     };
 
@@ -62,12 +72,14 @@ function Footer({
                                     return (
                                         <Link
                                             className={`${style.listItem} ${
-                                                activedItem === menu.value ? style.actived : ''
+                                                activedItem === menu.value && !isFirstActived
+                                                    ? style.actived
+                                                    : ''
                                             }`}
                                             href={menu.value}
                                             key={menu.value}
-                                            onClick={event => {
-                                                changeActivedItem(event, menu.value);
+                                            onClick={() => {
+                                                changeActivedItem(menu.value);
                                             }}
                                             style={{ backgroundColor: bgColor }}
                                         >

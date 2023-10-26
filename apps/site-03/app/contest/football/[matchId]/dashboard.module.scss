@@ -2,6 +2,9 @@
     :global .ui-tab {
         .swiper {
             height: auto;
+        }
+
+        .swiper-slide {
             min-height: calc(100vh - 320px);
         }
 

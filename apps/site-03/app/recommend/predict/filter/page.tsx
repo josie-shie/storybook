@@ -1,7 +1,11 @@
-import Link from 'next/link';
+import Filter from './filter';
 
 function Page() {
-    return <Link href="/recommend/predict/masterList">123123</Link>;
+    return (
+        <div className="gamePredict">
+            <Filter />
+        </div>
+    );
 }
 
 export default Page;
