@@ -8,8 +8,23 @@
             min-height: calc(100vh - 320px);
         }
 
-        .underline__tab {
-            border-bottom: 1px solid #9b9b9b;
+        .ui-tab-header {
+            .ui-tabs-header {
+                padding: 8px 12px 0;
+
+                .ui-button {
+                    padding: 6px 10px;
+                    font-size: 14px;
+                    font-weight: 500;
+                    line-height: normal;
+                    border-bottom: 1px solid #d9d9d9;
+                }
+            }
+        }
+
+        .ui-tab-header-liner {
+            bottom: -1px;
+            border-radius: 10px;
         }
     }
 }

@@ -5,5 +5,8 @@ export const baseTheme = createTheme({
         primary: {
             main: '#4489ff'
         }
+    },
+    typography: {
+        fontFamily: 'PingFang SC, sans-serif'
     }
 });

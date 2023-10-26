@@ -1,7 +1,6 @@
 .header {
-    padding: 12px;
-    padding-left: 16px;
-    height: 56px;
+    padding: 12px 12px 26px 16px;
+    height: 62px;
     width: 100%;
     display: flex;
     justify-content: space-between;
@@ -10,7 +9,7 @@
 
     &.headerFixed {
         position: fixed;
-        top: -56px;
+        top: -62px;
         left: 0;
         background-color: #fff;
         transition: top 0.3s;
