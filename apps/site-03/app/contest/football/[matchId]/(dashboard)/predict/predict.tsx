@@ -1,7 +1,7 @@
 import PredictList from './predictList';
 
-function PredictCard() {
+function Predict() {
     return <PredictList />;
 }
 
-export default PredictCard;
+export default Predict;
