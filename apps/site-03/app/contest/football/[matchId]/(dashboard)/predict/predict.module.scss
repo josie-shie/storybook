@@ -1,0 +1,133 @@
+.predictCard {
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid #f3f3f3;
+    background: #fff;
+
+    .mentor {
+        display: flex;
+        justify-content: space-between;
+        padding-bottom: 2px;
+
+        .mentorInfo {
+            display: flex;
+            gap: 10px;
+
+            .mentorAvator {
+                object-fit: cover;
+                border-radius: 20px;
+                border: 3px solid #4489ff;
+            }
+
+            .title {
+                display: flex;
+                flex-direction: column;
+
+                .mentorName {
+                    color: #222;
+                    font-size: 14px;
+                    font-weight: 500;
+                    max-width: 227px;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                    height: 30px;
+                    display: flex;
+                    align-items: center;
+                }
+
+                .tag {
+                    display: flex;
+                    color: #fff;
+                    font-size: 11px;
+                    transform: scale(0.9167);
+                    margin-left: -5px;
+                    font-weight: 500;
+                    gap: 4px;
+
+                    .hot {
+                        border-radius: 4px;
+                        background: linear-gradient(90deg, #ff844f 6%, #ff5a36 95.12%);
+                        padding: 2px 6px;
+                        display: flex;
+                        align-items: center;
+
+                        span {
+                            padding-right: 2px;
+                            display: flex;
+                            align-items: center;
+                        }
+                    }
+
+                    .rank {
+                        border-radius: 4px;
+                        background: #4489ff;
+                        padding: 2px 6px;
+
+                        span {
+                            padding-right: 2px;
+                        }
+                    }
+                }
+            }
+        }
+
+        .price {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+
+            .priceButton {
+                width: 70px;
+                border-radius: 30px;
+                border: 1px solid #4489ff;
+                background: #fff;
+                display: flex;
+                height: 28px;
+                padding: 0 12px 0 8px;
+                gap: 4px;
+                align-items: center;
+
+                span {
+                    display: flex;
+                    width: 100%;
+                    color: #4489ff;
+                    text-align: center;
+                    font-size: 14px;
+                    font-weight: 600;
+                    white-space: nowrap;
+                }
+            }
+
+            .unlockTotal {
+                color: #4489ff;
+                font-size: 12px;
+                font-weight: 500;
+            }
+        }
+    }
+
+    .title {
+        color: #4a4a4a;
+        font-size: 14px;
+        font-weight: 600;
+        padding-bottom: 12px;
+    }
+
+    .publishTime {
+        color: #8d8d8d;
+        font-size: 11px;
+        font-weight: 400;
+        transform: scale(0.9167);
+        margin-left: -16px;
+        padding-bottom: 8px;
+    }
+}
+
+.predictList {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    overflow-y: auto;
+    height: calc(100vh - 320px);
+}

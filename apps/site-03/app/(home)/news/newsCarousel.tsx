@@ -38,7 +38,7 @@ function NewsCarousel() {
 
     return (
         <div className={style.carousel}>
-            <div className={style.title}>热门快訊</div>
+            <div className={style.title}>热门快讯</div>
             <div style={{ height: '180px', width: '100%' }}>
                 <Swiper
                     creativeEffect={{

@@ -18,7 +18,7 @@ function NormalLayout({ children }: { children: ReactNode }) {
         <>
             <HeaderLogo logo={headerProps.logo} total={headerProps.total} />
             <div className={style.home}>
-                <Tabs labels={['熱門', '快訊']} paths={['/', '/news']} />
+                <Tabs labels={['熱門', '快讯']} paths={['/', '/news']} />
                 {children}
             </div>
             <Footer />
@@ -28,7 +28,7 @@ function NormalLayout({ children }: { children: ReactNode }) {
 
 function ArticleLayout({ children }: { children: ReactNode }) {
     const headerProps = {
-        title: '快訊',
+        title: '快讯',
         total: 999999
     };
 
