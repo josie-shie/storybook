@@ -15,3 +15,15 @@
     margin: 0 auto;
     padding: 0;
 }
+
+:global(.MuiDrawer-root) {
+    :global(.MuiDrawer-paper) {
+        background-color: #2d2d2d;
+        border-radius: 24px 24px 0 0;
+    }
+}
+
+.paper {
+    border-radius: 50px;
+    background: '#2D2D2D';
+}

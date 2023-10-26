@@ -6,6 +6,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Situation from './(dashboard)/situation/page';
 import TextBroadcast from './(dashboard)/textBroadcast/page';
 import Predict from './(dashboard)/predict/page';
+import MessageBoard from './(dashboard)/messageBoard/page';
 import style from './dashboard.module.scss';
 
 function Dashboard() {
@@ -44,7 +45,9 @@ function Dashboard() {
                         <Predict />
                     </Suspense>
                 </Tab>
-                <Tab label="聊天">MessageBoard</Tab>
+                <Tab label="聊天">
+                    <MessageBoard />
+                </Tab>
             </Tabs>
         </div>
     );
