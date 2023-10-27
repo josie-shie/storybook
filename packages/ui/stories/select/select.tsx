@@ -58,6 +58,12 @@ function Select({
                 <IconChevronDown />
             </button>
             <SwipeableDrawer
+                PaperProps={{
+                    style: {
+                        borderTopLeftRadius: '16px',
+                        borderTopRightRadius: '16px'
+                    }
+                }}
                 anchor="bottom"
                 onClose={handleClose}
                 onOpen={handleOpen}
