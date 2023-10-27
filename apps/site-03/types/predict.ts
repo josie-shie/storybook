@@ -10,6 +10,6 @@ export interface Predict {
     awayChs: string;
     max_accurate_streak: number; // -1表示不顯示
     price: number;
-    createdAt: number;
+    createdAt: string;
     unlockTotal: number;
 }
