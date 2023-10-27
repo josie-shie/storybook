@@ -15,7 +15,19 @@ interface PropsType<T> {
 
 function SelectDrawer<T>({ isOpen, children, value, onChange, onClose, onOpen }: PropsType<T>) {
     return (
-        <SwipeableDrawer anchor="bottom" onClose={onClose} onOpen={onOpen} open={isOpen}>
+        <SwipeableDrawer
+            PaperProps={{
+                style: {
+                    borderTopLeftRadius: '24px',
+                    borderTopRightRadius: '24px',
+                    background: '#2D2D2D'
+                }
+            }}
+            anchor="bottom"
+            onClose={onClose}
+            onOpen={onOpen}
+            open={isOpen}
+        >
             <div className={style.selectDrawer}>
                 <div className={style.dragBar} />
                 <ul className={style.drawerContainer}>
