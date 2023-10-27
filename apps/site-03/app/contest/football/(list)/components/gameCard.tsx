@@ -1,5 +1,4 @@
 import type { ContestInfo } from 'data-center';
-import { timestampToMonthDay } from 'lib';
 import style from './gameCard.module.scss';
 import Video from './img/video.svg';
 import Flag from './img/flag.svg';
@@ -74,7 +73,7 @@ function TopArea({ contestInfo }: { contestInfo: ContestInfo }) {
                 <div className={style.league} style={{ color: contestInfo.color }}>
                     {contestInfo.leagueChsShort}
                 </div>
-                <div className={style.time}>{timestampToMonthDay(contestInfo.startTime)}</div>
+                <div className={style.time}>{contestInfo.startTime}</div>
             </div>
             <div className={style.mid}>
                 <div className={style.corner}>

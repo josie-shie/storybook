@@ -86,7 +86,7 @@ type GetMatchPostsResult = z.infer<typeof GetMatchPostsResultSchema>;
  */
 export const getMatchPosts = async (
     input: GetMatchPostsRequest
-): ReturnData<GetMatchPostsResponse> => {
+): Promise<ReturnData<GetMatchPostsResponse>> => {
     try {
         const { data }: { data: GetMatchPostsResult } = await fetcher(
             {

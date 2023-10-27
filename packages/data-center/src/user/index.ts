@@ -148,7 +148,7 @@ export const register = async ({
     password,
     parentId = '123', // TODO: 需改為選填，123 沒意義
     verificationCode
-}: RegisterRequest): ReturnData<string> => {
+}: RegisterRequest): Promise<ReturnData<string>> => {
     try {
         const { data }: { data: RegisterResult } = await fetcher({
             data: {
@@ -194,7 +194,7 @@ export const sendVerificationCode = async ({
     mobileNumber,
     verificationType,
     checkExistingAccount
-}: SendVerificationCodeRequest): ReturnData<string> => {
+}: SendVerificationCodeRequest): Promise<ReturnData<string>> => {
     try {
         const { data }: { data: SendVerificationCodeResult } = await fetcher({
             data: {
@@ -234,7 +234,7 @@ export const sendVerificationCode = async ({
 export const sendVerificationCodeInLogged = async ({
     verificationType,
     checkExistingAccount
-}: SendVerificationCodeLoggedInRequest): ReturnData<string> => {
+}: SendVerificationCodeLoggedInRequest): Promise<ReturnData<string>> => {
     try {
         const { data }: { data: SendVerificationCodeLoggedInResult } = await fetcher({
             data: {
@@ -273,7 +273,7 @@ export const login = async ({
     mobileNumber,
     password,
     verificationCode
-}: LoginRequest): ReturnData<string> => {
+}: LoginRequest): Promise<ReturnData<string>> => {
     try {
         const { data }: { data: LoginResult } = await fetcher({
             data: {
@@ -308,7 +308,7 @@ export const login = async ({
  * 獲取會員資料
  * - returns : {@link GetMemberInfoResponse}
  */
-export const getMemberInfo = async (): ReturnData<GetMemberInfoResponse> => {
+export const getMemberInfo = async (): Promise<ReturnData<GetMemberInfoResponse>> => {
     try {
         const { data }: { data: GetMemberInfoResult } = await fetcher({
             data: {
@@ -335,7 +335,7 @@ export const forgetPasswordReset = async ({
     mobileNumber,
     verificationCode,
     newPassword
-}: ForgetPasswordRequest): ReturnData<null> => {
+}: ForgetPasswordRequest): Promise<ReturnData<null>> => {
     try {
         const res: { data: null } = await fetcher({
             data: {
@@ -364,7 +364,7 @@ export const updatePassword = async ({
     verificationCode,
     password,
     newPassword
-}: UpdatePasswordRequest): ReturnData<null> => {
+}: UpdatePasswordRequest): Promise<ReturnData<null>> => {
     try {
         const res: { data: null } = await fetcher({
             data: {
@@ -394,7 +394,7 @@ export const updateMemberInfo = async ({
     birthday,
     wechat,
     qqNumber
-}: UpdateMemberInfoRequest): ReturnData<MemberInfoResponse> => {
+}: UpdateMemberInfoRequest): Promise<ReturnData<MemberInfoResponse>> => {
     try {
         const { data }: { data: UpdateMemberInfoResult } = await fetcher({
             data: {
@@ -420,7 +420,7 @@ export const updateMemberInfo = async ({
  * 取得會員邀請碼
  * - returns string
  */
-export const getInvitationCode = async (): ReturnData<string> => {
+export const getInvitationCode = async (): Promise<ReturnData<string>> => {
     try {
         const { data }: { data: GetInvitationCodeResult } = await fetcher({
             data: {

@@ -680,7 +680,7 @@ const formatRecordData = (
 export const getBeforeGameIndex = async (
     matchId: number,
     companyId: number
-): ReturnData<GetBeforeGameIndexResponse> => {
+): Promise<ReturnData<GetBeforeGameIndexResponse>> => {
     try {
         const { data }: { data: GetBeforeGameIndexResult } = await fetcher(
             {
@@ -758,7 +758,7 @@ export const getBeforeGameIndex = async (
  */
 export const getLeaguePointsRank = async (
     matchId: number
-): ReturnData<GetLeaguePointsRankResponse> => {
+): Promise<ReturnData<GetLeaguePointsRankResponse>> => {
     try {
         const { data }: { data: GetLeaguePointsRankResult } = await fetcher(
             {
@@ -792,7 +792,9 @@ export const getLeaguePointsRank = async (
  * - param (matchId: number)
  * - returns {@link GetAnalysisOthersResponse}
  */
-export const getAnalysisOthers = async (matchId: number): ReturnData<GetAnalysisOthersResponse> => {
+export const getAnalysisOthers = async (
+    matchId: number
+): Promise<ReturnData<GetAnalysisOthersResponse>> => {
     try {
         const { data: analysis }: { data: GetAnalyzeResult } = await fetcher(
             {

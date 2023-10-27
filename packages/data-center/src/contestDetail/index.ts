@@ -419,7 +419,9 @@ export type CompanyLiveDetailResponse = z.infer<typeof CompanyLiveDetailSchema>;
  * - params : (matchId: number)
  * - returns : {@link GetSingleMatchResponse}
  */
-export const getMatchDetail = async (matchId: number): ReturnData<GetSingleMatchResponse> => {
+export const getMatchDetail = async (
+    matchId: number
+): Promise<ReturnData<GetSingleMatchResponse>> => {
     try {
         const { data }: { data: GetSingleMatchResult } = await fetcher(
             {
@@ -457,7 +459,9 @@ export const getMatchDetail = async (matchId: number): ReturnData<GetSingleMatch
  * - params : (matchId: number)
  * - returns : {@link GetDetailStatusResponse}
  */
-export const getDetailStatus = async (matchId: number): ReturnData<GetDetailStatusResponse> => {
+export const getDetailStatus = async (
+    matchId: number
+): Promise<ReturnData<GetDetailStatusResponse>> => {
     try {
         const { data }: { data: GetDetailStatusResult } = await fetcher(
             {
@@ -651,7 +655,7 @@ export const getDetailStatus = async (matchId: number): ReturnData<GetDetailStat
  * - params : number (matchId)
  * - returns : {@link GetLiveTextResponse} {@link GetLiveText}
  */
-export const getLiveText = async (matchId: number): ReturnData<GetLiveTextResponse> => {
+export const getLiveText = async (matchId: number): Promise<ReturnData<GetLiveTextResponse>> => {
     function formatArray(arr: LiveTextInfo[]) {
         return arr.map(item => {
             const timeMatch = /^(?<time>\d{1,3})'/.exec(item.content);
@@ -712,7 +716,7 @@ export const getLiveText = async (matchId: number): ReturnData<GetLiveTextRespon
 export const getCompanyLiveOddsDetail = async (
     matchId: number,
     companyId: number
-): ReturnData<CompanyLiveDetailResponse> => {
+): Promise<ReturnData<CompanyLiveDetailResponse>> => {
     try {
         const { data }: { data: CompanyLiveDetailResult } = await fetcher(
             {

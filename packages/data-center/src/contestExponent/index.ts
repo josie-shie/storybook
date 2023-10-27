@@ -152,7 +152,7 @@ export interface GetExponentResponse {
 export const getExponent = async (
     matchId: number,
     companyId: number
-): ReturnData<GetExponentResponse> => {
+): Promise<ReturnData<GetExponentResponse>> => {
     try {
         const { data }: { data: CompanyDetailResult } = await fetcher(
             {

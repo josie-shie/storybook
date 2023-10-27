@@ -1,4 +1,4 @@
-import { fetcher, timestampToString } from 'lib';
+import { fetcher, timestampToString, timestampToMonthDay } from 'lib';
 import { z } from 'zod';
 import { handleApiError } from '../common';
 import type { ReturnData } from '../common';
@@ -33,7 +33,7 @@ const ContestInfoSchema = z.object({
 
 type OriginalContestInfo = z.infer<typeof ContestInfoSchema>;
 
-type ContestInfo = Omit<OriginalContestInfo, 'matchTime' | 'startTime'> & {
+export type ContestInfo = Omit<OriginalContestInfo, 'matchTime' | 'startTime'> & {
     matchTime: string;
     startTime: string;
 };
@@ -57,7 +57,7 @@ export interface GetContestListResponse {
 
 /**
  * 取得當日賽事
- * - param (dateTime: number) ex: 1692038043 2023/8/2 12:00:00
+ * - param (dateTime: number) ex: 1692038043
  * - returns : {@link GetContestListResponse}
  * - {@link ContestListType} {@link ContestInfoType}
  */
@@ -89,7 +89,7 @@ export const getContestList = async (
             contestInfo[item.matchId] = {
                 ...item,
                 matchTime: timestampToString(item.matchTime, 'M-DD HH:mm'),
-                startTime: timestampToString(item.startTime, 'M-DD HH:mm')
+                startTime: timestampToMonthDay(item.startTime)
             };
         }
         return {
