@@ -5,7 +5,6 @@ import {
     GET_SINGLE_MATCH_QUERY,
     GET_DETAIL_STATUS_QUERY,
     GET_LIVE_TEXT_QUERY,
-    GET_COMPANY_ODDS_DETAIL_QUERY,
     GET_COMPANY_LIVE_ODDS_DETAIL
 } from './graphqlQueries';
 
@@ -64,7 +63,6 @@ const SingleMatchSchema = z.object({
     extraExplain: z.string(),
     isHidden: z.boolean(),
     injuryTime: z.string(),
-    updateTime: z.string(),
     homeLogo: z.string(),
     awayLogo: z.string()
 });
@@ -390,33 +388,6 @@ const GetLiveTextResultSchema = z.object({
 export type GetLiveTextResponse = GetLiveText[];
 type GetLiveTextResult = z.infer<typeof GetLiveTextResultSchema>;
 
-const GetCompanyOddsDetailSchema = z.object({
-    matchId: z.number(),
-    homeTeam: z.string(),
-    awayTeam: z.string(),
-    homeScore: z.number(),
-    awayScore: z.number(),
-    startTime: z.string(),
-    companyOdds: z.object({
-        companyId: z.number(),
-        companyName: z.string(),
-        fullHandicap: z.array(HandicapsInfoSchema),
-        halfHandicap: z.array(HandicapsInfoSchema),
-        fullTotalGoal: z.array(TotalGoalsInfoSchema),
-        halfTotalGoal: z.array(TotalGoalsInfoSchema),
-        fullWinDrawLose: z.array(WinDrawLoseTypeSchema),
-        halfWinDrawLose: z.array(WinDrawLoseTypeSchema)
-    })
-});
-
-const CompanyDetailSchema = z.object({
-    getCompanyOddsDetail: GetCompanyOddsDetailSchema
-});
-
-type CompanyDetailResult = z.infer<typeof CompanyDetailSchema>;
-
-export type GetCompanyOddsDetailResponse = z.infer<typeof CompanyDetailSchema>;
-
 const CompanyLiveDetailSchema = z.object({
     matchId: z.number(),
     companyOdds: z.object({
@@ -711,39 +682,6 @@ export const getLiveText = async (matchId: number) => {
         };
     } catch (error) {
         return handleApiError(error);
-    }
-};
-
-/**
- * 取得賭商詳細賠率記錄
- * - params : (matchId: number, companyId: number)
- * - returns : {@link GetCompanyOddsDetailResponse}
- */
-export const getCompanyOddsDetail = async (matchId: number, companyId: number) => {
-    try {
-        const { data }: { data: CompanyDetailResult } = await fetcher(
-            {
-                data: {
-                    query: GET_COMPANY_ODDS_DETAIL_QUERY,
-                    variables: {
-                        input: {
-                            matchId,
-                            companyId
-                        }
-                    }
-                }
-            },
-            { cache: 'no-store' }
-        );
-
-        CompanyDetailSchema.parse(data);
-
-        return {
-            success: true,
-            data: data.getCompanyOddsDetail
-        };
-    } catch (error) {
-        handleApiError;
     }
 };
 
