@@ -44,7 +44,19 @@ function PaidDialog({
     nextMonth.setMonth(today.getMonth() + 1);
 
     return (
-        <Dialog TransitionComponent={Transition} keepMounted onClose={onClose} open={openPaid}>
+        <Dialog
+            PaperProps={{
+                style: {
+                    backgroundColor: '#fff',
+                    borderRadius: '15px',
+                    boxShadow: 'none'
+                }
+            }}
+            TransitionComponent={Transition}
+            keepMounted
+            onClose={onClose}
+            open={openPaid}
+        >
             <div className={style.paidDialog}>
                 {plan ? (
                     <>
