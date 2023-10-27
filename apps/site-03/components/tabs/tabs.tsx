@@ -15,9 +15,8 @@ function Tabs({ labels, paths, styling = 'underline' }: TabsProps) {
     const pathname = usePathname();
     const searchParams = useSearchParams();
     const getSearchParams = Array.from(searchParams.entries());
-    const defaultActiveIndex = paths.findIndex(path => {
+    let defaultActiveIndex = paths.findIndex(path => {
         const [basePath, pathQueryString] = path.split('?');
-
         if (basePath === pathname) {
             if (getSearchParams.length > 0) {
                 const [queryKey, queryValue] = getSearchParams[0];
@@ -32,9 +31,11 @@ function Tabs({ labels, paths, styling = 'underline' }: TabsProps) {
         return false;
     });
 
-    const [activeIndex, setActiveIndex] = useState(
-        defaultActiveIndex !== -1 ? defaultActiveIndex : 0
-    );
+    if (defaultActiveIndex === -1) {
+        defaultActiveIndex = paths.findIndex(path => pathname.startsWith(path));
+    }
+
+    const [activeIndex, setActiveIndex] = useState(defaultActiveIndex);
     const navRef = useRef<HTMLDivElement>(null);
     const highlighterRef = useRef<HTMLDivElement>(null);
 
@@ -85,7 +86,7 @@ function Tabs({ labels, paths, styling = 'underline' }: TabsProps) {
                     {labels.map((label, index) => (
                         <Link
                             className={`item ${style[styling]} ${style.item} ${
-                                activeIndex === index ? style.active : ''
+                                activeIndex === index ? `active ${style.active}` : ''
                             }`}
                             href={paths[index]}
                             key={label}

@@ -147,9 +147,7 @@ function Tabs({
                                         </span>
                                     ) : null}
 
-                                    <span
-                                        className={`ui-tabs-header-label ${style.tabsHeaderLabel}`}
-                                    >
+                                    <span className="ui-tabs-header-label">
                                         {labeledChild.props.label}
                                     </span>
 
@@ -167,7 +165,9 @@ function Tabs({
                                     {labeledChild.props.to ? (
                                         <Link
                                             className={`ui-button ${style[styling]} ${
-                                                activeIndex === index ? style.active : ''
+                                                activeIndex === index
+                                                    ? `ui-active ${style.active}`
+                                                    : ''
                                             } ${style[`radius${buttonRadius}`]}`}
                                             href={labeledChild.props.to}
                                             onClick={() => {
@@ -182,7 +182,9 @@ function Tabs({
                                     ) : (
                                         <div
                                             className={`ui-button ${style[styling]} ${
-                                                activeIndex === index ? style.active : ''
+                                                activeIndex === index
+                                                    ? `ui-active ${style.active}`
+                                                    : ''
                                             } ${style[`radius${buttonRadius}`]}`}
                                             onClick={() => {
                                                 handleTabClick(index);
