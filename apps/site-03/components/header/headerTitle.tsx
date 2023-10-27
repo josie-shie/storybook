@@ -1,3 +1,4 @@
+import { useRouter } from 'next/navigation';
 import pureBackground from './img/pureBackground.png';
 import style from './header.module.scss';
 import BackLeftArrow from './img/backLeftArrow.svg';
@@ -9,11 +10,17 @@ interface HeaderProps {
 }
 
 function HeaderTitle({ title, total }: HeaderProps) {
+    const router = useRouter();
+
     return (
         <div className={style.placeholder}>
             <div className={style.header} style={{ backgroundImage: `url(${pureBackground.src})` }}>
                 <div className={style.title}>
-                    <BackLeftArrow />
+                    <BackLeftArrow
+                        onClick={() => {
+                            router.back();
+                        }}
+                    />
                     <div className={style.text}>{title}</div>
                 </div>
                 <Profile total={total} />
