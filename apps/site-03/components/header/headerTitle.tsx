@@ -11,15 +11,16 @@ interface HeaderProps {
 
 function HeaderTitle({ title, total }: HeaderProps) {
     const router = useRouter();
-    const back = () => {
-        router.back();
-    };
 
     return (
         <div className={style.placeholder}>
             <div className={style.header} style={{ backgroundImage: `url(${pureBackground.src})` }}>
                 <div className={style.title}>
-                    <BackLeftArrow onClick={back} />
+                    <BackLeftArrow
+                        onClick={() => {
+                            router.back();
+                        }}
+                    />
                     <div className={style.text}>{title}</div>
                 </div>
                 <Profile total={total} />
