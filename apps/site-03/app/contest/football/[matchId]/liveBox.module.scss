@@ -96,6 +96,7 @@
     }
 
     .gameTime {
+        position: relative;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -123,6 +124,28 @@
             100% {
                 opacity: 0;
             }
+        }
+
+        .homeScore {
+            width: 48px;
+            position: absolute;
+            top: 50%;
+            left: -200%;
+            transform: translateY(-50%);
+            text-align: center;
+            font-size: 46px;
+            font-weight: 800;
+        }
+
+        .awayScore {
+            width: 48px;
+            position: absolute;
+            top: 50%;
+            right: -200%;
+            transform: translateY(-50%);
+            text-align: center;
+            font-size: 46px;
+            font-weight: 800;
         }
     }
 
