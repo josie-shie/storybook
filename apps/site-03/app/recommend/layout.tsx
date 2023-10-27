@@ -9,13 +9,23 @@ import { Tabs } from '@/components/tabs/tabs';
 
 function RecommendLayout({ children }: { children: ReactNode }) {
     const pathname = usePathname();
-    const isMatchIdRoute = /\/recommend\/guess\/\d+/.test(pathname);
+    const isGuessMatchIdRoute = /\/recommend\/guess\/\d+/.test(pathname);
+    const isPredictMatchIdRoute = /\/recommend\/predict\/\d+/.test(pathname);
+    const isMasterList = pathname.includes('masterList');
+    const isMasterAvatar = pathname.includes('masterAvatar');
+    const isBigData = pathname.includes('bigData');
     const headerProps = {
         logo: <Logo />,
         total: 999999
     };
 
-    if (isMatchIdRoute) {
+    if (
+        isGuessMatchIdRoute ||
+        isPredictMatchIdRoute ||
+        isMasterList ||
+        isMasterAvatar ||
+        isBigData
+    ) {
         return <>{children}</>;
     }
 
