@@ -37,7 +37,7 @@ function GameStatus() {
                     <p className={style.text}>半場 5-5</p>
                 </div>
             )}
-            <p
+            <div
                 className={`${style.gameTime}  ${
                     (stateStyle[gameStatus.state] as GameStatusType)
                         ? stateStyle[gameStatus.state].style
@@ -51,7 +51,9 @@ function GameStatus() {
                         {gameStatus.time} <span className={style.timePoint}>’</span>
                     </>
                 )}
-            </p>
+                <div className={style.homeScore}>13</div>
+                <div className={style.awayScore}>7</div>
+            </div>
             {gameStatus.state === 'notYet' ? (
                 <p className={style.vsText}>VS</p>
             ) : (
