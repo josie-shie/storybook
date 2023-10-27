@@ -1,4 +1,4 @@
-import { fetcher } from 'lib';
+import { fetcher, timestampToString, truncateFloatingPoint, handicapToString } from 'lib';
 import { z } from 'zod';
 import { handleApiError } from '../common';
 import { GET_COMPANY_ODDS_DETAIL_QUERY } from './graphqlQueries';
@@ -12,7 +12,7 @@ const HandicapsInfoSchema = z.object({
     currentHandicap: z.number(),
     homeCurrentOdds: z.number(),
     awayCurrentOdds: z.number(),
-    oddsChangeTime: z.string(),
+    oddsChangeTime: z.number(),
     oddsType: z.number(),
     state: z.number(),
     homeScore: z.number(),
@@ -20,7 +20,15 @@ const HandicapsInfoSchema = z.object({
     isClosed: z.boolean()
 });
 
-type HandicapsInfo = z.infer<typeof HandicapsInfoSchema>;
+type OriginalHandicapsInfo = z.infer<typeof HandicapsInfoSchema>;
+type HandicapsInfo = Omit<
+    OriginalHandicapsInfo,
+    'oddsChangeTime' | 'initialHandicap' | 'currentHandicap'
+> & {
+    oddsChangeTime: string;
+    initialHandicap: string;
+    currentHandicap: string;
+};
 
 const TotalGoalsInfoSchema = z.object({
     matchId: z.number(),
@@ -31,7 +39,7 @@ const TotalGoalsInfoSchema = z.object({
     currentTotalGoals: z.number(),
     overCurrentOdds: z.number(),
     underCurrentOdds: z.number(),
-    oddsChangeTime: z.string(),
+    oddsChangeTime: z.number(),
     oddsType: z.number(),
     state: z.number(),
     homeScore: z.number(),
@@ -39,9 +47,17 @@ const TotalGoalsInfoSchema = z.object({
     isClosed: z.boolean()
 });
 
-type TotalGoalsInfo = z.infer<typeof TotalGoalsInfoSchema>;
+type OriginalTotalGoalsInfo = z.infer<typeof TotalGoalsInfoSchema>;
+type TotalGoalsInfo = Omit<
+    OriginalTotalGoalsInfo,
+    'oddsChangeTime' | 'initialTotalGoals' | 'currentTotalGoals'
+> & {
+    oddsChangeTime: string;
+    initialTotalGoals: string;
+    currentTotalGoals: string;
+};
 
-const WinDrawLoseTypeSchema = z.object({
+const WinDrawLoseSchema = z.object({
     matchId: z.number(),
     companyId: z.number(),
     initialHomeOdds: z.number(),
@@ -50,7 +66,7 @@ const WinDrawLoseTypeSchema = z.object({
     currentHomeOdds: z.number(),
     currentDrawOdds: z.number(),
     currentAwayOdds: z.number(),
-    oddsChangeTime: z.string(),
+    oddsChangeTime: z.number(),
     oddsType: z.number(),
     state: z.number(),
     homeScore: z.number(),
@@ -58,13 +74,18 @@ const WinDrawLoseTypeSchema = z.object({
     isClosed: z.boolean()
 });
 
+type OriginWinDrawLose = z.infer<typeof WinDrawLoseSchema>;
+type WinLoseInfo = Omit<OriginWinDrawLose, 'oddsChangeTime'> & {
+    oddsChangeTime: string;
+};
+
 const GetCompanyOddsDetailSchema = z.object({
     matchId: z.number(),
     homeTeam: z.string(),
     awayTeam: z.string(),
     homeScore: z.number(),
     awayScore: z.number(),
-    startTime: z.string(),
+    startTime: z.number(),
     companyOdds: z.object({
         companyId: z.number(),
         companyName: z.string(),
@@ -72,8 +93,8 @@ const GetCompanyOddsDetailSchema = z.object({
         halfHandicap: z.array(HandicapsInfoSchema),
         fullTotalGoal: z.array(TotalGoalsInfoSchema),
         halfTotalGoal: z.array(TotalGoalsInfoSchema),
-        fullWinDrawLose: z.array(WinDrawLoseTypeSchema),
-        halfWinDrawLose: z.array(WinDrawLoseTypeSchema)
+        fullWinDrawLose: z.array(WinDrawLoseSchema),
+        halfWinDrawLose: z.array(WinDrawLoseSchema)
     })
 });
 
@@ -82,23 +103,6 @@ const CompanyDetailSchema = z.object({
 });
 
 type CompanyDetailResult = z.infer<typeof CompanyDetailSchema>;
-
-interface WinLoseInfo {
-    matchId: number;
-    companyId: number;
-    initialHomeOdds: number;
-    initialDrawOdds: number;
-    initialAwayOdds: number;
-    currentHomeOdds: number;
-    currentDrawOdds: number;
-    currentAwayOdds: number;
-    oddsChangeTime: string;
-    isClosed: boolean;
-    oddsType: number;
-    state: number;
-    homeScore: number;
-    awayScore: number;
-}
 
 interface CompanyHandicapsDataType {
     half: {
@@ -180,7 +184,16 @@ export const getExponent = async (matchId: number, companyId: number) => {
                     handicapsData.half.list.push(item.companyId);
                 }
 
-                handicapsData.half.info[item.companyId] = item;
+                handicapsData.half.info[item.companyId] = {
+                    ...item,
+                    oddsChangeTime: timestampToString(item.oddsChangeTime),
+                    homeInitialOdds: truncateFloatingPoint(item.homeInitialOdds, 2),
+                    awayInitialOdds: truncateFloatingPoint(item.awayInitialOdds, 2),
+                    homeCurrentOdds: truncateFloatingPoint(item.homeCurrentOdds, 2),
+                    awayCurrentOdds: truncateFloatingPoint(item.awayCurrentOdds, 2),
+                    initialHandicap: handicapToString(item.initialHandicap),
+                    currentHandicap: handicapToString(item.currentHandicap)
+                };
             }
         }
         if (resData.fullHandicap.length > 0) {
@@ -189,7 +202,16 @@ export const getExponent = async (matchId: number, companyId: number) => {
                     handicapsData.full.list.push(item.companyId);
                 }
 
-                handicapsData.full.info[item.companyId] = item;
+                handicapsData.full.info[item.companyId] = {
+                    ...item,
+                    oddsChangeTime: timestampToString(item.oddsChangeTime),
+                    homeInitialOdds: truncateFloatingPoint(item.homeInitialOdds, 2),
+                    awayInitialOdds: truncateFloatingPoint(item.awayInitialOdds, 2),
+                    homeCurrentOdds: truncateFloatingPoint(item.homeCurrentOdds, 2),
+                    awayCurrentOdds: truncateFloatingPoint(item.awayCurrentOdds, 2),
+                    initialHandicap: handicapToString(item.initialHandicap),
+                    currentHandicap: handicapToString(item.currentHandicap)
+                };
             }
         }
 
@@ -210,7 +232,16 @@ export const getExponent = async (matchId: number, companyId: number) => {
                     totalGoalData.half.list.push(item.companyId);
                 }
 
-                totalGoalData.half.info[item.companyId] = item;
+                totalGoalData.half.info[item.companyId] = {
+                    ...item,
+                    oddsChangeTime: timestampToString(item.oddsChangeTime),
+                    overInitialOdds: truncateFloatingPoint(item.overInitialOdds, 2),
+                    underInitialOdds: truncateFloatingPoint(item.underInitialOdds, 2),
+                    overCurrentOdds: truncateFloatingPoint(item.overCurrentOdds, 2),
+                    underCurrentOdds: truncateFloatingPoint(item.underCurrentOdds, 2),
+                    initialTotalGoals: handicapToString(item.initialTotalGoals),
+                    currentTotalGoals: handicapToString(item.currentTotalGoals)
+                };
             }
         }
         if (resData.fullTotalGoal.length > 0) {
@@ -219,7 +250,16 @@ export const getExponent = async (matchId: number, companyId: number) => {
                     totalGoalData.full.list.push(item.companyId);
                 }
 
-                totalGoalData.full.info[item.companyId] = item;
+                totalGoalData.full.info[item.companyId] = {
+                    ...item,
+                    oddsChangeTime: timestampToString(item.oddsChangeTime),
+                    overInitialOdds: truncateFloatingPoint(item.overInitialOdds, 2),
+                    underInitialOdds: truncateFloatingPoint(item.underInitialOdds, 2),
+                    overCurrentOdds: truncateFloatingPoint(item.overCurrentOdds, 2),
+                    underCurrentOdds: truncateFloatingPoint(item.underCurrentOdds, 2),
+                    initialTotalGoals: handicapToString(item.initialTotalGoals),
+                    currentTotalGoals: handicapToString(item.currentTotalGoals)
+                };
             }
         }
 
@@ -240,7 +280,16 @@ export const getExponent = async (matchId: number, companyId: number) => {
                     winLoseData.half.list.push(item.companyId);
                 }
 
-                winLoseData.half.info[item.companyId] = item;
+                winLoseData.half.info[item.companyId] = {
+                    ...item,
+                    oddsChangeTime: timestampToString(item.oddsChangeTime),
+                    initialHomeOdds: truncateFloatingPoint(item.initialHomeOdds, 2),
+                    initialDrawOdds: truncateFloatingPoint(item.initialDrawOdds, 2),
+                    initialAwayOdds: truncateFloatingPoint(item.initialAwayOdds, 2),
+                    currentHomeOdds: truncateFloatingPoint(item.currentHomeOdds, 2),
+                    currentDrawOdds: truncateFloatingPoint(item.currentDrawOdds, 2),
+                    currentAwayOdds: truncateFloatingPoint(item.currentAwayOdds, 2)
+                };
             }
         }
         if (resData.fullWinDrawLose.length > 0) {
@@ -249,13 +298,24 @@ export const getExponent = async (matchId: number, companyId: number) => {
                     winLoseData.full.list.push(item.companyId);
                 }
 
-                winLoseData.full.info[item.companyId] = item;
+                winLoseData.full.info[item.companyId] = {
+                    ...item,
+                    oddsChangeTime: timestampToString(item.oddsChangeTime),
+                    initialHomeOdds: truncateFloatingPoint(item.initialHomeOdds, 2),
+                    initialDrawOdds: truncateFloatingPoint(item.initialDrawOdds, 2),
+                    initialAwayOdds: truncateFloatingPoint(item.initialAwayOdds, 2),
+                    currentHomeOdds: truncateFloatingPoint(item.currentHomeOdds, 2),
+                    currentDrawOdds: truncateFloatingPoint(item.currentDrawOdds, 2),
+                    currentAwayOdds: truncateFloatingPoint(item.currentAwayOdds, 2)
+                };
             }
         }
 
+        const res: GetExponentResponse = { handicapsData, totalGoalData, winLoseData };
+
         return {
             success: true,
-            data: { handicapsData, totalGoalData, winLoseData }
+            data: res
         };
     } catch (error) {
         return handleApiError(error);
