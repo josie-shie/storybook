@@ -1,4 +1,4 @@
-import { fetcher } from 'lib';
+import { fetcher, timestampToString } from 'lib';
 import { z } from 'zod';
 import { handleApiError } from '../common';
 import { GET_MATCH_POSTS_QUERY } from './graphqlQueries';
@@ -58,16 +58,21 @@ const PostsInfoPostResultSchema = z.object({
     shortAnalysisContent: z.string()
 });
 
-export type GetMatchPost = z.infer<typeof PostsInfoPostResultSchema>;
+type OriginalPostsInfoPostResult = z.infer<typeof PostsInfoPostResultSchema>;
+
+type GetMatchPost = Omit<OriginalPostsInfoPostResult, 'matchTime' | 'createdAt' | 'updatedAt'> & {
+    matchTime: string;
+    createdAt: string;
+    updatedAt: string;
+};
+
 export type GetMatchPostsResponse = GetMatchPost[];
 
-const MatchPostsInfoSchema = z.object({
-    posts: z.array(PostsInfoPostResultSchema),
-    total_page_count: z.number()
-});
-
 const GetMatchPostsResultSchema = z.object({
-    getMatchPosts: MatchPostsInfoSchema
+    getMatchPosts: z.object({
+        posts: z.array(PostsInfoPostResultSchema),
+        total_page_count: z.number()
+    })
 });
 
 type GetMatchPostsResult = z.infer<typeof GetMatchPostsResultSchema>;
@@ -96,9 +101,19 @@ export const getMatchPosts = async (input: GetMatchPostsRequest) => {
             { cache: 'no-store' }
         );
 
+        GetMatchPostsResultSchema.parse(data);
+
+        const { posts } = data.getMatchPosts;
+        const formatDateTime: GetMatchPostsResponse = posts.map(item => ({
+            ...item,
+            matchTime: timestampToString(item.matchTime),
+            createdAt: timestampToString(item.createdAt),
+            updatedAt: timestampToString(item.updatedAt)
+        }));
+
         return {
             success: true,
-            data: data.getMatchPosts.posts
+            data: formatDateTime
         };
     } catch (error) {
         return handleApiError(error);
