@@ -6,7 +6,7 @@ import GameIcon from './img/game';
 import RecommendIcon from './img/recommend';
 import DataIcon from './img/data';
 import NewsIcon from './img/news';
-import './footer.module.scss';
+import style from './footer.module.scss';
 
 const CategoryList = [
     {
@@ -45,12 +45,14 @@ function FooterComponent() {
     const pathname = usePathname();
 
     return (
-        <Footer
-            activeColor="#276CE1"
-            activeRouter={pathname}
-            bgColor="#FFF"
-            menuList={CategoryList}
-        />
+        <div className={style.footer}>
+            <Footer
+                activeColor="#276CE1"
+                activeRouter={pathname}
+                bgColor="#FFF"
+                menuList={CategoryList}
+            />
+        </div>
     );
 }
 
