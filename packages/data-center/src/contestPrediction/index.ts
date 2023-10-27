@@ -1,6 +1,7 @@
 import { fetcher, timestampToString } from 'lib';
 import { z } from 'zod';
 import { handleApiError } from '../common';
+import type { ReturnData } from '../common';
 import { GET_MATCH_POSTS_QUERY } from './graphqlQueries';
 
 export interface GetMatchPostsRequest {
@@ -83,7 +84,9 @@ type GetMatchPostsResult = z.infer<typeof GetMatchPostsResultSchema>;
  * - returns : {@link GetMatchPostsResponse}
  * - {@link GetMatchPost}
  */
-export const getMatchPosts = async (input: GetMatchPostsRequest) => {
+export const getMatchPosts = async (
+    input: GetMatchPostsRequest
+): ReturnData<GetMatchPostsResponse> => {
     try {
         const { data }: { data: GetMatchPostsResult } = await fetcher(
             {

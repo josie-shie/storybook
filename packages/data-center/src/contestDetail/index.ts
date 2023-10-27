@@ -1,6 +1,7 @@
 import { fetcher, handicapToString, truncateFloatingPoint, timestampToString } from 'lib';
 import { z } from 'zod';
 import { handleApiError } from '../common';
+import type { ReturnData } from '../common';
 import {
     GET_SINGLE_MATCH_QUERY,
     GET_DETAIL_STATUS_QUERY,
@@ -369,7 +370,7 @@ export interface GetDetailStatusResponse {
     totalGoalsData: TotalGoalsDataType;
     eventList: string[];
     eventInfo: EventInfoType;
-    technical: TechnicalInfo;
+    technical: TechnicalInfo[];
     lineupInfo: LineupList;
 }
 
@@ -418,7 +419,7 @@ export type CompanyLiveDetailResponse = z.infer<typeof CompanyLiveDetailSchema>;
  * - params : (matchId: number)
  * - returns : {@link GetSingleMatchResponse}
  */
-export const getMatchDetail = async (matchId: number) => {
+export const getMatchDetail = async (matchId: number): ReturnData<GetSingleMatchResponse> => {
     try {
         const { data }: { data: GetSingleMatchResult } = await fetcher(
             {
@@ -456,7 +457,7 @@ export const getMatchDetail = async (matchId: number) => {
  * - params : (matchId: number)
  * - returns : {@link GetDetailStatusResponse}
  */
-export const getDetailStatus = async (matchId: number) => {
+export const getDetailStatus = async (matchId: number): ReturnData<GetDetailStatusResponse> => {
     try {
         const { data }: { data: GetDetailStatusResult } = await fetcher(
             {
@@ -650,7 +651,7 @@ export const getDetailStatus = async (matchId: number) => {
  * - params : number (matchId)
  * - returns : {@link GetLiveTextResponse} {@link GetLiveText}
  */
-export const getLiveText = async (matchId: number) => {
+export const getLiveText = async (matchId: number): ReturnData<GetLiveTextResponse> => {
     function formatArray(arr: LiveTextInfo[]) {
         return arr.map(item => {
             const timeMatch = /^(?<time>\d{1,3})'/.exec(item.content);
@@ -708,7 +709,10 @@ export const getLiveText = async (matchId: number) => {
  * - params : (matchId: number, companyId: number)
  * - returns : {@link CompanyLiveDetailResponse}
  */
-export const getCompanyLiveOddsDetail = async (matchId: number, companyId: number) => {
+export const getCompanyLiveOddsDetail = async (
+    matchId: number,
+    companyId: number
+): ReturnData<CompanyLiveDetailResponse> => {
     try {
         const { data }: { data: CompanyLiveDetailResult } = await fetcher(
             {
@@ -728,7 +732,7 @@ export const getCompanyLiveOddsDetail = async (matchId: number, companyId: numbe
         CompanyLiveDetailResultSchema.parse(data);
 
         return {
-            succuss: true,
+            success: true,
             data: data.getCompanyLiveOdds
         };
     } catch (error) {

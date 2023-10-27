@@ -1,6 +1,7 @@
 import { fetcher, timestampToString, truncateFloatingPoint, handicapToString } from 'lib';
 import { z } from 'zod';
 import { handleApiError } from '../common';
+import type { ReturnData } from '../common';
 import { GET_COMPANY_ODDS_DETAIL_QUERY } from './graphqlQueries';
 
 const HandicapsInfoSchema = z.object({
@@ -148,7 +149,10 @@ export interface GetExponentResponse {
  * - params : (matchId: number, companyId: number)
  * - returns : {@link GetExponentResponse}
  */
-export const getExponent = async (matchId: number, companyId: number) => {
+export const getExponent = async (
+    matchId: number,
+    companyId: number
+): ReturnData<GetExponentResponse> => {
     try {
         const { data }: { data: CompanyDetailResult } = await fetcher(
             {

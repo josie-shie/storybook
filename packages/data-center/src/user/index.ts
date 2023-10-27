@@ -2,6 +2,7 @@ import { fetcher } from 'lib';
 import Cookies from 'js-cookie';
 import { z } from 'zod';
 import { handleApiError } from '../common';
+import type { ReturnData } from '../common';
 import {
     REGISTER_MUTATION,
     SEND_VERIFICATION_CODE_MUTATION,
@@ -79,19 +80,6 @@ export interface LoginRequest {
     verificationCode: string;
 }
 
-export interface MemberInfoResponse {
-    uid: string;
-    username: string;
-    birthday: number;
-    countryCode: string;
-    mobileNumber: string;
-    wechat: string;
-    qqNumber: string;
-    avatarPath: string;
-    balance: number;
-    createdAt: number;
-}
-
 export interface ForgetPasswordRequest {
     countryCode: string;
     mobileNumber: string;
@@ -118,18 +106,8 @@ const MemberInfoSchema = z.object({
     createdAt: z.number()
 });
 
-export interface MemberInfoResponse {
-    uid: string;
-    username: string;
-    birthday: number;
-    countryCode: string;
-    mobileNumber: string;
-    wechat: string;
-    qqNumber: string;
-    avatarPath: string;
-    balance: number;
-    createdAt: number;
-}
+export type MemberInfoResponse = z.infer<typeof MemberInfoSchema>;
+
 const UpdateMemberInfoResponseSchema = z.object({
     updateMemberInfo: MemberInfoSchema
 });
@@ -170,7 +148,7 @@ export const register = async ({
     password,
     parentId = '123', // TODO: 需改為選填，123 沒意義
     verificationCode
-}: RegisterRequest) => {
+}: RegisterRequest): ReturnData<string> => {
     try {
         const { data }: { data: RegisterResult } = await fetcher({
             data: {
@@ -216,7 +194,7 @@ export const sendVerificationCode = async ({
     mobileNumber,
     verificationType,
     checkExistingAccount
-}: SendVerificationCodeRequest) => {
+}: SendVerificationCodeRequest): ReturnData<string> => {
     try {
         const { data }: { data: SendVerificationCodeResult } = await fetcher({
             data: {
@@ -256,7 +234,7 @@ export const sendVerificationCode = async ({
 export const sendVerificationCodeInLogged = async ({
     verificationType,
     checkExistingAccount
-}: SendVerificationCodeLoggedInRequest) => {
+}: SendVerificationCodeLoggedInRequest): ReturnData<string> => {
     try {
         const { data }: { data: SendVerificationCodeLoggedInResult } = await fetcher({
             data: {
@@ -295,7 +273,7 @@ export const login = async ({
     mobileNumber,
     password,
     verificationCode
-}: LoginRequest) => {
+}: LoginRequest): ReturnData<string> => {
     try {
         const { data }: { data: LoginResult } = await fetcher({
             data: {
@@ -330,7 +308,7 @@ export const login = async ({
  * 獲取會員資料
  * - returns : {@link GetMemberInfoResponse}
  */
-export const getMemberInfo = async () => {
+export const getMemberInfo = async (): ReturnData<GetMemberInfoResponse> => {
     try {
         const { data }: { data: GetMemberInfoResult } = await fetcher({
             data: {
@@ -357,7 +335,7 @@ export const forgetPasswordReset = async ({
     mobileNumber,
     verificationCode,
     newPassword
-}: ForgetPasswordRequest) => {
+}: ForgetPasswordRequest): ReturnData<null> => {
     try {
         const res: { data: null } = await fetcher({
             data: {
@@ -386,7 +364,7 @@ export const updatePassword = async ({
     verificationCode,
     password,
     newPassword
-}: UpdatePasswordRequest) => {
+}: UpdatePasswordRequest): ReturnData<null> => {
     try {
         const res: { data: null } = await fetcher({
             data: {
@@ -409,13 +387,14 @@ export const updatePassword = async ({
 /**
  * 更新用戶資料
  * - params : {@link UpdateMemberInfoRequest}
+ * - returns : {@link MemberInfoResponse}
  */
 export const updateMemberInfo = async ({
     avatarPath,
     birthday,
     wechat,
     qqNumber
-}: UpdateMemberInfoRequest) => {
+}: UpdateMemberInfoRequest): ReturnData<MemberInfoResponse> => {
     try {
         const { data }: { data: UpdateMemberInfoResult } = await fetcher({
             data: {
@@ -441,7 +420,7 @@ export const updateMemberInfo = async ({
  * 取得會員邀請碼
  * - returns string
  */
-export const getInvitationCode = async () => {
+export const getInvitationCode = async (): ReturnData<string> => {
     try {
         const { data }: { data: GetInvitationCodeResult } = await fetcher({
             data: {
