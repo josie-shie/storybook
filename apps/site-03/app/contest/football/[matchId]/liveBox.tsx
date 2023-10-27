@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Button from '@mui/material/Button';
 import Header from './header';
 import style from './liveBox.module.scss';
-import VideoIcon from './img/video.svg';
+import VideoIcon from './img/video.png';
 import bgImage from './img/bg.jpg';
 import DefaultTeamLogoIcon from './img/defaultTeamLogo.png';
 
@@ -131,8 +131,14 @@ function LiveBox() {
                     </div>
                 </div>
                 <Button className={style.liveBtn}>
-                    <VideoIcon className={style.icon} />
-                    动画
+                    <Image
+                        alt="video_icon"
+                        className={style.icon}
+                        height={17}
+                        src={VideoIcon}
+                        width={17}
+                    />
+                    <span>动画</span>
                 </Button>
             </div>
         </div>
