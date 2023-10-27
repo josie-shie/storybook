@@ -1,9 +1,8 @@
 import Image from 'next/image';
 import style from './predict.module.scss';
-import HotIcon from './img/hot.svg';
-import CoinIcon from './img/coin.svg';
+import hotIcon from './img/hot.png';
+import coinIcon from './img/coin.png';
 import type { Predict } from '@/types/predict';
-import { formatTime } from '@/lib/formatTime';
 
 interface PredictCardProps {
     predictInfo: Predict;
@@ -26,7 +25,7 @@ function PredictCard({ predictInfo }: PredictCardProps) {
                         <div className={style.tag}>
                             <div className={style.hot}>
                                 <span>
-                                    <HotIcon />
+                                    <Image alt="" height={10} src={hotIcon} width={8} />
                                 </span>
                                 <span>{predictInfo.onRoll}連紅</span>
                             </div>
@@ -39,7 +38,7 @@ function PredictCard({ predictInfo }: PredictCardProps) {
                 <div className={style.price}>
                     <div className={style.priceButton}>
                         <span className={style.icon}>
-                            <CoinIcon />
+                            <Image alt="" height={14} src={coinIcon} width={14} />
                         </span>
                         <span>{predictInfo.price}元</span>
                     </div>
@@ -50,9 +49,7 @@ function PredictCard({ predictInfo }: PredictCardProps) {
                 【{predictInfo.max_accurate_streak}连胜】{predictInfo.homeChs}vs
                 {predictInfo.awayChs}，来看我的精心推荐吧
             </h3>
-            <div className={style.publishTime}>
-                发表于今天 {formatTime(predictInfo.createdAt, 'HH:mm')}
-            </div>
+            <div className={style.publishTime}>发表于今天 {predictInfo.createdAt}</div>
         </div>
     );
 }

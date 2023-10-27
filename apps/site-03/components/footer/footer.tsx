@@ -1,43 +1,54 @@
 'use client';
 import { Footer } from 'ui';
 import { usePathname } from 'next/navigation';
-import HomeIcon from './img/homeIcon';
-import GameIcon from './img/game';
-import RecommendIcon from './img/recommend';
-import DataIcon from './img/data';
-import NewsIcon from './img/news';
-import './footer.module.scss';
+import Image from 'next/image';
+import style from './footer.module.scss';
+import homeIcon from './img/homeIcon.png';
+import gameIcon from './img/game.png';
+import recommendIcon from './img/recommend.png';
+import dataIcon from './img/data.png';
+import newsIcon from './img/news.png';
+import activedHomeIcon from './img/activedHomeIcon.png';
+import activedGame from './img/activedGame.png';
+import activedReccomand from './img/activedRecommend.png';
+import activedData from './img/activedData.png';
+import activedNews from './img/activedNews.png';
 
 const CategoryList = [
     {
         label: '首頁',
         value: '/',
         includedRouters: ['/news'],
-        icon: <HomeIcon fill="#AAAAAA" />
+        icon: <Image alt="" className={style.icon} src={homeIcon} />,
+        activedIcon: <Image alt="" className={style.icon} src={activedHomeIcon} />
     },
     {
         label: '賽事',
         value: '/contest/football',
         includedRouters: ['/contest'],
-        icon: <GameIcon fill="#AAAAAA" />
+        icon: <Image alt="" className={style.icon} src={gameIcon} />,
+        activedIcon: <Image alt="" className={style.icon} src={activedGame} />
     },
     {
         label: '推薦',
         value: '/recommend/guess',
         includedRouters: ['/recommend'],
-        icon: <RecommendIcon fill="#AAAAAA" />
+        icon: <Image alt="" className={style.icon} src={recommendIcon} />,
+        activedIcon: <Image alt="" className={style.icon} src={activedReccomand} />
     },
     {
         label: '數據',
         value: '/data',
         includedRouters: ['/data'],
-        icon: <DataIcon fill="#AAAAAA" />
+        icon: <Image alt="" className={style.icon} src={dataIcon} />,
+        activedIcon: <Image alt="" className={style.icon} src={activedData} />
     },
     {
         label: '消息',
         value: '/message',
         includedRouters: ['/message'],
-        icon: <NewsIcon fill="#AAAAAA" />
+        icon: <Image alt="" className={style.icon} src={newsIcon} />,
+        activedIcon: <Image alt="" className={style.icon} src={activedNews} />
     }
 ];
 
@@ -45,12 +56,14 @@ function FooterComponent() {
     const pathname = usePathname();
 
     return (
-        <Footer
-            activeColor="#276CE1"
-            activeRouter={pathname}
-            bgColor="#FFF"
-            menuList={CategoryList}
-        />
+        <div className={style.footer}>
+            <Footer
+                activeColor="#276CE1"
+                activeRouter={pathname}
+                bgColor="#FFF"
+                menuList={CategoryList}
+            />
+        </div>
     );
 }
 

@@ -24,7 +24,9 @@ function SoundSelector({
 }) {
     return (
         <BottomDrawer isOpen={isOpen} onClose={onClose} onOpen={onOpen}>
-            <h3>{label === 'home' ? '主队进球声音' : '客队进球声音'}</h3>
+            <h3 className={style.soundTitle}>
+                {label === 'home' ? '主队进球声音' : '客队进球声音'}
+            </h3>
 
             {soundList.map(item => {
                 return (
@@ -86,7 +88,7 @@ function Setting({
         <BottomDrawer isOpen={isOpen} onClose={onClose} onOpen={onOpen}>
             <div className={style.setting}>
                 <div className={style.topLine} />
-                <h2>比賽設置</h2>
+                <h2 className={style.settingTitle}>比賽設置</h2>
                 <div className={style.item}>
                     <span>进球提示</span>
                     <span>
