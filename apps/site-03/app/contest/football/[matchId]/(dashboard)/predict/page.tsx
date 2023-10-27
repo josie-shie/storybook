@@ -16,7 +16,7 @@ function Page() {
                 max_accurate_streak: 11,
                 price: 20,
                 unlockTotal: 5,
-                createdAt: 1698289121
+                createdAt: '17:45'
             },
             {
                 mentor_avatar: mentorIcon,
@@ -29,7 +29,7 @@ function Page() {
                 max_accurate_streak: 11,
                 price: 20,
                 unlockTotal: 5,
-                createdAt: 1698307200
+                createdAt: '17:45'
             },
             {
                 mentor_avatar: mentorIcon,
@@ -42,7 +42,7 @@ function Page() {
                 max_accurate_streak: 11,
                 price: 20,
                 unlockTotal: 5,
-                createdAt: 1698307200
+                createdAt: '17:45'
             },
             {
                 mentor_avatar: mentorIcon,
@@ -55,7 +55,7 @@ function Page() {
                 max_accurate_streak: 11,
                 price: 20,
                 unlockTotal: 5,
-                createdAt: 1698307200
+                createdAt: '17:45'
             },
             {
                 mentor_avatar: mentorIcon,
@@ -68,7 +68,7 @@ function Page() {
                 max_accurate_streak: 11,
                 price: 20,
                 unlockTotal: 5,
-                createdAt: 1698307200
+                createdAt: '17:45'
             }
         ]
     });

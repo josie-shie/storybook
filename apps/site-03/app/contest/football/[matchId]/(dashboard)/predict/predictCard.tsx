@@ -3,7 +3,6 @@ import style from './predict.module.scss';
 import hotIcon from './img/hot.png';
 import coinIcon from './img/coin.png';
 import type { Predict } from '@/types/predict';
-import { formatTime } from '@/lib/formatTime';
 
 interface PredictCardProps {
     predictInfo: Predict;
@@ -50,9 +49,7 @@ function PredictCard({ predictInfo }: PredictCardProps) {
                 【{predictInfo.max_accurate_streak}连胜】{predictInfo.homeChs}vs
                 {predictInfo.awayChs}，来看我的精心推荐吧
             </h3>
-            <div className={style.publishTime}>
-                发表于今天 {formatTime(predictInfo.createdAt, 'HH:mm')}
-            </div>
+            <div className={style.publishTime}>发表于今天 {predictInfo.createdAt}</div>
         </div>
     );
 }
