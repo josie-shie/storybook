@@ -32,7 +32,7 @@ const ContestInfoSchema = z.object({
     countryCn: z.string()
 });
 
-type ContestInfo = z.infer<typeof ContestInfoSchema>;
+export type ContestInfo = z.infer<typeof ContestInfoSchema>;
 
 const GetContestListResultSchema = z.object({
     getTodayMatch: z.object({
@@ -57,7 +57,9 @@ export interface GetContestListResponse {
  * - returns : {@link GetContestListResponse}
  * - {@link ContestListType} {@link ContestInfoType}
  */
-export const getContestList = async (dateTime: number): ReturnData<GetContestListResponse> => {
+export const getContestList = async (
+    dateTime: number
+): Promise<ReturnData<GetContestListResponse>> => {
     try {
         const { data }: { data: GetContestListResult } = await fetcher(
             {

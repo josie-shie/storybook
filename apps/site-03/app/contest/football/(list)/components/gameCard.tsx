@@ -1,12 +1,15 @@
+import type { ContestInfo } from 'data-center';
+import { timestampToMonthDay } from 'lib';
 import style from './gameCard.module.scss';
 import Video from './img/video.svg';
 import Flag from './img/flag.svg';
+import { useTodayStore } from '@/app/todayContestStore';
 
-function ExtraInfo() {
-    return <div className={style.extraInfo}>90 分鐘 [0-0], 加時中,現在比分[1-1]</div>;
-}
+// function ExtraInfo({ contestInfo }: { contestInfo: ContestInfo }) {
+//     return <div className={style.extraInfo}>90 分鐘 [0-0], 加時中,現在比分[1-1]</div>;
+// } // TODO: game extra info
 
-function OddsInfo() {
+function OddsInfo({ contestInfo }: { contestInfo: ContestInfo }) {
     return (
         <div className={style.oddsInfo}>
             <span className={`${style.odd} ${style.left}`}>
@@ -15,7 +18,9 @@ function OddsInfo() {
                 <p>1.00</p>
             </span>
             <span className={style.mid}>
-                <p>(0-1)</p>
+                <p>
+                    ({contestInfo.homeHalfScore} - {contestInfo.awayHalfScore})
+                </p>
             </span>
             <span className={style.odd}>
                 <p>0.85</p>
@@ -26,42 +31,58 @@ function OddsInfo() {
     );
 }
 
-function TeamInfo() {
+function TeamInfo({ contestInfo }: { contestInfo: ContestInfo }) {
     return (
         <div className={style.teamInfo}>
             <div className={`${style.homeTeam} ${style.team}`}>
                 <div className={style.cards}>
-                    <p className={`${style.redCard} ${style.card}`}>6</p>
-                    <p className={`${style.yellowCard} ${style.card}`}>1</p>
+                    {contestInfo.homeRed > 0 && (
+                        <p className={`${style.redCard} ${style.card}`}>{contestInfo.homeRed}</p>
+                    )}
+                    {contestInfo.homeYellow > 0 && (
+                        <p className={`${style.yellowCard} ${style.card}`}>
+                            {contestInfo.homeYellow}
+                        </p>
+                    )}
                 </div>
-                巴西
+                {contestInfo.homeChs}
             </div>
-            <div className={style.score}>1 - 1</div>
+            <div className={style.score}>
+                {contestInfo.homeScore} - {contestInfo.awayScore}
+            </div>
             <div className={`${style.awayTeam} ${style.team}`}>
-                西班牙
+                {contestInfo.awayChs}
                 <div className={style.cards}>
-                    <p className={`${style.redCard} ${style.card}`}>2</p>
-                    <p className={`${style.yellowCard} ${style.card}`}>3</p>
+                    {contestInfo.awayRed > 0 && (
+                        <p className={`${style.redCard} ${style.card}`}>{contestInfo.awayRed}</p>
+                    )}
+                    {contestInfo.awayYellow > 0 && (
+                        <p className={`${style.yellowCard} ${style.card}`}>
+                            {contestInfo.awayYellow}
+                        </p>
+                    )}
                 </div>
             </div>
         </div>
     );
 }
 
-function TopArea() {
+function TopArea({ contestInfo }: { contestInfo: ContestInfo }) {
     return (
         <div className={style.topArea}>
             <div className={style.left}>
-                <div className={style.league}>巴西甲</div>
-                <div className={style.time}>11:30</div>
+                <div className={style.league} style={{ color: contestInfo.color }}>
+                    {contestInfo.leagueChsShort}
+                </div>
+                <div className={style.time}>{timestampToMonthDay(contestInfo.startTime)}</div>
             </div>
             <div className={style.mid}>
                 <div className={style.corner}>
-                    <Flag /> <span className={style.ratio}>5-10</span>
+                    <Flag /> <span className={style.ratio}>{contestInfo.homeCorner}</span>
                 </div>
                 <div className={style.status}>完</div>
                 <div className={style.corner}>
-                    <Flag /> <span className={style.ratio}>5-10</span>
+                    <Flag /> <span className={style.ratio}>{contestInfo.awayCorner}</span>
                 </div>
             </div>
             <div className={style.video}>
@@ -71,13 +92,15 @@ function TopArea() {
     );
 }
 
-function GameCard() {
+function GameCard({ matchId }: { matchId: number }) {
+    const contestInfo = useTodayStore.use.contestInfo()[matchId];
+
     return (
         <li className={style.gameCard}>
-            <TopArea />
-            <TeamInfo />
-            <OddsInfo />
-            <ExtraInfo />
+            <TopArea contestInfo={contestInfo} />
+            <TeamInfo contestInfo={contestInfo} />
+            <OddsInfo contestInfo={contestInfo} />
+            {/* <ExtraInfo contestInfo={contestInfo} /> */}
         </li>
     );
 }
