@@ -8,6 +8,7 @@ interface Menu {
     icon?: ReactElement;
     includedRouters: string[];
     value: string;
+    activedIcon?: ReactElement;
 }
 
 export interface FooterProps {
@@ -59,11 +60,18 @@ function Footer({
     const gettIcon = (menu: Menu) => {
         if (!menu.icon) return;
 
+        const isActive = activedItem === menu.value || menu.includedRouters.includes(activedItem);
+
+        if (menu.activedIcon && isActive) {
+            return menu.activedIcon;
+        }
+
+        if (menu.activedIcon) {
+            return menu.icon;
+        }
+
         return cloneElement(menu.icon, {
-            fill:
-                activedItem === menu.value || menu.includedRouters.includes(activedItem)
-                    ? activeColor
-                    : defaultColor
+            fill: isActive ? activeColor : defaultColor
         });
     };
 
