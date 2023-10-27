@@ -1,7 +1,6 @@
 .paidDialog {
     width: 300px;
     padding: 16px;
-    border-radius: 15px;
 
     .content {
         display: flex;
@@ -75,8 +74,4 @@
             border: 1px solid #4489ff;
         }
     }
-}
-
-:global(.MuiPaper-root) {
-    border-radius: 15px;
 }
