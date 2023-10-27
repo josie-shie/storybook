@@ -1,10 +1,8 @@
 .infoTabs {
-    height: calc(100vh - 242px);
     margin-top: -30px;
     padding: 12px 0 0;
     border-radius: 16px 16px 0 0;
-    overflow: auto;
-    background: #f8f8f8;
+    background: #fff;
 
     :global(.ui-tab) {
         padding: 0 12px;
@@ -29,16 +27,14 @@
             }
         }
 
-        :global(.swiper) {
-            :global(.swiper-wrapper) {
-                :global(.swiper-slide) {
-                    padding: 0;
-                }
-            }
+        :global(.ui-tab-container) {
+            height: calc(100vh - 251px);
+            overflow: auto;
+            padding: 0;
         }
     }
 
     .tabContest {
-        margin-top: 16px;
+        margin-top: 20px;
     }
 }

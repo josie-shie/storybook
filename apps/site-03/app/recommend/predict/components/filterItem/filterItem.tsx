@@ -1,4 +1,5 @@
-import Link from 'next/link';
+'use client';
+import { useRouter } from 'next/navigation';
 import style from './filterItem.module.scss';
 
 interface PropsType {
@@ -11,6 +12,12 @@ interface PropsType {
 }
 
 function FilterItem({ item }: { item: PropsType }) {
+    const router = useRouter();
+
+    const goDetail = () => {
+        router.push('/recommend/predict/masterList');
+    };
+
     return (
         <div className={style.filterItem}>
             <div className={style.top}>
@@ -22,11 +29,9 @@ function FilterItem({ item }: { item: PropsType }) {
                 <span className={style.compete}>VS</span>
                 <span className={style.away}>{item.awayTeam}</span>
             </div>
-            <Link href="masterList">
-                <button className={style.article} type="button">
-                    {item.articleNumber}篇专家文章
-                </button>
-            </Link>
+            <button className={style.article} onClick={goDetail} type="button">
+                {item.articleNumber}篇专家文章
+            </button>
         </div>
     );
 }

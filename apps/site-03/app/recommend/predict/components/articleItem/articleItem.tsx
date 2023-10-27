@@ -1,5 +1,6 @@
+'use client';
 import { IconFlame } from '@tabler/icons-react';
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import style from './articleItem.module.scss';
 import Avatar from '@/components/avatar/avatar';
 import Tag from '@/components/tag/tag';
@@ -21,10 +22,20 @@ interface PropsType {
 }
 
 function ArticleItem({ item }: { item: PropsType }) {
+    const router = useRouter();
+
+    const goDetail = () => {
+        router.push('/recommend/predict/1');
+    };
+
+    const goInfo = () => {
+        router.push('/recommend/predict/masterAvatar');
+    };
+
     return (
         <div className={style.articleItem}>
             <div className={style.user}>
-                <div className={style.avatarContainer}>
+                <div className={style.avatarContainer} onClick={goInfo}>
                     <Avatar borderColor="#4489FF" />
                 </div>
                 <div className={style.userInfo}>
@@ -50,17 +61,15 @@ function ArticleItem({ item }: { item: PropsType }) {
                 </div>
             </div>
             <div className={style.title}>{item.title}</div>
-            <Link href="/recommend/predict/1">
-                <div className={style.game}>
-                    <div className={style.detail}>
-                        {item.cupName}
-                        <span className={style.time}> | {item.cupTime}</span>
-                    </div>
-                    <div className={style.combination}>
-                        {item.homeTeam} vs {item.awayTeam}
-                    </div>
+            <div className={style.game} onClick={goDetail}>
+                <div className={style.detail}>
+                    {item.cupName}
+                    <span className={style.time}> | {item.cupTime}</span>
                 </div>
-            </Link>
+                <div className={style.combination}>
+                    {item.homeTeam} vs {item.awayTeam}
+                </div>
+            </div>
             <div className={style.postTime}>发表于 {item.postTime}</div>
         </div>
     );
