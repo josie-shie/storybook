@@ -31,17 +31,20 @@ function NormalComponent(args: FooterProps) {
         {
             label: '首頁',
             icon: <CallToActionIcon />,
-            value: '/'
+            value: '/',
+            includedRouters: ['/']
         },
         {
             label: '首頁',
             icon: <CallToActionIcon />,
-            value: '/index1'
+            value: '/index1',
+            includedRouters: ['index1']
         },
         {
             label: '首頁',
             icon: <CallToActionIcon />,
-            value: '/index2'
+            value: '/index2',
+            includedRouters: ['index2']
         }
     ];
 

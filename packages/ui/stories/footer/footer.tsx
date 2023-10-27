@@ -1,11 +1,12 @@
 import type { ReactElement } from 'react';
-import { cloneElement, useState } from 'react';
+import { cloneElement, useEffect, useState } from 'react';
 import Link from 'next/link';
 import style from './footer.module.scss';
 
 interface Menu {
     label: string;
     icon?: ReactElement;
+    includedRouters: string[];
     value: string;
 }
 
@@ -55,11 +56,20 @@ function Footer({
         setActivedItem(value);
     };
 
-    const gettIcon = (icon: ReactElement, value: string) => {
-        return cloneElement(icon, {
-            fill: activedItem === value ? activeColor : defaultColor
+    const gettIcon = (menu: Menu) => {
+        if (!menu.icon) return;
+
+        return cloneElement(menu.icon, {
+            fill:
+                activedItem === menu.value || menu.includedRouters.includes(activedItem)
+                    ? activeColor
+                    : defaultColor
         });
     };
+
+    useEffect(() => {
+        setActivedItem(activeRouter);
+    }, [activeRouter]);
 
     return (
         <>
@@ -84,15 +94,14 @@ function Footer({
                                             style={{ backgroundColor: bgColor }}
                                         >
                                             {menu.icon ? (
-                                                <div className={style.icon}>
-                                                    {gettIcon(menu.icon, menu.value)}
-                                                </div>
+                                                <div className={style.icon}>{gettIcon(menu)}</div>
                                             ) : null}
                                             <div
                                                 className={style.textLabel}
                                                 style={{
                                                     color:
-                                                        activedItem === menu.value
+                                                        activedItem === menu.value ||
+                                                        menu.includedRouters.includes(activedItem)
                                                             ? activeColor
                                                             : defaultColor
                                                 }}

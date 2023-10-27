@@ -7,7 +7,7 @@ interface InitState {
     contestInfo: ContestInfoType;
 }
 
-let useHomeStore: StoreWithSelectors<InitState>;
+let useTodayStore: StoreWithSelectors<InitState>;
 
 const initialState = (set: (data: InitState) => void) => ({
     contestList: [],
@@ -17,7 +17,7 @@ const initialState = (set: (data: InitState) => void) => ({
     }
 });
 
-const creatHomeStore = (init: InitState) =>
-    (useHomeStore = initStore<InitState>(initialState, init));
+const creatTodayStore = (init: InitState) =>
+    (useTodayStore = initStore<InitState>(initialState, init));
 
-export { creatHomeStore, useHomeStore };
+export { creatTodayStore, useTodayStore };
