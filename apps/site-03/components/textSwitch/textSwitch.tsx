@@ -15,6 +15,7 @@ function TextRadio({ value, onChange }: PropsType) {
             onChange('half');
         }
     };
+
     return (
         <div
             className={style.textSwitch}

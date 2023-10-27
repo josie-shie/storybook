@@ -1,6 +1,6 @@
 import { useState } from 'react';
+import TextRadio from '../../../../../../components/textSwitch/textSwitch';
 import style from './situation.module.scss';
-import TextRadio from './switch/textSwitch';
 import type { TotalGoalsDataType } from '@/types/detailStatus';
 
 // const switchOptins = [
