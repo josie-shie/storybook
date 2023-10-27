@@ -2,9 +2,9 @@ import { Tab, Tabs } from 'ui';
 import type { StaticImageData } from 'next/image';
 import Image from 'next/image';
 import { useHomeStore } from '../../homeStore';
-import PlayButton from './img/playButton.svg';
-import Plan from './img/plan.svg';
-import Professional from './img/professional.svg';
+import playButtonImg from './img/playButton.png';
+import planImg from './img/plan.png';
+import professionalImg from './img/professional.png';
 import style from './leagueCardList.module.scss';
 
 interface Match {
@@ -32,7 +32,7 @@ function StateComponent({ state }: { state: number }) {
             {state ? null : (
                 <>
                     直播中
-                    <PlayButton className={style.playButton} />
+                    <Image alt="" className={style.playButton} src={playButtonImg} />
                 </>
             )}
         </div>
@@ -64,8 +64,8 @@ function StartedScore({
 
 function LeagueCard({ match }: MatchProps) {
     const optionList = [
-        { label: '競猜方案', icon: <Plan className={style.image} /> },
-        { label: '專家預測', icon: <Professional className={style.image} /> }
+        { label: '競猜方案', icon: <Image alt="" height={18} src={planImg} width={18} /> },
+        { label: '專家預測', icon: <Image alt="" height={18} src={professionalImg} width={18} /> }
     ];
 
     return (

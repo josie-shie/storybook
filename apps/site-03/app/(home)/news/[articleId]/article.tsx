@@ -1,7 +1,7 @@
 'use client';
 import ArticleContent from './articleContent';
 import style from './article.module.scss';
-import articleImg from './img/articleImg.png';
+import articleImg from './img/articleImg.jpeg';
 import { creatArticleStore } from './articleStore';
 
 function Article() {

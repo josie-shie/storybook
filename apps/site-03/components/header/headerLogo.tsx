@@ -15,7 +15,7 @@ function HeaderLogo({ total, logo }: HeaderProps) {
             <div className={style.header} style={{ backgroundImage: `url(${dotBackground.src})` }}>
                 <div className={style.logo}>
                     <LogoIcon />
-                    {logo}
+                    <div className={style.icon}>{logo}</div>
                 </div>
                 <Profile total={total} />
             </div>

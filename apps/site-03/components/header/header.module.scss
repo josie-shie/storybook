@@ -33,5 +33,12 @@
         display: flex;
         align-items: center;
         min-width: 96px;
+
+        .icon {
+            width: 140px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+        }
     }
 }

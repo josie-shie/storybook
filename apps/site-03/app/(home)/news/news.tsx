@@ -3,7 +3,7 @@ import { creatNewsStore } from './newsStore';
 import NewsMarquee from './newsMarquee';
 import NewsList from './newsList';
 import NewsCarousel from './newsCarousel';
-import newsImage from './img/newsImg.png';
+import newsImage from './img/newsImg.jpeg';
 import style from './news.module.scss';
 
 function News() {
