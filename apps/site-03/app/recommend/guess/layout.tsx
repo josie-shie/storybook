@@ -14,7 +14,7 @@ function GuessLayout({ children }: { children: ReactNode }) {
     return (
         <div className={style.guess}>
             <Tabs
-                labels={['賽事競猜', '週榜', '月榜', '季榜', '連紅榜']}
+                labels={['賽事', '週榜', '月榜', '季榜', '連紅榜']}
                 paths={[
                     '/recommend/guess',
                     '/recommend/guess/rank?status=week',

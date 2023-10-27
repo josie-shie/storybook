@@ -56,12 +56,14 @@ function FooterComponent() {
     const pathname = usePathname();
 
     return (
-        <Footer
-            activeColor="#276CE1"
-            activeRouter={pathname}
-            bgColor="#FFF"
-            menuList={CategoryList}
-        />
+        <div className={style.footer}>
+            <Footer
+                activeColor="#276CE1"
+                activeRouter={pathname}
+                bgColor="#FFF"
+                menuList={CategoryList}
+            />
+        </div>
     );
 }
 

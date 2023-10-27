@@ -19,7 +19,7 @@
         width: 100%;
         display: flex;
         justify-content: space-between;
-        padding: 12px 18px;
+        padding: 16px 18px 0;
 
         .team {
             width: 100px;
@@ -59,11 +59,6 @@
         }
 
         .score {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-
             .all {
                 font-size: 28px;
                 font-weight: 400;
@@ -73,28 +68,95 @@
                     margin: 0 6px;
                 }
             }
+        }
+    }
 
-            .half {
-                font-size: 12px;
+    .gameStatus {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        .textHolder {
+            height: 20px;
+            width: 100%;
+            text-align: center;
+
+            .text {
+                font-size: 14px;
                 font-weight: 500;
             }
+        }
+
+        .vsText {
+            font-size: 32px;
+            font-weight: 500;
+            font-family: Vazirmatn, sans-serif;
         }
     }
 
     .gameTime {
+        position: relative;
         display: flex;
         justify-content: center;
         align-items: center;
-        padding: 0 6px;
-        margin-bottom: 4px;
-        font-size: 12px;
+        padding: 2px 6px;
+        margin: 8px 0;
+        font-size: 14px;
         font-weight: 500;
         border-radius: 4px;
+
+        .timePoint {
+            animation-name: oxxo;
+            animation-duration: 1s;
+            animation-iteration-count: infinite;
+        }
+
+        @keyframes oxxo {
+            0% {
+                opacity: 0;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0;
+            }
+        }
+
+        .homeScore {
+            width: 48px;
+            position: absolute;
+            top: 50%;
+            left: -200%;
+            transform: translateY(-50%);
+            text-align: center;
+            font-size: 46px;
+            font-weight: 800;
+        }
+
+        .awayScore {
+            width: 48px;
+            position: absolute;
+            top: 50%;
+            right: -200%;
+            transform: translateY(-50%);
+            text-align: center;
+            font-size: 46px;
+            font-weight: 800;
+        }
     }
 
     .notYet {
-        background-color: #bfbfbf;
-        color: #4a4a4a;
+        background-color: #f3f3f3;
+        color: #8d8d8d;
+    }
+
+    .midfielder {
+        background: linear-gradient(90deg, #4489ff 6.1%, #065ff5 95.12%);
+        color: #fff;
     }
 
     .finish {
@@ -109,20 +171,10 @@
         width: calc(100% - 36px);
     }
 
-    .vsText {
-        font-size: 32px;
-        font-weight: 500;
-        font-family: Vazirmatn, sans-serif;
-    }
-
-    .imageHolder {
-        width: 44px;
-        height: 40px;
-        margin-bottom: 6px;
-    }
-
     .liveBtn {
         height: 24px;
+        display: flex;
+        align-items: center;
         background-color: #0008;
         padding: 0 10px;
         color: white;

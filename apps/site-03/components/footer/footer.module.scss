@@ -1,5 +1,7 @@
-:global(.ui-footer) {
-    box-shadow: 0px -1px 0px 0px #bfbfbf;
+.footer {
+    :global(.ui-footer) {
+        box-shadow: 0px -1px 0px 0px #bfbfbf;
+    }
 }
 
 .icon {

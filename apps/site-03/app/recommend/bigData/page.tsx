@@ -1,5 +1,11 @@
+import BigData from './bigData';
+
 function Page() {
-    return <>大數據</>;
+    return (
+        <div className="bigData">
+            <BigData />
+        </div>
+    );
 }
 
 export default Page;

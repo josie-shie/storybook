@@ -1,7 +1,6 @@
 .header {
-    padding: 12px;
-    padding-left: 16px;
-    height: 56px;
+    padding: 12px 12px 26px 16px;
+    height: 62px;
     width: 100%;
     display: flex;
     justify-content: space-between;
@@ -9,11 +8,13 @@
     z-index: 9;
 
     &.headerFixed {
+        height: 46px;
         position: fixed;
-        top: -56px;
+        top: -46px;
         left: 0;
-        background-color: #fff;
+        background-color: #0a0a0a;
         transition: top 0.3s;
+        padding: 0 16px;
 
         &.show {
             top: 0;
@@ -27,7 +28,7 @@
         column-gap: 16px;
 
         .score {
-            color: #000;
+            color: #fff;
             font-size: 16px;
             font-weight: 600;
         }

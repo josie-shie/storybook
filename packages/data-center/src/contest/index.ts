@@ -1,4 +1,4 @@
-import { fetcher } from 'lib';
+import { fetcher, timestampToString, timestampToMonthDay } from 'lib';
 import { z } from 'zod';
 import { handleApiError } from '../common';
 import type { ReturnData } from '../common';
@@ -18,7 +18,6 @@ const ContestInfoSchema = z.object({
     homeRed: z.number(),
     homeScore: z.number(),
     homeYellow: z.number(),
-    // explain: z.string(),
     explainEn: z.string(),
     explainCn: z.string(),
     extraExplain: z.string(),
@@ -32,7 +31,12 @@ const ContestInfoSchema = z.object({
     countryCn: z.string()
 });
 
-type ContestInfo = z.infer<typeof ContestInfoSchema>;
+type OriginalContestInfo = z.infer<typeof ContestInfoSchema>;
+
+export type ContestInfo = Omit<OriginalContestInfo, 'matchTime' | 'startTime'> & {
+    matchTime: string;
+    startTime: string;
+};
 
 const GetContestListResultSchema = z.object({
     getTodayMatch: z.object({
@@ -57,7 +61,9 @@ export interface GetContestListResponse {
  * - returns : {@link GetContestListResponse}
  * - {@link ContestListType} {@link ContestInfoType}
  */
-export const getContestList = async (dateTime: number): ReturnData<GetContestListResponse> => {
+export const getContestList = async (
+    dateTime: number
+): Promise<ReturnData<GetContestListResponse>> => {
     try {
         const { data }: { data: GetContestListResult } = await fetcher(
             {
@@ -80,7 +86,11 @@ export const getContestList = async (dateTime: number): ReturnData<GetContestLis
 
         for (const item of data.getTodayMatch.match) {
             contestList.push(item.matchId);
-            contestInfo[item.matchId] = item;
+            contestInfo[item.matchId] = {
+                ...item,
+                matchTime: timestampToString(item.matchTime, 'M-DD HH:mm'),
+                startTime: timestampToMonthDay(item.startTime)
+            };
         }
         return {
             success: true,

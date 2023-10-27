@@ -5,9 +5,11 @@ import Image from 'next/image';
 import Button from '@mui/material/Button';
 import Header from './header';
 import style from './liveBox.module.scss';
-import VideoIcon from './img/video.svg';
+import VideoIcon from './img/video.png';
 import bgImage from './img/bg.jpg';
 import DefaultTeamLogoIcon from './img/defaultTeamLogo.png';
+
+type GameStatusType = { style: string; text: string } | undefined;
 
 function GameStatus() {
     const gameStatus = {
@@ -15,30 +17,57 @@ function GameStatus() {
         time: '21'
     };
 
-    // const stateStyle: Record<string, { style: string; text: string }> = {
-    //     notYet: { style: style.notYet, text: '未' },
-    //     midfielder: { style: style.notYet, text: '中场' },
-    //     finish: { style: style.finish, text: '完场' },
-    //     playoff: { style: style.playoff, text: '加' },
-    //     kick: { style: style.playoff, text: '点' },
-    //     cancel: { style: style.notYet, text: '取消' },
-    //     undetermined: { style: style.notYet, text: '待定' },
-    //     cut: { style: style.notYet, text: '腰斩' },
-    //     discontinue: { style: style.notYet, text: '中断' },
-    //     putOff: { style: style.notYet, text: '推迟' }
-    // };
+    const stateStyle: Record<string, { style: string; text: string }> = {
+        notYet: { style: style.notYet, text: '未' },
+        midfielder: { style: style.notYet, text: '中场' },
+        finish: { style: style.finish, text: '完场' },
+        playoff: { style: style.playoff, text: '加' },
+        kick: { style: style.playoff, text: '点' },
+        cancel: { style: style.notYet, text: '取消' },
+        undetermined: { style: style.notYet, text: '待定' },
+        cut: { style: style.notYet, text: '腰斩' },
+        discontinue: { style: style.notYet, text: '中断' },
+        putOff: { style: style.notYet, text: '推迟' }
+    };
 
     return (
-        <>
-            <p className={`${style.gameTime} `}>
-                {gameStatus.time} <span className={style.timePoint}>&apos;</span>
-            </p>
+        <div className={style.gameStatus}>
+            {gameStatus.state !== 'notYet' && (
+                <div className={style.textHolder}>
+                    <p className={style.text}>半場 5-5</p>
+                </div>
+            )}
+            <div
+                className={`${style.gameTime}  ${
+                    (stateStyle[gameStatus.state] as GameStatusType)
+                        ? stateStyle[gameStatus.state].style
+                        : style.midfielder
+                }`}
+            >
+                {(stateStyle[gameStatus.state] as GameStatusType) ? (
+                    stateStyle[gameStatus.state].text
+                ) : (
+                    <>
+                        {gameStatus.time} <span className={style.timePoint}>’</span>
+                    </>
+                )}
+                <div className={style.homeScore}>13</div>
+                <div className={style.awayScore}>7</div>
+            </div>
             {gameStatus.state === 'notYet' ? (
                 <p className={style.vsText}>VS</p>
             ) : (
-                <p className={style.half}>半場 5-5</p>
+                <>
+                    <div className={style.textHolder}>
+                        <p className={style.text}>加時 5-5</p>
+                    </div>
+
+                    <div className={style.textHolder}>
+                        <p className={style.text}>點球 5-5</p>
+                    </div>
+                </>
             )}
-        </>
+        </div>
     );
 }
 
@@ -102,8 +131,14 @@ function LiveBox() {
                     </div>
                 </div>
                 <Button className={style.liveBtn}>
-                    <VideoIcon className={style.icon} />
-                    动画
+                    <Image
+                        alt="video_icon"
+                        className={style.icon}
+                        height={17}
+                        src={VideoIcon}
+                        width={17}
+                    />
+                    <span>动画</span>
                 </Button>
             </div>
         </div>
