@@ -1,6 +1,7 @@
 import { fetcher, truncateFloatingPoint, convertHandicap } from 'lib';
 import { z } from 'zod';
 import { handleApiError } from '../common';
+import type { ReturnData } from '../common';
 import {
     GET_BEFORE_GAME_INDEX_ANALYZE_QUERY,
     GET_SINGLE_MATCH_QUERY,
@@ -676,7 +677,10 @@ const formatRecordData = (
  * - returns : {@link GetBeforeGameIndexResponse}
  * -  {@link GetBeforeGameIndex}
  */
-export const getBeforeGameIndex = async (matchId: number, companyId: number) => {
+export const getBeforeGameIndex = async (
+    matchId: number,
+    companyId: number
+): Promise<ReturnData<GetBeforeGameIndexResponse>> => {
     try {
         const { data }: { data: GetBeforeGameIndexResult } = await fetcher(
             {
@@ -752,7 +756,9 @@ export const getBeforeGameIndex = async (matchId: number, companyId: number) => 
  * - returns : {@link GetLeaguePointsRankResponse}
  * -  {@link GetBeforeGameIndex} {@link SingleMatchTeamName}
  */
-export const getLeaguePointsRank = async (matchId: number) => {
+export const getLeaguePointsRank = async (
+    matchId: number
+): Promise<ReturnData<GetLeaguePointsRankResponse>> => {
     try {
         const { data }: { data: GetLeaguePointsRankResult } = await fetcher(
             {
@@ -782,10 +788,13 @@ export const getLeaguePointsRank = async (matchId: number) => {
 };
 
 /**
- * param (matchId: number)
  * 取得聯賽走勢、對賽往績、近期戰績、半场/全场胜负统计(进两赛季)
+ * - param (matchId: number)
+ * - returns {@link GetAnalysisOthersResponse}
  */
-export const getAnalysisOthers = async (matchId: number) => {
+export const getAnalysisOthers = async (
+    matchId: number
+): Promise<ReturnData<GetAnalysisOthersResponse>> => {
     try {
         const { data: analysis }: { data: GetAnalyzeResult } = await fetcher(
             {
