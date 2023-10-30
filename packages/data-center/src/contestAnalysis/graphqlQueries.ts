@@ -629,6 +629,9 @@ export const GET_BEFORE_GAME_INDEX_ANALYZE_QUERY = `
                     oddsChangeTime
                     isClosed
                     oddsType
+                    state
+                    homeScore
+                    awayScore
                 }
             }
         }
