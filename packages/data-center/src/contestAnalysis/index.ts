@@ -145,7 +145,7 @@ const HTHMatchSchema = z.object({
     leagueEn: z.string(),
     leagueChs: z.string(),
     leagueCht: z.string(),
-    matchTime: z.string(),
+    matchTime: z.number(),
     matchLocation: z.string(),
     homeId: z.number(),
     homeEn: z.string(),
@@ -272,7 +272,7 @@ type GetAnalyzeResult = z.infer<typeof GetAnalyzeSchema>;
 
 const AsiaMatchSchema = z.object({
     matchId: z.number(),
-    matchTime: z.string(),
+    matchTime: z.number(),
     startTime: z.string(),
     leagueId: z.number(),
     leagueEn: z.string(),
@@ -796,7 +796,10 @@ export const getAnalysisOthers = async (
                 data: {
                     query: GET_ANALYSIS_QUERY,
                     variables: {
-                        input: {
+                        singleMatchInput: {
+                            matchId
+                        },
+                        analysisInput: {
                             matchId
                         }
                     }

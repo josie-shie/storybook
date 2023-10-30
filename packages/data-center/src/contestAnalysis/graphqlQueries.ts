@@ -1,6 +1,6 @@
 export const GET_ANALYSIS_QUERY = `
-    query getAnalysis($input: AnalysisInput!) {
-        getSingleMatch(input: $input) {
+    query getAnalysisOthers($singleMatchInput: SingleMatchInput!,$analysisInput: AnalysisInput!) {
+        getSingleMatch(input: $singleMatchInput) {
             homeEn
             homeChs
             homeCht
@@ -10,7 +10,7 @@ export const GET_ANALYSIS_QUERY = `
             homeId
             awayId
         }
-        getAnalysis(input: $input) {
+        getAnalysis(input: $analysisInput) {
             statistics {
                 headToHead {
                     matchId
@@ -417,7 +417,7 @@ export const GET_ANALYSIS_QUERY = `
 `;
 
 export const GET_MATCHES_ODDS_DETAIL_QUERY = `
-    query getMatchesOddsDetail($input1: !MatchesOddsDetailInput, $input2: !MatchesOddsDetailInput) {
+    query getMatchesOddsDetail($input1: MatchesOddsDetailInput!, $input2: MatchesOddsDetailInput!) {
         crownResponse: getMatchesOddsDetail(input: $input1) {
             match {
                 matchId
