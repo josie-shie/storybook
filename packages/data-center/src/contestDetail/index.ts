@@ -1,11 +1,11 @@
-import { fetcher, handicapToString, truncateFloatingPoint } from 'lib';
+import { fetcher, handicapToString, truncateFloatingPoint, timestampToString } from 'lib';
 import { z } from 'zod';
 import { handleApiError } from '../common';
+import type { ReturnData } from '../common';
 import {
     GET_SINGLE_MATCH_QUERY,
     GET_DETAIL_STATUS_QUERY,
     GET_LIVE_TEXT_QUERY,
-    GET_COMPANY_ODDS_DETAIL_QUERY,
     GET_COMPANY_LIVE_ODDS_DETAIL
 } from './graphqlQueries';
 
@@ -22,8 +22,8 @@ const SingleMatchSchema = z.object({
     subLeagueEn: z.string(),
     subLeagueChs: z.string(),
     subLeagueCht: z.string(),
-    matchTime: z.string(),
-    startTime: z.string(),
+    matchTime: z.number(),
+    startTime: z.number(),
     homeEn: z.string(),
     homeChs: z.string(),
     homeCht: z.string(),
@@ -64,7 +64,6 @@ const SingleMatchSchema = z.object({
     extraExplain: z.string(),
     isHidden: z.boolean(),
     injuryTime: z.string(),
-    updateTime: z.string(),
     homeLogo: z.string(),
     awayLogo: z.string()
 });
@@ -74,7 +73,13 @@ const GetSingleMatchResultSchema = z.object({
 });
 
 type GetSingleMatchResult = z.infer<typeof GetSingleMatchResultSchema>;
-export type GetSingleMatchResponse = z.infer<typeof SingleMatchSchema>;
+
+type OriginalGetSingleMatch = z.infer<typeof SingleMatchSchema>;
+
+export type GetSingleMatchResponse = Omit<OriginalGetSingleMatch, 'matchTime' | 'startTime'> & {
+    matchTime: string;
+    startTime: string;
+};
 
 const HandicapsInfoSchema = z.object({
     matchId: z.number(),
@@ -85,7 +90,7 @@ const HandicapsInfoSchema = z.object({
     currentHandicap: z.number(),
     homeCurrentOdds: z.number(),
     awayCurrentOdds: z.number(),
-    oddsChangeTime: z.string(),
+    oddsChangeTime: z.number(),
     oddsType: z.number(),
     state: z.number(),
     homeScore: z.number(),
@@ -93,22 +98,17 @@ const HandicapsInfoSchema = z.object({
     isClosed: z.boolean()
 });
 
-interface HandicapsInfo {
-    matchId: number;
-    companyId: number;
-    initialHandicap: number;
+type OriginHandicapsInfo = z.infer<typeof HandicapsInfoSchema>;
+type HandicapsInfo = Omit<
+    OriginHandicapsInfo,
+    'oddsChangeTime' | 'homeInitialOdds' | 'awayInitialOdds' | 'homeCurrentOdds' | 'awayCurrentOdds'
+> & {
+    oddsChangeTime: string;
     homeInitialOdds: string;
     awayInitialOdds: string;
-    currentHandicap: number;
     homeCurrentOdds: string;
     awayCurrentOdds: string;
-    oddsChangeTime: string;
-    oddsType: number;
-    state: number;
-    homeScore: number;
-    awayScore: number;
-    isClosed: boolean;
-}
+};
 
 const TotalGoalsInfoSchema = z.object({
     matchId: z.number(),
@@ -119,7 +119,7 @@ const TotalGoalsInfoSchema = z.object({
     currentTotalGoals: z.number(),
     overCurrentOdds: z.number(),
     underCurrentOdds: z.number(),
-    oddsChangeTime: z.string(),
+    oddsChangeTime: z.number(),
     oddsType: z.number(),
     state: z.number(),
     homeScore: z.number(),
@@ -127,22 +127,25 @@ const TotalGoalsInfoSchema = z.object({
     isClosed: z.boolean()
 });
 
-interface TotalGoalsInfo {
-    matchId: number;
-    companyId: number;
-    initialTotalGoals: string;
+type OriginTotalGoalsInfo = z.infer<typeof TotalGoalsInfoSchema>;
+type TotalGoalsInfo = Omit<
+    OriginTotalGoalsInfo,
+    | 'oddsChangeTime'
+    | 'overInitialOdds'
+    | 'underInitialOdds'
+    | 'overCurrentOdds'
+    | 'underCurrentOdds'
+    | 'initialTotalGoals'
+    | 'currentTotalGoals'
+> & {
+    oddsChangeTime: string;
     overInitialOdds: number;
     underInitialOdds: number;
-    currentTotalGoals: string;
     overCurrentOdds: number;
     underCurrentOdds: number;
-    oddsChangeTime: string;
-    oddsType: number;
-    state: number;
-    homeScore: number;
-    awayScore: number;
-    isClosed: boolean;
-}
+    initialTotalGoals: string;
+    currentTotalGoals: string;
+};
 
 const WinDrawLoseTypeSchema = z.object({
     matchId: z.number(),
@@ -153,7 +156,7 @@ const WinDrawLoseTypeSchema = z.object({
     currentHomeOdds: z.number(),
     currentDrawOdds: z.number(),
     currentAwayOdds: z.number(),
-    oddsChangeTime: z.string(),
+    oddsChangeTime: z.number(),
     oddsType: z.number(),
     state: z.number(),
     homeScore: z.number(),
@@ -175,7 +178,7 @@ const EventInfoSchema = z.object({
         z.literal(13),
         z.literal(14)
     ]),
-    time: z.string(),
+    time: z.number(),
     nameEn: z.string(),
     nameChs: z.string(),
     nameCht: z.string(),
@@ -301,7 +304,7 @@ const TotalGoalsListSchema = z.array(
 const LiveTextInfoSchema = z.object({
     id: z.number(),
     content: z.string(),
-    time: z.string()
+    time: z.number()
 });
 
 type LiveTextInfo = z.infer<typeof LiveTextInfoSchema>;
@@ -367,7 +370,7 @@ export interface GetDetailStatusResponse {
     totalGoalsData: TotalGoalsDataType;
     eventList: string[];
     eventInfo: EventInfoType;
-    technical: TechnicalInfo;
+    technical: TechnicalInfo[];
     lineupInfo: LineupList;
 }
 
@@ -389,33 +392,6 @@ const GetLiveTextResultSchema = z.object({
 
 export type GetLiveTextResponse = GetLiveText[];
 type GetLiveTextResult = z.infer<typeof GetLiveTextResultSchema>;
-
-const GetCompanyOddsDetailSchema = z.object({
-    matchId: z.number(),
-    homeTeam: z.string(),
-    awayTeam: z.string(),
-    homeScore: z.number(),
-    awayScore: z.number(),
-    startTime: z.string(),
-    companyOdds: z.object({
-        companyId: z.number(),
-        companyName: z.string(),
-        fullHandicap: z.array(HandicapsInfoSchema),
-        halfHandicap: z.array(HandicapsInfoSchema),
-        fullTotalGoal: z.array(TotalGoalsInfoSchema),
-        halfTotalGoal: z.array(TotalGoalsInfoSchema),
-        fullWinDrawLose: z.array(WinDrawLoseTypeSchema),
-        halfWinDrawLose: z.array(WinDrawLoseTypeSchema)
-    })
-});
-
-const CompanyDetailSchema = z.object({
-    getCompanyOddsDetail: GetCompanyOddsDetailSchema
-});
-
-type CompanyDetailResult = z.infer<typeof CompanyDetailSchema>;
-
-export type GetCompanyOddsDetailResponse = z.infer<typeof CompanyDetailSchema>;
 
 const CompanyLiveDetailSchema = z.object({
     matchId: z.number(),
@@ -443,7 +419,9 @@ export type CompanyLiveDetailResponse = z.infer<typeof CompanyLiveDetailSchema>;
  * - params : (matchId: number)
  * - returns : {@link GetSingleMatchResponse}
  */
-export const getSingleMatch = async (matchId: number) => {
+export const getMatchDetail = async (
+    matchId: number
+): Promise<ReturnData<GetSingleMatchResponse>> => {
     try {
         const { data }: { data: GetSingleMatchResult } = await fetcher(
             {
@@ -461,9 +439,15 @@ export const getSingleMatch = async (matchId: number) => {
 
         GetSingleMatchResultSchema.parse(data);
 
+        const formatDateTime: GetSingleMatchResponse = {
+            ...data.getSingleMatch,
+            startTime: timestampToString(data.getSingleMatch.startTime),
+            matchTime: timestampToString(data.getSingleMatch.matchTime)
+        };
+
         return {
             success: true,
-            data: data.getSingleMatch
+            data: formatDateTime
         };
     } catch (error) {
         return handleApiError(error);
@@ -475,7 +459,9 @@ export const getSingleMatch = async (matchId: number) => {
  * - params : (matchId: number)
  * - returns : {@link GetDetailStatusResponse}
  */
-export const getDetailStatus = async (matchId: number) => {
+export const getDetailStatus = async (
+    matchId: number
+): Promise<ReturnData<GetDetailStatusResponse>> => {
     try {
         const { data }: { data: GetDetailStatusResult } = await fetcher(
             {
@@ -509,7 +495,8 @@ export const getDetailStatus = async (matchId: number) => {
                             homeCurrentOdds: handicapToString(before.homeCurrentOdds),
                             awayCurrentOdds: handicapToString(before.awayCurrentOdds),
                             initialHandicap: truncateFloatingPoint(before.initialHandicap, 2),
-                            currentHandicap: truncateFloatingPoint(before.currentHandicap, 2)
+                            currentHandicap: truncateFloatingPoint(before.currentHandicap, 2),
+                            oddsChangeTime: timestampToString(before.oddsChangeTime)
                         };
                     }),
                     notStarted: item.timePeriods.notStarted.map(before => {
@@ -520,7 +507,8 @@ export const getDetailStatus = async (matchId: number) => {
                             homeCurrentOdds: handicapToString(before.homeCurrentOdds),
                             awayCurrentOdds: handicapToString(before.awayCurrentOdds),
                             initialHandicap: truncateFloatingPoint(before.initialHandicap, 2),
-                            currentHandicap: truncateFloatingPoint(before.currentHandicap, 2)
+                            currentHandicap: truncateFloatingPoint(before.currentHandicap, 2),
+                            oddsChangeTime: timestampToString(before.oddsChangeTime)
                         };
                     })
                 };
@@ -537,7 +525,8 @@ export const getDetailStatus = async (matchId: number) => {
                             homeCurrentOdds: handicapToString(before.homeCurrentOdds),
                             awayCurrentOdds: handicapToString(before.awayCurrentOdds),
                             initialHandicap: truncateFloatingPoint(before.initialHandicap, 2),
-                            currentHandicap: truncateFloatingPoint(before.currentHandicap, 2)
+                            currentHandicap: truncateFloatingPoint(before.currentHandicap, 2),
+                            oddsChangeTime: timestampToString(before.oddsChangeTime)
                         };
                     }),
                     notStarted: item.timePeriods.notStarted.map(before => {
@@ -548,7 +537,8 @@ export const getDetailStatus = async (matchId: number) => {
                             homeCurrentOdds: handicapToString(before.homeCurrentOdds),
                             awayCurrentOdds: handicapToString(before.awayCurrentOdds),
                             initialHandicap: truncateFloatingPoint(before.initialHandicap, 2),
-                            currentHandicap: truncateFloatingPoint(before.currentHandicap, 2)
+                            currentHandicap: truncateFloatingPoint(before.currentHandicap, 2),
+                            oddsChangeTime: timestampToString(before.oddsChangeTime)
                         };
                     })
                 };
@@ -571,7 +561,8 @@ export const getDetailStatus = async (matchId: number) => {
                             overInitialOdds: truncateFloatingPoint(before.overInitialOdds, 2),
                             underInitialOdds: truncateFloatingPoint(before.underInitialOdds, 2),
                             overCurrentOdds: truncateFloatingPoint(before.overCurrentOdds, 2),
-                            underCurrentOdds: truncateFloatingPoint(before.underCurrentOdds, 2)
+                            underCurrentOdds: truncateFloatingPoint(before.underCurrentOdds, 2),
+                            oddsChangeTime: timestampToString(before.oddsChangeTime)
                         };
                     }),
                     notStarted: item.timePeriods.notStarted.map(before => {
@@ -582,7 +573,8 @@ export const getDetailStatus = async (matchId: number) => {
                             overInitialOdds: truncateFloatingPoint(before.overInitialOdds, 2),
                             underInitialOdds: truncateFloatingPoint(before.underInitialOdds, 2),
                             overCurrentOdds: truncateFloatingPoint(before.overCurrentOdds, 2),
-                            underCurrentOdds: truncateFloatingPoint(before.underCurrentOdds, 2)
+                            underCurrentOdds: truncateFloatingPoint(before.underCurrentOdds, 2),
+                            oddsChangeTime: timestampToString(before.oddsChangeTime)
                         };
                     })
                 };
@@ -599,7 +591,8 @@ export const getDetailStatus = async (matchId: number) => {
                             overInitialOdds: truncateFloatingPoint(before.overInitialOdds, 2),
                             underInitialOdds: truncateFloatingPoint(before.underInitialOdds, 2),
                             overCurrentOdds: truncateFloatingPoint(before.overCurrentOdds, 2),
-                            underCurrentOdds: truncateFloatingPoint(before.underCurrentOdds, 2)
+                            underCurrentOdds: truncateFloatingPoint(before.underCurrentOdds, 2),
+                            oddsChangeTime: timestampToString(before.oddsChangeTime)
                         };
                     }),
                     notStarted: item.timePeriods.notStarted.map(before => {
@@ -610,14 +603,15 @@ export const getDetailStatus = async (matchId: number) => {
                             overInitialOdds: truncateFloatingPoint(before.overInitialOdds, 2),
                             underInitialOdds: truncateFloatingPoint(before.underInitialOdds, 2),
                             overCurrentOdds: truncateFloatingPoint(before.overCurrentOdds, 2),
-                            underCurrentOdds: truncateFloatingPoint(before.underCurrentOdds, 2)
+                            underCurrentOdds: truncateFloatingPoint(before.underCurrentOdds, 2),
+                            oddsChangeTime: timestampToString(before.oddsChangeTime)
                         };
                     })
                 };
             }
         }
 
-        const eventList: string[] = [];
+        const eventList: number[] = [];
         const eventInfo: EventInfoType = {
             isHome: {},
             isAway: {}
@@ -645,7 +639,7 @@ export const getDetailStatus = async (matchId: number) => {
             data: {
                 handicapsData,
                 totalGoalsData,
-                eventList,
+                eventList: eventList.map(item => timestampToString(item)),
                 eventInfo,
                 technical,
                 lineupInfo
@@ -661,7 +655,7 @@ export const getDetailStatus = async (matchId: number) => {
  * - params : number (matchId)
  * - returns : {@link GetLiveTextResponse} {@link GetLiveText}
  */
-export const getLiveText = async (matchId: number) => {
+export const getLiveText = async (matchId: number): Promise<ReturnData<GetLiveTextResponse>> => {
     function formatArray(arr: LiveTextInfo[]) {
         return arr.map(item => {
             const timeMatch = /^(?<time>\d{1,3})'/.exec(item.content);
@@ -675,7 +669,7 @@ export const getLiveText = async (matchId: number) => {
             }
 
             return {
-                dateTime: item.time,
+                dateTime: timestampToString(item.time),
                 time: timeMatch[1],
                 id: item.id,
                 content: contentMatch[1],
@@ -715,44 +709,14 @@ export const getLiveText = async (matchId: number) => {
 };
 
 /**
- * 取得賭商詳細賠率記錄
- * - params : (matchId: number, companyId: number)
- * - returns : {@link GetCompanyOddsDetailResponse}
- */
-export const getCompanyOddsDetail = async (matchId: number, companyId: number) => {
-    try {
-        const { data }: { data: CompanyDetailResult } = await fetcher(
-            {
-                data: {
-                    query: GET_COMPANY_ODDS_DETAIL_QUERY,
-                    variables: {
-                        input: {
-                            matchId,
-                            companyId
-                        }
-                    }
-                }
-            },
-            { cache: 'no-store' }
-        );
-
-        CompanyDetailSchema.parse(data);
-
-        return {
-            success: true,
-            data: data.getCompanyOddsDetail
-        };
-    } catch (error) {
-        handleApiError;
-    }
-};
-
-/**
  * 取得公司賠率現場數據
  * - params : (matchId: number, companyId: number)
  * - returns : {@link CompanyLiveDetailResponse}
  */
-export const getCompanyLiveOddsDetail = async (matchId: number, companyId: number) => {
+export const getCompanyLiveOddsDetail = async (
+    matchId: number,
+    companyId: number
+): Promise<ReturnData<CompanyLiveDetailResponse>> => {
     try {
         const { data }: { data: CompanyLiveDetailResult } = await fetcher(
             {
@@ -772,7 +736,7 @@ export const getCompanyLiveOddsDetail = async (matchId: number, companyId: numbe
         CompanyLiveDetailResultSchema.parse(data);
 
         return {
-            succuss: true,
+            success: true,
             data: data.getCompanyLiveOdds
         };
     } catch (error) {

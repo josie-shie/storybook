@@ -1,7 +1,8 @@
 import type { ReactElement, ReactNode } from 'react';
+import Image from 'next/image';
 import dotBackground from './img/dotBackground.png';
 import style from './header.module.scss';
-import LogoIcon from './img/logoIcon.svg';
+import logoIconImg from './img/logoIcon.png';
 
 interface HeaderProps {
     logo?: ReactElement | string;
@@ -14,8 +15,8 @@ function HeaderComponent({ logo, children }: HeaderProps) {
             <div className={style.header} style={{ backgroundImage: `url(${dotBackground.src})` }}>
                 <a href="/">
                     <div className={style.logo}>
-                        <LogoIcon />
-                        {logo}
+                        <Image alt="" height={24} src={logoIconImg} width={24} />
+                        <div className={style.icon}>{logo}</div>
                     </div>
                 </a>
                 {children}

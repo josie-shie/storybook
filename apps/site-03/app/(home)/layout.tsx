@@ -1,7 +1,8 @@
 'use client';
 import { usePathname } from 'next/navigation';
 import type { ReactNode } from 'react';
-import Logo from './img/logo.svg';
+import Image from 'next/image';
+import LogoImg from './img/logo.png';
 import style from './home.module.scss';
 import HeaderLogo from '@/components/header/headerLogo';
 import HeaderTitle from '@/components/header/headerTitle';
@@ -10,7 +11,7 @@ import { Tabs } from '@/components/tabs/tabs';
 
 function NormalLayout({ children }: { children: ReactNode }) {
     const headerProps = {
-        logo: <Logo />,
+        logo: <Image alt="" height={13} src={LogoImg} width={66} />,
         total: 999999
     };
 

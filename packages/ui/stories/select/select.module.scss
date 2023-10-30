@@ -78,9 +78,3 @@
 .selected {
     color: #4489ff;
 }
-
-:global(.MuiDrawer-root) {
-    :global(.MuiDrawer-paper) {
-        border-radius: 16px 16px 0 0;
-    }
-}

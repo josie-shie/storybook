@@ -1,6 +1,6 @@
 import { ZodError } from 'zod';
 
-export type ReturnData<T> = Promise<
+export type ReturnData<T> =
     | {
           success: true;
           data: T;
@@ -8,8 +8,7 @@ export type ReturnData<T> = Promise<
     | {
           success: false;
           error: string;
-      }
->;
+      };
 
 export const handleApiError = (error: unknown): { success: false; error: string } => {
     let errorMessage = '<001> An unexpected error occurred.'; // 未知錯誤

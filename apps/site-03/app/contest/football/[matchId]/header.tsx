@@ -2,8 +2,8 @@
 
 import Image from 'next/image';
 import style from './header.module.scss';
-import BackIcon from './img/back.svg';
-import SettingIcon from './img/setting.svg';
+import BackIcon from './img/back.png';
+import ShareIcon from './img/share.png';
 import DefaultTeamLogoIcon from './img/defaultTeamLogo.png';
 
 function GameStatus() {
@@ -46,7 +46,7 @@ function Header({ liveVisible }: { liveVisible: boolean }) {
     return (
         <>
             <header className={style.header}>
-                <BackIcon />
+                <Image alt="back_icon" height={24} src={BackIcon} width={24} />
                 <div className={style.scoreboard}>
                     <p className={style.createTime}>7/14 01:00</p>
                     <p className={style.league}>
@@ -55,13 +55,13 @@ function Header({ liveVisible }: { liveVisible: boolean }) {
                         {matchData.kind === 2 && ` ${matchData.roundCn} ${matchData.grouping}`}
                     </p>
                 </div>
-                <SettingIcon />
+                <Image alt="share_icon" height={24} src={ShareIcon} width={24} />
             </header>
 
             <header
                 className={`${style.header} ${style.headerFixed} ${!liveVisible && style.show}`}
             >
-                <BackIcon />
+                <Image alt="back_icon" height={24} src={BackIcon} width={24} />
                 <div className={style.scoreBar}>
                     <Image alt="" height={24} src={DefaultTeamLogoIcon} width={24} />
                     <p className={style.score}>10</p>
@@ -69,7 +69,7 @@ function Header({ liveVisible }: { liveVisible: boolean }) {
                     <p className={style.score}>10</p>
                     <Image alt="" height={24} src={DefaultTeamLogoIcon} width={24} />
                 </div>
-                <SettingIcon />
+                <Image alt="share_icon" height={24} src={ShareIcon} width={24} />
             </header>
         </>
     );
