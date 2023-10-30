@@ -555,17 +555,12 @@ export interface GetAnalysisOthersResponse {
  * - returns {@link FormatRecordDataResponse} {@link MatchCompanyOdds}
  */
 const formatRecordData = (
-    headToHead: HTHMatch[],
+    matchesDataMap: Map<number, HTHMatch>,
     matchesOddsDetails: GetMatchesOddsDetailsResult
 ) => {
-    const headToHeadDataMap = headToHead.reduce((acc, item) => {
-        acc.set(item.matchId, item);
-        return acc;
-    }, new Map<number, HTHMatch>());
-
     const bet365Response = matchesOddsDetails.bet365Response.reduce<MatchCompanyOdds>(
         (preItem, item) => {
-            const matchData = headToHeadDataMap.get(item.match.matchId);
+            const matchData = matchesDataMap.get(item.match.matchId);
             const data = {
                 full: {
                     initial: {
@@ -615,7 +610,7 @@ const formatRecordData = (
 
     const crownResponse = matchesOddsDetails.crownResponse.reduce<MatchCompanyOdds>(
         (preItem, item) => {
-            const matchData = headToHeadDataMap.get(item.match.matchId);
+            const matchData = matchesDataMap.get(item.match.matchId);
             const data = {
                 full: {
                     initial: {
@@ -810,18 +805,38 @@ export const getAnalysisOthers = async (
             { cache: 'no-store' }
         );
 
-        /* 取得不同三方的對戰紀錄 */
+        GetAnalyzeSchema.parse(analysis);
+
+        const { homeOdds, awayOdds, headToHead, homeHT, awayHT, homeLastMatches, awayLastMatches } =
+            analysis.getAnalysis.statistics;
+
+        const headToHeadDataMap = headToHead.reduce((acc, item) => {
+            acc.set(item.matchId, item);
+            return acc;
+        }, new Map<number, HTHMatch>());
+
+        const homeLastMatchesDataMap = homeLastMatches.reduce((acc, item) => {
+            acc.set(item.matchId, item);
+            return acc;
+        }, new Map<number, HTHMatch>());
+
+        const awayLastMatchesMapDataMap = awayLastMatches.reduce((acc, item) => {
+            acc.set(item.matchId, item);
+            return acc;
+        }, new Map<number, HTHMatch>());
+
+        /* 取得全部不同三方的對戰紀錄 */
         const { data: matchesOddsDetails }: { data: GetMatchesOddsDetailsResult } = await fetcher(
             {
                 data: {
                     query: GET_MATCHES_ODDS_DETAIL_QUERY,
                     variables: {
                         input1: {
-                            matchId,
+                            matchIds: Array.from(headToHeadDataMap.keys()),
                             companyId: '3'
                         },
                         input2: {
-                            matchId,
+                            matchIds: Array.from(headToHeadDataMap.keys()),
                             companyId: '8'
                         }
                     }
@@ -830,19 +845,57 @@ export const getAnalysisOthers = async (
             { cache: 'no-store' }
         );
 
-        GetAnalyzeSchema.parse(analysis);
-        MatchesOddsDetailsSchema.parse(matchesOddsDetails);
+        /* 取得主場隊伍不同三方的對戰紀錄 */
+        const { data: homeMatchesOddsDetails }: { data: GetMatchesOddsDetailsResult } =
+            await fetcher(
+                {
+                    data: {
+                        query: GET_MATCHES_ODDS_DETAIL_QUERY,
+                        variables: {
+                            input1: {
+                                matchIds: Array.from(homeLastMatchesDataMap.keys()),
+                                companyId: '3'
+                            },
+                            input2: {
+                                matchIds: Array.from(homeLastMatchesDataMap.keys()),
+                                companyId: '8'
+                            }
+                        }
+                    }
+                },
+                { cache: 'no-store' }
+            );
 
-        const { homeOdds, awayOdds, headToHead, homeHT, awayHT, homeLastMatches, awayLastMatches } =
-            analysis.getAnalysis.statistics;
+        /* 取得客場隊伍不同三方的對戰紀錄 */
+        const { data: awayMatchesOddsDetails }: { data: GetMatchesOddsDetailsResult } =
+            await fetcher(
+                {
+                    data: {
+                        query: GET_MATCHES_ODDS_DETAIL_QUERY,
+                        variables: {
+                            input1: {
+                                matchIds: Array.from(awayLastMatchesMapDataMap.keys()),
+                                companyId: '3'
+                            },
+                            input2: {
+                                matchIds: Array.from(awayLastMatchesMapDataMap.keys()),
+                                companyId: '8'
+                            }
+                        }
+                    }
+                },
+                { cache: 'no-store' }
+            );
+
+        MatchesOddsDetailsSchema.parse(matchesOddsDetails);
 
         const teamInfo = analysis.getSingleMatch;
 
         const leagueTrendData = formatLeagueTrendData(homeOdds, awayOdds);
         const winLoseCountData = formatWinLoseCountData(homeHT, awayHT);
-        const battleRecordData = formatRecordData(headToHead, matchesOddsDetails);
-        const homeMatches = formatRecordData(homeLastMatches, matchesOddsDetails);
-        const awayMatches = formatRecordData(awayLastMatches, matchesOddsDetails);
+        const battleRecordData = formatRecordData(headToHeadDataMap, matchesOddsDetails);
+        const homeMatches = formatRecordData(homeLastMatchesDataMap, homeMatchesOddsDetails);
+        const awayMatches = formatRecordData(awayLastMatchesMapDataMap, awayMatchesOddsDetails);
         const res: GetAnalysisOthersResponse = {
             teamInfo,
             leagueTrendData,
