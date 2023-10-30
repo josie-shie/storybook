@@ -67,11 +67,11 @@ function Technical({ technicalList }: { technicalList?: TechnicalInfo[] }) {
                 <div className="tableBody">
                     {technicalList?.map((technic, idx) => (
                         <div className="tr" key={`technic_${idx.toString()}`}>
-                            <div className={`td ${technic.home > technic.away && 'win'}`}>
+                            <div className={`td ${technic.home > technic.away && 'redText'}`}>
                                 {technic.home}
                             </div>
                             <div className="td">{technicMap[technic.technicType]}</div>
-                            <div className={`td ${technic.home < technic.away && style.win}`}>
+                            <div className={`td ${technic.home < technic.away && 'redText'}`}>
                                 {technic.away}
                             </div>
                         </div>

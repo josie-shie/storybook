@@ -68,12 +68,12 @@ function TotalGoals({ totalGoalsData }: { totalGoalsData?: TotalGoalsDataType })
                                 </div>
                                 <div className="td">
                                     <p>{before.overInitialOdds}</p>
-                                    <p>{before.initialTotalGoals}</p>
+                                    <p className="redText">{before.initialTotalGoals}</p>
                                     <p>{before.underInitialOdds}</p>
                                 </div>
                                 <div className="td">
                                     <p>{before.overCurrentOdds}</p>
-                                    <p>{before.currentTotalGoals}</p>
+                                    <p className="redText">{before.currentTotalGoals}</p>
                                     <p>{before.underCurrentOdds}</p>
                                 </div>
                             </div>
@@ -90,12 +90,12 @@ function TotalGoals({ totalGoalsData }: { totalGoalsData?: TotalGoalsDataType })
                                 </div>
                                 <div className="td">
                                     <p>{now.overInitialOdds}</p>
-                                    <p>{now.initialTotalGoals}</p>
+                                    <p className="redText">{now.initialTotalGoals}</p>
                                     <p>{now.underInitialOdds}</p>
                                 </div>
                                 <div className="td">
                                     <p>{now.overCurrentOdds}</p>
-                                    <p>{now.currentTotalGoals}</p>
+                                    <p className="redText">{now.currentTotalGoals}</p>
                                     <p>{now.underCurrentOdds}</p>
                                 </div>
                             </div>

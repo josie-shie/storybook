@@ -1,5 +1,7 @@
-function Analyze() {
-    return <>Analyze</>;
+import Analyze from './analyze';
+
+function Page() {
+    return <Analyze />;
 }
 
-export default Analyze;
+export default Page;

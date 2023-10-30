@@ -63,12 +63,12 @@ function Handicap({ handicapData }: { handicapData?: HandicapsDataType }) {
                             </div>
                             <div className="td">
                                 <p>{before.homeInitialOdds}</p>
-                                <p>{before.initialHandicap}</p>
+                                <p className="redText">{before.initialHandicap}</p>
                                 <p>{before.awayInitialOdds}</p>
                             </div>
                             <div className="td">
                                 <p>{before.homeCurrentOdds}</p>
-                                <p>{before.currentHandicap}</p>
+                                <p className="redText">{before.currentHandicap}</p>
                                 <p>{before.awayCurrentOdds}</p>
                             </div>
                         </div>
@@ -84,12 +84,12 @@ function Handicap({ handicapData }: { handicapData?: HandicapsDataType }) {
                             </div>
                             <div className="td">
                                 <p>{now.homeInitialOdds}</p>
-                                <p>{now.initialHandicap}</p>
+                                <p className="redText">{now.initialHandicap}</p>
                                 <p>{now.awayInitialOdds}</p>
                             </div>
                             <div className="td">
                                 <p>{now.homeCurrentOdds}</p>
-                                <p>{now.currentHandicap}</p>
+                                <p className="redText">{now.currentHandicap}</p>
                                 <p>{now.awayCurrentOdds}</p>
                             </div>
                         </div>

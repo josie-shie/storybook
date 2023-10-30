@@ -81,7 +81,7 @@ function LiveBox() {
                 setLiveVisible(entry.isIntersecting);
             },
             {
-                threshold: 0.24
+                threshold: 0.1
             }
         );
         if (currentRef) {

@@ -62,7 +62,7 @@
                 align-items: center;
                 flex: 1;
                 background-color: #fdfdf8;
-                padding: 10px;
+                padding: 10px 8px;
                 color: #222;
                 font-size: 12px;
                 font-weight: 500;
@@ -78,6 +78,22 @@
                 .td {
                     background-color: #f3f3f3;
                 }
+            }
+
+            .redText {
+                color: #f85640;
+            }
+
+            .greenText {
+                color: #009a63;
+            }
+
+            .grayText {
+                color: #9b9b9b;
+            }
+
+            .blueText {
+                color: #065ff5;
             }
         }
 

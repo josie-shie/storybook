@@ -1,0 +1,26 @@
+.leagueTrendTableContainer {
+    .leagueTrendTables {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        gap: 10px;
+    }
+
+    :global {
+        .tableBody {
+            .tr {
+                &:first-child {
+                    .td {
+                        color: #8d8d8d;
+
+                        &:first-child {
+                            white-space: nowrap;
+                        }
+
+                        border-right: 0;
+                    }
+                }
+            }
+        }
+    }
+}

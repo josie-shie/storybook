@@ -6,6 +6,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Situation from './(dashboard)/situation/page';
 import TextBroadcast from './(dashboard)/textBroadcast/page';
 import Predict from './(dashboard)/predict/page';
+import Analyze from './(dashboard)/analyze/page';
 import MessageBoard from './(dashboard)/messageBoard/page';
 import style from './dashboard.module.scss';
 
@@ -35,7 +36,9 @@ function Dashboard() {
                     </Suspense>
                 </Tab>
                 <Tab label="分析">
-                    <Suspense fallback={<CircularProgress />}>Analyze</Suspense>
+                    <Suspense fallback={<CircularProgress />}>
+                        <Analyze />
+                    </Suspense>
                 </Tab>
                 <Tab label="指数">
                     <Suspense fallback={<CircularProgress />}>Exponent</Suspense>
