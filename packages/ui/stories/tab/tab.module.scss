@@ -36,6 +36,10 @@
             flex-wrap: wrap;
             padding: 8px 8px 0;
 
+            a {
+                cursor: none;
+            }
+
             > div {
                 display: flex;
                 align-items: center;

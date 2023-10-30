@@ -35,7 +35,11 @@ function RecommendLayout({ children }: { children: ReactNode }) {
             <div className={style.layout}>
                 <Tabs
                     labels={['竟猜', '专家预测', '大数据分析']}
-                    paths={['/recommend/guess', '/recommend/predict', '/recommend/bigData']}
+                    paths={[
+                        '/recommend/guess',
+                        '/recommend/predict',
+                        '/recommend/bigData?status=analysis'
+                    ]}
                 />
                 {children}
             </div>

@@ -1,0 +1,38 @@
+.switch {
+    position: relative;
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    padding: 3px 0;
+    border: 1px solid #4489ff;
+    border-radius: 30px;
+    background: transparent;
+    overflow: hidden;
+
+    .indicator {
+        position: absolute;
+        bottom: 1px;
+        height: 90%;
+        border-radius: 30px;
+        background-color: #4489ff;
+        transition:
+            left 0.3s cubic-bezier(0.22, 0.94, 0.19, 0.88),
+            width 0.3s cubic-bezier(0.22, 0.94, 0.19, 0.88);
+    }
+
+    span {
+        position: relative;
+        display: inline-block;
+        flex: 1;
+        padding: 0 8px;
+        text-align: center;
+        color: #4489ff;
+        font-size: 12px;
+        font-weight: 500;
+        z-index: 1;
+
+        &.active {
+            color: #fff;
+        }
+    }
+}
