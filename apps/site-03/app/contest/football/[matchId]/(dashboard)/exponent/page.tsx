@@ -1,5 +1,7 @@
-function Exponent() {
-    return <>Exponent</>;
+import Exponent from './exponent';
+
+function Page() {
+    return <Exponent />;
 }
 
-export default Exponent;
+export default Page;
