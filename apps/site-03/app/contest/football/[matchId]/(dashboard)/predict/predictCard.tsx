@@ -3,6 +3,8 @@ import style from './predict.module.scss';
 import hotIcon from './img/hot.png';
 import coinIcon from './img/coin.png';
 import type { Predict } from '@/types/predict';
+import Avatar from '@/components/avatar/avatar';
+import Tag from '@/components/tag/tag';
 
 interface PredictCardProps {
     predictInfo: Predict;
@@ -13,25 +15,19 @@ function PredictCard({ predictInfo }: PredictCardProps) {
         <div className={style.predictCard}>
             <div className={style.mentor}>
                 <div className={style.mentorInfo}>
-                    <Image
-                        alt=""
-                        className={style.mentorAvator}
-                        height={40}
-                        src={predictInfo.mentor_avatar}
-                        width={40}
-                    />
+                    <Avatar borderColor="#4489ff" size={40} src={predictInfo.mentor_avatar.src} />
                     <div className={style.title}>
                         <h3 className={style.mentorName}>{predictInfo.mentorName}</h3>
                         <div className={style.tag}>
-                            <div className={style.hot}>
-                                <span>
-                                    <Image alt="" height={10} src={hotIcon} width={8} />
-                                </span>
-                                <span>{predictInfo.onRoll}連紅</span>
-                            </div>
-                            <div className={style.rank}>
-                                <span>月榜{predictInfo.rank}</span>
-                            </div>
+                            <Tag
+                                icon={<Image alt="" height={10} src={hotIcon} width={8} />}
+                                text="9連紅"
+                            />
+                            <Tag
+                                background="#4489FF"
+                                color="#FFF"
+                                text={`月榜${predictInfo.rank}`}
+                            />
                         </div>
                     </div>
                 </div>

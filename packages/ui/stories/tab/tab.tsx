@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import React, { useState, useEffect, useRef, Children, isValidElement } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import type { Swiper as SwiperCore } from 'swiper';
@@ -69,6 +70,9 @@ function Tabs({
     const headerLinerRef = useRef<HTMLDivElement>(null);
     const swiperRef = useRef<SwiperCore | null>(null);
     const [contentFade, setContentFade] = useState(false);
+    const router = useRouter();
+    const pathname = usePathname();
+    const searchParams = useSearchParams();
 
     const handleTabClick = (index: number) => {
         const headerLiner = headerLinerRef.current;
@@ -92,6 +96,42 @@ function Tabs({
             setContentFade(false);
         }, 100);
     };
+
+    useEffect(() => {
+        const getSearchParams = Array.from(searchParams.entries());
+        if (Array.isArray(props.children)) {
+            const pathsArray = React.Children.toArray(props.children)
+                .map(child => {
+                    return (child as React.ReactElement<{ to: string }>).props.to;
+                })
+                .filter(path => typeof path === 'string' && path.length > 0);
+
+            if (pathsArray.length === 0) {
+                return;
+            }
+
+            let defaultActiveIndex = pathsArray.findIndex(path => {
+                const [basePath, pathQueryString] = path.split('?');
+                if (basePath === pathname) {
+                    if (getSearchParams.length > 0) {
+                        const [queryKey, queryValue] = getSearchParams[0];
+                        if (pathQueryString) {
+                            const [pathQueryKey, pathQueryValue] = pathQueryString.split('=');
+                            return queryKey === pathQueryKey && queryValue === pathQueryValue;
+                        }
+                    } else {
+                        return !pathQueryString;
+                    }
+                }
+                return false;
+            });
+
+            if (defaultActiveIndex === -1) {
+                defaultActiveIndex = pathsArray.findIndex(path => pathname.startsWith(path));
+            }
+            setActiveIndex(defaultActiveIndex);
+        }
+    }, [pathname, props.children, searchParams]);
 
     useEffect(() => {
         const updateHeaderLinerStyle = (index: number) => {
@@ -214,8 +254,22 @@ function Tabs({
                 <Swiper
                     autoHeight
                     onSlideChange={swiper => {
+                        const tabIndex = swiper.activeIndex;
                         handleTabClick(swiper.activeIndex);
                         setActiveIndex(swiper.activeIndex);
+
+                        const childrenArray = React.Children.toArray(props.children);
+                        if (
+                            childrenArray[tabIndex] &&
+                            React.isValidElement(childrenArray[tabIndex])
+                        ) {
+                            const tab = childrenArray[tabIndex] as React.ReactElement<{
+                                to?: string;
+                            }>;
+                            if (tab.props.to) {
+                                router.push(tab.props.to);
+                            }
+                        }
                     }}
                     onSwiper={swiper => {
                         swiperRef.current = swiper;

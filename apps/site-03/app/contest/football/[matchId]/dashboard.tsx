@@ -8,6 +8,7 @@ import TextBroadcast from './(dashboard)/textBroadcast/page';
 import Predict from './(dashboard)/predict/page';
 import Analyze from './(dashboard)/analyze/page';
 import MessageBoard from './(dashboard)/messageBoard/page';
+import Exponent from './(dashboard)/exponent/page';
 import style from './dashboard.module.scss';
 
 function Dashboard() {
@@ -41,7 +42,9 @@ function Dashboard() {
                     </Suspense>
                 </Tab>
                 <Tab label="指数">
-                    <Suspense fallback={<CircularProgress />}>Exponent</Suspense>
+                    <Suspense fallback={<CircularProgress />}>
+                        <Exponent />
+                    </Suspense>
                 </Tab>
                 <Tab label="预测">
                     <Suspense fallback={<CircularProgress />}>

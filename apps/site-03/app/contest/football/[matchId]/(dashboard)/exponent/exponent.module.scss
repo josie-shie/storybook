@@ -1,0 +1,18 @@
+.exponentTable {
+    .options {
+        display: flex;
+        justify-content: flex-end;
+        gap: 20px;
+    }
+
+    :global {
+        .tableHead {
+            .tr {
+                margin-left: 45px;
+            }
+        }
+        .firstColumn {
+            max-width: 45px;
+        }
+    }
+}
