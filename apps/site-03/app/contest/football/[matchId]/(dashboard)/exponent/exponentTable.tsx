@@ -1,8 +1,8 @@
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup/ToggleButtonGroup';
 import ToggleButton from '@mui/material/ToggleButton/ToggleButton';
-import TextRadio from '../../../../../../components/textSwitch/textSwitch';
 import style from './exponent.module.scss';
 import { useExponentStore } from './exponentStore';
+import TextRadio from '@/components/textSwitch/textSwitch';
 import type { ExponentType, TotalGoalsRadioType } from '@/types/exponent';
 
 function Table() {
