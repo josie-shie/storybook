@@ -532,3 +532,33 @@ interface EuropeOdds {
     oddsType: number;
     //賠率類型
 }
+
+export interface WinLoseCountDate {
+    homeHome: string;
+    homeAway: string;
+    awayHome: string;
+    awayAway: string;
+    name: string;
+    label:
+        | 'victoryVictory'
+        | 'drawVictory'
+        | 'defeatVictory'
+        | 'victoryDraw'
+        | 'drawDraw'
+        | 'defeatDraw'
+        | 'victoryDefeat'
+        | 'drawDefeat'
+        | 'defeatDefeat';
+}
+
+export interface TotalCount {
+    homeHome: number;
+    homeAway: number;
+    awayHome: number;
+    awayAway: number;
+}
+
+export interface FormatWinLoseCountDataResponse {
+    data: WinLoseCountDate[];
+    totalCount: TotalCount;
+}
