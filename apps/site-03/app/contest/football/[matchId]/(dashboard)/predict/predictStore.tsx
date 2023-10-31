@@ -15,7 +15,7 @@ let usePredictStore: StoreWithSelectors<PredictState>;
 const initialState = (set: (data: Partial<PredictState>) => void) => ({
     predictList: [],
     loading: false,
-    setSlideList: (predictList: Predict[]) => {
+    setPredictList: (predictList: Predict[]) => {
         set({ predictList });
     }
 });
