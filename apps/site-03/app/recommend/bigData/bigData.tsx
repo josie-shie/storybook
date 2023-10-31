@@ -1,7 +1,9 @@
 'use client';
 
+import DiscSelect from './discSelect';
+
 function BigData() {
-    return <>123123</>;
+    return <DiscSelect />;
 }
 
 export default BigData;

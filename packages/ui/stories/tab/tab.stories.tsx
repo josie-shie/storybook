@@ -8,7 +8,10 @@ const meta: Meta<typeof Tabs> = {
     component: Tabs,
     tags: ['autodocs'],
     parameters: {
-        layout: 'fullscreen'
+        layout: 'fullscreen',
+        nextjs: {
+            appDirectory: true
+        }
     }
 };
 
