@@ -178,7 +178,7 @@ const EventInfoSchema = z.object({
         z.literal(13),
         z.literal(14)
     ]),
-    time: z.number(),
+    time: z.string(),
     nameEn: z.string(),
     nameChs: z.string(),
     nameCht: z.string(),
@@ -607,7 +607,7 @@ export const getDetailStatus = async (
             }
         }
 
-        const eventList: number[] = [];
+        const eventList: string[] = [];
         const eventInfo: EventInfoType = {
             isHome: {},
             isAway: {}
@@ -635,7 +635,7 @@ export const getDetailStatus = async (
             data: {
                 handicapsData,
                 totalGoalsData,
-                eventList: eventList.map(item => timestampToString(item)),
+                eventList: eventList.map(item => item),
                 eventInfo,
                 technical,
                 lineupInfo

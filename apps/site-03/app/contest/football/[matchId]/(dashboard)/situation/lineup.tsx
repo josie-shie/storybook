@@ -1,9 +1,15 @@
 import BlueLeftIcon from './img/left_blue.svg';
 import BlueRightIcon from './img/right_blue.svg';
 import style from './lineup.module.scss';
-import type { LineupList } from '@/types/detailStatus';
+import { useSituationStore } from './situationStore';
 
-function Lineup({ lineList }: { lineList?: LineupList }) {
+function Lineup() {
+    const lineList = useSituationStore.use.lineupInfo();
+
+    if (lineList.matchId === 0) {
+        return null;
+    }
+
     return (
         <div className={style.lineUp}>
             <div className="topBar">
@@ -12,19 +18,19 @@ function Lineup({ lineList }: { lineList?: LineupList }) {
             <div className="dataTable">
                 <div className="tableHead">
                     <div className="tr">
-                        <div className="th right">{lineList?.homeArray.split('').join('-')}</div>
+                        <div className="th right">{lineList.homeArray.split('').join('-')}</div>
                         <div className="th title">
                             <BlueLeftIcon />
                             首发阵容
                             <BlueRightIcon />
                         </div>
-                        <div className="th left">{lineList?.awayArray.split('').join('-')}</div>
+                        <div className="th left">{lineList.awayArray.split('').join('-')}</div>
                     </div>
                 </div>
                 <div className="tableBody">
                     <div className="tr">
                         <ul className="td">
-                            {lineList?.homeLineup.map(home => (
+                            {lineList.homeLineup.map(home => (
                                 <li className="player" key={home.playerId}>
                                     <p className="number">{home.number}</p>
                                     <p className="name">{home.nameChs}</p>
@@ -32,7 +38,7 @@ function Lineup({ lineList }: { lineList?: LineupList }) {
                             ))}
                         </ul>
                         <ul className="td">
-                            {lineList?.awayLineup.map(home => (
+                            {lineList.awayLineup.map(home => (
                                 <li className="player" key={home.playerId}>
                                     <p className="number">{home.number}</p>
                                     <p className="name">{home.nameChs}</p>
@@ -53,7 +59,7 @@ function Lineup({ lineList }: { lineList?: LineupList }) {
                 <div className="tableBody">
                     <div className="tr">
                         <ul className="td">
-                            {lineList?.homeBackup.map(home => (
+                            {lineList.homeBackup.map(home => (
                                 <li className="player" key={home.playerId}>
                                     <p className="number">{home.number}</p>
                                     <p className="name">{home.nameChs}</p>
@@ -61,7 +67,7 @@ function Lineup({ lineList }: { lineList?: LineupList }) {
                             ))}
                         </ul>
                         <ul className="td">
-                            {lineList?.awayBackup.map(home => (
+                            {lineList.awayBackup.map(home => (
                                 <li className="player" key={home.playerId}>
                                     <p className="number">{home.number}</p>
                                     <p className="name">{home.nameChs}</p>

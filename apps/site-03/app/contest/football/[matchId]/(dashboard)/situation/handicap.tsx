@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import style from './situation.module.scss';
+import { useSituationStore } from './situationStore';
 import TextRadio from '@/components/textSwitch/textSwitch';
-import type { HandicapsDataType } from '@/types/detailStatus';
+import ButtonSwitch from '@/components/textSwitch/buttonSwitch';
 
 function GameTime() {
     const gameStatus = {
@@ -27,14 +28,29 @@ function GameTime() {
     );
 }
 
-function Handicap({ handicapData }: { handicapData?: HandicapsDataType }) {
+const switchOptins = [
+    { label: '皇*', value: 3 },
+    { label: '36*', value: 8 }
+];
+
+function Handicap() {
+    const handicapData = useSituationStore.use.handicapsData();
     const [handicapRadio, setHandicapRadio] = useState<'half' | 'full'>('half');
-    const handicapSwitch = 3;
+    const [handicapSwitch, setHandicapSwitch] = useState(3);
 
     return (
         <div className={style.handicap}>
             <div className="topBar">
                 <h6 className="title">让球指数</h6>
+
+                <ButtonSwitch
+                    onChange={(switchValue: number) => {
+                        setHandicapSwitch(switchValue);
+                    }}
+                    options={switchOptins}
+                    outline
+                    value={handicapSwitch}
+                />
 
                 <TextRadio
                     onChange={value => {
@@ -53,7 +69,7 @@ function Handicap({ handicapData }: { handicapData?: HandicapsDataType }) {
                     </div>
                 </div>
                 <div className="tableBody">
-                    {handicapData?.[handicapRadio][handicapSwitch].notStarted.map((before, idx) => (
+                    {handicapData[handicapRadio][handicapSwitch].notStarted.map((before, idx) => (
                         <div className="tr" key={`before_${idx.toString()}`}>
                             <div className="td">
                                 <GameTime />
@@ -74,7 +90,7 @@ function Handicap({ handicapData }: { handicapData?: HandicapsDataType }) {
                         </div>
                     ))}
 
-                    {handicapData?.[handicapRadio][handicapSwitch].inProgress.map((now, idx) => (
+                    {handicapData[handicapRadio][handicapSwitch].inProgress.map((now, idx) => (
                         <div className="tr" key={`before_${idx.toString()}`}>
                             <div className="td">
                                 <GameTime />
