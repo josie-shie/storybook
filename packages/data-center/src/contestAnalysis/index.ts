@@ -18,7 +18,7 @@ const HandicapsInfoSchema = z.object({
     currentHandicap: z.number(),
     homeCurrentOdds: z.number(),
     awayCurrentOdds: z.number(),
-    oddsChangeTime: z.string(),
+    oddsChangeTime: z.number(),
     oddsType: z.number(),
     state: z.number(),
     homeScore: z.number(),
@@ -35,7 +35,7 @@ const TotalGoalsInfoSchema = z.object({
     currentTotalGoals: z.number(),
     overCurrentOdds: z.number(),
     underCurrentOdds: z.number(),
-    oddsChangeTime: z.string(),
+    oddsChangeTime: z.number(),
     oddsType: z.number(),
     state: z.number(),
     homeScore: z.number(),
@@ -52,7 +52,7 @@ const WinDrawLoseSchema = z.object({
     currentHomeOdds: z.number(),
     currentDrawOdds: z.number(),
     currentAwayOdds: z.number(),
-    oddsChangeTime: z.string(),
+    oddsChangeTime: z.number(),
     isClosed: z.boolean(),
     oddsType: z.number(),
     state: z.number(),
@@ -145,7 +145,7 @@ const HTHMatchSchema = z.object({
     leagueEn: z.string(),
     leagueChs: z.string(),
     leagueCht: z.string(),
-    matchTime: z.string(),
+    matchTime: z.number(),
     matchLocation: z.string(),
     homeId: z.number(),
     homeEn: z.string(),
@@ -272,7 +272,7 @@ type GetAnalyzeResult = z.infer<typeof GetAnalyzeSchema>;
 
 const AsiaMatchSchema = z.object({
     matchId: z.number(),
-    matchTime: z.string(),
+    matchTime: z.number(),
     startTime: z.string(),
     leagueId: z.number(),
     leagueEn: z.string(),
@@ -696,7 +696,7 @@ export const getBeforeGameIndex = async (
         const rows: GetBeforeGameIndexResponse = [
             {
                 label: '欧',
-                init: truncateFloatingPoint(companyOdds.fullWinDrawLose[0].initialDrawOdds, 2),
+                init: truncateFloatingPoint(companyOdds.fullWinDrawLose[0]?.initialDrawOdds, 2),
                 initHome: truncateFloatingPoint(companyOdds.fullWinDrawLose[0]?.initialHomeOdds, 2),
                 initAway: truncateFloatingPoint(companyOdds.fullWinDrawLose[0]?.initialAwayOdds, 2),
                 current: truncateFloatingPoint(companyOdds.fullWinDrawLose[0]?.currentDrawOdds, 2),
@@ -796,7 +796,10 @@ export const getAnalysisOthers = async (
                 data: {
                     query: GET_ANALYSIS_QUERY,
                     variables: {
-                        input: {
+                        singleMatchInput: {
+                            matchId
+                        },
+                        analysisInput: {
                             matchId
                         }
                     }
