@@ -37,6 +37,10 @@
     .tabContest {
         margin-top: 20px;
 
+        .title {
+            margin-bottom: 10px;
+        }
+
         .recentGames {
             display: flex;
             justify-content: space-between;
@@ -45,43 +49,54 @@
     }
 }
 
-.detail {
+.detailContainer {
+    flex-grow: 1;
+    margin-left: 12px;
+}
+
+.detailBlock {
     font-size: 12px;
     font-weight: 500;
+    box-sizing: border-box;
+    color: #4a4a4a;
+    padding: 4px 8px;
+    border-radius: 8px;
+    margin-bottom: 4px;
 
-    .listItem {
+    .top,
+    .bot {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .top {
         margin-bottom: 2px;
+    }
 
-        > span {
-            display: inline-block;
-        }
+    .bot {
+        gap: 4px;
 
-        .total {
-            color: #8d8d8d;
-            padding: 4px;
-        }
-
-        .win {
-            color: #ed3a45;
-            background: #f3f3f3;
-            padding: 4px;
-        }
-
-        .work {
-            color: #8d8d8d;
-            background: #ebebeb;
-            padding: 4px;
-        }
-
-        .defeat {
-            color: #4a4a4a;
-            background: #f3f3f3;
-            padding: 4px;
-        }
-
-        .winRate {
-            color: #4489ff;
-            padding: 2px 4px;
+        :global(.ui-progressBar) {
+            flex-grow: 1;
         }
     }
+}
+
+.percentage {
+    display: flex;
+    gap: 4px;
+
+    .win {
+        color: #ed3a45;
+    }
+
+    .walk {
+        color: #8d8d8d;
+    }
+}
+
+.focusDetail {
+    background: #f3f3f3;
+    border: 1px solid #4489ff;
 }
