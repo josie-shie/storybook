@@ -1,4 +1,3 @@
-import style from './winLoseCountTable.module.scss';
 import { useAnalyzeStore } from './analyzeStore';
 
 function WinLoseCountTable() {
@@ -10,7 +9,7 @@ function WinLoseCountTable() {
         totalCount.awayAway + totalCount.awayHome + totalCount.homeAway + totalCount.homeHome;
 
     return (
-        <div className={style.winloseCountTable}>
+        <div>
             <div className="topBar">
                 <h6 className="title">半场/全场胜负统计(近两赛季)</h6>
             </div>

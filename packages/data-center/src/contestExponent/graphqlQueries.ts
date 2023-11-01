@@ -1,5 +1,5 @@
 export const GET_COMPANY_ODDS_DETAIL_QUERY = `
-    query getCompanyOddsDetail($input: CompanyLiveOddsRequest!) {
+    query getCompanyOddsDetail($input: CompanyOddsDetailRequest!) {
         getCompanyOddsDetail(input:$input) {
             matchId
             homeTeam

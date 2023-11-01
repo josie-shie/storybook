@@ -35,7 +35,7 @@ const initialState = (set: (data: Partial<ExponentState>) => void) => ({
             value: 'goalTotal'
         }
     ],
-    selectedOption: 'handicaps' as const,
+    selectedOption: 'handicapsData' as const,
     setExponentList: (exponentData: Exponent) => {
         set({ exponentData });
     },

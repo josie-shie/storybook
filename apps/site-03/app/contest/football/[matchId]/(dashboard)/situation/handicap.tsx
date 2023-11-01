@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import style from './situation.module.scss';
+import { useSituationStore } from './situationStore';
 import TextRadio from '@/components/textSwitch/textSwitch';
-import type { HandicapsDataType } from '@/types/detailStatus';
+import ButtonSwitch from '@/components/textSwitch/buttonSwitch';
 
 function GameTime() {
     const gameStatus = {
@@ -27,14 +28,29 @@ function GameTime() {
     );
 }
 
-function Handicap({ handicapData }: { handicapData?: HandicapsDataType }) {
+const switchOptins = [
+    { label: '皇*', value: 3 },
+    { label: '36*', value: 8 }
+];
+
+function Handicap() {
+    const handicapData = useSituationStore.use.handicapsData();
     const [handicapRadio, setHandicapRadio] = useState<'half' | 'full'>('half');
-    const handicapSwitch = 3;
+    const [handicapSwitch, setHandicapSwitch] = useState(3);
 
     return (
         <div className={style.handicap}>
             <div className="topBar">
                 <h6 className="title">让球指数</h6>
+
+                <ButtonSwitch
+                    onChange={(switchValue: number) => {
+                        setHandicapSwitch(switchValue);
+                    }}
+                    options={switchOptins}
+                    outline
+                    value={handicapSwitch}
+                />
 
                 <TextRadio
                     onChange={value => {
@@ -53,47 +69,53 @@ function Handicap({ handicapData }: { handicapData?: HandicapsDataType }) {
                     </div>
                 </div>
                 <div className="tableBody">
-                    {handicapData?.[handicapRadio][handicapSwitch].notStarted.map((before, idx) => (
-                        <div className="tr" key={`before_${idx.toString()}`}>
-                            <div className="td">
-                                <GameTime />
-                            </div>
-                            <div className="td">
-                                {before.homeScore}-{before.awayScore}
-                            </div>
-                            <div className="td">
-                                <p>{before.homeInitialOdds}</p>
-                                <p className="redText">{before.initialHandicap}</p>
-                                <p>{before.awayInitialOdds}</p>
-                            </div>
-                            <div className="td">
-                                <p>{before.homeCurrentOdds}</p>
-                                <p className="redText">{before.currentHandicap}</p>
-                                <p>{before.awayCurrentOdds}</p>
-                            </div>
-                        </div>
-                    ))}
+                    {typeof handicapData[handicapRadio][handicapSwitch] !== 'undefined'
+                        ? handicapData[handicapRadio][handicapSwitch].notStarted.map(
+                              (before, idx) => (
+                                  <div className="tr" key={`before_${idx.toString()}`}>
+                                      <div className="td">
+                                          <GameTime />
+                                      </div>
+                                      <div className="td">
+                                          {before.homeScore}-{before.awayScore}
+                                      </div>
+                                      <div className="td">
+                                          <p>{before.homeInitialOdds}</p>
+                                          <p>{before.initialHandicap}</p>
+                                          <p>{before.awayInitialOdds}</p>
+                                      </div>
+                                      <div className="td">
+                                          <p>{before.homeCurrentOdds}</p>
+                                          <p>{before.currentHandicap}</p>
+                                          <p>{before.awayCurrentOdds}</p>
+                                      </div>
+                                  </div>
+                              )
+                          )
+                        : null}
 
-                    {handicapData?.[handicapRadio][handicapSwitch].inProgress.map((now, idx) => (
-                        <div className="tr" key={`before_${idx.toString()}`}>
-                            <div className="td">
-                                <GameTime />
-                            </div>
-                            <div className="td">
-                                {now.homeScore}-{now.awayScore}
-                            </div>
-                            <div className="td">
-                                <p>{now.homeInitialOdds}</p>
-                                <p className="redText">{now.initialHandicap}</p>
-                                <p>{now.awayInitialOdds}</p>
-                            </div>
-                            <div className="td">
-                                <p>{now.homeCurrentOdds}</p>
-                                <p className="redText">{now.currentHandicap}</p>
-                                <p>{now.awayCurrentOdds}</p>
-                            </div>
-                        </div>
-                    ))}
+                    {typeof handicapData[handicapRadio][handicapSwitch] !== 'undefined'
+                        ? handicapData[handicapRadio][handicapSwitch].inProgress.map((now, idx) => (
+                              <div className="tr" key={`before_${idx.toString()}`}>
+                                  <div className="td">
+                                      <GameTime />
+                                  </div>
+                                  <div className="td">
+                                      {now.homeScore}-{now.awayScore}
+                                  </div>
+                                  <div className="td">
+                                      <p>{now.homeInitialOdds}</p>
+                                      <p>{now.initialHandicap}</p>
+                                      <p>{now.awayInitialOdds}</p>
+                                  </div>
+                                  <div className="td">
+                                      <p>{now.homeCurrentOdds}</p>
+                                      <p>{now.currentHandicap}</p>
+                                      <p>{now.awayCurrentOdds}</p>
+                                  </div>
+                              </div>
+                          ))
+                        : null}
                 </div>
             </div>
         </div>

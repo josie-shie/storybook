@@ -1,3 +1,4 @@
+'use client';
 import BeforeGameTable from './beforeGameTable';
 import LeagueRankTables from './leagueRankTables';
 import LeagueTrendTables from './leagueTrendTables';

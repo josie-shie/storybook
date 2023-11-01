@@ -10,9 +10,11 @@ import OwnIcon from './img/own.png';
 import YellowsTurnRedIcon from './img/yellow_turn_red.png';
 import MissedIcon from './img/missed.png';
 import VideoIcon from './img/video.png';
-import type { EventInfoType } from '@/types/detailStatus';
+import { useSituationStore } from './situationStore';
 
-function GameEvent({ eventList, eventInfo }: { eventList?: string[]; eventInfo?: EventInfoType }) {
+function GameEvent() {
+    const eventList = useSituationStore.use.eventList();
+    const eventInfo = useSituationStore.use.eventInfo();
     const swapEvent = (names: string) => {
         if (names.length === 0) return '';
         const splitNames = names.split('↑').map((name: string) => name.replace('↓', ''));
@@ -98,10 +100,10 @@ function GameEvent({ eventList, eventInfo }: { eventList?: string[]; eventInfo?:
                     <div className="tr">
                         <div className="td">
                             <div className="timeLine">
-                                {eventList?.map(time => (
+                                {eventList.map(time => (
                                     <div className="timeEvent" key={time}>
                                         <div className="left">
-                                            {eventInfo?.isHome[time] ? (
+                                            {typeof eventInfo.isHome[time] !== 'undefined' ? (
                                                 <>
                                                     {eventInfo.isHome[time].kind === 11
                                                         ? swapEvent(eventInfo.isHome[time].nameChs)
@@ -112,7 +114,7 @@ function GameEvent({ eventList, eventInfo }: { eventList?: string[]; eventInfo?:
                                         </div>
                                         <div className="time">{time}&#39;</div>
                                         <div className="right">
-                                            {eventInfo?.isAway[time] ? (
+                                            {typeof eventInfo.isAway[time] !== 'undefined' ? (
                                                 <>
                                                     {eventInfo.isAway[time].kind === 11
                                                         ? swapEvent(eventInfo.isAway[time].nameChs)

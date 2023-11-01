@@ -65,16 +65,19 @@ function Setting({
     onOpen: () => void;
     onClose: () => void;
 }) {
-    const [openTip, setOpenTip] = useState(Boolean(localStorage.getItem('openTip')));
-    const [openSound, setOpenSound] = useState(Boolean(localStorage.getItem('openSound')));
-    const [homeSound, setHomeSound] = useState(
-        localStorage.getItem('homeSound') || soundDefault.homeSound
-    );
-    const [awaySound, setAwaySound] = useState(
-        localStorage.getItem('awaySound') || soundDefault.awaySound
-    );
+    const [openTip, setOpenTip] = useState(false);
+    const [openSound, setOpenSound] = useState(false);
+    const [homeSound, setHomeSound] = useState('');
+    const [awaySound, setAwaySound] = useState('');
     const [showSoundList, setShowSoundList] = useState('');
     const soundSourceList = useRef<{ source: Record<string, HTMLAudioElement> }>({ source: {} });
+
+    useEffect(() => {
+        setOpenTip(Boolean(localStorage.getItem('openTip')));
+        setOpenSound(Boolean(localStorage.getItem('openSound')));
+        setHomeSound(localStorage.getItem('homeSound') || soundDefault.homeSound);
+        setAwaySound(localStorage.getItem('awaySound') || soundDefault.awaySound);
+    }, []);
 
     useEffect(() => {
         const table: Record<string, HTMLAudioElement> = {};

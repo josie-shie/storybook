@@ -1,0 +1,71 @@
+.bettingPlan {
+    position: relative;
+    padding: 0 10px;
+    border: 1px solid #dadada;
+    border-radius: 8px;
+    margin-bottom: 8px;
+}
+
+.top {
+    font-size: 12px;
+    font-weight: 500;
+    color: #276ce1;
+    padding: 16px 0 4px;
+
+    .time {
+        color: #9b9b9b;
+    }
+}
+
+.mid {
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+
+    .plan {
+        font-size: 12px;
+        font-weight: 500;
+        color: #4489ff;
+        padding: 2px 6px;
+        border-radius: 4px;
+        border: 1px solid #4489ff;
+    }
+
+    .combination {
+        font-size: 14px;
+        font-weight: 600;
+        color: #757575;
+    }
+}
+
+.bot {
+    min-height: 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 8px;
+
+    .message {
+        font-size: 14px;
+        font-weight: 500;
+        color: #4a4a4a;
+    }
+}
+
+.iconWin {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 36px;
+    height: auto;
+}
+
+.iconDefeat {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 36px;
+    height: auto;
+    background: #bfbfbf;
+    border-radius: 50%;
+}
