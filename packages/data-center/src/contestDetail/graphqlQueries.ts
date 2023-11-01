@@ -286,7 +286,7 @@ export const GET_DETAIL_STATUS_QUERY = `
 
 export const GET_LIVE_TEXT_QUERY = `
     query getDetailStatus($input: DetailStatusInput!) {
-        getDetailStatus(input: $input }) {
+        getDetailStatus(input: $input) {
             liveText {
                 id
                 content

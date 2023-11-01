@@ -1,8 +1,6 @@
 'use client';
-
-import { Suspense } from 'react';
 import type { ReactNode } from 'react';
-import CircularProgress from '@mui/material/CircularProgress';
+import { usePathname } from 'next/navigation';
 import './dataTable.scss';
 import { Tab, Tabs } from 'ui';
 import LiveBox from './liveBox';
@@ -22,30 +20,37 @@ export default function DashboardLayout({
         buttonRadius: 0
     };
 
+    const route = usePathname().split('/');
     const tabList = [
         {
             label: '聊天',
-            to: `/contest/football/${params.matchId}/messageBoard`
+            to: `/contest/football/${params.matchId}/messageBoard`,
+            params: 'messageBoard'
         },
         {
             label: '赛况',
-            to: `/contest/football/${params.matchId}/situation`
+            to: `/contest/football/${params.matchId}/situation`,
+            params: 'situation'
         },
         {
             label: '直播',
-            to: `/contest/football/${params.matchId}/textBroadcast`
+            to: `/contest/football/${params.matchId}/textBroadcast`,
+            params: 'textBroadcast'
         },
         {
             label: '分析',
-            to: `/contest/football/${params.matchId}/analyze`
+            to: `/contest/football/${params.matchId}/analyze`,
+            params: 'analyze'
         },
         {
             label: '预测',
-            to: `/contest/football/${params.matchId}/predict`
+            to: `/contest/football/${params.matchId}/predict`,
+            params: 'predict'
         },
         {
             label: '指数',
-            to: `/contest/football/${params.matchId}/exponent`
+            to: `/contest/football/${params.matchId}/exponent`,
+            params: 'exponent'
         }
     ];
 
@@ -64,7 +69,7 @@ export default function DashboardLayout({
                     {tabList.map(item => {
                         return (
                             <Tab key={item.label} label={item.label} to={item.to}>
-                                <Suspense fallback={<CircularProgress />}>{children}</Suspense>
+                                {item.params === route[route.length - 1] ? children : ''}
                             </Tab>
                         );
                     })}
