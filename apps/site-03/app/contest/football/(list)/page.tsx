@@ -7,7 +7,8 @@ export const metadata: Metadata = {
 };
 
 async function Page() {
-    const todayContest = await getContestList(1692038043);
+    const timestamp = Math.floor(Date.now() / 1000);
+    const todayContest = await getContestList(timestamp);
 
     if (!todayContest.success) {
         return new Error();

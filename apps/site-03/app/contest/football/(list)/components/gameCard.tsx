@@ -1,8 +1,8 @@
 import type { ContestInfo } from 'data-center';
+import { useContestListStore } from '../contestListStore';
 import style from './gameCard.module.scss';
 import Video from './img/video.svg';
 import Flag from './img/flag.svg';
-import { useTodayStore } from '@/app/todayContestStore';
 
 // function ExtraInfo({ contestInfo }: { contestInfo: ContestInfo }) {
 //     return <div className={style.extraInfo}>90 分鐘 [0-0], 加時中,現在比分[1-1]</div>;
@@ -92,7 +92,7 @@ function TopArea({ contestInfo }: { contestInfo: ContestInfo }) {
 }
 
 function GameCard({ matchId }: { matchId: number }) {
-    const contestInfo = useTodayStore.use.contestInfo()[matchId];
+    const contestInfo = useContestListStore.use.contestInfo()[matchId];
 
     return (
         <li className={style.gameCard}>
