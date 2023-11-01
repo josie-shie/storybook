@@ -1,8 +1,9 @@
 import type { ContestInfo } from 'data-center';
+import Image from 'next/image';
 import { useContestListStore } from '../contestListStore';
 import style from './gameCard.module.scss';
-import Video from './img/video.svg';
-import Flag from './img/flag.svg';
+import Video from './img/video.png';
+import Flag from './img/flag.png';
 
 // function ExtraInfo({ contestInfo }: { contestInfo: ContestInfo }) {
 //     return <div className={style.extraInfo}>90 分鐘 [0-0], 加時中,現在比分[1-1]</div>;
@@ -77,15 +78,17 @@ function TopArea({ contestInfo }: { contestInfo: ContestInfo }) {
             </div>
             <div className={style.mid}>
                 <div className={style.corner}>
-                    <Flag /> <span className={style.ratio}>{contestInfo.homeCorner}</span>
+                    <Image alt="flag" src={Flag} />{' '}
+                    <span className={style.ratio}>{contestInfo.homeCorner}</span>
                 </div>
                 <div className={style.status}>完</div>
                 <div className={style.corner}>
-                    <Flag /> <span className={style.ratio}>{contestInfo.awayCorner}</span>
+                    <Image alt="flag" src={Flag} />{' '}
+                    <span className={style.ratio}>{contestInfo.awayCorner}</span>
                 </div>
             </div>
             <div className={style.video}>
-                <Video className={style.videoIcon} />
+                <Image alt="video" className={style.videoIcon} src={Video} />
             </div>
         </div>
     );
