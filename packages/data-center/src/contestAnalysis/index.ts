@@ -1,4 +1,10 @@
-import { fetcher, truncateFloatingPoint, convertHandicap } from 'lib';
+import {
+    fetcher,
+    truncateFloatingPoint,
+    convertHandicap,
+    timestampToString,
+    convertOdds
+} from 'lib';
 import { z } from 'zod';
 import { handleApiError } from '../common';
 import type { ReturnData } from '../common';
@@ -410,30 +416,35 @@ export interface FormatWinLoseCountDataResponse {
 }
 
 interface OddsDetail {
+    matchId: number;
+    leagueCup: '0' | '1' | '2';
+    matchTime: string;
+    winLose: '0' | '1' | '2';
+    isHome: boolean;
+    homeScore: number;
+    awayScore: number;
+    homeHalfScore: number;
+    awayHalfScore: number;
+    homeTeamName: string;
+    awayTeamName: string;
     initial: {
         handicap: string | number;
         overUnder: number;
+        handicapType: string;
+        overType: string;
     };
     current: {
         handicap: string | number;
         overUnder: number;
-    };
-    home: {
-        homeScore: number;
-        awayScore: number;
-    };
-    away: {
-        homeScore: number;
-        awayScore: number;
+        handicapType: string;
+        overType: string;
     };
 }
 
-interface FullHalfOdds {
-    full: OddsDetail;
-    half: OddsDetail;
+interface FullHalfOddsResponse {
+    full: OddsDetail[];
+    half: OddsDetail[];
 }
-
-type MatchCompanyOdds = Record<number, FullHalfOdds>;
 
 /**
  * 聯賽走勢 format
@@ -535,8 +546,8 @@ const formatWinLoseCountData = (homeHT: HTWinCountsStat, awayHT: HTWinCountsStat
 };
 
 export interface FormatRecordDataResponse {
-    bet365: MatchCompanyOdds;
-    crown: MatchCompanyOdds;
+    bet365: FullHalfOddsResponse;
+    crown: FullHalfOddsResponse;
 }
 
 export interface GetAnalysisOthersResponse {
@@ -550,120 +561,332 @@ export interface GetAnalysisOthersResponse {
     winLoseCountData: FormatWinLoseCountDataResponse;
 }
 
+const handleOddsType = ({
+    handicap,
+    overUnder,
+    homeScore,
+    awayScore
+}: {
+    handicap: number;
+    overUnder: number;
+    homeScore: number;
+    awayScore: number;
+}) => {
+    const totalScore = homeScore + awayScore;
+    let handicapType = '';
+    let overType = '';
+
+    if (
+        homeScore - convertOdds(handicap)[0] > awayScore ||
+        homeScore - convertOdds(handicap)[1] > awayScore
+    ) {
+        handicapType = 'win';
+    }
+
+    if (
+        homeScore - convertOdds(handicap)[0] === awayScore ||
+        homeScore - convertOdds(handicap)[1] === awayScore
+    ) {
+        handicapType = 'draw';
+    }
+
+    if (
+        homeScore - convertOdds(handicap)[0] < awayScore &&
+        homeScore - convertOdds(handicap)[1] < awayScore
+    ) {
+        handicapType = 'lose';
+    }
+
+    if (convertOdds(overUnder)[0] > totalScore || convertOdds(overUnder)[1] > totalScore) {
+        overType = 'big';
+    }
+
+    if (convertOdds(overUnder)[0] < totalScore && convertOdds(overUnder)[1] < totalScore) {
+        overType = 'small';
+    }
+
+    if (convertOdds(overUnder)[0] === totalScore && convertOdds(overUnder)[1] === totalScore) {
+        overType = 'draw';
+    }
+
+    return {
+        overType,
+        handicapType
+    };
+};
+
 /**
  * 對戰紀錄 format
  * - returns {@link FormatRecordDataResponse} {@link MatchCompanyOdds}
  */
 const formatRecordData = ({
     matchesList,
-    matchesOddsDetails
+    matchesOddsDetails,
+    homeId
 }: {
     matchesList: HTHMatch[];
     matchesOddsDetails: GetMatchesOddsDetailsResult;
+    homeId: number;
 }) => {
     const matchesDataMap = matchesList.reduce((acc, item) => {
         acc.set(item.matchId, item);
         return acc;
     }, new Map<number, HTHMatch>());
 
-    const bet365Response = matchesOddsDetails.bet365Response.reduce<MatchCompanyOdds>(
+    const bet365Response = matchesOddsDetails.bet365Response.reduce<FullHalfOddsResponse>(
         (preItem, item) => {
             const matchData = matchesDataMap.get(item.match.matchId);
-            const data = {
-                full: {
-                    initial: {
-                        handicap: convertHandicap(item.handicap.initialHandicap),
-                        overUnder: item.overUnder.initialHandicap
-                    },
-                    current: {
-                        handicap: convertHandicap(item.handicap.currentHandicap),
-                        overUnder: item.overUnder.currentHandicap
-                    },
-                    home: {
-                        homeScore: matchData?.homeScore || 0,
-                        awayScore: matchData?.awayScore || 0
-                    },
-                    away: {
-                        homeScore: matchData?.awayScore || 0,
-                        awayScore: matchData?.homeScore || 0
-                    }
+            let homeScore = 0;
+            let awayScore = 0;
+            let homeHalfScore = 0;
+            let awayHalfScore = 0;
+            let homeChs = '';
+            let awayChs = '';
+
+            if (homeId === item.match.homeId) {
+                homeScore = matchData?.homeScore || 0;
+                awayScore = matchData?.awayScore || 0;
+                homeHalfScore = matchData?.homeHalfScore || 0;
+                awayHalfScore = matchData?.awayHalfScore || 0;
+                homeChs = item.match.homeChs;
+                awayChs = item.match.awayChs;
+            }
+
+            if (homeId === item.match.awayId) {
+                homeScore = matchData?.awayScore || 0;
+                awayScore = matchData?.homeScore || 0;
+                homeHalfScore = matchData?.awayHalfScore || 0;
+                awayHalfScore = matchData?.homeHalfScore || 0;
+                homeChs = item.match.awayChs;
+                awayChs = item.match.homeChs;
+            }
+
+            const full = {
+                matchId: item.match.matchId,
+                leagueCup: matchData?.leagueCup || '0',
+                matchTime: timestampToString(item.match.matchTime),
+                winLose: matchData?.winLose || '0',
+                isHome: homeId === item.match.homeId,
+                homeTeamName: homeChs,
+                awayTeamName: awayChs,
+                homeScore,
+                awayScore,
+                homeHalfScore,
+                awayHalfScore,
+                initial: {
+                    handicap: convertHandicap(item.handicap.initialHandicap),
+                    overUnder: item.overUnder.initialHandicap,
+                    handicapType: handleOddsType({
+                        handicap: item.handicap.initialHandicap,
+                        overUnder: item.overUnder.initialHandicap,
+                        homeScore,
+                        awayScore
+                    }).handicapType,
+                    overType: handleOddsType({
+                        handicap: item.handicap.initialHandicap,
+                        overUnder: item.overUnder.initialHandicap,
+                        homeScore,
+                        awayScore
+                    }).overType
                 },
-                half: {
-                    initial: {
-                        handicap: convertHandicap(item.handicapHalf.initialHandicap),
-                        overUnder: item.overUnderHalf.initialHandicap
-                    },
-                    current: {
-                        handicap: convertHandicap(item.handicapHalf.currentHandicap),
-                        overUnder: item.overUnderHalf.currentHandicap
-                    },
-                    home: {
-                        homeScore: matchData?.homeHalfScore || 0,
-                        awayScore: matchData?.awayHalfScore || 0
-                    },
-                    away: {
-                        homeScore: matchData?.awayHalfScore || 0,
-                        awayScore: matchData?.homeHalfScore || 0
-                    }
+                current: {
+                    handicap: convertHandicap(item.handicap.currentHandicap),
+                    overUnder: item.overUnder.currentHandicap,
+                    handicapType: handleOddsType({
+                        handicap: item.handicap.currentHandicap,
+                        overUnder: item.overUnder.currentHandicap,
+                        homeScore,
+                        awayScore
+                    }).handicapType,
+                    overType: handleOddsType({
+                        handicap: item.handicap.currentHandicap,
+                        overUnder: item.overUnder.currentHandicap,
+                        homeScore,
+                        awayScore
+                    }).overType
                 }
             };
 
-            return {
-                ...preItem,
-                [item.match.matchId]: data
+            const half = {
+                matchId: item.match.matchId,
+                leagueCup: matchData?.leagueCup || '0',
+                matchTime: timestampToString(item.match.matchTime),
+                winLose: matchData?.winLose || '0',
+                isHome: true,
+                homeScore,
+                awayScore,
+                homeHalfScore,
+                awayHalfScore,
+                homeTeamName: homeChs,
+                awayTeamName: awayChs,
+                initial: {
+                    handicap: convertHandicap(item.handicapHalf.initialHandicap),
+                    overUnder: item.overUnderHalf.initialHandicap,
+                    handicapType: handleOddsType({
+                        handicap: item.handicapHalf.initialHandicap,
+                        overUnder: item.overUnderHalf.initialHandicap,
+                        homeScore,
+                        awayScore
+                    }).handicapType,
+                    overType: handleOddsType({
+                        handicap: item.handicapHalf.initialHandicap,
+                        overUnder: item.overUnderHalf.initialHandicap,
+                        homeScore,
+                        awayScore
+                    }).overType
+                },
+                current: {
+                    handicap: convertHandicap(item.handicapHalf.currentHandicap),
+                    overUnder: item.overUnderHalf.currentHandicap,
+                    handicapType: handleOddsType({
+                        handicap: item.handicapHalf.currentHandicap,
+                        overUnder: item.overUnderHalf.currentHandicap,
+                        homeScore,
+                        awayScore
+                    }).handicapType,
+                    overType: handleOddsType({
+                        handicap: item.handicapHalf.currentHandicap,
+                        overUnder: item.overUnderHalf.currentHandicap,
+                        homeScore,
+                        awayScore
+                    }).overType
+                }
             };
+
+            preItem.full.push(full);
+            preItem.half.push(half);
+
+            return preItem;
         },
-        {}
+        { full: [], half: [] }
     );
 
-    const crownResponse = matchesOddsDetails.crownResponse.reduce<MatchCompanyOdds>(
+    const crownResponse = matchesOddsDetails.crownResponse.reduce<FullHalfOddsResponse>(
         (preItem, item) => {
             const matchData = matchesDataMap.get(item.match.matchId);
-            const data = {
-                full: {
-                    initial: {
-                        handicap: convertHandicap(item.handicap.initialHandicap),
-                        overUnder: item.overUnder.initialHandicap
-                    },
-                    current: {
-                        handicap: convertHandicap(item.handicap.currentHandicap),
-                        overUnder: item.overUnder.currentHandicap
-                    },
-                    home: {
-                        homeScore: matchData?.homeScore || 0,
-                        awayScore: matchData?.awayScore || 0
-                    },
-                    away: {
-                        homeScore: matchData?.awayScore || 0,
-                        awayScore: matchData?.homeScore || 0
-                    }
+            let homeScore = 0;
+            let awayScore = 0;
+            let homeHalfScore = 0;
+            let awayHalfScore = 0;
+            let homeChs = '';
+            let awayChs = '';
+
+            if (homeId === item.match.homeId) {
+                homeScore = matchData?.homeScore || 0;
+                awayScore = matchData?.awayScore || 0;
+                homeHalfScore = matchData?.homeHalfScore || 0;
+                awayHalfScore = matchData?.awayHalfScore || 0;
+                homeChs = item.match.homeChs;
+                awayChs = item.match.awayChs;
+            }
+
+            if (homeId === item.match.awayId) {
+                homeScore = matchData?.awayScore || 0;
+                awayScore = matchData?.homeScore || 0;
+                homeHalfScore = matchData?.awayHalfScore || 0;
+                awayHalfScore = matchData?.homeHalfScore || 0;
+                homeChs = item.match.awayChs;
+                awayChs = item.match.homeChs;
+            }
+
+            const full = {
+                matchId: item.match.matchId,
+                leagueCup: matchData?.leagueCup || '0',
+                matchTime: timestampToString(item.match.matchTime),
+                winLose: matchData?.winLose || '0',
+                isHome: homeId === item.match.homeId,
+                homeTeamName: homeChs,
+                awayTeamName: awayChs,
+                homeScore,
+                awayScore,
+                homeHalfScore,
+                awayHalfScore,
+                initial: {
+                    handicap: convertHandicap(item.handicap.initialHandicap),
+                    overUnder: item.overUnder.initialHandicap,
+                    handicapType: handleOddsType({
+                        handicap: item.handicap.initialHandicap,
+                        overUnder: item.overUnder.initialHandicap,
+                        homeScore,
+                        awayScore
+                    }).handicapType,
+                    overType: handleOddsType({
+                        handicap: item.handicap.initialHandicap,
+                        overUnder: item.overUnder.initialHandicap,
+                        homeScore,
+                        awayScore
+                    }).overType
                 },
-                half: {
-                    initial: {
-                        handicap: convertHandicap(item.handicapHalf.initialHandicap),
-                        overUnder: item.overUnderHalf.initialHandicap
-                    },
-                    current: {
-                        handicap: convertHandicap(item.handicapHalf.currentHandicap),
-                        overUnder: item.overUnderHalf.currentHandicap
-                    },
-                    home: {
-                        homeScore: matchData?.homeHalfScore || 0,
-                        awayScore: matchData?.awayHalfScore || 0
-                    },
-                    away: {
-                        homeScore: matchData?.awayHalfScore || 0,
-                        awayScore: matchData?.homeHalfScore || 0
-                    }
+                current: {
+                    handicap: convertHandicap(item.handicap.currentHandicap),
+                    overUnder: item.overUnder.currentHandicap,
+                    handicapType: handleOddsType({
+                        handicap: item.handicap.currentHandicap,
+                        overUnder: item.overUnder.currentHandicap,
+                        homeScore,
+                        awayScore
+                    }).handicapType,
+                    overType: handleOddsType({
+                        handicap: item.handicap.currentHandicap,
+                        overUnder: item.overUnder.currentHandicap,
+                        homeScore,
+                        awayScore
+                    }).overType
                 }
             };
 
-            return {
-                ...preItem,
-                [item.match.matchId]: data
+            const half = {
+                matchId: item.match.matchId,
+                leagueCup: matchData?.leagueCup || '0',
+                matchTime: timestampToString(item.match.matchTime),
+                winLose: matchData?.winLose || '0',
+                isHome: true,
+                homeScore,
+                awayScore,
+                homeHalfScore,
+                awayHalfScore,
+                homeTeamName: homeChs,
+                awayTeamName: awayChs,
+                initial: {
+                    handicap: convertHandicap(item.handicapHalf.initialHandicap),
+                    overUnder: item.overUnderHalf.initialHandicap,
+                    handicapType: handleOddsType({
+                        handicap: item.handicapHalf.initialHandicap,
+                        overUnder: item.overUnderHalf.initialHandicap,
+                        homeScore,
+                        awayScore
+                    }).handicapType,
+                    overType: handleOddsType({
+                        handicap: item.handicapHalf.initialHandicap,
+                        overUnder: item.overUnderHalf.initialHandicap,
+                        homeScore,
+                        awayScore
+                    }).overType
+                },
+                current: {
+                    handicap: convertHandicap(item.handicapHalf.currentHandicap),
+                    overUnder: item.overUnderHalf.currentHandicap,
+                    handicapType: handleOddsType({
+                        handicap: item.handicapHalf.currentHandicap,
+                        overUnder: item.overUnderHalf.currentHandicap,
+                        homeScore,
+                        awayScore
+                    }).handicapType,
+                    overType: handleOddsType({
+                        handicap: item.handicapHalf.currentHandicap,
+                        overUnder: item.overUnderHalf.currentHandicap,
+                        homeScore,
+                        awayScore
+                    }).overType
+                }
             };
+
+            preItem.full.push(full);
+            preItem.half.push(half);
+
+            return preItem;
         },
-        {}
+        { full: [], half: [] }
     );
 
     const halfHandicapData: FormatRecordDataResponse = {
@@ -897,16 +1120,20 @@ export const getAnalysisOthers = async (
         const winLoseCountData = formatWinLoseCountData(homeHT, awayHT);
         const battleRecordData = formatRecordData({
             matchesList: headToHead,
-            matchesOddsDetails
+            matchesOddsDetails,
+            homeId: teamInfo.homeId
         });
         const homeMatches = formatRecordData({
             matchesList: homeLastMatches,
-            matchesOddsDetails: homeMatchesOddsDetails
+            matchesOddsDetails: homeMatchesOddsDetails,
+            homeId: teamInfo.homeId
         });
         const awayMatches = formatRecordData({
             matchesList: awayLastMatches,
-            matchesOddsDetails: awayMatchesOddsDetails
+            matchesOddsDetails: awayMatchesOddsDetails,
+            homeId: teamInfo.awayId
         });
+
         const res: GetAnalysisOthersResponse = {
             teamInfo,
             leagueTrendData,
