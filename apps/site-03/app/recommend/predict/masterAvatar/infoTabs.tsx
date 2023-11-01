@@ -1,7 +1,6 @@
 'use client';
-import { Tab, Tabs } from 'ui';
+import { Tab, Tabs, ProgressBar } from 'ui';
 import ReactEcharts from 'echarts-for-react';
-import { ProgressBar } from 'ui/stories/progressBar/progressBar';
 import AnalysisItem from '../components/analysisItem/analysisItem';
 import MasterItem from '../components/masterItem/masterItem';
 import BettingPlan from '../components/bettingPlan/bettingPlan';
