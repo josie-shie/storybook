@@ -3,6 +3,14 @@
     :global {
         .topBar {
             margin-bottom: 10px;
+
+            & > * {
+                flex: 1;
+
+                &:last-child {
+                    justify-content: flex-end;
+                }
+            }
         }
 
         .tableHead {

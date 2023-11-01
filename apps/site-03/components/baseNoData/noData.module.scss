@@ -1,0 +1,18 @@
+.noDataBox {
+    position: relative;
+    min-height: calc(100vh - 338px);
+
+    .content {
+        position: absolute;
+        top: 80px;
+        left: 50%;
+        transform: translateX(-50%);
+
+        p {
+            margin-top: 10px;
+            text-align: center;
+            color: #9b9b9b;
+            font-size: 14px;
+        }
+    }
+}

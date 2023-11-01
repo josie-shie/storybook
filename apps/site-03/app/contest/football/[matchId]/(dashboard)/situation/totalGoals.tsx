@@ -69,50 +69,54 @@ function TotalGoals() {
                     </div>
                 </div>
                 <div className="tableBody">
-                    {totalGoalsData[totalGoalsRadio][totalGoalsSwitch].notStarted.map(
-                        (before, idx) => (
-                            <div className="tr" key={`before_${idx.toString()}`}>
-                                <div className="td">
-                                    <GameTime />
-                                </div>
-                                <div className="td">
-                                    {before.homeScore}-{before.awayScore}
-                                </div>
-                                <div className="td">
-                                    <p>{before.overInitialOdds}</p>
-                                    <p>{before.initialTotalGoals}</p>
-                                    <p>{before.underInitialOdds}</p>
-                                </div>
-                                <div className="td">
-                                    <p>{before.overCurrentOdds}</p>
-                                    <p>{before.currentTotalGoals}</p>
-                                    <p>{before.underCurrentOdds}</p>
-                                </div>
-                            </div>
-                        )
-                    )}
-                    {totalGoalsData[totalGoalsRadio][totalGoalsSwitch].inProgress.map(
-                        (now, idx) => (
-                            <div className="tr" key={`before_${idx.toString()}`}>
-                                <div className="td">
-                                    <GameTime />
-                                </div>
-                                <div className="td">
-                                    {now.homeScore}-{now.awayScore}
-                                </div>
-                                <div className="td">
-                                    <p>{now.overInitialOdds}</p>
-                                    <p>{now.initialTotalGoals}</p>
-                                    <p>{now.underInitialOdds}</p>
-                                </div>
-                                <div className="td">
-                                    <p>{now.overCurrentOdds}</p>
-                                    <p>{now.currentTotalGoals}</p>
-                                    <p>{now.underCurrentOdds}</p>
-                                </div>
-                            </div>
-                        )
-                    )}
+                    {typeof totalGoalsData[totalGoalsRadio][totalGoalsSwitch] !== 'undefined'
+                        ? totalGoalsData[totalGoalsRadio][totalGoalsSwitch].notStarted.map(
+                              (before, idx) => (
+                                  <div className="tr" key={`before_${idx.toString()}`}>
+                                      <div className="td">
+                                          <GameTime />
+                                      </div>
+                                      <div className="td">
+                                          {before.homeScore}-{before.awayScore}
+                                      </div>
+                                      <div className="td">
+                                          <p>{before.overInitialOdds}</p>
+                                          <p>{before.initialTotalGoals}</p>
+                                          <p>{before.underInitialOdds}</p>
+                                      </div>
+                                      <div className="td">
+                                          <p>{before.overCurrentOdds}</p>
+                                          <p>{before.currentTotalGoals}</p>
+                                          <p>{before.underCurrentOdds}</p>
+                                      </div>
+                                  </div>
+                              )
+                          )
+                        : null}
+                    {typeof totalGoalsData[totalGoalsRadio][totalGoalsSwitch] !== 'undefined'
+                        ? totalGoalsData[totalGoalsRadio][totalGoalsSwitch].inProgress.map(
+                              (now, idx) => (
+                                  <div className="tr" key={`before_${idx.toString()}`}>
+                                      <div className="td">
+                                          <GameTime />
+                                      </div>
+                                      <div className="td">
+                                          {now.homeScore}-{now.awayScore}
+                                      </div>
+                                      <div className="td">
+                                          <p>{now.overInitialOdds}</p>
+                                          <p>{now.initialTotalGoals}</p>
+                                          <p>{now.underInitialOdds}</p>
+                                      </div>
+                                      <div className="td">
+                                          <p>{now.overCurrentOdds}</p>
+                                          <p>{now.currentTotalGoals}</p>
+                                          <p>{now.underCurrentOdds}</p>
+                                      </div>
+                                  </div>
+                              )
+                          )
+                        : null}
                 </div>
             </div>
         </div>
