@@ -1,12 +1,12 @@
 import type { Metadata } from 'next';
-import ContestDetail from './contestDetail';
+import MessageBoard from './(dashboard)/messageBoard/messageBoard';
 
 export const metadata: Metadata = {
     title: '賽事 | Sport'
 };
 
-function Page({ params }: { params: { matchId: number } }) {
-    return <ContestDetail params={params} />;
+function Page() {
+    return <MessageBoard />;
 }
 
 export default Page;

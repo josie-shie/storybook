@@ -1,18 +1,15 @@
 import { useState } from 'react';
 import style from './situation.module.scss';
+import { useSituationStore } from './situationStore';
 import TextRadio from '@/components/textSwitch/textSwitch';
-import type { TotalGoalsDataType } from '@/types/detailStatus';
-
-// const switchOptins = [
-//     { label: '皇*', value: 3 },
-//     { label: '36*', value: 8 }
-// ];
+import ButtonSwitch from '@/components/textSwitch/buttonSwitch';
 
 function GameTime() {
     const gameStatus = {
         state: 'notYet',
         time: '21'
     };
+
     const stateStyle: Record<string, { style: string; text: string }> = {
         notYet: { style: style.notYet, text: '未' },
         midfielder: { style: style.notYet, text: '中场' },
@@ -31,14 +28,29 @@ function GameTime() {
     );
 }
 
-function TotalGoals({ totalGoalsData }: { totalGoalsData?: TotalGoalsDataType }) {
-    const totalGoalsSwitch = 3;
+const switchOptins = [
+    { label: '皇*', value: 3 },
+    { label: '36*', value: 8 }
+];
+
+function TotalGoals() {
+    const totalGoalsData = useSituationStore.use.totalGoalsData();
+    const [totalGoalsSwitch, setTotalGoalsSwitch] = useState(3);
     const [totalGoalsRadio, setTotalGoalsRadio] = useState<'half' | 'full'>('half');
 
     return (
         <div className={style.totalGoals}>
             <div className="topBar">
                 <h6 className="title">总进球指数</h6>
+
+                <ButtonSwitch
+                    onChange={(switchValue: number) => {
+                        setTotalGoalsSwitch(switchValue);
+                    }}
+                    options={switchOptins}
+                    outline
+                    value={totalGoalsSwitch}
+                />
 
                 <TextRadio
                     onChange={value => {
@@ -57,7 +69,7 @@ function TotalGoals({ totalGoalsData }: { totalGoalsData?: TotalGoalsDataType })
                     </div>
                 </div>
                 <div className="tableBody">
-                    {totalGoalsData?.[totalGoalsRadio][totalGoalsSwitch].notStarted.map(
+                    {totalGoalsData[totalGoalsRadio][totalGoalsSwitch].notStarted.map(
                         (before, idx) => (
                             <div className="tr" key={`before_${idx.toString()}`}>
                                 <div className="td">
@@ -79,7 +91,7 @@ function TotalGoals({ totalGoalsData }: { totalGoalsData?: TotalGoalsDataType })
                             </div>
                         )
                     )}
-                    {totalGoalsData?.[totalGoalsRadio][totalGoalsSwitch].inProgress.map(
+                    {totalGoalsData[totalGoalsRadio][totalGoalsSwitch].inProgress.map(
                         (now, idx) => (
                             <div className="tr" key={`before_${idx.toString()}`}>
                                 <div className="td">
