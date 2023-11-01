@@ -554,10 +554,18 @@ export interface GetAnalysisOthersResponse {
  * 對戰紀錄 format
  * - returns {@link FormatRecordDataResponse} {@link MatchCompanyOdds}
  */
-const formatRecordData = (
-    matchesDataMap: Map<number, HTHMatch>,
-    matchesOddsDetails: GetMatchesOddsDetailsResult
-) => {
+const formatRecordData = ({
+    matchesList,
+    matchesOddsDetails
+}: {
+    matchesList: HTHMatch[];
+    matchesOddsDetails: GetMatchesOddsDetailsResult;
+}) => {
+    const matchesDataMap = matchesList.reduce((acc, item) => {
+        acc.set(item.matchId, item);
+        return acc;
+    }, new Map<number, HTHMatch>());
+
     const bet365Response = matchesOddsDetails.bet365Response.reduce<MatchCompanyOdds>(
         (preItem, item) => {
             const matchData = matchesDataMap.get(item.match.matchId);
@@ -813,20 +821,9 @@ export const getAnalysisOthers = async (
         const { homeOdds, awayOdds, headToHead, homeHT, awayHT, homeLastMatches, awayLastMatches } =
             analysis.getAnalysis.statistics;
 
-        const headToHeadDataMap = headToHead.reduce((acc, item) => {
-            acc.set(item.matchId, item);
-            return acc;
-        }, new Map<number, HTHMatch>());
-
-        const homeLastMatchesDataMap = homeLastMatches.reduce((acc, item) => {
-            acc.set(item.matchId, item);
-            return acc;
-        }, new Map<number, HTHMatch>());
-
-        const awayLastMatchesMapDataMap = awayLastMatches.reduce((acc, item) => {
-            acc.set(item.matchId, item);
-            return acc;
-        }, new Map<number, HTHMatch>());
+        const headToHeadMatchesId = headToHead.map(item => item.matchId);
+        const homeLastMatchesId = homeLastMatches.map(item => item.matchId);
+        const awayLastMatchesId = awayLastMatches.map(item => item.matchId);
 
         /* 取得全部不同三方的對戰紀錄 */
         const { data: matchesOddsDetails }: { data: GetMatchesOddsDetailsResult } = await fetcher(
@@ -835,11 +832,11 @@ export const getAnalysisOthers = async (
                     query: GET_MATCHES_ODDS_DETAIL_QUERY,
                     variables: {
                         input1: {
-                            matchIds: Array.from(headToHeadDataMap.keys()),
+                            matchIds: headToHeadMatchesId,
                             companyId: '3'
                         },
                         input2: {
-                            matchIds: Array.from(headToHeadDataMap.keys()),
+                            matchIds: headToHeadMatchesId,
                             companyId: '8'
                         }
                     }
@@ -856,11 +853,11 @@ export const getAnalysisOthers = async (
                         query: GET_MATCHES_ODDS_DETAIL_QUERY,
                         variables: {
                             input1: {
-                                matchIds: Array.from(homeLastMatchesDataMap.keys()),
+                                matchIds: homeLastMatchesId,
                                 companyId: '3'
                             },
                             input2: {
-                                matchIds: Array.from(homeLastMatchesDataMap.keys()),
+                                matchIds: homeLastMatchesId,
                                 companyId: '8'
                             }
                         }
@@ -877,11 +874,11 @@ export const getAnalysisOthers = async (
                         query: GET_MATCHES_ODDS_DETAIL_QUERY,
                         variables: {
                             input1: {
-                                matchIds: Array.from(awayLastMatchesMapDataMap.keys()),
+                                matchIds: awayLastMatchesId,
                                 companyId: '3'
                             },
                             input2: {
-                                matchIds: Array.from(awayLastMatchesMapDataMap.keys()),
+                                matchIds: awayLastMatchesId,
                                 companyId: '8'
                             }
                         }
@@ -891,14 +888,25 @@ export const getAnalysisOthers = async (
             );
 
         MatchesOddsDetailsSchema.parse(matchesOddsDetails);
+        MatchesOddsDetailsSchema.parse(homeMatchesOddsDetails);
+        MatchesOddsDetailsSchema.parse(awayMatchesOddsDetails);
 
         const teamInfo = analysis.getSingleMatch;
 
         const leagueTrendData = formatLeagueTrendData(homeOdds, awayOdds);
         const winLoseCountData = formatWinLoseCountData(homeHT, awayHT);
-        const battleRecordData = formatRecordData(headToHeadDataMap, matchesOddsDetails);
-        const homeMatches = formatRecordData(homeLastMatchesDataMap, homeMatchesOddsDetails);
-        const awayMatches = formatRecordData(awayLastMatchesMapDataMap, awayMatchesOddsDetails);
+        const battleRecordData = formatRecordData({
+            matchesList: headToHead,
+            matchesOddsDetails
+        });
+        const homeMatches = formatRecordData({
+            matchesList: homeLastMatches,
+            matchesOddsDetails: homeMatchesOddsDetails
+        });
+        const awayMatches = formatRecordData({
+            matchesList: awayLastMatches,
+            matchesOddsDetails: awayMatchesOddsDetails
+        });
         const res: GetAnalysisOthersResponse = {
             teamInfo,
             leagueTrendData,
