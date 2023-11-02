@@ -9,15 +9,5 @@ module.exports = {
     transpilePackages: ['ui', 'lib'],
     sassOptions: {
         includePaths: [path.join(__dirname, 'styles')]
-    },
-    experimental: {
-        turbo: {
-            rules: {
-                '*.svg': {
-                    loaders: ['@svgr/webpack'],
-                    as: '*.js'
-                }
-            }
-        }
     }
 };

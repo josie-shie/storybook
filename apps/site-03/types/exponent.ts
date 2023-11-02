@@ -21,7 +21,7 @@ export interface OptionsType {
     value: string;
 }
 
-export type ExponentType = 'handicapsData' | 'winLoseData' | 'totalGoalData';
+export type ExponentType = 'handicapsData' | 'winLoseData' | 'totalGoalData' | 'handicaps';
 
 export type TotalGoalsRadioType = 'half' | 'full';
 

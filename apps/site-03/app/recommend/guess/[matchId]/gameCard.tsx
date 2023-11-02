@@ -1,10 +1,10 @@
 import { useMemo } from 'react';
 import Image from 'next/image';
 import Fire from './img/fire.png';
-import Win from './img/win.svg';
-import Lose from './img/lose.svg';
-import Star from './img/star.svg';
-import Hit from './img/hit.svg';
+import Win from './img/win.png';
+import Lose from './img/lose.png';
+import Star from './img/star.png';
+import Hit from './img/hit.png';
 import style from './gameCard.module.scss';
 import Avatar from '@/components/avatar/avatar';
 import Tag from '@/components/tag/tag';
@@ -31,8 +31,8 @@ function GameCard({
     // 假的走勢球
     const randomResult = () => {
         const outcomes = [
-            { id: 'win', component: <Win /> },
-            { id: 'lose', component: <Lose /> }
+            { id: 'win', component: <Image alt="winIcon" src={Win} width={18} /> },
+            { id: 'lose', component: <Image alt="loseIcon" src={Lose} width={18} /> }
         ];
         return outcomes[Math.floor(Math.random() * outcomes.length)];
     };
@@ -67,7 +67,7 @@ function GameCard({
             <div className={style.paid}>
                 {isContentUnlocked ? (
                     <div className={style.hit}>
-                        <Hit />
+                        <Image alt="hitIcon" className={style.hitIcon} src={Hit} width={36} />
                         <div className={style.play}>一球/球半</div>
                         <div className={style.paidContent}>
                             <div className={style.play}>小</div>
@@ -78,7 +78,7 @@ function GameCard({
                     <>
                         <div className={style.play}>一球/球半</div>
                         <div className={style.noPaid} onClick={onOpenPaidDialog}>
-                            <Star className={style.image} />
+                            <Image alt="star" className={style.image} src={Star} width={14} />
                             <span className={style.text}>20元</span>
                         </div>
                     </>

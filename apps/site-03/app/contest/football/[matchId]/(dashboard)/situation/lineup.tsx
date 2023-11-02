@@ -1,5 +1,6 @@
-import BlueLeftIcon from './img/left_blue.svg';
-import BlueRightIcon from './img/right_blue.svg';
+import Image from 'next/image';
+import BlueLeftIcon from './img/left_blue.png';
+import BlueRightIcon from './img/right_blue.png';
 import style from './lineup.module.scss';
 import { useSituationStore } from './situationStore';
 
@@ -20,9 +21,13 @@ function Lineup() {
                     <div className="tr">
                         <div className="th right">{lineList.homeArray.split('').join('-')}</div>
                         <div className="th title">
-                            <BlueLeftIcon />
+                            <Image alt="leftIcon" className={style.arrowIcon} src={BlueLeftIcon} />
                             首发阵容
-                            <BlueRightIcon />
+                            <Image
+                                alt="rightIcon"
+                                className={style.arrowIcon}
+                                src={BlueRightIcon}
+                            />
                         </div>
                         <div className="th left">{lineList.awayArray.split('').join('-')}</div>
                     </div>
@@ -50,9 +55,13 @@ function Lineup() {
                 <div className="tableHead">
                     <div className="tr">
                         <div className="th title">
-                            <BlueLeftIcon />
+                            <Image alt="leftIcon" className={style.arrowIcon} src={BlueLeftIcon} />
                             替补阵容
-                            <BlueRightIcon />
+                            <Image
+                                alt="rightIcon"
+                                className={style.arrowIcon}
+                                src={BlueRightIcon}
+                            />
                         </div>
                     </div>
                 </div>

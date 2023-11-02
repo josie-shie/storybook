@@ -1,7 +1,8 @@
 'use client';
 import { IconSearch } from '@tabler/icons-react';
+import Image from 'next/image';
 import PeriodListItem from '../components/period/periodListItem';
-import Soccer from '../components/period/img/soccerblue.svg';
+import Soccer from '../components/period/img/soccerblue.png';
 import UserSwitch from '../components/userSwitch/userSwitch';
 import Rule from '../components/rule/rule';
 import style from './rank.module.scss';
@@ -48,7 +49,7 @@ function Rank() {
                         </div>
                     </div>
                     <div className={style.winRateBlock}>
-                        <Soccer className={style.icon} />
+                        <Image alt="icon" className={style.icon} src={Soccer} />
                         <span className={style.winRate}>
                             <span>{userData.winRate}</span>
                             <span className={style.percent}>%</span>

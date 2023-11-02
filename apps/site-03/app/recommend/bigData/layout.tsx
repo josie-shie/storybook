@@ -3,7 +3,7 @@ import type { ReactNode } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Tab, Tabs } from 'ui';
-import Logo from '../img/logo.svg';
+import Logo from './img/logo.png';
 import style from './layout.module.scss';
 import banner from './img/banner.png';
 import dataText from './img/dataText.png';
@@ -50,7 +50,7 @@ function BigDataLayout({ children }: { children: ReactNode }) {
     ];
 
     const headerProps = {
-        logo: <Logo />,
+        logo: <Image alt="logo" src={Logo} width={66} />,
         total: 999999
     };
 

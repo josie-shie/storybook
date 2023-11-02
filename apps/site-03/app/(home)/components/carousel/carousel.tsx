@@ -7,7 +7,7 @@ import 'swiper/css/effect-creative';
 import { Keyboard, Pagination, Navigation, EffectCreative } from 'swiper';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
-import { useHomeStore } from '../homeStore';
+import { useHomeStore } from '../../homeStore';
 import style from './carousel.module.scss';
 
 interface Slide {

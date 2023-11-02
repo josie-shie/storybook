@@ -44,6 +44,7 @@
         "@mui/styled-engine": "^5.14.11",
         "next": "^13.4.19",
         "@tabler/icons-react": "^2.38.0",
-        "swiper": "^9.4.1"
+        "swiper": "^9.4.1",
+        "lib": "workspace:*"
     }
 }
