@@ -54,9 +54,11 @@
             flex-direction: column;
             height: 100%;
 
-            svg {
+            .hitIcon {
                 position: absolute;
-                top: -14px;
+                width: 36px;
+                background: #fb897a;
+                border-radius: 50%;
             }
         }
 
@@ -105,14 +107,11 @@
             border: 1px solid #4489ff;
             border-radius: 30px;
 
-            .image {
-                padding-top: 2px;
-            }
-
             .text {
                 color: #4489ff;
                 font-size: 14px;
                 font-weight: 500;
+                word-break: keep-all;
             }
         }
     }
