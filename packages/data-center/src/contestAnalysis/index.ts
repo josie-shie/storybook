@@ -380,13 +380,19 @@ export interface HomeTrend {
     overUnderOverRate: number;
     overUnderUnder: number;
     overUnderUnderRate: number;
-    handicapResult: string;
-    overUnderResult: string;
 }
 
 export interface FormatLeagueTrendDataResponse {
     homeTrendList: HomeTrend[];
     awayTrendList: HomeTrend[];
+    homeResult: {
+        handicap: string;
+        overUnder: string;
+    };
+    awayResult: {
+        handicap: string;
+        overUnder: string;
+    };
 }
 
 export interface WinLoseCountDate {
@@ -471,9 +477,7 @@ const formatLeagueTrendData = (homeOdds: HomeAwayOdds, awayOdds: HomeAwayOdds) =
             overUnderOver: homeOdds[item.label].overUnderOver,
             overUnderOverRate: truncateFloatingPoint(homeOdds[item.label].overUnderOverRate, 2),
             overUnderUnder: homeOdds[item.label].overUnderUnder,
-            overUnderUnderRate: truncateFloatingPoint(homeOdds[item.label].overUnderUnderRate, 2),
-            handicapResult: homeOdds.lastSixResultFullTime.handicapResult,
-            overUnderResult: homeOdds.lastSixResultFullTime.overUnderResult
+            overUnderUnderRate: truncateFloatingPoint(homeOdds[item.label].overUnderUnderRate, 2)
         };
     });
 
@@ -487,12 +491,21 @@ const formatLeagueTrendData = (homeOdds: HomeAwayOdds, awayOdds: HomeAwayOdds) =
             overUnderOver: awayOdds[item.label].overUnderOver,
             overUnderOverRate: truncateFloatingPoint(homeOdds[item.label].overUnderOverRate, 2),
             overUnderUnder: awayOdds[item.label].overUnderUnder,
-            overUnderUnderRate: truncateFloatingPoint(homeOdds[item.label].overUnderUnderRate, 2),
-            handicapResult: awayOdds.lastSixResultFullTime.handicapResult,
-            overUnderResult: awayOdds.lastSixResultFullTime.overUnderResult
+            overUnderUnderRate: truncateFloatingPoint(homeOdds[item.label].overUnderUnderRate, 2)
         };
     });
-    const data: FormatLeagueTrendDataResponse = { homeTrendList, awayTrendList };
+    const data: FormatLeagueTrendDataResponse = {
+        homeTrendList,
+        awayTrendList,
+        homeResult: {
+            handicap: homeOdds.lastSixResultFullTime.handicapResult,
+            overUnder: homeOdds.lastSixResultFullTime.overUnderResult
+        },
+        awayResult: {
+            handicap: awayOdds.lastSixResultFullTime.handicapResult,
+            overUnder: awayOdds.lastSixResultFullTime.overUnderResult
+        }
+    };
     return data;
 };
 
