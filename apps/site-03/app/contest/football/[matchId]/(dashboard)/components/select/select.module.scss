@@ -1,0 +1,23 @@
+.customSelect {
+    :global {
+        .ui-select {
+            white-space: nowrap;
+            text-align: center;
+            font-family: PingFang SC;
+            font-size: 12px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: normal;
+            padding: 0;
+            background: transparent;
+            color: black;
+            gap: 2px;
+            height: 22px;
+
+            .tabler-icon-chevron-down {
+                width: 14px;
+                color: #4489ff;
+            }
+        }
+    }
+}

@@ -532,3 +532,28 @@ interface EuropeOdds {
     oddsType: number;
     //賠率類型
 }
+
+export interface HandicapType {
+    handicap: string | number;
+    overUnder: number;
+    handicapType: string;
+    overType: string;
+}
+
+export interface BattleRecord {
+    matchId: number;
+    matchTime: string;
+    leagueName: string;
+    homeTeamName: string;
+    awayTeamName: string;
+    homeScore: number;
+    awayScore: number;
+    homeHalfScore: number;
+    awayHalfScore: number;
+    handicap: string | number;
+    overUnder: number;
+    handicapType: string;
+    overType: string;
+    winLose: string;
+    isHome: boolean;
+}

@@ -22,9 +22,14 @@ interface InitState {
     winLoseCountData: FormatWinLoseCountDataResponse;
 }
 
-let useAnalyzeStore: StoreWithSelectors<InitState>;
+interface AnalyzeState extends InitState {
+    loading: boolean;
+}
 
-const initialState = (set: (data: Partial<InitState>) => void) => ({
+let useAnalyzeStore: StoreWithSelectors<AnalyzeState>;
+
+const initialState = (set: (data: Partial<AnalyzeState>) => void) => ({
+    loading: false,
     companyDetailAnalyze: [],
     leaguePointsRankData: {} as GetLeaguePointsRankResponse,
     teamInfo: {} as SingleMatchTeamName,
@@ -35,7 +40,7 @@ const initialState = (set: (data: Partial<InitState>) => void) => ({
         away: {} as FormatRecordDataResponse
     },
     winLoseCountData: {} as FormatWinLoseCountDataResponse,
-    setCompanyDetailAnalyze: (companyDetailAnalyze: GetBeforeGameIndexResponse) => {
+    setCompanyDetailAnalyze: ({ companyDetailAnalyze }: InitState) => {
         set({ companyDetailAnalyze });
     },
     setLeaguePointsRankData: (leaguePointsRankData: GetLeaguePointsRankResponse) => {
@@ -62,6 +67,6 @@ const initialState = (set: (data: Partial<InitState>) => void) => ({
 });
 
 const createAnalyzeStore = (init: InitState) =>
-    (useAnalyzeStore = initStore<InitState>(initialState, init));
+    (useAnalyzeStore = initStore<AnalyzeState>(initialState, init));
 
 export { createAnalyzeStore, useAnalyzeStore };
