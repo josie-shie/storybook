@@ -439,14 +439,14 @@ interface OddsDetail {
     awayTeamName: string;
     leagueName: string;
     initial: {
-        handicap: string | number;
-        overUnder: number;
+        handicap: string;
+        overUnder: string;
         handicapType: string;
         overType: string;
     };
     current: {
-        handicap: string | number;
-        overUnder: number;
+        handicap: string;
+        overUnder: string;
         handicapType: string;
         overType: string;
     };
@@ -678,7 +678,7 @@ const formatRecordData = ({
                 ...basicInfo,
                 initial: {
                     handicap: convertHandicap(item.handicap.initialHandicap),
-                    overUnder: item.overUnder.initialHandicap,
+                    overUnder: convertHandicap(item.overUnder.initialHandicap),
                     handicapType: handleOddsType({
                         handicap: item.handicap.initialHandicap,
                         overUnder: item.overUnder.initialHandicap,
@@ -694,7 +694,7 @@ const formatRecordData = ({
                 },
                 current: {
                     handicap: convertHandicap(item.handicap.currentHandicap),
-                    overUnder: item.overUnder.currentHandicap,
+                    overUnder: convertHandicap(item.overUnder.currentHandicap),
                     handicapType: handleOddsType({
                         handicap: item.handicap.currentHandicap,
                         overUnder: item.overUnder.currentHandicap,
@@ -714,7 +714,7 @@ const formatRecordData = ({
                 ...basicInfo,
                 initial: {
                     handicap: convertHandicap(item.handicapHalf.initialHandicap),
-                    overUnder: item.overUnderHalf.initialHandicap,
+                    overUnder: convertHandicap(item.overUnderHalf.initialHandicap),
                     handicapType: handleOddsType({
                         handicap: item.handicapHalf.initialHandicap,
                         overUnder: item.overUnderHalf.initialHandicap,
@@ -730,7 +730,7 @@ const formatRecordData = ({
                 },
                 current: {
                     handicap: convertHandicap(item.handicapHalf.currentHandicap),
-                    overUnder: item.overUnderHalf.currentHandicap,
+                    overUnder: convertHandicap(item.overUnderHalf.currentHandicap),
                     handicapType: handleOddsType({
                         handicap: item.handicapHalf.currentHandicap,
                         overUnder: item.overUnderHalf.currentHandicap,
@@ -776,7 +776,7 @@ const formatRecordData = ({
                 ...basicInfo,
                 initial: {
                     handicap: convertHandicap(item.handicap.initialHandicap),
-                    overUnder: item.overUnder.initialHandicap,
+                    overUnder: convertHandicap(item.overUnder.initialHandicap),
                     handicapType: handleOddsType({
                         handicap: item.handicap.initialHandicap,
                         overUnder: item.overUnder.initialHandicap,
@@ -792,7 +792,7 @@ const formatRecordData = ({
                 },
                 current: {
                     handicap: convertHandicap(item.handicap.currentHandicap),
-                    overUnder: item.overUnder.currentHandicap,
+                    overUnder: convertHandicap(item.overUnder.currentHandicap),
                     handicapType: handleOddsType({
                         handicap: item.handicap.currentHandicap,
                         overUnder: item.overUnder.currentHandicap,
@@ -812,7 +812,7 @@ const formatRecordData = ({
                 ...basicInfo,
                 initial: {
                     handicap: convertHandicap(item.handicapHalf.initialHandicap),
-                    overUnder: item.overUnderHalf.initialHandicap,
+                    overUnder: convertHandicap(item.overUnderHalf.initialHandicap),
                     handicapType: handleOddsType({
                         handicap: item.handicapHalf.initialHandicap,
                         overUnder: item.overUnderHalf.initialHandicap,
@@ -828,7 +828,7 @@ const formatRecordData = ({
                 },
                 current: {
                     handicap: convertHandicap(item.handicapHalf.currentHandicap),
-                    overUnder: item.overUnderHalf.currentHandicap,
+                    overUnder: convertHandicap(item.overUnderHalf.currentHandicap),
                     handicapType: handleOddsType({
                         handicap: item.handicapHalf.currentHandicap,
                         overUnder: item.overUnderHalf.currentHandicap,
