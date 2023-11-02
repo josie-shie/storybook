@@ -1,0 +1,21 @@
+.leagueRankTables {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.leagueRankTable {
+    .tableBody {
+        .tr {
+            &:first-child {
+                .td {
+                    &:first-child {
+                        white-space: nowrap;
+                    }
+
+                    border-right: 0;
+                }
+            }
+        }
+    }
+}
