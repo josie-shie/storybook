@@ -1,7 +1,7 @@
 import ReactEcharts from 'echarts-for-react';
 import style from './fifteenMinutesChart.module.scss';
 
-const sixPie = {
+const options = {
     legend: {
         show: false
     },
@@ -108,7 +108,7 @@ function FifteenMinutesChart() {
     return (
         <div className={style.fifteenMinutesChart}>
             <div className={style.chartContainer}>
-                <ReactEcharts option={sixPie} style={{ width: '100%', height: '200px' }} />
+                <ReactEcharts option={options} style={{ width: '100%', height: '200px' }} />
             </div>
             <div className={style.labelContainer}>
                 <span>大</span>
