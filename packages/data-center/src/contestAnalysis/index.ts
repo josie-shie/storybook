@@ -437,6 +437,7 @@ interface OddsDetail {
     awayHalfScore: number;
     homeTeamName: string;
     awayTeamName: string;
+    leagueName: string;
     initial: {
         handicap: string | number;
         overUnder: number;
@@ -657,7 +658,8 @@ const formatRecordData = ({
     const bet365Response = matchesOddsDetails.bet365Response.reduce<FullHalfOddsResponse>(
         (preItem, item) => {
             const matchData = matchesDataMap.get(item.match.matchId);
-            const full = {
+            item.match.leagueChs;
+            const basicInfo = {
                 matchId: item.match.matchId,
                 leagueCup: matchData?.leagueCup || '0',
                 matchTime: timestampToString(item.match.matchTime),
@@ -669,6 +671,11 @@ const formatRecordData = ({
                 awayScore: matchData?.awayScore || 0,
                 homeHalfScore: matchData?.homeHalfScore || 0,
                 awayHalfScore: matchData?.awayHalfScore || 0,
+                leagueName: item.match.leagueChs
+            };
+
+            const full = {
+                ...basicInfo,
                 initial: {
                     handicap: convertHandicap(item.handicap.initialHandicap),
                     overUnder: item.overUnder.initialHandicap,
@@ -704,17 +711,7 @@ const formatRecordData = ({
             };
 
             const half = {
-                matchId: item.match.matchId,
-                leagueCup: matchData?.leagueCup || '0',
-                matchTime: timestampToString(item.match.matchTime),
-                winLose: matchData?.winLose || '0',
-                isHome: true,
-                homeTeamName: item.match.homeChs,
-                awayTeamName: item.match.homeChs,
-                homeScore: matchData?.homeScore || 0,
-                awayScore: matchData?.awayScore || 0,
-                homeHalfScore: matchData?.homeHalfScore || 0,
-                awayHalfScore: matchData?.awayHalfScore || 0,
+                ...basicInfo,
                 initial: {
                     handicap: convertHandicap(item.handicapHalf.initialHandicap),
                     overUnder: item.overUnderHalf.initialHandicap,
@@ -760,7 +757,7 @@ const formatRecordData = ({
     const crownResponse = matchesOddsDetails.crownResponse.reduce<FullHalfOddsResponse>(
         (preItem, item) => {
             const matchData = matchesDataMap.get(item.match.matchId);
-            const full = {
+            const basicInfo = {
                 matchId: item.match.matchId,
                 leagueCup: matchData?.leagueCup || '0',
                 matchTime: timestampToString(item.match.matchTime),
@@ -772,6 +769,11 @@ const formatRecordData = ({
                 awayScore: matchData?.awayScore || 0,
                 homeHalfScore: matchData?.homeHalfScore || 0,
                 awayHalfScore: matchData?.awayHalfScore || 0,
+                leagueName: item.match.leagueChs
+            };
+
+            const full: OddsDetail = {
+                ...basicInfo,
                 initial: {
                     handicap: convertHandicap(item.handicap.initialHandicap),
                     overUnder: item.overUnder.initialHandicap,
@@ -806,18 +808,8 @@ const formatRecordData = ({
                 }
             };
 
-            const half = {
-                matchId: item.match.matchId,
-                leagueCup: matchData?.leagueCup || '0',
-                matchTime: timestampToString(item.match.matchTime),
-                winLose: matchData?.winLose || '0',
-                isHome: true,
-                homeTeamName: item.match.homeChs,
-                awayTeamName: item.match.homeChs,
-                homeScore: matchData?.homeScore || 0,
-                awayScore: matchData?.awayScore || 0,
-                homeHalfScore: matchData?.homeHalfScore || 0,
-                awayHalfScore: matchData?.awayHalfScore || 0,
+            const half: OddsDetail = {
+                ...basicInfo,
                 initial: {
                     handicap: convertHandicap(item.handicapHalf.initialHandicap),
                     overUnder: item.overUnderHalf.initialHandicap,
