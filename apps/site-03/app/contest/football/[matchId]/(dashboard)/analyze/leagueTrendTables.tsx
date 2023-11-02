@@ -1,12 +1,7 @@
 'use client';
+import type { HomeTrend } from 'data-center';
 import style from './leagueTrendTables.module.scss';
 import { useAnalyzeStore } from './analyzeStore';
-import type { HomeAwayOdds } from '@/types/analyze';
-
-interface Rows {
-    name: string;
-    label: 'totalFullTime' | 'homeFullTime' | 'awayFullTime';
-}
 
 const getStyleResult = (char: string) => {
     if (char === '输' || char === '小') {
@@ -20,34 +15,28 @@ const getStyleResult = (char: string) => {
     }
 };
 
+const lastSixResultFullTime = {
+    name: '',
+    played: 0,
+    handicapResult: '赢输赢输赢输',
+    handicapWinRate: 0,
+    overUnderResult: '大小大小大小'
+};
+
+// const teamMapping = {
+//     totalFullTime: '总',
+//     homeFullTime: '主',
+//     awayFullTime: '客'
+// }
+
 // 全场 赛 胜 平 负 得 失 净 积分 排名 胜率
 function LeagueTrendTable({
     leagueTrendData,
     teamName
 }: {
-    leagueTrendData: HomeAwayOdds;
+    leagueTrendData: HomeTrend[];
     teamName?: string;
 }) {
-    const rows: Rows[] = [
-        { name: '总', label: 'totalFullTime' },
-        { name: '主', label: 'homeFullTime' },
-        { name: '客', label: 'awayFullTime' }
-    ];
-
-    const rowsData = rows.map(item => {
-        return {
-            ...item,
-            played: leagueTrendData[item.label].played,
-            handicapDraw: leagueTrendData[item.label].handicapDraw,
-            handicapLose: leagueTrendData[item.label].handicapLose,
-            handicapWinRate: leagueTrendData[item.label].HandicapWinRate,
-            overUnderOver: leagueTrendData[item.label].overUnderOver,
-            overUnderOverRate: leagueTrendData[item.label].overUnderOverRate,
-            overUnderUnder: leagueTrendData[item.label].overUnderUnder,
-            overUnderUnderRate: leagueTrendData[item.label].overUnderUnderRate
-        };
-    });
-
     if (JSON.stringify(leagueTrendData) === '{}') {
         return <div>無資料</div>;
     }
@@ -73,10 +62,10 @@ function LeagueTrendTable({
                     <div className="td">小</div>
                     <div className="td">小%</div>
                 </div>
-                {rowsData.map((item, idx) => (
+                {leagueTrendData.map((item, idx) => (
                     <div className="tr" key={`league_rank_${idx.toString()}`}>
                         <div className="td" style={{ flex: 'initial', width: '45px' }}>
-                            {item.name}
+                            {/* {teamMapping[item.label]} */}
                         </div>
                         <div className="td">{item.played}</div>
                         <div className="td">{item.handicapDraw}</div>
@@ -93,35 +82,31 @@ function LeagueTrendTable({
                         近6
                     </div>
                     <div className="td" style={{ justifyContent: 'center', alignItems: 'center' }}>
-                        {leagueTrendData.lastSixResultFullTime.handicapResult.length > 0
-                            ? leagueTrendData.lastSixResultFullTime.handicapResult
-                                  .split('')
-                                  .map((char, index) => {
-                                      return (
-                                          <span
-                                              className={getStyleResult(char)}
-                                              key={`handicap_${index.toString()}`}
-                                          >
-                                              {char}
-                                          </span>
-                                      );
-                                  })
+                        {lastSixResultFullTime.handicapResult.length > 0
+                            ? lastSixResultFullTime.handicapResult.split('').map((char, index) => {
+                                  return (
+                                      <span
+                                          className={getStyleResult(char)}
+                                          key={`handicap_${index.toString()}`}
+                                      >
+                                          {char}
+                                      </span>
+                                  );
+                              })
                             : '-'}
                     </div>
                     <div className="td" style={{ justifyContent: 'center', alignItems: 'center' }}>
-                        {leagueTrendData.lastSixResultFullTime.overUnderResult.length > 0
-                            ? leagueTrendData.lastSixResultFullTime.overUnderResult
-                                  .split('')
-                                  .map((char, index) => {
-                                      return (
-                                          <span
-                                              className={getStyleResult(char)}
-                                              key={`overUnder_${index.toString()}`}
-                                          >
-                                              {char}
-                                          </span>
-                                      );
-                                  })
+                        {lastSixResultFullTime.overUnderResult.length > 0
+                            ? lastSixResultFullTime.overUnderResult.split('').map((char, index) => {
+                                  return (
+                                      <span
+                                          className={getStyleResult(char)}
+                                          key={`overUnder_${index.toString()}`}
+                                      >
+                                          {char}
+                                      </span>
+                                  );
+                              })
                             : '-'}
                     </div>
                 </div>
@@ -132,16 +117,8 @@ function LeagueTrendTable({
 
 function LeagueTrendTables() {
     const leagueTrendData = useAnalyzeStore.use.leagueTrendData();
-    const matchTeamName = {
-        homeEn: 'KA Akureyri',
-        homeChs: 'KA阿古雷利',
-        homeCht: '阿古雷利',
-        awayEn: 'Breidablik',
-        awayChs: '贝雷达比历克',
-        awayCht: '比達比歷',
-        homeId: 1639,
-        awayId: 4052
-    };
+    const teamInfo = useAnalyzeStore.use.teamInfo();
+
     if (JSON.stringify(leagueTrendData) === '{}') {
         return <div>沒有資料</div>;
     }
@@ -152,12 +129,12 @@ function LeagueTrendTables() {
             </div>
             <div className={style.leagueTrendTables}>
                 <LeagueTrendTable
-                    leagueTrendData={leagueTrendData.homeOdds}
-                    teamName={matchTeamName.homeChs || '-'}
+                    leagueTrendData={leagueTrendData.homeTrendList}
+                    teamName={teamInfo.homeChs || '-'}
                 />
                 <LeagueTrendTable
-                    leagueTrendData={leagueTrendData.awayOdds}
-                    teamName={matchTeamName.awayChs || '-'}
+                    leagueTrendData={leagueTrendData.awayTrendList}
+                    teamName={teamInfo.awayChs || '-'}
                 />
             </div>
         </div>

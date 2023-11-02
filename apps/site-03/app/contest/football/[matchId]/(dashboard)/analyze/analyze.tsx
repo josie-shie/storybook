@@ -1,9 +1,9 @@
 'use client';
 import type {
-    SingleMatchTeamName,
-    FormatLeagueTrendDataResponse,
     FormatRecordDataResponse,
-    GetAnalysisOthersResponse
+    GetAnalysisOthersResponse,
+    GetLeaguePointsRankResponse,
+    GetBeforeGameIndexResponse
 } from 'data-center';
 import BeforeGameTable from './beforeGameTable';
 import LeagueRankTables from './leagueRankTables';
@@ -11,11 +11,17 @@ import LeagueTrendTables from './leagueTrendTables';
 import WinLoseCountTable from './winLoseCountTable';
 import { createAnalyzeStore } from './analyzeStore';
 
-function Analyze({ analysisData }: { analysisData: GetAnalysisOthersResponse }) {
+interface PropsType {
+    analysisData: GetAnalysisOthersResponse;
+    beforeGameData: GetBeforeGameIndexResponse;
+}
+
+function Analyze({ analysisData, beforeGameData }: PropsType) {
     createAnalyzeStore({
-        companyDetailAnalyze: [],
-        teamInfo: {} as SingleMatchTeamName,
-        leagueTrendData: {} as FormatLeagueTrendDataResponse,
+        companyDetailAnalyze: beforeGameData,
+        leaguePointsRankData: {} as GetLeaguePointsRankResponse,
+        teamInfo: analysisData.teamInfo,
+        leagueTrendData: analysisData.leagueTrendData,
         battleRecordData: {} as FormatRecordDataResponse,
         lastMatches: {
             home: {} as FormatRecordDataResponse,

@@ -5,11 +5,13 @@ import type {
     FormatLeagueTrendDataResponse,
     FormatRecordDataResponse,
     FormatWinLoseCountDataResponse,
-    GetBeforeGameIndexResponse
+    GetBeforeGameIndexResponse,
+    GetLeaguePointsRankResponse
 } from 'data-center';
 
 interface InitState {
     companyDetailAnalyze: GetBeforeGameIndexResponse;
+    leaguePointsRankData: GetLeaguePointsRankResponse;
     teamInfo: SingleMatchTeamName;
     leagueTrendData: FormatLeagueTrendDataResponse;
     battleRecordData: FormatRecordDataResponse;
@@ -24,6 +26,7 @@ let useAnalyzeStore: StoreWithSelectors<InitState>;
 
 const initialState = (set: (data: Partial<InitState>) => void) => ({
     companyDetailAnalyze: [],
+    leaguePointsRankData: {} as GetLeaguePointsRankResponse,
     teamInfo: {} as SingleMatchTeamName,
     leagueTrendData: {} as FormatLeagueTrendDataResponse,
     battleRecordData: {} as FormatRecordDataResponse,
@@ -32,6 +35,12 @@ const initialState = (set: (data: Partial<InitState>) => void) => ({
         away: {} as FormatRecordDataResponse
     },
     winLoseCountData: {} as FormatWinLoseCountDataResponse,
+    setCompanyDetailAnalyze: (companyDetailAnalyze: GetBeforeGameIndexResponse) => {
+        set({ companyDetailAnalyze });
+    },
+    setLeaguePointsRankData: (leaguePointsRankData: GetLeaguePointsRankResponse) => {
+        set({ leaguePointsRankData });
+    },
     setTeamInfoData: (teamInfo: SingleMatchTeamName) => {
         set({ teamInfo });
     },
