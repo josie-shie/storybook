@@ -1,49 +1,18 @@
-import { useState } from 'react';
+import { useEffect } from 'react';
 import type { FormatRecordDataResponse } from 'data-center';
-import Select from '../../../components/select/select';
+import { useAnalyzeStore } from '../../analyzeStore';
 import style from './record.module.scss';
-import type { HandicapType, BattleRecord } from '@/types/analyze';
-
-type GameAmountProps = 10 | 20;
-type GameTypeProps = '0' | '1' | '2';
-type GameCompanyProps = 'crown' | 'bet365';
-const DefaultCompany = 'crown';
-const DefaultHandicap = 'current';
-const DefaultTime = 'full';
-type GameHandicapProps = 'current' | 'initial';
-type GameTimeProps = 'full' | 'half';
-
-const WinLoseResultStyle = {
-    win: style.colorRed,
-    lose: style.colorGreen,
-    draw: style.colorBlue
-};
-
-const contestAmountList = [
-    { label: '近10场', value: 10 },
-    { label: '近20场', value: 20 }
-];
-
-const contestTypeList = [
-    { label: '全部赛事', value: '2' },
-    { label: '联赛', value: '0' },
-    { label: '杯赛', value: '1' }
-];
-
-const componyList = [
-    { label: '皇*', value: 'crown' },
-    { label: 'Bet*', value: 'bet365' }
-];
-
-const handicapList = [
-    { label: '终', value: 'current' },
-    { label: '初', value: 'initial' }
-];
-
-const contestTimeList = [
-    { label: '全场', value: 'full' },
-    { label: '半场', value: 'half' }
-];
+import SelectList from './selectList';
+import TableDetail from './tableDetail';
+import type {
+    HandicapType,
+    WinLoseResultProps,
+    GameAmountProps,
+    GameTypeProps,
+    GameCompanyProps,
+    GameHandicapProps,
+    GameTimeProps
+} from '@/types/analyze';
 
 interface RecordTableProps {
     tableData: FormatRecordDataResponse;
@@ -52,86 +21,29 @@ interface RecordTableProps {
     showTitle?: boolean;
 }
 
-const convertValue = (input: number) => {
-    const isNegative = input < 0;
-    const absoluteValue = Math.abs(input);
-    const floorValue = Math.floor(absoluteValue);
-    const fraction = absoluteValue - floorValue;
-
-    switch (fraction) {
-        case 0.25:
-            return isNegative
-                ? `-${floorValue}/${floorValue + 0.5}`
-                : `${floorValue}/${floorValue + 0.5}`;
-        case 0.75:
-            return isNegative
-                ? `-${floorValue + 0.5}/${floorValue + 1}`
-                : `${floorValue + 0.5}/${floorValue + 1}`;
-        default:
-            return input;
-    }
-};
-
 function formatFloatingPoint(target: number, num: number) {
     return Math.floor(target * Math.pow(10, num)) / Math.pow(10, num);
 }
 
 function RecordTable({ tableData, mode, homeTeamData, showTitle }: RecordTableProps) {
-    const [list, setList] = useState<BattleRecord[]>([]);
-    const [contestAmount, setContestAmount] = useState<GameAmountProps>(10);
-    const [contestType, setContestType] = useState<GameTypeProps>('2');
-    const [contestCompany, setContestCompany] = useState<GameCompanyProps>(DefaultCompany);
-    const [contestHandicap, setContestHandicap] = useState<GameHandicapProps>(DefaultHandicap);
-    const [contestTime, setContestTime] = useState<GameTimeProps>(DefaultTime);
-    const [gameIsHome, setGameIsHome] = useState(false);
-
-    const handleOddsText = ({ handicap, overUnder }: { handicap?: string; overUnder?: string }) => {
-        let handicapStyle = '';
-        let handicapText = '';
-        let overStyle = '';
-        let overText = '';
-
-        if (handicap === 'win') {
-            handicapStyle = style.colorRed;
-            handicapText = '赢';
-        }
-
-        if (handicap === 'draw') {
-            handicapStyle = style.colorBlue;
-            handicapText = '走';
-        }
-
-        if (handicap === 'lose') {
-            handicapStyle = style.colorGreen;
-            handicapText = '输';
-        }
-
-        if (overUnder === 'big') {
-            overStyle = style.colorRed;
-            overText = '大';
-        }
-
-        if (overUnder === 'small') {
-            overStyle = style.colorGreen;
-            overText = '小';
-        }
-
-        if (overUnder === 'draw') {
-            overStyle = style.colorBlue;
-            overText = '走';
-        }
-
-        return {
-            style: {
-                over: overStyle,
-                handicap: handicapStyle
-            },
-            text: {
-                over: overText,
-                handicap: handicapText
-            }
-        };
-    };
+    const list = useAnalyzeStore.use.list();
+    const setList = useAnalyzeStore.use.setList();
+    const contestAmount = useAnalyzeStore.use.contestAmount();
+    const setContestAmount = useAnalyzeStore.use.setContestAmount();
+    const contestType = useAnalyzeStore.use.contestType();
+    const setContestType = useAnalyzeStore.use.setContestType();
+    const contestCompany = useAnalyzeStore.use.contestCompany();
+    const setContestCompany = useAnalyzeStore.use.setContestCompany();
+    const contestHandicap = useAnalyzeStore.use.contestHandicap();
+    const setContestHandicap = useAnalyzeStore.use.setContestHandicap();
+    const contestTime = useAnalyzeStore.use.contestTime();
+    const setContestTime = useAnalyzeStore.use.setContestTime();
+    const gameIsHome = useAnalyzeStore.use.gameIsHome();
+    const setGameIsHome = useAnalyzeStore.use.setGameIsHome();
+    const winLoseResult = useAnalyzeStore.use.winLoseResult();
+    const setWinLoseResult = useAnalyzeStore.use.setWinLoseResult();
+    const oddsDetailResult = useAnalyzeStore.use.oddsDetailResult();
+    const setOddsDetailResult = useAnalyzeStore.use.setOddsDetailResult();
 
     const handleFilterList = (filterParams: {
         company?: GameCompanyProps;
@@ -184,8 +96,83 @@ function RecordTable({ tableData, mode, homeTeamData, showTitle }: RecordTablePr
             });
 
         rowData = rowData.slice(0, prams.amount);
+
+        // 計算勝/平負場次、贏率
+        const winLose = rowData.reduce<WinLoseResultProps>(
+            (preItem, item) => {
+                switch (item.winLose) {
+                    case '2':
+                        preItem.tie += 1;
+                        break;
+                    case '0':
+                        if (item.isHome) {
+                            preItem.win += 1;
+                        } else {
+                            preItem.lose += 1;
+                        }
+                        break;
+                    case '1':
+                        if (item.isHome) {
+                            preItem.lose += 1;
+                        } else {
+                            preItem.win += 1;
+                        }
+                        break;
+                    default:
+                        return preItem;
+                }
+                return preItem;
+            },
+            {
+                win: 0,
+                tie: 0,
+                lose: 0,
+                winRate: 0
+            }
+        );
+
+        winLose.winRate = formatFloatingPoint((winLose.win / rowData.length) * 100, 0);
+
+        // 計算贏率、大率
+        const oddsDetail = rowData.reduce(
+            (preItem, item) => {
+                let win = preItem.win;
+                let over = preItem.over;
+
+                if (item.isHome && item.homeScore > item.awayScore) {
+                    win += 1;
+                }
+
+                if (item.homeScore + item.awayScore > item.overUnder) {
+                    // 假设overUnder是item的一个属性
+                    over += 1;
+                }
+
+                return {
+                    win,
+                    over,
+                    winRate: formatFloatingPoint((win / rowData.length) * 100, 0),
+                    overRate: formatFloatingPoint((over / rowData.length) * 100, 0)
+                };
+            },
+            {
+                win: 0,
+                over: 0,
+                winRate: 0,
+                overRate: 0
+            }
+        );
+        oddsDetail.winRate = formatFloatingPoint((oddsDetail.win / rowData.length) * 100, 0);
+        oddsDetail.overRate = formatFloatingPoint((oddsDetail.over / rowData.length) * 100, 0);
+
+        setWinLoseResult(winLose);
+        setOddsDetailResult(oddsDetail);
         setList(rowData);
     };
+
+    useEffect(() => {
+        handleFilterList({});
+    }, []);
 
     return (
         <div className={style.recordTable}>
@@ -214,147 +201,25 @@ function RecordTable({ tableData, mode, homeTeamData, showTitle }: RecordTablePr
                         </div>
                     </div>
                 )}
-                <div className="tableHead">
-                    <div className="tr">
-                        <div className="th">
-                            <Select
-                                onChange={value => {
-                                    setContestAmount(value as GameAmountProps);
-                                    handleFilterList({
-                                        amount: value as GameAmountProps
-                                    });
-                                }}
-                                options={contestAmountList}
-                                selectedValue={contestAmount}
-                            />
-                        </div>
-                        <div className="th">
-                            <Select
-                                onChange={value => {
-                                    setContestType(value as GameTypeProps);
-                                    handleFilterList({ type: value as GameTypeProps });
-                                }}
-                                options={contestTypeList}
-                                selectedValue={contestType}
-                            />
-                        </div>
-                        <div className="th">
-                            <Select
-                                onChange={value => {
-                                    setContestCompany(value as GameCompanyProps);
-                                    handleFilterList({ company: value as GameCompanyProps });
-                                }}
-                                options={componyList}
-                                selectedValue={contestCompany}
-                            />
-                        </div>
-                        <div className="th">
-                            <Select
-                                onChange={value => {
-                                    setContestHandicap(value as GameHandicapProps);
-                                    handleFilterList({ handicap: value as GameHandicapProps });
-                                }}
-                                options={handicapList}
-                                selectedValue={contestHandicap}
-                            />
-                        </div>
-                    </div>
-                </div>
-                <div className="tableBody">
-                    <div className="tr">
-                        <div className="td">日期/赛事</div>
-                        <div className="td">主场</div>
-                        <div className="td">比分</div>
-                        <div className="td">客场</div>
-                        <div className="td">
-                            <Select
-                                onChange={value => {
-                                    setContestTime(value as GameTimeProps);
-                                    handleFilterList({ time: value as GameTimeProps });
-                                }}
-                                options={contestTimeList}
-                                selectedValue={contestTime}
-                            />
-                        </div>
-                    </div>
-                    {list.length > 0 ? (
-                        list.map(item => (
-                            <div className="tr" key={item.matchId}>
-                                <div className={`td ${style.flexColumns}`}>
-                                    <div className={style.dateText}>{item.matchTime}</div>
-                                    <div>{item.leagueName}</div>
-                                </div>
-                                <div
-                                    className={`td ${
-                                        item.isHome ? WinLoseResultStyle[item.handicapType] : ''
-                                    }`}
-                                >
-                                    {item.homeTeamName}
-                                </div>
-                                <div className={`td ${style.flexColumns}`}>
-                                    <div className={`${WinLoseResultStyle[item.handicapType]}`}>
-                                        <span>{item.homeScore}</span>-<span>{item.awayScore}</span>
-                                    </div>
-                                    <div className={style.halfScore}>
-                                        <span>{item.homeHalfScore}</span>-
-                                        <span>{item.awayHalfScore}</span>
-                                    </div>
-                                </div>
-                                <div
-                                    className={`td ${
-                                        !item.isHome ? WinLoseResultStyle[item.handicapType] : ''
-                                    }`}
-                                >
-                                    {item.awayTeamName}
-                                </div>
-                                <div className={`td ${style.handicapCell}`}>
-                                    <div
-                                        className={`${
-                                            handleOddsText({ handicap: item.handicapType }).style
-                                                .handicap
-                                        }`}
-                                    >
-                                        <div className={style.textAlign}>
-                                            {convertValue(Number(item.handicap)) || '-'}
-                                        </div>
-                                        <div className={style.textAlign}>
-                                            {item.matchId
-                                                ? handleOddsText({ handicap: item.handicapType })
-                                                      .text.handicap
-                                                : '-'}
-                                        </div>
-                                    </div>
-                                    <div
-                                        className={`${
-                                            item.matchId
-                                                ? handleOddsText({ overUnder: item.overType }).style
-                                                      .over
-                                                : ''
-                                        }`}
-                                    >
-                                        <div className={style.textAlign}>
-                                            {formatFloatingPoint(item.overUnder, 2) || '-'}
-                                        </div>
-                                        <div className={style.textAlign}>
-                                            {item.matchId
-                                                ? handleOddsText({ overUnder: item.overType }).text
-                                                      .over
-                                                : '-'}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        ))
-                    ) : (
-                        <div className="tr" key="default">
-                            <div className="td">- </div>
-                            <div className="td">-</div>
-                            <div className="td">-</div>
-                            <div className="td">-</div>
-                            <div className="td">-</div>
-                        </div>
-                    )}
-                </div>
+                <SelectList
+                    contestAmount={contestAmount}
+                    contestCompany={contestCompany}
+                    contestHandicap={contestHandicap}
+                    contestType={contestType}
+                    handleFilterList={handleFilterList}
+                    setContestAmount={setContestAmount}
+                    setContestCompany={setContestCompany}
+                    setContestHandicap={setContestHandicap}
+                    setContestType={setContestType}
+                />
+                <TableDetail
+                    contestTime={contestTime}
+                    handleFilterList={handleFilterList}
+                    list={list}
+                    oddsDetailResult={oddsDetailResult}
+                    setContestTime={setContestTime}
+                    winLoseResult={winLoseResult}
+                />
             </div>
         </div>
     );

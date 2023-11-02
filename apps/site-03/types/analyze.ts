@@ -557,3 +557,31 @@ export interface BattleRecord {
     winLose: string;
     isHome: boolean;
 }
+
+export interface WinLoseResultProps {
+    win: number;
+    tie: number;
+    lose: number;
+    winRate: number;
+}
+
+export interface OddsDetailResultProps {
+    win: number;
+    over: number;
+    winRate: number;
+    overRate: number;
+}
+
+export interface FilterProps {
+    company?: GameCompanyProps;
+    handicap?: GameHandicapProps;
+    time?: GameTimeProps;
+    amount?: GameAmountProps;
+    type?: GameTypeProps;
+}
+
+export type GameAmountProps = 10 | 20;
+export type GameTypeProps = '0' | '1' | '2';
+export type GameCompanyProps = 'crown' | 'bet365';
+export type GameHandicapProps = 'current' | 'initial';
+export type GameTimeProps = 'full' | 'half';
