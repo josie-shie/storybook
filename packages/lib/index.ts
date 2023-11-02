@@ -7,3 +7,4 @@ export { truncateFloatingPoint } from './src/formatNumber';
 export { handicapToString, convertHandicap, convertOdds } from './src/formatHandicap';
 export type { StoreWithSelectors } from './src/store';
 export { timestampToString, timestampToMonthDay } from './src/timeFormat';
+export { handleStartTime, handleGameTime } from './src/gameStatus';

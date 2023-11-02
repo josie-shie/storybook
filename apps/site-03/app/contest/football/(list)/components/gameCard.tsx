@@ -1,5 +1,6 @@
 import type { ContestInfo } from 'data-center';
 import Image from 'next/image';
+import { GameStatus } from 'ui';
 import { useContestListStore } from '../contestListStore';
 import style from './gameCard.module.scss';
 import Video from './img/video.png';
@@ -81,7 +82,9 @@ function TopArea({ contestInfo }: { contestInfo: ContestInfo }) {
                     <Image alt="flag" src={Flag} />{' '}
                     <span className={style.ratio}>{contestInfo.homeCorner}</span>
                 </div>
-                <div className={style.status}>完</div>
+                <div className={style.status}>
+                    <GameStatus startTime={contestInfo.startTime} status={contestInfo.state} />
+                </div>
                 <div className={style.corner}>
                     <Image alt="flag" src={Flag} />{' '}
                     <span className={style.ratio}>{contestInfo.awayCorner}</span>
