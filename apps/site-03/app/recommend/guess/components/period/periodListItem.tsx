@@ -1,5 +1,6 @@
+import Image from 'next/image';
 import style from './periodListItem.module.scss';
-import Soccer from './img/soccer.svg';
+import Soccer from './img/soccer.png';
 import Avatar from '@/components/avatar/avatar';
 
 interface PropsType {
@@ -39,7 +40,7 @@ function PeriodListItem({
                 </div>
             </div>
             <div className={style.winRateBlock}>
-                {winRate >= 90 && <Soccer className={style.icon} />}
+                {winRate >= 90 && <Image alt="icon" className={style.icon} src={Soccer} />}
                 <span className={`${style.winRate} ${winRate >= 90 ? style.redFill : ''}`}>
                     <span>{winRate}</span>
                     <span className={style.percent}>%</span>

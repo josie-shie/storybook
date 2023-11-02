@@ -1,10 +1,11 @@
 'use client';
 import { useState } from 'react';
+import Image from 'next/image';
 import Rule from '../components/rule/rule';
 import PaidDialog from './components/paidDialog/paidDialog';
 import GameCard from './gameCard';
 import AnalyzeColumn from './analyze';
-import Title from './img/title.svg';
+import Title from './img/title.png';
 import style from './masterPlan.module.scss';
 
 interface MasterPlanProps {
@@ -71,7 +72,7 @@ function MasterPlan({ isUnlocked, setIsUnlocked }: MasterPlanProps) {
             <div className={style.area}>
                 <div className={style.title}>
                     <div className={style.name}>
-                        <Title />
+                        <Image alt="titleIcon" src={Title} width={16} />
                         <span>近20场高胜率玩家风向</span>
                     </div>
                     <Rule />

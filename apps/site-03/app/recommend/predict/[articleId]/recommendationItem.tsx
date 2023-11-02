@@ -1,5 +1,6 @@
+import Image from 'next/image';
 import style from './recommendationItem.module.scss';
-import Star from './img/star.svg';
+import Star from './img/star.png';
 
 interface LeagueNameProps {
     name: string;
@@ -28,7 +29,7 @@ function RecommendationItem({ time, leagueName, teamName }: RecommendationProps)
             </div>
             <div className={style.right}>
                 <div className={style.noPaid}>
-                    <Star className={style.image} />
+                    <Image alt="" className={style.image} src={Star} width={14} />
                     <span className={style.text}>20元</span>
                 </div>
                 <div className={style.unlockMember}>已有5人解鎖</div>
