@@ -1,17 +1,18 @@
 'use client';
-
-import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Button from '@mui/material/Button';
+import type { GetSingleMatchResponse } from 'data-center';
 import Header from './header';
 import style from './liveBox.module.scss';
 import VideoIcon from './img/video.png';
 import bgImage from './img/bg.jpg';
 import DefaultTeamLogoIcon from './img/defaultTeamLogo.png';
+import { createContestDetailStore, useContestDetailStore } from './contestDetailStore';
 
 type GameStatusType = { style: string; text: string } | undefined;
 
 function GameStatus() {
+    const matchDetail = useContestDetailStore.use.matchDetail();
     const gameStatus = {
         state: 'apple',
         time: '21'
@@ -34,7 +35,9 @@ function GameStatus() {
         <div className={style.gameStatus}>
             {gameStatus.state !== 'notYet' && (
                 <div className={style.textHolder}>
-                    <p className={style.text}>半場 5-5</p>
+                    <p className={style.text}>
+                        半場 {matchDetail.homeHalfScore}-{matchDetail.awayHalfScore}
+                    </p>
                 </div>
             )}
             <div
@@ -51,8 +54,8 @@ function GameStatus() {
                         {gameStatus.time} <span className={style.timePoint}>’</span>
                     </>
                 )}
-                <div className={style.homeScore}>13</div>
-                <div className={style.awayScore}>7</div>
+                <div className={style.homeScore}>{matchDetail.homeScore}</div>
+                <div className={style.awayScore}>{matchDetail.awayScore}</div>
             </div>
             {gameStatus.state === 'notYet' ? (
                 <p className={style.vsText}>VS</p>
@@ -71,49 +74,25 @@ function GameStatus() {
     );
 }
 
-function LiveBox() {
-    const [liveVisible, setLiveVisible] = useState(true);
-    const liveBarRef = useRef<HTMLDivElement | null>(null);
-    useEffect(() => {
-        const currentRef = liveBarRef.current;
-        const observer = new IntersectionObserver(
-            ([entry]) => {
-                setLiveVisible(entry.isIntersecting);
-            },
-            {
-                threshold: 0.1
-            }
-        );
-        if (currentRef) {
-            observer.observe(currentRef);
-        }
-
-        return () => {
-            if (currentRef) {
-                observer.unobserve(currentRef);
-            }
-        };
-    }, [setLiveVisible]);
+function LiveBox({ contestDetail }: { contestDetail: GetSingleMatchResponse }) {
+    createContestDetailStore({ matchDetail: contestDetail });
+    const { homeChs, homeLogo, awayChs, awayLogo } = useContestDetailStore.use.matchDetail();
 
     return (
-        <div
-            className={style.liveBox}
-            ref={liveBarRef}
-            style={{ backgroundImage: `url(${bgImage.src})` }}
-        >
-            <Header liveVisible={liveVisible} />
+        <div className={style.liveBox} style={{ backgroundImage: `url(${bgImage.src})` }}>
+            <Header />
             <div className={style.scoreboard}>
                 <div className={style.gameInfo}>
                     <div className={style.team}>
                         <div className={style.circleBg}>
                             <Image
-                                alt="主隊隊名"
+                                alt={homeChs}
                                 height={40}
-                                src={DefaultTeamLogoIcon}
+                                src={homeLogo ? homeLogo : DefaultTeamLogoIcon}
                                 width={40}
                             />
                         </div>
-                        <p className={style.teamName}>主隊隊名</p>
+                        <p className={style.teamName}>{homeChs}</p>
                     </div>
                     <div className={style.score}>
                         <GameStatus />
@@ -121,13 +100,13 @@ function LiveBox() {
                     <div className={style.team}>
                         <div className={style.circleBg}>
                             <Image
-                                alt="客隊隊名"
+                                alt={awayChs}
                                 height={40}
-                                src={DefaultTeamLogoIcon}
+                                src={awayLogo ? awayLogo : DefaultTeamLogoIcon}
                                 width={40}
                             />
                         </div>
-                        <p className={style.teamName}>客隊隊名</p>
+                        <p className={style.teamName}>{awayChs}</p>
                     </div>
                 </div>
                 <Button className={style.liveBtn}>
