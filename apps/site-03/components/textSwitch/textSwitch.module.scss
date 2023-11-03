@@ -1,0 +1,22 @@
+.textSwitch {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+
+    .label {
+        color: #22222280;
+        font-size: 12px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: normal;
+        transition: color 0.3s;
+    }
+
+    .active {
+        color: #4489ff;
+    }
+
+    .radio {
+        display: none;
+    }
+}

@@ -58,6 +58,12 @@ export const GET_CONTEST_LIST_QUERY = `
                 injuryTime
                 updateTime
                 countryCn
+                handicapCurrent
+                handicapHomeCurrentOdds
+                handicapAwayCurrentOdds
+                overUnderCurrent
+                overUnderOverCurrentOdds
+                overUnderUnderCurrentOdds
             }
         }
     }

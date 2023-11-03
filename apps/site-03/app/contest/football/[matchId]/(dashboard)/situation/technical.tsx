@@ -1,7 +1,8 @@
+import { useSituationStore } from './situationStore';
 import style from './technical.module.scss';
-import type { TechnicalInfo } from '@/types/detailStatus';
 
-function Technical({ technicalList }: { technicalList?: TechnicalInfo[] }) {
+function Technical() {
+    const technicalList = useSituationStore.use.technical();
     const technicMap = {
         '0': '先开球',
         '1': '第一个角球',
@@ -65,13 +66,13 @@ function Technical({ technicalList }: { technicalList?: TechnicalInfo[] }) {
                     </div>
                 </div>
                 <div className="tableBody">
-                    {technicalList?.map((technic, idx) => (
+                    {technicalList.map((technic, idx) => (
                         <div className="tr" key={`technic_${idx.toString()}`}>
-                            <div className={`td ${technic.home > technic.away && 'win'}`}>
+                            <div className={`td ${technic.home > technic.away && 'redText'}`}>
                                 {technic.home}
                             </div>
                             <div className="td">{technicMap[technic.technicType]}</div>
-                            <div className={`td ${technic.home < technic.away && style.win}`}>
+                            <div className={`td ${technic.home < technic.away && 'redText'}`}>
                                 {technic.away}
                             </div>
                         </div>

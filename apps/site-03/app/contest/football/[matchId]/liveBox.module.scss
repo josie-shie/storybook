@@ -128,6 +128,7 @@
 
         .homeScore {
             width: 48px;
+            color: #fff;
             position: absolute;
             top: 50%;
             left: -200%;
@@ -139,6 +140,7 @@
 
         .awayScore {
             width: 48px;
+            color: #fff;
             position: absolute;
             top: 50%;
             right: -200%;
@@ -160,7 +162,11 @@
     }
 
     .finish {
-        background-color: red;
+        background: linear-gradient(90deg, #ff6523 6.1%, #ff390e 95.12%);
+
+        p {
+            color: #fff;
+        }
     }
 
     .playOff {

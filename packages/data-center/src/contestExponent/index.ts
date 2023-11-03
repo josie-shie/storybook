@@ -316,7 +316,6 @@ export const getExponent = async (
         }
 
         const res: GetExponentResponse = { handicapsData, totalGoalData, winLoseData };
-
         return {
             success: true,
             data: res

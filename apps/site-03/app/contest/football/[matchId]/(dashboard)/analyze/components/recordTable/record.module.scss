@@ -1,0 +1,93 @@
+.recordTable {
+    :global {
+        .dataTable .tableHead {
+            .tr {
+                flex: none;
+                gap: 2px;
+
+                .th {
+                    padding: 2px 10px;
+                }
+
+                .td {
+                    width: 66px;
+                }
+            }
+        }
+    }
+
+    .teamNameHeader {
+        position: relative;
+        padding: 6px 0;
+        justify-content: center;
+        background-color: #f3f3f3;
+        border: 1px solid #f3f3f3;
+        border-top-left-radius: 6px;
+        border-top-right-radius: 6px;
+
+        .checkbox {
+            position: absolute;
+            right: 10px;
+            top: 6px;
+            display: flex;
+            align-items: center;
+
+            input {
+                accent-color: #065ff5;
+            }
+
+            .label {
+                font-size: 12px;
+                font-weight: 400;
+            }
+        }
+    }
+
+    .trResult {
+        display: flex;
+        justify-content: center;
+        padding: 6px 0;
+        font-size: 12px;
+        font-weight: 500;
+        gap: 4px;
+        background-color: #f3f3f3;
+        border-bottom: 1px solid #f3f3f3;
+        border-right: 1px solid #f3f3f3;
+        border-left: 1px solid #f3f3f3;
+        border-radius: 0px 0px 6px 6px;
+
+        .spanGap {
+            display: flex;
+            gap: 4px;
+        }
+    }
+
+    .flexColumns {
+        flex-direction: column;
+    }
+
+    .handicapCell {
+        display: flex;
+    }
+
+    .teamName {
+        color: #4489ff;
+        text-align: center;
+    }
+
+    .textAlign {
+        text-align: center;
+    }
+
+    .colorRed {
+        color: #f85640 !important;
+    }
+
+    .colorBlue {
+        color: #8d8d8d !important;
+    }
+
+    .colorGreen {
+        color: #009a63 !important;
+    }
+}

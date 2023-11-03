@@ -4,7 +4,7 @@ import 'swiper/css';
 import 'swiper/css/effect-creative';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
-import Carousel from './(carousel)/carousel';
+import Carousel from './components/carousel/carousel';
 import HomeTeamIcon from './img/homeTeam.png';
 import AwayTeamIcon from './img/awayTeam.png';
 import liveImg from './img/live.png';

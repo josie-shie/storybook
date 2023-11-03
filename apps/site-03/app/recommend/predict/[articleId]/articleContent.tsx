@@ -4,7 +4,7 @@ import Image from 'next/image';
 import NorthBangKokClubIcon from './img/northBangkokClubIcon.png';
 import ThaiUniversityClubIcon from './img/thaiUniversityClubIcon.png';
 import RecommendationItem from './recommendationItem';
-import Star from './img/star.svg';
+import Star from './img/star.png';
 import Push from './img/push.png';
 import style from './articleContent.module.scss';
 
@@ -69,7 +69,7 @@ function ArticleContent() {
                                     setIsUnlocked(true);
                                 }}
                             >
-                                <Star className={style.image} />
+                                <Image alt="" className={style.image} src={Star} width={14} />
                                 <span className={style.text}>10 金币解锁本场预测</span>
                             </div>
                         </div>

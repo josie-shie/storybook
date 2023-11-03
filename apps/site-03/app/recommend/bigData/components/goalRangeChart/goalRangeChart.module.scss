@@ -1,0 +1,66 @@
+.goalRangeChart {
+    width: 100%;
+}
+
+.chartContainer {
+    width: 100%;
+    height: 200px;
+    border: 2px solid #f3f3f3;
+    border-radius: 12px;
+    margin-bottom: 12px;
+}
+
+.labelContainer {
+    text-align: right;
+
+    span {
+        font-size: 12px;
+        font-weight: 600;
+        margin-right: 12px;
+
+        &::before {
+            display: inline-block;
+            content: '';
+            width: 10px;
+            height: 10px;
+            margin-right: 4px;
+            border-radius: 50%;
+        }
+
+        &:last-child {
+            margin-right: 0;
+        }
+    }
+
+    .label1 {
+        color: #6357f0;
+
+        &::before {
+            background: #6357f0;
+        }
+    }
+
+    .label2 {
+        color: #33ad1f;
+
+        &::before {
+            background: #33ad1f;
+        }
+    }
+
+    .label3 {
+        color: #4489ff;
+
+        &::before {
+            background: #4489ff;
+        }
+    }
+
+    .label4 {
+        color: #fbb03b;
+
+        &::before {
+            background: #fbb03b;
+        }
+    }
+}

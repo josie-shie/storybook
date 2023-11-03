@@ -18,7 +18,7 @@ interface PropsType {
     onChange?: (value: OptionType['value']) => void;
 }
 
-function Select({
+function CustomSelect({
     value: initialValue,
     options,
     title,
@@ -48,7 +48,7 @@ function Select({
     return (
         <>
             <button
-                className={style.selectButton}
+                className={`ui-select ${style.selectButton}`}
                 onClick={() => {
                     setIsOpen(!isOpen);
                 }}
@@ -113,4 +113,4 @@ function Select({
     );
 }
 
-export default Select;
+export { CustomSelect };

@@ -16,7 +16,7 @@ function RecommendLayout({ children }: { children: ReactNode }) {
     const isMasterAvatar = pathname.includes('masterAvatar');
     const isBigData = pathname.includes('bigData');
     const headerProps = {
-        logo: <Image alt="" height={13} src={Logo} width={66} />,
+        logo: <Image alt="logo" src={Logo} width={66} />,
         total: 999999
     };
 

@@ -43,6 +43,28 @@ export const convertHandicap = (input: number) => {
                 ? `-${floorValue + 0.5}/${floorValue + 1}`
                 : `${floorValue + 0.5}/${floorValue + 1}`;
         default:
-            return input;
+            return `${input}`;
+    }
+};
+
+/**
+ * 格式賠率數字
+ * - param (odds: number)
+ */
+export const convertOdds = (odds: number): [number, number] => {
+    const isNegative = odds < 0;
+    const absoluteValue = Math.abs(odds);
+    const floorValue = Math.floor(absoluteValue);
+    const fraction = absoluteValue - floorValue;
+
+    switch (fraction) {
+        case 0.25:
+            return isNegative ? [-floorValue, -(floorValue + 0.5)] : [floorValue, floorValue + 0.5];
+        case 0.75:
+            return isNegative
+                ? [-(floorValue + 0.5), -(floorValue + 1)]
+                : [floorValue + 0.5, floorValue + 1];
+        default:
+            return [floorValue, floorValue];
     }
 };

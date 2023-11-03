@@ -2,10 +2,10 @@
 import type { GetContestListResponse } from 'data-center';
 import GameCard from './components/gameCard';
 import style from './football.module.scss';
-import { creatTodayStore, useTodayStore } from '@/app/todayContestStore';
+import { creatContestListStore, useContestListStore } from './contestListStore';
 
 function ContestList() {
-    const contestList = useTodayStore.use.contestList();
+    const contestList = useContestListStore.use.contestList();
 
     return (
         <ul>
@@ -17,7 +17,7 @@ function ContestList() {
 }
 
 function Football({ todayContest }: { todayContest: GetContestListResponse }) {
-    creatTodayStore(todayContest);
+    creatContestListStore(todayContest);
 
     return (
         <div className={style.football}>

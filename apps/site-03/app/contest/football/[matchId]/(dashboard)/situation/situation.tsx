@@ -1,21 +1,21 @@
 'use client';
+import type { GetDetailStatusResponse } from 'data-center';
+import { creatSituationStore } from './situationStore';
 import Handicap from './handicap';
 import TotalGoals from './totalGoals';
 import Event from './event';
 import Technical from './technical';
 import Lineup from './lineup';
-import type { DetailStatusData } from '@/types/detailStatus';
 
-function Situation({ situationData }: { situationData: DetailStatusData }) {
+function Situation({ situationData }: { situationData: GetDetailStatusResponse }) {
+    creatSituationStore(situationData);
     return (
         <>
-            <Handicap handicapData={situationData.handicapsData} />
-            <TotalGoals totalGoalsData={situationData.totalGoalsData} />
-            <Event eventInfo={situationData.eventInfo} eventList={situationData.eventList} />
-            <Technical technicalList={situationData.technical} />
-            {situationData.lineupInfo.matchId !== 0 && (
-                <Lineup lineList={situationData.lineupInfo} />
-            )}
+            <Handicap />
+            <TotalGoals />
+            <Event />
+            <Technical />
+            <Lineup />
         </>
     );
 }

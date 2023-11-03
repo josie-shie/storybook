@@ -1,0 +1,73 @@
+.exponentTable {
+    .options {
+        display: flex;
+        justify-content: flex-end;
+        gap: 20px;
+    }
+
+    :global {
+        .tableHead {
+            .th {
+                flex: 1;
+
+                &:first-child {
+                    width: 60px;
+                    flex: initial;
+                }
+            }
+        }
+
+        .tableBody {
+            .tr {
+                .td {
+                    flex: 1;
+
+                    &:first-child {
+                        width: 60px;
+                        flex: initial;
+                    }
+                }
+            }
+        }
+
+        .firstColumn {
+            max-width: 45px;
+        }
+    }
+}
+
+.winLose {
+    :global {
+        .tableBody {
+            &:last-of-type {
+                .tr {
+                    &:last-of-type {
+                        .td {
+                            &:first-of-type {
+                                border-bottom-left-radius: 0;
+                            }
+
+                            &:last-of-type {
+                                border-bottom-right-radius: 0;
+                            }
+                        }
+                    }
+                }
+            }
+
+            .company:last-of-type {
+                .tr:last-of-type {
+                    .td {
+                        &:first-of-type {
+                            border-bottom-left-radius: 8px;
+                        }
+
+                        &:last-of-type {
+                            border-bottom-right-radius: 8px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

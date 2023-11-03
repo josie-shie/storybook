@@ -178,7 +178,7 @@ const EventInfoSchema = z.object({
         z.literal(13),
         z.literal(14)
     ]),
-    time: z.number(),
+    time: z.string(),
     nameEn: z.string(),
     nameChs: z.string(),
     nameCht: z.string(),
@@ -208,7 +208,7 @@ const LineupListSchema = z.object({
     awayBackup: z.array(LineupInfoSchema)
 });
 
-type LineupList = z.infer<typeof LineupListSchema>;
+export type LineupList = z.infer<typeof LineupListSchema>;
 
 const TechnicMapSchema = z.union([
     z.literal('0'),
@@ -267,7 +267,7 @@ const TechnicalInfoSchema = z.object({
     technicType: TechnicMapSchema
 });
 
-type TechnicalInfo = z.infer<typeof TechnicalInfoSchema>;
+export type TechnicalInfo = z.infer<typeof TechnicalInfoSchema>;
 
 const HandicapsListSchema = z.array(
     z.object({
@@ -283,8 +283,6 @@ const HandicapsListSchema = z.array(
     })
 );
 
-// type HandicapsList = z.infer<typeof HandicapsListSchema>;
-
 const TotalGoalsListSchema = z.array(
     z.object({
         company: z.array(
@@ -298,8 +296,6 @@ const TotalGoalsListSchema = z.array(
         )
     })
 );
-
-// type TotalGoalsList = z.infer<typeof TotalGoalsListSchema>;
 
 const LiveTextInfoSchema = z.object({
     id: z.number(),
@@ -326,7 +322,7 @@ const GetDetailStatusResultSchema = z.object({
 
 type GetDetailStatusResult = z.infer<typeof GetDetailStatusResultSchema>;
 
-interface HandicapsDataType {
+export interface HandicapsDataType {
     half: Record<
         number,
         {
@@ -343,7 +339,7 @@ interface HandicapsDataType {
     >;
 }
 
-interface TotalGoalsDataType {
+export interface TotalGoalsDataType {
     half: Record<
         number,
         {
@@ -360,7 +356,7 @@ interface TotalGoalsDataType {
     >;
 }
 
-interface EventInfoType {
+export interface EventInfoType {
     isHome: Record<string, EventInfo>;
     isAway: Record<string, EventInfo>;
 }
@@ -441,8 +437,8 @@ export const getMatchDetail = async (
 
         const formatDateTime: GetSingleMatchResponse = {
             ...data.getSingleMatch,
-            startTime: timestampToString(data.getSingleMatch.startTime),
-            matchTime: timestampToString(data.getSingleMatch.matchTime)
+            startTime: timestampToString(data.getSingleMatch.startTime, 'M-DD HH:mm'),
+            matchTime: timestampToString(data.getSingleMatch.matchTime, 'M-DD HH:mm')
         };
 
         return {
@@ -611,7 +607,7 @@ export const getDetailStatus = async (
             }
         }
 
-        const eventList: number[] = [];
+        const eventList: string[] = [];
         const eventInfo: EventInfoType = {
             isHome: {},
             isAway: {}
@@ -639,7 +635,7 @@ export const getDetailStatus = async (
             data: {
                 handicapsData,
                 totalGoalsData,
-                eventList: eventList.map(item => timestampToString(item)),
+                eventList: eventList.map(item => item),
                 eventInfo,
                 technical,
                 lineupInfo

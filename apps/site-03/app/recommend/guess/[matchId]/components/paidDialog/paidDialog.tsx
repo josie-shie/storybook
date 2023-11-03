@@ -3,7 +3,8 @@ import React from 'react';
 import { Dialog } from '@mui/material';
 import Slide from '@mui/material/Slide';
 import type { TransitionProps } from '@mui/material/transitions';
-import Star from '../../img/star.svg';
+import Image from 'next/image';
+import Star from '../../img/star.png';
 import style from './paidDialog.module.scss';
 
 interface PaidDialogProps {
@@ -64,7 +65,7 @@ function PaidDialog({
                             <div className={style.price}>
                                 <span className={style.text}>支付</span>
                                 <span className={style.number}>
-                                    <Star className={style.image} />
+                                    <Image alt="" className={style.image} src={Star} width={14} />
                                     {amount}
                                 </span>
                             </div>
@@ -78,7 +79,7 @@ function PaidDialog({
                             <div className={style.price}>
                                 <span className={style.text}>支付</span>
                                 <span className={style.number}>
-                                    <Star className={style.image} />
+                                    <Image alt="" className={style.image} src={Star} width={14} />
                                     {amount}
                                 </span>
                             </div>

@@ -1,14 +1,19 @@
 import type { ContestInfo } from 'data-center';
+import Image from 'next/image';
+import { GameStatus } from 'ui';
+import { useContestListStore } from '../contestListStore';
 import style from './gameCard.module.scss';
-import Video from './img/video.svg';
-import Flag from './img/flag.svg';
-import { useTodayStore } from '@/app/todayContestStore';
+import Video from './img/video.png';
+import Flag from './img/flag.png';
+import { useContestInfoStore } from '@/app/contestInfoStore';
 
 // function ExtraInfo({ contestInfo }: { contestInfo: ContestInfo }) {
 //     return <div className={style.extraInfo}>90 分鐘 [0-0], 加時中,現在比分[1-1]</div>;
 // } // TODO: game extra info
 
-function OddsInfo({ contestInfo }: { contestInfo: ContestInfo }) {
+function OddsInfo({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId: number }) {
+    const globalStore = useContestInfoStore.use.contestInfo();
+    const syncData = Object.hasOwnProperty.call(globalStore, matchId) ? globalStore[matchId] : {};
     return (
         <div className={style.oddsInfo}>
             <span className={`${style.odd} ${style.left}`}>
@@ -18,7 +23,8 @@ function OddsInfo({ contestInfo }: { contestInfo: ContestInfo }) {
             </span>
             <span className={style.mid}>
                 <p>
-                    ({contestInfo.homeHalfScore} - {contestInfo.awayHalfScore})
+                    ({syncData.homeHalfScore || contestInfo.homeHalfScore} -{' '}
+                    {syncData.awayHalfScore || contestInfo.awayHalfScore})
                 </p>
             </span>
             <span className={style.odd}>
@@ -30,75 +36,102 @@ function OddsInfo({ contestInfo }: { contestInfo: ContestInfo }) {
     );
 }
 
-function TeamInfo({ contestInfo }: { contestInfo: ContestInfo }) {
+function TeamInfo({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId: number }) {
+    const globalStore = useContestInfoStore.use.contestInfo();
+    const syncData = Object.hasOwnProperty.call(globalStore, matchId) ? globalStore[matchId] : {};
+    if (syncData.matchId)
+        // eslint-disable-next-line -- test info
+        console.log(syncData, contestInfo.awayChs, contestInfo.homeChs, '此賽事更新');
     return (
         <div className={style.teamInfo}>
             <div className={`${style.homeTeam} ${style.team}`}>
                 <div className={style.cards}>
-                    {contestInfo.homeRed > 0 && (
-                        <p className={`${style.redCard} ${style.card}`}>{contestInfo.homeRed}</p>
-                    )}
-                    {contestInfo.homeYellow > 0 && (
-                        <p className={`${style.yellowCard} ${style.card}`}>
-                            {contestInfo.homeYellow}
-                        </p>
-                    )}
+                    {(syncData.homeRed && syncData.homeRed > 0) ||
+                        (contestInfo.homeRed > 0 && (
+                            <p className={`${style.redCard} ${style.card}`}>
+                                {syncData.homeRed || contestInfo.homeRed}
+                            </p>
+                        ))}
+                    {(syncData.homeYellow && syncData.homeYellow > 0) ||
+                        (contestInfo.homeYellow > 0 && (
+                            <p className={`${style.yellowCard} ${style.card}`}>
+                                {syncData.homeYellow || contestInfo.homeYellow}
+                            </p>
+                        ))}
                 </div>
                 {contestInfo.homeChs}
             </div>
             <div className={style.score}>
-                {contestInfo.homeScore} - {contestInfo.awayScore}
+                {syncData.homeScore || contestInfo.homeScore} -{' '}
+                {syncData.awayScore || contestInfo.awayScore}
             </div>
             <div className={`${style.awayTeam} ${style.team}`}>
                 {contestInfo.awayChs}
                 <div className={style.cards}>
-                    {contestInfo.awayRed > 0 && (
-                        <p className={`${style.redCard} ${style.card}`}>{contestInfo.awayRed}</p>
-                    )}
-                    {contestInfo.awayYellow > 0 && (
-                        <p className={`${style.yellowCard} ${style.card}`}>
-                            {contestInfo.awayYellow}
-                        </p>
-                    )}
+                    {(syncData.awayRed && syncData.awayRed > 0) ||
+                        (contestInfo.awayRed > 0 && (
+                            <p className={`${style.redCard} ${style.card}`}>
+                                {syncData.awayRed || contestInfo.awayRed}
+                            </p>
+                        ))}
+                    {(syncData.awayYellow && syncData.awayYellow > 0) ||
+                        (contestInfo.awayYellow > 0 && (
+                            <p className={`${style.yellowCard} ${style.card}`}>
+                                {syncData.awayYellow || contestInfo.awayYellow}
+                            </p>
+                        ))}
                 </div>
             </div>
         </div>
     );
 }
 
-function TopArea({ contestInfo }: { contestInfo: ContestInfo }) {
+function TopArea({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId: number }) {
+    const globalStore = useContestInfoStore.use.contestInfo();
+    const syncData = Object.hasOwnProperty.call(globalStore, matchId) ? globalStore[matchId] : {};
+
     return (
         <div className={style.topArea}>
             <div className={style.left}>
                 <div className={style.league} style={{ color: contestInfo.color }}>
                     {contestInfo.leagueChsShort}
                 </div>
-                <div className={style.time}>{contestInfo.startTime}</div>
+                <div className={style.time}>
+                    {contestInfo.matchTime ? contestInfo.matchTime.slice(-5) : null}
+                </div>
             </div>
             <div className={style.mid}>
                 <div className={style.corner}>
-                    <Flag /> <span className={style.ratio}>{contestInfo.homeCorner}</span>
+                    <Image alt="flag" src={Flag} />{' '}
+                    <span className={style.ratio}>
+                        {syncData.homeCorner || contestInfo.homeCorner}
+                    </span>
                 </div>
-                <div className={style.status}>完</div>
+                <div className={style.status}>
+                    <GameStatus startTime={contestInfo.startTime} status={contestInfo.state} />
+                </div>
                 <div className={style.corner}>
-                    <Flag /> <span className={style.ratio}>{contestInfo.awayCorner}</span>
+                    <Image alt="flag" src={Flag} />{' '}
+                    <span className={style.ratio}>
+                        {syncData.awayCorner || contestInfo.awayCorner}
+                    </span>
                 </div>
             </div>
             <div className={style.video}>
-                <Video className={style.videoIcon} />
+                <Image alt="video" className={style.videoIcon} src={Video} />
             </div>
         </div>
     );
 }
 
 function GameCard({ matchId }: { matchId: number }) {
-    const contestInfo = useTodayStore.use.contestInfo()[matchId];
+    const contestInfo = useContestListStore.use.contestInfo()[matchId];
 
     return (
         <li className={style.gameCard}>
-            <TopArea contestInfo={contestInfo} />
-            <TeamInfo contestInfo={contestInfo} />
-            <OddsInfo contestInfo={contestInfo} />
+            <TopArea contestInfo={contestInfo} matchId={matchId} />
+            <TeamInfo contestInfo={contestInfo} matchId={matchId} />
+            <OddsInfo contestInfo={contestInfo} matchId={matchId} />
             {/* <ExtraInfo contestInfo={contestInfo} /> */}
         </li>
     );

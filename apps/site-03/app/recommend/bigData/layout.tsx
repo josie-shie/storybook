@@ -30,7 +30,7 @@ function BigDataLayout({ children }: { children: ReactNode }) {
     ];
 
     const headerProps = {
-        logo: <Image alt="" height={13} src={Logo} width={66} />,
+        logo: <Image alt="logo" height={13} src={Logo} width={66} />,
         total: 999999
     };
 
