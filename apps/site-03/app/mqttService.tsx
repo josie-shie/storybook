@@ -6,14 +6,16 @@ import type { OriginalContestInfo } from 'data-center';
 import { useContestInfoStore } from './contestInfoStore';
 
 function MqttService({ children }: { children: ReactNode }) {
+    const update = useContestInfoStore.use.setContestInfoContest();
+
     useEffect(() => {
         const syncGlobalStore = (message: Partial<OriginalContestInfo>) => {
-            const update = useContestInfoStore.use.setContestInfoContest();
             update(message);
         };
         mqttService.init();
         mqttService.getMessage(syncGlobalStore);
     }, []);
+
     return <>{children}</>;
 }
 

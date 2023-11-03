@@ -11,6 +11,7 @@ interface ContestInfoContest extends InitState {
     setContestInfoContest: (info: Partial<OriginalContestInfo>) => void;
 }
 
+let isInit = true;
 let useContestInfoStore: StoreWithSelectors<ContestInfoContest>;
 
 const initialState = (
@@ -31,12 +32,19 @@ const initialState = (
                 newContestInfo[id] = info;
             }
 
+            // eslint-disable-next-line -- test info
+            console.log('New global store', newContestInfo);
+
             return { ...state, contestInfo: newContestInfo };
         });
     }
 });
 
-const creatContestInfoStore = (init: InitState) =>
-    (useContestInfoStore = initStore<ContestInfoContest>(initialState, init));
+const creatContestInfoStore = (init: InitState) => {
+    if (isInit) {
+        useContestInfoStore = initStore<ContestInfoContest>(initialState, init);
+        isInit = false;
+    }
+};
 
 export { creatContestInfoStore, useContestInfoStore };
