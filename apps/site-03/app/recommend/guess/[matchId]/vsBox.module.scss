@@ -2,21 +2,20 @@
     margin-top: -14px;
     padding: 16px 12px 45px;
     width: 100%;
-    background: linear-gradient(91deg, #144ca8 0.72%, #2575fc 98.56%);
+    background: linear-gradient(to right, #2c5eb2 0%, #3a82fb 100%);
 
     .title {
         display: table;
         margin: auto;
         color: #fff;
         font-size: 12px;
-        font-weight: 500;
     }
 
     .clubInfo {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 3px 21px 16px;
+        padding: 3px 21px 12px;
 
         .team {
             display: flex;
@@ -30,7 +29,6 @@
             .name {
                 color: #fff;
                 font-size: 14px;
-                font-weight: 500;
             }
         }
 
@@ -48,7 +46,7 @@
     .join {
         display: block;
         text-align: center;
-        padding: 12px 0;
+        padding: 10px 0;
 
         .text {
             position: relative;

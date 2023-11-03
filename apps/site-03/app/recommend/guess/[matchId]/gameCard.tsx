@@ -4,7 +4,7 @@ import Fire from './img/fire.png';
 import Win from './img/win.svg';
 import Lose from './img/lose.svg';
 import Star from './img/star.svg';
-import Hit from './img/hit.svg';
+import Hit from './img/hit.png';
 import style from './gameCard.module.scss';
 import Avatar from '@/components/avatar/avatar';
 import Tag from '@/components/tag/tag';
@@ -67,7 +67,7 @@ function GameCard({
             <div className={style.paid}>
                 {isContentUnlocked ? (
                     <div className={style.hit}>
-                        <Hit />
+                        <Image alt="" height={36} src={Hit} width={36} />
                         <div className={style.play}>一球/球半</div>
                         <div className={style.paidContent}>
                             <div className={style.play}>小</div>
@@ -76,11 +76,11 @@ function GameCard({
                     </div>
                 ) : (
                     <>
-                        <div className={style.play}>一球/球半</div>
                         <div className={style.noPaid} onClick={onOpenPaidDialog}>
                             <Star className={style.image} />
                             <span className={style.text}>20元</span>
                         </div>
+                        <div className={style.play}>一球/球半</div>
                     </>
                 )}
             </div>

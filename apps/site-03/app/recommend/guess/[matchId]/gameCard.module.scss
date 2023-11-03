@@ -42,7 +42,7 @@
     .paid {
         display: flex;
         flex-direction: column;
-        justify-content: center;
+        justify-content: flex-start;
         width: 70px;
         height: 72px;
 
@@ -63,7 +63,6 @@
         .play {
             color: #8d8d8d;
             font-size: 14px;
-            font-weight: 500;
             text-align: center;
         }
 
@@ -79,7 +78,6 @@
                 height: 20px;
                 line-height: 20px;
                 font-size: 14px;
-                font-weight: 500;
                 text-align: center;
             }
 
@@ -90,7 +88,6 @@
                 line-height: 20px;
                 background: #f85640;
                 font-size: 14px;
-                font-weight: 500;
                 border-radius: 4px;
                 text-align: center;
             }
@@ -100,8 +97,7 @@
             display: flex;
             align-items: center;
             gap: 4px;
-            margin-top: 3px;
-            padding: 4px 8px 4px 4px;
+            padding: 2px 8px 4px 4px;
             border: 1px solid #4489ff;
             border-radius: 30px;
 
@@ -112,7 +108,6 @@
             .text {
                 color: #4489ff;
                 font-size: 14px;
-                font-weight: 500;
             }
         }
     }

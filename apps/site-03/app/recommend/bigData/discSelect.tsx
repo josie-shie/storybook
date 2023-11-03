@@ -1,5 +1,7 @@
 'use client';
 import { useSearchParams } from 'next/navigation';
+import Image from 'next/image';
+import Star from './img/star.png';
 import style from './disSelect.module.scss';
 
 interface SectionSelectProps {
@@ -39,12 +41,12 @@ function DiscSelect() {
             ) : (
                 <SectionSelect items={['不挑選']} selectTitle="" title="玩法篩選" />
             )}
-            <button
-                className={style.search}
-                // onClick={handleNavigation}
-                type="button"
-            >
-                查詢
+            <div className={style.tips}>
+                数据中心将会汇整出符合您条件设定，在时间区间内开出相同盘口的赛事
+            </div>
+            <button className={style.search} type="button">
+                <Image alt="" height={14} src={Star} width={14} />
+                {search === 'analysis' ? '獲得趨勢分析' : '獲得盤路提示'}
             </button>
         </div>
     );
