@@ -7,7 +7,11 @@ function GameStatus({ startTime, status }: { status: number; startTime: string }
 
     return (
         <div className={style.gameStatus}>
-            <p className={realTimeStatus.time ? style.point : style[realTimeStatus.state]}>
+            <p
+                className={`${realTimeStatus.time ? style.point : ''} ${
+                    style[realTimeStatus.state]
+                }`}
+            >
                 {realTimeStatus.time || realTimeStatus.text}
             </p>
         </div>
