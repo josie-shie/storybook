@@ -138,12 +138,14 @@ function Tabs({
             const nav = navRef.current;
             const headerLiner = headerLinerRef.current;
             if (nav && headerLiner) {
-                const elm = nav.children[index] as HTMLElement;
-                headerLiner.style.left = `${elm.offsetLeft}px`;
-                headerLiner.style.right = `${
-                    nav.offsetWidth - (elm.offsetLeft + elm.offsetWidth)
-                }px`;
-                headerLiner.style.minWidth = `${elm.offsetWidth}px`;
+                const elm = nav.children[index] as HTMLElement | null;
+                if (elm) {
+                    headerLiner.style.left = `${elm.offsetLeft}px`;
+                    headerLiner.style.right = `${
+                        nav.offsetWidth - (elm.offsetLeft + elm.offsetWidth)
+                    }px`;
+                    headerLiner.style.minWidth = `${elm.offsetWidth}px`;
+                }
             }
         };
 

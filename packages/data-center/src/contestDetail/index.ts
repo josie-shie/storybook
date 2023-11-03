@@ -437,8 +437,8 @@ export const getMatchDetail = async (
 
         const formatDateTime: GetSingleMatchResponse = {
             ...data.getSingleMatch,
-            startTime: timestampToString(data.getSingleMatch.startTime),
-            matchTime: timestampToString(data.getSingleMatch.matchTime)
+            startTime: timestampToString(data.getSingleMatch.startTime, 'M-DD HH:mm'),
+            matchTime: timestampToString(data.getSingleMatch.matchTime, 'M-DD HH:mm')
         };
 
         return {

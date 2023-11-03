@@ -1,4 +1,4 @@
-import { fetcher, timestampToString, timestampToMonthDay } from 'lib';
+import { fetcher, timestampToString, timestampToMonthDay, convertHandicap } from 'lib';
 import { z } from 'zod';
 import { handleApiError } from '../common';
 import type { ReturnData } from '../common';
@@ -28,14 +28,25 @@ const ContestInfoSchema = z.object({
     startTime: z.number(),
     state: z.number(),
     color: z.string(),
-    countryCn: z.string()
+    countryCn: z.string(),
+    handicapCurrent: z.number(),
+    handicapHomeCurrentOdds: z.number(),
+    handicapAwayCurrentOdds: z.number(),
+    overUnderCurrent: z.number(),
+    overUnderOverCurrentOdds: z.number(),
+    overUnderUnderCurrentOdds: z.number()
 });
 
-type OriginalContestInfo = z.infer<typeof ContestInfoSchema>;
+export type OriginalContestInfo = z.infer<typeof ContestInfoSchema>;
 
-export type ContestInfo = Omit<OriginalContestInfo, 'matchTime' | 'startTime'> & {
+export type ContestInfo = Omit<
+    OriginalContestInfo,
+    'matchTime' | 'startTime' | 'handicapCurrent' | 'overUnderCurrent'
+> & {
     matchTime: string;
     startTime: string;
+    handicapCurrent: string;
+    overUnderCurrent: string;
 };
 
 const GetContestListResultSchema = z.object({
@@ -83,13 +94,14 @@ export const getContestList = async (
         GetContestListResultSchema.parse(data);
         const contestList: ContestListType = [];
         const contestInfo: ContestInfoType = {};
-
         for (const item of data.getTodayMatch.match) {
             contestList.push(item.matchId);
             contestInfo[item.matchId] = {
                 ...item,
                 matchTime: timestampToString(item.matchTime, 'M-DD HH:mm'),
-                startTime: timestampToMonthDay(item.startTime)
+                startTime: timestampToMonthDay(item.startTime),
+                handicapCurrent: convertHandicap(item.handicapCurrent),
+                overUnderCurrent: convertHandicap(item.overUnderCurrent)
             };
         }
         return {

@@ -58,12 +58,14 @@ function Tabs({ labels, paths, styling = 'underline' }: TabsProps) {
             const nav = navRef.current;
             const highlighter = highlighterRef.current;
             if (nav && highlighter) {
-                const elm = nav.children[index] as HTMLElement;
-                highlighter.style.left = `${elm.offsetLeft}px`;
-                highlighter.style.right = `${
-                    nav.offsetWidth - (elm.offsetLeft + elm.offsetWidth)
-                }px`;
-                highlighter.style.minWidth = `${elm.offsetWidth}px`;
+                const elm = nav.children[index] as HTMLElement | null;
+                if (elm) {
+                    highlighter.style.left = `${elm.offsetLeft}px`;
+                    highlighter.style.right = `${
+                        nav.offsetWidth - (elm.offsetLeft + elm.offsetWidth)
+                    }px`;
+                    highlighter.style.minWidth = `${elm.offsetWidth}px`;
+                }
             }
         };
 

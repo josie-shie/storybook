@@ -1,60 +1,33 @@
 'use client';
-
-import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Button from '@mui/material/Button';
+import type { GetSingleMatchResponse } from 'data-center';
+import { GameStatus } from 'ui';
+import TeamLogo from './components/teamLogo';
 import Header from './header';
 import style from './liveBox.module.scss';
 import VideoIcon from './img/video.png';
 import bgImage from './img/bg.jpg';
-import DefaultTeamLogoIcon from './img/defaultTeamLogo.png';
+import { createContestDetailStore, useContestDetailStore } from './contestDetailStore';
 
-type GameStatusType = { style: string; text: string } | undefined;
-
-function GameStatus() {
-    const gameStatus = {
-        state: 'apple',
-        time: '21'
-    };
-
-    const stateStyle: Record<string, { style: string; text: string }> = {
-        notYet: { style: style.notYet, text: '未' },
-        midfielder: { style: style.notYet, text: '中场' },
-        finish: { style: style.finish, text: '完场' },
-        playoff: { style: style.playoff, text: '加' },
-        kick: { style: style.playoff, text: '点' },
-        cancel: { style: style.notYet, text: '取消' },
-        undetermined: { style: style.notYet, text: '待定' },
-        cut: { style: style.notYet, text: '腰斩' },
-        discontinue: { style: style.notYet, text: '中断' },
-        putOff: { style: style.notYet, text: '推迟' }
-    };
-
+function GameDetail() {
+    const matchDetail = useContestDetailStore.use.matchDetail();
     return (
         <div className={style.gameStatus}>
-            {gameStatus.state !== 'notYet' && (
-                <div className={style.textHolder}>
-                    <p className={style.text}>半場 5-5</p>
-                </div>
-            )}
-            <div
-                className={`${style.gameTime}  ${
-                    (stateStyle[gameStatus.state] as GameStatusType)
-                        ? stateStyle[gameStatus.state].style
-                        : style.midfielder
-                }`}
-            >
-                {(stateStyle[gameStatus.state] as GameStatusType) ? (
-                    stateStyle[gameStatus.state].text
-                ) : (
-                    <>
-                        {gameStatus.time} <span className={style.timePoint}>’</span>
-                    </>
-                )}
-                <div className={style.homeScore}>13</div>
-                <div className={style.awayScore}>7</div>
+            {matchDetail.state > 0 ||
+                (matchDetail.state === -1 && (
+                    <div className={style.textHolder}>
+                        <p className={style.text}>
+                            半場 {matchDetail.homeHalfScore}-{matchDetail.awayHalfScore}
+                        </p>
+                    </div>
+                ))}
+            <div className={`${style.gameTime} ${matchDetail.state === -1 && style.finish}`}>
+                <GameStatus startTime={matchDetail.startTime} status={matchDetail.state} />
+                <div className={style.homeScore}>{matchDetail.homeScore}</div>
+                <div className={style.awayScore}>{matchDetail.awayScore}</div>
             </div>
-            {gameStatus.state === 'notYet' ? (
+            {matchDetail.state < 1 && matchDetail.state !== -1 ? (
                 <p className={style.vsText}>VS</p>
             ) : (
                 <>
@@ -71,63 +44,29 @@ function GameStatus() {
     );
 }
 
-function LiveBox() {
-    const [liveVisible, setLiveVisible] = useState(true);
-    const liveBarRef = useRef<HTMLDivElement | null>(null);
-    useEffect(() => {
-        const currentRef = liveBarRef.current;
-        const observer = new IntersectionObserver(
-            ([entry]) => {
-                setLiveVisible(entry.isIntersecting);
-            },
-            {
-                threshold: 0.1
-            }
-        );
-        if (currentRef) {
-            observer.observe(currentRef);
-        }
-
-        return () => {
-            if (currentRef) {
-                observer.unobserve(currentRef);
-            }
-        };
-    }, [setLiveVisible]);
+function LiveBox({ contestDetail }: { contestDetail: GetSingleMatchResponse }) {
+    createContestDetailStore({ matchDetail: contestDetail });
+    const { homeChs, homeLogo, awayChs, awayLogo } = useContestDetailStore.use.matchDetail();
 
     return (
-        <div
-            className={style.liveBox}
-            ref={liveBarRef}
-            style={{ backgroundImage: `url(${bgImage.src})` }}
-        >
-            <Header liveVisible={liveVisible} />
+        <div className={style.liveBox} style={{ backgroundImage: `url(${bgImage.src})` }}>
+            <Header />
             <div className={style.scoreboard}>
                 <div className={style.gameInfo}>
                     <div className={style.team}>
                         <div className={style.circleBg}>
-                            <Image
-                                alt="主隊隊名"
-                                height={40}
-                                src={DefaultTeamLogoIcon}
-                                width={40}
-                            />
+                            <TeamLogo alt={homeChs} height={40} src={homeLogo} width={40} />
                         </div>
-                        <p className={style.teamName}>主隊隊名</p>
+                        <p className={style.teamName}>{homeChs}</p>
                     </div>
                     <div className={style.score}>
-                        <GameStatus />
+                        <GameDetail />
                     </div>
                     <div className={style.team}>
                         <div className={style.circleBg}>
-                            <Image
-                                alt="客隊隊名"
-                                height={40}
-                                src={DefaultTeamLogoIcon}
-                                width={40}
-                            />
+                            <TeamLogo alt={awayChs} height={40} src={awayLogo} width={40} />
                         </div>
-                        <p className={style.teamName}>客隊隊名</p>
+                        <p className={style.teamName}>{awayChs}</p>
                     </div>
                 </div>
                 <Button className={style.liveBtn}>

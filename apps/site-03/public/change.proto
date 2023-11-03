@@ -1,0 +1,77 @@
+syntax = "proto3";
+package dataFetcher;
+option go_package = "../data_fetcher";
+
+message ChangeItem {
+  // 比赛ID
+  int32 matchId = 1;
+
+  // 比赛状态
+  // 0：未开
+  // 1：上半场
+  // 2：中场
+  // 3：下半场
+  // 4：加时
+  // 5：点球
+  // -1：完场
+  // -10：取消
+  // -11：待定
+  // -12：腰斩
+  // -13：中断
+  // -14：推迟
+  int32 state = 2;
+
+  // 主队得分（常规时间）
+  int32 homeScore = 3;
+
+  // 客队得分（常规时间）
+  int32 awayScore = 4;
+
+  // 主队上半场得分
+  int32 homeHalfScore = 5;
+
+  // 客队上半场得分
+  int32 awayHalfScore = 6;
+
+  // 主队红牌数
+  int32 homeRed = 7;
+
+  // 客队红牌数
+  int32 awayRed = 8;
+
+  // 主队黄牌数
+  int32 homeYellow = 9;
+
+  // 客队黄牌数
+  int32 awayYellow = 10;
+
+  // 主队角球数
+  int32 homeCorner = 11;
+
+  // 客队角球数
+  int32 awayCorner = 12;
+
+  // 是否有阵容
+  // 1：有
+  // null：无
+  string hasLineup = 13;
+
+  // 比赛时间，格式：yyyy-MM-dd HH:mm:ss
+  int64 matchTime = 14;
+
+  // 开场时间
+  // 比赛进行时间=当前时间-开场时间（下半场+45分钟）
+  // state=1：返回上半场开场时间；
+  // state=3：返回下半场开场时间。
+  // 格式：yyyy-MM-dd HH:mm:ss
+  int64 startTime = 15;
+
+  // 比赛说明
+  string explain = 16;
+
+  // 比赛说明2，数据分为2部分，用“|”分隔。例如：2;|90,1-0;2-2;1,1-0;2-4;2
+  string extraExplain = 17;
+
+  // 上下半场补时时长，上下半场补时的时长，补时进行到多少分钟需客户自行计算。上半场超过45分钟开始，下半场超过90分钟开始。
+  string injuryTime = 18;
+}
