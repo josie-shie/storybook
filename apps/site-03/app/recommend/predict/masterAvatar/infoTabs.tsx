@@ -121,9 +121,21 @@ function InfoTabs() {
                     show: false
                 },
                 data: [
-                    { value: 548, name: 'Plan1', itemStyle: { color: '#F3F3F3' } },
-                    { value: 415, name: 'Plan2', itemStyle: { color: '#BFBFBF' } },
-                    { value: 680, name: 'Plan3', itemStyle: { color: '#ED3A45' } }
+                    {
+                        value: 548,
+                        name: 'Plan1',
+                        itemStyle: { color: '#F3F3F3', borderWidth: 2, borderColor: '#fff' }
+                    },
+                    {
+                        value: 415,
+                        name: 'Plan2',
+                        itemStyle: { color: '#BFBFBF', borderWidth: 2, borderColor: '#fff' }
+                    },
+                    {
+                        value: 680,
+                        name: 'Plan3',
+                        itemStyle: { color: '#ED3A45', borderWidth: 2, borderColor: '#fff' }
+                    }
                 ]
             }
         ]
