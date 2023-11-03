@@ -3,7 +3,6 @@ import Image from 'next/image';
 import { GameStatus } from 'ui';
 import { useContestListStore } from '../contestListStore';
 import style from './gameCard.module.scss';
-import Video from './img/video.png';
 import Flag from './img/flag.png';
 import { useContestInfoStore } from '@/app/contestInfoStore';
 
@@ -102,7 +101,7 @@ function TopArea({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId: 
             </div>
             <div className={style.mid}>
                 <div className={style.corner}>
-                    <Image alt="flag" src={Flag} />{' '}
+                    <Image alt="flag" height={12} src={Flag.src} width={12} />{' '}
                     <span className={style.ratio}>
                         {syncData.homeCorner || contestInfo.homeCorner}
                     </span>
@@ -111,15 +110,13 @@ function TopArea({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId: 
                     <GameStatus startTime={contestInfo.startTime} status={contestInfo.state} />
                 </div>
                 <div className={style.corner}>
-                    <Image alt="flag" src={Flag} />{' '}
+                    <Image alt="flag" height={12} src={Flag.src} width={12} />{' '}
                     <span className={style.ratio}>
                         {syncData.awayCorner || contestInfo.awayCorner}
                     </span>
                 </div>
             </div>
-            <div className={style.video}>
-                <Image alt="video" className={style.videoIcon} src={Video} />
-            </div>
+            <div className={style.video} />
         </div>
     );
 }
