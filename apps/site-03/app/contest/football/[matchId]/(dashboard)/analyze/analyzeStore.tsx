@@ -3,7 +3,6 @@ import type { StoreWithSelectors } from 'lib';
 import type {
     SingleMatchTeamName,
     FormatLeagueTrendDataResponse,
-    FormatRecordDataResponse,
     FormatWinLoseCountDataResponse,
     GetBeforeGameIndexResponse,
     GetLeaguePointsRankResponse
@@ -29,10 +28,6 @@ interface InitState {
     leaguePointsRankData: GetLeaguePointsRankResponse;
     teamInfo: SingleMatchTeamName;
     leagueTrendData: FormatLeagueTrendDataResponse;
-    lastMatches: {
-        home: FormatRecordDataResponse;
-        away: FormatRecordDataResponse;
-    };
     winLoseCountData: FormatWinLoseCountDataResponse;
 }
 
@@ -43,10 +38,6 @@ const initialState = (set: (data: Partial<InitState>) => void) => ({
     leaguePointsRankData: {} as GetLeaguePointsRankResponse,
     teamInfo: {} as SingleMatchTeamName,
     leagueTrendData: {} as FormatLeagueTrendDataResponse,
-    lastMatches: {
-        home: {} as FormatRecordDataResponse,
-        away: {} as FormatRecordDataResponse
-    },
     winLoseCountData: {} as FormatWinLoseCountDataResponse,
     list: [],
     contestAmount: DefaultAmount as GameAmountProps,
@@ -68,12 +59,6 @@ const initialState = (set: (data: Partial<InitState>) => void) => ({
     },
     setLeagueTrendData: (leagueTrendData: FormatLeagueTrendDataResponse) => {
         set({ leagueTrendData });
-    },
-    setLastMatches: (lastMatches: {
-        home: FormatRecordDataResponse;
-        away: FormatRecordDataResponse;
-    }) => {
-        set({ lastMatches });
     },
     setWinLoseCountData: (winLoseCountData: FormatWinLoseCountDataResponse) => {
         set({ winLoseCountData });

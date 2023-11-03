@@ -1,15 +1,44 @@
 .recordTable {
     :global {
-        .dataTable .tableHead .tr {
-            flex: none;
-            gap: 2px;
+        .dataTable .tableHead {
+            .tr {
+                flex: none;
+                gap: 2px;
 
-            .th {
-                padding: 2px 10px;
+                .th {
+                    padding: 2px 10px;
+                }
+
+                .td {
+                    width: 66px;
+                }
+            }
+        }
+    }
+
+    .teamNameHeader {
+        position: relative;
+        padding: 6px 0;
+        justify-content: center;
+        background-color: #f3f3f3;
+        border: 1px solid #f3f3f3;
+        border-top-left-radius: 6px;
+        border-top-right-radius: 6px;
+
+        .checkbox {
+            position: absolute;
+            right: 10px;
+            top: 6px;
+            display: flex;
+            align-items: center;
+
+            input {
+                accent-color: #065ff5;
             }
 
-            .td {
-                width: 66px;
+            .label {
+                font-size: 12px;
+                font-weight: 400;
             }
         }
     }
@@ -39,6 +68,11 @@
 
     .handicapCell {
         display: flex;
+    }
+
+    .teamName {
+        color: #4489ff;
+        text-align: center;
     }
 
     .textAlign {

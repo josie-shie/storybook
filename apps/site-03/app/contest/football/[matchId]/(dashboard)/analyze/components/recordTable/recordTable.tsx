@@ -89,10 +89,18 @@ function RecordTable({
         let rowData = filterData
             .filter(item => {
                 if (prams.type === '2') {
+                    if (prams.isHome) {
+                        return prams.isHome === item.isHome;
+                    }
+
                     return item;
                 }
 
-                return prams.type === item.leagueCup && prams.isHome === item.isHome;
+                if (prams.isHome) {
+                    return prams.type === item.leagueCup && prams.isHome === item.isHome;
+                }
+
+                return prams.type === item.leagueCup;
             })
             .map(item => {
                 let handicapData: HandicapType;
@@ -200,21 +208,21 @@ function RecordTable({
         <div className={style.recordTable}>
             <div className="dataTable">
                 {mode === 'one' && (
-                    <div className="tableHead">
-                        <div className="tr">
-                            <div className="th">{teamName}</div>
-                            <div className={style.checkbox}>
-                                <input
-                                    checked={gameIsHome}
-                                    id="isHome"
-                                    onChange={() => {
-                                        setGameIsHome(!gameIsHome);
-                                        handleFilterList({ isHome: !gameIsHome });
-                                    }}
-                                    type="checkbox"
-                                />
-                                <label htmlFor="isHome">同主客</label>
-                            </div>
+                    <div className={style.teamNameHeader}>
+                        <div className={`${style.teamName}`}>{teamName}</div>
+                        <div className={style.checkbox}>
+                            <input
+                                checked={gameIsHome}
+                                id="isHome"
+                                onChange={() => {
+                                    setGameIsHome(!gameIsHome);
+                                    handleFilterList({ isHome: !gameIsHome });
+                                }}
+                                type="checkbox"
+                            />
+                            <label className={style.label} htmlFor="isHome">
+                                同主客
+                            </label>
                         </div>
                     </div>
                 )}
