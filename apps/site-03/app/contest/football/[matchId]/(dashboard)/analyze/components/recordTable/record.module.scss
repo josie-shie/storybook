@@ -1,0 +1,59 @@
+.recordTable {
+    :global {
+        .dataTable .tableHead .tr {
+            flex: none;
+            gap: 2px;
+
+            .th {
+                padding: 2px 10px;
+            }
+
+            .td {
+                width: 66px;
+            }
+        }
+    }
+
+    .trResult {
+        display: flex;
+        justify-content: center;
+        padding: 6px 0;
+        font-size: 12px;
+        font-weight: 500;
+        gap: 4px;
+        background-color: #f3f3f3;
+        border-bottom: 1px solid #f3f3f3;
+        border-right: 1px solid #f3f3f3;
+        border-left: 1px solid #f3f3f3;
+        border-radius: 0px 0px 6px 6px;
+
+        .spanGap {
+            display: flex;
+            gap: 4px;
+        }
+    }
+
+    .flexColumns {
+        flex-direction: column;
+    }
+
+    .handicapCell {
+        display: flex;
+    }
+
+    .textAlign {
+        text-align: center;
+    }
+
+    .colorRed {
+        color: #f85640 !important;
+    }
+
+    .colorBlue {
+        color: #8d8d8d !important;
+    }
+
+    .colorGreen {
+        color: #009a63 !important;
+    }
+}

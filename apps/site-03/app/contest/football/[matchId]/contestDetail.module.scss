@@ -4,6 +4,10 @@
     :global .ui-tab {
         .swiper {
             height: auto;
+
+            .swiper-wrapper {
+                height: auto !important;
+            }
         }
 
         .swiper-slide {

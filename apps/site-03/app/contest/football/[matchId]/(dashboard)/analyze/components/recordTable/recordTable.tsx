@@ -1,0 +1,228 @@
+import { useEffect } from 'react';
+import type { FormatRecordDataResponse } from 'data-center';
+import { useAnalyzeStore } from '../../analyzeStore';
+import style from './record.module.scss';
+import SelectList from './selectList';
+import TableDetail from './tableDetail';
+import type {
+    HandicapType,
+    WinLoseResultProps,
+    GameAmountProps,
+    GameTypeProps,
+    GameCompanyProps,
+    GameHandicapProps,
+    GameTimeProps
+} from '@/types/analyze';
+
+interface RecordTableProps {
+    tableData: FormatRecordDataResponse;
+    homeTeamData?: { id: number; name: string };
+    mode?: 'battle' | 'one';
+    showTitle?: boolean;
+}
+
+function formatFloatingPoint(target: number, num: number) {
+    return Math.floor(target * Math.pow(10, num)) / Math.pow(10, num);
+}
+
+function RecordTable({ tableData, mode, homeTeamData, showTitle }: RecordTableProps) {
+    const list = useAnalyzeStore.use.list();
+    const setList = useAnalyzeStore.use.setList();
+    const contestAmount = useAnalyzeStore.use.contestAmount();
+    const setContestAmount = useAnalyzeStore.use.setContestAmount();
+    const contestType = useAnalyzeStore.use.contestType();
+    const setContestType = useAnalyzeStore.use.setContestType();
+    const contestCompany = useAnalyzeStore.use.contestCompany();
+    const setContestCompany = useAnalyzeStore.use.setContestCompany();
+    const contestHandicap = useAnalyzeStore.use.contestHandicap();
+    const setContestHandicap = useAnalyzeStore.use.setContestHandicap();
+    const contestTime = useAnalyzeStore.use.contestTime();
+    const setContestTime = useAnalyzeStore.use.setContestTime();
+    const gameIsHome = useAnalyzeStore.use.gameIsHome();
+    const setGameIsHome = useAnalyzeStore.use.setGameIsHome();
+    const winLoseResult = useAnalyzeStore.use.winLoseResult();
+    const setWinLoseResult = useAnalyzeStore.use.setWinLoseResult();
+    const oddsDetailResult = useAnalyzeStore.use.oddsDetailResult();
+    const setOddsDetailResult = useAnalyzeStore.use.setOddsDetailResult();
+
+    const handleFilterList = (filterParams: {
+        company?: GameCompanyProps;
+        handicap?: GameHandicapProps;
+        time?: GameTimeProps;
+        amount?: GameAmountProps;
+        type?: GameTypeProps;
+    }) => {
+        const prams = {
+            company: contestCompany,
+            handicap: contestHandicap,
+            time: contestTime,
+            type: contestType,
+            amount: contestAmount,
+            ...filterParams
+        };
+
+        const filterData = tableData[prams.company][prams.time];
+
+        let rowData = filterData
+            .filter(item => {
+                if (prams.type === '2') {
+                    return item;
+                }
+
+                return prams.type === item.leagueCup;
+            })
+            .map(item => {
+                let handicapData: HandicapType;
+                if (prams.handicap === 'current') {
+                    handicapData = item.current;
+                } else {
+                    handicapData = item.initial;
+                }
+
+                return {
+                    matchId: item.matchId,
+                    matchTime: item.matchTime,
+                    leagueName: item.leagueName,
+                    homeTeamName: item.homeTeamName,
+                    awayTeamName: item.awayTeamName,
+                    homeScore: item.homeScore,
+                    awayScore: item.awayScore,
+                    homeHalfScore: item.homeHalfScore,
+                    awayHalfScore: item.awayHalfScore,
+                    winLose: item.winLose,
+                    isHome: item.isHome,
+                    ...handicapData
+                };
+            });
+
+        rowData = rowData.slice(0, prams.amount);
+
+        // 計算勝/平負場次、贏率
+        const winLose = rowData.reduce<WinLoseResultProps>(
+            (preItem, item) => {
+                switch (item.winLose) {
+                    case '2':
+                        preItem.tie += 1;
+                        break;
+                    case '0':
+                        if (item.isHome) {
+                            preItem.win += 1;
+                        } else {
+                            preItem.lose += 1;
+                        }
+                        break;
+                    case '1':
+                        if (item.isHome) {
+                            preItem.lose += 1;
+                        } else {
+                            preItem.win += 1;
+                        }
+                        break;
+                    default:
+                        return preItem;
+                }
+                return preItem;
+            },
+            {
+                win: 0,
+                tie: 0,
+                lose: 0,
+                winRate: 0
+            }
+        );
+
+        winLose.winRate = formatFloatingPoint((winLose.win / rowData.length) * 100, 0);
+
+        // 計算贏率、大率
+        const oddsDetail = rowData.reduce(
+            (preItem, item) => {
+                let win = preItem.win;
+                let over = preItem.over;
+
+                if (item.isHome && item.homeScore > item.awayScore) {
+                    win += 1;
+                }
+
+                if (item.homeScore + item.awayScore > item.overUnder) {
+                    // 假设overUnder是item的一个属性
+                    over += 1;
+                }
+
+                return {
+                    win,
+                    over,
+                    winRate: formatFloatingPoint((win / rowData.length) * 100, 0),
+                    overRate: formatFloatingPoint((over / rowData.length) * 100, 0)
+                };
+            },
+            {
+                win: 0,
+                over: 0,
+                winRate: 0,
+                overRate: 0
+            }
+        );
+        oddsDetail.winRate = formatFloatingPoint((oddsDetail.win / rowData.length) * 100, 0);
+        oddsDetail.overRate = formatFloatingPoint((oddsDetail.over / rowData.length) * 100, 0);
+
+        setWinLoseResult(winLose);
+        setOddsDetailResult(oddsDetail);
+        setList(rowData);
+    };
+
+    useEffect(() => {
+        handleFilterList({});
+    }, []);
+
+    return (
+        <div className={style.recordTable}>
+            <div className="topBar">
+                <h6 className="title">{showTitle ? '对赛往绩' : null}</h6>
+            </div>
+            <div className="dataTable">
+                {mode === 'one' && (
+                    <div>
+                        <div className={style.tableHead}>
+                            <div className={style.th}>
+                                <div>{homeTeamData?.name}</div>
+                                <div className={style.checkbox}>
+                                    <input
+                                        checked={gameIsHome}
+                                        id="isHome"
+                                        onChange={() => {
+                                            setGameIsHome(!gameIsHome);
+                                            // handleFilterList({ isHome: !gameIsHome });
+                                        }}
+                                        type="checkbox"
+                                    />
+                                    <label htmlFor="isHome">同主客</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
+                <SelectList
+                    contestAmount={contestAmount}
+                    contestCompany={contestCompany}
+                    contestHandicap={contestHandicap}
+                    contestType={contestType}
+                    handleFilterList={handleFilterList}
+                    setContestAmount={setContestAmount}
+                    setContestCompany={setContestCompany}
+                    setContestHandicap={setContestHandicap}
+                    setContestType={setContestType}
+                />
+                <TableDetail
+                    contestTime={contestTime}
+                    handleFilterList={handleFilterList}
+                    list={list}
+                    oddsDetailResult={oddsDetailResult}
+                    setContestTime={setContestTime}
+                    winLoseResult={winLoseResult}
+                />
+            </div>
+        </div>
+    );
+}
+
+export default RecordTable;

@@ -532,3 +532,56 @@ interface EuropeOdds {
     oddsType: number;
     //賠率類型
 }
+
+export interface HandicapType {
+    handicap: string | number;
+    overUnder: number;
+    handicapType: string;
+    overType: string;
+}
+
+export interface BattleRecord {
+    matchId: number;
+    matchTime: string;
+    leagueName: string;
+    homeTeamName: string;
+    awayTeamName: string;
+    homeScore: number;
+    awayScore: number;
+    homeHalfScore: number;
+    awayHalfScore: number;
+    handicap: string | number;
+    overUnder: number;
+    handicapType: string;
+    overType: string;
+    winLose: string;
+    isHome: boolean;
+}
+
+export interface WinLoseResultProps {
+    win: number;
+    tie: number;
+    lose: number;
+    winRate: number;
+}
+
+export interface OddsDetailResultProps {
+    win: number;
+    over: number;
+    winRate: number;
+    overRate: number;
+}
+
+export interface FilterProps {
+    company?: GameCompanyProps;
+    handicap?: GameHandicapProps;
+    time?: GameTimeProps;
+    amount?: GameAmountProps;
+    type?: GameTypeProps;
+}
+
+export type GameAmountProps = 10 | 20;
+export type GameTypeProps = '0' | '1' | '2';
+export type GameCompanyProps = 'crown' | 'bet365';
+export type GameHandicapProps = 'current' | 'initial';
+export type GameTimeProps = 'full' | 'half';
