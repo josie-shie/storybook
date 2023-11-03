@@ -1,8 +1,9 @@
 'use client';
 import type { ReactNode } from 'react';
 import { usePathname } from 'next/navigation';
+import Image from 'next/image';
 import style from './layout.module.scss';
-import Logo from './img/logo.svg';
+import Logo from './img/logo.png';
 import Header from '@/components/header/headerLogo';
 import Footer from '@/components/footer/footer';
 import { Tabs } from '@/components/tabs/tabs';
@@ -15,7 +16,7 @@ function RecommendLayout({ children }: { children: ReactNode }) {
     const isMasterAvatar = pathname.includes('masterAvatar');
     const isBigData = pathname.includes('bigData');
     const headerProps = {
-        logo: <Logo />,
+        logo: <Image alt="" height={13} src={Logo} width={66} />,
         total: 999999
     };
 

@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import style from './bigDataDetail.module.scss';
 import FilterIcon from './img/filter.png';
-import Filter from './components/filter';
+import Filter from './components/filter/filter';
 import Dashboard from './dashboard';
 import HeaderTitleFilter from '@/components/header/headerTitleFilter';
 
