@@ -1,0 +1,44 @@
+.fifteenMinutesChart {
+    width: 100%;
+}
+
+.chartContainer {
+    width: 100%;
+    height: 200px;
+    border: 2px solid #f3f3f3;
+    border-radius: 12px;
+    margin-bottom: 12px;
+}
+
+.labelContainer {
+    text-align: right;
+
+    span {
+        font-size: 12px;
+        font-weight: 600;
+        margin-right: 12px;
+        color: #00ac6e;
+
+        &::before {
+            display: inline-block;
+            content: '';
+            width: 10px;
+            height: 10px;
+            background: #00ac6e;
+            margin-right: 4px;
+            border-radius: 50%;
+        }
+
+        &:last-child {
+            margin-right: 0;
+        }
+    }
+
+    .labelSmall {
+        color: #fbb03b;
+
+        &::before {
+            background: #fbb03b;
+        }
+    }
+}
