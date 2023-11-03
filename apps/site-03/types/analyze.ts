@@ -534,8 +534,8 @@ interface EuropeOdds {
 }
 
 export interface HandicapType {
-    handicap: string | number;
-    overUnder: number;
+    handicap: string;
+    overUnder: string;
     handicapType: string;
     overType: string;
 }
@@ -550,8 +550,8 @@ export interface BattleRecord {
     awayScore: number;
     homeHalfScore: number;
     awayHalfScore: number;
-    handicap: string | number;
-    overUnder: number;
+    handicap: string;
+    overUnder: string;
     handicapType: string;
     overType: string;
     winLose: string;
@@ -567,7 +567,7 @@ export interface WinLoseResultProps {
 
 export interface OddsDetailResultProps {
     win: number;
-    over: number;
+    big: number;
     winRate: number;
     overRate: number;
 }

@@ -164,36 +164,32 @@ function RecordTable({
         winLose.winRate = formatFloatingPoint((winLose.win / rowData.length) * 100, 0);
 
         // 計算贏率、大率
-        const oddsDetail = rowData.reduce(
+        const oddsDetail = rowData.reduce<OddsDetailResultProps>(
             (preItem, item) => {
-                let win = preItem.win;
-                let over = preItem.over;
-
-                if (item.isHome && item.homeScore > item.awayScore) {
-                    win += 1;
+                switch (item.handicapType) {
+                    case 'win':
+                        preItem.win++;
+                        break;
                 }
 
-                if (item.homeScore + item.awayScore > item.overUnder) {
-                    // 假设overUnder是item的一个属性
-                    over += 1;
+                switch (item.overType) {
+                    case 'big':
+                        preItem.big++;
+                        break;
                 }
 
-                return {
-                    win,
-                    over,
-                    winRate: formatFloatingPoint((win / rowData.length) * 100, 0),
-                    overRate: formatFloatingPoint((over / rowData.length) * 100, 0)
-                };
+                return preItem;
             },
             {
                 win: 0,
-                over: 0,
+                big: 0,
                 winRate: 0,
                 overRate: 0
             }
         );
+
         oddsDetail.winRate = formatFloatingPoint((oddsDetail.win / rowData.length) * 100, 0);
-        oddsDetail.overRate = formatFloatingPoint((oddsDetail.over / rowData.length) * 100, 0);
+        oddsDetail.overRate = formatFloatingPoint((oddsDetail.big / rowData.length) * 100, 0);
 
         setWinLoseResult(winLose);
         setOddsDetailResult(oddsDetail);

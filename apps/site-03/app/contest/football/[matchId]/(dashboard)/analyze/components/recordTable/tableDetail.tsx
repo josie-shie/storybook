@@ -179,7 +179,7 @@ function TableDetail({
                                 }`}
                             >
                                 <div className={style.textAlign}>
-                                    {formatFloatingPoint(item.overUnder, 2) || '-'}
+                                    {formatFloatingPoint(Number(item.overUnder), 2) || '-'}
                                 </div>
                                 <div className={style.textAlign}>
                                     {item.matchId
@@ -192,7 +192,7 @@ function TableDetail({
                 ))
             ) : (
                 <div className="tr" key="default">
-                    <div className="td">- </div>
+                    <div className="td">-</div>
                     <div className="td">-</div>
                     <div className="td">-</div>
                     <div className="td">-</div>
