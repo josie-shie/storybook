@@ -12,6 +12,7 @@ interface ContestList extends InitState {
     reset: () => void;
 }
 
+let isInit = true;
 let useContestListStore: StoreWithSelectors<ContestList>;
 
 const initialState = (set: (data: Partial<ContestList>) => void): ContestList => ({
@@ -25,7 +26,11 @@ const initialState = (set: (data: Partial<ContestList>) => void): ContestList =>
     }
 });
 
-const creatContestListStore = (init: InitState) =>
-    (useContestListStore = initStore<ContestList>(initialState, init));
+const creatContestListStore = (init: InitState) => {
+    if (isInit) {
+        useContestListStore = initStore<ContestList>(initialState, init);
+        isInit = false;
+    }
+};
 
 export { creatContestListStore, useContestListStore };
