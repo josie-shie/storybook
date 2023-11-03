@@ -6,6 +6,10 @@ import style from './gameCard.module.scss';
 import Flag from './img/flag.png';
 import { useContestInfoStore } from '@/app/contestInfoStore';
 
+/**
+ * extraExplain: ";|90,1-0;1-1;;3-2;1",matchId: 2496035
+ */
+
 // function ExtraInfo({ contestInfo }: { contestInfo: ContestInfo }) {
 //     return <div className={style.extraInfo}>90 分鐘 [0-0], 加時中,現在比分[1-1]</div>;
 // } // TODO: game extra info
@@ -107,7 +111,10 @@ function TopArea({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId: 
                     </span>
                 </div>
                 <div className={style.status}>
-                    <GameStatus startTime={contestInfo.startTime} status={contestInfo.state} />
+                    <GameStatus
+                        startTime={contestInfo.startTime}
+                        status={syncData.state || contestInfo.state}
+                    />
                 </div>
                 <div className={style.corner}>
                     <Image alt="flag" height={12} src={Flag.src} width={12} />{' '}
