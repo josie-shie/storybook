@@ -33,7 +33,7 @@ interface PropsType {
 }
 
 function TableDetail({
-    list,
+    list = [],
     winLoseResult,
     oddsDetailResult,
     contestTime,
@@ -107,6 +107,7 @@ function TableDetail({
                 return input;
         }
     };
+
     return (
         <div className="tableBody">
             <div className="tr">

@@ -1,6 +1,5 @@
 'use client';
 import type {
-    FormatRecordDataResponse,
     GetAnalysisOthersResponse,
     GetLeaguePointsRankResponse,
     GetBeforeGameIndexResponse
@@ -10,7 +9,11 @@ import LeagueRankTables from './leagueRankTables';
 import LeagueTrendTables from './leagueTrendTables';
 import WinLoseCountTable from './winLoseCountTable';
 import { createAnalyzeStore } from './analyzeStore';
-import BattleRecordTable from './battleRecordTable';
+import { createBattleRecordStore } from './battleRecordTable/battleRecordStore';
+import { createHomeRecordStore } from './homeAwayRecordTable/homeRecordStore';
+import { createAwayRecordStore } from './homeAwayRecordTable/awayRecordStore';
+import BattleRecordTable from './battleRecordTable/battleRecordTable';
+import HomeAwayRecord from './homeAwayRecordTable/homeAwayRecordTable';
 
 interface PropsType {
     analysisData: GetAnalysisOthersResponse;
@@ -23,12 +26,137 @@ function Analyze({ analysisData, beforeGameData }: PropsType) {
         leaguePointsRankData: {} as GetLeaguePointsRankResponse,
         teamInfo: analysisData.teamInfo,
         leagueTrendData: analysisData.leagueTrendData,
-        battleRecordData: analysisData.battleRecordData,
-        lastMatches: {
-            home: {} as FormatRecordDataResponse,
-            away: {} as FormatRecordDataResponse
-        },
         winLoseCountData: analysisData.winLoseCountData
+    });
+
+    createBattleRecordStore({
+        // battleRecordData: analysisData.battleRecordData
+        battleRecordData: {
+            bet365: {
+                full: [
+                    {
+                        matchId: 1,
+                        leagueCup: '1',
+                        leagueName: '韩K联',
+                        matchTime: '23-11-02',
+                        winLose: '1',
+                        isHome: true,
+                        homeScore: 1,
+                        awayScore: 3,
+                        homeHalfScore: 1,
+                        awayHalfScore: 0,
+                        homeTeamName: 'Team A',
+                        awayTeamName: 'Team B',
+                        initial: {
+                            handicap: '0.25',
+                            overUnder: 2.5,
+                            handicapType: 'lose',
+                            overType: 'big'
+                        },
+                        current: {
+                            handicap: '0.75',
+                            overUnder: 3.0,
+                            handicapType: 'lose',
+                            overType: 'big'
+                        }
+                    }
+                ],
+                half: [
+                    {
+                        matchId: 1,
+                        leagueCup: '1',
+                        leagueName: '韩K联',
+                        matchTime: '23-11-02',
+                        winLose: '0',
+                        isHome: true,
+                        homeScore: 3,
+                        awayScore: 1,
+                        homeHalfScore: 1,
+                        awayHalfScore: 0,
+                        homeTeamName: 'Team A',
+                        awayTeamName: 'Team B',
+                        initial: {
+                            handicap: '0.25',
+                            overUnder: 2.5,
+                            handicapType: 'win',
+                            overType: 'big'
+                        },
+                        current: {
+                            handicap: '0.75',
+                            overUnder: 3.0,
+                            handicapType: 'win',
+                            overType: 'big'
+                        }
+                    }
+                ]
+            },
+            crown: {
+                full: [
+                    {
+                        matchId: 1,
+                        leagueCup: '1',
+                        leagueName: '韩K联',
+                        matchTime: '23-11-02',
+                        winLose: '0',
+                        isHome: true,
+                        homeScore: 3,
+                        awayScore: 1,
+                        homeHalfScore: 1,
+                        awayHalfScore: 0,
+                        homeTeamName: 'Team A',
+                        awayTeamName: 'Team B',
+                        initial: {
+                            handicap: '0.25',
+                            overUnder: 2.5,
+                            handicapType: 'win',
+                            overType: 'big'
+                        },
+                        current: {
+                            handicap: '0.75',
+                            overUnder: 3.0,
+                            handicapType: 'win',
+                            overType: 'big'
+                        }
+                    }
+                ],
+                half: [
+                    {
+                        matchId: 1,
+                        leagueCup: '1',
+                        leagueName: '韩K联',
+                        matchTime: '23-11-02',
+                        winLose: '0',
+                        isHome: true,
+                        homeScore: 3,
+                        awayScore: 1,
+                        homeHalfScore: 1,
+                        awayHalfScore: 0,
+                        homeTeamName: 'Team A',
+                        awayTeamName: 'Team B',
+                        initial: {
+                            handicap: '0.25',
+                            overUnder: 2.5,
+                            handicapType: 'win',
+                            overType: 'big'
+                        },
+                        current: {
+                            handicap: '0.75',
+                            overUnder: 3.0,
+                            handicapType: 'win',
+                            overType: 'big'
+                        }
+                    }
+                ]
+            }
+        }
+    });
+
+    createHomeRecordStore({
+        homeRecordData: analysisData.LastMatches.home
+    });
+
+    createAwayRecordStore({
+        awayRecordData: analysisData.LastMatches.away
     });
 
     return (
@@ -37,6 +165,7 @@ function Analyze({ analysisData, beforeGameData }: PropsType) {
             <LeagueRankTables />
             <LeagueTrendTables />
             <BattleRecordTable />
+            <HomeAwayRecord />
             <WinLoseCountTable />
         </>
     );

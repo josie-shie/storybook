@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import type { FormatRecordDataResponse } from 'data-center';
-import { useAnalyzeStore } from '../../analyzeStore';
 import style from './record.module.scss';
 import SelectList from './selectList';
 import TableDetail from './tableDetail';
@@ -11,46 +10,69 @@ import type {
     GameTypeProps,
     GameCompanyProps,
     GameHandicapProps,
-    GameTimeProps
+    GameTimeProps,
+    BattleRecord,
+    OddsDetailResultProps
 } from '@/types/analyze';
-
-interface RecordTableProps {
-    tableData: FormatRecordDataResponse;
-    homeTeamData?: { id: number; name: string };
-    mode?: 'battle' | 'one';
-    showTitle?: boolean;
-}
 
 function formatFloatingPoint(target: number, num: number) {
     return Math.floor(target * Math.pow(10, num)) / Math.pow(10, num);
 }
 
-function RecordTable({ tableData, mode, homeTeamData, showTitle }: RecordTableProps) {
-    const list = useAnalyzeStore.use.list();
-    const setList = useAnalyzeStore.use.setList();
-    const contestAmount = useAnalyzeStore.use.contestAmount();
-    const setContestAmount = useAnalyzeStore.use.setContestAmount();
-    const contestType = useAnalyzeStore.use.contestType();
-    const setContestType = useAnalyzeStore.use.setContestType();
-    const contestCompany = useAnalyzeStore.use.contestCompany();
-    const setContestCompany = useAnalyzeStore.use.setContestCompany();
-    const contestHandicap = useAnalyzeStore.use.contestHandicap();
-    const setContestHandicap = useAnalyzeStore.use.setContestHandicap();
-    const contestTime = useAnalyzeStore.use.contestTime();
-    const setContestTime = useAnalyzeStore.use.setContestTime();
-    const gameIsHome = useAnalyzeStore.use.gameIsHome();
-    const setGameIsHome = useAnalyzeStore.use.setGameIsHome();
-    const winLoseResult = useAnalyzeStore.use.winLoseResult();
-    const setWinLoseResult = useAnalyzeStore.use.setWinLoseResult();
-    const oddsDetailResult = useAnalyzeStore.use.oddsDetailResult();
-    const setOddsDetailResult = useAnalyzeStore.use.setOddsDetailResult();
+interface RecordTableProps {
+    tableData: FormatRecordDataResponse;
+    teamName?: string;
+    mode?: 'battle' | 'one';
+    list: BattleRecord[];
+    contestAmount: GameAmountProps;
+    contestType: GameTypeProps;
+    contestCompany: GameCompanyProps;
+    contestHandicap: GameHandicapProps;
+    contestTime: GameTimeProps;
+    gameIsHome: boolean;
+    winLoseResult: WinLoseResultProps;
+    oddsDetailResult: OddsDetailResultProps;
+    setList: (list: BattleRecord[]) => void;
+    setContestAmount: (contestAmount: GameAmountProps) => void;
+    setContestType: (contestType: GameTypeProps) => void;
+    setContestCompany: (contestCompany: GameCompanyProps) => void;
+    setContestHandicap: (contestHandicap: GameHandicapProps) => void;
+    setContestTime: (contestTime: GameTimeProps) => void;
+    setGameIsHome: (gameIsHome: boolean) => void;
+    setWinLoseResult: (winLoseResult: WinLoseResultProps) => void;
+    setOddsDetailResult: (oddsDetailResult: OddsDetailResultProps) => void;
+}
 
+function RecordTable({
+    tableData,
+    mode,
+    teamName,
+    list,
+    contestAmount,
+    contestType,
+    contestCompany,
+    contestHandicap,
+    contestTime,
+    gameIsHome,
+    winLoseResult,
+    oddsDetailResult,
+    setList,
+    setContestAmount,
+    setContestType,
+    setContestCompany,
+    setContestHandicap,
+    setContestTime,
+    setGameIsHome,
+    setWinLoseResult,
+    setOddsDetailResult
+}: RecordTableProps) {
     const handleFilterList = (filterParams: {
         company?: GameCompanyProps;
         handicap?: GameHandicapProps;
         time?: GameTimeProps;
         amount?: GameAmountProps;
         type?: GameTypeProps;
+        isHome?: boolean;
     }) => {
         const prams = {
             company: contestCompany,
@@ -58,6 +80,7 @@ function RecordTable({ tableData, mode, homeTeamData, showTitle }: RecordTablePr
             time: contestTime,
             type: contestType,
             amount: contestAmount,
+            isHome: gameIsHome,
             ...filterParams
         };
 
@@ -66,7 +89,15 @@ function RecordTable({ tableData, mode, homeTeamData, showTitle }: RecordTablePr
         let rowData = filterData
             .filter(item => {
                 if (prams.type === '2') {
+                    if (prams.isHome) {
+                        return prams.isHome === item.isHome;
+                    }
+
                     return item;
+                }
+
+                if (prams.isHome) {
+                    return prams.type === item.leagueCup && prams.isHome === item.isHome;
                 }
 
                 return prams.type === item.leagueCup;
@@ -94,7 +125,6 @@ function RecordTable({ tableData, mode, homeTeamData, showTitle }: RecordTablePr
                     ...handicapData
                 };
             });
-
         rowData = rowData.slice(0, prams.amount);
 
         // 計算勝/平負場次、贏率
@@ -176,28 +206,23 @@ function RecordTable({ tableData, mode, homeTeamData, showTitle }: RecordTablePr
 
     return (
         <div className={style.recordTable}>
-            <div className="topBar">
-                <h6 className="title">{showTitle ? '对赛往绩' : null}</h6>
-            </div>
             <div className="dataTable">
                 {mode === 'one' && (
-                    <div>
-                        <div className={style.tableHead}>
-                            <div className={style.th}>
-                                <div>{homeTeamData?.name}</div>
-                                <div className={style.checkbox}>
-                                    <input
-                                        checked={gameIsHome}
-                                        id="isHome"
-                                        onChange={() => {
-                                            setGameIsHome(!gameIsHome);
-                                            // handleFilterList({ isHome: !gameIsHome });
-                                        }}
-                                        type="checkbox"
-                                    />
-                                    <label htmlFor="isHome">同主客</label>
-                                </div>
-                            </div>
+                    <div className={style.teamNameHeader}>
+                        <div className={`${style.teamName}`}>{teamName}</div>
+                        <div className={style.checkbox}>
+                            <input
+                                checked={gameIsHome}
+                                id="isHome"
+                                onChange={() => {
+                                    setGameIsHome(!gameIsHome);
+                                    handleFilterList({ isHome: !gameIsHome });
+                                }}
+                                type="checkbox"
+                            />
+                            <label className={style.label} htmlFor="isHome">
+                                同主客
+                            </label>
                         </div>
                     </div>
                 )}
