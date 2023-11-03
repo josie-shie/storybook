@@ -9,7 +9,6 @@ import type {
     GetLeaguePointsRankResponse
 } from 'data-center';
 import type {
-    BattleRecord,
     WinLoseResultProps,
     OddsDetailResultProps,
     GameAmountProps,
@@ -30,7 +29,6 @@ interface InitState {
     leaguePointsRankData: GetLeaguePointsRankResponse;
     teamInfo: SingleMatchTeamName;
     leagueTrendData: FormatLeagueTrendDataResponse;
-    battleRecordData: FormatRecordDataResponse;
     lastMatches: {
         home: FormatRecordDataResponse;
         away: FormatRecordDataResponse;
@@ -38,35 +36,13 @@ interface InitState {
     winLoseCountData: FormatWinLoseCountDataResponse;
 }
 
-interface AnalyzeState extends InitState {
-    list: BattleRecord[];
-    contestAmount: GameAmountProps;
-    contestType: GameTypeProps;
-    contestCompany: GameCompanyProps;
-    contestHandicap: GameHandicapProps;
-    contestTime: GameTimeProps;
-    gameIsHome: boolean;
-    winLoseResult: WinLoseResultProps;
-    oddsDetailResult: OddsDetailResultProps;
-    setList: (list: BattleRecord[]) => void;
-    setContestAmount: (contestAmount: GameAmountProps) => void;
-    setContestType: (contestType: GameTypeProps) => void;
-    setContestCompany: (contestCompany: GameCompanyProps) => void;
-    setContestHandicap: (contestHandicap: GameHandicapProps) => void;
-    setContestTime: (contestTime: GameTimeProps) => void;
-    setGameIsHome: (gameIsHome: boolean) => void;
-    setWinLoseResult: (winLoseResult: WinLoseResultProps) => void;
-    setOddsDetailResult: (oddsDetailResult: OddsDetailResultProps) => void;
-}
+let useAnalyzeStore: StoreWithSelectors<InitState>;
 
-let useAnalyzeStore: StoreWithSelectors<AnalyzeState>;
-
-const initialState = (set: (data: Partial<AnalyzeState>) => void) => ({
+const initialState = (set: (data: Partial<InitState>) => void) => ({
     companyDetailAnalyze: [],
     leaguePointsRankData: {} as GetLeaguePointsRankResponse,
     teamInfo: {} as SingleMatchTeamName,
     leagueTrendData: {} as FormatLeagueTrendDataResponse,
-    battleRecordData: {} as FormatRecordDataResponse,
     lastMatches: {
         home: {} as FormatRecordDataResponse,
         away: {} as FormatRecordDataResponse
@@ -78,7 +54,7 @@ const initialState = (set: (data: Partial<AnalyzeState>) => void) => ({
     contestCompany: DefaultCompany as GameCompanyProps,
     contestHandicap: DefaultHandicap as GameHandicapProps,
     contestTime: DefaultTime as GameTimeProps,
-    gameIsHome: true,
+    gameIsHome: false,
     winLoseResult: {} as WinLoseResultProps,
     oddsDetailResult: {} as OddsDetailResultProps,
     setCompanyDetailAnalyze: ({ companyDetailAnalyze }: InitState) => {
@@ -93,9 +69,6 @@ const initialState = (set: (data: Partial<AnalyzeState>) => void) => ({
     setLeagueTrendData: (leagueTrendData: FormatLeagueTrendDataResponse) => {
         set({ leagueTrendData });
     },
-    setBattleRecordData: (battleRecordData: FormatRecordDataResponse) => {
-        set({ battleRecordData });
-    },
     setLastMatches: (lastMatches: {
         home: FormatRecordDataResponse;
         away: FormatRecordDataResponse;
@@ -104,37 +77,10 @@ const initialState = (set: (data: Partial<AnalyzeState>) => void) => ({
     },
     setWinLoseCountData: (winLoseCountData: FormatWinLoseCountDataResponse) => {
         set({ winLoseCountData });
-    },
-    setList: (list: BattleRecord[]) => {
-        set({ list });
-    },
-    setContestAmount: (contestAmount: GameAmountProps) => {
-        set({ contestAmount });
-    },
-    setContestType: (contestType: GameTypeProps) => {
-        set({ contestType });
-    },
-    setContestCompany: (contestCompany: GameCompanyProps) => {
-        set({ contestCompany });
-    },
-    setContestHandicap: (contestHandicap: GameHandicapProps) => {
-        set({ contestHandicap });
-    },
-    setContestTime: (contestTime: GameTimeProps) => {
-        set({ contestTime });
-    },
-    setGameIsHome: (gameIsHome: boolean) => {
-        set({ gameIsHome });
-    },
-    setWinLoseResult: (winLoseResult: WinLoseResultProps) => {
-        set({ winLoseResult });
-    },
-    setOddsDetailResult: (oddsDetailResult: OddsDetailResultProps) => {
-        set({ oddsDetailResult });
     }
 });
 
 const createAnalyzeStore = (init: InitState) =>
-    (useAnalyzeStore = initStore<AnalyzeState>(initialState, init));
+    (useAnalyzeStore = initStore<InitState>(initialState, init));
 
 export { createAnalyzeStore, useAnalyzeStore };

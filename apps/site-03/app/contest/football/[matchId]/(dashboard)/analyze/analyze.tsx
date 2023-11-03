@@ -1,6 +1,5 @@
 'use client';
 import type {
-    FormatRecordDataResponse,
     GetAnalysisOthersResponse,
     GetLeaguePointsRankResponse,
     GetBeforeGameIndexResponse
@@ -10,7 +9,9 @@ import LeagueRankTables from './leagueRankTables';
 import LeagueTrendTables from './leagueTrendTables';
 import WinLoseCountTable from './winLoseCountTable';
 import { createAnalyzeStore } from './analyzeStore';
-import BattleRecordTable from './battleRecordTable';
+import { createBattleRecordStore } from './battleRecordTable/battleRecordStore';
+import BattleRecordTable from './battleRecordTable/battleRecordTable';
+import HomeAwayRecord from './homeAwayRecordTable';
 
 interface PropsType {
     analysisData: GetAnalysisOthersResponse;
@@ -23,12 +24,15 @@ function Analyze({ analysisData, beforeGameData }: PropsType) {
         leaguePointsRankData: {} as GetLeaguePointsRankResponse,
         teamInfo: analysisData.teamInfo,
         leagueTrendData: analysisData.leagueTrendData,
-        battleRecordData: analysisData.battleRecordData,
         lastMatches: {
-            home: {} as FormatRecordDataResponse,
-            away: {} as FormatRecordDataResponse
+            home: analysisData.LastMatches.home,
+            away: analysisData.LastMatches.away
         },
         winLoseCountData: analysisData.winLoseCountData
+    });
+
+    createBattleRecordStore({
+        battleRecordData: analysisData.battleRecordData
     });
 
     return (
@@ -37,6 +41,7 @@ function Analyze({ analysisData, beforeGameData }: PropsType) {
             <LeagueRankTables />
             <LeagueTrendTables />
             <BattleRecordTable />
+            <HomeAwayRecord />
             <WinLoseCountTable />
         </>
     );
