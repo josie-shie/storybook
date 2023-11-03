@@ -2,62 +2,32 @@
 import Image from 'next/image';
 import Button from '@mui/material/Button';
 import type { GetSingleMatchResponse } from 'data-center';
+import { GameStatus } from 'ui';
+import TeamLogo from './components/teamLogo';
 import Header from './header';
 import style from './liveBox.module.scss';
 import VideoIcon from './img/video.png';
 import bgImage from './img/bg.jpg';
-import DefaultTeamLogoIcon from './img/defaultTeamLogo.png';
 import { createContestDetailStore, useContestDetailStore } from './contestDetailStore';
 
-type GameStatusType = { style: string; text: string } | undefined;
-
-function GameStatus() {
+function GameDetail() {
     const matchDetail = useContestDetailStore.use.matchDetail();
-    const gameStatus = {
-        state: 'apple',
-        time: '21'
-    };
-
-    const stateStyle: Record<string, { style: string; text: string }> = {
-        notYet: { style: style.notYet, text: '未' },
-        midfielder: { style: style.notYet, text: '中场' },
-        finish: { style: style.finish, text: '完场' },
-        playoff: { style: style.playoff, text: '加' },
-        kick: { style: style.playoff, text: '点' },
-        cancel: { style: style.notYet, text: '取消' },
-        undetermined: { style: style.notYet, text: '待定' },
-        cut: { style: style.notYet, text: '腰斩' },
-        discontinue: { style: style.notYet, text: '中断' },
-        putOff: { style: style.notYet, text: '推迟' }
-    };
-
     return (
         <div className={style.gameStatus}>
-            {gameStatus.state !== 'notYet' && (
-                <div className={style.textHolder}>
-                    <p className={style.text}>
-                        半場 {matchDetail.homeHalfScore}-{matchDetail.awayHalfScore}
-                    </p>
-                </div>
-            )}
-            <div
-                className={`${style.gameTime}  ${
-                    (stateStyle[gameStatus.state] as GameStatusType)
-                        ? stateStyle[gameStatus.state].style
-                        : style.midfielder
-                }`}
-            >
-                {(stateStyle[gameStatus.state] as GameStatusType) ? (
-                    stateStyle[gameStatus.state].text
-                ) : (
-                    <>
-                        {gameStatus.time} <span className={style.timePoint}>’</span>
-                    </>
-                )}
+            {matchDetail.state > 0 ||
+                (matchDetail.state === -1 && (
+                    <div className={style.textHolder}>
+                        <p className={style.text}>
+                            半場 {matchDetail.homeHalfScore}-{matchDetail.awayHalfScore}
+                        </p>
+                    </div>
+                ))}
+            <div className={`${style.gameTime} ${matchDetail.state === -1 && style.finish}`}>
+                <GameStatus startTime={matchDetail.startTime} status={matchDetail.state} />
                 <div className={style.homeScore}>{matchDetail.homeScore}</div>
                 <div className={style.awayScore}>{matchDetail.awayScore}</div>
             </div>
-            {gameStatus.state === 'notYet' ? (
+            {matchDetail.state < 1 && matchDetail.state !== -1 ? (
                 <p className={style.vsText}>VS</p>
             ) : (
                 <>
@@ -85,26 +55,16 @@ function LiveBox({ contestDetail }: { contestDetail: GetSingleMatchResponse }) {
                 <div className={style.gameInfo}>
                     <div className={style.team}>
                         <div className={style.circleBg}>
-                            <Image
-                                alt={homeChs}
-                                height={40}
-                                src={homeLogo ? homeLogo : DefaultTeamLogoIcon}
-                                width={40}
-                            />
+                            <TeamLogo alt={homeChs} height={40} src={homeLogo} width={40} />
                         </div>
                         <p className={style.teamName}>{homeChs}</p>
                     </div>
                     <div className={style.score}>
-                        <GameStatus />
+                        <GameDetail />
                     </div>
                     <div className={style.team}>
                         <div className={style.circleBg}>
-                            <Image
-                                alt={awayChs}
-                                height={40}
-                                src={awayLogo ? awayLogo : DefaultTeamLogoIcon}
-                                width={40}
-                            />
+                            <TeamLogo alt={awayChs} height={40} src={awayLogo} width={40} />
                         </div>
                         <p className={style.teamName}>{awayChs}</p>
                     </div>
