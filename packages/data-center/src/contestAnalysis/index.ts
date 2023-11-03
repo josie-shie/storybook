@@ -439,14 +439,14 @@ interface OddsDetail {
     awayTeamName: string;
     leagueName: string;
     initial: {
-        handicap: string | number;
-        overUnder: number;
+        handicap: string;
+        overUnder: string;
         handicapType: string;
         overType: string;
     };
     current: {
-        handicap: string | number;
-        overUnder: number;
+        handicap: string;
+        overUnder: string;
         handicapType: string;
         overType: string;
     };
@@ -658,7 +658,8 @@ const formatRecordData = ({
     const bet365Response = matchesOddsDetails.bet365Response.reduce<FullHalfOddsResponse>(
         (preItem, item) => {
             const matchData = matchesDataMap.get(item.match.matchId);
-            item.match.leagueChs;
+            let mainScore = 0;
+            let secondScore = 0;
             const basicInfo = {
                 matchId: item.match.matchId,
                 leagueCup: matchData?.leagueCup || '0',
@@ -674,38 +675,46 @@ const formatRecordData = ({
                 leagueName: item.match.leagueChs
             };
 
+            if (homeId === item.match.homeId) {
+                mainScore = matchData?.homeScore || 0;
+                secondScore = matchData?.awayScore || 0;
+            } else {
+                mainScore = matchData?.awayScore || 0;
+                secondScore = matchData?.homeScore || 0;
+            }
+
             const full = {
                 ...basicInfo,
                 initial: {
                     handicap: convertHandicap(item.handicap.initialHandicap),
-                    overUnder: item.overUnder.initialHandicap,
+                    overUnder: convertHandicap(item.overUnder.initialHandicap),
                     handicapType: handleOddsType({
                         handicap: item.handicap.initialHandicap,
                         overUnder: item.overUnder.initialHandicap,
-                        homeScore: matchData?.homeScore || 0,
-                        awayScore: matchData?.awayScore || 0
+                        homeScore: mainScore,
+                        awayScore: secondScore
                     }).handicapType,
                     overType: handleOddsType({
                         handicap: item.handicap.initialHandicap,
                         overUnder: item.overUnder.initialHandicap,
-                        homeScore: matchData?.homeScore || 0,
-                        awayScore: matchData?.awayScore || 0
+                        homeScore: mainScore,
+                        awayScore: secondScore
                     }).overType
                 },
                 current: {
                     handicap: convertHandicap(item.handicap.currentHandicap),
-                    overUnder: item.overUnder.currentHandicap,
+                    overUnder: convertHandicap(item.overUnder.currentHandicap),
                     handicapType: handleOddsType({
                         handicap: item.handicap.currentHandicap,
                         overUnder: item.overUnder.currentHandicap,
-                        homeScore: matchData?.homeScore || 0,
-                        awayScore: matchData?.awayScore || 0
+                        homeScore: mainScore,
+                        awayScore: secondScore
                     }).handicapType,
                     overType: handleOddsType({
                         handicap: item.handicap.currentHandicap,
                         overUnder: item.overUnder.currentHandicap,
-                        homeScore: matchData?.homeScore || 0,
-                        awayScore: matchData?.awayScore || 0
+                        homeScore: mainScore,
+                        awayScore: secondScore
                     }).overType
                 }
             };
@@ -714,34 +723,34 @@ const formatRecordData = ({
                 ...basicInfo,
                 initial: {
                     handicap: convertHandicap(item.handicapHalf.initialHandicap),
-                    overUnder: item.overUnderHalf.initialHandicap,
+                    overUnder: convertHandicap(item.overUnderHalf.initialHandicap),
                     handicapType: handleOddsType({
                         handicap: item.handicapHalf.initialHandicap,
                         overUnder: item.overUnderHalf.initialHandicap,
                         homeScore: matchData?.homeScore || 0,
-                        awayScore: matchData?.awayScore || 0
+                        awayScore: secondScore
                     }).handicapType,
                     overType: handleOddsType({
                         handicap: item.handicapHalf.initialHandicap,
                         overUnder: item.overUnderHalf.initialHandicap,
                         homeScore: matchData?.homeScore || 0,
-                        awayScore: matchData?.awayScore || 0
+                        awayScore: secondScore
                     }).overType
                 },
                 current: {
                     handicap: convertHandicap(item.handicapHalf.currentHandicap),
-                    overUnder: item.overUnderHalf.currentHandicap,
+                    overUnder: convertHandicap(item.overUnderHalf.currentHandicap),
                     handicapType: handleOddsType({
                         handicap: item.handicapHalf.currentHandicap,
                         overUnder: item.overUnderHalf.currentHandicap,
                         homeScore: matchData?.homeScore || 0,
-                        awayScore: matchData?.awayScore || 0
+                        awayScore: secondScore
                     }).handicapType,
                     overType: handleOddsType({
                         handicap: item.handicapHalf.currentHandicap,
                         overUnder: item.overUnderHalf.currentHandicap,
                         homeScore: matchData?.homeScore || 0,
-                        awayScore: matchData?.awayScore || 0
+                        awayScore: secondScore
                     }).overType
                 }
             };
@@ -757,6 +766,8 @@ const formatRecordData = ({
     const crownResponse = matchesOddsDetails.crownResponse.reduce<FullHalfOddsResponse>(
         (preItem, item) => {
             const matchData = matchesDataMap.get(item.match.matchId);
+            let mainScore = 0;
+            let secondScore = 0;
             const basicInfo = {
                 matchId: item.match.matchId,
                 leagueCup: matchData?.leagueCup || '0',
@@ -772,38 +783,46 @@ const formatRecordData = ({
                 leagueName: item.match.leagueChs
             };
 
+            if (homeId === item.match.homeId) {
+                mainScore = matchData?.homeScore || 0;
+                secondScore = matchData?.awayScore || 0;
+            } else {
+                mainScore = matchData?.awayScore || 0;
+                secondScore = matchData?.homeScore || 0;
+            }
+
             const full: OddsDetail = {
                 ...basicInfo,
                 initial: {
                     handicap: convertHandicap(item.handicap.initialHandicap),
-                    overUnder: item.overUnder.initialHandicap,
+                    overUnder: convertHandicap(item.overUnder.initialHandicap),
                     handicapType: handleOddsType({
                         handicap: item.handicap.initialHandicap,
                         overUnder: item.overUnder.initialHandicap,
-                        homeScore: matchData?.homeScore || 0,
-                        awayScore: matchData?.awayScore || 0
+                        homeScore: mainScore,
+                        awayScore: secondScore
                     }).handicapType,
                     overType: handleOddsType({
                         handicap: item.handicap.initialHandicap,
                         overUnder: item.overUnder.initialHandicap,
-                        homeScore: matchData?.homeScore || 0,
-                        awayScore: matchData?.awayScore || 0
+                        homeScore: mainScore,
+                        awayScore: secondScore
                     }).overType
                 },
                 current: {
                     handicap: convertHandicap(item.handicap.currentHandicap),
-                    overUnder: item.overUnder.currentHandicap,
+                    overUnder: convertHandicap(item.overUnder.currentHandicap),
                     handicapType: handleOddsType({
                         handicap: item.handicap.currentHandicap,
                         overUnder: item.overUnder.currentHandicap,
-                        homeScore: matchData?.homeScore || 0,
-                        awayScore: matchData?.awayScore || 0
+                        homeScore: mainScore,
+                        awayScore: secondScore
                     }).handicapType,
                     overType: handleOddsType({
                         handicap: item.handicap.currentHandicap,
                         overUnder: item.overUnder.currentHandicap,
-                        homeScore: matchData?.homeScore || 0,
-                        awayScore: matchData?.awayScore || 0
+                        homeScore: mainScore,
+                        awayScore: secondScore
                     }).overType
                 }
             };
@@ -812,34 +831,34 @@ const formatRecordData = ({
                 ...basicInfo,
                 initial: {
                     handicap: convertHandicap(item.handicapHalf.initialHandicap),
-                    overUnder: item.overUnderHalf.initialHandicap,
+                    overUnder: convertHandicap(item.overUnderHalf.initialHandicap),
                     handicapType: handleOddsType({
                         handicap: item.handicapHalf.initialHandicap,
                         overUnder: item.overUnderHalf.initialHandicap,
-                        homeScore: matchData?.homeScore || 0,
-                        awayScore: matchData?.awayScore || 0
+                        homeScore: mainScore,
+                        awayScore: secondScore
                     }).handicapType,
                     overType: handleOddsType({
                         handicap: item.handicapHalf.initialHandicap,
                         overUnder: item.overUnderHalf.initialHandicap,
-                        homeScore: matchData?.homeScore || 0,
-                        awayScore: matchData?.awayScore || 0
+                        homeScore: mainScore,
+                        awayScore: secondScore
                     }).overType
                 },
                 current: {
                     handicap: convertHandicap(item.handicapHalf.currentHandicap),
-                    overUnder: item.overUnderHalf.currentHandicap,
+                    overUnder: convertHandicap(item.overUnderHalf.currentHandicap),
                     handicapType: handleOddsType({
                         handicap: item.handicapHalf.currentHandicap,
                         overUnder: item.overUnderHalf.currentHandicap,
-                        homeScore: matchData?.homeScore || 0,
-                        awayScore: matchData?.awayScore || 0
+                        homeScore: mainScore,
+                        awayScore: secondScore
                     }).handicapType,
                     overType: handleOddsType({
                         handicap: item.handicapHalf.currentHandicap,
                         overUnder: item.overUnderHalf.currentHandicap,
-                        homeScore: matchData?.homeScore || 0,
-                        awayScore: matchData?.awayScore || 0
+                        homeScore: mainScore,
+                        awayScore: secondScore
                     }).overType
                 }
             };

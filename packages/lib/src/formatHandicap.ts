@@ -43,7 +43,7 @@ export const convertHandicap = (input: number) => {
                 ? `-${floorValue + 0.5}/${floorValue + 1}`
                 : `${floorValue + 0.5}/${floorValue + 1}`;
         default:
-            return input;
+            return `${input}`;
     }
 };
 
