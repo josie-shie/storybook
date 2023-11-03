@@ -24,11 +24,13 @@ function TabBar({ matchId, children }: { children: ReactNode; matchId: number })
             to: `/contest/football/${matchId}/situation`,
             params: 'situation'
         },
-        {
-            label: '直播',
-            to: `/contest/football/${matchId}/textBroadcast`,
-            params: 'textBroadcast'
-        },
+        // 數據源暫無資料 先隱藏
+        // {
+        //     label: '直播',
+        //     to: `/contest/football/${matchId}/textBroadcast`,
+        //     params: 'textBroadcast'
+        // },
+
         {
             label: '分析',
             to: `/contest/football/${matchId}/analyze`,

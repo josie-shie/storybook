@@ -17,7 +17,6 @@ async function DetailLayout({
     if (!contestDetail.success) {
         return new Error();
     }
-
     return (
         <>
             <LiveBox contestDetail={contestDetail.data} />
