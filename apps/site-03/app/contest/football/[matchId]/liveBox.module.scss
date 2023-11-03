@@ -59,6 +59,9 @@
         }
 
         .score {
+            display: flex;
+            align-items: center;
+
             .all {
                 font-size: 28px;
                 font-weight: 400;
@@ -95,8 +98,35 @@
         }
     }
 
-    .gameTime {
+    .statusTop {
         position: relative;
+
+        .homeScore {
+            width: 48px;
+            color: #fff;
+            position: absolute;
+            top: 50%;
+            left: -144%;
+            transform: translateY(-50%);
+            text-align: center;
+            font-size: 46px;
+            font-weight: 800;
+        }
+
+        .awayScore {
+            width: 48px;
+            color: #fff;
+            position: absolute;
+            top: 50%;
+            right: -144%;
+            transform: translateY(-50%);
+            text-align: center;
+            font-size: 46px;
+            font-weight: 800;
+        }
+    }
+
+    .gameTime {
         display: flex;
         justify-content: center;
         align-items: center;
@@ -107,12 +137,12 @@
         border-radius: 4px;
 
         .timePoint {
-            animation-name: oxxo;
+            animation-name: timepoint;
             animation-duration: 1s;
             animation-iteration-count: infinite;
         }
 
-        @keyframes oxxo {
+        @keyframes timepoint {
             0% {
                 opacity: 0;
             }
@@ -125,30 +155,6 @@
                 opacity: 0;
             }
         }
-
-        .homeScore {
-            width: 48px;
-            color: #fff;
-            position: absolute;
-            top: 50%;
-            left: -200%;
-            transform: translateY(-50%);
-            text-align: center;
-            font-size: 46px;
-            font-weight: 800;
-        }
-
-        .awayScore {
-            width: 48px;
-            color: #fff;
-            position: absolute;
-            top: 50%;
-            right: -200%;
-            transform: translateY(-50%);
-            text-align: center;
-            font-size: 46px;
-            font-weight: 800;
-        }
     }
 
     .notYet {
@@ -158,7 +164,10 @@
 
     .midfielder {
         background: linear-gradient(90deg, #4489ff 6.1%, #065ff5 95.12%);
-        color: #fff;
+
+        p {
+            color: #fff;
+        }
     }
 
     .finish {
@@ -170,7 +179,11 @@
     }
 
     .playOff {
-        background-color: #fd9a00;
+        background-color: #fbb03b;
+
+        p {
+            color: #fff;
+        }
     }
 
     .placeholder {

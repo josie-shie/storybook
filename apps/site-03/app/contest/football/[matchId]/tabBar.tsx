@@ -8,7 +8,7 @@ import style from './contestDetail.module.scss';
 function TabBar({ matchId, children }: { children: ReactNode; matchId: number }) {
     const tabStyle = {
         gap: 0,
-        swiperOpen: true,
+        swiperOpen: false,
         buttonRadius: 0
     };
 

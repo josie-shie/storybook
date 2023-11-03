@@ -3,7 +3,12 @@ import { useState, useEffect, useRef } from 'react';
 import { handleGameTime } from 'lib';
 import style from './gameStatus.module.scss';
 
-function useGameTime({ startTime, status }: { status: number; startTime: string }) {
+interface GameStatusProps extends React.HTMLAttributes<HTMLDivElement> {
+    status: number;
+    startTime: string;
+}
+
+function useGameTime({ startTime, status }: GameStatusProps) {
     const [realTimeStatus, setRealTimeStatus] = useState<{
         time?: number;
         state: string;
@@ -21,7 +26,7 @@ function useGameTime({ startTime, status }: { status: number; startTime: string 
     return realTimeStatus;
 }
 
-function GameStatus({ startTime, status }: { status: number; startTime: string }) {
+function GameStatus({ startTime, status, ...props }: { status: number; startTime: string }) {
     const realTimeStatus = useGameTime({ startTime, status });
     const [realMinute, setRealMinute] = useState(realTimeStatus.time || 0);
     const timerRef = useRef<NodeJS.Timeout | null>(null);
@@ -44,7 +49,7 @@ function GameStatus({ startTime, status }: { status: number; startTime: string }
     }, [status, realTimeStatus.time]);
 
     return (
-        <div className={style.gameStatus}>
+        <div className={style.gameStatus} {...props}>
             <p
                 className={`${realTimeStatus.time ? style.point : ''} ${
                     style[realTimeStatus.state]
