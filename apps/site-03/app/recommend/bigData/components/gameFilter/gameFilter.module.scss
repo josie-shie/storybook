@@ -1,0 +1,85 @@
+.selectButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: 40px;
+    font-weight: 600;
+    font-size: 14px;
+    background: #1c1c1d;
+    color: #fff;
+    padding: 10px 26px;
+    border: 1px solid #ffffff1a;
+    border-radius: 50px;
+}
+
+.selectDrawer {
+    width: auto;
+}
+
+.dragBar {
+    background: #aaa;
+    width: 32px;
+    height: 4px;
+    border-radius: 100px;
+    margin: 10px auto;
+}
+
+.topSpace {
+    margin-top: 10px;
+
+    .title {
+        font-size: 14px;
+        font-weight: 500;
+        text-align: left;
+        padding: 0 16px;
+        color: #222;
+    }
+}
+
+.drawerContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    user-select: none;
+    margin: 8px auto 16px auto;
+    padding: 0;
+}
+
+.optionItem {
+    padding: 0 16px;
+    list-style: none;
+    text-align: center;
+}
+
+.cancelButton {
+    display: block;
+    line-height: 22px;
+    font-weight: 500;
+    font-size: 14px;
+    width: 100%;
+    padding: 26px 10px;
+    border: 0;
+    border-radius: 12px;
+    color: #f85640;
+    background: transparent;
+}
+
+.option {
+    display: block;
+    line-height: 22px;
+    font-weight: 500;
+    font-size: 14px;
+    width: 100%;
+    padding: 6px 0;
+    border-radius: 6px;
+    border: 1px solid #bfbfbf;
+    color: #4a4a4a;
+    background: transparent;
+}
+
+.selected {
+    color: #4489ff;
+    border-color: #4489ff;
+    background: #e6effe;
+}

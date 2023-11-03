@@ -1,10 +1,11 @@
+import GoalRangeChart from '../../../components/goalRangeChart/goalRangeChart';
 import style from './range.module.scss';
 
 function Range() {
     return (
         <>
             <div className={style.range}>
-                <div className={style.eChat} />
+                <GoalRangeChart />
                 <div className={style.dot}>
                     <span className={style.first}>0-1</span>
                     <span className={style.second}>2-3</span>

@@ -42,14 +42,10 @@
                 font-weight: 400;
             }
 
-            .selectItem {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                gap: 8px;
+            :global(.ui-select) {
                 flex: 1;
-                padding: 4px;
-                text-align: center;
+                height: 28px;
+                font-weight: 400;
                 color: #757575;
                 background: #f3f3f3;
                 border-radius: 8px;

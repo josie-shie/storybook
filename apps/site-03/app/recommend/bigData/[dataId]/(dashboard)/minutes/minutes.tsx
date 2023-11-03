@@ -1,10 +1,15 @@
+import { useState } from 'react';
+import FifteenMinutesChart from '../../../components/fifteenMinutesChart/fifteenMinutesChart';
+import ContestDrawerList from '../components/contestDrawerList';
 import style from './minutes.module.scss';
 
 function Minutes() {
+    const [showList, setShowList] = useState(false);
+
     return (
         <>
             <div className={style.minutes}>
-                <div className={style.eChat} />
+                <FifteenMinutesChart />
                 <div className={style.dot}>
                     <span className={style.big}>大</span>
                     <span className={style.small}>小</span>
@@ -16,23 +21,59 @@ function Minutes() {
                 <div className={style.header}>30:00-半場</div>
 
                 <div className={style.cell}>
-                    <span>上 40</span>
+                    <span
+                        onClick={() => {
+                            setShowList(true);
+                        }}
+                    >
+                        上 40
+                    </span>
                 </div>
                 <div className={style.cell}>
-                    <span>上 40</span>
+                    <span
+                        onClick={() => {
+                            setShowList(true);
+                        }}
+                    >
+                        上 40
+                    </span>
                 </div>
                 <div className={style.cell}>
-                    <span>上 40</span>
+                    <span
+                        onClick={() => {
+                            setShowList(true);
+                        }}
+                    >
+                        上 40
+                    </span>
                 </div>
 
                 <div className={`${style.cell} ${style.odd}`}>
-                    <span>下 40</span>
+                    <span
+                        onClick={() => {
+                            setShowList(true);
+                        }}
+                    >
+                        下 40
+                    </span>
                 </div>
                 <div className={`${style.cell} ${style.odd}`}>
-                    <span>下 40</span>
+                    <span
+                        onClick={() => {
+                            setShowList(true);
+                        }}
+                    >
+                        下 40
+                    </span>
                 </div>
                 <div className={`${style.cell} ${style.odd}`}>
-                    <span>下 40</span>
+                    <span
+                        onClick={() => {
+                            setShowList(true);
+                        }}
+                    >
+                        下 40
+                    </span>
                 </div>
             </div>
             <div className={style.tableContainer}>
@@ -41,25 +82,70 @@ function Minutes() {
                 <div className={style.header}>30:00-半場</div>
 
                 <div className={style.cell}>
-                    <span>上 40</span>
+                    <span
+                        onClick={() => {
+                            setShowList(true);
+                        }}
+                    >
+                        上 40
+                    </span>
                 </div>
                 <div className={style.cell}>
-                    <span>上 40</span>
+                    <span
+                        onClick={() => {
+                            setShowList(true);
+                        }}
+                    >
+                        上 40
+                    </span>
                 </div>
                 <div className={style.cell}>
-                    <span>上 40</span>
+                    <span
+                        onClick={() => {
+                            setShowList(true);
+                        }}
+                    >
+                        上 40
+                    </span>
                 </div>
 
                 <div className={`${style.cell} ${style.odd}`}>
-                    <span>下 40</span>
+                    <span
+                        onClick={() => {
+                            setShowList(true);
+                        }}
+                    >
+                        下 40
+                    </span>
                 </div>
                 <div className={`${style.cell} ${style.odd}`}>
-                    <span>下 40</span>
+                    <span
+                        onClick={() => {
+                            setShowList(true);
+                        }}
+                    >
+                        下 40
+                    </span>
                 </div>
                 <div className={`${style.cell} ${style.odd}`}>
-                    <span>下 40</span>
+                    <span
+                        onClick={() => {
+                            setShowList(true);
+                        }}
+                    >
+                        下 40
+                    </span>
                 </div>
             </div>
+            <ContestDrawerList
+                isOpen={showList}
+                onClose={() => {
+                    setShowList(false);
+                }}
+                onOpen={() => {
+                    setShowList(true);
+                }}
+            />
         </>
     );
 }
