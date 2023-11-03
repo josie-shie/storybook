@@ -1,5 +1,5 @@
 import type { MqttClient } from 'mqtt';
-import mqtt from 'mqtt';
+import * as mqtt from 'mqtt';
 import { deProto } from './prtobuf';
 
 interface OriginalContestInfo {

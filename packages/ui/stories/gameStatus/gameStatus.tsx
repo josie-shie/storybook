@@ -1,3 +1,4 @@
+'use client';
 import { handleGameTime } from 'lib';
 import style from './gameStatus.module.scss';
 
@@ -6,11 +7,13 @@ function GameStatus({ startTime, status }: { status: number; startTime: string }
 
     return (
         <div className={style.gameStatus}>
-            {realTimeStatus.time ? (
-                <p className={style.point}>{realTimeStatus.time}‘</p>
-            ) : (
-                <p className={style[realTimeStatus.state]}>{realTimeStatus.text}</p>
-            )}
+            <p
+                className={`${realTimeStatus.time ? style.point : ''} ${
+                    style[realTimeStatus.state]
+                }`}
+            >
+                {realTimeStatus.time || realTimeStatus.text}
+            </p>
         </div>
     );
 }

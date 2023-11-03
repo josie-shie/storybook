@@ -1,4 +1,4 @@
-import { fetcher, timestampToString, timestampToMonthDay, convertHandicap } from 'lib';
+import { fetcher, timestampToString, convertHandicap } from 'lib';
 import { z } from 'zod';
 import { handleApiError } from '../common';
 import type { ReturnData } from '../common';
@@ -99,7 +99,7 @@ export const getContestList = async (
             contestInfo[item.matchId] = {
                 ...item,
                 matchTime: timestampToString(item.matchTime, 'M-DD HH:mm'),
-                startTime: timestampToMonthDay(item.startTime),
+                startTime: timestampToString(item.startTime || item.matchTime, 'YYYY-M-DD HH:mm'),
                 handicapCurrent: convertHandicap(item.handicapCurrent),
                 overUnderCurrent: convertHandicap(item.overUnderCurrent)
             };
