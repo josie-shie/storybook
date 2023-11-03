@@ -1,3 +1,4 @@
+import { useAnalyzeStore } from './analyzeStore';
 import style from './leagueRankTables.module.scss';
 
 interface LeagueRankTableProps {
@@ -5,23 +6,15 @@ interface LeagueRankTableProps {
 }
 
 function LeagueRankTables() {
-    const matchTeamName = {
-        homeEn: 'KA Akureyri',
-        homeChs: 'KA阿古雷利',
-        homeCht: '阿古雷利',
-        awayEn: 'Breidablik',
-        awayChs: '贝雷达比历克',
-        awayCht: '比達比歷',
-        homeId: 1639,
-        awayId: 4052
-    };
+    const teamInfo = useAnalyzeStore.use.teamInfo();
+
     return (
         <div className={style.leagueRankTables}>
             <div className="topBar">
                 <h6 className="title">联赛积分排名</h6>
             </div>
-            <LeagueRankTable teamName={matchTeamName.homeChs || '-'} />
-            <LeagueRankTable teamName={matchTeamName.awayChs || '-'} />
+            <LeagueRankTable teamName={teamInfo.homeChs || '-'} />
+            <LeagueRankTable teamName={teamInfo.awayChs || '-'} />
         </div>
     );
 }
