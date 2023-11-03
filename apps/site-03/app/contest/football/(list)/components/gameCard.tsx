@@ -49,18 +49,17 @@ function TeamInfo({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId:
         <div className={style.teamInfo}>
             <div className={`${style.homeTeam} ${style.team}`}>
                 <div className={style.cards}>
-                    {(syncData.homeRed && syncData.homeRed > 0) ||
-                        (contestInfo.homeRed > 0 && (
-                            <p className={`${style.redCard} ${style.card}`}>
-                                {syncData.homeRed || contestInfo.homeRed}
-                            </p>
-                        ))}
+                    {(syncData.homeRed && syncData.homeRed > 0) || contestInfo.homeRed > 0 ? (
+                        <p className={`${style.redCard} ${style.card}`}>
+                            {syncData.homeRed || contestInfo.homeRed}
+                        </p>
+                    ) : null}
                     {(syncData.homeYellow && syncData.homeYellow > 0) ||
-                        (contestInfo.homeYellow > 0 && (
-                            <p className={`${style.yellowCard} ${style.card}`}>
-                                {syncData.homeYellow || contestInfo.homeYellow}
-                            </p>
-                        ))}
+                    contestInfo.homeYellow > 0 ? (
+                        <p className={`${style.yellowCard} ${style.card}`}>
+                            {syncData.homeYellow || contestInfo.homeYellow}
+                        </p>
+                    ) : null}
                 </div>
                 {contestInfo.homeChs}
             </div>
@@ -71,18 +70,17 @@ function TeamInfo({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId:
             <div className={`${style.awayTeam} ${style.team}`}>
                 {contestInfo.awayChs}
                 <div className={style.cards}>
-                    {(syncData.awayRed && syncData.awayRed > 0) ||
-                        (contestInfo.awayRed > 0 && (
-                            <p className={`${style.redCard} ${style.card}`}>
-                                {syncData.awayRed || contestInfo.awayRed}
-                            </p>
-                        ))}
+                    {(syncData.awayRed && syncData.awayRed > 0) || contestInfo.awayRed > 0 ? (
+                        <p className={`${style.redCard} ${style.card}`}>
+                            {syncData.awayRed || contestInfo.awayRed}
+                        </p>
+                    ) : null}
                     {(syncData.awayYellow && syncData.awayYellow > 0) ||
-                        (contestInfo.awayYellow > 0 && (
-                            <p className={`${style.yellowCard} ${style.card}`}>
-                                {syncData.awayYellow || contestInfo.awayYellow}
-                            </p>
-                        ))}
+                    contestInfo.awayYellow > 0 ? (
+                        <p className={`${style.yellowCard} ${style.card}`}>
+                            {syncData.awayYellow || contestInfo.awayYellow}
+                        </p>
+                    ) : null}
                 </div>
             </div>
         </div>
