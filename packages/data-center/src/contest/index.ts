@@ -37,7 +37,7 @@ const ContestInfoSchema = z.object({
     overUnderUnderCurrentOdds: z.number()
 });
 
-type OriginalContestInfo = z.infer<typeof ContestInfoSchema>;
+export type OriginalContestInfo = z.infer<typeof ContestInfoSchema>;
 
 export type ContestInfo = Omit<
     OriginalContestInfo,

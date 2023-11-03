@@ -75,7 +75,7 @@ function TopArea({ contestInfo }: { contestInfo: ContestInfo }) {
                 <div className={style.league} style={{ color: contestInfo.color }}>
                     {contestInfo.leagueChsShort}
                 </div>
-                <div className={style.time}>{contestInfo.startTime}</div>
+                <div className={style.time}>{contestInfo.matchTime}</div>
             </div>
             <div className={style.mid}>
                 <div className={style.corner}>

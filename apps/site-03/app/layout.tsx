@@ -3,6 +3,7 @@ import '@/styles/globals.scss';
 import type { ReactNode } from 'react';
 import type { Metadata } from 'next';
 import GlobalStore from './globalStore';
+import MqttService from './mqttService';
 
 export const metadata: Metadata = {
     title: 'Sport',
@@ -14,7 +15,9 @@ function RootLayout({ children }: { children: ReactNode }) {
         <html lang="en">
             <body>
                 <GlobalStore>
-                    <main>{children}</main>
+                    <MqttService>
+                        <main>{children}</main>
+                    </MqttService>
                 </GlobalStore>
             </body>
         </html>

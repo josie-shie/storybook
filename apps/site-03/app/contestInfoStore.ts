@@ -1,20 +1,38 @@
 import { initStore } from 'lib';
 import type { StoreWithSelectors } from 'lib';
-import type { ContestInfoType } from 'data-center';
+import type { OriginalContestInfo } from 'data-center';
+
+type ContestTable = Record<string, Partial<OriginalContestInfo>>;
 
 interface InitState {
-    contestInfo: ContestInfoType;
+    contestInfo: ContestTable;
 }
 interface ContestInfoContest extends InitState {
-    setContestInfoContest: ({ contestInfo }: InitState) => void;
+    setContestInfoContest: (info: Partial<OriginalContestInfo>) => void;
 }
 
 let useContestInfoStore: StoreWithSelectors<ContestInfoContest>;
 
-const initialState = (set: (data: Partial<ContestInfoContest>) => void) => ({
+const initialState = (
+    set: (updater: (state: ContestInfoContest) => Partial<ContestInfoContest>) => void
+) => ({
     contestInfo: {},
-    setContestInfoContest: ({ contestInfo }: InitState) => {
-        set({ contestInfo });
+    setContestInfoContest: (info: Partial<OriginalContestInfo>) => {
+        const id = info.matchId?.toString();
+        if (!id) return;
+        set(state => {
+            const newContestInfo: ContestTable = { ...state.contestInfo };
+            if (Object.hasOwnProperty.call(newContestInfo, id)) {
+                newContestInfo[id] = {
+                    ...newContestInfo[id],
+                    ...info
+                };
+            } else {
+                newContestInfo[id] = info;
+            }
+
+            return { ...state, contestInfo: newContestInfo };
+        });
     }
 });
 
