@@ -40,7 +40,7 @@ export const handleGameTime = (
         return { state: 'midfielder', text: '中场' };
     }
     if (state === 3) {
-        return { state: 'playing', time: handleStartTime(startTime, endTime) + 45 };
+        return { state: 'playing', time: handleStartTime(startTime, endTime) };
     }
     if (state === 4) {
         return { state: 'playoff', text: '加' };
