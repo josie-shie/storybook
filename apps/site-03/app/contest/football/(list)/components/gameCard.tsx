@@ -20,9 +20,11 @@ function OddsInfo({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId:
     return (
         <div className={style.oddsInfo}>
             <span className={`${style.odd} ${style.left}`}>
-                <p>0.85</p>
-                <p className={style.blue}>0/0.5</p>
-                <p>1.00</p>
+                <p>{syncData.handicapHomeCurrentOdds || contestInfo.handicapHomeCurrentOdds}</p>
+                <p className={style.blue}>
+                    {syncData.handicapCurrent || contestInfo.handicapCurrent}
+                </p>
+                <p>{syncData.handicapAwayCurrentOdds || contestInfo.handicapAwayCurrentOdds}</p>
             </span>
             <span className={style.mid}>
                 <p>
@@ -31,9 +33,11 @@ function OddsInfo({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId:
                 </p>
             </span>
             <span className={style.odd}>
-                <p>0.85</p>
-                <p className={style.blue}>2</p>
-                <p>1.00</p>
+                <p>{syncData.overUnderUnderCurrentOdds || contestInfo.overUnderUnderCurrentOdds}</p>
+                <p className={style.blue}>
+                    {syncData.overUnderCurrent || contestInfo.overUnderCurrent}
+                </p>
+                <p>{syncData.overUnderOverCurrentOdds || contestInfo.overUnderOverCurrentOdds}</p>
             </span>
         </div>
     );
