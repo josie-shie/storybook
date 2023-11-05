@@ -1,3 +1,4 @@
+'use client';
 import dayjs from 'dayjs';
 
 export const handleStartTime = (startTime: string, endTime?: string) => {
