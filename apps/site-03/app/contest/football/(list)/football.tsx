@@ -88,11 +88,14 @@ function ContestList() {
                     return <GameCard key={matchId} matchId={matchId} />;
                 })}
             </ul>
-            <InfiniteScroll onVisible={loadMoreList}>
-                <div className={style.loadMore}>
-                    <CircularProgress size={24} />
-                </div>
-            </InfiniteScroll>
+            {((status === 'all' && rows.finish < finishList.length) ||
+                (status !== 'all' && rows.full < currentList.length)) && (
+                <InfiniteScroll onVisible={loadMoreList}>
+                    <div className={style.loadMore}>
+                        <CircularProgress size={24} />
+                    </div>
+                </InfiniteScroll>
+            )}
         </>
     );
 }
