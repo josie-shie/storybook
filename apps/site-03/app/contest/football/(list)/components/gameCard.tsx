@@ -1,18 +1,29 @@
 import type { ContestInfo } from 'data-center';
 import Image from 'next/image';
 import { GameStatus } from 'ui';
+import { parseMatchInfo } from 'lib';
 import { useContestListStore } from '../contestListStore';
 import style from './gameCard.module.scss';
 import Flag from './img/flag.png';
 import { useContestInfoStore } from '@/app/contestInfoStore';
 
-/**
- * extraExplain: ";|90,1-0;1-1;;3-2;1",matchId: 2496035
- */
+function ExtraInfo({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId: number }) {
+    const globalStore = useContestInfoStore.use.contestInfo();
+    const syncData = Object.hasOwnProperty.call(globalStore, matchId) ? globalStore[matchId] : {};
 
-// function ExtraInfo({ contestInfo }: { contestInfo: ContestInfo }) {
-//     return <div className={style.extraInfo}>90 分鐘 [0-0], 加時中,現在比分[1-1]</div>;
-// } // TODO: game extra info
+    if (!syncData.extraExplain && !contestInfo.extraExplain) return null;
+
+    const extraObj = parseMatchInfo(syncData.extraExplain || contestInfo.extraExplain);
+
+    return (
+        <div className={style.extraInfo}>
+            {extraObj.regularTime?.minutes ? `${extraObj.regularTime.minutes} 分鐘` : ''} [
+            {extraObj.regularTime?.score}]{' '}
+            {extraObj.extraTime?.type ? `${extraObj.extraTime.type},` : ''}
+            {extraObj.extraTime?.score ? `, 現在比分[${extraObj.extraTime.score}]` : ''}
+        </div>
+    );
+}
 
 function OddsInfo({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId: number }) {
     const globalStore = useContestInfoStore.use.contestInfo();
@@ -138,7 +149,7 @@ function GameCard({ matchId }: { matchId: number }) {
             <TopArea contestInfo={contestInfo} matchId={matchId} />
             <TeamInfo contestInfo={contestInfo} matchId={matchId} />
             <OddsInfo contestInfo={contestInfo} matchId={matchId} />
-            {/* <ExtraInfo contestInfo={contestInfo} /> */}
+            <ExtraInfo contestInfo={contestInfo} matchId={matchId} />
         </li>
     );
 }
