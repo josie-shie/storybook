@@ -1,3 +1,4 @@
+'use client';
 import style from './bodan.module.scss';
 
 function Bodan() {

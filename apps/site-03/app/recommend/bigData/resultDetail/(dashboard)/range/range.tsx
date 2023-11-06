@@ -1,3 +1,4 @@
+'use client';
 import { useState } from 'react';
 import GoalRangeChart from '../../../components/goalRangeChart/goalRangeChart';
 import ContestDrawerList from '../components/contestDrawerList';

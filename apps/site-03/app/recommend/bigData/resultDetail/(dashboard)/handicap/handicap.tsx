@@ -1,3 +1,4 @@
+'use client';
 import { Switch } from 'ui/stories/switch/switch';
 import { useState } from 'react';
 import ContestDrawerList from '../components/contestDrawerList';
