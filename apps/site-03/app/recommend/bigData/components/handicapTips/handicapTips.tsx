@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import style from './handicapTips.module.scss';
 import iconHot from './img/hot.png';
-import teamLogo from '@/app/(home)/img/homeTeam.png';
+import teamLogo from './img/homeTeam.png';
 import Tag from '@/components/tag/tag';
 
 interface PropsType {
