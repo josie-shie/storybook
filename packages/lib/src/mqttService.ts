@@ -1,6 +1,6 @@
 import type { MqttClient } from 'mqtt';
 import * as mqtt from 'mqtt';
-import { deProto, deProtoOdds } from './prtobuf';
+import { deProto, deProtoOdds, deProtoDetail } from './prtobuf';
 
 interface OriginalContestInfo {
     leagueChsShort: string;
@@ -72,6 +72,21 @@ const handleOddsMessage = async (message: Buffer) => {
     console.log('[MQTT On odds message]: ', decodedMessage);
 };
 
+const handleDetailMessage = async (message: Buffer, event: string) => {
+    const messageObject = await deProtoDetail(message, event);
+
+    const decodedMessage = toSerializableObject(
+        messageObject as unknown as Record<string, unknown>
+    );
+
+    for (const messageMethod of useOddsQueue) {
+        messageMethod(decodedMessage as unknown as OriginalContestInfo);
+    }
+
+    // eslint-disable-next-line no-console -- Check mqtt message
+    console.log(`[MQTT On detail ${event} message]: `, decodedMessage);
+};
+
 export const mqttService = {
     init: () => {
         if (init) {
@@ -85,6 +100,8 @@ export const mqttService = {
             client.on('message', (topic, message) => {
                 if (topic === 'updatematch') void handleContestMessage(message);
                 if (topic === 'updateasia_odds_change') void handleOddsMessage(message);
+                if (topic === 'updateevent') void handleDetailMessage(message, 'EventList');
+                if (topic === 'updatetechnic') void handleDetailMessage(message, 'TechnicList');
             });
             init = false;
         }
