@@ -25,8 +25,19 @@ export const deProto = async (msg: Uint8Array) => {
 
 export const deProtoOdds = async (msg: Uint8Array) => {
     if (init) {
-        protobuf = await load('/odd.proto');
-        changeItem = protobuf.lookupType('dataFetcher.AsiaMatchOdds');
+        protobuf = await load('/odds_change.proto');
+        changeItem = protobuf.lookupType('dataFetcher.AsiaMatchOddsChange');
+        init = false;
+    }
+
+    const decoded = changeItem.decode(msg);
+    return decoded;
+};
+
+export const deProtoDetail = async (msg: Uint8Array, event: string) => {
+    if (init) {
+        protobuf = await load('/detail.proto');
+        changeItem = protobuf.lookupType(`dataFetcher.${event}`);
         init = false;
     }
     const decoded = changeItem.decode(msg);
