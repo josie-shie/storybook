@@ -17,7 +17,7 @@
         .left {
             display: flex;
             line-height: 16px;
-            width: 80px;
+            width: 112px;
             align-items: center;
 
             .league {
@@ -26,6 +26,9 @@
                 font-weight: 600;
                 margin-right: 12px;
                 word-break: keep-all;
+                width: 100%;
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
 
             .time {
@@ -67,7 +70,7 @@
         }
 
         .video {
-            width: 80px;
+            width: 112px;
 
             .videoIcon {
                 width: 18px;

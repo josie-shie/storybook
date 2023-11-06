@@ -1,0 +1,10 @@
+version: "3.8"
+services:
+  FUTURE_SERVICE_NAME:
+    image:  REGISTRY/future-backend:IMAGE_VERSION
+    container_name: FUTURE_SERVICE_NAME
+    restart: always
+    # ports:
+    #   # out:in
+    #   - 3000:3000
+    working_dir: /app
