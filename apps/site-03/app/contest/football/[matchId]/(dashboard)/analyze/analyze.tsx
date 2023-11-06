@@ -18,12 +18,13 @@ import HomeAwayRecord from './homeAwayRecordTable/homeAwayRecordTable';
 interface PropsType {
     analysisData: GetAnalysisOthersResponse;
     beforeGameData: GetBeforeGameIndexResponse;
+    leaguePointsRank: GetLeaguePointsRankResponse;
 }
 
-function Analyze({ analysisData, beforeGameData }: PropsType) {
+function Analyze({ analysisData, beforeGameData, leaguePointsRank }: PropsType) {
     createAnalyzeStore({
         companyDetailAnalyze: beforeGameData,
-        leaguePointsRankData: {} as GetLeaguePointsRankResponse,
+        leaguePointsRankData: leaguePointsRank,
         teamInfo: analysisData.teamInfo,
         leagueTrendData: analysisData.leagueTrendData,
         winLoseCountData: analysisData.winLoseCountData
