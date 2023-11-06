@@ -22,3 +22,13 @@ export const deProto = async (msg: Uint8Array) => {
     const decoded = changeItem.decode(msg);
     return decoded;
 };
+
+export const deProtoOdds = async (msg: Uint8Array) => {
+    if (init) {
+        protobuf = await load('/odd.proto');
+        changeItem = protobuf.lookupType('dataFetcher.AsiaMatchOdds');
+        init = false;
+    }
+    const decoded = changeItem.decode(msg);
+    return decoded;
+};
