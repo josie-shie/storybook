@@ -12,6 +12,11 @@ message TechnicList {
   string TechnicCount = 2;
 }
 
+message TechnicConvertList {
+  int32 matchId = 1;
+  repeated TechnicStat technicStat = 2;
+}
+
 message PenaltyList {
   int32 MatchId = 1;
   repeated PenaltyEvent Event = 2;
