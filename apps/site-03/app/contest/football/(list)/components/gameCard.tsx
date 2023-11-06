@@ -60,6 +60,7 @@ function TeamInfo({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId:
     if (syncData.matchId)
         // eslint-disable-next-line -- test info
         console.log(syncData, contestInfo.awayChs, contestInfo.homeChs, '此賽事更新');
+
     return (
         <div className={style.teamInfo}>
             <div className={`${style.homeTeam} ${style.team}`}>
