@@ -15,29 +15,23 @@ const getStyleResult = (char: string) => {
     }
 };
 
-const lastSixResultFullTime = {
-    name: '',
-    played: 0,
-    handicapResult: '赢输赢输赢输',
-    handicapWinRate: 0,
-    overUnderResult: '大小大小大小'
+const teamMapping = {
+    totalFullTime: '总',
+    homeFullTime: '主',
+    awayFullTime: '客'
 };
-
-// const teamMapping = {
-//     totalFullTime: '总',
-//     homeFullTime: '主',
-//     awayFullTime: '客'
-// }
 
 // 全场 赛 胜 平 负 得 失 净 积分 排名 胜率
 function LeagueTrendTable({
     leagueTrendData,
-    teamName
+    teamName,
+    teamResult
 }: {
     leagueTrendData: HomeTrend[];
     teamName?: string;
+    teamResult: { handicap: string; overUnder: string };
 }) {
-    if (JSON.stringify(leagueTrendData) === '{}') {
+    if (!Object.keys(leagueTrendData).length) {
         return <div>無資料</div>;
     }
 
@@ -65,7 +59,7 @@ function LeagueTrendTable({
                 {leagueTrendData.map((item, idx) => (
                     <div className="tr" key={`league_rank_${idx.toString()}`}>
                         <div className="td" style={{ flex: 'initial', width: '45px' }}>
-                            {/* {teamMapping[item.label]} */}
+                            {teamMapping[item.label]}
                         </div>
                         <div className="td">{item.played}</div>
                         <div className="td">{item.handicapDraw}</div>
@@ -82,8 +76,8 @@ function LeagueTrendTable({
                         近6
                     </div>
                     <div className="td" style={{ justifyContent: 'center', alignItems: 'center' }}>
-                        {lastSixResultFullTime.handicapResult.length > 0
-                            ? lastSixResultFullTime.handicapResult.split('').map((char, index) => {
+                        {teamResult.handicap.length > 0
+                            ? teamResult.handicap.split('').map((char, index) => {
                                   return (
                                       <span
                                           className={getStyleResult(char)}
@@ -96,8 +90,8 @@ function LeagueTrendTable({
                             : '-'}
                     </div>
                     <div className="td" style={{ justifyContent: 'center', alignItems: 'center' }}>
-                        {lastSixResultFullTime.overUnderResult.length > 0
-                            ? lastSixResultFullTime.overUnderResult.split('').map((char, index) => {
+                        {teamResult.overUnder.length > 0
+                            ? teamResult.overUnder.split('').map((char, index) => {
                                   return (
                                       <span
                                           className={getStyleResult(char)}
@@ -119,9 +113,10 @@ function LeagueTrendTables() {
     const leagueTrendData = useAnalyzeStore.use.leagueTrendData();
     const teamInfo = useAnalyzeStore.use.teamInfo();
 
-    if (JSON.stringify(leagueTrendData) === '{}') {
+    if (!Object.keys(leagueTrendData).length) {
         return <div>沒有資料</div>;
     }
+
     return (
         <div className={style.leagueTrendTableContainer}>
             <div className="topBar">
@@ -131,10 +126,12 @@ function LeagueTrendTables() {
                 <LeagueTrendTable
                     leagueTrendData={leagueTrendData.homeTrendList}
                     teamName={teamInfo.homeChs || '-'}
+                    teamResult={leagueTrendData.homeResult}
                 />
                 <LeagueTrendTable
                     leagueTrendData={leagueTrendData.awayTrendList}
                     teamName={teamInfo.awayChs || '-'}
+                    teamResult={leagueTrendData.awayResult}
                 />
             </div>
         </div>
