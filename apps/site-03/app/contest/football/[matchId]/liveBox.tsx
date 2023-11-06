@@ -46,29 +46,30 @@ function GameDetail() {
 
     return (
         <div className={style.gameStatus}>
-            <div className={style.statusTop}>
+            {liveState < 1 && liveState !== -1 && <p className={style.vsText}>VS</p>}
+            <div className={style.gameScore}>
                 <GameStatus
                     className={`${style.gameTime} ${statusStyleMap[matchDetail.state]}`}
                     startTime={matchDetail.startTime}
                     status={matchDetail.state}
                 />
-                <div className={style.homeScore}>{homeLiveScore}</div>
-                <div className={style.awayScore}>{awayLiveScore}</div>
+                {liveState === -1 ||
+                    (liveState > 0 && (
+                        <>
+                            <div className={style.homeScore}>{homeLiveScore}</div>
+                            <div className={style.awayScore}>{awayLiveScore}</div>
+                        </>
+                    ))}
             </div>
-            {liveState < 1 && liveState !== -1 ? (
-                <>
-                    <p className={style.vsText}>VS</p>
+
+            {liveState === -1 ||
+                (liveState > 1 && (
                     <div className={style.textHolder}>
-                        <p className={style.text}>未開賽</p>
+                        <p className={style.text}>
+                            半場 {matchDetail.homeHalfScore}-{matchDetail.awayHalfScore}
+                        </p>
                     </div>
-                </>
-            ) : (
-                <div className={style.textHolder}>
-                    <p className={style.text}>
-                        半場 {matchDetail.homeHalfScore}-{matchDetail.awayHalfScore}
-                    </p>
-                </div>
-            )}
+                ))}
         </div>
     );
 }

@@ -26,7 +26,7 @@ function useGameTime({ startTime, status }: GameStatusProps) {
     return realTimeStatus;
 }
 
-function GameStatus({ startTime, status, ...props }: { status: number; startTime: string }) {
+function GameStatus({ startTime, status, ...props }: GameStatusProps) {
     const realTimeStatus = useGameTime({ startTime, status });
     const [realMinute, setRealMinute] = useState(realTimeStatus.time || 0);
     const timerRef = useRef<NodeJS.Timeout | null>(null);
