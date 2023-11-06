@@ -1,0 +1,25 @@
+include:
+    - project: Ricky/ci_template
+      ref: main
+      file: frontend.server.template.yml
+
+stages:
+    - lint
+    - test
+    - build
+    - deploy
+
+variables:
+    FUTURE_DOCKER_API_PORT: 13579
+    FUTURE_SERVICE_HOST: stage-dev.frontend.newfuturetv.com
+    FUTURE_SERVICE_NAME: sport-turborepo
+    IMAGE_VERSION: sport-turborepo-${CI_COMMIT_SHORT_SHA}
+    FUTURE_NODE_VERSION: 20
+
+
+init:
+    stage: lint
+    script: echo "Start CI"
+    image: node:${FUTURE_NODE_VERSION}
+    tags:
+        - dind

@@ -1,6 +1,6 @@
 import type { MqttClient } from 'mqtt';
 import * as mqtt from 'mqtt';
-import { deProto } from './prtobuf';
+import { deProto, deProtoOdds } from './prtobuf';
 
 interface OriginalContestInfo {
     leagueChsShort: string;
@@ -31,6 +31,7 @@ interface OriginalContestInfo {
 
 let client: MqttClient;
 const useMessageQueue: ((data: OriginalContestInfo) => void)[] = [];
+const useOddsQueue: ((data: OriginalContestInfo) => void)[] = [];
 let init = true;
 
 const toSerializableObject = <T extends Record<string, unknown>>(protoObj: T): T => {
@@ -59,20 +60,20 @@ const handleContestMessage = async (message: Buffer) => {
     console.log('[MQTT On contest message]: ', decodedMessage);
 };
 
-// const handleOddsMessage = async (message: Buffer) => {
-//     const messageObject = await deProto(message);
+const handleOddsMessage = async (message: Buffer) => {
+    const messageObject = await deProtoOdds(message);
 
-//     const decodedMessage = toSerializableObject(
-//         messageObject as unknown as Record<string, unknown>
-//     );
+    const decodedMessage = toSerializableObject(
+        messageObject as unknown as Record<string, unknown>
+    );
 
-//     for (const messageMethod of useMessageQueue) {
-//         messageMethod(decodedMessage as unknown as OriginalContestInfo);
-//     }
+    for (const messageMethod of useOddsQueue) {
+        messageMethod(decodedMessage as unknown as OriginalContestInfo);
+    }
 
-//     // eslint-disable-next-line no-console -- Check mqtt message
-//     console.log('[MQTT On odds message]: ', decodedMessage);
-// };
+    // eslint-disable-next-line no-console -- Check mqtt message
+    console.log('[MQTT On odds message]: ', decodedMessage);
+};
 
 export const mqttService = {
     init: () => {
@@ -90,24 +91,24 @@ export const mqttService = {
                         });
                     }
                 });
-                // client.subscribe('updateasia_odds', err => {
-                //     if (err) {
-                //         console.error('subscribe updatematch error');
-                //     } else {
-                //         client.on('message', (topic, message) => {
-                //             void handleOddsMessage(message);
-                //         });
-                //     }
-                // });
-                // client.subscribe('updateasia_odds_change', err => {
-                //     if (err) {
-                //         console.error('subscribe updatematch error');
-                //     } else {
-                //         client.on('message', (topic, message) => {
-                //             void handleOddsMessage(message);
-                //         });
-                //     }
-                // });
+                client.subscribe('updateasia_odds', err => {
+                    if (err) {
+                        console.error('subscribe updatematch error');
+                    } else {
+                        client.on('message', (topic, message) => {
+                            void handleOddsMessage(message);
+                        });
+                    }
+                });
+                client.subscribe('updateasia_odds_change', err => {
+                    if (err) {
+                        console.error('subscribe updatematch error');
+                    } else {
+                        client.on('message', (topic, message) => {
+                            void handleOddsMessage(message);
+                        });
+                    }
+                });
             });
             init = false;
         }
@@ -115,5 +116,8 @@ export const mqttService = {
     },
     getMessage: (onMessage: (data: OriginalContestInfo) => void) => {
         useMessageQueue.push(onMessage);
+    },
+    getOdds: (onMessage: (data: OriginalContestInfo) => void) => {
+        useOddsQueue.push(onMessage);
     }
 };
