@@ -59,12 +59,6 @@ function GoalRangeChart() {
             <div className={style.chartContainer}>
                 <ReactEcharts option={options} style={{ width: '100%', height: '200px' }} />
             </div>
-            <div className={style.labelContainer}>
-                <span className={style.label1}>0-1</span>
-                <span className={style.label2}>2-3</span>
-                <span className={style.label3}>4-6</span>
-                <span className={style.label4}>7以上</span>
-            </div>
         </div>
     );
 }

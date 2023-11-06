@@ -1,0 +1,34 @@
+.dashboard {
+    border-radius: 16px 16px 0 0;
+    margin-top: -24px;
+    padding: 12px 0;
+    background: #fff;
+
+    :global(.ui-tab) {
+        :global(.ui-tab-header) {
+            :global(.ui-tabs-header) {
+                padding: 8px 12px 0;
+
+                :global(.ui-button) {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    min-width: 104px;
+                    padding: 6px 12px;
+
+                    :global(.ui-tabs-header-label) {
+                        font-size: 14px;
+                    }
+                }
+            }
+        }
+
+        :global(.swiper) {
+            :global(.swiper-wrapper) {
+                :global(.swiper-slide) {
+                    padding: 0;
+                }
+            }
+        }
+    }
+}

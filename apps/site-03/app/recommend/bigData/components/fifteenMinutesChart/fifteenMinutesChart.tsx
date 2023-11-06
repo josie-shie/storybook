@@ -110,10 +110,6 @@ function FifteenMinutesChart() {
             <div className={style.chartContainer}>
                 <ReactEcharts option={options} style={{ width: '100%', height: '200px' }} />
             </div>
-            <div className={style.labelContainer}>
-                <span>大</span>
-                <span className={style.labelSmall}>小</span>
-            </div>
         </div>
     );
 }

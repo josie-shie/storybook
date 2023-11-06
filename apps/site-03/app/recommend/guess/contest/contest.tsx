@@ -10,7 +10,7 @@ function Contest() {
                 matchId: '1',
                 sport: '亞運男足',
                 time: '11:30',
-                homeTeam: '泰国国立法政大学泰国国立法政大学',
+                homeTeam: '泰国国立法政大学',
                 awayTeam: '北曼谷学院北曼谷学院',
                 member: 124,
                 plan: true,

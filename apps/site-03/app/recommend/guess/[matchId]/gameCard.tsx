@@ -76,11 +76,11 @@ function GameCard({
                     </div>
                 ) : (
                     <>
-                        <div className={style.play}>一球/球半</div>
                         <div className={style.noPaid} onClick={onOpenPaidDialog}>
                             <Image alt="star" className={style.image} src={Star} width={14} />
                             <span className={style.text}>20元</span>
                         </div>
+                        <div className={style.play}>一球/球半</div>
                     </>
                 )}
             </div>
