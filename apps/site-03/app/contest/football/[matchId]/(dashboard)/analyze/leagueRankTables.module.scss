@@ -5,17 +5,32 @@
 }
 
 .leagueRankTable {
-    .tableBody {
-        .tr {
-            &:first-child {
+    :global {
+        .tableBody {
+            .tr {
                 .td {
-                    &:first-child {
-                        white-space: nowrap;
-                    }
+                    width: 28px;
 
-                    border-right: 0;
+                    &:nth-last-child(-n + 3) {
+                        width: 40px;
+                    }
+                }
+
+                &:first-child {
+                    white-space: nowrap;
+                    .td {
+                        &:first-child {
+                            white-space: nowrap;
+                        }
+
+                        border-right: 0;
+                    }
                 }
             }
         }
+    }
+
+    .highlight {
+        color: #f85640 !important;
     }
 }
