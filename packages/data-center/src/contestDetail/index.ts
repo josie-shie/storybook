@@ -618,14 +618,18 @@ export const getDetailStatus = async (
 
         if (data.getDetailStatus.events.length > 0) {
             for (const event of data.getDetailStatus.events) {
-                if (!eventList.includes(event.time)) {
-                    eventList.push(event.time);
+                const eventTime = `${event.time}${
+                    event.overtime !== '0' ? `+${event.overtime}` : ''
+                }`;
+
+                if (!eventList.includes(eventTime)) {
+                    eventList.push(eventTime);
                 }
 
                 if (event.isHome) {
-                    eventInfo.isHome[event.time] = event;
+                    eventInfo.isHome[eventTime] = event;
                 } else {
-                    eventInfo.isAway[event.time] = event;
+                    eventInfo.isAway[eventTime] = event;
                 }
             }
         }
