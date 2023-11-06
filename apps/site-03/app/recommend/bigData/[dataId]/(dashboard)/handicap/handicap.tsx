@@ -1,11 +1,13 @@
 import { Switch } from 'ui/stories/switch/switch';
 import { useState } from 'react';
+import ContestDrawerList from '../components/contestDrawerList';
 import TextRadio from './switch/textSwitch';
 import style from './handicap.module.scss';
 
 function Handicap() {
     const [handicapRadio, setHandicapRadio] = useState<'half' | 'full'>('full');
     const [currentSwitch, setCurrentSwitch] = useState('day');
+    const [showList, setShowList] = useState(false);
 
     return (
         <>
@@ -54,33 +56,87 @@ function Handicap() {
                 <div className={style.header}>半場獨贏</div>
 
                 <div className={style.cell}>
-                    <span>上 40</span>
+                    <span
+                        onClick={() => {
+                            setShowList(true);
+                        }}
+                    >
+                        上 40
+                    </span>
                 </div>
                 <div className={style.cell}>
-                    <span>上 40</span>
+                    <span
+                        onClick={() => {
+                            setShowList(true);
+                        }}
+                    >
+                        上 40
+                    </span>
                 </div>
                 <div className={style.cell}>
-                    <span>上 40</span>
+                    <span
+                        onClick={() => {
+                            setShowList(true);
+                        }}
+                    >
+                        上 40
+                    </span>
                 </div>
 
                 <div className={`${style.cell} ${style.odd}`}>
-                    <span>下 40</span>
+                    <span
+                        onClick={() => {
+                            setShowList(true);
+                        }}
+                    >
+                        下 40
+                    </span>
                 </div>
                 <div className={`${style.cell} ${style.odd}`}>
-                    <span>下 40</span>
+                    <span
+                        onClick={() => {
+                            setShowList(true);
+                        }}
+                    >
+                        下 40
+                    </span>
                 </div>
                 <div className={`${style.cell} ${style.odd}`}>
-                    <span>下 40</span>
+                    <span
+                        onClick={() => {
+                            setShowList(true);
+                        }}
+                    >
+                        下 40
+                    </span>
                 </div>
 
                 <div className={style.cell}>
-                    <span>定 20</span>
+                    <span
+                        onClick={() => {
+                            setShowList(true);
+                        }}
+                    >
+                        定 20
+                    </span>
                 </div>
                 <div className={style.cell}>
-                    <span>定 20</span>
+                    <span
+                        onClick={() => {
+                            setShowList(true);
+                        }}
+                    >
+                        定 20
+                    </span>
                 </div>
                 <div className={style.cell}>
-                    <span>定 20</span>
+                    <span
+                        onClick={() => {
+                            setShowList(true);
+                        }}
+                    >
+                        定 20
+                    </span>
                 </div>
             </div>
             <div className={style.tableContainer}>
@@ -89,35 +145,99 @@ function Handicap() {
                 <div className={style.header}>全場獨贏</div>
 
                 <div className={style.cell}>
-                    <span>上 40</span>
+                    <span
+                        onClick={() => {
+                            setShowList(true);
+                        }}
+                    >
+                        上 40
+                    </span>
                 </div>
                 <div className={style.cell}>
-                    <span>上 40</span>
+                    <span
+                        onClick={() => {
+                            setShowList(true);
+                        }}
+                    >
+                        上 40
+                    </span>
                 </div>
                 <div className={style.cell}>
-                    <span>上 40</span>
+                    <span
+                        onClick={() => {
+                            setShowList(true);
+                        }}
+                    >
+                        上 40
+                    </span>
                 </div>
 
                 <div className={`${style.cell} ${style.odd}`}>
-                    <span>下 40</span>
+                    <span
+                        onClick={() => {
+                            setShowList(true);
+                        }}
+                    >
+                        下 40
+                    </span>
                 </div>
                 <div className={`${style.cell} ${style.odd}`}>
-                    <span>下 40</span>
+                    <span
+                        onClick={() => {
+                            setShowList(true);
+                        }}
+                    >
+                        下 40
+                    </span>
                 </div>
                 <div className={`${style.cell} ${style.odd}`}>
-                    <span>下 40</span>
+                    <span
+                        onClick={() => {
+                            setShowList(true);
+                        }}
+                    >
+                        下 40
+                    </span>
                 </div>
 
                 <div className={style.cell}>
-                    <span>定 20</span>
+                    <span
+                        onClick={() => {
+                            setShowList(true);
+                        }}
+                    >
+                        定 20
+                    </span>
                 </div>
                 <div className={style.cell}>
-                    <span>定 20</span>
+                    <span
+                        onClick={() => {
+                            setShowList(true);
+                        }}
+                    >
+                        定 20
+                    </span>
                 </div>
                 <div className={style.cell}>
-                    <span>定 20</span>
+                    <span
+                        onClick={() => {
+                            setShowList(true);
+                        }}
+                    >
+                        定 20
+                    </span>
                 </div>
             </div>
+            <ContestDrawerList
+                isOpen={showList}
+                onClose={() => {
+                    setShowList(false);
+                }}
+                onOpen={() => {
+                    setShowList(true);
+                }}
+                title="讓球大小/全場讓球/上盤"
+            />
         </>
     );
 }

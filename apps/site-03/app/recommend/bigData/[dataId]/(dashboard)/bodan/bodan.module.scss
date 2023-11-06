@@ -35,6 +35,11 @@
         color: #57a4ff;
         background: #fdfdf8;
 
+        span {
+            padding-bottom: 2px;
+            border-bottom: 1px solid #57a4ff;
+        }
+
         &.nulls {
             background: #fdfdf8;
         }

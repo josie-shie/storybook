@@ -7,40 +7,36 @@ import style from './disSelect.module.scss';
 import RecordFilter from './components/recordFilter/recordFilter';
 import { GameFilter } from './components/gameFilter/gameFilter';
 
-// interface SectionSelectProps {
-//     title: string;
-//     selectTitle: string;
-//     items: string[];
-// }
+interface OptionType {
+    label: string;
+    value: string;
+}
 
-// function SectionSelect({ title, selectTitle, items }: SectionSelectProps) {
-//     const [showFilter, setShowFilter] = useState(false);
+interface SectionSelectProps {
+    title: string;
+    selectTitle: string;
+    options: OptionType[];
+    placeholder: string;
+}
 
-//     return (
-//         <>
-//             <section className={style.items}>
-//                 <p className={style.title}>{title}</p>
-//                 <div className={style.select}>
-//                     {selectTitle !== '' && <div className={style.selectTitle}>{selectTitle}</div>}
-//                     {items.map((item: string) => (
-//                         <span className={style.selectItem} key={`${item}`}>
-//                             {item}
-//                         </span>
-//                     ))}
-//                 </div>
-//             </section>
-//             <RecordFilter
-//                 isOpen={showFilter}
-//                 onClose={() => {
-//                     setShowFilter(false);
-//                 }}
-//                 onOpen={() => {
-//                     setShowFilter(true);
-//                 }}
-//             />
-//         </>
-//     );
-// }
+function SectionSelect({ title, selectTitle, options, placeholder }: SectionSelectProps) {
+    return (
+        <section className={style.items}>
+            <p className={style.title}>{title}</p>
+            <div className={style.select}>
+                <div className={style.selectTitle}>{selectTitle}</div>
+                <GameFilter
+                    options={options}
+                    placeholder={placeholder}
+                    showCloseButton={false}
+                    showDragBar
+                    title={selectTitle}
+                    value={null}
+                />
+            </div>
+        </section>
+    );
+}
 
 function DiscSelect() {
     const searchParams = useSearchParams();
@@ -149,9 +145,9 @@ function DiscSelect() {
                             分析纪录
                         </div>
                         <section className={style.items}>
-                            <p className={style.title}>全場讓球</p>
+                            <p className={style.title}>全场让球</p>
                             <div className={style.select}>
-                                <div className={style.selectTitle}>讓方</div>
+                                <div className={style.selectTitle}>让方</div>
                                 <GameFilter
                                     options={handicapList}
                                     placeholder="选择主队"
@@ -165,54 +161,31 @@ function DiscSelect() {
                                     placeholder="选择让球"
                                     showCloseButton={false}
                                     showDragBar
-                                    title="選擇讓方"
+                                    title="选择让方"
                                     value={null}
                                 />
                             </div>
                         </section>
-                        <section className={style.items}>
-                            <p className={style.title}>全場大小</p>
-                            <div className={style.select}>
-                                <div className={style.selectTitle}>盤口</div>
-                                <GameFilter
-                                    options={numberList}
-                                    placeholder="不挑选"
-                                    showCloseButton={false}
-                                    showDragBar
-                                    title="選擇讓方"
-                                    value={null}
-                                />
-                            </div>
-                        </section>
-                        <section className={style.items}>
-                            <p className={style.title}>時間範圍</p>
-                            <div className={style.select}>
-                                <div className={style.selectTitle}>區間</div>
-                                <GameFilter
-                                    options={dateList}
-                                    placeholder="选择时间"
-                                    showCloseButton={false}
-                                    showDragBar
-                                    title="選擇讓方"
-                                    value={null}
-                                />
-                            </div>
-                        </section>
+                        <SectionSelect
+                            options={numberList}
+                            placeholder="不挑选"
+                            selectTitle="盘口"
+                            title="全场大小"
+                        />
+                        <SectionSelect
+                            options={dateList}
+                            placeholder="选择时间"
+                            selectTitle="区间"
+                            title="时间范围"
+                        />
                     </>
                 ) : (
-                    <section className={style.items}>
-                        <p className={style.title}>玩法篩選</p>
-                        <div className={style.select}>
-                            <GameFilter
-                                options={playList}
-                                placeholder="选择全场大小球"
-                                showCloseButton={false}
-                                showDragBar
-                                title="选择全场大小球"
-                                value={null}
-                            />
-                        </div>
-                    </section>
+                    <SectionSelect
+                        options={playList}
+                        placeholder="选择全场大小球"
+                        selectTitle="选择全场大小球"
+                        title="玩法筛选"
+                    />
                 )}
                 <div className={style.tips}>
                     数据中心将会汇整出符合您条件设定，在时间区间内开出相同盘口的赛事

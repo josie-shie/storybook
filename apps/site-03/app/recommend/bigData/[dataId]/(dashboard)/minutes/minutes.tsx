@@ -145,6 +145,7 @@ function Minutes() {
                 onOpen={() => {
                     setShowList(true);
                 }}
+                title="15分鐘進球/75:00-全場/大"
             />
         </>
     );

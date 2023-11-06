@@ -41,7 +41,7 @@ function Bodan() {
                         {item.score}
                     </span>
                     <span className={`${style.value} ${!item.value ? style.nulls : ''}`}>
-                        {item.value}
+                        <span>{item.value}</span>
                     </span>
                 </div>
             ))}

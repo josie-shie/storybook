@@ -1,7 +1,11 @@
+import { useState } from 'react';
 import GoalRangeChart from '../../../components/goalRangeChart/goalRangeChart';
+import ContestDrawerList from '../components/contestDrawerList';
 import style from './range.module.scss';
 
 function Range() {
+    const [showList, setShowList] = useState(false);
+
     return (
         <>
             <div className={style.range}>
@@ -20,18 +24,52 @@ function Range() {
                 <div className={style.header}>7以上</div>
 
                 <div className={style.cell}>
-                    <span>55</span>
+                    <span
+                        onClick={() => {
+                            setShowList(true);
+                        }}
+                    >
+                        55
+                    </span>
                 </div>
                 <div className={style.cell}>
-                    <span>32</span>
+                    <span
+                        onClick={() => {
+                            setShowList(true);
+                        }}
+                    >
+                        32
+                    </span>
                 </div>
                 <div className={style.cell}>
-                    <span>18</span>
+                    <span
+                        onClick={() => {
+                            setShowList(true);
+                        }}
+                    >
+                        18
+                    </span>
                 </div>
                 <div className={style.cell}>
-                    <span>11</span>
+                    <span
+                        onClick={() => {
+                            setShowList(true);
+                        }}
+                    >
+                        11
+                    </span>
                 </div>
             </div>
+            <ContestDrawerList
+                isOpen={showList}
+                onClose={() => {
+                    setShowList(false);
+                }}
+                onOpen={() => {
+                    setShowList(true);
+                }}
+                title="進球數區間/4-6"
+            />
         </>
     );
 }
