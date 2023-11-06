@@ -53,23 +53,16 @@ function GameDetail() {
                     startTime={matchDetail.startTime}
                     status={matchDetail.state}
                 />
-                {liveState === -1 ||
-                    (liveState > 0 && (
-                        <>
-                            <div className={style.homeScore}>{homeLiveScore}</div>
-                            <div className={style.awayScore}>{awayLiveScore}</div>
-                        </>
-                    ))}
+
+                <div className={style.homeScore}>{homeLiveScore}</div>
+                <div className={style.awayScore}>{awayLiveScore}</div>
             </div>
 
-            {liveState === -1 ||
-                (liveState > 1 && (
-                    <div className={style.textHolder}>
-                        <p className={style.text}>
-                            半場 {matchDetail.homeHalfScore}-{matchDetail.awayHalfScore}
-                        </p>
-                    </div>
-                ))}
+            <div className={style.textHolder}>
+                <p className={style.text}>
+                    半場 {matchDetail.homeHalfScore}-{matchDetail.awayHalfScore}
+                </p>
+            </div>
         </div>
     );
 }
