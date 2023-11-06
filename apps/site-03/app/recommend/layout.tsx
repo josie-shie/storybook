@@ -15,6 +15,7 @@ function RecommendLayout({ children }: { children: ReactNode }) {
     const isMasterList = pathname.includes('masterList');
     const isMasterAvatar = pathname.includes('masterAvatar');
     const isBigData = pathname.includes('bigData');
+    const isBigDataDetail = pathname.includes('resultDetail');
     const headerProps = {
         logo: <Image alt="logo" src={Logo} width={66} />,
         total: 999999
@@ -25,7 +26,8 @@ function RecommendLayout({ children }: { children: ReactNode }) {
         isPredictMatchIdRoute ||
         isMasterList ||
         isMasterAvatar ||
-        isBigData
+        isBigData ||
+        isBigDataDetail
     ) {
         return <>{children}</>;
     }

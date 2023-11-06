@@ -11,7 +11,7 @@ import Header from '@/components/header/headerLogo';
 
 function BigDataLayout({ children }: { children: ReactNode }) {
     const pathname = usePathname();
-    const isBigDataIdRoute = /\/recommend\/bigData\/\d+/.test(pathname);
+    const isBigDataDetail = pathname.includes('resultDetail');
 
     const tabStyle = {
         gap: 8,
@@ -34,7 +34,7 @@ function BigDataLayout({ children }: { children: ReactNode }) {
         total: 999999
     };
 
-    if (isBigDataIdRoute) {
+    if (isBigDataDetail) {
         return <>{children}</>;
     }
 

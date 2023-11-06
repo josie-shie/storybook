@@ -1,10 +1,11 @@
 'use client';
 import { useState } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import Star from './img/star.png';
 import style from './disSelect.module.scss';
 import RecordFilter from './components/recordFilter/recordFilter';
+import HandicapDrawer from './components/handicapDrawer/handicapDrawer';
 import { GameFilter } from './components/gameFilter/gameFilter';
 
 interface OptionType {
@@ -39,9 +40,15 @@ function SectionSelect({ title, selectTitle, options, placeholder }: SectionSele
 }
 
 function DiscSelect() {
+    const router = useRouter();
     const searchParams = useSearchParams();
     const search = searchParams.get('status');
     const [showFilter, setShowFilter] = useState(false);
+    const [showHandicapDrawer, setShowHandicapDrawer] = useState(false);
+
+    const goDetail = () => {
+        router.push(`/recommend/bigData/resultDetail`);
+    };
 
     const handicapList = [
         {
@@ -190,10 +197,29 @@ function DiscSelect() {
                 <div className={style.tips}>
                     数据中心将会汇整出符合您条件设定，在时间区间内开出相同盘口的赛事
                 </div>
-                <button className={style.search} type="button">
-                    <Image alt="" height={14} src={Star} width={14} />
-                    {search === 'analysis' ? '获得趋势分析' : '获得盘路提示'}
-                </button>
+                {search === 'analysis' ? (
+                    <button
+                        className={style.search}
+                        onClick={() => {
+                            goDetail();
+                        }}
+                        type="button"
+                    >
+                        <Image alt="" height={14} src={Star} width={14} />
+                        获得趋势分析
+                    </button>
+                ) : (
+                    <button
+                        className={style.search}
+                        onClick={() => {
+                            setShowHandicapDrawer(true);
+                        }}
+                        type="button"
+                    >
+                        <Image alt="" height={14} src={Star} width={14} />
+                        获得盘路提示
+                    </button>
+                )}
             </div>
 
             <RecordFilter
@@ -203,6 +229,15 @@ function DiscSelect() {
                 }}
                 onOpen={() => {
                     setShowFilter(true);
+                }}
+            />
+            <HandicapDrawer
+                isOpen={showHandicapDrawer}
+                onClose={() => {
+                    setShowHandicapDrawer(false);
+                }}
+                onOpen={() => {
+                    setShowHandicapDrawer(true);
                 }}
             />
         </>
