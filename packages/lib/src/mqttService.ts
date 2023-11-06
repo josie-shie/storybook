@@ -1,5 +1,5 @@
 import type { MqttClient } from 'mqtt';
-import mqtt from 'mqtt';
+import * as mqtt from 'mqtt';
 import { deProto } from './prtobuf';
 
 interface OriginalContestInfo {
@@ -44,7 +44,7 @@ const toSerializableObject = <T extends Record<string, unknown>>(protoObj: T): T
     return result as T;
 };
 
-const handleMessage = async (message: Buffer) => {
+const handleContestMessage = async (message: Buffer) => {
     const messageObject = await deProto(message);
 
     const decodedMessage = toSerializableObject(
@@ -56,8 +56,23 @@ const handleMessage = async (message: Buffer) => {
     }
 
     // eslint-disable-next-line no-console -- Check mqtt message
-    console.log('[MQTT On message]: ', decodedMessage);
+    console.log('[MQTT On contest message]: ', decodedMessage);
 };
+
+// const handleOddsMessage = async (message: Buffer) => {
+//     const messageObject = await deProto(message);
+
+//     const decodedMessage = toSerializableObject(
+//         messageObject as unknown as Record<string, unknown>
+//     );
+
+//     for (const messageMethod of useMessageQueue) {
+//         messageMethod(decodedMessage as unknown as OriginalContestInfo);
+//     }
+
+//     // eslint-disable-next-line no-console -- Check mqtt message
+//     console.log('[MQTT On odds message]: ', decodedMessage);
+// };
 
 export const mqttService = {
     init: () => {
@@ -71,10 +86,28 @@ export const mqttService = {
                         console.error('subscribe updatematch error');
                     } else {
                         client.on('message', (topic, message) => {
-                            void handleMessage(message);
+                            void handleContestMessage(message);
                         });
                     }
                 });
+                // client.subscribe('updateasia_odds', err => {
+                //     if (err) {
+                //         console.error('subscribe updatematch error');
+                //     } else {
+                //         client.on('message', (topic, message) => {
+                //             void handleOddsMessage(message);
+                //         });
+                //     }
+                // });
+                // client.subscribe('updateasia_odds_change', err => {
+                //     if (err) {
+                //         console.error('subscribe updatematch error');
+                //     } else {
+                //         client.on('message', (topic, message) => {
+                //             void handleOddsMessage(message);
+                //         });
+                //     }
+                // });
             });
             init = false;
         }

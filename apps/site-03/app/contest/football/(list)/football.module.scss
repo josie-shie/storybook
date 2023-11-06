@@ -5,3 +5,16 @@
     overflow: auto;
     height: calc(100vh - 152px);
 }
+
+.line {
+    background-color: #ededed;
+    color: #999;
+    text-align: center;
+    line-height: 32px;
+    font-size: 14px;
+}
+
+.loadMore {
+    text-align: center;
+    padding: 8px 0;
+}
