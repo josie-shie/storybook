@@ -46,6 +46,13 @@ function ContestList() {
     const finishList = status === 'all' ? filterByStatus(contestList, state => state < 0) : [];
     const displayFinishList = finishList.slice(0, rows.finish);
 
+    if (status === 'all' && currentList.length < 20 && rows.notYet < 10) {
+        setRows(prevRows => ({
+            ...prevRows,
+            notYet: prevRows.notYet + 20
+        }));
+    }
+
     const loadMoreList = () => {
         if (rows.full < currentList.length) {
             setRows(prevRows => ({
