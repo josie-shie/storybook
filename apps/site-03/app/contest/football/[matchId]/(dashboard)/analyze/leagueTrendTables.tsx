@@ -31,7 +31,7 @@ function LeagueTrendTable({
     teamName?: string;
     teamResult: { handicap: string; overUnder: string };
 }) {
-    if (JSON.stringify(leagueTrendData) === '{}') {
+    if (!Object.keys(leagueTrendData).length) {
         return <div>無資料</div>;
     }
 
@@ -113,9 +113,10 @@ function LeagueTrendTables() {
     const leagueTrendData = useAnalyzeStore.use.leagueTrendData();
     const teamInfo = useAnalyzeStore.use.teamInfo();
 
-    if (JSON.stringify(leagueTrendData) === '{}') {
+    if (!Object.keys(leagueTrendData).length) {
         return <div>沒有資料</div>;
     }
+
     return (
         <div className={style.leagueTrendTableContainer}>
             <div className="topBar">
