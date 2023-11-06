@@ -62,15 +62,12 @@ const handleContestMessage = async (message: Buffer) => {
 
 const handleOddsMessage = async (message: Buffer) => {
     const messageObject = await deProtoOdds(message);
-
     const decodedMessage = toSerializableObject(
         messageObject as unknown as Record<string, unknown>
     );
-
     for (const messageMethod of useOddsQueue) {
         messageMethod(decodedMessage as unknown as OriginalContestInfo);
     }
-
     // eslint-disable-next-line no-console -- Check mqtt message
     console.log('[MQTT On odds message]: ', decodedMessage);
 };
@@ -82,33 +79,12 @@ export const mqttService = {
             client.on('connect', () => {
                 // eslint-disable-next-line no-console -- Check lifecycle
                 console.log('Mqtt connected');
-                client.subscribe('updatematch', err => {
-                    if (err) {
-                        console.error('subscribe updatematch error');
-                    } else {
-                        client.on('message', (topic, message) => {
-                            void handleContestMessage(message);
-                        });
-                    }
-                });
-                client.subscribe('updateasia_odds', err => {
-                    if (err) {
-                        console.error('subscribe updatematch error');
-                    } else {
-                        client.on('message', (topic, message) => {
-                            void handleOddsMessage(message);
-                        });
-                    }
-                });
-                client.subscribe('updateasia_odds_change', err => {
-                    if (err) {
-                        console.error('subscribe updatematch error');
-                    } else {
-                        client.on('message', (topic, message) => {
-                            void handleOddsMessage(message);
-                        });
-                    }
-                });
+                client.subscribe('updatematch');
+                client.subscribe('updateasia_odds_change');
+            });
+            client.on('message', (topic, message) => {
+                if (topic === 'updatematch') void handleContestMessage(message);
+                if (topic === 'updateasia_odds_change') void handleOddsMessage(message);
             });
             init = false;
         }
