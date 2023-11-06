@@ -5,3 +5,4 @@ export { Tabs, Tab } from './stories/tab/tab';
 export { ProgressBar } from './stories/progressBar/progressBar';
 export { GameStatus } from './stories/gameStatus/gameStatus';
 export { CustomSelect } from './stories/select/select';
+export { InfiniteScroll } from './stories/infiniteScroll/infiniteScroll';
