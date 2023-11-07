@@ -2,6 +2,8 @@ import Drawer from '@mui/material/Drawer';
 import Image from 'next/image';
 import { Tab, Tabs } from 'ui';
 import type { HandicapsInfo, TotalGoalsInfo } from 'data-center';
+import { getCompanyLiveOddsDetail } from 'data-center';
+import { useEffect } from 'react';
 import leftBlackIcon from '../../img/left_black.png';
 import { useContestDetailStore } from '../../../../contestDetailStore';
 import { useSituationStore } from '../../situationStore';
@@ -9,6 +11,7 @@ import style from './oddsDetailDrawer.module.scss';
 import HandicapTable from './handicapTable';
 import TotalGoalTable from './totalGoalTable';
 import WinLoseTable from './winLoseTable';
+import { useContestInfoStore } from '@/app/contestInfoStore';
 
 interface WinDrawLoseType {
     matchId: number;
@@ -42,8 +45,20 @@ function HandicapDrawer() {
     const tabValue = useSituationStore.use.oddsDeatilDrawerTabValue();
     const setTabValue = useSituationStore.use.setOddsDeatilDrawerTabValue();
     const companyLiveOddsDetail = useSituationStore.use.companyLiveOddsDetail();
+    const setCompanyOddsDetail = useSituationStore.use.setCompanyLiveOddsDetail();
     const companyNameMap = useContestDetailStore.use.companyNameMap();
     const companyId = useSituationStore.use.companyId();
+    const globalStore = useContestInfoStore.use.contestInfo();
+
+    const homeLiveScore =
+        typeof globalStore[matchDetail.matchId] !== 'undefined'
+            ? globalStore[matchDetail.matchId].homeScore || matchDetail.homeScore
+            : matchDetail.homeScore;
+
+    const awayLiveScore =
+        typeof globalStore[matchDetail.matchId] !== 'undefined'
+            ? globalStore[matchDetail.matchId].awayScore || matchDetail.awayScore
+            : matchDetail.awayScore;
 
     const tabStyle = {
         gap: 8,
@@ -60,9 +75,28 @@ function HandicapDrawer() {
         { label: '半胜平负', value: 'halfWinDrawLose' }
     ];
 
+    const fetchCompanyLiveOddsDetail = async () => {
+        try {
+            const res = await getCompanyLiveOddsDetail(matchDetail.matchId, companyId);
+            if (!res.success) {
+                throw new Error();
+            }
+
+            setCompanyOddsDetail(res.data);
+        } catch (error) {
+            throw new Error();
+        }
+    };
+
     const handleChange = (newValue: TabTpye) => {
         setTabValue(newValue);
     };
+
+    useEffect(() => {
+        if (isOpen) {
+            void fetchCompanyLiveOddsDetail();
+        }
+    }, [isOpen]);
 
     return (
         <Drawer
@@ -92,7 +126,7 @@ function HandicapDrawer() {
                 <div className={style.teamScore}>
                     <p className={style.homeTeam}>{matchDetail.homeChs}</p>
                     <p className={style.score}>
-                        {matchDetail.homeScore}-{matchDetail.awayScore}
+                        {homeLiveScore}-{awayLiveScore}
                     </p>
                     <p className={style.awayTeam}>{matchDetail.awayChs}</p>
                 </div>

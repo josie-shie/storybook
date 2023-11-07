@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import Image from 'next/image';
-import { getCompanyLiveOddsDetail } from 'data-center';
 import { handleStartTime } from 'lib';
 import { useContestDetailStore } from '../../contestDetailStore';
 import style from './situation.module.scss';
@@ -25,26 +24,13 @@ function Handicap() {
     const matchDetail = useContestDetailStore.use.matchDetail();
     const [handicapRadio, setHandicapRadio] = useState<'half' | 'full'>('half');
     const [handicapSwitch, setHandicapSwitch] = useState(3);
-    const setCompanyOddsDetail = useSituationStore.use.setCompanyLiveOddsDetail();
     const setCompanyId = useSituationStore.use.setCompanyId();
     const setDrawerTabValue = useSituationStore.use.setOddsDeatilDrawerTabValue();
     const setIsOddsDetailDrawerOpen = useSituationStore.use.setIsOddsDetailDrawerOpen();
 
-    const handleChangeSwitch = async (switchValue: number) => {
+    const handleChangeSwitch = (switchValue: number) => {
         setHandicapSwitch(switchValue);
         setCompanyId(switchValue);
-
-        try {
-            const res = await getCompanyLiveOddsDetail(matchDetail.matchId, switchValue);
-
-            if (!res.success) {
-                throw new Error();
-            }
-
-            setCompanyOddsDetail(res.data);
-        } catch (error) {
-            throw new Error();
-        }
     };
 
     return (
@@ -54,7 +40,7 @@ function Handicap() {
 
                 <ButtonSwitch
                     onChange={(switchValue: number) => {
-                        void handleChangeSwitch(switchValue);
+                        handleChangeSwitch(switchValue);
                     }}
                     options={switchOptins}
                     outline
