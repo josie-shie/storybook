@@ -17,11 +17,7 @@ function Situation({
 }) {
     creatSituationStore({
         ...situationData,
-        companyLiveOddsDetail,
-
-        setCompanyLiveOddsDetail: () => {
-            // empty
-        }
+        companyLiveOddsDetail
     });
 
     return (

@@ -11,7 +11,6 @@ import type {
 
 interface InitState extends GetDetailStatusResponse {
     companyLiveOddsDetail: CompanyLiveDetailResponse;
-    setCompanyLiveOddsDetail: (detail: CompanyLiveDetailResponse) => void;
 }
 
 interface SituationState extends InitState {
@@ -21,6 +20,7 @@ interface SituationState extends InitState {
     setCompanyId: (companyId: number) => void;
     setIsOddsDetailDrawerOpen: (isOpen: boolean) => void;
     setOddsDeatilDrawerTabValue: (tabValue: string) => void;
+    setCompanyLiveOddsDetail: (detail: CompanyLiveDetailResponse) => void;
 }
 
 let useSituationStore: StoreWithSelectors<SituationState>;
