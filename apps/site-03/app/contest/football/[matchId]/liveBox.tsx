@@ -51,7 +51,7 @@ function GameDetail() {
                 <GameStatus
                     className={`${style.gameTime} ${statusStyleMap[matchDetail.state]}`}
                     startTime={matchDetail.startTime}
-                    status={matchDetail.state}
+                    status={liveState}
                 />
 
                 <div className={style.homeScore}>{homeLiveScore}</div>
