@@ -1,4 +1,4 @@
-import { fetcher, timestampToString, convertHandicap } from 'lib';
+import { fetcher, timestampToString, convertHandicap, truncateFloatingPoint } from 'lib';
 import { z } from 'zod';
 import { handleApiError } from '../common';
 import type { ReturnData } from '../common';
@@ -101,7 +101,11 @@ export const getContestList = async (
                 matchTime: timestampToString(item.matchTime, 'M-DD HH:mm'),
                 startTime: timestampToString(item.startTime || item.matchTime, 'YYYY-M-DD HH:mm'),
                 handicapCurrent: convertHandicap(item.handicapCurrent),
-                overUnderCurrent: convertHandicap(item.overUnderCurrent)
+                overUnderCurrent: convertHandicap(item.overUnderCurrent),
+                overUnderOverCurrentOdds: truncateFloatingPoint(item.overUnderOverCurrentOdds, 2),
+                overUnderUnderCurrentOdds: truncateFloatingPoint(item.overUnderUnderCurrentOdds, 2),
+                handicapAwayCurrentOdds: truncateFloatingPoint(item.handicapAwayCurrentOdds, 2),
+                handicapHomeCurrentOdds: truncateFloatingPoint(item.handicapHomeCurrentOdds, 2)
             };
         }
         return {

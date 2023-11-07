@@ -9,10 +9,13 @@
     :global {
         .tableBody {
             .tr {
+                .td {
+                    width: 46px;
+                }
+
                 &:first-child {
                     .td {
                         color: #8d8d8d;
-                        width: 40px;
 
                         &:first-child {
                             white-space: nowrap;

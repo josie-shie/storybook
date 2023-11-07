@@ -638,17 +638,95 @@ export const GET_BEFORE_GAME_INDEX_ANALYZE_QUERY = `
     }
 `;
 
-export const GET_SINGLE_MATCH_QUERY = `
-    query getSingleMatch($singleMatchInput: SingleMatchInput!) {
-        getSingleMatch(input: $singleMatchInput) {
-            homeEn
-            homeChs
-            homeCht
-            awayEn
-            awayChs
-            awayCht
-            homeId
-            awayId
+export const GET_LEAGUE_STANDINGS_QUERY = `
+    query getLeagueStandings($input: GetLeagueStandingsInput!) {
+      getLeagueStandings(request: $input) {
+        homeTeamStandings {
+          teamId
+          totalCount
+          winCount
+          drawCount
+          loseCount
+          getScore
+          loseScore
+          goalDifference
+          integral
+          rank
+          winRate
+          homeTotalCount
+          homeWinCount
+          homeDrawCount
+          homeLoseCount
+          homeGetScore
+          homeLoseScore
+          homeGoalDifference
+          homeIntegral
+          homeRank
+          homeWinRate
+          awayTotalCount
+          awayWinCount
+          awayDrawCount
+          awayLoseCount
+          awayGetScore
+          awayLoseScore
+          awayGoalDifference
+          awayIntegral
+          awayRank
+          awayWinRate
+          recentTotalCount
+          recentWinCount
+          recentDrawCount
+          recentLoseCount
+          recentGetScore
+          recentLoseScore
+          recentGoalDifference
+          recentIntegral
+          recentWinRate
+          teamName
         }
+        awayTeamStandings {
+          teamId
+          totalCount
+          winCount
+          drawCount
+          loseCount
+          getScore
+          loseScore
+          goalDifference
+          integral
+          rank
+          winRate
+          homeTotalCount
+          homeWinCount
+          homeDrawCount
+          homeLoseCount
+          homeGetScore
+          homeLoseScore
+          homeGoalDifference
+          homeIntegral
+          homeRank
+          homeWinRate
+          awayTotalCount
+          awayWinCount
+          awayDrawCount
+          awayLoseCount
+          awayGetScore
+          awayLoseScore
+          awayGoalDifference
+          awayIntegral
+          awayRank
+          awayWinRate
+          recentTotalCount
+          recentWinCount
+          recentDrawCount
+          recentLoseCount
+          recentGetScore
+          recentLoseScore
+          recentGoalDifference
+          recentIntegral
+          recentWinRate
+          teamName
+        }
+      }    
     }
 `;

@@ -1,13 +1,13 @@
 .masterPlan {
-    height: calc(100vh - 387px);
-    margin-top: -20px;
+    height: calc(100vh - 434px);
+    margin-top: -24px;
     border-radius: 16px 16px 0 0;
     overflow: auto;
     background: #f8f8f8;
 
     .area {
         padding: 12px;
-        margin-bottom: 12px;
+        margin-bottom: 8px;
         background: #fff;
 
         .title {
@@ -38,13 +38,13 @@
                 align-items: center;
                 justify-content: center;
                 width: 100%;
-                height: 120px;
+                height: 106px;
                 gap: 6px;
 
                 button {
                     width: 100%;
                     max-width: 242px;
-                    padding: 6px 0;
+                    padding: 5px 0;
                     color: #4489ff;
                     font-size: 14px;
                     font-weight: 500;
@@ -64,17 +64,9 @@
                 justify-content: space-between;
 
                 span {
-                    &:first-child {
-                        font-size: 18px;
-                        color: #222;
-                        font-weight: 600;
-                    }
-
-                    &:last-child {
-                        color: #9b9b9b;
-                        font-size: 12px;
-                        font-weight: 500;
-                    }
+                    font-size: 18px;
+                    color: #222;
+                    font-weight: 600;
                 }
             }
         }

@@ -3,16 +3,28 @@
 import { useRef, useEffect, useState } from 'react';
 import style from './switch.module.scss';
 
-interface Sports {
-    /**
-     * push name in this array
-     */
-    name?: string[];
+interface Option {
+    label: string;
+    value: string;
 }
 
-function Switch({ name }: Sports) {
+export interface SwitchProps {
+    /**
+     * List of options
+     */
+    options?: Option[];
+    /**
+     * current active switch
+     */
+    value?: string;
+    /**
+     * change value
+     */
+    onChange: (value: string) => void;
+}
+
+function Switch({ options, value, onChange }: SwitchProps) {
     const switchRef = useRef<HTMLDivElement | null>(null);
-    const [activeSport, setActiveSport] = useState<string>(name?.[0] || '');
     const [indicatorStyle, setIndicatorStyle] = useState({ left: '1px', width: 'auto' });
 
     const updateIndicator = () => {
@@ -28,20 +40,19 @@ function Switch({ name }: Sports) {
         }
     };
 
-    useEffect(updateIndicator, [activeSport]);
+    useEffect(updateIndicator, [value]);
 
     return (
         <div className={`switch ${style.switch}`} ref={switchRef}>
-            {name?.map(item => (
+            {options?.map(item => (
                 <span
-                    className={activeSport === item ? `active ${style.active}` : ''}
-                    key={item}
+                    className={value === item.value ? `active ${style.active}` : ''}
+                    key={item.value}
                     onClick={() => {
-                        setActiveSport(item);
-                        updateIndicator();
+                        onChange(item.value);
                     }}
                 >
-                    {item}
+                    {item.label}
                 </span>
             ))}
             <div className={`indicator ${style.indicator}`} style={indicatorStyle} />

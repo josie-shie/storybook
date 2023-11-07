@@ -3,8 +3,16 @@
     align-items: flex-start;
     justify-content: center;
     flex-direction: column;
-    gap: 18px;
-    margin: 11px 6px;
+    gap: 12px;
+    margin: 10px 2px;
+
+    .record {
+        position: absolute;
+        top: 4px;
+        right: 12px;
+        font-size: 12px;
+        color: #4489ff;
+    }
 
     .items {
         width: 100%;
@@ -29,19 +37,15 @@
             gap: 6px;
 
             .selectTitle {
+                color: #757575;
                 margin-right: 10px;
                 font-weight: 400;
             }
 
-            .selectItem {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                gap: 8px;
+            :global(.ui-select) {
                 flex: 1;
-                padding: 4px;
-                font-weight: 600;
-                text-align: center;
+                height: 28px;
+                font-weight: 400;
                 color: #757575;
                 background: #f3f3f3;
                 border-radius: 8px;
@@ -49,12 +53,26 @@
         }
     }
 
+    .tips {
+        font-size: 12px;
+        color: #8d8d8d;
+    }
+
     .search {
-        display: block;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
         margin: auto;
         min-width: 240px;
         height: 44px;
         border-radius: 50px;
-        background: #fff;
+        border: none;
+        color: #fff;
+        background: #4489ff;
+
+        img {
+            margin-top: 3px;
+        }
     }
 }

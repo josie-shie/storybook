@@ -122,7 +122,6 @@ function MasterPlan({ isUnlocked, setIsUnlocked }: MasterPlanProps) {
                 <div className={style.planList}>
                     <div className={style.title}>
                         <span>同场高手方案</span>
-                        <span>声明</span>
                     </div>
                     <GameCard
                         globalUnlock={isUnlocked}

@@ -9,37 +9,60 @@ import style from './liveBox.module.scss';
 import VideoIcon from './img/video.png';
 import bgImage from './img/bg.jpg';
 import { createContestDetailStore, useContestDetailStore } from './contestDetailStore';
+import { useContestInfoStore } from '@/app/contestInfoStore';
+
+const statusStyleMap = {
+    '0': style.notYet,
+    '1': style.midfielder,
+    '2': style.midfielder,
+    '3': style.midfielder,
+    '4': style.playOff,
+    '5': style.playOff,
+    '-1': style.finish,
+    '-10': style.notYet,
+    '-11': style.notYet,
+    '-12': style.notYet,
+    '-13': style.notYet,
+    '-14': style.notYet
+};
 
 function GameDetail() {
     const matchDetail = useContestDetailStore.use.matchDetail();
+    const globalStore = useContestInfoStore.use.contestInfo();
+    const homeLiveScore =
+        typeof globalStore[matchDetail.matchId] !== 'undefined'
+            ? globalStore[matchDetail.matchId].homeScore || matchDetail.homeScore
+            : matchDetail.homeScore;
+
+    const awayLiveScore =
+        typeof globalStore[matchDetail.matchId] !== 'undefined'
+            ? globalStore[matchDetail.matchId].awayScore || matchDetail.awayScore
+            : matchDetail.awayScore;
+
+    const liveState =
+        typeof globalStore[matchDetail.matchId] !== 'undefined'
+            ? globalStore[matchDetail.matchId].state || matchDetail.state
+            : matchDetail.state;
+
     return (
         <div className={style.gameStatus}>
-            {matchDetail.state > 0 ||
-                (matchDetail.state === -1 && (
-                    <div className={style.textHolder}>
-                        <p className={style.text}>
-                            半場 {matchDetail.homeHalfScore}-{matchDetail.awayHalfScore}
-                        </p>
-                    </div>
-                ))}
-            <div className={`${style.gameTime} ${matchDetail.state === -1 && style.finish}`}>
-                <GameStatus startTime={matchDetail.startTime} status={matchDetail.state} />
-                <div className={style.homeScore}>{matchDetail.homeScore}</div>
-                <div className={style.awayScore}>{matchDetail.awayScore}</div>
-            </div>
-            {matchDetail.state < 1 && matchDetail.state !== -1 ? (
-                <p className={style.vsText}>VS</p>
-            ) : (
-                <>
-                    <div className={style.textHolder}>
-                        <p className={style.text}>加時 5-5</p>
-                    </div>
+            {liveState < 1 && liveState !== -1 && <p className={style.vsText}>VS</p>}
+            <div className={style.gameScore}>
+                <GameStatus
+                    className={`${style.gameTime} ${statusStyleMap[matchDetail.state]}`}
+                    startTime={matchDetail.startTime}
+                    status={matchDetail.state}
+                />
 
-                    <div className={style.textHolder}>
-                        <p className={style.text}>點球 5-5</p>
-                    </div>
-                </>
-            )}
+                <div className={style.homeScore}>{homeLiveScore}</div>
+                <div className={style.awayScore}>{awayLiveScore}</div>
+            </div>
+
+            <div className={style.textHolder}>
+                <p className={style.text}>
+                    半場 {matchDetail.homeHalfScore}-{matchDetail.awayHalfScore}
+                </p>
+            </div>
         </div>
     );
 }

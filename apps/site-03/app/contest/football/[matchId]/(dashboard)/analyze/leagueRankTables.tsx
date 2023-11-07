@@ -1,38 +1,41 @@
+import type { LeaguePointsRank } from 'data-center';
+import { useAnalyzeStore } from './analyzeStore';
 import style from './leagueRankTables.module.scss';
 
 interface LeagueRankTableProps {
     teamName: string;
+    tableData: LeaguePointsRank;
 }
 
 function LeagueRankTables() {
-    const matchTeamName = {
-        homeEn: 'KA Akureyri',
-        homeChs: 'KA阿古雷利',
-        homeCht: '阿古雷利',
-        awayEn: 'Breidablik',
-        awayChs: '贝雷达比历克',
-        awayCht: '比達比歷',
-        homeId: 1639,
-        awayId: 4052
-    };
+    const teamInfo = useAnalyzeStore.use.teamInfo();
+    const leaguePointsRankData = useAnalyzeStore.use.leaguePointsRankData();
+
     return (
         <div className={style.leagueRankTables}>
             <div className="topBar">
                 <h6 className="title">联赛积分排名</h6>
             </div>
-            <LeagueRankTable teamName={matchTeamName.homeChs || '-'} />
-            <LeagueRankTable teamName={matchTeamName.awayChs || '-'} />
+            <LeagueRankTable
+                tableData={leaguePointsRankData.homeTeam}
+                teamName={teamInfo.homeChs || '-'}
+            />
+            <LeagueRankTable
+                tableData={leaguePointsRankData.awayTeam}
+                teamName={teamInfo.awayChs || '-'}
+            />
         </div>
     );
 }
 
-function LeagueRankTable({ teamName }: LeagueRankTableProps) {
+function LeagueRankTable({ teamName, tableData }: LeagueRankTableProps) {
     const rows = [
-        { desc: '总', qty: '-', unit: '-' },
-        { desc: '主', qty: '-', unit: '-' },
-        { desc: '客', qty: '-', unit: '-' },
-        { desc: '近', qty: '-', unit: '-' }
+        { desc: '总', ...tableData.total },
+        { desc: '主', ...tableData.home },
+        { desc: '客', ...tableData.away },
+        { desc: '近', ...tableData.recent }
     ];
+
     return (
         <div className={style.leagueRankTable}>
             <div className="dataTable">
@@ -66,16 +69,16 @@ function LeagueRankTable({ teamName }: LeagueRankTableProps) {
                             <div className="td" style={{ flex: 'initial', width: '45px' }}>
                                 {item.desc}
                             </div>
-                            <div className="td">{item.qty}</div>
-                            <div className="td">{item.unit}</div>
-                            <div className="td">{item.unit}</div>
-                            <div className="td">{item.unit}</div>
-                            <div className="td">{item.unit}</div>
-                            <div className="td">{item.unit}</div>
-                            <div className="td">{item.unit}</div>
-                            <div className="td">{item.unit}</div>
-                            <div className="td">{item.unit}</div>
-                            <div className="td">{item.unit}</div>
+                            <div className="td">{item.totalCount}</div>
+                            <div className="td">{item.winCount}</div>
+                            <div className="td">{item.drawCount}</div>
+                            <div className="td">{item.loseCount}</div>
+                            <div className="td">{item.getScore}</div>
+                            <div className="td">{item.loseScore}</div>
+                            <div className="td">{item.goalDifference}</div>
+                            <div className={`td ${style.highlight}`}>{item.integral}</div>
+                            <div className="td">{item.rank}</div>
+                            <div className={`td ${style.highlight}`}>{item.winRate}%</div>
                         </div>
                     ))}
                 </div>

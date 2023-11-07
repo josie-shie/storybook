@@ -6,7 +6,9 @@
         "dev": "turbo run dev",
         "lint": "turbo run lint",
         "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-        "prepare": "husky install"
+        "prepare": "husky install",
+        "build:site03": "turbo run build --filter=site-03",
+        "start:site03": "cd apps/site-03 && pnpm start"
     },
     "commitlint": {
         "extends": [

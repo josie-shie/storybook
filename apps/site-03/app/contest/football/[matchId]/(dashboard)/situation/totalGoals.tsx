@@ -1,36 +1,13 @@
 import { useState } from 'react';
 import { getCompanyLiveOddsDetail } from 'data-center';
 import Image from 'next/image';
+import { handleStartTime } from 'lib';
 import { useContestDetailStore } from '../../contestDetailStore';
 import style from './situation.module.scss';
 import { useSituationStore } from './situationStore';
 import rightBlack from './img/right_black.png';
 import TextRadio from '@/components/textSwitch/textSwitch';
 import ButtonSwitch from '@/components/textSwitch/buttonSwitch';
-
-function GameTime() {
-    const gameStatus = {
-        state: 'notYet',
-        time: '21'
-    };
-
-    const stateStyle: Record<string, { style: string; text: string }> = {
-        notYet: { style: style.notYet, text: '未' },
-        midfielder: { style: style.notYet, text: '中场' },
-        finish: { style: style.finish, text: '完场' },
-        playoff: { style: style.playoff, text: '加' }
-    };
-
-    return (
-        <>
-            {stateStyle[gameStatus.state].text || (
-                <>
-                    {gameStatus.time} <span className="timePoint">&apos;</span>
-                </>
-            )}
-        </>
-    );
-}
 
 const switchOptins = [
     { label: 'CROW*', value: 3 },
@@ -46,9 +23,9 @@ const handicapRadioMapping = {
 function TotalGoals() {
     const totalGoalsData = useSituationStore.use.totalGoalsData();
     const setCompanyId = useSituationStore.use.setCompanyId();
+    const matchDetail = useContestDetailStore.use.matchDetail();
     const [totalGoalsSwitch, setTotalGoalsSwitch] = useState(3);
     const [totalGoalsRadio, setTotalGoalsRadio] = useState<'half' | 'full'>('half');
-    const matchDetail = useContestDetailStore.use.matchDetail();
     const setCompanyOddsDetail = useSituationStore.use.setCompanyLiveOddsDetail();
     const setDrawerTabValue = useSituationStore.use.setOddsDeatilDrawerTabValue();
     const setIsOddsDetailDrawerOpen = useSituationStore.use.setIsOddsDetailDrawerOpen();
@@ -105,9 +82,7 @@ function TotalGoals() {
                         ? totalGoalsData[totalGoalsRadio][totalGoalsSwitch].notStarted.map(
                               (before, idx) => (
                                   <div className="tr" key={`before_${idx.toString()}`}>
-                                      <div className="td">
-                                          <GameTime />
-                                      </div>
+                                      <div className="td">未</div>
                                       <div className="td">
                                           {before.homeScore}-{before.awayScore}
                                       </div>
@@ -130,7 +105,10 @@ function TotalGoals() {
                               (now, idx) => (
                                   <div className="tr" key={`before_${idx.toString()}`}>
                                       <div className="td">
-                                          <GameTime />
+                                          {handleStartTime(
+                                              matchDetail.startTime,
+                                              now.oddsChangeTime
+                                          )}
                                       </div>
                                       <div className="td">
                                           {now.homeScore}-{now.awayScore}

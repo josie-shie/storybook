@@ -17,7 +17,7 @@
     }
 
     :global(.ui-tabs-header) {
-        padding: 0;
+        padding: 8px !important;
         gap: 0 !important;
         justify-content: space-between !important;
     }

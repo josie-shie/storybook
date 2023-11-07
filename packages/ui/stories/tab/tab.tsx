@@ -171,6 +171,12 @@ function Tabs({
         };
     }, [activeIndex, position, gap, styling, scrolling]);
 
+    useEffect(() => {
+        if (swiperRef.current && typeof activeIndex === 'number') {
+            swiperRef.current.slideTo(activeIndex);
+        }
+    }, [activeIndex, swiperRef]);
+
     return (
         <div className={`ui-tab ${style.tab} ${style[position]}`}>
             <div className={`ui-tab-header ${style.tabHeader}`}>
@@ -266,6 +272,7 @@ function Tabs({
             {swiperOpen ? (
                 <Swiper
                     autoHeight
+                    initialSlide={activeIndex}
                     onSlideChange={swiper => {
                         const tabIndex = swiper.activeIndex;
                         handleTabClick(swiper.activeIndex);

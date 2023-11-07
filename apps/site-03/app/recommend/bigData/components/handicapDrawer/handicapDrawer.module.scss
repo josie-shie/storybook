@@ -1,0 +1,35 @@
+.handicapDrawer {
+    padding: 0 16px;
+    height: 726px;
+    overflow: auto;
+
+    .title {
+        padding: 8px 0;
+        font-size: 14px;
+    }
+
+    .sort {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 8px;
+
+        .button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            width: 112px;
+            height: 28px;
+            font-size: 14px;
+            color: #4489ff;
+            border: 1px solid #4489ff;
+            border-radius: 4px;
+
+            .image {
+                width: 16px;
+                height: 16px;
+            }
+        }
+    }
+}
