@@ -1,10 +1,11 @@
+import { useContestDetailStore } from '../../contestDetailStore';
 import style from './exponent.module.scss';
 import { useExponentStore } from './exponentStore';
 
 function TotalGoal() {
     const exponentData = useExponentStore.use.exponentData();
     const totalGoalsRadio = useExponentStore.use.totalGoalsRadio();
-    const companyNameMap = useExponentStore.use.companyNameMap();
+    const companyNameMap = useContestDetailStore.use.companyNameMap();
 
     return (
         <div className={style.totalGoal}>

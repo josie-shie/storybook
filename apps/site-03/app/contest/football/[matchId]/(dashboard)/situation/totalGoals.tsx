@@ -1,21 +1,50 @@
 import { useState } from 'react';
+import { getCompanyLiveOddsDetail } from 'data-center';
+import Image from 'next/image';
 import { handleStartTime } from 'lib';
 import { useContestDetailStore } from '../../contestDetailStore';
 import style from './situation.module.scss';
 import { useSituationStore } from './situationStore';
+import rightBlack from './img/right_black.png';
 import TextRadio from '@/components/textSwitch/textSwitch';
 import ButtonSwitch from '@/components/textSwitch/buttonSwitch';
 
 const switchOptins = [
-    { label: '皇*', value: 3 },
+    { label: 'CROW*', value: 3 },
     { label: '36*', value: 8 }
 ];
 
+type TabTpye = 'fullTotalGoal' | 'halfTotalGoal';
+const handicapRadioMapping = {
+    half: 'halfTotalGoal',
+    full: 'fullTotalGoal'
+};
+
 function TotalGoals() {
     const totalGoalsData = useSituationStore.use.totalGoalsData();
+    const setCompanyId = useSituationStore.use.setCompanyId();
     const matchDetail = useContestDetailStore.use.matchDetail();
     const [totalGoalsSwitch, setTotalGoalsSwitch] = useState(3);
     const [totalGoalsRadio, setTotalGoalsRadio] = useState<'half' | 'full'>('half');
+    const setCompanyOddsDetail = useSituationStore.use.setCompanyLiveOddsDetail();
+    const setDrawerTabValue = useSituationStore.use.setOddsDeatilDrawerTabValue();
+    const setIsOddsDetailDrawerOpen = useSituationStore.use.setIsOddsDetailDrawerOpen();
+
+    const handleChangeSwitch = async (switchValue: number) => {
+        setTotalGoalsSwitch(switchValue);
+        setCompanyId(switchValue);
+
+        try {
+            const res = await getCompanyLiveOddsDetail(matchDetail.matchId, switchValue);
+            if (!res.success) {
+                throw new Error();
+            }
+
+            setCompanyOddsDetail(res.data);
+        } catch (error) {
+            throw new Error();
+        }
+    };
 
     return (
         <div className={style.totalGoals}>
@@ -24,7 +53,7 @@ function TotalGoals() {
 
                 <ButtonSwitch
                     onChange={(switchValue: number) => {
-                        setTotalGoalsSwitch(switchValue);
+                        void handleChangeSwitch(switchValue);
                     }}
                     options={switchOptins}
                     outline
@@ -34,6 +63,7 @@ function TotalGoals() {
                 <TextRadio
                     onChange={value => {
                         setTotalGoalsRadio(value as 'half' | 'full');
+                        setDrawerTabValue(handicapRadioMapping[value] as TabTpye);
                     }}
                     value={totalGoalsRadio}
                 />
@@ -91,7 +121,18 @@ function TotalGoals() {
                                       <div className="td">
                                           <p>{now.overCurrentOdds}</p>
                                           <p>{now.currentTotalGoals}</p>
-                                          <p>{now.underCurrentOdds}</p>
+                                          <p>
+                                              {now.underCurrentOdds}
+                                              <Image
+                                                  alt=""
+                                                  height={14}
+                                                  onClick={() => {
+                                                      setIsOddsDetailDrawerOpen(true);
+                                                  }}
+                                                  src={rightBlack.src}
+                                                  width={14}
+                                              />
+                                          </p>
                                       </div>
                                   </div>
                               )

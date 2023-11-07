@@ -9,6 +9,7 @@ import style from './tab.module.scss';
 
 interface TabProps {
     label: string;
+    value?: string;
     to?: string;
     children: ReactNode;
     leftSection?: ReactNode; // 左邊的icon
@@ -50,6 +51,10 @@ interface TabsProps {
      * control TabContent
      */
     children?: string | ReactNode;
+    /**
+     * Tab change event
+     */
+    onTabChange?: (value: string) => void;
 }
 
 function Tab(props: TabProps) {
@@ -63,6 +68,7 @@ function Tabs({
     scrolling = false,
     swiperOpen = true,
     buttonRadius = 50,
+    onTabChange,
     ...props
 }: TabsProps) {
     const [activeIndex, setActiveIndex] = useState(0);
@@ -74,7 +80,7 @@ function Tabs({
     const pathname = usePathname();
     const searchParams = useSearchParams();
 
-    const handleTabClick = (index: number) => {
+    const handleTabClick = (index: number, value?: string) => {
         const headerLiner = headerLinerRef.current;
         if (headerLiner) {
             if (index > activeIndex) {
@@ -89,6 +95,10 @@ function Tabs({
         swiperRef.current?.slideTo(index);
 
         setContentFade(true);
+
+        if (value && onTabChange) {
+            onTabChange(value);
+        }
 
         setTimeout(() => {
             setActiveIndex(index);
@@ -180,6 +190,7 @@ function Tabs({
                     {Children.map(props.children, (child, index) => {
                         if (isValidElement(child) && child.type === Tab) {
                             const labeledChild = child as React.ReactElement<{
+                                value?: string;
                                 label: React.ReactNode;
                                 to: string;
                                 leftSection?: ReactNode;
@@ -235,7 +246,7 @@ function Tabs({
                                                     : ''
                                             } ${style[`radius${buttonRadius}`]}`}
                                             onClick={() => {
-                                                handleTabClick(index);
+                                                handleTabClick(index, labeledChild.props.value);
                                             }}
                                             style={{
                                                 borderRadius: buttonRadius
