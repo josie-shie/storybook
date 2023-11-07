@@ -29,9 +29,67 @@ interface OriginalContestInfo {
     countryCn: string;
 }
 
+interface TechnicalInfoData {
+    matchId: number;
+    technicStat: {
+        away: string;
+        home: string;
+        technicType:
+            | '0'
+            | '1'
+            | '2'
+            | '3'
+            | '4'
+            | '5'
+            | '6'
+            | '7'
+            | '8'
+            | '9'
+            | '10'
+            | '11'
+            | '12'
+            | '13'
+            | '14'
+            | '15'
+            | '16'
+            | '17'
+            | '18'
+            | '19'
+            | '20'
+            | '21'
+            | '22'
+            | '23'
+            | '24'
+            | '25'
+            | '26'
+            | '27'
+            | '28'
+            | '29'
+            | '30'
+            | '31'
+            | '32'
+            | '33'
+            | '34'
+            | '35'
+            | '36'
+            | '37'
+            | '38'
+            | '39'
+            | '40'
+            | '41'
+            | '42'
+            | '43'
+            | '44'
+            | '45'
+            | '46'
+            | '47';
+    }[];
+}
+
 let client: MqttClient;
 const useMessageQueue: ((data: OriginalContestInfo) => void)[] = [];
 const useOddsQueue: ((data: OriginalContestInfo) => void)[] = [];
+const useTechnicalQueue: ((data: TechnicalInfoData) => void)[] = [];
 let init = true;
 
 const toSerializableObject = <T extends Record<string, unknown>>(protoObj: T): T => {
@@ -94,8 +152,8 @@ const handleDetailTechnicListMessage = async (message: Buffer) => {
         messageObject as unknown as Record<string, unknown>
     );
 
-    for (const messageMethod of useOddsQueue) {
-        messageMethod(decodedMessage as unknown as OriginalContestInfo);
+    for (const messageMethod of useTechnicalQueue) {
+        messageMethod(decodedMessage as unknown as TechnicalInfoData);
     }
 
     // eslint-disable-next-line no-console -- Check mqtt message
@@ -129,5 +187,8 @@ export const mqttService = {
     },
     getOdds: (onMessage: (data: OriginalContestInfo) => void) => {
         useOddsQueue.push(onMessage);
+    },
+    getTechnicList: (onMessage: (data: TechnicalInfoData) => void) => {
+        useTechnicalQueue.push(onMessage);
     }
 };
