@@ -44,7 +44,7 @@ const handicapRadioMapping = {
 };
 
 function Handicap() {
-    let handicapData = useSituationStore.use.handicapsData();
+    const handicapData = useSituationStore.use.handicapsData();
     const [handicapRadio, setHandicapRadio] = useState<'half' | 'full'>('half');
     const [handicapSwitch, setHandicapSwitch] = useState(3);
     const matchDetail = useContestDetailStore.use.matchDetail();
@@ -52,97 +52,6 @@ function Handicap() {
     const setCompanyId = useSituationStore.use.setCompanyId();
     const setDrawerTabValue = useSituationStore.use.setOddsDeatilDrawerTabValue();
     const setIsOddsDetailDrawerOpen = useSituationStore.use.setIsOddsDetailDrawerOpen();
-
-    handicapData = {
-        full: {
-            3: {
-                inProgress: [],
-                notStarted: [
-                    {
-                        awayCurrentOdds: '0.94',
-                        awayInitialOdds: '0.94',
-                        awayScore: 0,
-                        companyId: 47,
-                        currentHandicap: -0.25,
-                        homeCurrentOdds: '0.83',
-                        homeInitialOdds: '0.83',
-                        homeScore: 0,
-                        initialHandicap: -0.25,
-                        isClosed: false,
-                        matchId: 2359838,
-                        oddsChangeTime: '2023-11-02 02:13:04',
-                        oddsType: 1,
-                        state: 0
-                    }
-                ]
-            },
-            8: {
-                inProgress: [],
-                notStarted: [
-                    {
-                        awayCurrentOdds: '0.94',
-                        awayInitialOdds: '0.94',
-                        awayScore: 0,
-                        companyId: 47,
-                        currentHandicap: -0.25,
-                        homeCurrentOdds: '0.83',
-                        homeInitialOdds: '0.83',
-                        homeScore: 0,
-                        initialHandicap: -0.25,
-                        isClosed: false,
-                        matchId: 2359838,
-                        oddsChangeTime: '2023-11-02 02:13:04',
-                        oddsType: 1,
-                        state: 0
-                    }
-                ]
-            }
-        },
-        half: {
-            3: {
-                inProgress: [],
-                notStarted: [
-                    {
-                        awayCurrentOdds: '0.94',
-                        awayInitialOdds: '0.94',
-                        awayScore: 0,
-                        companyId: 47,
-                        currentHandicap: -0.25,
-                        homeCurrentOdds: '0.83',
-                        homeInitialOdds: '0.83',
-                        homeScore: 0,
-                        initialHandicap: -0.25,
-                        isClosed: false,
-                        matchId: 2359838,
-                        oddsChangeTime: '2023-11-02 02:13:04',
-                        oddsType: 1,
-                        state: 0
-                    }
-                ]
-            },
-            8: {
-                inProgress: [],
-                notStarted: [
-                    {
-                        awayCurrentOdds: '0.94',
-                        awayInitialOdds: '0.94',
-                        awayScore: 0,
-                        companyId: 47,
-                        currentHandicap: -0.25,
-                        homeCurrentOdds: '0.83',
-                        homeInitialOdds: '0.83',
-                        homeScore: 0,
-                        initialHandicap: -0.25,
-                        isClosed: false,
-                        matchId: 2359838,
-                        oddsChangeTime: '2023-11-02 02:13:04',
-                        oddsType: 1,
-                        state: 0
-                    }
-                ]
-            }
-        }
-    };
 
     const handleChangeSwitch = async (switchValue: number) => {
         setHandicapSwitch(switchValue);
