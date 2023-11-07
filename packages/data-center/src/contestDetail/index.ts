@@ -99,7 +99,7 @@ const HandicapsInfoSchema = z.object({
 });
 
 type OriginHandicapsInfo = z.infer<typeof HandicapsInfoSchema>;
-type HandicapsInfo = Omit<
+export type HandicapsInfo = Omit<
     OriginHandicapsInfo,
     'oddsChangeTime' | 'homeInitialOdds' | 'awayInitialOdds' | 'homeCurrentOdds' | 'awayCurrentOdds'
 > & {
@@ -128,7 +128,7 @@ const TotalGoalsInfoSchema = z.object({
 });
 
 type OriginTotalGoalsInfo = z.infer<typeof TotalGoalsInfoSchema>;
-type TotalGoalsInfo = Omit<
+export type TotalGoalsInfo = Omit<
     OriginTotalGoalsInfo,
     | 'oddsChangeTime'
     | 'overInitialOdds'

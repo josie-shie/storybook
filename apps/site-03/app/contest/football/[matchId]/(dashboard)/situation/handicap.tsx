@@ -1,6 +1,10 @@
 import { useState } from 'react';
+import Image from 'next/image';
+import { getCompanyLiveOddsDetail } from 'data-center';
+import { useContestDetailStore } from '../../contestDetailStore';
 import style from './situation.module.scss';
 import { useSituationStore } from './situationStore';
+import rightBlack from './img/right_black.png';
 import TextRadio from '@/components/textSwitch/textSwitch';
 import ButtonSwitch from '@/components/textSwitch/buttonSwitch';
 
@@ -29,14 +33,133 @@ function GameTime() {
 }
 
 const switchOptins = [
-    { label: '皇*', value: 3 },
+    { label: 'CROW*', value: 3 },
     { label: '36*', value: 8 }
 ];
 
+type TabTpye = 'fullHandicap' | 'halfHandicap';
+const handicapRadioMapping = {
+    half: 'halfHandicap',
+    full: 'fullHandicap'
+};
+
 function Handicap() {
-    const handicapData = useSituationStore.use.handicapsData();
+    let handicapData = useSituationStore.use.handicapsData();
     const [handicapRadio, setHandicapRadio] = useState<'half' | 'full'>('half');
     const [handicapSwitch, setHandicapSwitch] = useState(3);
+    const matchDetail = useContestDetailStore.use.matchDetail();
+    const setCompanyOddsDetail = useSituationStore.use.setCompanyLiveOddsDetail();
+    const setCompanyId = useSituationStore.use.setCompanyId();
+    const setDrawerTabValue = useSituationStore.use.setOddsDeatilDrawerTabValue();
+    const setIsOddsDetailDrawerOpen = useSituationStore.use.setIsOddsDetailDrawerOpen();
+
+    handicapData = {
+        full: {
+            3: {
+                inProgress: [],
+                notStarted: [
+                    {
+                        awayCurrentOdds: '0.94',
+                        awayInitialOdds: '0.94',
+                        awayScore: 0,
+                        companyId: 47,
+                        currentHandicap: -0.25,
+                        homeCurrentOdds: '0.83',
+                        homeInitialOdds: '0.83',
+                        homeScore: 0,
+                        initialHandicap: -0.25,
+                        isClosed: false,
+                        matchId: 2359838,
+                        oddsChangeTime: '2023-11-02 02:13:04',
+                        oddsType: 1,
+                        state: 0
+                    }
+                ]
+            },
+            8: {
+                inProgress: [],
+                notStarted: [
+                    {
+                        awayCurrentOdds: '0.94',
+                        awayInitialOdds: '0.94',
+                        awayScore: 0,
+                        companyId: 47,
+                        currentHandicap: -0.25,
+                        homeCurrentOdds: '0.83',
+                        homeInitialOdds: '0.83',
+                        homeScore: 0,
+                        initialHandicap: -0.25,
+                        isClosed: false,
+                        matchId: 2359838,
+                        oddsChangeTime: '2023-11-02 02:13:04',
+                        oddsType: 1,
+                        state: 0
+                    }
+                ]
+            }
+        },
+        half: {
+            3: {
+                inProgress: [],
+                notStarted: [
+                    {
+                        awayCurrentOdds: '0.94',
+                        awayInitialOdds: '0.94',
+                        awayScore: 0,
+                        companyId: 47,
+                        currentHandicap: -0.25,
+                        homeCurrentOdds: '0.83',
+                        homeInitialOdds: '0.83',
+                        homeScore: 0,
+                        initialHandicap: -0.25,
+                        isClosed: false,
+                        matchId: 2359838,
+                        oddsChangeTime: '2023-11-02 02:13:04',
+                        oddsType: 1,
+                        state: 0
+                    }
+                ]
+            },
+            8: {
+                inProgress: [],
+                notStarted: [
+                    {
+                        awayCurrentOdds: '0.94',
+                        awayInitialOdds: '0.94',
+                        awayScore: 0,
+                        companyId: 47,
+                        currentHandicap: -0.25,
+                        homeCurrentOdds: '0.83',
+                        homeInitialOdds: '0.83',
+                        homeScore: 0,
+                        initialHandicap: -0.25,
+                        isClosed: false,
+                        matchId: 2359838,
+                        oddsChangeTime: '2023-11-02 02:13:04',
+                        oddsType: 1,
+                        state: 0
+                    }
+                ]
+            }
+        }
+    };
+
+    const handleChangeSwitch = async (switchValue: number) => {
+        setHandicapSwitch(switchValue);
+        setCompanyId(switchValue);
+
+        try {
+            const res = await getCompanyLiveOddsDetail(matchDetail.matchId, switchValue);
+
+            if (!res.success) {
+                throw new Error();
+            }
+
+            setCompanyOddsDetail(res.data);
+        } catch (error) {
+            throw new Error();
+        }
+    };
 
     return (
         <div className={style.handicap}>
@@ -45,7 +168,7 @@ function Handicap() {
 
                 <ButtonSwitch
                     onChange={(switchValue: number) => {
-                        setHandicapSwitch(switchValue);
+                        void handleChangeSwitch(switchValue);
                     }}
                     options={switchOptins}
                     outline
@@ -55,6 +178,7 @@ function Handicap() {
                 <TextRadio
                     onChange={value => {
                         setHandicapRadio(value as 'half' | 'full');
+                        setDrawerTabValue(handicapRadioMapping[value] as TabTpye);
                     }}
                     value={handicapRadio}
                 />
@@ -87,7 +211,18 @@ function Handicap() {
                                       <div className="td">
                                           <p>{before.homeCurrentOdds}</p>
                                           <p>{before.currentHandicap}</p>
-                                          <p>{before.awayCurrentOdds}</p>
+                                          <p>
+                                              <span>{before.awayCurrentOdds}</span>
+                                              <Image
+                                                  alt=""
+                                                  height={14}
+                                                  onClick={() => {
+                                                      setIsOddsDetailDrawerOpen(true);
+                                                  }}
+                                                  src={rightBlack.src}
+                                                  width={14}
+                                              />
+                                          </p>
                                       </div>
                                   </div>
                               )
@@ -111,7 +246,18 @@ function Handicap() {
                                   <div className="td">
                                       <p>{now.homeCurrentOdds}</p>
                                       <p>{now.currentHandicap}</p>
-                                      <p>{now.awayCurrentOdds}</p>
+                                      <p>
+                                          <span>{now.awayCurrentOdds}</span>
+                                          <Image
+                                              alt=""
+                                              height={14}
+                                              onClick={() => {
+                                                  setIsOddsDetailDrawerOpen(true);
+                                              }}
+                                              src={rightBlack.src}
+                                              width={14}
+                                          />
+                                      </p>
                                   </div>
                               </div>
                           ))
