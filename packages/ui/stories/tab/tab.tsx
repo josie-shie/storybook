@@ -51,6 +51,11 @@ interface TabsProps {
      */
     buttonRadius?: number;
     /**
+     * tab swiper content auto height
+     * tab swiper 內容自動高度開關
+     */
+    autoHeight?: boolean;
+    /**
      * control TabContent
      */
     children?: string | ReactNode;
@@ -62,6 +67,7 @@ function Tab(props: TabProps) {
 
 function Tabs({
     value,
+    autoHeight = false,
     position = 'center',
     gap = 12,
     styling = 'text',
@@ -265,7 +271,7 @@ function Tabs({
 
             {swiperOpen ? (
                 <Swiper
-                    autoHeight
+                    autoHeight={autoHeight}
                     onSlideChange={swiper => {
                         const tabIndex = swiper.activeIndex;
                         handleTabClick(swiper.activeIndex);
