@@ -18,6 +18,11 @@ interface TabProps {
 
 interface TabsProps {
     /**
+     * tab header default active
+     * tab header 預設active
+     */
+    defaultValue?: number;
+    /**
      * tab header position
      * tab header位置的切換
      */
@@ -67,6 +72,7 @@ function Tab(props: TabProps) {
 }
 
 function Tabs({
+    defaultValue,
     autoHeight = false,
     position = 'center',
     gap = 12,
@@ -77,7 +83,7 @@ function Tabs({
     onTabChange,
     ...props
 }: TabsProps) {
-    const [activeIndex, setActiveIndex] = useState(0);
+    const [activeIndex, setActiveIndex] = useState(defaultValue || 0);
     const navRef = useRef<HTMLDivElement>(null);
     const headerLinerRef = useRef<HTMLDivElement>(null);
     const swiperRef = useRef<SwiperCore | null>(null);
