@@ -47,7 +47,7 @@ function DiscSelect() {
     const [showHandicapDrawer, setShowHandicapDrawer] = useState(false);
 
     const goDetail = () => {
-        router.push(`/recommend/bigData/resultDetail`);
+        router.push(`/recommend/bigData/resultDetail/handicap`);
     };
 
     const handicapList = [
