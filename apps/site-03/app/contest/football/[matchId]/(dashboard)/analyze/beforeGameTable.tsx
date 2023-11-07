@@ -1,6 +1,6 @@
 'use client';
+import { useAnalyzeStore } from '../../analyzeStore';
 import style from './beforeGameTable.module.scss';
-import { useAnalyzeStore } from './analyzeStore';
 
 const compareValueStyle = (a: number, b: number) => {
     if (a === b) {

@@ -26,74 +26,76 @@ message AsiaOddsChangeStruct {
 }
 
 message AsiaOddsChange {
-  int32 MatchId = 1;
-  int32 HomeScore = 2;
-  int32 AwayScore = 3;
-  int32 State = 4;
+  int32 matchId = 1;
+  int32 homeScore = 2;
+  int32 awayScore = 3;
+  int32 state = 4;
 }
 
 message HandicapChange {
-  int32 MatchId = 1;
-  int32 CompanyId = 2;
-  double CurrentHandicap = 3;
-  double HomeCurrentOdds = 4;
-  double AwayCurrentOdds = 5;
-  bool IsMaintained = 6;
-  bool IsInProgress = 7;
-  int64 OddsChangeTime = 8;
-  bool IsClosed = 9;
-  int32 OddsType = 10;
+  int32 matchId = 1;
+  int32 companyId = 2;
+  double currentHandicap = 3;
+  double homeCurrentOdds = 4;
+  double awayCurrentOdds = 5;
+  bool isMaintained = 6;
+  bool isInProgress = 7;
+  int64 oddsChangeTime = 8;
+  bool isClosed = 9;
+  int32 oddsType = 10;
 }
 
 message EuropeOddsChange {
-  int32 MatchId = 1;
-  int32 CompanyId = 2;
-  double CurrentHomeOdds = 3;
-  double CurrentDrawOdds = 4;
-  double CurrentAwayOdds = 5;
-  int64 OddsChangeTime = 6;
-  bool IsClosed = 7;
-  int32 OddsType = 8;
+  int32 matchId = 1;
+  int32 companyId = 2;
+  double currentHomeOdds = 3;
+  double currentDrawOdds = 4;
+  double currentAwayOdds = 5;
+  int64 oddsChangeTime = 6;
+  bool isClosed = 7;
+  int32 oddsType = 8;
 }
 
 message OverUnderChange {
-  int32 MatchId = 1;
-  int32 CompanyId = 2;
-  double CurrentHandicap = 3;
-  double CurrentOverOdds = 4;
-  double CurrentUnderOdds = 5;
-  int64 OddsChangeTime = 6;
-  bool IsClosed = 7;
-  int32 OddsType = 8;
+  int32 matchId = 1;
+  int32 companyId = 2;
+  double currentHandicap = 3;
+  double currentOverOdds = 4;
+  double currentUnderOdds = 5;
+  int64 oddsChangeTime = 6;
+  bool isClosed = 7;
+  int32 oddsType = 8;
 }
 
 message HandicapHalfChange {
-  int32 MatchId = 1;
-  int32 CompanyId = 2;
-  double CurrentHandicap = 3;
-  double HomeCurrentOdds = 4;
-  double AwayCurrentOdds = 5;
-  int64 OddsChangeTime = 6;
-  int32 OddsType = 7;
+  int32 matchId = 1;
+  int32 companyId = 2;
+  double currentHandicap = 3;
+  double homeCurrentOdds = 4;
+  double awayCurrentOdds = 5;
+  int64 oddsChangeTime = 6;
+  int32 oddsType = 7;
 }
 
 message EuropeOddsHalfChange {
-  int32 MatchId = 1;
-  int32 CompanyId = 2;
-  double CurrentHomeOdds = 3;
-  double CurrentDrawOdds = 4;
-  double CurrentAwayOdds = 5;
-  int64 OddsChangeTime = 6;
-  bool IsClosed = 7;
-  int32 OddsType = 8;
+  int32 matchId = 1;
+  int32 companyId = 2;
+  double currentHomeOdds = 3;
+  double currentDrawOdds = 4;
+  double currentAwayOdds = 5;
+  int64 oddsChangeTime = 6;
+  bool isClosed = 7;
+  int32 oddsType = 8;
 }
 
 message OverUnderHalfChange {
-  int32 MatchId = 1;
-  int32 CompanyId = 2;
-  double CurrentHandicap = 3;
-  double CurrentOverOdds = 4;
-  double CurrentUnderOdds = 5;
-  int64 OddsChangeTime = 6;
-  int32 OddsType = 7;
+  int32 matchId = 1;
+  int32 companyId = 2;
+  double currentHandicap = 3;
+  double currentOverOdds = 4;
+  double currentUnderOdds = 5;
+  int64 oddsChangeTime = 6;
+  int32 oddsType = 7;
 }
+
+

@@ -1,5 +1,5 @@
 import type { LeaguePointsRank } from 'data-center';
-import { useAnalyzeStore } from './analyzeStore';
+import { useAnalyzeStore } from '../../analyzeStore';
 import style from './leagueRankTables.module.scss';
 
 interface LeagueRankTableProps {

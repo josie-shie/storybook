@@ -1,4 +1,4 @@
-import { useAnalyzeStore } from './analyzeStore';
+import { useAnalyzeStore } from '../../analyzeStore';
 
 function WinLoseCountTable() {
     const tableData = useAnalyzeStore.use.winLoseCountData();

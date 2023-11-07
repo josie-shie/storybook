@@ -1,6 +1,6 @@
 import { useContestDetailStore } from '../../contestDetailStore';
+import { useExponentStore } from '../../exponentStore';
 import style from './exponent.module.scss';
-import { useExponentStore } from './exponentStore';
 
 function Handicap() {
     const exponentData = useExponentStore.use.exponentData();

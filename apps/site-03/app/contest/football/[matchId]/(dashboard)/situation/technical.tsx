@@ -1,4 +1,4 @@
-import { useSituationStore } from './situationStore';
+import { useSituationStore } from '../../situationStore';
 import style from './technical.module.scss';
 
 function Technical() {

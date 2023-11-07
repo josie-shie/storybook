@@ -1,7 +1,7 @@
 'use client';
 import type { HomeTrend } from 'data-center';
+import { useAnalyzeStore } from '../../analyzeStore';
 import style from './leagueTrendTables.module.scss';
-import { useAnalyzeStore } from './analyzeStore';
 
 const getStyleResult = (char: string) => {
     if (char === '输' || char === '小') {
