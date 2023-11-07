@@ -1,6 +1,6 @@
 'use client';
 import type { GetExponentResponse } from 'data-center';
-import { creatExponentStore } from './exponentStore';
+import { creatExponentStore } from '../../exponentStore';
 import ExponentTable from './exponentTable';
 
 function Exponent({ exponentData }: { exponentData: GetExponentResponse }) {

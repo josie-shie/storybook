@@ -5,6 +5,7 @@ import type {
     HandicapsDataType,
     TotalGoalsDataType,
     EventInfoType,
+    TechnicalInfo,
     LineupList,
     CompanyLiveDetailResponse
 } from 'data-center';
@@ -21,6 +22,14 @@ interface SituationState extends InitState {
     setIsOddsDetailDrawerOpen: (isOpen: boolean) => void;
     setOddsDeatilDrawerTabValue: (tabValue: string) => void;
     setCompanyLiveOddsDetail: (detail: CompanyLiveDetailResponse) => void;
+    setEvents: ({
+        eventList,
+        eventInfo
+    }: {
+        eventList: string[];
+        eventInfo: EventInfoType;
+    }) => void;
+    setTechnical: ({ technical }: { technical: TechnicalInfo[] }) => void;
 }
 
 let useSituationStore: StoreWithSelectors<SituationState>;
@@ -28,9 +37,9 @@ let useSituationStore: StoreWithSelectors<SituationState>;
 const initialState = (set: (data: Partial<SituationState>) => void) => ({
     handicapsData: {} as HandicapsDataType,
     totalGoalsData: {} as TotalGoalsDataType,
-    eventList: [],
+    eventList: [] as string[],
     eventInfo: {} as EventInfoType,
-    technical: [],
+    technical: [] as TechnicalInfo[],
     lineupInfo: {} as LineupList,
     companyLiveOddsDetail: {} as CompanyLiveDetailResponse,
     isOddsDetailDrawerOpen: false,
@@ -62,14 +71,13 @@ const initialState = (set: (data: Partial<SituationState>) => void) => ({
         technical,
         lineupInfo
     }: SituationState) => {
-        set({
-            handicapsData,
-            totalGoalsData,
-            eventList,
-            eventInfo,
-            technical,
-            lineupInfo
-        });
+        set({ handicapsData, totalGoalsData, eventList, eventInfo, technical, lineupInfo });
+    },
+    setEvents: ({ eventList, eventInfo }: { eventList: string[]; eventInfo: EventInfoType }) => {
+        set({ eventList, eventInfo });
+    },
+    setTechnical: ({ technical }: { technical: TechnicalInfo[] }) => {
+        set({ technical });
     }
 });
 

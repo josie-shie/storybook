@@ -434,7 +434,6 @@ export const getMatchDetail = async (
             },
             { cache: 'no-store' }
         );
-
         GetSingleMatchResultSchema.parse(data);
 
         const formatDateTime: GetSingleMatchResponse = {

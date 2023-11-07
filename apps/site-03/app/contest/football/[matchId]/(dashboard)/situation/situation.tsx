@@ -1,6 +1,6 @@
 'use client';
 import type { GetDetailStatusResponse, CompanyLiveDetailResponse } from 'data-center';
-import { creatSituationStore } from './situationStore';
+import { creatSituationStore } from '../../situationStore';
 import Handicap from './handicap';
 import TotalGoals from './totalGoals';
 import Event from './event';

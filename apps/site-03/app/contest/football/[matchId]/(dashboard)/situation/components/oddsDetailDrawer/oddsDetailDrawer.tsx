@@ -6,7 +6,7 @@ import { getCompanyLiveOddsDetail } from 'data-center';
 import { useEffect } from 'react';
 import leftBlackIcon from '../../img/left_black.png';
 import { useContestDetailStore } from '../../../../contestDetailStore';
-import { useSituationStore } from '../../situationStore';
+import { useSituationStore } from '../../../../situationStore';
 import style from './oddsDetailDrawer.module.scss';
 import HandicapTable from './handicapTable';
 import TotalGoalTable from './totalGoalTable';

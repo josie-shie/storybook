@@ -4,11 +4,11 @@ import type {
     GetLeaguePointsRankResponse,
     GetBeforeGameIndexResponse
 } from 'data-center';
+import { createAnalyzeStore } from '../../analyzeStore';
 import BeforeGameTable from './beforeGameTable';
 import LeagueRankTables from './leagueRankTables';
 import LeagueTrendTables from './leagueTrendTables';
 import WinLoseCountTable from './winLoseCountTable';
-import { createAnalyzeStore } from './analyzeStore';
 import { createBattleRecordStore } from './battleRecordTable/battleRecordStore';
 import { createHomeRecordStore } from './homeAwayRecordTable/homeRecordStore';
 import { createAwayRecordStore } from './homeAwayRecordTable/awayRecordStore';
