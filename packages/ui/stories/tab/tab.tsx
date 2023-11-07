@@ -17,6 +17,10 @@ interface TabProps {
 
 interface TabsProps {
     /**
+     * tab header active自訂
+     */
+    value?: number;
+    /**
      * tab header position
      * tab header位置的切換
      */
@@ -57,6 +61,7 @@ function Tab(props: TabProps) {
 }
 
 function Tabs({
+    value,
     position = 'center',
     gap = 12,
     styling = 'text',
@@ -65,7 +70,7 @@ function Tabs({
     buttonRadius = 50,
     ...props
 }: TabsProps) {
-    const [activeIndex, setActiveIndex] = useState(0);
+    const [activeIndex, setActiveIndex] = useState(value || 0);
     const navRef = useRef<HTMLDivElement>(null);
     const headerLinerRef = useRef<HTMLDivElement>(null);
     const swiperRef = useRef<SwiperCore | null>(null);
@@ -261,7 +266,6 @@ function Tabs({
             {swiperOpen ? (
                 <Swiper
                     autoHeight
-                    initialSlide={activeIndex}
                     onSlideChange={swiper => {
                         const tabIndex = swiper.activeIndex;
                         handleTabClick(swiper.activeIndex);
