@@ -2,7 +2,8 @@
 import type {
     GetDetailStatusResponse,
     CompanyLiveDetailResponse,
-    TechnicalInfo
+    TechnicalInfo,
+    EventInfo
 } from 'data-center';
 import { mqttService } from 'lib';
 import { useEffect } from 'react';
@@ -20,6 +21,11 @@ interface TechnicalInfoData {
     technicStat: TechnicalInfo[];
 }
 
+interface EventInfoData {
+    matchId: number;
+    event: EventInfo[];
+}
+
 function Situation({
     situationData,
     companyLiveOddsDetail
@@ -32,16 +38,42 @@ function Situation({
         companyLiveOddsDetail
     });
 
-    const update = useSituationStore.use.setTechnical();
+    const updateTechnical = useSituationStore.use.setTechnical();
+    const updateEvent = useSituationStore.use.setEvents();
     const matchDetail = useContestDetailStore.use.matchDetail();
 
     useEffect(() => {
-        const syncGlobalStore = (message: Partial<TechnicalInfoData>) => {
+        const syncTechnicalGlobalStore = (message: Partial<TechnicalInfoData>) => {
             if (message.matchId === matchDetail.matchId && message.technicStat) {
-                update({ technical: message.technicStat });
+                updateTechnical({ technical: message.technicStat });
             }
         };
-        mqttService.getTechnicList(syncGlobalStore);
+        const syncEventGlobalStore = (message: Partial<EventInfoData>) => {
+            if (message.matchId === matchDetail.matchId && message.event) {
+                const eventList: string[] = [];
+                const eventInfo = {
+                    isAway: {},
+                    isHome: {}
+                };
+
+                for (const event of message.event) {
+                    eventList.push(event.time);
+
+                    if (event.isHome) {
+                        eventInfo.isHome[event.time] = {
+                            ...event
+                        };
+                    } else {
+                        eventInfo.isAway[event.time] = {
+                            ...event
+                        };
+                    }
+                }
+                updateEvent({ eventList, eventInfo });
+            }
+        };
+        mqttService.getTechnicList(syncTechnicalGlobalStore);
+        mqttService.getEventList(syncEventGlobalStore);
     }, []);
 
     return (

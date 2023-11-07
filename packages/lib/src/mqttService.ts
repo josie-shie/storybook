@@ -86,10 +86,27 @@ interface TechnicalInfoData {
     }[];
 }
 
+interface EventInfoData {
+    matchId: number;
+    event: {
+        id: number;
+        isHome: boolean;
+        kind: 2 | 1 | 3 | 7 | 8 | 9 | 11 | 13 | 14;
+        nameChs: string;
+        nameCht: string;
+        nameEn: string;
+        overtime: string;
+        playerId: string;
+        playerId2: string;
+        time: string;
+    }[];
+}
+
 let client: MqttClient;
 const useMessageQueue: ((data: OriginalContestInfo) => void)[] = [];
 const useOddsQueue: ((data: OriginalContestInfo) => void)[] = [];
 const useTechnicalQueue: ((data: TechnicalInfoData) => void)[] = [];
+const useEventQueue: ((data: EventInfoData) => void)[] = [];
 let init = true;
 
 const toSerializableObject = <T extends Record<string, unknown>>(protoObj: T): T => {
@@ -137,8 +154,8 @@ const handleDetailEventMessage = async (message: Buffer) => {
         messageObject as unknown as Record<string, unknown>
     );
 
-    for (const messageMethod of useOddsQueue) {
-        messageMethod(decodedMessage as unknown as OriginalContestInfo);
+    for (const messageMethod of useEventQueue) {
+        messageMethod(decodedMessage as unknown as EventInfoData);
     }
 
     // eslint-disable-next-line no-console -- Check mqtt message
@@ -190,5 +207,8 @@ export const mqttService = {
     },
     getTechnicList: (onMessage: (data: TechnicalInfoData) => void) => {
         useTechnicalQueue.push(onMessage);
+    },
+    getEventList: (onMessage: (data: EventInfoData) => void) => {
+        useEventQueue.push(onMessage);
     }
 };
