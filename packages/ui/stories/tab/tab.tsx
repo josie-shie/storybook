@@ -18,6 +18,10 @@ interface TabProps {
 
 interface TabsProps {
     /**
+     * tab header active自訂
+     */
+    value?: number;
+    /**
      * tab header position
      * tab header位置的切換
      */
@@ -48,6 +52,11 @@ interface TabsProps {
      */
     buttonRadius?: number;
     /**
+     * tab swiper content auto height
+     * tab swiper 內容自動高度開關
+     */
+    autoHeight?: boolean;
+    /**
      * control TabContent
      */
     children?: string | ReactNode;
@@ -62,6 +71,8 @@ function Tab(props: TabProps) {
 }
 
 function Tabs({
+    value,
+    autoHeight = false,
     position = 'center',
     gap = 12,
     styling = 'text',
@@ -71,7 +82,7 @@ function Tabs({
     onTabChange,
     ...props
 }: TabsProps) {
-    const [activeIndex, setActiveIndex] = useState(0);
+    const [activeIndex, setActiveIndex] = useState(value || 0);
     const navRef = useRef<HTMLDivElement>(null);
     const headerLinerRef = useRef<HTMLDivElement>(null);
     const swiperRef = useRef<SwiperCore | null>(null);
@@ -175,6 +186,17 @@ function Tabs({
         if (swiperRef.current && typeof activeIndex === 'number') {
             swiperRef.current.slideTo(activeIndex);
         }
+
+        const nav = navRef.current;
+        const activeTab = nav?.children[activeIndex] as HTMLElement | null;
+        if (nav && activeTab) {
+            const leftScrollPosition =
+                activeTab.offsetLeft + activeTab.offsetWidth / 2 - nav.offsetWidth / 2;
+            nav.scrollTo({
+                left: leftScrollPosition,
+                behavior: 'smooth'
+            });
+        }
     }, [activeIndex, swiperRef]);
 
     return (
@@ -271,8 +293,7 @@ function Tabs({
 
             {swiperOpen ? (
                 <Swiper
-                    autoHeight
-                    initialSlide={activeIndex}
+                    autoHeight={autoHeight}
                     onSlideChange={swiper => {
                         const tabIndex = swiper.activeIndex;
                         handleTabClick(swiper.activeIndex);
