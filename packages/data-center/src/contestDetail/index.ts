@@ -164,6 +164,8 @@ const WinDrawLoseTypeSchema = z.object({
     isClosed: z.boolean()
 });
 
+export type WinDrawLoseType = z.infer<typeof WinDrawLoseTypeSchema>;
+
 const EventInfoSchema = z.object({
     id: z.number(),
     isHome: z.boolean(),

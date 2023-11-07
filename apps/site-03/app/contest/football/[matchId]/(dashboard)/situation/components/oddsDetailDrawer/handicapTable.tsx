@@ -1,8 +1,7 @@
 import type { HandicapsInfo } from 'data-center';
-import GameStatus from './gameStatus';
+import { GameStatus } from 'ui';
+import { truncateFloatingPoint, handicapToString, handleMatchDateTime } from 'lib';
 import { useContestDetailStore } from '@/app/contest/football/[matchId]/contestDetailStore';
-import { formatFloatingPoint, formatHandicap } from '@/app/lib/formatNum';
-import { handleMatchDateTime } from '@/app/lib/gameTime';
 
 function HandicapTable({ dataList = [] }: { dataList: HandicapsInfo[] }) {
     const matchDetail = useContestDetailStore.use.matchDetail();
@@ -24,21 +23,17 @@ function HandicapTable({ dataList = [] }: { dataList: HandicapsInfo[] }) {
                     {dataList.map(data => (
                         <div className="tr" key={data.oddsChangeTime}>
                             <div className="td">
-                                <GameStatus
-                                    endTime={data.oddsChangeTime}
-                                    startTime={matchDetail.startTime}
-                                    state={data.state}
-                                />
+                                <GameStatus startTime={matchDetail.startTime} status={data.state} />
                             </div>
                             <div className="td">
                                 {data.homeScore}-{data.awayScore}
                             </div>
                             <div className="td">
-                                {formatFloatingPoint(Number(data.homeCurrentOdds), 2)}
+                                {truncateFloatingPoint(Number(data.homeCurrentOdds), 2)}
                             </div>
-                            <div className="td">{formatHandicap(data.currentHandicap)}</div>
+                            <div className="td">{handicapToString(data.currentHandicap)}</div>
                             <div className="td">
-                                {formatFloatingPoint(Number(data.awayCurrentOdds), 2)}
+                                {truncateFloatingPoint(Number(data.awayCurrentOdds), 2)}
                             </div>
                             <div className="td">{handleMatchDateTime(data.oddsChangeTime)}</div>
                         </div>

@@ -1,7 +1,7 @@
 import Drawer from '@mui/material/Drawer';
 import Image from 'next/image';
 import { Tab, Tabs } from 'ui';
-import type { HandicapsInfo, TotalGoalsInfo } from 'data-center';
+import type { HandicapsInfo, TotalGoalsInfo, WinDrawLoseType } from 'data-center';
 import { getCompanyLiveOddsDetail } from 'data-center';
 import { useEffect } from 'react';
 import leftBlackIcon from '../../img/left_black.png';
@@ -12,23 +12,6 @@ import HandicapTable from './handicapTable';
 import TotalGoalTable from './totalGoalTable';
 import WinLoseTable from './winLoseTable';
 import { useContestInfoStore } from '@/app/contestInfoStore';
-
-interface WinDrawLoseType {
-    matchId: number;
-    companyId: number;
-    initialHomeOdds: number;
-    initialDrawOdds: number;
-    initialAwayOdds: number;
-    currentHomeOdds: number;
-    currentDrawOdds: number;
-    currentAwayOdds: number;
-    oddsChangeTime: number;
-    oddsType: number;
-    state: number;
-    homeScore: number;
-    awayScore: number;
-    isClosed: number;
-}
 
 type TabTpye =
     | 'fullHandicap'
