@@ -1,6 +1,6 @@
 import type { MqttClient } from 'mqtt';
 import * as mqtt from 'mqtt';
-import { deProto, deProtoOdds, deProtoDetail } from './prtobuf';
+import { deProto, deProtoOdds, deProtoDetailEvent, deProtoDetailTechnicList } from './prtobuf';
 
 interface OriginalContestInfo {
     leagueChsShort: string;
@@ -72,8 +72,8 @@ const handleOddsMessage = async (message: Buffer) => {
     console.log('[MQTT On odds message]: ', decodedMessage);
 };
 
-const handleDetailMessage = async (message: Buffer, event: string) => {
-    const messageObject = await deProtoDetail(message, event);
+const handleDetailEventMessage = async (message: Buffer) => {
+    const messageObject = await deProtoDetailEvent(message);
 
     const decodedMessage = toSerializableObject(
         messageObject as unknown as Record<string, unknown>
@@ -84,7 +84,22 @@ const handleDetailMessage = async (message: Buffer, event: string) => {
     }
 
     // eslint-disable-next-line no-console -- Check mqtt message
-    console.log(`[MQTT On detail ${event} message]: `, decodedMessage);
+    console.log(`[MQTT On detail EventList message]: `, decodedMessage);
+};
+
+const handleDetailTechnicListMessage = async (message: Buffer) => {
+    const messageObject = await deProtoDetailTechnicList(message);
+
+    const decodedMessage = toSerializableObject(
+        messageObject as unknown as Record<string, unknown>
+    );
+
+    for (const messageMethod of useOddsQueue) {
+        messageMethod(decodedMessage as unknown as OriginalContestInfo);
+    }
+
+    // eslint-disable-next-line no-console -- Check mqtt message
+    console.log(`[MQTT On detail TechnicList message]: `, decodedMessage);
 };
 
 export const mqttService = {
@@ -96,12 +111,14 @@ export const mqttService = {
                 console.log('Mqtt connected');
                 client.subscribe('updatematch');
                 client.subscribe('updateasia_odds_change');
+                client.subscribe('updateevent');
+                client.subscribe('updatetechnic');
             });
             client.on('message', (topic, message) => {
                 if (topic === 'updatematch') void handleContestMessage(message);
                 if (topic === 'updateasia_odds_change') void handleOddsMessage(message);
-                if (topic === 'updateevent') void handleDetailMessage(message, 'EventList');
-                if (topic === 'updatetechnic') void handleDetailMessage(message, 'TechnicList');
+                if (topic === 'updateevent') void handleDetailEventMessage(message);
+                if (topic === 'updatetechnic') void handleDetailTechnicListMessage(message);
             });
             init = false;
         }

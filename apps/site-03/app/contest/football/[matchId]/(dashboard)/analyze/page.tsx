@@ -9,7 +9,10 @@ async function Page({ params }: { params: { matchId: number } }) {
     ]);
 
     if (!analysisData.success || !beforeGameData.success || !leaguePointsRank.success) {
-        return new Error();
+        console.error('analysisData', analysisData);
+        console.error('beforeGameData', beforeGameData);
+        console.error('leaguePointsRank', leaguePointsRank);
+        return null;
     }
 
     return (
