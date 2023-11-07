@@ -176,6 +176,17 @@ function Tabs({
         if (swiperRef.current && typeof activeIndex === 'number') {
             swiperRef.current.slideTo(activeIndex);
         }
+
+        const nav = navRef.current;
+        const activeTab = nav?.children[activeIndex] as HTMLElement | null;
+        if (nav && activeTab) {
+            const leftScrollPosition =
+                activeTab.offsetLeft + activeTab.offsetWidth / 2 - nav.offsetWidth / 2;
+            nav.scrollTo({
+                left: leftScrollPosition,
+                behavior: 'smooth'
+            });
+        }
     }, [activeIndex, swiperRef]);
 
     return (
