@@ -6,17 +6,18 @@ export interface ContestInfoType {
 }
 
 export interface FilterMap {
-    infoObj: Record<string, { name: string; pick: boolean; count: number }[]>;
+    infoObj: Record<string, string[]>;
     countMap: Record<string, number>;
 }
 
 export type FilterInfo = Record<string, ContestInfoType>;
 
-type ContestArr = { title: string; list: { name: string; pick: boolean; count: number }[] }[];
+type ContestArr = { title: string; list: string[] }[];
 
 export const formatFilterMap = (currentInfo: FilterInfo, filterKey: keyof ContestInfoType) => {
     const infoObj: FilterMap['infoObj'] = {};
     const countMap: FilterMap['countMap'] = {};
+    const doubleTable: Record<string, boolean> = {};
 
     for (const key in currentInfo) {
         const value = currentInfo[key];
@@ -34,11 +35,13 @@ export const formatFilterMap = (currentInfo: FilterInfo, filterKey: keyof Contes
             countMap[filterValue] = 1;
         }
 
-        const newObj = {
-            name: filterValue,
-            pick: false,
-            count: countMap[filterValue]
-        };
+        if (doubleTable[value[filterKey]]) {
+            continue;
+        } else {
+            doubleTable[value[filterKey]] = true;
+        }
+
+        const newObj = filterValue;
 
         if (Object.hasOwnProperty.call(infoObj, words)) {
             infoObj[words].push(newObj);
@@ -51,17 +54,14 @@ export const formatFilterMap = (currentInfo: FilterInfo, filterKey: keyof Contes
 };
 
 export const formatContestMap = (currentInfo: FilterInfo, filterKey: keyof ContestInfoType) => {
-    const { infoObj, countMap } = formatFilterMap(currentInfo, filterKey);
+    const { infoObj } = formatFilterMap(currentInfo, filterKey);
     const newArr: ContestArr = [];
     for (let i = 'A'.charCodeAt(0); i <= 'Z'.charCodeAt(0); i++) {
         const word = String.fromCharCode(i);
         if (!Object.hasOwnProperty.call(infoObj, word)) continue;
         newArr.push({
             title: word,
-            list: infoObj[word].map(item => {
-                item.count = countMap[item.name];
-                return item;
-            })
+            list: infoObj[word]
         });
     }
     return newArr;

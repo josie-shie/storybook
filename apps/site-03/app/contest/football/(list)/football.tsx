@@ -7,6 +7,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import GameCard from './components/gameCard';
 import style from './football.module.scss';
 import { creatContestListStore, useContestListStore } from './contestListStore';
+import Filter from './components/filter';
 import { useContestInfoStore } from '@/app/contestInfoStore';
 
 function ContestList() {
@@ -111,9 +112,12 @@ function Football({ todayContest }: { todayContest: GetContestListResponse }) {
     creatContestListStore(todayContest);
 
     return (
-        <div className={style.football}>
-            <ContestList />
-        </div>
+        <>
+            <div className={style.football}>
+                <ContestList />
+            </div>
+            <Filter />
+        </>
     );
 }
 
