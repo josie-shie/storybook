@@ -10,3 +10,4 @@ export { timestampToString, timestampToMonthDay } from './src/timeFormat';
 export { handleStartTime, handleGameTime, handleMatchDateTime } from './src/gameStatus';
 export { mqttService } from './src/mqttService';
 export { parseMatchInfo } from './src/formatExtraExplain';
+export * from './src/formatFilterMap';

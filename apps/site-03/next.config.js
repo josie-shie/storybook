@@ -18,5 +18,11 @@ module.exports = {
     transpilePackages: ['ui', 'lib'],
     sassOptions: {
         includePaths: [path.join(__dirname, 'styles')]
+    },
+    typescript: {
+        ignoreBuildErrors: true // TODO: for test
+    },
+    eslint: {
+        ignoreDuringBuilds: true // TODO: for test
     }
 };

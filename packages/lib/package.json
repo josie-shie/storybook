@@ -11,6 +11,7 @@
         "dayjs": "^1.11.10",
         "js-cookie": "^3.0.5",
         "mqtt": "^5.1.4",
+        "pinyin-pro": "^3.17.0",
         "protobufjs": "^7.2.5",
         "zustand": "^4.4.1"
     },

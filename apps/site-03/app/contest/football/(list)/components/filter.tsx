@@ -17,6 +17,7 @@ function Filter({
         swiperOpen: true,
         buttonRadius: 30
     };
+
     return (
         <BottomDrawer isOpen={isOpen} onClose={onClose} onOpen={onOpen}>
             <div className={style.filter}>
