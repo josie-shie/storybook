@@ -19,7 +19,7 @@ function DetailLayout({ children }: { children: ReactNode }) {
     const [showFilter, setShowFilter] = useState(false);
     const route = usePathname().split('/');
     const tabStyle = {
-        gap: 8,
+        gap: 4,
         swiperOpen: true,
         scrolling: true,
         buttonRadius: 30

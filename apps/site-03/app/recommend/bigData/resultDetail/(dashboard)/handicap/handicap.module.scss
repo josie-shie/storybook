@@ -32,10 +32,13 @@
                 text-align: center;
 
                 .bar {
-                    position: relative;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    gap: 2px;
                     width: 8px;
                     height: 141px;
-                    background: #d9d9d9;
+                    background: #fff;
                     border-radius: 30px;
                     transform: scaleY(0);
                     transform-origin: center;
@@ -43,21 +46,19 @@
                     animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
                     overflow: hidden;
 
-                    &::before {
-                        content: '';
-                        position: absolute;
-                        top: 0;
-                        left: 0;
+                    .top {
                         width: 100%;
                         height: 40%;
                         background: #00ac6e;
                     }
 
-                    &::after {
-                        content: '';
-                        position: absolute;
-                        bottom: 0;
-                        left: 0;
+                    .middle {
+                        width: 100%;
+                        height: 20%;
+                        background: #d9d9d9;
+                    }
+
+                    .bottom {
                         width: 100%;
                         height: 40%;
                         background: #1782ff;
