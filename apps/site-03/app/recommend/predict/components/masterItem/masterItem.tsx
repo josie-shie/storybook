@@ -1,4 +1,6 @@
+'use client';
 import { IconFlame } from '@tabler/icons-react';
+import { motion } from 'framer-motion';
 import style from './masterItem.module.scss';
 import Avatar from '@/components/avatar/avatar';
 import Tag from '@/components/tag/tag';
@@ -36,13 +38,21 @@ function MasterItem({ item }: { item: PropsType }) {
                     </div>
                 </div>
                 {item.followed ? (
-                    <button className={style.followedButton} type="button">
+                    <motion.button
+                        className={style.followedButton}
+                        type="button"
+                        whileTap={{ scale: 0.9 }}
+                    >
                         已关注
-                    </button>
+                    </motion.button>
                 ) : (
-                    <button className={style.followButton} type="button">
+                    <motion.button
+                        className={style.followButton}
+                        type="button"
+                        whileTap={{ scale: 0.9 }}
+                    >
                         关注
-                    </button>
+                    </motion.button>
                 )}
             </div>
             <div className={style.description}>{item.description}</div>
