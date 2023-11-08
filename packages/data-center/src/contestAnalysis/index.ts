@@ -152,8 +152,8 @@ const LeagueStandingsSchema = z.object({
 
 const GetLeaguePointsRankSchema = z.object({
     getLeagueStandings: z.object({
-        homeTeamStandings: LeagueStandingsSchema,
-        awayTeamStandings: LeagueStandingsSchema
+        homeTeamStandings: z.nullable(LeagueStandingsSchema),
+        awayTeamStandings: z.nullable(LeagueStandingsSchema)
     })
 });
 
@@ -180,8 +180,8 @@ export interface LeaguePointsRank {
 }
 
 export interface GetLeaguePointsRankResponse {
-    homeTeam: LeaguePointsRank;
-    awayTeam: LeaguePointsRank;
+    homeTeam: LeaguePointsRank | Record<'total' | 'home' | 'away' | 'recent', never>;
+    awayTeam: LeaguePointsRank | Record<'total' | 'home' | 'away' | 'recent', never>;
 }
 
 const HTHEuropeOddsSchema = z.object({
@@ -1053,6 +1053,16 @@ export const getLeaguePointsRank = async (
         GetLeaguePointsRankSchema.parse(data);
 
         const { homeTeamStandings, awayTeamStandings } = data.getLeagueStandings;
+
+        if (!homeTeamStandings || !awayTeamStandings) {
+            return {
+                success: true,
+                data: {
+                    homeTeam: {} as Record<string, never>,
+                    awayTeam: {} as Record<string, never>
+                }
+            };
+        }
 
         const homeTeam = {
             total: {

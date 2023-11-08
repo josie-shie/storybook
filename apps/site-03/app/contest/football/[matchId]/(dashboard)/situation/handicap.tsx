@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { handleStartTime } from 'lib';
+import type { HandicapsInfo } from 'data-center';
 import { useContestDetailStore } from '../../contestDetailStore';
 import { useSituationStore } from '../../situationStore';
 import style from './situation.module.scss';
@@ -19,9 +20,93 @@ const handicapRadioMapping = {
     full: 'fullHandicap'
 };
 
+function InProgress({
+    targetHandicap,
+    setIsOddsDetailDrawerOpen
+}: {
+    targetHandicap: HandicapsInfo[];
+    setIsOddsDetailDrawerOpen: (value: boolean) => void;
+}) {
+    const matchDetail = useContestDetailStore.use.matchDetail();
+    return (
+        <>
+            {targetHandicap.map((now, idx) => (
+                <div className="tr" key={`before_${idx.toString()}`}>
+                    <div className="td">
+                        {handleStartTime(matchDetail.startTime, now.oddsChangeTime)}
+                    </div>
+                    <div className="td">
+                        {now.homeScore}-{now.awayScore}
+                    </div>
+                    <div className="td">
+                        <p>{now.homeInitialOdds}</p>
+                        <p>{now.initialHandicap}</p>
+                        <p>{now.awayInitialOdds}</p>
+                    </div>
+                    <div className="td">
+                        <p>{now.homeCurrentOdds}</p>
+                        <p>{now.currentHandicap}</p>
+                        <p>
+                            <span>{now.awayCurrentOdds}</span>
+                            <Image
+                                alt=""
+                                height={14}
+                                onClick={() => {
+                                    setIsOddsDetailDrawerOpen(true);
+                                }}
+                                src={rightBlack.src}
+                                width={14}
+                            />
+                        </p>
+                    </div>
+                </div>
+            ))}
+        </>
+    );
+}
+
+function NotStarted({
+    targetHandicap,
+    setIsOddsDetailDrawerOpen
+}: {
+    targetHandicap: HandicapsInfo[];
+    setIsOddsDetailDrawerOpen: (value: boolean) => void;
+}) {
+    return (
+        <>
+            {targetHandicap.map((before, idx) => (
+                <div className="tr" key={`before_${idx.toString()}`}>
+                    <div className="td">未</div>
+                    <div className="td">-</div>
+                    <div className="td">
+                        <p>{before.homeInitialOdds}</p>
+                        <p>{before.initialHandicap}</p>
+                        <p>{before.awayInitialOdds}</p>
+                    </div>
+                    <div className="td">
+                        <p>{before.homeCurrentOdds}</p>
+                        <p>{before.currentHandicap}</p>
+                        <p>
+                            <span>{before.awayCurrentOdds}</span>
+                            <Image
+                                alt=""
+                                height={14}
+                                onClick={() => {
+                                    setIsOddsDetailDrawerOpen(true);
+                                }}
+                                src={rightBlack.src}
+                                width={14}
+                            />
+                        </p>
+                    </div>
+                </div>
+            ))}
+        </>
+    );
+}
+
 function Handicap() {
     const handicapData = useSituationStore.use.handicapsData();
-    const matchDetail = useContestDetailStore.use.matchDetail();
     const [handicapRadio, setHandicapRadio] = useState<'half' | 'full'>('half');
     const [handicapSwitch, setHandicapSwitch] = useState(3);
     const setCompanyId = useSituationStore.use.setCompanyId();
@@ -32,6 +117,11 @@ function Handicap() {
         setHandicapSwitch(switchValue);
         setCompanyId(switchValue);
     };
+
+    const targetHandicap = handicapData[handicapRadio][handicapSwitch];
+    const hasData: boolean =
+        typeof targetHandicap === 'undefined' ||
+        targetHandicap.inProgress.length + targetHandicap.notStarted.length === 0;
 
     return (
         <div className={style.handicap}>
@@ -65,73 +155,22 @@ function Handicap() {
                     </div>
                 </div>
                 <div className="tableBody">
-                    {typeof handicapData[handicapRadio][handicapSwitch] !== 'undefined'
-                        ? handicapData[handicapRadio][handicapSwitch].notStarted.map(
-                              (before, idx) => (
-                                  <div className="tr" key={`before_${idx.toString()}`}>
-                                      <div className="td">未</div>
-                                      <div className="td">
-                                          {before.homeScore}-{before.awayScore}
-                                      </div>
-                                      <div className="td">
-                                          <p>{before.homeInitialOdds}</p>
-                                          <p>{before.initialHandicap}</p>
-                                          <p>{before.awayInitialOdds}</p>
-                                      </div>
-                                      <div className="td">
-                                          <p>{before.homeCurrentOdds}</p>
-                                          <p>{before.currentHandicap}</p>
-                                          <p>
-                                              <span>{before.awayCurrentOdds}</span>
-                                              <Image
-                                                  alt=""
-                                                  height={14}
-                                                  onClick={() => {
-                                                      setIsOddsDetailDrawerOpen(true);
-                                                  }}
-                                                  src={rightBlack.src}
-                                                  width={14}
-                                              />
-                                          </p>
-                                      </div>
-                                  </div>
-                              )
-                          )
-                        : null}
-
-                    {typeof handicapData[handicapRadio][handicapSwitch] !== 'undefined'
-                        ? handicapData[handicapRadio][handicapSwitch].inProgress.map((now, idx) => (
-                              <div className="tr" key={`before_${idx.toString()}`}>
-                                  <div className="td">
-                                      {handleStartTime(matchDetail.startTime, now.oddsChangeTime)}
-                                  </div>
-                                  <div className="td">
-                                      {now.homeScore}-{now.awayScore}
-                                  </div>
-                                  <div className="td">
-                                      <p>{now.homeInitialOdds}</p>
-                                      <p>{now.initialHandicap}</p>
-                                      <p>{now.awayInitialOdds}</p>
-                                  </div>
-                                  <div className="td">
-                                      <p>{now.homeCurrentOdds}</p>
-                                      <p>{now.currentHandicap}</p>
-                                      <p>
-                                          <span>{now.awayCurrentOdds}</span>
-                                          <Image
-                                              alt=""
-                                              height={14}
-                                              onClick={() => {
-                                                  setIsOddsDetailDrawerOpen(true);
-                                              }}
-                                              src={rightBlack.src}
-                                              width={14}
-                                          />
-                                      </p>
-                                  </div>
-                              </div>
-                          ))
-                        : null}
+                    {hasData ? (
+                        <div className="tr">
+                            <div className="td">暂无数据</div>
+                        </div>
+                    ) : (
+                        <>
+                            <InProgress
+                                setIsOddsDetailDrawerOpen={setIsOddsDetailDrawerOpen}
+                                targetHandicap={targetHandicap.inProgress}
+                            />
+                            <NotStarted
+                                setIsOddsDetailDrawerOpen={setIsOddsDetailDrawerOpen}
+                                targetHandicap={targetHandicap.notStarted}
+                            />
+                        </>
+                    )}
                 </div>
             </div>
         </div>
