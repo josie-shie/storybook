@@ -26,13 +26,9 @@ const initialState = (
             ...(typeof info.matchTime === 'number' && {
                 matchTime: timestampToString(info.matchTime, 'M-DD HH:mm')
             }),
-            ...(typeof info.startTime === 'number' &&
-                typeof info.matchTime === 'number' && {
-                    startTime: timestampToString(
-                        info.startTime || info.matchTime,
-                        'YYYY-M-DD HH:mm'
-                    )
-                }),
+            ...(typeof info.startTime === 'number' && {
+                startTime: timestampToString(info.startTime, 'YYYY-M-DD HH:mm')
+            }),
             ...(typeof info.handicapCurrent === 'number' && {
                 handicapCurrent: convertHandicap(info.handicapCurrent)
             }),
