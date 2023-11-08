@@ -15,6 +15,7 @@ const switchOptins = [
 ];
 
 type TabTpye = 'fullHandicap' | 'halfHandicap';
+type RadioType = 'half' | 'full';
 const handicapRadioMapping = {
     half: 'halfHandicap',
     full: 'fullHandicap'
@@ -22,10 +23,18 @@ const handicapRadioMapping = {
 
 function InProgress({
     targetHandicap,
-    setIsOddsDetailDrawerOpen
+    setIsOddsDetailDrawerOpen,
+    setDrawerTabValue,
+    handicapRadio,
+    setCompanyId,
+    handicapSwitch
 }: {
     targetHandicap: HandicapsInfo[];
     setIsOddsDetailDrawerOpen: (value: boolean) => void;
+    setDrawerTabValue: (value: TabTpye) => void;
+    handicapRadio: RadioType;
+    setCompanyId: (value: number) => void;
+    handicapSwitch: number;
 }) {
     const matchDetail = useContestDetailStore.use.matchDetail();
     return (
@@ -53,6 +62,10 @@ function InProgress({
                                 height={14}
                                 onClick={() => {
                                     setIsOddsDetailDrawerOpen(true);
+                                    setDrawerTabValue(
+                                        handicapRadioMapping[handicapRadio] as TabTpye
+                                    );
+                                    setCompanyId(handicapSwitch);
                                 }}
                                 src={rightBlack.src}
                                 width={14}
@@ -67,10 +80,18 @@ function InProgress({
 
 function NotStarted({
     targetHandicap,
-    setIsOddsDetailDrawerOpen
+    setIsOddsDetailDrawerOpen,
+    setDrawerTabValue,
+    handicapRadio,
+    setCompanyId,
+    handicapSwitch
 }: {
     targetHandicap: HandicapsInfo[];
     setIsOddsDetailDrawerOpen: (value: boolean) => void;
+    setDrawerTabValue: (value: TabTpye) => void;
+    handicapRadio: RadioType;
+    setCompanyId: (value: number) => void;
+    handicapSwitch: number;
 }) {
     return (
         <>
@@ -92,7 +113,11 @@ function NotStarted({
                                 alt=""
                                 height={14}
                                 onClick={() => {
+                                    setDrawerTabValue(
+                                        handicapRadioMapping[handicapRadio] as TabTpye
+                                    );
                                     setIsOddsDetailDrawerOpen(true);
+                                    setCompanyId(handicapSwitch);
                                 }}
                                 src={rightBlack.src}
                                 width={14}
@@ -107,7 +132,7 @@ function NotStarted({
 
 function Handicap() {
     const handicapData = useSituationStore.use.handicapsData();
-    const [handicapRadio, setHandicapRadio] = useState<'half' | 'full'>('half');
+    const [handicapRadio, setHandicapRadio] = useState<RadioType>('half');
     const [handicapSwitch, setHandicapSwitch] = useState(3);
     const setCompanyId = useSituationStore.use.setCompanyId();
     const setDrawerTabValue = useSituationStore.use.setOddsDeatilDrawerTabValue();
@@ -162,10 +187,18 @@ function Handicap() {
                     ) : (
                         <>
                             <InProgress
+                                handicapRadio={handicapRadio}
+                                handicapSwitch={handicapSwitch}
+                                setCompanyId={setCompanyId}
+                                setDrawerTabValue={setDrawerTabValue}
                                 setIsOddsDetailDrawerOpen={setIsOddsDetailDrawerOpen}
                                 targetHandicap={targetHandicap.inProgress}
                             />
                             <NotStarted
+                                handicapRadio={handicapRadio}
+                                handicapSwitch={handicapSwitch}
+                                setCompanyId={setCompanyId}
+                                setDrawerTabValue={setDrawerTabValue}
                                 setIsOddsDetailDrawerOpen={setIsOddsDetailDrawerOpen}
                                 targetHandicap={targetHandicap.notStarted}
                             />

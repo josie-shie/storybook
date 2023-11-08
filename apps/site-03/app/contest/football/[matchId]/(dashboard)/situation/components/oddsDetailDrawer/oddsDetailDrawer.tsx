@@ -115,6 +115,7 @@ function HandicapDrawer() {
                 </div>
                 <Tabs
                     buttonRadius={tabStyle.buttonRadius}
+                    defaultValue={tabList.findIndex(item => item.value === tabValue) || undefined}
                     gap={tabStyle.gap}
                     onTabChange={handleChange}
                     position="center"
