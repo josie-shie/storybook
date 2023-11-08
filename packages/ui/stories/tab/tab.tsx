@@ -17,11 +17,11 @@ interface TabProps {
 }
 
 interface TabsProps {
+    defaultValue?: string | number;
     /**
-     * tab header default active
-     * tab header 預設active
+     * tab header map
      */
-    defaultValue?: number;
+    // tabValueToIndexMap?: Record<string, number>;
     /**
      * tab header position
      * tab header位置的切換
@@ -83,7 +83,7 @@ function Tabs({
     onTabChange,
     ...props
 }: TabsProps) {
-    const [activeIndex, setActiveIndex] = useState(defaultValue || 0);
+    const [activeIndex, setActiveIndex] = useState(0);
     const navRef = useRef<HTMLDivElement>(null);
     const headerLinerRef = useRef<HTMLDivElement>(null);
     const swiperRef = useRef<SwiperCore | null>(null);
@@ -199,6 +199,26 @@ function Tabs({
             });
         }
     }, [activeIndex, swiperRef]);
+
+    useEffect(() => {
+        if (typeof defaultValue === 'number') {
+            setActiveIndex(defaultValue);
+        } else if (typeof defaultValue === 'string') {
+            const index = React.Children.toArray(props.children).findIndex(child => {
+                if (
+                    React.isValidElement(child) &&
+                    (child as React.ReactElement<{ value: string }>).props.value === defaultValue
+                ) {
+                    return true;
+                }
+                return false;
+            });
+
+            if (index !== -1) {
+                setActiveIndex(index);
+            }
+        }
+    }, [defaultValue, props.children]);
 
     return (
         <div className={`ui-tab ${style.tab} ${style[position]}`}>
