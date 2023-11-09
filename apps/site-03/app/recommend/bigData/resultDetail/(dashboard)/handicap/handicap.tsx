@@ -39,7 +39,11 @@ function Handicap() {
                             .fill(null)
                             .map((_, index) => (
                                 <li key={`${9 - index}`}>
-                                    <span className={style.bar} />
+                                    <span className={style.bar}>
+                                        <span className={style.top} />
+                                        <span className={style.middle} />
+                                        <span className={style.bottom} />
+                                    </span>
                                     <span className={style.text}>{`W${9 - index}`}</span>
                                 </li>
                             ))}
