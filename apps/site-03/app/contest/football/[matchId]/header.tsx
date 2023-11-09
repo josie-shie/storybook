@@ -8,6 +8,21 @@ import { useContestDetailStore } from './contestDetailStore';
 import TeamLogo from './components/teamLogo';
 import { useContestInfoStore } from '@/app/contestInfoStore';
 
+const statusStyleMap = {
+    '0': 'notYet',
+    '1': 'midfielder',
+    '2': 'midfielder',
+    '3': 'midfielder',
+    '4': 'playOff',
+    '5': 'playOff',
+    '-1': 'finish',
+    '-10': 'notYet',
+    '-11': 'notYet',
+    '-12': 'notYet',
+    '-13': 'notYet',
+    '-14': 'notYet'
+};
+
 function Header() {
     const matchDetail = useContestDetailStore.use.matchDetail();
     const layoutDisplayed = useContestDetailStore.use.layoutDisplayed();
@@ -55,7 +70,11 @@ function Header() {
                 <div className={style.scoreBar}>
                     <TeamLogo alt="" height={24} src={matchDetail.homeLogo} width={24} />
                     <p className={style.score}>{homeLiveScore}</p>
-                    <GameStatus startTime={matchDetail.startTime} status={liveState} />
+                    <GameStatus
+                        className={`gameTime ${statusStyleMap[matchDetail.state]}`}
+                        startTime={matchDetail.startTime}
+                        status={liveState}
+                    />
                     <p className={style.score}>{awayLiveScore}</p>
                     <TeamLogo alt="" height={24} src={matchDetail.awayLogo} width={24} />
                 </div>
