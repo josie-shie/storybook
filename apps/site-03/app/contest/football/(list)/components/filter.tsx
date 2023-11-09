@@ -39,10 +39,15 @@ function Filter() {
 
     const filterInfo = useContestListStore.use.filterInfo();
     const filterSelected = useContestListStore.use.filterSelected();
+    const filterCounter = useContestListStore.use.filterCounter();
     const filterPick = useContestListStore.use.setFilterSelected();
+    const filterSubmit = useContestListStore.use.setFilterList();
+    const revertFilter = useContestListStore.use.revertFilterList();
+    const selectAll = useContestListStore.use.selectAll();
 
-    const pick = (name: string, group: string) => {
-        filterPick(name, group);
+    const submit = (group: 'league' | 'country') => {
+        filterSubmit(group);
+        onClose();
     };
 
     return (
@@ -76,7 +81,7 @@ function Filter() {
                                                                 }`}
                                                                 key={item}
                                                                 onClick={() => {
-                                                                    pick(item, 'league');
+                                                                    filterPick(item, 'league');
                                                                 }}
                                                                 whileTap={{ scale: 0.9 }}
                                                             >
@@ -93,6 +98,9 @@ function Filter() {
                                 <div className={style.functionButton}>
                                     <motion.button
                                         className={style.button}
+                                        onClick={() => {
+                                            selectAll('league');
+                                        }}
                                         type="button"
                                         whileTap={{ scale: 0.9 }}
                                     >
@@ -100,6 +108,9 @@ function Filter() {
                                     </motion.button>
                                     <motion.button
                                         className={style.button}
+                                        onClick={() => {
+                                            revertFilter('league');
+                                        }}
                                         type="button"
                                         whileTap={{ scale: 0.9 }}
                                     >
@@ -107,10 +118,17 @@ function Filter() {
                                     </motion.button>
                                 </div>
                                 <div className={style.counter}>
-                                    已選 <span className={style.blue}>77</span> 場
+                                    已選 <span className={style.blue}>{filterCounter.league}</span>{' '}
+                                    場
                                 </div>
 
-                                <motion.div className={style.confirm} whileTap={{ scale: 0.9 }}>
+                                <motion.div
+                                    className={style.confirm}
+                                    onClick={() => {
+                                        submit('league');
+                                    }}
+                                    whileTap={{ scale: 0.9 }}
+                                >
                                     確定
                                 </motion.div>
                             </div>
@@ -134,7 +152,7 @@ function Filter() {
                                                                 }`}
                                                                 key={item}
                                                                 onClick={() => {
-                                                                    pick(item, 'country');
+                                                                    filterPick(item, 'country');
                                                                 }}
                                                                 whileTap={{ scale: 0.9 }}
                                                             >
@@ -151,6 +169,9 @@ function Filter() {
                                 <div className={style.functionButton}>
                                     <motion.button
                                         className={style.button}
+                                        onClick={() => {
+                                            selectAll('country');
+                                        }}
                                         type="button"
                                         whileTap={{ scale: 0.9 }}
                                     >
@@ -158,6 +179,9 @@ function Filter() {
                                     </motion.button>
                                     <motion.button
                                         className={style.button}
+                                        onClick={() => {
+                                            revertFilter('country');
+                                        }}
                                         type="button"
                                         whileTap={{ scale: 0.9 }}
                                     >
@@ -165,10 +189,17 @@ function Filter() {
                                     </motion.button>
                                 </div>
                                 <div className={style.counter}>
-                                    已選 <span className={style.blue}>66</span> 場
+                                    已選 <span className={style.blue}>{filterCounter.country}</span>{' '}
+                                    場
                                 </div>
 
-                                <motion.div className={style.confirm} whileTap={{ scale: 0.9 }}>
+                                <motion.div
+                                    className={style.confirm}
+                                    onClick={() => {
+                                        submit('country');
+                                    }}
+                                    whileTap={{ scale: 0.9 }}
+                                >
                                     確定
                                 </motion.div>
                             </div>

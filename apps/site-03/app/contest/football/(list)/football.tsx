@@ -15,6 +15,7 @@ function ContestList() {
     const contestList = useContestListStore.use.contestList();
     const contestInfo = useContestListStore.use.contestInfo();
     const globalStore = useContestInfoStore.use.contestInfo();
+    const filterList = useContestListStore.use.filterList();
 
     const searchParams = useSearchParams();
     const status = searchParams.get('status') || 'all';
@@ -28,7 +29,14 @@ function ContestList() {
     };
 
     const filterByStatus = (list: number[], statusFunc: (state: number) => boolean) => {
+        const filterGroup = filterList.group === 'league' ? 'leagueChsShort' : 'countryCn';
         return list.filter(item => {
+            if (
+                Object.keys(filterList.selectedTable).length > 0 &&
+                !filterList.selectedTable[contestInfo[item][filterGroup]]
+            ) {
+                return false;
+            }
             const state =
                 Object.hasOwnProperty.call(globalStore, item) &&
                 globalStore[item].state !== undefined
