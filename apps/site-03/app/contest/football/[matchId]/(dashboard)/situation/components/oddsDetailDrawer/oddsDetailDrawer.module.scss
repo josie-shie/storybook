@@ -22,7 +22,7 @@
 
             .td:last-child,
             .th:last-child {
-                // width: 100px;
+                min-width: 82px;
                 white-space: nowrap;
             }
         }
