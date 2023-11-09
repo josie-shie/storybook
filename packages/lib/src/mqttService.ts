@@ -131,8 +131,7 @@ const handleContestMessage = async (message: Buffer) => {
         messageMethod(decodedMessage as unknown as OriginalContestInfo);
     }
 
-    // eslint-disable-next-line no-console -- Check mqtt message
-    console.log('[MQTT On contest message]: ', decodedMessage);
+    // console.log('[MQTT On contest message ContestMessage]: ', decodedMessage);
 };
 
 export type Match = Partial<{
@@ -316,12 +315,11 @@ const handleOddsMessage = async (message: Buffer) => {
         messageObject as unknown as Record<string, unknown>
     );
     for (const messageMethod of useOddsQueue) {
-        messageMethod(decodedMessage as unknown as OriginalContestInfo);
         const formatDecodedMessage = createHashTable(decodedMessage);
         messageMethod(formatDecodedMessage);
     }
-    // eslint-disable-next-line no-console -- Check mqtt message
-    console.log('[MQTT On odds message]: ', decodedMessage);
+
+    // console.log('[MQTT On odds message]: ', decodedMessage);
 };
 
 const handleDetailEventMessage = async (message: Buffer) => {
@@ -335,8 +333,7 @@ const handleDetailEventMessage = async (message: Buffer) => {
         messageMethod(decodedMessage as unknown as EventInfoData);
     }
 
-    // eslint-disable-next-line no-console -- Check mqtt message
-    console.log(`[MQTT On detail EventList message]: `, decodedMessage);
+    // console.log(`[MQTT On detail EventList message]: `, decodedMessage);
 };
 
 const handleDetailTechnicListMessage = async (message: Buffer) => {
@@ -350,8 +347,7 @@ const handleDetailTechnicListMessage = async (message: Buffer) => {
         messageMethod(decodedMessage as unknown as TechnicalInfoData);
     }
 
-    // eslint-disable-next-line no-console -- Check mqtt message
-    console.log(`[MQTT On detail TechnicList message]: `, decodedMessage);
+    // console.log(`[MQTT On detail TechnicList message]: `, decodedMessage);
 };
 
 export const mqttService = {
@@ -379,7 +375,7 @@ export const mqttService = {
     getMessage: (onMessage: (data: OriginalContestInfo) => void) => {
         useMessageQueue.push(onMessage);
     },
-    getOdds: (onMessage: (data: OriginalContestInfo) => void) => {
+    getOdds: (onMessage: (data: OddChangeType) => void) => {
         useOddsQueue.push(onMessage);
     },
     getTechnicList: (onMessage: (data: TechnicalInfoData) => void) => {

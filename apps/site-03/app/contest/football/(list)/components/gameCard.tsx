@@ -138,9 +138,9 @@ function OddsInfo({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId:
 function TeamInfo({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId: number }) {
     const globalStore = useContestInfoStore.use.contestInfo();
     const syncData = Object.hasOwnProperty.call(globalStore, matchId) ? globalStore[matchId] : {};
-    if (syncData.matchId)
-        // eslint-disable-next-line -- test info
-        console.log(syncData, contestInfo.awayChs, contestInfo.homeChs, '此賽事更新');
+    // if (syncData.matchId)
+
+    // console.log(syncData, contestInfo.awayChs, contestInfo.homeChs, '此賽事更新');
 
     return (
         <div className={style.teamInfo}>
@@ -207,6 +207,7 @@ function TopArea({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId: 
                 </div>
                 <div className={style.status}>
                     <GameStatus
+                        injuryTime={syncData.injuryTime || contestInfo.injuryTime}
                         startTime={contestInfo.startTime}
                         status={syncData.state || contestInfo.state}
                     />
