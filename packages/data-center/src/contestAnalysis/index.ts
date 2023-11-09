@@ -1218,11 +1218,11 @@ export const getAnalysisOthers = async (
                     variables: {
                         input1: {
                             matchIds: headToHeadMatchesId,
-                            companyId: '3'
+                            companyId: 3
                         },
                         input2: {
                             matchIds: headToHeadMatchesId,
-                            companyId: '8'
+                            companyId: 8
                         }
                     }
                 }
@@ -1239,11 +1239,11 @@ export const getAnalysisOthers = async (
                         variables: {
                             input1: {
                                 matchIds: homeLastMatchesId,
-                                companyId: '3'
+                                companyId: 3
                             },
                             input2: {
                                 matchIds: homeLastMatchesId,
-                                companyId: '8'
+                                companyId: 8
                             }
                         }
                     }
@@ -1260,11 +1260,11 @@ export const getAnalysisOthers = async (
                         variables: {
                             input1: {
                                 matchIds: awayLastMatchesId,
-                                companyId: '3'
+                                companyId: 3
                             },
                             input2: {
                                 matchIds: awayLastMatchesId,
-                                companyId: '8'
+                                companyId: 8
                             }
                         }
                     }
