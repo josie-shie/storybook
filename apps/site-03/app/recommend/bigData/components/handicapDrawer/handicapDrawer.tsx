@@ -28,14 +28,13 @@ function RecordFilter({
                     </div>
                 </div>
                 <HandicapTips gamesNumber={4} hot />
-                <HandicapTips gamesNumber={3} hot={false} />
-                <HandicapTips gamesNumber={3} hot={false} />
-                <HandicapTips gamesNumber={3} hot={false} />
-                <HandicapTips gamesNumber={3} hot={false} />
-                <HandicapTips gamesNumber={3} hot={false} />
-                <HandicapTips gamesNumber={3} hot={false} />
-                <HandicapTips gamesNumber={3} hot={false} />
-                <HandicapTips gamesNumber={3} hot={false} />
+                <HandicapTips betType="handicap" gamesNumber={5} />
+                <HandicapTips betStatus="win" gamesNumber={3} />
+                <HandicapTips betStatus="lose" gamesNumber={3} />
+                <HandicapTips betStatus="big" gamesNumber={3} hot />
+                <HandicapTips gamesNumber={6} hot />
+                <HandicapTips betStatus="big" gamesNumber={6} />
+                <HandicapTips betStatus="big" gamesNumber={6} />
             </div>
         </BottomDrawer>
     );

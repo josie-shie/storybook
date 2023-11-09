@@ -1,4 +1,6 @@
+'use client';
 import { IconFilter } from '@tabler/icons-react';
+import { motion } from 'framer-motion';
 import FilterItem from '../components/filterItem/filterItem';
 import style from './filter.module.scss';
 
@@ -42,10 +44,14 @@ function Filter() {
         <div className={style.filter}>
             <div className={style.block}>
                 <span />
-                <button className={style.filterButton} type="button">
+                <motion.button
+                    className={style.filterButton}
+                    type="button"
+                    whileTap={{ scale: 0.9 }}
+                >
                     <span>篩選</span>
                     <IconFilter color="#4489FF" size={16} />
-                </button>
+                </motion.button>
             </div>
             <div className={style.listContainer}>
                 {filterList.map(item => (

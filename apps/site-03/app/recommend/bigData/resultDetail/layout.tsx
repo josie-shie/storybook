@@ -3,17 +3,12 @@ import type { ReactNode } from 'react';
 import { useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { Tabs, Tab } from 'ui';
-import type { Metadata } from 'next';
 import Image from 'next/image';
 import style from './dashboard.module.scss';
 import FilterIcon from './img/filter.png';
 import Filter from './components/filter/filter';
 import BigDataDetail from './bigDataDetail';
 import HeaderTitleFilter from '@/components/header/headerTitleFilter';
-
-export const metadata: Metadata = {
-    title: '分析結果'
-};
 
 function DetailLayout({ children }: { children: ReactNode }) {
     const [showFilter, setShowFilter] = useState(false);

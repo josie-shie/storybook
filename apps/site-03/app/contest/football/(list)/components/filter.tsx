@@ -1,24 +1,52 @@
 import { motion } from 'framer-motion';
 import { Tab, Tabs } from 'ui';
+import { useSearchParams, useRouter, usePathname } from 'next/navigation';
+import { useCallback } from 'react';
+import { useContestListStore } from '../contestListStore';
 import style from './filter.module.scss';
 import BottomDrawer from '@/components/drawer/bottomDrawer';
 
-function Filter({
-    isOpen,
-    onOpen,
-    onClose
-}: {
-    isOpen: boolean;
-    onOpen: () => void;
-    onClose: () => void;
-}) {
+function Filter() {
     const tabStyle = {
         gap: 8,
         swiperOpen: true,
         buttonRadius: 30
     };
+    const searchParams = useSearchParams();
+    const isOpen = searchParams.get('filter');
+    const pathname = usePathname();
+    const router = useRouter();
+
+    const createQueryString = useCallback(
+        (name: string, value?: string) => {
+            const params = new URLSearchParams(searchParams);
+            if (value) {
+                params.set(name, value);
+            } else {
+                params.delete(name);
+            }
+
+            return params.toString();
+        },
+        [searchParams]
+    );
+    const onClose = () => {
+        router.push(`${pathname}?${createQueryString('filter')}`);
+    };
+    const onOpen = () => {
+        router.push(`${pathname}?${createQueryString('filter', 'open')}`);
+    };
+
+    const filterInfo = useContestListStore.use.filterInfo();
+    const filterSelected = useContestListStore.use.filterSelected();
+    const filterPick = useContestListStore.use.setFilterSelected();
+
+    const pick = (name: string, group: string) => {
+        filterPick(name, group);
+    };
+
     return (
-        <BottomDrawer isOpen={isOpen} onClose={onClose} onOpen={onOpen}>
+        <BottomDrawer isOpen={isOpen === 'open'} onClose={onClose} onOpen={onOpen}>
             <div className={style.filter}>
                 <h2>賽事篩選</h2>
                 <div className={style.tab}>
@@ -31,27 +59,35 @@ function Filter({
                     >
                         <Tab label="賽事">
                             <div className={style.list}>
-                                <h3>熱門</h3>
-                                <ul>
-                                    <motion.li
-                                        className={`${style.item} ${style.selected}`}
-                                        whileTap={{ scale: 0.9 }}
-                                    >
-                                        英超
-                                    </motion.li>
-                                    <motion.li className={style.item} whileTap={{ scale: 0.9 }}>
-                                        法甲
-                                    </motion.li>
-                                    <motion.li className={style.item} whileTap={{ scale: 0.9 }}>
-                                        西甲
-                                    </motion.li>
-                                    <motion.li className={style.item} whileTap={{ scale: 0.9 }}>
-                                        義甲
-                                    </motion.li>
-                                    <motion.li className={style.item} whileTap={{ scale: 0.9 }}>
-                                        德甲
-                                    </motion.li>
-                                </ul>
+                                {Object.entries(filterInfo.league.infoObj)
+                                    .sort((a, b) => a[0].localeCompare(b[0]))
+                                    .map(([key, value]) => {
+                                        return (
+                                            <div key={key}>
+                                                <h3>{key}</h3>
+                                                <ul>
+                                                    {value.map(item => {
+                                                        return (
+                                                            <motion.li
+                                                                className={`${style.item} ${
+                                                                    filterSelected.league[item]
+                                                                        ? style.selected
+                                                                        : ''
+                                                                }`}
+                                                                key={item}
+                                                                onClick={() => {
+                                                                    pick(item, 'league');
+                                                                }}
+                                                                whileTap={{ scale: 0.9 }}
+                                                            >
+                                                                {item}
+                                                            </motion.li>
+                                                        );
+                                                    })}
+                                                </ul>
+                                            </div>
+                                        );
+                                    })}
                             </div>
                             <div className={style.tool}>
                                 <div className={style.functionButton}>
@@ -71,7 +107,7 @@ function Filter({
                                     </motion.button>
                                 </div>
                                 <div className={style.counter}>
-                                    已選 <span className={style.blue}>33</span> 場
+                                    已選 <span className={style.blue}>77</span> 場
                                 </div>
 
                                 <motion.div className={style.confirm} whileTap={{ scale: 0.9 }}>
@@ -81,33 +117,35 @@ function Filter({
                         </Tab>
                         <Tab label="國家">
                             <div className={style.list}>
-                                <h3>熱門</h3>
-                                <ul>
-                                    <motion.li
-                                        className={`${style.item} ${style.selected}`}
-                                        whileTap={{ scale: 0.9 }}
-                                    >
-                                        葡萄牙
-                                    </motion.li>
-                                    <motion.li className={style.item} whileTap={{ scale: 0.9 }}>
-                                        法國
-                                    </motion.li>
-                                    <motion.li className={style.item} whileTap={{ scale: 0.9 }}>
-                                        西班牙
-                                    </motion.li>
-                                    <motion.li className={style.item} whileTap={{ scale: 0.9 }}>
-                                        義大利
-                                    </motion.li>
-                                    <motion.li className={style.item} whileTap={{ scale: 0.9 }}>
-                                        日本
-                                    </motion.li>
-                                    <motion.li className={style.item} whileTap={{ scale: 0.9 }}>
-                                        德國
-                                    </motion.li>
-                                    <motion.li className={style.item} whileTap={{ scale: 0.9 }}>
-                                        土耳其
-                                    </motion.li>
-                                </ul>
+                                {Object.entries(filterInfo.country.infoObj)
+                                    .sort((a, b) => a[0].localeCompare(b[0]))
+                                    .map(([key, value]) => {
+                                        return (
+                                            <div key={key}>
+                                                <h3>{key}</h3>
+                                                <ul>
+                                                    {value.map(item => {
+                                                        return (
+                                                            <motion.li
+                                                                className={`${style.item} ${
+                                                                    filterSelected.country[item]
+                                                                        ? style.selected
+                                                                        : ''
+                                                                }`}
+                                                                key={item}
+                                                                onClick={() => {
+                                                                    pick(item, 'country');
+                                                                }}
+                                                                whileTap={{ scale: 0.9 }}
+                                                            >
+                                                                {item}
+                                                            </motion.li>
+                                                        );
+                                                    })}
+                                                </ul>
+                                            </div>
+                                        );
+                                    })}
                             </div>
                             <div className={style.tool}>
                                 <div className={style.functionButton}>
@@ -127,7 +165,7 @@ function Filter({
                                     </motion.button>
                                 </div>
                                 <div className={style.counter}>
-                                    已選 <span className={style.blue}>33</span> 場
+                                    已選 <span className={style.blue}>66</span> 場
                                 </div>
 
                                 <motion.div className={style.confirm} whileTap={{ scale: 0.9 }}>

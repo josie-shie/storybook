@@ -30,6 +30,10 @@
             }
         }
 
+        .ui-tab-container {
+            height: calc(100vh - 320px);
+        }
+
         .ui-tab-header-liner {
             bottom: -1px;
             border-radius: 10px;

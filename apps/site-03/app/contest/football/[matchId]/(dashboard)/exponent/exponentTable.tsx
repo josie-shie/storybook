@@ -1,5 +1,5 @@
+import { useExponentStore } from '../../exponentStore';
 import style from './exponent.module.scss';
-import { useExponentStore } from './exponentStore';
 import Handicap from './handicap';
 import TotalGoal from './totalGoal';
 import WinLose from './winLose';

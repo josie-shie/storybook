@@ -1,0 +1,101 @@
+syntax = "proto3";
+package dataFetcher;
+option go_package = "../data_fetcher";
+
+message AsiaMatchOddsChange {
+  AsiaOddsChange match = 1;
+  repeated HandicapChange handicapList = 2;
+  repeated EuropeOddsChange europeOddsList = 3;
+  repeated OverUnderChange overUnderList = 4;
+  repeated HandicapHalfChange handicapHalfList = 5;
+  repeated EuropeOddsHalfChange europeOddsHalfList = 6;
+  repeated OverUnderHalfChange overUnderHalfList = 7;
+}
+
+message AsiaOddsChangeList {
+  repeated AsiaOddsChangeStruct changeList = 1;
+}
+
+message AsiaOddsChangeStruct {
+  repeated HandicapChange handicap = 1;
+  repeated EuropeOddsChange europeOdds = 2;
+  repeated OverUnderChange overUnder = 3;
+  repeated HandicapHalfChange handicapHalf = 4;
+  repeated EuropeOddsHalfChange europeOddsHalf = 5;
+  repeated OverUnderHalfChange overUnderHalf = 6;
+}
+
+message AsiaOddsChange {
+  int32 matchId = 1;
+  int32 homeScore = 2;
+  int32 awayScore = 3;
+  int32 state = 4;
+}
+
+message HandicapChange {
+  int32 matchId = 1;
+  int32 companyId = 2;
+  double currentHandicap = 3;
+  double homeCurrentOdds = 4;
+  double awayCurrentOdds = 5;
+  bool isMaintained = 6;
+  bool isInProgress = 7;
+  int64 oddsChangeTime = 8;
+  bool isClosed = 9;
+  int32 oddsType = 10;
+}
+
+message EuropeOddsChange {
+  int32 matchId = 1;
+  int32 companyId = 2;
+  double currentHomeOdds = 3;
+  double currentDrawOdds = 4;
+  double currentAwayOdds = 5;
+  int64 oddsChangeTime = 6;
+  bool isClosed = 7;
+  int32 oddsType = 8;
+}
+
+message OverUnderChange {
+  int32 matchId = 1;
+  int32 companyId = 2;
+  double currentHandicap = 3;
+  double currentOverOdds = 4;
+  double currentUnderOdds = 5;
+  int64 oddsChangeTime = 6;
+  bool isClosed = 7;
+  int32 oddsType = 8;
+}
+
+message HandicapHalfChange {
+  int32 matchId = 1;
+  int32 companyId = 2;
+  double currentHandicap = 3;
+  double homeCurrentOdds = 4;
+  double awayCurrentOdds = 5;
+  int64 oddsChangeTime = 6;
+  int32 oddsType = 7;
+}
+
+message EuropeOddsHalfChange {
+  int32 matchId = 1;
+  int32 companyId = 2;
+  double currentHomeOdds = 3;
+  double currentDrawOdds = 4;
+  double currentAwayOdds = 5;
+  int64 oddsChangeTime = 6;
+  bool isClosed = 7;
+  int32 oddsType = 8;
+}
+
+message OverUnderHalfChange {
+  int32 matchId = 1;
+  int32 companyId = 2;
+  double currentHandicap = 3;
+  double currentOverOdds = 4;
+  double currentUnderOdds = 5;
+  int64 oddsChangeTime = 6;
+  int32 oddsType = 7;
+}
+
+

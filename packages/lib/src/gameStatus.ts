@@ -1,6 +1,8 @@
 'use client';
 import dayjs from 'dayjs';
 
+// const HALF_BREAK_TIME = 15;
+
 export const handleStartTime = (startTime: string, endTime?: string) => {
     if (!startTime) return 0;
     const start = dayjs(startTime);
@@ -41,7 +43,7 @@ export const handleGameTime = (
         return { state: 'midfielder', text: '中场' };
     }
     if (state === 3) {
-        return { state: 'playing', time: handleStartTime(startTime, endTime) };
+        return { state: 'playing', time: handleStartTime(startTime, endTime) + 45 };
     }
     if (state === 4) {
         return { state: 'playoff', text: '加' };
@@ -68,4 +70,16 @@ export const handleGameTime = (
         return { state: 'putOff', text: '推迟' };
     }
     return { state: 'unknow', text: '未知' };
+};
+
+export const handleMatchDateTime = (startTime: string) => {
+    if (!startTime) return '';
+    const inputDate = dayjs.unix(parseInt(startTime));
+    const now = dayjs();
+
+    if (now.format('YYYY/MM/DD') === inputDate.format('YYYY/MM/DD')) {
+        return inputDate.format('HH:mm');
+    }
+
+    return inputDate.format('MM/DD HH:mm');
 };

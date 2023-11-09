@@ -1,42 +1,152 @@
 import { useState } from 'react';
+import Image from 'next/image';
+import { handleStartTime } from 'lib';
+import type { HandicapsInfo } from 'data-center';
+import { useContestDetailStore } from '../../contestDetailStore';
+import { useSituationStore } from '../../situationStore';
 import style from './situation.module.scss';
-import { useSituationStore } from './situationStore';
+import rightBlack from './img/right_black.png';
 import TextRadio from '@/components/textSwitch/textSwitch';
 import ButtonSwitch from '@/components/textSwitch/buttonSwitch';
 
-function GameTime() {
-    const gameStatus = {
-        state: 'notYet',
-        time: '21'
-    };
+const switchOptins = [
+    { label: 'CROW*', value: 3 },
+    { label: '36*', value: 8 }
+];
 
-    const stateStyle: Record<string, { style: string; text: string }> = {
-        notYet: { style: style.notYet, text: '未' },
-        midfielder: { style: style.notYet, text: '中场' },
-        finish: { style: style.finish, text: '完场' },
-        playoff: { style: style.playoff, text: '加' }
-    };
+type TabTpye = 'fullHandicap' | 'halfHandicap';
+type RadioType = 'half' | 'full';
+const handicapRadioMapping = {
+    half: 'halfHandicap',
+    full: 'fullHandicap'
+};
 
+function InProgress({
+    targetHandicap,
+    setIsOddsDetailDrawerOpen,
+    setDrawerTabValue,
+    handicapRadio,
+    setCompanyId,
+    handicapSwitch
+}: {
+    targetHandicap: HandicapsInfo[];
+    setIsOddsDetailDrawerOpen: (value: boolean) => void;
+    setDrawerTabValue: (value: TabTpye) => void;
+    handicapRadio: RadioType;
+    setCompanyId: (value: number) => void;
+    handicapSwitch: number;
+}) {
+    const matchDetail = useContestDetailStore.use.matchDetail();
     return (
         <>
-            {stateStyle[gameStatus.state].text || (
-                <>
-                    {gameStatus.time} <span className="timePoint">&apos;</span>
-                </>
-            )}
+            {targetHandicap.map((now, idx) => (
+                <div className="tr" key={`before_${idx.toString()}`}>
+                    <div className="td">
+                        {handleStartTime(matchDetail.startTime, now.oddsChangeTime)}
+                    </div>
+                    <div className="td">
+                        {now.homeScore}-{now.awayScore}
+                    </div>
+                    <div className="td">
+                        <p>{now.homeInitialOdds}</p>
+                        <p>{now.initialHandicap}</p>
+                        <p>{now.awayInitialOdds}</p>
+                    </div>
+                    <div className="td">
+                        <p>{now.homeCurrentOdds}</p>
+                        <p>{now.currentHandicap}</p>
+                        <p>
+                            <span>{now.awayCurrentOdds}</span>
+                            <Image
+                                alt=""
+                                height={14}
+                                onClick={() => {
+                                    setIsOddsDetailDrawerOpen(true);
+                                    setDrawerTabValue(
+                                        handicapRadioMapping[handicapRadio] as TabTpye
+                                    );
+                                    setCompanyId(handicapSwitch);
+                                }}
+                                src={rightBlack.src}
+                                width={14}
+                            />
+                        </p>
+                    </div>
+                </div>
+            ))}
         </>
     );
 }
 
-const switchOptins = [
-    { label: '皇*', value: 3 },
-    { label: '36*', value: 8 }
-];
+function NotStarted({
+    targetHandicap,
+    setIsOddsDetailDrawerOpen,
+    setDrawerTabValue,
+    handicapRadio,
+    setCompanyId,
+    handicapSwitch
+}: {
+    targetHandicap: HandicapsInfo[];
+    setIsOddsDetailDrawerOpen: (value: boolean) => void;
+    setDrawerTabValue: (value: TabTpye) => void;
+    handicapRadio: RadioType;
+    setCompanyId: (value: number) => void;
+    handicapSwitch: number;
+}) {
+    return (
+        <>
+            {targetHandicap.map((before, idx) => (
+                <div className="tr" key={`before_${idx.toString()}`}>
+                    <div className="td">未</div>
+                    <div className="td">-</div>
+                    <div className="td">
+                        <p>{before.homeInitialOdds}</p>
+                        <p>{before.initialHandicap}</p>
+                        <p>{before.awayInitialOdds}</p>
+                    </div>
+                    <div className="td">
+                        <p>{before.homeCurrentOdds}</p>
+                        <p>{before.currentHandicap}</p>
+                        <p>
+                            <span>{before.awayCurrentOdds}</span>
+                            <Image
+                                alt=""
+                                height={14}
+                                onClick={() => {
+                                    setDrawerTabValue(
+                                        handicapRadioMapping[handicapRadio] as TabTpye
+                                    );
+                                    setIsOddsDetailDrawerOpen(true);
+                                    setCompanyId(handicapSwitch);
+                                }}
+                                src={rightBlack.src}
+                                width={14}
+                            />
+                        </p>
+                    </div>
+                </div>
+            ))}
+        </>
+    );
+}
 
 function Handicap() {
     const handicapData = useSituationStore.use.handicapsData();
-    const [handicapRadio, setHandicapRadio] = useState<'half' | 'full'>('half');
+    const [handicapRadio, setHandicapRadio] = useState<RadioType>('half');
     const [handicapSwitch, setHandicapSwitch] = useState(3);
+    const setCompanyId = useSituationStore.use.setCompanyId();
+    const setDrawerTabValue = useSituationStore.use.setOddsDeatilDrawerTabValue();
+    const setIsOddsDetailDrawerOpen = useSituationStore.use.setIsOddsDetailDrawerOpen();
+
+    const handleChangeSwitch = (switchValue: number) => {
+        setHandicapSwitch(switchValue);
+        setCompanyId(switchValue);
+    };
+
+    const targetHandicap = handicapData[handicapRadio][handicapSwitch];
+    const hasData: boolean =
+        typeof targetHandicap === 'undefined' ||
+        targetHandicap.inProgress.length + targetHandicap.notStarted.length === 0;
 
     return (
         <div className={style.handicap}>
@@ -45,7 +155,7 @@ function Handicap() {
 
                 <ButtonSwitch
                     onChange={(switchValue: number) => {
-                        setHandicapSwitch(switchValue);
+                        handleChangeSwitch(switchValue);
                     }}
                     options={switchOptins}
                     outline
@@ -55,6 +165,7 @@ function Handicap() {
                 <TextRadio
                     onChange={value => {
                         setHandicapRadio(value as 'half' | 'full');
+                        setDrawerTabValue(handicapRadioMapping[value] as TabTpye);
                     }}
                     value={handicapRadio}
                 />
@@ -69,53 +180,30 @@ function Handicap() {
                     </div>
                 </div>
                 <div className="tableBody">
-                    {typeof handicapData[handicapRadio][handicapSwitch] !== 'undefined'
-                        ? handicapData[handicapRadio][handicapSwitch].notStarted.map(
-                              (before, idx) => (
-                                  <div className="tr" key={`before_${idx.toString()}`}>
-                                      <div className="td">
-                                          <GameTime />
-                                      </div>
-                                      <div className="td">
-                                          {before.homeScore}-{before.awayScore}
-                                      </div>
-                                      <div className="td">
-                                          <p>{before.homeInitialOdds}</p>
-                                          <p>{before.initialHandicap}</p>
-                                          <p>{before.awayInitialOdds}</p>
-                                      </div>
-                                      <div className="td">
-                                          <p>{before.homeCurrentOdds}</p>
-                                          <p>{before.currentHandicap}</p>
-                                          <p>{before.awayCurrentOdds}</p>
-                                      </div>
-                                  </div>
-                              )
-                          )
-                        : null}
-
-                    {typeof handicapData[handicapRadio][handicapSwitch] !== 'undefined'
-                        ? handicapData[handicapRadio][handicapSwitch].inProgress.map((now, idx) => (
-                              <div className="tr" key={`before_${idx.toString()}`}>
-                                  <div className="td">
-                                      <GameTime />
-                                  </div>
-                                  <div className="td">
-                                      {now.homeScore}-{now.awayScore}
-                                  </div>
-                                  <div className="td">
-                                      <p>{now.homeInitialOdds}</p>
-                                      <p>{now.initialHandicap}</p>
-                                      <p>{now.awayInitialOdds}</p>
-                                  </div>
-                                  <div className="td">
-                                      <p>{now.homeCurrentOdds}</p>
-                                      <p>{now.currentHandicap}</p>
-                                      <p>{now.awayCurrentOdds}</p>
-                                  </div>
-                              </div>
-                          ))
-                        : null}
+                    {hasData ? (
+                        <div className="tr">
+                            <div className="td">暂无数据</div>
+                        </div>
+                    ) : (
+                        <>
+                            <InProgress
+                                handicapRadio={handicapRadio}
+                                handicapSwitch={handicapSwitch}
+                                setCompanyId={setCompanyId}
+                                setDrawerTabValue={setDrawerTabValue}
+                                setIsOddsDetailDrawerOpen={setIsOddsDetailDrawerOpen}
+                                targetHandicap={targetHandicap.inProgress}
+                            />
+                            <NotStarted
+                                handicapRadio={handicapRadio}
+                                handicapSwitch={handicapSwitch}
+                                setCompanyId={setCompanyId}
+                                setDrawerTabValue={setDrawerTabValue}
+                                setIsOddsDetailDrawerOpen={setIsOddsDetailDrawerOpen}
+                                targetHandicap={targetHandicap.notStarted}
+                            />
+                        </>
+                    )}
                 </div>
             </div>
         </div>

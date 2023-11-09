@@ -9,6 +9,7 @@ import style from './tab.module.scss';
 
 interface TabProps {
     label: string;
+    value?: string;
     to?: string;
     children: ReactNode;
     leftSection?: ReactNode; // 左邊的icon
@@ -16,6 +17,11 @@ interface TabProps {
 }
 
 interface TabsProps {
+    defaultValue?: string | number;
+    /**
+     * tab header map
+     */
+    // tabValueToIndexMap?: Record<string, number>;
     /**
      * tab header position
      * tab header位置的切換
@@ -47,9 +53,18 @@ interface TabsProps {
      */
     buttonRadius?: number;
     /**
+     * tab swiper content auto height
+     * tab swiper 內容自動高度開關
+     */
+    autoHeight?: boolean;
+    /**
      * control TabContent
      */
     children?: string | ReactNode;
+    /**
+     * Tab change event
+     */
+    onTabChange?: (value: string) => void;
 }
 
 function Tab(props: TabProps) {
@@ -57,12 +72,15 @@ function Tab(props: TabProps) {
 }
 
 function Tabs({
+    defaultValue,
+    autoHeight = false,
     position = 'center',
     gap = 12,
     styling = 'text',
     scrolling = false,
     swiperOpen = true,
     buttonRadius = 50,
+    onTabChange,
     ...props
 }: TabsProps) {
     const [activeIndex, setActiveIndex] = useState(0);
@@ -74,7 +92,7 @@ function Tabs({
     const pathname = usePathname();
     const searchParams = useSearchParams();
 
-    const handleTabClick = (index: number) => {
+    const handleTabClick = (index: number, value?: string) => {
         const headerLiner = headerLinerRef.current;
         if (headerLiner) {
             if (index > activeIndex) {
@@ -89,6 +107,10 @@ function Tabs({
         swiperRef.current?.slideTo(index);
 
         setContentFade(true);
+
+        if (value && onTabChange) {
+            onTabChange(value);
+        }
 
         setTimeout(() => {
             setActiveIndex(index);
@@ -165,7 +187,38 @@ function Tabs({
         if (swiperRef.current && typeof activeIndex === 'number') {
             swiperRef.current.slideTo(activeIndex);
         }
+
+        const nav = navRef.current;
+        const activeTab = nav?.children[activeIndex] as HTMLElement | null;
+        if (nav && activeTab) {
+            const leftScrollPosition =
+                activeTab.offsetLeft + activeTab.offsetWidth / 2 - nav.offsetWidth / 2;
+            nav.scrollTo({
+                left: leftScrollPosition,
+                behavior: 'smooth'
+            });
+        }
     }, [activeIndex, swiperRef]);
+
+    useEffect(() => {
+        if (typeof defaultValue === 'number') {
+            setActiveIndex(defaultValue);
+        } else if (typeof defaultValue === 'string') {
+            const index = React.Children.toArray(props.children).findIndex(child => {
+                if (
+                    React.isValidElement(child) &&
+                    (child as React.ReactElement<{ value: string }>).props.value === defaultValue
+                ) {
+                    return true;
+                }
+                return false;
+            });
+
+            if (index !== -1) {
+                setActiveIndex(index);
+            }
+        }
+    }, [defaultValue, props.children]);
 
     return (
         <div className={`ui-tab ${style.tab} ${style[position]}`}>
@@ -180,6 +233,7 @@ function Tabs({
                     {Children.map(props.children, (child, index) => {
                         if (isValidElement(child) && child.type === Tab) {
                             const labeledChild = child as React.ReactElement<{
+                                value?: string;
                                 label: React.ReactNode;
                                 to: string;
                                 leftSection?: ReactNode;
@@ -235,7 +289,7 @@ function Tabs({
                                                     : ''
                                             } ${style[`radius${buttonRadius}`]}`}
                                             onClick={() => {
-                                                handleTabClick(index);
+                                                handleTabClick(index, labeledChild.props.value);
                                             }}
                                             style={{
                                                 borderRadius: buttonRadius
@@ -260,8 +314,7 @@ function Tabs({
 
             {swiperOpen ? (
                 <Swiper
-                    autoHeight
-                    initialSlide={activeIndex}
+                    autoHeight={autoHeight}
                     onSlideChange={swiper => {
                         const tabIndex = swiper.activeIndex;
                         handleTabClick(swiper.activeIndex);

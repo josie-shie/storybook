@@ -1,0 +1,90 @@
+.oddsDetailDrawer {
+    :global {
+        .ui-tabs-header {
+            flex-wrap: nowrap;
+            font-size: 12px;
+            font-weight: 500;
+
+            .ui-tab-header-liner {
+                min-width: 0;
+                width: 60px;
+            }
+
+            .ui-button {
+                white-space: nowrap;
+            }
+        }
+
+        .tr {
+            .td {
+                width: 45px;
+            }
+
+            .td:last-child,
+            .th:last-child {
+                min-width: 82px;
+                white-space: nowrap;
+            }
+        }
+    }
+
+    .header {
+        position: relative;
+        padding: 12px 16px;
+
+        .title {
+            text-align: center;
+            font-size: 16px;
+            font-weight: 600;
+            color: #222;
+        }
+
+        .back {
+            position: absolute;
+            left: 16px;
+            top: 12px;
+        }
+    }
+
+    .teamScore {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 6px 10px;
+
+        .score {
+            width: 10%;
+            color: #00ac6e;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .homeTeam,
+        .awayTeam {
+            width: 45%;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .homeTeam {
+            text-align: right;
+        }
+
+        .awayTeam {
+            text-align: left;
+        }
+    }
+
+    .notYet {
+        color: #9b9b9b;
+    }
+
+    .finish {
+        color: #fd9a00;
+    }
+
+    .playOff {
+        color: #f85640;
+    }
+}

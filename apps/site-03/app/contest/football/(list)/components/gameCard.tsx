@@ -30,26 +30,41 @@ function OddsInfo({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId:
     const syncData = Object.hasOwnProperty.call(globalStore, matchId) ? globalStore[matchId] : {};
     return (
         <div className={style.oddsInfo}>
-            <span className={`${style.odd} ${style.left}`}>
-                <p>{syncData.handicapHomeCurrentOdds || contestInfo.handicapHomeCurrentOdds}</p>
-                <p className={style.blue}>
-                    {syncData.handicapCurrent || contestInfo.handicapCurrent}
-                </p>
-                <p>{syncData.handicapAwayCurrentOdds || contestInfo.handicapAwayCurrentOdds}</p>
-            </span>
+            {syncData.handicapHomeCurrentOdds ||
+            syncData.handicapAwayCurrentOdds ||
+            contestInfo.handicapHomeCurrentOdds ||
+            contestInfo.handicapAwayCurrentOdds ? (
+                <span className={`${style.odd} ${style.left}`}>
+                    <p>{syncData.handicapHomeCurrentOdds || contestInfo.handicapHomeCurrentOdds}</p>
+                    <p className={style.blue}>
+                        {syncData.handicapCurrent || contestInfo.handicapCurrent}
+                    </p>
+                    <p>{syncData.handicapAwayCurrentOdds || contestInfo.handicapAwayCurrentOdds}</p>
+                </span>
+            ) : null}
             <span className={style.mid}>
                 <p>
                     ({syncData.homeHalfScore || contestInfo.homeHalfScore} -{' '}
                     {syncData.awayHalfScore || contestInfo.awayHalfScore})
                 </p>
             </span>
-            <span className={style.odd}>
-                <p>{syncData.overUnderUnderCurrentOdds || contestInfo.overUnderUnderCurrentOdds}</p>
-                <p className={style.blue}>
-                    {syncData.overUnderCurrent || contestInfo.overUnderCurrent}
-                </p>
-                <p>{syncData.overUnderOverCurrentOdds || contestInfo.overUnderOverCurrentOdds}</p>
-            </span>
+            {syncData.overUnderUnderCurrentOdds ||
+            syncData.overUnderOverCurrentOdds ||
+            contestInfo.overUnderUnderCurrentOdds ||
+            contestInfo.overUnderOverCurrentOdds ? (
+                <span className={style.odd}>
+                    <p>
+                        {syncData.overUnderUnderCurrentOdds ||
+                            contestInfo.overUnderUnderCurrentOdds}
+                    </p>
+                    <p className={style.blue}>
+                        {syncData.overUnderCurrent || contestInfo.overUnderCurrent}
+                    </p>
+                    <p>
+                        {syncData.overUnderOverCurrentOdds || contestInfo.overUnderOverCurrentOdds}
+                    </p>
+                </span>
+            ) : null}
         </div>
     );
 }

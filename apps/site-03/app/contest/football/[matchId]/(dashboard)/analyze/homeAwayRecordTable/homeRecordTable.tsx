@@ -1,4 +1,4 @@
-import { useAnalyzeStore } from '../analyzeStore';
+import { useAnalyzeStore } from '../../../analyzeStore';
 import RecordTable from '../components/recordTable/recordTable';
 import { useHomeRecordStore } from './homeRecordStore';
 

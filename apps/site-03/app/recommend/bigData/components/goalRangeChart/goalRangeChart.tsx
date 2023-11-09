@@ -11,7 +11,7 @@ const options = {
     },
     series: [
         {
-            name: 'Access From',
+            name: '進球數區間',
             type: 'pie',
             radius: ['35%', '65%'],
             data: [
@@ -36,13 +36,6 @@ const options = {
                     itemStyle: { borderWidth: 2, borderColor: '#fff', color: '#6357F0' }
                 }
             ],
-            emphasis: {
-                itemStyle: {
-                    shadowBlur: 10,
-                    shadowOffsetX: 0,
-                    shadowColor: 'rgba(0, 0, 0, 0.2)'
-                }
-            },
             label: {
                 distanceToLabelLine: -10
             },

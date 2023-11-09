@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { useSituationStore } from '../../situationStore';
 import style from './event.module.scss';
 import ClockIcon from './img/clock.png';
 import YellowCardIcon from './img/yellow_card.png';
@@ -10,7 +11,6 @@ import OwnIcon from './img/own.png';
 import YellowsTurnRedIcon from './img/yellow_turn_red.png';
 import MissedIcon from './img/missed.png';
 import VideoIcon from './img/video.png';
-import { useSituationStore } from './situationStore';
 
 function GameEvent() {
     const eventList = useSituationStore.use.eventList();

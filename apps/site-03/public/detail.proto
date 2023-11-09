@@ -1,0 +1,60 @@
+syntax = "proto3";
+package dataFetcher;
+option go_package = "../data_fetcher";
+
+message EventList {
+  int32 matchId = 1;
+  repeated Event event = 2;
+}
+
+message TechnicList {
+  int32 matchId = 1;
+  string technicCount = 2;
+}
+
+message TechnicConvertList {
+  int32 matchId = 1;
+  repeated TechnicStat technicStat = 2;
+}
+
+message PenaltyList {
+  int32 matchId = 1;
+  repeated PenaltyEvent event = 2;
+}
+
+message Event {
+  int32 id = 1;
+  bool isHome = 2;
+  int32 kind = 3;
+  string time = 4;
+  string nameEn = 5;
+  string nameChs = 6;
+  string nameCht = 7;
+  string playerId = 8;
+  string playerId2 = 9;
+  string overtime = 10;
+}
+
+message PenaltyEvent {
+  int32 id = 1;
+  bool isHome = 2;
+  int32 playerId = 3;
+  string nameEn = 4;
+  string nameChs = 5;
+  string nameCht = 6;
+  int32 homeScore = 7;
+  int32 awayScore = 8;
+  bool isMissed = 9;
+}
+
+message TechnicStat {
+  string technicType = 1;
+  string home = 2;
+  string away = 3;
+}
+
+message Data {
+  repeated Event eventList = 1;
+  repeated TechnicStat technic = 2;
+  repeated PenaltyEvent penalty = 3;
+}

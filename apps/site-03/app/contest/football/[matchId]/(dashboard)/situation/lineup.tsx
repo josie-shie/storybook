@@ -1,8 +1,8 @@
 import Image from 'next/image';
+import { useSituationStore } from '../../situationStore';
 import BlueLeftIcon from './img/left_blue.png';
 import BlueRightIcon from './img/right_blue.png';
 import style from './lineup.module.scss';
-import { useSituationStore } from './situationStore';
 
 function Lineup() {
     const lineList = useSituationStore.use.lineupInfo();

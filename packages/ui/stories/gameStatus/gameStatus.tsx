@@ -13,30 +13,16 @@ function useGameTime({ startTime, status }: GameStatusProps) {
         time?: number;
         state: string;
         text?: string;
-    }>({
-        time: 0,
-        state: '',
-        text: ''
-    });
+    }>({ time: undefined, state: '', text: '' });
+    const timerRef = useRef<NodeJS.Timeout | null>(null);
+    const [triggerUpdate, setTriggerUpdate] = useState(false);
 
     useEffect(() => {
         setRealTimeStatus(handleGameTime(startTime, status));
-    }, [startTime, status]);
-
-    return realTimeStatus;
-}
-
-function GameStatus({ startTime, status, ...props }: GameStatusProps) {
-    const realTimeStatus = useGameTime({ startTime, status });
-    const [realMinute, setRealMinute] = useState(realTimeStatus.time || 0);
-    const timerRef = useRef<NodeJS.Timeout | null>(null);
-
-    useEffect(() => {
         if (status === 1 || status === 3) {
-            setRealMinute(realTimeStatus.time || 0);
             timerRef.current = setInterval(() => {
-                setRealMinute(preMinute => preMinute + 1);
-            }, 60000);
+                setTriggerUpdate(u => !u);
+            }, 30000);
         } else if (timerRef.current) {
             clearInterval(timerRef.current);
         }
@@ -46,7 +32,13 @@ function GameStatus({ startTime, status, ...props }: GameStatusProps) {
                 clearInterval(timerRef.current);
             }
         };
-    }, [status, realTimeStatus.time]);
+    }, [startTime, status, triggerUpdate]);
+
+    return realTimeStatus;
+}
+
+function GameStatus({ startTime, status, ...props }: GameStatusProps) {
+    const realTimeStatus = useGameTime({ startTime, status });
 
     return (
         <div className={style.gameStatus} {...props}>
@@ -55,7 +47,8 @@ function GameStatus({ startTime, status, ...props }: GameStatusProps) {
                     style[realTimeStatus.state]
                 }`}
             >
-                {realMinute || realTimeStatus.text}
+                {realTimeStatus.time || realTimeStatus.text}
+                {realTimeStatus.time ? '' : ''}
             </p>
         </div>
     );

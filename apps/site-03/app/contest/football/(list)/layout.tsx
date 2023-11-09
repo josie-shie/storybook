@@ -1,23 +1,33 @@
 'use client';
-import { useState, type ReactNode } from 'react';
+import { useState, useCallback, type ReactNode } from 'react';
 import Image from 'next/image';
 import { Tab, Tabs } from 'ui';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import style from './layout.module.scss';
 import FilterIcon from './img/filter.png';
 import SettingIcon from './img/setting.png';
 import Logo from './img/logo.png';
 import Setting from './components/setting';
-import Filter from './components/filter';
 import HeaderFilter from '@/components/header/headerFilter';
 import Footer from '@/components/footer/footer';
 
 function ContestListLayout({ children }: { children: ReactNode }) {
     const [showSetting, setShowSetting] = useState(false);
-    const [showFilter, setShowFilter] = useState(false);
 
     const searchParams = useSearchParams();
     const status = searchParams.get('status');
+    const pathname = usePathname();
+    const router = useRouter();
+
+    const createQueryString = useCallback(
+        (name: string, value: string) => {
+            const params = new URLSearchParams(searchParams);
+            params.set(name, value);
+
+            return params.toString();
+        },
+        [searchParams]
+    );
 
     const tabStyle = {
         gap: 8,
@@ -61,7 +71,7 @@ function ContestListLayout({ children }: { children: ReactNode }) {
                         alt="filter"
                         className={style.mr}
                         onClick={() => {
-                            setShowFilter(true);
+                            router.push(`${pathname}?${createQueryString('filter', 'open')}`);
                         }}
                         sizes="32"
                         src={FilterIcon}
@@ -102,15 +112,7 @@ function ContestListLayout({ children }: { children: ReactNode }) {
                     setShowSetting(true);
                 }}
             />
-            <Filter
-                isOpen={showFilter}
-                onClose={() => {
-                    setShowFilter(false);
-                }}
-                onOpen={() => {
-                    setShowFilter(true);
-                }}
-            />
+
             <Footer />
         </div>
     );

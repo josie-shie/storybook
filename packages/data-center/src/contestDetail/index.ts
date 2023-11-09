@@ -99,7 +99,7 @@ const HandicapsInfoSchema = z.object({
 });
 
 type OriginHandicapsInfo = z.infer<typeof HandicapsInfoSchema>;
-type HandicapsInfo = Omit<
+export type HandicapsInfo = Omit<
     OriginHandicapsInfo,
     'oddsChangeTime' | 'homeInitialOdds' | 'awayInitialOdds' | 'homeCurrentOdds' | 'awayCurrentOdds'
 > & {
@@ -128,7 +128,7 @@ const TotalGoalsInfoSchema = z.object({
 });
 
 type OriginTotalGoalsInfo = z.infer<typeof TotalGoalsInfoSchema>;
-type TotalGoalsInfo = Omit<
+export type TotalGoalsInfo = Omit<
     OriginTotalGoalsInfo,
     | 'oddsChangeTime'
     | 'overInitialOdds'
@@ -164,6 +164,8 @@ const WinDrawLoseTypeSchema = z.object({
     isClosed: z.boolean()
 });
 
+export type WinDrawLoseType = z.infer<typeof WinDrawLoseTypeSchema>;
+
 const EventInfoSchema = z.object({
     id: z.number(),
     isHome: z.boolean(),
@@ -187,7 +189,7 @@ const EventInfoSchema = z.object({
     overtime: z.string()
 });
 
-type EventInfo = z.infer<typeof EventInfoSchema>;
+export type EventInfo = z.infer<typeof EventInfoSchema>;
 
 const LineupInfoSchema = z.object({
     nameChs: z.string(),
@@ -432,7 +434,6 @@ export const getMatchDetail = async (
             },
             { cache: 'no-store' }
         );
-
         GetSingleMatchResultSchema.parse(data);
 
         const formatDateTime: GetSingleMatchResponse = {
@@ -618,14 +619,18 @@ export const getDetailStatus = async (
 
         if (data.getDetailStatus.events.length > 0) {
             for (const event of data.getDetailStatus.events) {
-                if (!eventList.includes(event.time)) {
-                    eventList.push(event.time);
+                const eventTime = `${event.time}${
+                    event.overtime !== '0' ? `+${event.overtime}` : ''
+                }`;
+
+                if (!eventList.includes(eventTime)) {
+                    eventList.push(eventTime);
                 }
 
                 if (event.isHome) {
-                    eventInfo.isHome[event.time] = event;
+                    eventInfo.isHome[eventTime] = event;
                 } else {
-                    eventInfo.isAway[event.time] = event;
+                    eventInfo.isAway[eventTime] = event;
                 }
             }
         }
