@@ -15,6 +15,7 @@ const switchOptins = [
 ];
 
 type TabTpye = 'fullTotalGoal' | 'halfTotalGoal';
+type RadioType = 'half' | 'full';
 const handicapRadioMapping = {
     half: 'halfTotalGoal',
     full: 'fullTotalGoal'
@@ -22,10 +23,18 @@ const handicapRadioMapping = {
 
 function InProgress({
     targetTotalGoals,
-    setIsOddsDetailDrawerOpen
+    setIsOddsDetailDrawerOpen,
+    setDrawerTabValue,
+    totalGoalsRadio,
+    setCompanyId,
+    totalGoalsSwitch
 }: {
     targetTotalGoals: TotalGoalsInfo[];
     setIsOddsDetailDrawerOpen: (value: boolean) => void;
+    setDrawerTabValue: (value: TabTpye) => void;
+    totalGoalsRadio: RadioType;
+    setCompanyId: (value: number) => void;
+    totalGoalsSwitch: number;
 }) {
     const matchDetail = useContestDetailStore.use.matchDetail();
     return (
@@ -52,7 +61,11 @@ function InProgress({
                                 alt=""
                                 height={14}
                                 onClick={() => {
+                                    setDrawerTabValue(
+                                        handicapRadioMapping[totalGoalsRadio] as TabTpye
+                                    );
                                     setIsOddsDetailDrawerOpen(true);
+                                    setCompanyId(totalGoalsSwitch);
                                 }}
                                 src={rightBlack.src}
                                 width={14}
@@ -67,10 +80,18 @@ function InProgress({
 
 function NotStarted({
     targetTotalGoals,
-    setIsOddsDetailDrawerOpen
+    setIsOddsDetailDrawerOpen,
+    setDrawerTabValue,
+    totalGoalsRadio,
+    setCompanyId,
+    totalGoalsSwitch
 }: {
     targetTotalGoals: TotalGoalsInfo[];
     setIsOddsDetailDrawerOpen: (value: boolean) => void;
+    setDrawerTabValue: (value: TabTpye) => void;
+    totalGoalsRadio: RadioType;
+    setCompanyId: (value: number) => void;
+    totalGoalsSwitch: number;
 }) {
     return (
         <>
@@ -92,7 +113,11 @@ function NotStarted({
                                 alt=""
                                 height={14}
                                 onClick={() => {
+                                    setDrawerTabValue(
+                                        handicapRadioMapping[totalGoalsRadio] as TabTpye
+                                    );
                                     setIsOddsDetailDrawerOpen(true);
+                                    setCompanyId(totalGoalsSwitch);
                                 }}
                                 src={rightBlack.src}
                                 width={14}
@@ -109,7 +134,7 @@ function TotalGoals() {
     const totalGoalsData = useSituationStore.use.totalGoalsData();
     const setCompanyId = useSituationStore.use.setCompanyId();
     const [totalGoalsSwitch, setTotalGoalsSwitch] = useState(3);
-    const [totalGoalsRadio, setTotalGoalsRadio] = useState<'half' | 'full'>('half');
+    const [totalGoalsRadio, setTotalGoalsRadio] = useState<RadioType>('half');
     const setDrawerTabValue = useSituationStore.use.setOddsDeatilDrawerTabValue();
     const setIsOddsDetailDrawerOpen = useSituationStore.use.setIsOddsDetailDrawerOpen();
 
@@ -162,12 +187,20 @@ function TotalGoals() {
                     ) : (
                         <>
                             <InProgress
+                                setCompanyId={setCompanyId}
+                                setDrawerTabValue={setDrawerTabValue}
                                 setIsOddsDetailDrawerOpen={setIsOddsDetailDrawerOpen}
                                 targetTotalGoals={targetTotalGoals.inProgress}
+                                totalGoalsRadio={totalGoalsRadio}
+                                totalGoalsSwitch={totalGoalsSwitch}
                             />
                             <NotStarted
+                                setCompanyId={setCompanyId}
+                                setDrawerTabValue={setDrawerTabValue}
                                 setIsOddsDetailDrawerOpen={setIsOddsDetailDrawerOpen}
                                 targetTotalGoals={targetTotalGoals.notStarted}
+                                totalGoalsRadio={totalGoalsRadio}
+                                totalGoalsSwitch={totalGoalsSwitch}
                             />
                         </>
                     )}
