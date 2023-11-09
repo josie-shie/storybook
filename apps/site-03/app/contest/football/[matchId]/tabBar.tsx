@@ -1,11 +1,11 @@
 'use client';
-
 import { Tab, Tabs } from 'ui';
 import { usePathname } from 'next/navigation';
-import type { ReactNode } from 'react';
+import { Suspense, type ReactNode } from 'react';
 import style from './contestDetail.module.scss';
+import Loading from '@/components/loading/loading';
 
-function TabBar({ matchId, children }: { children: ReactNode; matchId: number }) {
+function TabBar({ children, matchId }: { children: ReactNode; matchId: number }) {
     const tabStyle = {
         gap: 0,
         swiperOpen: false,
@@ -59,7 +59,11 @@ function TabBar({ matchId, children }: { children: ReactNode; matchId: number })
                 {tabList.map(item => {
                     return (
                         <Tab key={item.label} label={item.label} to={item.to}>
-                            {item.params === route[route.length - 1] ? children : ''}
+                            {item.params === route[route.length - 1] ? (
+                                <Suspense fallback={<Loading />}>{children}</Suspense>
+                            ) : (
+                                ''
+                            )}
                         </Tab>
                     );
                 })}
