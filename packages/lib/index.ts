@@ -8,6 +8,6 @@ export { handicapToString, convertHandicap, convertOdds } from './src/formatHand
 export type { StoreWithSelectors } from './src/store';
 export { timestampToString, timestampToMonthDay } from './src/timeFormat';
 export { handleStartTime, handleGameTime, handleMatchDateTime } from './src/gameStatus';
-export { mqttService } from './src/mqttService';
+export * from './src/mqttService';
 export { parseMatchInfo } from './src/formatExtraExplain';
 export * from './src/formatFilterMap';

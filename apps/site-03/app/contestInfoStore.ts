@@ -1,5 +1,5 @@
 import { initStore, convertHandicap, truncateFloatingPoint, timestampToString } from 'lib';
-import type { StoreWithSelectors } from 'lib';
+import type { StoreWithSelectors, OddsHashTable } from 'lib';
 import type { OriginalContestInfo, ContestInfo } from 'data-center';
 
 type ContestTable = Record<string, Partial<ContestInfo>>;
@@ -9,6 +9,7 @@ interface InitState {
 }
 interface ContestInfoContest extends InitState {
     setContestInfoContest: (info: Partial<OriginalContestInfo>) => void;
+    setContestOdds: (odds: OddsHashTable) => void;
 }
 
 let isInit = true;
@@ -64,6 +65,63 @@ const initialState = (
             console.log('New global store', newContestInfo);
 
             return { ...state, contestInfo: newContestInfo };
+        });
+    },
+
+    setContestOdds: (odds: OddsHashTable) => {
+        Object.keys(odds).forEach(matchId => {
+            Object.keys(odds[matchId]).forEach(companyId => {
+                if (companyId === '42') {
+                    const obj = odds[matchId][companyId];
+                    set(state => {
+                        const newContestInfo: ContestTable = { ...state.contestInfo };
+                        const updatedOdds = {
+                            ...(typeof obj.handicap.currentHandicap === 'number' && {
+                                handicapCurrent: convertHandicap(obj.handicap.currentHandicap)
+                            }),
+                            ...(typeof obj.overUnder.currentHandicap === 'number' && {
+                                overUnderCurrent: convertHandicap(obj.overUnder.currentHandicap)
+                            }),
+                            ...(typeof obj.handicap.homeCurrentOdds === 'number' && {
+                                handicapHomeCurrentOdds: truncateFloatingPoint(
+                                    obj.handicap.homeCurrentOdds,
+                                    2
+                                )
+                            }),
+                            ...(typeof obj.handicap.awayCurrentOdds === 'number' && {
+                                handicapAwayCurrentOdds: truncateFloatingPoint(
+                                    obj.handicap.awayCurrentOdds,
+                                    2
+                                )
+                            }),
+                            ...(typeof obj.overUnder.currentUnderOdds === 'number' && {
+                                overUnderUnderCurrentOdds: truncateFloatingPoint(
+                                    obj.overUnder.currentUnderOdds,
+                                    2
+                                )
+                            }),
+                            ...(typeof obj.overUnder.currentOverOdds === 'number' && {
+                                overUnderOverCurrentOdds: truncateFloatingPoint(
+                                    obj.overUnder.currentOverOdds,
+                                    2
+                                )
+                            })
+                        } as Partial<ContestInfo>;
+
+                        if (Object.hasOwnProperty.call(newContestInfo, matchId)) {
+                            newContestInfo[matchId] = {
+                                ...newContestInfo[matchId],
+                                ...updatedOdds
+                            };
+                        }
+
+                        // eslint-disable-next-line -- test info
+                        console.log('New global odd store', newContestInfo);
+
+                        return { ...state, contestInfo: newContestInfo };
+                    });
+                }
+            });
         });
     }
 });
