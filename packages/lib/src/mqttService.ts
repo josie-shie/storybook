@@ -29,6 +29,74 @@ interface OriginalContestInfo {
     countryCn: string;
 }
 
+interface OddChangType {
+    match: {
+        matchId: number;
+        homeScore: number;
+        awayScore: number;
+        state: number;
+    };
+    handicapHalfList: {
+        matchId: number;
+        companyId: number;
+        currentHandicap: number;
+        homeCurrentOdds: number;
+        awayCurrentOdds: number;
+        oddsChangeTime: number;
+        oddsType: number;
+    }[];
+    handicapList: {
+        matchId: number;
+        companyId: number;
+        currentHandicap: number;
+        homeCurrentOdds: number;
+        awayCurrentOdds: number;
+        isMaintained: boolean;
+        isInProgress: boolean;
+        oddsChangeTime: number;
+        isClosed: boolean;
+        oddsType: number;
+    }[];
+    overUnderHalfList: {
+        matchId: number;
+        companyId: number;
+        currentHandicap: number;
+        currentOverOdds: number;
+        currentUnderOdds: number;
+        oddsChangeTime: number;
+        oddsType: number;
+    }[];
+    overUnderList: {
+        matchId: number;
+        companyId: number;
+        currentHandicap: number;
+        currentOverOdds: number;
+        currentUnderOdds: number;
+        oddsChangeTime: number;
+        isClosed: boolean;
+        oddsType: number;
+    }[];
+    europeOddsHalfList: {
+        matchId: number;
+        companyId: number;
+        currentHandicap: number;
+        currentOverOdds: number;
+        currentUnderOdds: number;
+        oddsChangeTime: number;
+        isClosed: boolean;
+        oddsType: number;
+    }[];
+    europeOddsList: {
+        matchId: number;
+        companyId: number;
+        currentHandicap: number;
+        currentOverOdds: number;
+        currentUnderOdds: number;
+        oddsChangeTime: number;
+        oddsType: number;
+    }[];
+}
+
 interface TechnicalInfoData {
     matchId: number;
     technicStat: {
@@ -104,7 +172,7 @@ interface EventInfoData {
 
 let client: MqttClient;
 const useMessageQueue: ((data: OriginalContestInfo) => void)[] = [];
-const useOddsQueue: ((data: OriginalContestInfo) => void)[] = [];
+const useOddsQueue: ((data: OddChangType) => void)[] = [];
 const useTechnicalQueue: ((data: TechnicalInfoData) => void)[] = [];
 const useEventQueue: ((data: EventInfoData) => void)[] = [];
 let init = true;
@@ -141,7 +209,7 @@ const handleOddsMessage = async (message: Buffer) => {
         messageObject as unknown as Record<string, unknown>
     );
     for (const messageMethod of useOddsQueue) {
-        messageMethod(decodedMessage as unknown as OriginalContestInfo);
+        messageMethod(decodedMessage as unknown as OddChangType);
     }
     // eslint-disable-next-line no-console -- Check mqtt message
     console.log('[MQTT On odds message]: ', decodedMessage);
@@ -202,7 +270,7 @@ export const mqttService = {
     getMessage: (onMessage: (data: OriginalContestInfo) => void) => {
         useMessageQueue.push(onMessage);
     },
-    getOdds: (onMessage: (data: OriginalContestInfo) => void) => {
+    getOdds: (onMessage: (data: OddChangType) => void) => {
         useOddsQueue.push(onMessage);
     },
     getTechnicList: (onMessage: (data: TechnicalInfoData) => void) => {

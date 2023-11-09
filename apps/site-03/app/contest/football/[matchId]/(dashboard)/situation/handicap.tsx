@@ -137,7 +137,6 @@ function Handicap() {
     const setCompanyId = useSituationStore.use.setCompanyId();
     const setDrawerTabValue = useSituationStore.use.setOddsDeatilDrawerTabValue();
     const setIsOddsDetailDrawerOpen = useSituationStore.use.setIsOddsDetailDrawerOpen();
-
     const handleChangeSwitch = (switchValue: number) => {
         setHandicapSwitch(switchValue);
         setCompanyId(switchValue);

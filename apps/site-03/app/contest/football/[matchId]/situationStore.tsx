@@ -10,6 +10,74 @@ import type {
     CompanyLiveDetailResponse
 } from 'data-center';
 
+interface OddChangType {
+    match: {
+        matchId: number;
+        homeScore: number;
+        awayScore: number;
+        state: number;
+    };
+    handicapHalfList: {
+        matchId: number;
+        companyId: number;
+        currentHandicap: number;
+        homeCurrentOdds: number;
+        awayCurrentOdds: number;
+        oddsChangeTime: number;
+        oddsType: number;
+    }[];
+    handicapList: {
+        matchId: number;
+        companyId: number;
+        currentHandicap: number;
+        homeCurrentOdds: number;
+        awayCurrentOdds: number;
+        isMaintained: boolean;
+        isInProgress: boolean;
+        oddsChangeTime: number;
+        isClosed: boolean;
+        oddsType: number;
+    }[];
+    overUnderHalfList: {
+        matchId: number;
+        companyId: number;
+        currentHandicap: number;
+        currentOverOdds: number;
+        currentUnderOdds: number;
+        oddsChangeTime: number;
+        oddsType: number;
+    }[];
+    overUnderList: {
+        matchId: number;
+        companyId: number;
+        currentHandicap: number;
+        currentOverOdds: number;
+        currentUnderOdds: number;
+        oddsChangeTime: number;
+        isClosed: boolean;
+        oddsType: number;
+    }[];
+    europeOddsHalfList: {
+        matchId: number;
+        companyId: number;
+        currentHandicap: number;
+        currentOverOdds: number;
+        currentUnderOdds: number;
+        oddsChangeTime: number;
+        isClosed: boolean;
+        oddsType: number;
+    }[];
+    europeOddsList: {
+        matchId: number;
+        companyId: number;
+        currentHandicap: number;
+        currentOverOdds: number;
+        currentUnderOdds: number;
+        oddsChangeTime: number;
+        oddsType: number;
+    }[];
+}
+
 interface InitState extends GetDetailStatusResponse {
     companyLiveOddsDetail: CompanyLiveDetailResponse;
 }
@@ -30,6 +98,7 @@ interface SituationState extends InitState {
         eventInfo: EventInfoType;
     }) => void;
     setTechnical: ({ technical }: { technical: TechnicalInfo[] }) => void;
+    setOddChange: ({ oddChangeData }: { oddChangeData: OddChangType }) => void;
 }
 
 let useSituationStore: StoreWithSelectors<SituationState>;
@@ -78,6 +147,10 @@ const initialState = (set: (data: Partial<SituationState>) => void) => ({
     },
     setTechnical: ({ technical }: { technical: TechnicalInfo[] }) => {
         set({ technical });
+    },
+    setOddChange: ({ oddChangeData }: { oddChangeData: OddChangType }) => {
+        // eslint-disable-next-line no-console -- TODO  setOddChange
+        console.log(oddChangeData);
     }
 });
 
