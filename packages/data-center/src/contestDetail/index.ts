@@ -189,7 +189,7 @@ const EventInfoSchema = z.object({
     overtime: z.string()
 });
 
-type EventInfo = z.infer<typeof EventInfoSchema>;
+export type EventInfo = z.infer<typeof EventInfoSchema>;
 
 const LineupInfoSchema = z.object({
     nameChs: z.string(),
