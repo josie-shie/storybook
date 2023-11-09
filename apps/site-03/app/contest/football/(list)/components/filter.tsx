@@ -6,6 +6,82 @@ import { useContestListStore } from '../contestListStore';
 import style from './filter.module.scss';
 import BottomDrawer from '@/components/drawer/bottomDrawer';
 
+function FilterSection({ group, onClose }: { group: 'league' | 'country'; onClose: () => void }) {
+    const filterInfo = useContestListStore.use.filterInfo();
+    const filterSelected = useContestListStore.use.filterSelected();
+    const filterCounter = useContestListStore.use.filterCounter();
+    const filterPick = useContestListStore.use.setFilterSelected();
+    const filterSubmit = useContestListStore.use.setFilterList();
+    const revertFilter = useContestListStore.use.revertFilterList();
+    const selectAll = useContestListStore.use.selectAll();
+
+    const submit = () => {
+        filterSubmit(group);
+        onClose();
+    };
+
+    return (
+        <>
+            <div className={style.list}>
+                {Object.entries(filterInfo[group].infoObj)
+                    .sort((a, b) => a[0].localeCompare(b[0]))
+                    .map(([key, value]) => (
+                        <div key={key}>
+                            <h3>{key}</h3>
+                            <ul>
+                                {value.map(item => (
+                                    <motion.li
+                                        className={`${style.item} ${
+                                            filterSelected[group][item] ? style.selected : ''
+                                        }`}
+                                        key={item}
+                                        onClick={() => {
+                                            filterPick(item, group);
+                                        }}
+                                        whileTap={{ scale: 0.9 }}
+                                    >
+                                        {item}
+                                    </motion.li>
+                                ))}
+                            </ul>
+                        </div>
+                    ))}
+            </div>
+            <div className={style.tool}>
+                <div className={style.functionButton}>
+                    <motion.button
+                        className={style.button}
+                        onClick={() => {
+                            selectAll(group);
+                        }}
+                        type="button"
+                        whileTap={{ scale: 0.9 }}
+                    >
+                        全選
+                    </motion.button>
+                    <motion.button
+                        className={style.button}
+                        onClick={() => {
+                            revertFilter(group);
+                        }}
+                        type="button"
+                        whileTap={{ scale: 0.9 }}
+                    >
+                        反選
+                    </motion.button>
+                </div>
+                <div className={style.counter}>
+                    已選 <span className={style.blue}>{filterCounter[group]}</span> 場
+                </div>
+
+                <motion.div className={style.confirm} onClick={submit} whileTap={{ scale: 0.9 }}>
+                    確定
+                </motion.div>
+            </div>
+        </>
+    );
+}
+
 function Filter() {
     const tabStyle = {
         gap: 8,
@@ -37,19 +113,6 @@ function Filter() {
         router.push(`${pathname}?${createQueryString('filter', 'open')}`);
     };
 
-    const filterInfo = useContestListStore.use.filterInfo();
-    const filterSelected = useContestListStore.use.filterSelected();
-    const filterCounter = useContestListStore.use.filterCounter();
-    const filterPick = useContestListStore.use.setFilterSelected();
-    const filterSubmit = useContestListStore.use.setFilterList();
-    const revertFilter = useContestListStore.use.revertFilterList();
-    const selectAll = useContestListStore.use.selectAll();
-
-    const submit = (group: 'league' | 'country') => {
-        filterSubmit(group);
-        onClose();
-    };
-
     return (
         <BottomDrawer isOpen={isOpen === 'open'} onClose={onClose} onOpen={onOpen}>
             <div className={style.filter}>
@@ -63,146 +126,10 @@ function Filter() {
                         swiperOpen={tabStyle.swiperOpen}
                     >
                         <Tab label="賽事">
-                            <div className={style.list}>
-                                {Object.entries(filterInfo.league.infoObj)
-                                    .sort((a, b) => a[0].localeCompare(b[0]))
-                                    .map(([key, value]) => {
-                                        return (
-                                            <div key={key}>
-                                                <h3>{key}</h3>
-                                                <ul>
-                                                    {value.map(item => {
-                                                        return (
-                                                            <motion.li
-                                                                className={`${style.item} ${
-                                                                    filterSelected.league[item]
-                                                                        ? style.selected
-                                                                        : ''
-                                                                }`}
-                                                                key={item}
-                                                                onClick={() => {
-                                                                    filterPick(item, 'league');
-                                                                }}
-                                                                whileTap={{ scale: 0.9 }}
-                                                            >
-                                                                {item}
-                                                            </motion.li>
-                                                        );
-                                                    })}
-                                                </ul>
-                                            </div>
-                                        );
-                                    })}
-                            </div>
-                            <div className={style.tool}>
-                                <div className={style.functionButton}>
-                                    <motion.button
-                                        className={style.button}
-                                        onClick={() => {
-                                            selectAll('league');
-                                        }}
-                                        type="button"
-                                        whileTap={{ scale: 0.9 }}
-                                    >
-                                        全選
-                                    </motion.button>
-                                    <motion.button
-                                        className={style.button}
-                                        onClick={() => {
-                                            revertFilter('league');
-                                        }}
-                                        type="button"
-                                        whileTap={{ scale: 0.9 }}
-                                    >
-                                        反選
-                                    </motion.button>
-                                </div>
-                                <div className={style.counter}>
-                                    已選 <span className={style.blue}>{filterCounter.league}</span>{' '}
-                                    場
-                                </div>
-
-                                <motion.div
-                                    className={style.confirm}
-                                    onClick={() => {
-                                        submit('league');
-                                    }}
-                                    whileTap={{ scale: 0.9 }}
-                                >
-                                    確定
-                                </motion.div>
-                            </div>
+                            <FilterSection group="league" onClose={onClose} />
                         </Tab>
                         <Tab label="國家">
-                            <div className={style.list}>
-                                {Object.entries(filterInfo.country.infoObj)
-                                    .sort((a, b) => a[0].localeCompare(b[0]))
-                                    .map(([key, value]) => {
-                                        return (
-                                            <div key={key}>
-                                                <h3>{key}</h3>
-                                                <ul>
-                                                    {value.map(item => {
-                                                        return (
-                                                            <motion.li
-                                                                className={`${style.item} ${
-                                                                    filterSelected.country[item]
-                                                                        ? style.selected
-                                                                        : ''
-                                                                }`}
-                                                                key={item}
-                                                                onClick={() => {
-                                                                    filterPick(item, 'country');
-                                                                }}
-                                                                whileTap={{ scale: 0.9 }}
-                                                            >
-                                                                {item}
-                                                            </motion.li>
-                                                        );
-                                                    })}
-                                                </ul>
-                                            </div>
-                                        );
-                                    })}
-                            </div>
-                            <div className={style.tool}>
-                                <div className={style.functionButton}>
-                                    <motion.button
-                                        className={style.button}
-                                        onClick={() => {
-                                            selectAll('country');
-                                        }}
-                                        type="button"
-                                        whileTap={{ scale: 0.9 }}
-                                    >
-                                        全選
-                                    </motion.button>
-                                    <motion.button
-                                        className={style.button}
-                                        onClick={() => {
-                                            revertFilter('country');
-                                        }}
-                                        type="button"
-                                        whileTap={{ scale: 0.9 }}
-                                    >
-                                        反選
-                                    </motion.button>
-                                </div>
-                                <div className={style.counter}>
-                                    已選 <span className={style.blue}>{filterCounter.country}</span>{' '}
-                                    場
-                                </div>
-
-                                <motion.div
-                                    className={style.confirm}
-                                    onClick={() => {
-                                        submit('country');
-                                    }}
-                                    whileTap={{ scale: 0.9 }}
-                                >
-                                    確定
-                                </motion.div>
-                            </div>
+                            <FilterSection group="country" onClose={onClose} />
                         </Tab>
                     </Tabs>
                 </div>
