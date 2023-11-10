@@ -1,0 +1,136 @@
+syntax = "proto3";
+package dataFetcher;
+option go_package = "../data_fetcher";
+
+message AsiaMatchOdds {
+  AsiaOdds match = 1;
+  repeated Handicap handicapList = 2;
+  repeated EuropeOdds europeOddsList = 3;
+  repeated OverUnder overUnderList = 4;
+  repeated HandicapHalf handicapHalfList = 5;
+  repeated EuropeOddsHalf europeOddsHalfList = 6;
+  repeated OverUnderHalf overUnderHalfList = 7;
+}
+
+message AsiaOddsList {
+  repeated AsiaOddsStruct list = 1;
+}
+
+message AsiaOddsStruct {
+  repeated AsiaOdds asiaOddsMatch = 1;
+  repeated Handicap handicap = 2;
+  repeated EuropeOdds europeOdds = 3;
+  repeated OverUnder overUnder = 4;
+  repeated HandicapHalf handicapHalf = 5;
+  repeated EuropeOddsHalf europeOddsHalf = 6;
+  repeated OverUnderHalf overUnderHalf = 7;
+}
+
+message AsiaOdds {
+  int32 matchId = 1;
+  int64 matchTime = 2;
+  int64 startTime = 3;
+  int32 leagueId = 4;
+  string leagueEn = 5;
+  string leagueChs = 6;
+  string leagueCht = 7;
+  string homeEn = 8;
+  string homeChs = 9;
+  string homeCht = 10;
+  string awayEn = 11;
+  string awayChs = 12;
+  string awayCht = 13;
+  int32 homeId = 14;
+  int32 awayId = 15;
+  string homeRank = 16;
+  string awayRank = 17;
+  bool isNeutral = 18;
+  int32 state = 19;
+  int32 homeScore = 20;
+  int32 awayScore = 21;
+  int32 homeRed = 22;
+  int32 awayRed = 23;
+}
+
+message Handicap {
+  int32 matchId = 1;
+  int32 companyId = 2;
+  double initialHandicap = 3;
+  double homeInitialOdds = 4;
+  double awayInitialOdds = 5;
+  double currentHandicap = 6;
+  double homeCurrentOdds = 7;
+  double awayCurrentOdds = 8;
+  bool isMaintained = 9;
+  bool isInProgress = 10;
+  int64 oddsChangeTime = 11;
+  bool isClosed = 12;
+  int32 oddsType = 13;
+}
+
+message EuropeOdds {
+  int32 matchId = 1;
+  int32 companyId = 2;
+  double initialHomeOdds = 3;
+  double initialDrawOdds = 4;
+  double initialAwayOdds = 5;
+  double currentHomeOdds = 6;
+  double currentDrawOdds = 7;
+  double currentAwayOdds = 8;
+  int64 oddsChangeTime = 9;
+  bool isClosed = 10;
+  int32 oddsType = 11;
+}
+
+message OverUnder {
+  int32 matchId = 1;
+  int32 companyId = 2;
+  double initialHandicap = 3;
+  double initialOverOdds = 4;
+  double initialUnderOdds = 5;
+  double currentHandicap = 6;
+  double currentOverOdds = 7;
+  double currentUnderOdds = 8;
+  int64 oddsChangeTime = 9;
+  int32 oddsType = 10;
+}
+
+message HandicapHalf {
+  int32 matchId = 1;
+  int32 companyId = 2;
+  double initialHandicap = 3;
+  double homeInitialOdds = 4;
+  double awayInitialOdds = 5;
+  double currentHandicap = 6;
+  double homeCurrentOdds = 7;
+  double awayCurrentOdds = 8;
+  int64 oddsChangeTime = 9;
+  int32 oddsType = 10;
+}
+
+message EuropeOddsHalf {
+  int32 matchId = 1;
+  int32 companyId = 2;
+  double initialHomeOdds = 3;
+  double initialDrawOdds = 4;
+  double initialAwayOdds = 5;
+  double currentHomeOdds = 6;
+  double currentDrawOdds = 7;
+  double currentAwayOdds = 8;
+  int64 oddsChangeTime = 9;
+  bool isClosed = 10;
+  int32 oddsType = 11;
+}
+
+message OverUnderHalf {
+  int32 matchId = 1;
+  int32 companyId = 2;
+  double initialHandicap = 3;
+  double initialOverOdds = 4;
+  double initialUnderOdds = 5;
+  double currentHandicap = 6;
+  double currentOverOdds = 7;
+  double currentUnderOdds = 8;
+  int64 oddsChangeTime = 9;
+  int32 oddsType = 10;
+}

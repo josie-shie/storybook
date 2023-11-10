@@ -5,6 +5,10 @@ let changeProtobuf: Root;
 let changeItem: Type;
 let changeInit = true;
 
+let oddsProtobuf: Root;
+let oddsItem: Type;
+let oddsInit = true;
+
 let oddsChangeProtobuf: Root;
 let oddsChangeItem: Type;
 let oddsChangeInit = true;
@@ -37,6 +41,17 @@ export const deProto = async (msg: Uint8Array) => {
 };
 
 export const deProtoOdds = async (msg: Uint8Array) => {
+    if (oddsInit) {
+        oddsProtobuf = await load('/odds.proto');
+        oddsItem = oddsProtobuf.lookupType('dataFetcher.AsiaMatchOdds');
+        oddsInit = false;
+    }
+
+    const decoded = oddsItem.decode(msg);
+    return decoded;
+};
+
+export const deProtoOddsChange = async (msg: Uint8Array) => {
     if (oddsChangeInit) {
         oddsChangeProtobuf = await load('/odds_change.proto');
         oddsChangeItem = oddsChangeProtobuf.lookupType('dataFetcher.AsiaMatchOddsChange');

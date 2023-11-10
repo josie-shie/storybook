@@ -1,6 +1,12 @@
 import type { MqttClient } from 'mqtt';
 import * as mqtt from 'mqtt';
-import { deProto, deProtoOdds, deProtoDetailEvent, deProtoDetailTechnicList } from './prtobuf';
+import {
+    deProto,
+    deProtoOdds,
+    deProtoOddsChange,
+    deProtoDetailEvent,
+    deProtoDetailTechnicList
+} from './prtobuf';
 
 interface OriginalContestInfo {
     leagueChsShort: string;
@@ -105,6 +111,7 @@ interface EventInfoData {
 let client: MqttClient;
 const useMessageQueue: ((data: OriginalContestInfo) => void)[] = [];
 const useOddsQueue: ((data: OddChangeType) => void)[] = [];
+const useOddsChangeQueue: ((data: OddChangeType) => void)[] = [];
 const useTechnicalQueue: ((data: TechnicalInfoData) => void)[] = [];
 const useEventQueue: ((data: EventInfoData) => void)[] = [];
 let init = true;
@@ -316,12 +323,25 @@ const handleOddsMessage = async (message: Buffer) => {
         messageObject as unknown as Record<string, unknown>
     );
     for (const messageMethod of useOddsQueue) {
-        messageMethod(decodedMessage as unknown as OriginalContestInfo);
+        messageMethod(decodedMessage as unknown as OddChangeType);
         const formatDecodedMessage = createHashTable(decodedMessage);
         messageMethod(formatDecodedMessage);
     }
     // eslint-disable-next-line no-console -- Check mqtt message
     console.log('[MQTT On odds message]: ', decodedMessage);
+};
+
+const handleOddsChangeMessage = async (message: Buffer) => {
+    const messageObject = await deProtoOddsChange(message);
+    const decodedMessage = toSerializableObject(
+        messageObject as unknown as Record<string, unknown>
+    );
+
+    for (const messageMethod of useOddsChangeQueue) {
+        messageMethod(decodedMessage as unknown as OddChangeType);
+    }
+    // eslint-disable-next-line no-console -- Check mqtt message
+    console.log('[MQTT On odds change message]: ', decodedMessage);
 };
 
 const handleDetailEventMessage = async (message: Buffer) => {
@@ -362,13 +382,15 @@ export const mqttService = {
                 // eslint-disable-next-line no-console -- Check lifecycle
                 console.log('Mqtt connected');
                 client.subscribe('updatematch');
+                client.subscribe('updateasia_odds');
                 client.subscribe('updateasia_odds_change');
                 client.subscribe('updateevent');
                 client.subscribe('updatetechnic');
             });
             client.on('message', (topic, message) => {
                 if (topic === 'updatematch') void handleContestMessage(message);
-                if (topic === 'updateasia_odds_change') void handleOddsMessage(message);
+                if (topic === 'updateasia_odds') void handleOddsMessage(message);
+                if (topic === 'updateasia_odds_change') void handleOddsChangeMessage(message);
                 if (topic === 'updateevent') void handleDetailEventMessage(message);
                 if (topic === 'updatetechnic') void handleDetailTechnicListMessage(message);
             });
@@ -379,8 +401,11 @@ export const mqttService = {
     getMessage: (onMessage: (data: OriginalContestInfo) => void) => {
         useMessageQueue.push(onMessage);
     },
-    getOdds: (onMessage: (data: OriginalContestInfo) => void) => {
+    getOdds: (onMessage: (data: OddChangeType) => void) => {
         useOddsQueue.push(onMessage);
+    },
+    getOddsChange: (onMessage: (data: OddChangeType) => void) => {
+        useOddsChangeQueue.push(onMessage);
     },
     getTechnicList: (onMessage: (data: TechnicalInfoData) => void) => {
         useTechnicalQueue.push(onMessage);
