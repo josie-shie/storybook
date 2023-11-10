@@ -3,19 +3,18 @@ import dayjs from 'dayjs';
 
 // const HALF_BREAK_TIME = 15;
 
-export const handleStartTime = (startTime: string, endTime?: string) => {
+export const handleStartTime = (startTime: number, endTime?: number) => {
     if (!startTime) return 0;
-    const start = dayjs(startTime);
-    const end = endTime ? dayjs(endTime) : dayjs();
+    const start = dayjs(startTime * 1000);
+    const end = endTime ? dayjs(endTime * 1000) : dayjs();
     const diffMinutes = end.diff(start, 'minute');
-
     return diffMinutes;
 };
 
 export const handleGameTime = (
-    startTime: string,
+    startTime: number,
     state: number,
-    endTime?: string
+    endTime?: number
 ): {
     state:
         | 'notYet'
@@ -72,9 +71,9 @@ export const handleGameTime = (
     return { state: 'unknow', text: '未知' };
 };
 
-export const handleMatchDateTime = (startTime: string) => {
+export const handleMatchDateTime = (startTime: number) => {
     if (!startTime) return '';
-    const inputDate = dayjs.unix(parseInt(startTime));
+    const inputDate = dayjs(startTime * 1000);
     const now = dayjs();
 
     if (now.format('YYYY/MM/DD') === inputDate.format('YYYY/MM/DD')) {

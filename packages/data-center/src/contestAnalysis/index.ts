@@ -35,10 +35,10 @@ const HandicapsInfoSchema = z.object({
 const TotalGoalsInfoSchema = z.object({
     matchId: z.number(),
     companyId: z.number(),
-    initialTotalGoals: z.number(),
+    initialHandicap: z.number(),
     overInitialOdds: z.number(),
     underInitialOdds: z.number(),
-    currentTotalGoals: z.number(),
+    currentHandicap: z.number(),
     overCurrentOdds: z.number(),
     underCurrentOdds: z.number(),
     oddsChangeTime: z.number(),
@@ -347,7 +347,7 @@ type GetAnalyzeResult = z.infer<typeof GetAnalyzeSchema>;
 const AsiaMatchSchema = z.object({
     matchId: z.number(),
     matchTime: z.number(),
-    startTime: z.string(),
+    startTime: z.number(),
     leagueId: z.number(),
     leagueEn: z.string(),
     leagueChs: z.string(),
@@ -380,7 +380,7 @@ const MatchesHandicapSchema = z.object({
     awayCurrentOdds: z.number(),
     isMaintained: z.boolean(),
     isInProgress: z.boolean(),
-    oddsChangeTime: z.string(),
+    oddsChangeTime: z.number(),
     isClosed: z.boolean(),
     oddsType: z.number()
 });
@@ -394,7 +394,7 @@ const MatchesOverUnderSchema = z.object({
     currentHandicap: z.number(),
     currentOverOdds: z.number(),
     currentUnderOdds: z.number(),
-    oddsChangeTime: z.string(),
+    oddsChangeTime: z.number(),
     isClosed: z.boolean(),
     oddsType: z.number()
 });
@@ -407,7 +407,7 @@ const MatchesHandicapHalfSchema = z.object({
     currentHandicap: z.number(),
     homeCurrentOdds: z.number(),
     awayCurrentOdds: z.number(),
-    oddsChangeTime: z.string(),
+    oddsChangeTime: z.number(),
     oddsType: z.number()
 });
 const MatchesOverUnderHalfSchema = z.object({
@@ -419,7 +419,7 @@ const MatchesOverUnderHalfSchema = z.object({
     currentHandicap: z.number(),
     currentOverOdds: z.number(),
     currentUnderOdds: z.number(),
-    oddsChangeTime: z.string(),
+    oddsChangeTime: z.number(),
     oddsType: z.number()
 });
 const MatchesOddsDetailSchema = z.object({
@@ -1001,10 +1001,10 @@ export const getBeforeGameIndex = async (
             },
             {
                 label: '大',
-                init: truncateFloatingPoint(companyOdds.fullTotalGoal[0]?.initialTotalGoals, 2),
+                init: truncateFloatingPoint(companyOdds.fullTotalGoal[0]?.initialHandicap, 2),
                 initHome: truncateFloatingPoint(companyOdds.fullTotalGoal[0]?.overInitialOdds, 2),
                 initAway: truncateFloatingPoint(companyOdds.fullTotalGoal[0]?.underInitialOdds, 2),
-                current: truncateFloatingPoint(companyOdds.fullTotalGoal[0]?.currentTotalGoals, 2),
+                current: truncateFloatingPoint(companyOdds.fullTotalGoal[0]?.currentHandicap, 2),
                 currentHome: truncateFloatingPoint(
                     companyOdds.fullTotalGoal[0]?.overCurrentOdds,
                     2

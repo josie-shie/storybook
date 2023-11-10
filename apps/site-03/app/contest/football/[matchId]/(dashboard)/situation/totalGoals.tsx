@@ -49,12 +49,12 @@ function InProgress({
                     </div>
                     <div className="td">
                         <p>{now.overInitialOdds}</p>
-                        <p>{now.initialTotalGoals}</p>
+                        <p>{now.initialHandicap}</p>
                         <p>{now.underInitialOdds}</p>
                     </div>
                     <div className="td">
                         <p>{now.overCurrentOdds}</p>
-                        <p>{now.currentTotalGoals}</p>
+                        <p>{now.currentHandicap}</p>
                         <p>
                             {now.underCurrentOdds}
                             <Image
@@ -101,12 +101,12 @@ function NotStarted({
                     <div className="td">-</div>
                     <div className="td">
                         <p>{before.overInitialOdds}</p>
-                        <p>{before.initialTotalGoals}</p>
+                        <p>{before.initialHandicap}</p>
                         <p>{before.underInitialOdds}</p>
                     </div>
                     <div className="td">
                         <p>{before.overCurrentOdds}</p>
-                        <p>{before.currentTotalGoals}</p>
+                        <p>{before.currentHandicap}</p>
                         <p>
                             {before.underCurrentOdds}
                             <Image

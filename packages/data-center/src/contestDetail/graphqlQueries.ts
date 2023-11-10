@@ -150,10 +150,10 @@ export const GET_DETAIL_STATUS_QUERY = `
                 notStarted {
                     matchId
                     companyId
-                    initialTotalGoals
+                    initialHandicap
                     overInitialOdds
                     underInitialOdds
-                    currentTotalGoals
+                    currentHandicap
                     overCurrentOdds
                     underCurrentOdds
                     oddsChangeTime
@@ -166,10 +166,10 @@ export const GET_DETAIL_STATUS_QUERY = `
                 inProgress {
                     matchId
                     companyId
-                    initialTotalGoals
+                    initialHandicap
                     overInitialOdds
                     underInitialOdds
-                    currentTotalGoals
+                    currentHandicap
                     overCurrentOdds
                     underCurrentOdds
                     oddsChangeTime
@@ -189,10 +189,10 @@ export const GET_DETAIL_STATUS_QUERY = `
                 notStarted {
                     matchId
                     companyId
-                    initialTotalGoals
+                    initialHandicap
                     overInitialOdds
                     underInitialOdds
-                    currentTotalGoals
+                    currentHandicap
                     overCurrentOdds
                     underCurrentOdds
                     oddsChangeTime
@@ -205,10 +205,10 @@ export const GET_DETAIL_STATUS_QUERY = `
                 inProgress {
                     matchId
                     companyId
-                    initialTotalGoals
+                    initialHandicap
                     overInitialOdds
                     underInitialOdds
-                    currentTotalGoals
+                    currentHandicap
                     overCurrentOdds
                     underCurrentOdds
                     oddsChangeTime
@@ -338,10 +338,10 @@ export const GET_COMPANY_LIVE_ODDS_DETAIL = `
             fullTotalGoal {
                 matchId
                 companyId
-                initialTotalGoals
+                initialHandicap
                 overInitialOdds
                 underInitialOdds
-                currentTotalGoals
+                currentHandicap
                 overCurrentOdds
                 underCurrentOdds
                 oddsChangeTime
@@ -354,10 +354,10 @@ export const GET_COMPANY_LIVE_ODDS_DETAIL = `
             halfTotalGoal {
                 matchId
                 companyId
-                initialTotalGoals
+                initialHandicap
                 overInitialOdds
                 underInitialOdds
-                currentTotalGoals
+                currentHandicap
                 overCurrentOdds
                 underCurrentOdds
                 oddsChangeTime

@@ -11,8 +11,8 @@ export interface MatchInfo {
     subLeagueEn: string;
     subLeagueChs: string;
     subLeagueCht: string;
-    matchTime: string;
-    startTime: string;
+    matchTime: number;
+    startTime: number;
     homeEn: string;
     homeChs: string;
     homeCht: string;
@@ -88,10 +88,10 @@ export type HandicapsList = {
 export interface TotalGoalsInfo {
     matchId: number;
     companyId: number;
-    initialTotalGoals: number;
+    initialHandicap: number;
     overInitialOdds: number;
     underInitialOdds: number;
-    currentTotalGoals: number;
+    currentHandicap: number;
     overCurrentOdds: number;
     underCurrentOdds: number;
     oddsChangeTime: number;
@@ -248,7 +248,7 @@ export interface CompanyDetailResponse {
     awayTeam: string;
     homeScore: number;
     awayScore: number;
-    startTime: string;
+    startTime: number;
     companyOdds: {
         companyId: number;
         companyName: string;

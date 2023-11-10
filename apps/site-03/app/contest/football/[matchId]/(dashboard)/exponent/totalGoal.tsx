@@ -34,7 +34,7 @@ function TotalGoal() {
                                       {
                                           exponentData.totalGoalData[totalGoalsRadio].info[
                                               companyId
-                                          ].initialTotalGoals
+                                          ].initialHandicap
                                       }
                                   </div>
                                   <div className="td">
@@ -55,7 +55,7 @@ function TotalGoal() {
                                       {
                                           exponentData.totalGoalData[totalGoalsRadio].info[
                                               companyId
-                                          ].currentTotalGoals
+                                          ].currentHandicap
                                       }
                                   </div>
                                   <div className="td">

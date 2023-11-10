@@ -1,6 +1,7 @@
 'use client';
 import Image from 'next/image';
 import Button from '@mui/material/Button';
+import { useRouter } from 'next/navigation';
 import type { GetSingleMatchResponse } from 'data-center';
 import { GameStatus } from 'ui';
 import TeamLogo from './components/teamLogo';
@@ -67,13 +68,27 @@ function GameDetail() {
     );
 }
 
-function LiveBox({ contestDetail }: { contestDetail: GetSingleMatchResponse }) {
+function LiveBox({
+    contestDetail,
+    backHistory
+}: {
+    contestDetail: GetSingleMatchResponse;
+    backHistory?: boolean;
+}) {
     createContestDetailStore({ matchDetail: contestDetail });
     const { homeChs, homeLogo, awayChs, awayLogo } = useContestDetailStore.use.matchDetail();
+    const router = useRouter();
+    const back = () => {
+        if (backHistory) {
+            router.back();
+        } else {
+            router.push('/contest/football');
+        }
+    };
 
     return (
         <div className={style.liveBox} style={{ backgroundImage: `url(${bgImage.src})` }}>
-            <Header />
+            <Header back={back} />
             <div className={style.scoreboard}>
                 <div className={style.gameInfo}>
                     <div className={style.team}>
