@@ -36,13 +36,23 @@ export const handleGameTime = (
         return { state: 'notYet', text: '未' };
     }
     if (state === 1) {
-        return { state: 'playing', time: handleStartTime(startTime, endTime) };
+        return {
+            state: 'playing',
+            time:
+                handleStartTime(startTime, endTime) >= 45 ? 45 : handleStartTime(startTime, endTime)
+        };
     }
     if (state === 2) {
         return { state: 'midfielder', text: '中场' };
     }
     if (state === 3) {
-        return { state: 'playing', time: handleStartTime(startTime, endTime) + 45 };
+        return {
+            state: 'playing',
+            time:
+                handleStartTime(startTime, endTime) + 45 >= 90
+                    ? 90
+                    : handleStartTime(startTime, endTime) + 45
+        };
     }
     if (state === 4) {
         return { state: 'playoff', text: '加' };
