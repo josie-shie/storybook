@@ -65,7 +65,7 @@ const initialState = (
     setContestOdds: (odds: OddsHashTable) => {
         Object.keys(odds).forEach(matchId => {
             Object.keys(odds[matchId]).forEach(companyId => {
-                if (companyId === '42') {
+                if (companyId === '3') {
                     const obj = odds[matchId][companyId];
                     set(state => {
                         const newContestInfo: ContestTable = { ...state.contestInfo };
