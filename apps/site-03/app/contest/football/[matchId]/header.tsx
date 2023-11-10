@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import { GameStatus } from 'ui';
+import { timestampToString } from 'lib';
 import style from './header.module.scss';
 import BackIcon from './img/back.png';
 import ShareIcon from './img/share.png';
@@ -47,7 +48,9 @@ function Header({ back }: { back: () => void }) {
             <header className={style.header}>
                 <Image alt="back_icon" height={24} onClick={back} src={BackIcon} width={24} />
                 <div className={style.scoreboard}>
-                    <p className={style.createTime}>{matchDetail.matchTime}</p>
+                    <p className={style.createTime}>
+                        {timestampToString(matchDetail.startTime, 'M/DD HH:mm')}
+                    </p>
                     <p className={style.league}>
                         {matchDetail.leagueChsShort}
                         {matchDetail.kind === 1 && ` 第${matchDetail.roundCn}轮`}

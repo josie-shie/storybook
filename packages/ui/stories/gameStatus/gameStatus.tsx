@@ -23,7 +23,7 @@ function useGameTime({ startTime, status }: GameStatusProps) {
         if (status === 1 || status === 3) {
             timerRef.current = setInterval(() => {
                 setTriggerUpdate(u => !u);
-            }, 30000);
+            }, 10000);
         } else if (timerRef.current) {
             clearInterval(timerRef.current);
         }
@@ -49,7 +49,7 @@ function GameStatus({ startTime, status, injuryTime = '', ...props }: GameStatus
                 }`}
             >
                 {realTimeStatus.time || realTimeStatus.text}
-                {Number(injuryTime) > 0 ? `+${injuryTime}'` : ''}
+                {Number(injuryTime) > 0 && realTimeStatus.time ? `+${injuryTime}'` : ''}
             </p>
         </div>
     );

@@ -20,7 +20,7 @@ let useExponentStore: StoreWithSelectors<ExponentState>;
 
 const initialState = (set: (data: Partial<ExponentState>) => void) => ({
     exponentData: null,
-    totalGoalsRadio: 'half' as const,
+    totalGoalsRadio: 'full' as const,
     loading: false,
     options: [
         {
@@ -45,7 +45,7 @@ const initialState = (set: (data: Partial<ExponentState>) => void) => ({
     },
     setSelectedOption: (selectedOption: ExponentType) => {
         set({ selectedOption });
-        set({ totalGoalsRadio: 'half' });
+        set({ totalGoalsRadio: 'full' });
     }
 });
 

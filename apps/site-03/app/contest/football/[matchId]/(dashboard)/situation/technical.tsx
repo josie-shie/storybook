@@ -54,6 +54,16 @@ function Technical() {
         '47': '扑出点球'
     };
 
+    const numberRatio = (first: string, second: string) => {
+        const firstValue = parseInt(first.replace(/%/, ''), 10);
+        const secondValue = parseInt(second.replace(/%/, ''), 10);
+
+        if (firstValue > secondValue) {
+            return 'redText';
+        }
+        return '';
+    };
+
     return (
         <div className={style.technical}>
             <div className="topBar">
@@ -68,11 +78,11 @@ function Technical() {
                 <div className="tableBody">
                     {technicalList.map((technic, idx) => (
                         <div className="tr" key={`technic_${idx.toString()}`}>
-                            <div className={`td ${technic.home > technic.away && 'redText'}`}>
+                            <div className={`td ${numberRatio(technic.home, technic.away)}`}>
                                 {technic.home}
                             </div>
                             <div className="td">{technicMap[technic.technicType]}</div>
-                            <div className={`td ${technic.home < technic.away && 'redText'}`}>
+                            <div className={`td ${numberRatio(technic.away, technic.home)}`}>
                                 {technic.away}
                             </div>
                         </div>

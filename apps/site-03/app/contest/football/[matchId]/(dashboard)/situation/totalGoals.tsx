@@ -134,7 +134,7 @@ function TotalGoals() {
     const totalGoalsData = useSituationStore.use.totalGoalsData();
     const setCompanyId = useSituationStore.use.setCompanyId();
     const [totalGoalsSwitch, setTotalGoalsSwitch] = useState(3);
-    const [totalGoalsRadio, setTotalGoalsRadio] = useState<RadioType>('half');
+    const [totalGoalsRadio, setTotalGoalsRadio] = useState<RadioType>('full');
     const setDrawerTabValue = useSituationStore.use.setOddsDeatilDrawerTabValue();
     const setIsOddsDetailDrawerOpen = useSituationStore.use.setIsOddsDetailDrawerOpen();
 
