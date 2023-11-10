@@ -21,6 +21,30 @@ type TabTpye =
     | 'fullWinDrawLose'
     | 'halfWinDrawLose';
 
+function ScroeBar() {
+    const matchDetail = useContestDetailStore.use.matchDetail();
+    const globalStore = useContestInfoStore.use.contestInfo();
+    const homeLiveScore =
+        typeof globalStore[matchDetail.matchId] !== 'undefined'
+            ? globalStore[matchDetail.matchId].homeScore || matchDetail.homeScore
+            : matchDetail.homeScore;
+
+    const awayLiveScore =
+        typeof globalStore[matchDetail.matchId] !== 'undefined'
+            ? globalStore[matchDetail.matchId].awayScore || matchDetail.awayScore
+            : matchDetail.awayScore;
+
+    return (
+        <div className={style.teamScore}>
+            <p className={style.homeTeam}>{matchDetail.homeChs}</p>
+            <p className={style.score}>
+                {homeLiveScore}-{awayLiveScore}
+            </p>
+            <p className={style.awayTeam}>{matchDetail.awayChs}</p>
+        </div>
+    );
+}
+
 function HandicapDrawer() {
     const isOpen = useSituationStore.use.isOddsDetailDrawerOpen();
     const setIsOpen = useSituationStore.use.setIsOddsDetailDrawerOpen();
@@ -31,17 +55,6 @@ function HandicapDrawer() {
     const setCompanyOddsDetail = useSituationStore.use.setCompanyLiveOddsDetail();
     const companyNameMap = useContestDetailStore.use.companyNameMap();
     const companyId = useSituationStore.use.companyId();
-    const globalStore = useContestInfoStore.use.contestInfo();
-
-    const homeLiveScore =
-        typeof globalStore[matchDetail.matchId] !== 'undefined'
-            ? globalStore[matchDetail.matchId].homeScore || matchDetail.homeScore
-            : matchDetail.homeScore;
-
-    const awayLiveScore =
-        typeof globalStore[matchDetail.matchId] !== 'undefined'
-            ? globalStore[matchDetail.matchId].awayScore || matchDetail.awayScore
-            : matchDetail.awayScore;
 
     const tabStyle = {
         gap: 8,
@@ -106,13 +119,7 @@ function HandicapDrawer() {
                         width={24}
                     />
                 </div>
-                <div className={style.teamScore}>
-                    <p className={style.homeTeam}>{matchDetail.homeChs}</p>
-                    <p className={style.score}>
-                        {homeLiveScore}-{awayLiveScore}
-                    </p>
-                    <p className={style.awayTeam}>{matchDetail.awayChs}</p>
-                </div>
+                <ScroeBar />
                 <Tabs
                     buttonRadius={tabStyle.buttonRadius}
                     defaultValue={tabList.findIndex(item => item.value === tabValue) || undefined}

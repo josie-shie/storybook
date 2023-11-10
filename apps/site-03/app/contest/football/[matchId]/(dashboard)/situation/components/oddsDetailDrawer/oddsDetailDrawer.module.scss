@@ -18,6 +18,18 @@
         .tr {
             .td {
                 width: 45px;
+
+                &:nth-child(1),
+                &:nth-child(2) {
+                    flex: initial;
+                }
+            }
+
+            .th {
+                &:nth-child(1),
+                &:nth-child(2) {
+                    flex: initial;
+                }
             }
 
             .td:last-child,

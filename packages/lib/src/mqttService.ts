@@ -413,10 +413,9 @@ const handleOddsChangeMessage = async (message: Buffer) => {
         messageObject as unknown as Record<string, unknown>
     );
 
-    for (const messageMethod of useOddsQueue) {
+    for (const messageMethod of useOddsChangeQueue) {
         const formatDecodedMessage = createHashTable(decodedMessage);
         messageMethod(formatDecodedMessage);
-        messageMethod(decodedMessage);
     }
     // eslint-disable-next-line no-console -- Check mqtt message
     console.log('[MQTT On odds change message]: ', decodedMessage);
