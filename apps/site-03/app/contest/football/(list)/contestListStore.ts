@@ -160,32 +160,38 @@ const initialState = (set: (updater: (state: ContestList) => Partial<ContestList
     }
 });
 
+const formatCounterAndSelected = (league: FilterMap, country: FilterMap) => {
+    const filterSelected = {
+        league: {},
+        country: {}
+    };
+    const filterCounter = {
+        league: 0,
+        country: 0
+    };
+
+    Object.values(league.infoObj).forEach((value: string[]) => {
+        value.forEach(leagueName => {
+            filterSelected.league[leagueName] = true;
+            filterCounter.league += league.countMap[leagueName] || 0;
+        });
+    });
+    Object.values(country.infoObj).forEach((value: string[]) => {
+        value.forEach(countryName => {
+            filterSelected.country[countryName] = true;
+            filterCounter.country += country.countMap[countryName] || 0;
+        });
+    });
+
+    return { filterSelected, filterCounter };
+};
+
 const creatContestListStore = (init: InitState) => {
     if (isInit) {
         const league = formatFilterMap(init.contestInfo, 'leagueChsShort');
         const country = formatFilterMap(init.contestInfo, 'countryCn');
 
-        const filterSelected = {
-            league: {},
-            country: {}
-        };
-        const filterCounter = {
-            league: 0,
-            country: 0
-        };
-
-        Object.values(league.infoObj).forEach((value: string[]) => {
-            value.forEach(leagueName => {
-                filterSelected.league[leagueName] = true;
-                filterCounter.league += league.countMap[leagueName] || 0;
-            });
-        });
-        Object.values(country.infoObj).forEach((value: string[]) => {
-            value.forEach(countryName => {
-                filterSelected.country[countryName] = true;
-                filterCounter.country += country.countMap[countryName] || 0;
-            });
-        });
+        const { filterSelected, filterCounter } = formatCounterAndSelected(league, country);
 
         const params = {
             contestList: init.contestList,
@@ -205,6 +211,7 @@ const creatContestListStore = (init: InitState) => {
                 }
             }
         };
+
         useContestListStore = initStore<ContestList>(initialState, params);
         isInit = false;
     }
