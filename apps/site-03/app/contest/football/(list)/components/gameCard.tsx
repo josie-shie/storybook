@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { GameStatus } from 'ui';
 import { parseMatchInfo, timestampToString } from 'lib';
 import { useEffect, useState, useCallback } from 'react';
+import Link from 'next/link';
 import { useContestListStore } from '../contestListStore';
 import style from './gameCard.module.scss';
 import Flag from './img/flag.png';
@@ -231,10 +232,14 @@ function GameCard({ matchId }: { matchId: number }) {
 
     return (
         <li className={style.gameCard}>
-            <TopArea contestInfo={contestInfo} matchId={matchId} />
-            <TeamInfo contestInfo={contestInfo} matchId={matchId} />
-            <OddsInfo contestInfo={contestInfo} matchId={matchId} />
-            <ExtraInfo contestInfo={contestInfo} matchId={matchId} />
+            <Link href={`/contest/football/${matchId}`}>
+                <div>
+                    <TopArea contestInfo={contestInfo} matchId={matchId} />
+                    <TeamInfo contestInfo={contestInfo} matchId={matchId} />
+                    <OddsInfo contestInfo={contestInfo} matchId={matchId} />
+                    <ExtraInfo contestInfo={contestInfo} matchId={matchId} />
+                </div>
+            </Link>
         </li>
     );
 }
