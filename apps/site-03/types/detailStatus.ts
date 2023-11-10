@@ -88,10 +88,10 @@ export type HandicapsList = {
 export interface TotalGoalsInfo {
     matchId: number;
     companyId: number;
-    initialTotalGoals: number;
+    initialHandicap: number;
     overInitialOdds: number;
     underInitialOdds: number;
-    currentTotalGoals: number;
+    currentHandicap: number;
     overCurrentOdds: number;
     underCurrentOdds: number;
     oddsChangeTime: number;

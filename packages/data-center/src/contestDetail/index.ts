@@ -107,10 +107,10 @@ export type HandicapsInfo = Omit<
 const TotalGoalsInfoSchema = z.object({
     matchId: z.number(),
     companyId: z.number(),
-    initialTotalGoals: z.number(),
+    initialHandicap: z.number(),
     overInitialOdds: z.number(),
     underInitialOdds: z.number(),
-    currentTotalGoals: z.number(),
+    currentHandicap: z.number(),
     overCurrentOdds: z.number(),
     underCurrentOdds: z.number(),
     oddsChangeTime: z.number(),
@@ -128,15 +128,15 @@ export type TotalGoalsInfo = Omit<
     | 'underInitialOdds'
     | 'overCurrentOdds'
     | 'underCurrentOdds'
-    | 'initialTotalGoals'
-    | 'currentTotalGoals'
+    | 'initialHandicap'
+    | 'currentHandicap'
 > & {
     overInitialOdds: number;
     underInitialOdds: number;
     overCurrentOdds: number;
     underCurrentOdds: number;
-    initialTotalGoals: string;
-    currentTotalGoals: string;
+    initialHandicap: string;
+    currentHandicap: string;
 };
 
 const WinDrawLoseTypeSchema = z.object({
@@ -540,8 +540,8 @@ export const getDetailStatus = async (
                     inProgress: item.timePeriods.inProgress.map(before => {
                         return {
                             ...before,
-                            initialTotalGoals: handicapToString(before.initialTotalGoals),
-                            currentTotalGoals: handicapToString(before.currentTotalGoals),
+                            initialHandicap: handicapToString(before.initialHandicap),
+                            currentHandicap: handicapToString(before.currentHandicap),
                             overInitialOdds: truncateFloatingPoint(before.overInitialOdds, 2),
                             underInitialOdds: truncateFloatingPoint(before.underInitialOdds, 2),
                             overCurrentOdds: truncateFloatingPoint(before.overCurrentOdds, 2),
@@ -551,8 +551,8 @@ export const getDetailStatus = async (
                     notStarted: item.timePeriods.notStarted.map(before => {
                         return {
                             ...before,
-                            initialTotalGoals: handicapToString(before.initialTotalGoals),
-                            currentTotalGoals: handicapToString(before.currentTotalGoals),
+                            initialHandicap: handicapToString(before.initialHandicap),
+                            currentHandicap: handicapToString(before.currentHandicap),
                             overInitialOdds: truncateFloatingPoint(before.overInitialOdds, 2),
                             underInitialOdds: truncateFloatingPoint(before.underInitialOdds, 2),
                             overCurrentOdds: truncateFloatingPoint(before.overCurrentOdds, 2),
@@ -568,8 +568,8 @@ export const getDetailStatus = async (
                     inProgress: item.timePeriods.inProgress.map(before => {
                         return {
                             ...before,
-                            initialTotalGoals: handicapToString(before.initialTotalGoals),
-                            currentTotalGoals: handicapToString(before.currentTotalGoals),
+                            initialHandicap: handicapToString(before.initialHandicap),
+                            currentHandicap: handicapToString(before.currentHandicap),
                             overInitialOdds: truncateFloatingPoint(before.overInitialOdds, 2),
                             underInitialOdds: truncateFloatingPoint(before.underInitialOdds, 2),
                             overCurrentOdds: truncateFloatingPoint(before.overCurrentOdds, 2),
@@ -579,8 +579,8 @@ export const getDetailStatus = async (
                     notStarted: item.timePeriods.notStarted.map(before => {
                         return {
                             ...before,
-                            initialTotalGoals: handicapToString(before.initialTotalGoals),
-                            currentTotalGoals: handicapToString(before.currentTotalGoals),
+                            initialHandicap: handicapToString(before.initialHandicap),
+                            currentHandicap: handicapToString(before.currentHandicap),
                             overInitialOdds: truncateFloatingPoint(before.overInitialOdds, 2),
                             underInitialOdds: truncateFloatingPoint(before.underInitialOdds, 2),
                             overCurrentOdds: truncateFloatingPoint(before.overCurrentOdds, 2),

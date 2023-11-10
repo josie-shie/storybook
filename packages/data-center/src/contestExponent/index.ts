@@ -30,10 +30,10 @@ type HandicapsInfo = Omit<OriginalHandicapsInfo, 'initialHandicap' | 'currentHan
 const TotalGoalsInfoSchema = z.object({
     matchId: z.number(),
     companyId: z.number(),
-    initialTotalGoals: z.number(),
+    initialHandicap: z.number(),
     overInitialOdds: z.number(),
     underInitialOdds: z.number(),
-    currentTotalGoals: z.number(),
+    currentHandicap: z.number(),
     overCurrentOdds: z.number(),
     underCurrentOdds: z.number(),
     oddsChangeTime: z.number(),
@@ -45,9 +45,9 @@ const TotalGoalsInfoSchema = z.object({
 });
 
 type OriginalTotalGoalsInfo = z.infer<typeof TotalGoalsInfoSchema>;
-type TotalGoalsInfo = Omit<OriginalTotalGoalsInfo, 'initialTotalGoals' | 'currentTotalGoals'> & {
-    initialTotalGoals: string;
-    currentTotalGoals: string;
+type TotalGoalsInfo = Omit<OriginalTotalGoalsInfo, 'initialHandicap' | 'currentHandicap'> & {
+    initialHandicap: string;
+    currentHandicap: string;
 };
 
 const WinDrawLoseSchema = z.object({
@@ -229,8 +229,8 @@ export const getExponent = async (
                     underInitialOdds: truncateFloatingPoint(item.underInitialOdds, 2),
                     overCurrentOdds: truncateFloatingPoint(item.overCurrentOdds, 2),
                     underCurrentOdds: truncateFloatingPoint(item.underCurrentOdds, 2),
-                    initialTotalGoals: handicapToString(item.initialTotalGoals),
-                    currentTotalGoals: handicapToString(item.currentTotalGoals)
+                    initialHandicap: handicapToString(item.initialHandicap),
+                    currentHandicap: handicapToString(item.currentHandicap)
                 };
             }
         }
@@ -246,8 +246,8 @@ export const getExponent = async (
                     underInitialOdds: truncateFloatingPoint(item.underInitialOdds, 2),
                     overCurrentOdds: truncateFloatingPoint(item.overCurrentOdds, 2),
                     underCurrentOdds: truncateFloatingPoint(item.underCurrentOdds, 2),
-                    initialTotalGoals: handicapToString(item.initialTotalGoals),
-                    currentTotalGoals: handicapToString(item.currentTotalGoals)
+                    initialHandicap: handicapToString(item.initialHandicap),
+                    currentHandicap: handicapToString(item.currentHandicap)
                 };
             }
         }
