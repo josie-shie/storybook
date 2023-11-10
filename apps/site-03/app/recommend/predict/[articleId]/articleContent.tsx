@@ -15,19 +15,22 @@ function ArticleContent() {
         {
             id: 1,
             time: '发表于今天 17:45',
-            leagueName: { name: '欧锦U20A', time: '09-05 16:45' },
+            leagueName: '欧锦U20A',
+            leagueTime: '09-05 16:45',
             teamName: '德國U20A vs 斯洛文尼亚U20'
         },
         {
             id: 2,
             time: '发表于今天 17:45',
-            leagueName: { name: '欧锦U20A', time: '09-05 16:45' },
+            leagueName: '欧锦U20A',
+            leagueTime: '09-05 16:45',
             teamName: '德國U20A vs 斯洛文尼亚U20'
         },
         {
             id: 3,
             time: '发表于今天 17:45',
-            leagueName: { name: '欧锦U20A', time: '09-05 16:45' },
+            leagueName: '欧锦U20A',
+            leagueTime: '09-05 16:45',
             teamName: '德國U20A vs 斯洛文尼亚U20'
         }
     ];

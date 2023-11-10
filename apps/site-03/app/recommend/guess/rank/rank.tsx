@@ -5,10 +5,70 @@ import PeriodListItem from '../components/period/periodListItem';
 import Soccer from '../components/period/img/soccerblue.png';
 import UserSwitch from '../components/userSwitch/userSwitch';
 import Rule from '../components/rule/rule';
+import { creatRankStore } from './rankStore';
 import style from './rank.module.scss';
 import Avatar from '@/components/avatar/avatar';
 
 function Rank() {
+    creatRankStore({
+        rankList: [
+            {
+                ranking: 5,
+                avatar: '',
+                name: '老梁聊球',
+                record: 0,
+                victory: 10,
+                defeat: 5,
+                winRate: 98
+            },
+            {
+                ranking: 4,
+                avatar: '',
+                name: '老董聊球',
+                record: 0,
+                victory: 0,
+                defeat: 3,
+                winRate: 98
+            },
+            {
+                ranking: 1,
+                avatar: '',
+                name: '老衲聊球',
+                record: 0,
+                victory: 4,
+                defeat: 3,
+                winRate: 97
+            },
+            {
+                ranking: 6,
+                avatar: '',
+                name: '老薛聊球',
+                record: 0,
+                victory: 7,
+                defeat: 3,
+                winRate: 50
+            },
+            {
+                ranking: 2,
+                avatar: '',
+                name: '老王聊球',
+                record: 0,
+                victory: 5,
+                defeat: 2,
+                winRate: 40
+            },
+            {
+                ranking: 2,
+                avatar: '',
+                name: '老李聊球',
+                record: 0,
+                victory: 3,
+                defeat: 5,
+                winRate: 30
+            }
+        ]
+    });
+
     const userData = {
         avatar: undefined,
         name: '郭台銘',
@@ -57,10 +117,7 @@ function Rank() {
                     </div>
                 </div>
             </div>
-            <PeriodListItem ranking={1} winRate={98} />
-            <PeriodListItem ranking={2} winRate={90} />
-            <PeriodListItem ranking={3} winRate={60} />
-            <PeriodListItem ranking={4} winRate={20} />
+            <PeriodListItem />
         </div>
     );
 }
