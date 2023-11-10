@@ -1,9 +1,10 @@
 'use client';
-import type { GetContestListResponse } from 'data-center';
-import { useSearchParams } from 'next/navigation';
-import { useState } from 'react';
+import { getContestList, type GetContestListResponse } from 'data-center';
+import { useEffect, useState } from 'react';
 import { InfiniteScroll } from 'ui';
 import CircularProgress from '@mui/material/CircularProgress';
+import { useSearchParams } from 'next/navigation';
+import dayjs from 'dayjs';
 import GameCard from './components/gameCard';
 import style from './football.module.scss';
 import { creatContestListStore, useContestListStore } from './contestListStore';
@@ -16,15 +17,45 @@ function ContestList() {
     const contestInfo = useContestListStore.use.contestInfo();
     const globalStore = useContestInfoStore.use.contestInfo();
     const filterList = useContestListStore.use.filterList();
+    const setContestList = useContestListStore.use.setContestList();
+    const setContestInfo = useContestListStore.use.setContestInfo();
 
     const searchParams = useSearchParams();
     const status = searchParams.get('status') || 'all';
+
+    const fetchContestdata = async (timestamp: number) => {
+        try {
+            const todayContest = await getContestList(timestamp);
+            if (!todayContest.success) {
+                return new Error();
+            }
+
+            setContestList({ contestList: todayContest.data.contestList });
+            setContestInfo({ contestInfo: todayContest.data.contestInfo });
+        } catch (error) {
+            return new Error();
+        }
+    };
+
+    useEffect(() => {
+        const result = searchParams.get('resultsDate') || null;
+        const schedule = searchParams.get('scheduleDate') || null;
+
+        if (schedule || result) {
+            const dateString = schedule ? schedule : result;
+            const format = 'YYYY/MM/DD HH:mm:ss';
+            const now = Math.floor(Date.now() / 1000);
+
+            const timestamp = dayjs(dateString, format).valueOf() / 1000 || now;
+            void fetchContestdata(timestamp);
+        }
+    }, [searchParams.get('resultsDate'), searchParams.get('scheduleDate')]);
 
     const statusTable: Record<string, (state: number) => boolean> = {
         all: state => state >= 1 && state < 5,
         progress: state => state >= 1 && state <= 5,
         notyet: state => state === 0,
-        scheule: state => state === 0,
+        schedule: state => state === 0,
         result: state => state === -1
     };
 

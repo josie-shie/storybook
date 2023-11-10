@@ -22,6 +22,7 @@ interface ContestList extends InitState {
     filterSelected: { league: Record<string, boolean>; country: Record<string, boolean> };
     filterList: { group: GroupType; selectedTable: Record<string, boolean> };
     setContestList: ({ contestList }: { contestList: ContestListType }) => void;
+    setContestInfo: ({ contestInfo }: { contestInfo: ContestInfoType }) => void;
     setFilterInit: ({ league, country }: { league: FilterMap; country: FilterMap }) => void;
     setFilterSelected: (name: string, group: GroupType) => void;
     setFilterList: (group: GroupType) => void;
@@ -68,6 +69,9 @@ const initialState = (set: (updater: (state: ContestList) => Partial<ContestList
     },
     setContestList: ({ contestList }: { contestList: ContestListType }) => {
         set(() => ({ contestList }));
+    },
+    setContestInfo: ({ contestInfo }: { contestInfo: ContestInfoType }) => {
+        set(() => ({ contestInfo }));
     },
     setFilterInit: (filterInfo: { league: FilterMap; country: FilterMap }) => {
         set(() => ({ filterInfo }));
