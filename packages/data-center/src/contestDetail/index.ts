@@ -74,12 +74,7 @@ const GetSingleMatchResultSchema = z.object({
 
 type GetSingleMatchResult = z.infer<typeof GetSingleMatchResultSchema>;
 
-type OriginalGetSingleMatch = z.infer<typeof SingleMatchSchema>;
-
-export type GetSingleMatchResponse = Omit<OriginalGetSingleMatch, 'matchTime' | 'startTime'> & {
-    matchTime: string;
-    startTime: string;
-};
+export type GetSingleMatchResponse = z.infer<typeof SingleMatchSchema>;
 
 const HandicapsInfoSchema = z.object({
     matchId: z.number(),
@@ -101,9 +96,8 @@ const HandicapsInfoSchema = z.object({
 type OriginHandicapsInfo = z.infer<typeof HandicapsInfoSchema>;
 export type HandicapsInfo = Omit<
     OriginHandicapsInfo,
-    'oddsChangeTime' | 'homeInitialOdds' | 'awayInitialOdds' | 'homeCurrentOdds' | 'awayCurrentOdds'
+    'homeInitialOdds' | 'awayInitialOdds' | 'homeCurrentOdds' | 'awayCurrentOdds'
 > & {
-    oddsChangeTime: string;
     homeInitialOdds: string;
     awayInitialOdds: string;
     homeCurrentOdds: string;
@@ -130,7 +124,6 @@ const TotalGoalsInfoSchema = z.object({
 type OriginTotalGoalsInfo = z.infer<typeof TotalGoalsInfoSchema>;
 export type TotalGoalsInfo = Omit<
     OriginTotalGoalsInfo,
-    | 'oddsChangeTime'
     | 'overInitialOdds'
     | 'underInitialOdds'
     | 'overCurrentOdds'
@@ -138,7 +131,6 @@ export type TotalGoalsInfo = Omit<
     | 'initialTotalGoals'
     | 'currentTotalGoals'
 > & {
-    oddsChangeTime: string;
     overInitialOdds: number;
     underInitialOdds: number;
     overCurrentOdds: number;
@@ -438,11 +430,7 @@ export const getMatchDetail = async (
 
         const formatDateTime: GetSingleMatchResponse = {
             ...data.getSingleMatch,
-            startTime: timestampToString(
-                data.getSingleMatch.startTime || data.getSingleMatch.matchTime,
-                'YYYY-M-DD HH:mm'
-            ),
-            matchTime: timestampToString(data.getSingleMatch.matchTime, 'M-DD HH:mm')
+            startTime: data.getSingleMatch.startTime || data.getSingleMatch.matchTime
         };
 
         return {
@@ -495,8 +483,7 @@ export const getDetailStatus = async (
                             homeCurrentOdds: handicapToString(before.homeCurrentOdds),
                             awayCurrentOdds: handicapToString(before.awayCurrentOdds),
                             initialHandicap: truncateFloatingPoint(before.initialHandicap, 2),
-                            currentHandicap: truncateFloatingPoint(before.currentHandicap, 2),
-                            oddsChangeTime: timestampToString(before.oddsChangeTime)
+                            currentHandicap: truncateFloatingPoint(before.currentHandicap, 2)
                         };
                     }),
                     notStarted: item.timePeriods.notStarted.map(before => {
@@ -507,8 +494,7 @@ export const getDetailStatus = async (
                             homeCurrentOdds: handicapToString(before.homeCurrentOdds),
                             awayCurrentOdds: handicapToString(before.awayCurrentOdds),
                             initialHandicap: truncateFloatingPoint(before.initialHandicap, 2),
-                            currentHandicap: truncateFloatingPoint(before.currentHandicap, 2),
-                            oddsChangeTime: timestampToString(before.oddsChangeTime)
+                            currentHandicap: truncateFloatingPoint(before.currentHandicap, 2)
                         };
                     })
                 };
@@ -525,8 +511,7 @@ export const getDetailStatus = async (
                             homeCurrentOdds: handicapToString(before.homeCurrentOdds),
                             awayCurrentOdds: handicapToString(before.awayCurrentOdds),
                             initialHandicap: truncateFloatingPoint(before.initialHandicap, 2),
-                            currentHandicap: truncateFloatingPoint(before.currentHandicap, 2),
-                            oddsChangeTime: timestampToString(before.oddsChangeTime)
+                            currentHandicap: truncateFloatingPoint(before.currentHandicap, 2)
                         };
                     }),
                     notStarted: item.timePeriods.notStarted.map(before => {
@@ -537,8 +522,7 @@ export const getDetailStatus = async (
                             homeCurrentOdds: handicapToString(before.homeCurrentOdds),
                             awayCurrentOdds: handicapToString(before.awayCurrentOdds),
                             initialHandicap: truncateFloatingPoint(before.initialHandicap, 2),
-                            currentHandicap: truncateFloatingPoint(before.currentHandicap, 2),
-                            oddsChangeTime: timestampToString(before.oddsChangeTime)
+                            currentHandicap: truncateFloatingPoint(before.currentHandicap, 2)
                         };
                     })
                 };
@@ -561,8 +545,7 @@ export const getDetailStatus = async (
                             overInitialOdds: truncateFloatingPoint(before.overInitialOdds, 2),
                             underInitialOdds: truncateFloatingPoint(before.underInitialOdds, 2),
                             overCurrentOdds: truncateFloatingPoint(before.overCurrentOdds, 2),
-                            underCurrentOdds: truncateFloatingPoint(before.underCurrentOdds, 2),
-                            oddsChangeTime: timestampToString(before.oddsChangeTime)
+                            underCurrentOdds: truncateFloatingPoint(before.underCurrentOdds, 2)
                         };
                     }),
                     notStarted: item.timePeriods.notStarted.map(before => {
@@ -573,8 +556,7 @@ export const getDetailStatus = async (
                             overInitialOdds: truncateFloatingPoint(before.overInitialOdds, 2),
                             underInitialOdds: truncateFloatingPoint(before.underInitialOdds, 2),
                             overCurrentOdds: truncateFloatingPoint(before.overCurrentOdds, 2),
-                            underCurrentOdds: truncateFloatingPoint(before.underCurrentOdds, 2),
-                            oddsChangeTime: timestampToString(before.oddsChangeTime)
+                            underCurrentOdds: truncateFloatingPoint(before.underCurrentOdds, 2)
                         };
                     })
                 };
@@ -591,8 +573,7 @@ export const getDetailStatus = async (
                             overInitialOdds: truncateFloatingPoint(before.overInitialOdds, 2),
                             underInitialOdds: truncateFloatingPoint(before.underInitialOdds, 2),
                             overCurrentOdds: truncateFloatingPoint(before.overCurrentOdds, 2),
-                            underCurrentOdds: truncateFloatingPoint(before.underCurrentOdds, 2),
-                            oddsChangeTime: timestampToString(before.oddsChangeTime)
+                            underCurrentOdds: truncateFloatingPoint(before.underCurrentOdds, 2)
                         };
                     }),
                     notStarted: item.timePeriods.notStarted.map(before => {
@@ -603,8 +584,7 @@ export const getDetailStatus = async (
                             overInitialOdds: truncateFloatingPoint(before.overInitialOdds, 2),
                             underInitialOdds: truncateFloatingPoint(before.underInitialOdds, 2),
                             overCurrentOdds: truncateFloatingPoint(before.overCurrentOdds, 2),
-                            underCurrentOdds: truncateFloatingPoint(before.underCurrentOdds, 2),
-                            oddsChangeTime: timestampToString(before.oddsChangeTime)
+                            underCurrentOdds: truncateFloatingPoint(before.underCurrentOdds, 2)
                         };
                     })
                 };

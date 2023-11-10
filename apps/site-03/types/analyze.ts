@@ -329,8 +329,8 @@ export interface MatchesOddsDetailResponse {
 
 export interface AsiaMatch {
     matchId: number;
-    matchTime: string;
-    startTime: string;
+    matchTime: number;
+    startTime: number;
     leagueId: number;
     leagueEn: string;
     leagueChs: string;
@@ -364,7 +364,7 @@ export interface MatchesHandicap {
     awayCurrentOdds: number;
     isMaintained: boolean;
     isInProgress: boolean;
-    oddsChangeTime: string;
+    oddsChangeTime: number;
     isClosed: boolean;
     oddsType: number;
 }
@@ -378,7 +378,7 @@ export interface MatchesEuropeOdds {
     currentHomeOdds: number;
     currentDrawOdds: number;
     currentAwayOdds: number;
-    oddsChangeTime: string;
+    oddsChangeTime: number;
     isClosed: boolean;
     oddsType: 0 | 1 | 2 | 3;
 }
@@ -392,7 +392,7 @@ export interface MatchesOverUnder {
     currentHandicap: number;
     currentOverOdds: number;
     currentUnderOdds: number;
-    oddsChangeTime: string;
+    oddsChangeTime: number;
     isClosed: boolean;
     oddsType: number;
 }
@@ -406,7 +406,7 @@ export interface MatchesHandicapHalf {
     currentHandicap: number;
     homeCurrentOdds: number;
     awayCurrentOdds: number;
-    oddsChangeTime: string;
+    oddsChangeTime: number;
     oddsType: number;
 }
 
@@ -419,7 +419,7 @@ export interface MatchesOverUnderHalf {
     currentHandicap: number;
     currentOverOdds: number;
     currentUnderOdds: number;
-    oddsChangeTime: string;
+    oddsChangeTime: number;
     oddsType: number;
 }
 
@@ -463,7 +463,7 @@ interface Handicap {
     //主隊現時賠率
     awayCurrentOdds: number;
     //客隊現時賠率
-    oddsChangeTime: string;
+    oddsChangeTime: number;
     //改變時間
     oddsType: number;
     //賠率類型
@@ -494,7 +494,7 @@ interface TotalGoals {
     //大球現時賠率
     underCurrentOdds: number;
     //小球現時賠率
-    oddsChangeTime: string;
+    oddsChangeTime: number;
     //改變時間
     oddsType: number;
     //賠率類型
@@ -525,7 +525,7 @@ interface EuropeOdds {
     //現時平局賠率
     currentAwayOdds: number;
     //現時客隊賠率
-    oddsChangeTime: string;
+    oddsChangeTime: number;
     //改變時間
     isClosed: boolean;
     //是否封盤

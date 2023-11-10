@@ -1,4 +1,4 @@
-import { initStore, convertHandicap, truncateFloatingPoint, timestampToString } from 'lib';
+import { initStore, convertHandicap, truncateFloatingPoint } from 'lib';
 import type { StoreWithSelectors, OddsHashTable } from 'lib';
 import type { OriginalContestInfo, ContestInfo } from 'data-center';
 
@@ -24,12 +24,6 @@ const initialState = (
         if (!id) return;
         const updatedInfo = {
             ...info,
-            ...(typeof info.matchTime === 'number' && {
-                matchTime: timestampToString(info.matchTime, 'M-DD HH:mm')
-            }),
-            ...(typeof info.startTime === 'number' && {
-                startTime: timestampToString(info.startTime, 'YYYY-M-DD HH:mm')
-            }),
             ...(typeof info.handicapCurrent === 'number' && {
                 handicapCurrent: convertHandicap(info.handicapCurrent)
             }),

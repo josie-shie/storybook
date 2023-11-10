@@ -1,7 +1,7 @@
 import type { ContestInfo } from 'data-center';
 import Image from 'next/image';
 import { GameStatus } from 'ui';
-import { parseMatchInfo } from 'lib';
+import { parseMatchInfo, timestampToString } from 'lib';
 import { useEffect, useState, useCallback } from 'react';
 import { useContestListStore } from '../contestListStore';
 import style from './gameCard.module.scss';
@@ -138,9 +138,9 @@ function OddsInfo({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId:
 function TeamInfo({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId: number }) {
     const globalStore = useContestInfoStore.use.contestInfo();
     const syncData = Object.hasOwnProperty.call(globalStore, matchId) ? globalStore[matchId] : {};
-    if (syncData.matchId)
-        // eslint-disable-next-line -- test info
-        console.log(syncData, contestInfo.awayChs, contestInfo.homeChs, '此賽事更新');
+    // if (syncData.matchId)
+
+    // console.log(syncData, contestInfo.awayChs, contestInfo.homeChs, '此賽事更新');
 
     return (
         <div className={style.teamInfo}>
@@ -195,7 +195,9 @@ function TopArea({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId: 
                     {contestInfo.leagueChsShort}
                 </div>
                 <div className={style.time}>
-                    {contestInfo.matchTime ? contestInfo.matchTime.slice(-5) : null}
+                    {contestInfo.matchTime
+                        ? timestampToString(contestInfo.matchTime, 'HH:mm')
+                        : null}
                 </div>
             </div>
             <div className={style.mid}>
@@ -207,6 +209,7 @@ function TopArea({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId: 
                 </div>
                 <div className={style.status}>
                     <GameStatus
+                        injuryTime={syncData.injuryTime || contestInfo.injuryTime}
                         startTime={contestInfo.startTime}
                         status={syncData.state || contestInfo.state}
                     />

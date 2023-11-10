@@ -55,7 +55,7 @@ function Home() {
                 {
                     matchId: 1,
                     leagueChsShort: '英超',
-                    startTime: '2023-8-23 11:30',
+                    startTime: 1699583734,
                     matchTime: 57,
                     state: 0, // 進行中
                     homeChs: '北曼谷學院',
@@ -70,7 +70,7 @@ function Home() {
                     matchId: 2,
                     leagueChsShort: '英超',
                     matchTime: 0,
-                    startTime: '2023-8-23 11:30',
+                    startTime: 1699583734,
                     state: 1, // 未開始
                     homeChs: '北曼谷學院',
                     homeIcon: northBangKokClubIcon.src,
@@ -84,7 +84,7 @@ function Home() {
                     matchId: 3,
                     leagueChsShort: '英超',
                     matchTime: 0,
-                    startTime: '2023-8-23 11:30',
+                    startTime: 1699583734,
                     state: 1, // 未開始
                     homeChs: '北曼谷學院',
                     homeIcon: northBangKokClubIcon.src,
@@ -100,7 +100,7 @@ function Home() {
                     matchId: 4,
                     leagueChsShort: '西甲',
                     matchTime: 0,
-                    startTime: '2023-8-23 11:30',
+                    startTime: 1699583734,
                     state: 1, // 未開始
                     homeChs: '北曼谷學院',
                     homeIcon: northBangKokClubIcon.src,
@@ -116,7 +116,7 @@ function Home() {
                     matchId: 5,
                     leagueChsShort: '德甲',
                     matchTime: 0,
-                    startTime: '2023-8-23 11:30',
+                    startTime: 1699583734,
                     state: 1, // 未開始
                     homeChs: '北曼谷學院',
                     homeIcon: northBangKokClubIcon.src,
@@ -132,7 +132,7 @@ function Home() {
                     matchId: 6,
                     leagueChsShort: '法甲',
                     matchTime: 0,
-                    startTime: '2023-8-23 11:30',
+                    startTime: 1699583734,
                     state: 1, // 未開始
                     homeChs: '北曼谷學院',
                     homeIcon: northBangKokClubIcon.src,
@@ -148,7 +148,7 @@ function Home() {
                     matchId: 7,
                     leagueChsShort: '義甲',
                     matchTime: 0,
-                    startTime: '2023-8-23 11:30',
+                    startTime: 1699583734,
                     state: 1, // 未開始
                     homeChs: '北曼谷學院',
                     homeIcon: northBangKokClubIcon.src,

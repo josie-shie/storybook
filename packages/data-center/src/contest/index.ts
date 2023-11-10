@@ -1,4 +1,4 @@
-import { fetcher, timestampToString, convertHandicap, truncateFloatingPoint } from 'lib';
+import { fetcher, convertHandicap, truncateFloatingPoint } from 'lib';
 import { z } from 'zod';
 import { handleApiError } from '../common';
 import type { ReturnData } from '../common';
@@ -39,12 +39,7 @@ const ContestInfoSchema = z.object({
 
 export type OriginalContestInfo = z.infer<typeof ContestInfoSchema>;
 
-export type ContestInfo = Omit<
-    OriginalContestInfo,
-    'matchTime' | 'startTime' | 'handicapCurrent' | 'overUnderCurrent'
-> & {
-    matchTime: string;
-    startTime: string;
+export type ContestInfo = Omit<OriginalContestInfo, 'handicapCurrent' | 'overUnderCurrent'> & {
     handicapCurrent: string;
     overUnderCurrent: string;
 };
@@ -98,8 +93,7 @@ export const getContestList = async (
             contestList.push(item.matchId);
             contestInfo[item.matchId] = {
                 ...item,
-                matchTime: timestampToString(item.matchTime, 'M-DD HH:mm'),
-                startTime: timestampToString(item.startTime || item.matchTime, 'YYYY-M-DD HH:mm'),
+                startTime: item.startTime || item.matchTime,
                 handicapCurrent: convertHandicap(item.handicapCurrent),
                 overUnderCurrent: convertHandicap(item.overUnderCurrent),
                 overUnderOverCurrentOdds: truncateFloatingPoint(item.overUnderOverCurrentOdds, 2),
