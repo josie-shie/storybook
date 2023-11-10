@@ -45,10 +45,10 @@ export const GET_COMPANY_ODDS_DETAIL_QUERY = `
                 fullTotalGoal {
                     matchId
                     companyId
-                    initialTotalGoals
+                    initialHandicap
                     overInitialOdds
                     underInitialOdds
-                    currentTotalGoals
+                    currentHandicap
                     overCurrentOdds
                     underCurrentOdds
                     oddsChangeTime
@@ -61,10 +61,10 @@ export const GET_COMPANY_ODDS_DETAIL_QUERY = `
                 halfTotalGoal {
                     matchId
                     companyId
-                    initialTotalGoals
+                    initialHandicap
                     overInitialOdds
                     underInitialOdds
-                    currentTotalGoals
+                    currentHandicap
                     overCurrentOdds
                     underCurrentOdds
                     oddsChangeTime

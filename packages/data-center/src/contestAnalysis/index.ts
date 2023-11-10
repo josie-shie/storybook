@@ -35,10 +35,10 @@ const HandicapsInfoSchema = z.object({
 const TotalGoalsInfoSchema = z.object({
     matchId: z.number(),
     companyId: z.number(),
-    initialTotalGoals: z.number(),
+    initialHandicap: z.number(),
     overInitialOdds: z.number(),
     underInitialOdds: z.number(),
-    currentTotalGoals: z.number(),
+    currentHandicap: z.number(),
     overCurrentOdds: z.number(),
     underCurrentOdds: z.number(),
     oddsChangeTime: z.number(),
@@ -1001,10 +1001,10 @@ export const getBeforeGameIndex = async (
             },
             {
                 label: '大',
-                init: truncateFloatingPoint(companyOdds.fullTotalGoal[0]?.initialTotalGoals, 2),
+                init: truncateFloatingPoint(companyOdds.fullTotalGoal[0]?.initialHandicap, 2),
                 initHome: truncateFloatingPoint(companyOdds.fullTotalGoal[0]?.overInitialOdds, 2),
                 initAway: truncateFloatingPoint(companyOdds.fullTotalGoal[0]?.underInitialOdds, 2),
-                current: truncateFloatingPoint(companyOdds.fullTotalGoal[0]?.currentTotalGoals, 2),
+                current: truncateFloatingPoint(companyOdds.fullTotalGoal[0]?.currentHandicap, 2),
                 currentHome: truncateFloatingPoint(
                     companyOdds.fullTotalGoal[0]?.overCurrentOdds,
                     2

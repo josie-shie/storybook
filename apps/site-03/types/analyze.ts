@@ -482,13 +482,13 @@ interface TotalGoals {
     //比賽ID
     companyId: number;
     //賭商ID
-    initialTotalGoals: number;
+    initialHandicap: number;
     //初始總進球數
     overInitialOdds: number;
     //初始大球賠率
     underInitialOdds: number;
     //初始小球賠率
-    currentTotalGoals: number;
+    currentHandicap: number;
     //現時總進球數
     overCurrentOdds: number;
     //大球現時賠率

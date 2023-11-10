@@ -32,7 +32,7 @@ function TotalGoalTable({ dataList }: { dataList?: TotalGoalsInfo[] }) {
                                 {truncateFloatingPoint(data.overCurrentOdds, 2)}
                             </div>
                             <div className="td">
-                                {handicapToString(Number(data.currentTotalGoals))}
+                                {handicapToString(Number(data.currentHandicap))}
                             </div>
                             <div className="td">
                                 <p>{truncateFloatingPoint(data.underInitialOdds, 2)}</p>
