@@ -1,4 +1,4 @@
-import { fetcher, timestampToString, truncateFloatingPoint, handicapToString } from 'lib';
+import { fetcher, truncateFloatingPoint, handicapToString } from 'lib';
 import { z } from 'zod';
 import { handleApiError } from '../common';
 import type { ReturnData } from '../common';
@@ -22,11 +22,7 @@ const HandicapsInfoSchema = z.object({
 });
 
 type OriginalHandicapsInfo = z.infer<typeof HandicapsInfoSchema>;
-type HandicapsInfo = Omit<
-    OriginalHandicapsInfo,
-    'oddsChangeTime' | 'initialHandicap' | 'currentHandicap'
-> & {
-    oddsChangeTime: string;
+type HandicapsInfo = Omit<OriginalHandicapsInfo, 'initialHandicap' | 'currentHandicap'> & {
     initialHandicap: string;
     currentHandicap: string;
 };
@@ -49,11 +45,7 @@ const TotalGoalsInfoSchema = z.object({
 });
 
 type OriginalTotalGoalsInfo = z.infer<typeof TotalGoalsInfoSchema>;
-type TotalGoalsInfo = Omit<
-    OriginalTotalGoalsInfo,
-    'oddsChangeTime' | 'initialTotalGoals' | 'currentTotalGoals'
-> & {
-    oddsChangeTime: string;
+type TotalGoalsInfo = Omit<OriginalTotalGoalsInfo, 'initialTotalGoals' | 'currentTotalGoals'> & {
     initialTotalGoals: string;
     currentTotalGoals: string;
 };
@@ -75,10 +67,7 @@ const WinDrawLoseSchema = z.object({
     isClosed: z.boolean()
 });
 
-type OriginWinDrawLose = z.infer<typeof WinDrawLoseSchema>;
-type WinLoseInfo = Omit<OriginWinDrawLose, 'oddsChangeTime'> & {
-    oddsChangeTime: string;
-};
+export type WinLoseInfo = z.infer<typeof WinDrawLoseSchema>;
 
 const GetCompanyOddsDetailSchema = z.object({
     matchId: z.number(),
@@ -190,7 +179,6 @@ export const getExponent = async (
 
                 handicapsData.half.info[item.companyId] = {
                     ...item,
-                    oddsChangeTime: timestampToString(item.oddsChangeTime),
                     homeInitialOdds: truncateFloatingPoint(item.homeInitialOdds, 2),
                     awayInitialOdds: truncateFloatingPoint(item.awayInitialOdds, 2),
                     homeCurrentOdds: truncateFloatingPoint(item.homeCurrentOdds, 2),
@@ -208,7 +196,6 @@ export const getExponent = async (
 
                 handicapsData.full.info[item.companyId] = {
                     ...item,
-                    oddsChangeTime: timestampToString(item.oddsChangeTime),
                     homeInitialOdds: truncateFloatingPoint(item.homeInitialOdds, 2),
                     awayInitialOdds: truncateFloatingPoint(item.awayInitialOdds, 2),
                     homeCurrentOdds: truncateFloatingPoint(item.homeCurrentOdds, 2),
@@ -238,7 +225,6 @@ export const getExponent = async (
 
                 totalGoalData.half.info[item.companyId] = {
                     ...item,
-                    oddsChangeTime: timestampToString(item.oddsChangeTime),
                     overInitialOdds: truncateFloatingPoint(item.overInitialOdds, 2),
                     underInitialOdds: truncateFloatingPoint(item.underInitialOdds, 2),
                     overCurrentOdds: truncateFloatingPoint(item.overCurrentOdds, 2),
@@ -256,7 +242,6 @@ export const getExponent = async (
 
                 totalGoalData.full.info[item.companyId] = {
                     ...item,
-                    oddsChangeTime: timestampToString(item.oddsChangeTime),
                     overInitialOdds: truncateFloatingPoint(item.overInitialOdds, 2),
                     underInitialOdds: truncateFloatingPoint(item.underInitialOdds, 2),
                     overCurrentOdds: truncateFloatingPoint(item.overCurrentOdds, 2),
@@ -286,7 +271,6 @@ export const getExponent = async (
 
                 winLoseData.half.info[item.companyId] = {
                     ...item,
-                    oddsChangeTime: timestampToString(item.oddsChangeTime),
                     initialHomeOdds: truncateFloatingPoint(item.initialHomeOdds, 2),
                     initialDrawOdds: truncateFloatingPoint(item.initialDrawOdds, 2),
                     initialAwayOdds: truncateFloatingPoint(item.initialAwayOdds, 2),
@@ -304,7 +288,6 @@ export const getExponent = async (
 
                 winLoseData.full.info[item.companyId] = {
                     ...item,
-                    oddsChangeTime: timestampToString(item.oddsChangeTime),
                     initialHomeOdds: truncateFloatingPoint(item.initialHomeOdds, 2),
                     initialDrawOdds: truncateFloatingPoint(item.initialDrawOdds, 2),
                     initialAwayOdds: truncateFloatingPoint(item.initialAwayOdds, 2),

@@ -347,7 +347,7 @@ type GetAnalyzeResult = z.infer<typeof GetAnalyzeSchema>;
 const AsiaMatchSchema = z.object({
     matchId: z.number(),
     matchTime: z.number(),
-    startTime: z.string(),
+    startTime: z.number(),
     leagueId: z.number(),
     leagueEn: z.string(),
     leagueChs: z.string(),
@@ -380,7 +380,7 @@ const MatchesHandicapSchema = z.object({
     awayCurrentOdds: z.number(),
     isMaintained: z.boolean(),
     isInProgress: z.boolean(),
-    oddsChangeTime: z.string(),
+    oddsChangeTime: z.number(),
     isClosed: z.boolean(),
     oddsType: z.number()
 });
@@ -394,7 +394,7 @@ const MatchesOverUnderSchema = z.object({
     currentHandicap: z.number(),
     currentOverOdds: z.number(),
     currentUnderOdds: z.number(),
-    oddsChangeTime: z.string(),
+    oddsChangeTime: z.number(),
     isClosed: z.boolean(),
     oddsType: z.number()
 });
@@ -407,7 +407,7 @@ const MatchesHandicapHalfSchema = z.object({
     currentHandicap: z.number(),
     homeCurrentOdds: z.number(),
     awayCurrentOdds: z.number(),
-    oddsChangeTime: z.string(),
+    oddsChangeTime: z.number(),
     oddsType: z.number()
 });
 const MatchesOverUnderHalfSchema = z.object({
@@ -419,7 +419,7 @@ const MatchesOverUnderHalfSchema = z.object({
     currentHandicap: z.number(),
     currentOverOdds: z.number(),
     currentUnderOdds: z.number(),
-    oddsChangeTime: z.string(),
+    oddsChangeTime: z.number(),
     oddsType: z.number()
 });
 const MatchesOddsDetailSchema = z.object({

@@ -17,7 +17,7 @@ interface Slide {
 interface Contest {
     matchId: number;
     leagueChsShort: string;
-    startTime: string;
+    startTime: number;
     matchTime: number;
     state: number;
     homeChs: string;

@@ -37,9 +37,7 @@ function TotalGoalTable({ dataList }: { dataList?: TotalGoalsInfo[] }) {
                             <div className="td">
                                 <p>{truncateFloatingPoint(data.underInitialOdds, 2)}</p>
                             </div>
-                            <div className="td">
-                                {handleMatchDateTime(data.oddsChangeTime.toString())}
-                            </div>
+                            <div className="td">{handleMatchDateTime(data.oddsChangeTime)}</div>
                         </div>
                     ))}
                 </div>

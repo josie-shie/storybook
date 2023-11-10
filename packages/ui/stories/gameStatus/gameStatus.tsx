@@ -5,7 +5,7 @@ import style from './gameStatus.module.scss';
 
 interface GameStatusProps extends React.HTMLAttributes<HTMLDivElement> {
     status: number;
-    startTime: string;
+    startTime: number;
     injuryTime?: string;
 }
 

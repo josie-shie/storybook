@@ -1,7 +1,7 @@
 import type { ContestInfo } from 'data-center';
 import Image from 'next/image';
 import { GameStatus } from 'ui';
-import { parseMatchInfo } from 'lib';
+import { parseMatchInfo, timestampToString } from 'lib';
 import { useEffect, useState, useCallback } from 'react';
 import { useContestListStore } from '../contestListStore';
 import style from './gameCard.module.scss';
@@ -195,7 +195,9 @@ function TopArea({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId: 
                     {contestInfo.leagueChsShort}
                 </div>
                 <div className={style.time}>
-                    {contestInfo.matchTime ? contestInfo.matchTime.slice(-5) : null}
+                    {contestInfo.matchTime
+                        ? timestampToString(contestInfo.matchTime, 'HH:mm')
+                        : null}
                 </div>
             </div>
             <div className={style.mid}>
