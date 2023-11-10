@@ -19,7 +19,7 @@ async function DetailLayout({
     }
     return (
         <>
-            <LiveBox contestDetail={contestDetail.data} />
+            <LiveBox backHistory={false} contestDetail={contestDetail.data} />
             <GuessBar />
             <TabBar matchId={params.matchId}>{children}</TabBar>
         </>
