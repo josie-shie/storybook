@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import { useSituationStore } from '../../situationStore';
+import { useContestDetailStore } from '../../contestDetailStore';
 import style from './event.module.scss';
 import ClockIcon from './img/clock.png';
 import YellowCardIcon from './img/yellow_card.png';
@@ -13,6 +14,7 @@ import MissedIcon from './img/missed.png';
 import VideoIcon from './img/video.png';
 
 function GameEvent() {
+    const matchDetail = useContestDetailStore.use.matchDetail();
     const eventList = useSituationStore.use.eventList();
     const eventInfo = useSituationStore.use.eventInfo();
     const swapEvent = (names: string) => {
@@ -89,11 +91,11 @@ function GameEvent() {
             <div className="dataTable">
                 <div className="tableHead">
                     <div className="tr">
-                        <div className="th right">斯洛文尼亚U20</div>
+                        <div className="th right">{matchDetail.homeChs}</div>
                         <div className="th icon">
                             <Image alt="" height={24} src={ClockIcon} width={24} />
                         </div>
-                        <div className="th left">德國U20</div>
+                        <div className="th left">{matchDetail.awayChs}</div>
                     </div>
                 </div>
                 <div className="tableBody">

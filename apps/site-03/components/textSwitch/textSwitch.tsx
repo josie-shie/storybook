@@ -25,18 +25,18 @@ function TextRadio({ value, onChange }: PropsType) {
         >
             <label
                 className={`${style.label} 
-                    ${value === 'half' ? style.active : undefined}`}
-                htmlFor="half"
-            >
-                半場
-            </label>
-            <Image alt="icon" height={16} src={SwitchIcon} width={16} />
-            <label
-                className={`${style.label} 
                     ${value === 'full' ? style.active : undefined}`}
                 htmlFor="full"
             >
                 全場
+            </label>
+            <Image alt="icon" height={16} src={SwitchIcon} width={16} />
+            <label
+                className={`${style.label} 
+                    ${value === 'half' ? style.active : undefined}`}
+                htmlFor="half"
+            >
+                半場
             </label>
         </div>
     );
