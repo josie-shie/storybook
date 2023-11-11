@@ -27,7 +27,30 @@ function ExtraInfo({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId
     );
 }
 
-function CompareOdds(value: string | number, defaultColor = '') {
+const convertStringToNumber = (input: string): number => {
+    if (input.includes('/')) {
+        const parts = input.split('/').map(Number);
+        return (parts[0] + parts[1]) / 2;
+    }
+    return Number(input);
+};
+
+const compareNumbers = (previous: number, current: number): string => {
+    if (current > previous) {
+        return 'greater';
+    } else if (current < previous) {
+        return 'lesser';
+    }
+    return 'equal';
+};
+
+function CompareOdds({
+    value,
+    defaultColor = ''
+}: {
+    value: string | number;
+    defaultColor?: string;
+}) {
     const [previousValue, setPreviousValue] = useState(value);
     const [color, setColor] = useState(defaultColor);
 
@@ -64,30 +87,12 @@ function CompareOdds(value: string | number, defaultColor = '') {
         if (typeof value === 'string' && typeof previousValue === 'string') {
             const result = stringCompare(previousValue, value);
             setStyleBasedOnComparison(result);
-            setPreviousValue(value);
         } else if (typeof value === 'number' && typeof previousValue === 'number') {
             const result = compareNumbers(previousValue, value);
             setStyleBasedOnComparison(result);
-            setPreviousValue(value);
         }
+        setPreviousValue(value);
     }, [value, previousValue, stringCompare, setStyleBasedOnComparison]);
-
-    const convertStringToNumber = (input: string): number => {
-        if (input.includes('/')) {
-            const parts = input.split('/').map(Number);
-            return (parts[0] + parts[1]) / 2;
-        }
-        return Number(input);
-    };
-
-    const compareNumbers = (previous: number, current: number): string => {
-        if (current > previous) {
-            return 'greater';
-        } else if (current < previous) {
-            return 'lesser';
-        }
-        return 'equal';
-    };
 
     return <p className={style[color]}>{value}</p>;
 }
@@ -103,19 +108,31 @@ function OddsInfo({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId:
             contestInfo.handicapHomeCurrentOdds ||
             contestInfo.handicapAwayCurrentOdds ? (
                 <span className={`${style.odd} ${style.left}`}>
-                    {CompareOdds(
-                        syncData.handicapHomeCurrentOdds || contestInfo.handicapHomeCurrentOdds
-                    )}
-                    {CompareOdds(syncData.handicapCurrent || contestInfo.handicapCurrent, 'blue')}
-                    {CompareOdds(
-                        syncData.handicapAwayCurrentOdds || contestInfo.handicapAwayCurrentOdds
-                    )}
+                    <CompareOdds
+                        value={
+                            syncData.handicapHomeCurrentOdds || contestInfo.handicapHomeCurrentOdds
+                        }
+                    />
+                    <CompareOdds
+                        defaultColor="blue"
+                        value={syncData.handicapCurrent || contestInfo.handicapCurrent}
+                    />
+                    <CompareOdds
+                        value={
+                            syncData.handicapAwayCurrentOdds || contestInfo.handicapAwayCurrentOdds
+                        }
+                    />
                 </span>
             ) : null}
             <span className={style.mid}>
                 <p>
-                    ({syncData.homeHalfScore || contestInfo.homeHalfScore} -{' '}
-                    {syncData.awayHalfScore || contestInfo.awayHalfScore})
+                    {(syncData.state || contestInfo.state) >= 1 &&
+                    (syncData.state || contestInfo.state) <= 5 ? (
+                        <>
+                            {syncData.homeHalfScore || contestInfo.homeHalfScore} -{' '}
+                            {syncData.awayHalfScore || contestInfo.awayHalfScore}
+                        </>
+                    ) : null}
                 </p>
             </span>
             {syncData.overUnderUnderCurrentOdds ||
@@ -123,13 +140,22 @@ function OddsInfo({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId:
             contestInfo.overUnderUnderCurrentOdds ||
             contestInfo.overUnderOverCurrentOdds ? (
                 <span className={style.odd}>
-                    {CompareOdds(
-                        syncData.overUnderUnderCurrentOdds || contestInfo.overUnderUnderCurrentOdds
-                    )}
-                    {CompareOdds(syncData.overUnderCurrent || contestInfo.overUnderCurrent, 'blue')}
-                    {CompareOdds(
-                        syncData.overUnderOverCurrentOdds || contestInfo.overUnderOverCurrentOdds
-                    )}
+                    <CompareOdds
+                        value={
+                            syncData.overUnderUnderCurrentOdds ||
+                            contestInfo.overUnderUnderCurrentOdds
+                        }
+                    />
+                    <CompareOdds
+                        defaultColor="blue"
+                        value={syncData.overUnderCurrent || contestInfo.overUnderCurrent}
+                    />
+                    <CompareOdds
+                        value={
+                            syncData.overUnderOverCurrentOdds ||
+                            contestInfo.overUnderOverCurrentOdds
+                        }
+                    />
                 </span>
             ) : null}
         </div>
@@ -162,8 +188,15 @@ function TeamInfo({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId:
                 {contestInfo.homeChs}
             </div>
             <div className={style.score}>
-                {syncData.homeScore || contestInfo.homeScore} -{' '}
-                {syncData.awayScore || contestInfo.awayScore}
+                {(syncData.state || contestInfo.state) >= 1 &&
+                (syncData.state || contestInfo.state) <= 5 ? (
+                    <>
+                        {syncData.homeScore || contestInfo.homeScore} -{' '}
+                        {syncData.awayScore || contestInfo.awayScore}
+                    </>
+                ) : (
+                    '-'
+                )}
             </div>
             <div className={`${style.awayTeam} ${style.team}`}>
                 {contestInfo.awayChs}
