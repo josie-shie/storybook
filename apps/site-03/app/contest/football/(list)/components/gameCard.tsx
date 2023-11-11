@@ -114,8 +114,13 @@ function OddsInfo({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId:
             ) : null}
             <span className={style.mid}>
                 <p>
-                    ({syncData.homeHalfScore || contestInfo.homeHalfScore} -{' '}
-                    {syncData.awayHalfScore || contestInfo.awayHalfScore})
+                    {(syncData.state || contestInfo.state) >= 1 &&
+                    (syncData.state || contestInfo.state) <= 5 ? (
+                        <>
+                            {syncData.homeHalfScore || contestInfo.homeHalfScore} -{' '}
+                            {syncData.awayHalfScore || contestInfo.awayHalfScore}
+                        </>
+                    ) : null}
                 </p>
             </span>
             {syncData.overUnderUnderCurrentOdds ||
@@ -162,8 +167,15 @@ function TeamInfo({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId:
                 {contestInfo.homeChs}
             </div>
             <div className={style.score}>
-                {syncData.homeScore || contestInfo.homeScore} -{' '}
-                {syncData.awayScore || contestInfo.awayScore}
+                {(syncData.state || contestInfo.state) >= 1 &&
+                (syncData.state || contestInfo.state) <= 5 ? (
+                    <>
+                        {syncData.homeScore || contestInfo.homeScore} -{' '}
+                        {syncData.awayScore || contestInfo.awayScore}
+                    </>
+                ) : (
+                    '-'
+                )}
             </div>
             <div className={`${style.awayTeam} ${style.team}`}>
                 {contestInfo.awayChs}
