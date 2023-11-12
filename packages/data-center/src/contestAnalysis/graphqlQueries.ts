@@ -604,10 +604,10 @@ export const GET_BEFORE_GAME_INDEX_ANALYZE_QUERY = `
                 fullTotalGoal {
                     matchId
                     companyId
-                    initialTotalGoals
+                    initialHandicap
                     overInitialOdds
                     underInitialOdds
-                    currentTotalGoals
+                    currentHandicap
                     overCurrentOdds
                     underCurrentOdds
                     oddsChangeTime

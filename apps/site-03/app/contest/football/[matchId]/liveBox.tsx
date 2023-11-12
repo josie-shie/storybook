@@ -1,6 +1,7 @@
 'use client';
 import Image from 'next/image';
 import Button from '@mui/material/Button';
+import { useRouter } from 'next/navigation';
 import type { GetSingleMatchResponse } from 'data-center';
 import { GameStatus } from 'ui';
 import TeamLogo from './components/teamLogo';
@@ -12,18 +13,18 @@ import { createContestDetailStore, useContestDetailStore } from './contestDetail
 import { useContestInfoStore } from '@/app/contestInfoStore';
 
 const statusStyleMap = {
-    '0': style.notYet,
-    '1': style.midfielder,
-    '2': style.midfielder,
-    '3': style.midfielder,
-    '4': style.playOff,
-    '5': style.playOff,
-    '-1': style.finish,
-    '-10': style.notYet,
-    '-11': style.notYet,
-    '-12': style.notYet,
-    '-13': style.notYet,
-    '-14': style.notYet
+    '0': 'notYet',
+    '1': 'midfielder',
+    '2': 'midfielder',
+    '3': 'midfielder',
+    '4': 'playOff',
+    '5': 'playOff',
+    '-1': 'finish',
+    '-10': 'notYet',
+    '-11': 'notYet',
+    '-12': 'notYet',
+    '-13': 'notYet',
+    '-14': 'notYet'
 };
 
 function GameDetail() {
@@ -49,7 +50,7 @@ function GameDetail() {
             {liveState < 1 && liveState !== -1 && <p className={style.vsText}>VS</p>}
             <div className={style.gameScore}>
                 <GameStatus
-                    className={`${style.gameTime} ${statusStyleMap[matchDetail.state]}`}
+                    className={`gameTime ${statusStyleMap[matchDetail.state]}`}
                     startTime={matchDetail.startTime}
                     status={liveState}
                 />
@@ -67,13 +68,27 @@ function GameDetail() {
     );
 }
 
-function LiveBox({ contestDetail }: { contestDetail: GetSingleMatchResponse }) {
+function LiveBox({
+    contestDetail,
+    backHistory
+}: {
+    contestDetail: GetSingleMatchResponse;
+    backHistory?: boolean;
+}) {
     createContestDetailStore({ matchDetail: contestDetail });
     const { homeChs, homeLogo, awayChs, awayLogo } = useContestDetailStore.use.matchDetail();
+    const router = useRouter();
+    const back = () => {
+        if (backHistory) {
+            router.back();
+        } else {
+            router.push('/contest/football');
+        }
+    };
 
     return (
         <div className={style.liveBox} style={{ backgroundImage: `url(${bgImage.src})` }}>
-            <Header />
+            <Header back={back} />
             <div className={style.scoreboard}>
                 <div className={style.gameInfo}>
                     <div className={style.team}>

@@ -83,7 +83,7 @@ function Tabs({
     onTabChange,
     ...props
 }: TabsProps) {
-    const [activeIndex, setActiveIndex] = useState(0);
+    const [activeIndex, setActiveIndex] = useState<number | null>(null);
     const navRef = useRef<HTMLDivElement>(null);
     const headerLinerRef = useRef<HTMLDivElement>(null);
     const swiperRef = useRef<SwiperCore | null>(null);
@@ -92,15 +92,32 @@ function Tabs({
     const pathname = usePathname();
     const searchParams = useSearchParams();
 
+    useEffect(() => {
+        if (pathname) {
+            let foundIndex = React.Children.toArray(props.children).findIndex(child => {
+                if (React.isValidElement(child)) {
+                    const element = child as React.ReactElement<{ to?: string }>;
+                    return element.props.to === pathname;
+                }
+                return false;
+            });
+
+            foundIndex = foundIndex !== -1 ? foundIndex : 0;
+            setActiveIndex(foundIndex);
+        }
+    }, [pathname, props.children]);
+
     const handleTabClick = (index: number, value?: string) => {
         const headerLiner = headerLinerRef.current;
         if (headerLiner) {
-            if (index > activeIndex) {
-                headerLiner.classList.remove(style.secondClassName);
-                headerLiner.classList.add(style.firstClassName);
-            } else if (index < activeIndex) {
-                headerLiner.classList.remove(style.firstClassName);
-                headerLiner.classList.add(style.secondClassName);
+            if (activeIndex !== null) {
+                if (index > activeIndex) {
+                    headerLiner.classList.remove(style.secondClassName);
+                    headerLiner.classList.add(style.firstClassName);
+                } else if (index < activeIndex) {
+                    headerLiner.classList.remove(style.firstClassName);
+                    headerLiner.classList.add(style.secondClassName);
+                }
             }
         }
         setActiveIndex(index);
@@ -171,14 +188,20 @@ function Tabs({
             }
         };
 
-        updateHeaderLinerStyle(activeIndex);
+        if (activeIndex !== null) {
+            updateHeaderLinerStyle(activeIndex);
+        }
 
         window.addEventListener('resize', () => {
-            updateHeaderLinerStyle(activeIndex);
+            if (activeIndex !== null) {
+                updateHeaderLinerStyle(activeIndex);
+            }
         });
         return () => {
             window.removeEventListener('resize', () => {
-                updateHeaderLinerStyle(activeIndex);
+                if (activeIndex !== null) {
+                    updateHeaderLinerStyle(activeIndex);
+                }
             });
         };
     }, [activeIndex, position, gap, styling, scrolling]);
@@ -189,7 +212,8 @@ function Tabs({
         }
 
         const nav = navRef.current;
-        const activeTab = nav?.children[activeIndex] as HTMLElement | null;
+        const activeTab =
+            nav && activeIndex !== null ? (nav.children[activeIndex] as HTMLElement) : null;
         if (nav && activeTab) {
             const leftScrollPosition =
                 activeTab.offsetLeft + activeTab.offsetWidth / 2 - nav.offsetWidth / 2;
@@ -353,7 +377,7 @@ function Tabs({
                         contentFade ? style.fade : ''
                     }`}
                 >
-                    {Children.toArray(props.children)[activeIndex]}
+                    {activeIndex !== null && Children.toArray(props.children)[activeIndex]}
                 </div>
             )}
         </div>

@@ -7,6 +7,7 @@ import style from './disSelect.module.scss';
 import RecordFilter from './components/recordFilter/recordFilter';
 import HandicapDrawer from './components/handicapDrawer/handicapDrawer';
 import { GameFilter } from './components/gameFilter/gameFilter';
+import { creatDiscSelectStore } from './discSelectStore';
 
 interface OptionType {
     label: string;
@@ -47,8 +48,55 @@ function DiscSelect() {
     const [showHandicapDrawer, setShowHandicapDrawer] = useState(false);
 
     const goDetail = () => {
-        router.push(`/recommend/bigData/resultDetail`);
+        router.push(`/recommend/bigData/resultDetail/handicap`);
     };
+
+    creatDiscSelectStore({
+        handicapTips: [
+            {
+                id: 181,
+                betType: 'handicap',
+                betStatus: 'big',
+                gamesNumber: 2,
+                hot: false
+            },
+            {
+                id: 238,
+                betType: 'total',
+                betStatus: 'small',
+                gamesNumber: 3,
+                hot: false
+            },
+            {
+                id: 532,
+                betType: 'total',
+                betStatus: 'lose',
+                gamesNumber: 2,
+                hot: true
+            },
+            {
+                id: 636,
+                betType: 'handicap',
+                betStatus: 'lose',
+                gamesNumber: 3,
+                hot: false
+            },
+            {
+                id: 678,
+                betType: 'total',
+                betStatus: 'win',
+                gamesNumber: 2,
+                hot: true
+            },
+            {
+                id: 768,
+                betType: 'total',
+                betStatus: 'big',
+                gamesNumber: 5,
+                hot: false
+            }
+        ]
+    });
 
     const handicapList = [
         {

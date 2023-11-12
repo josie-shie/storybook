@@ -1,5 +1,5 @@
-import { initStore, convertHandicap, truncateFloatingPoint, timestampToString } from 'lib';
-import type { StoreWithSelectors } from 'lib';
+import { initStore, convertHandicap, truncateFloatingPoint } from 'lib';
+import type { StoreWithSelectors, OddsHashTable } from 'lib';
 import type { OriginalContestInfo, ContestInfo } from 'data-center';
 
 type ContestTable = Record<string, Partial<ContestInfo>>;
@@ -9,6 +9,7 @@ interface InitState {
 }
 interface ContestInfoContest extends InitState {
     setContestInfoContest: (info: Partial<OriginalContestInfo>) => void;
+    setContestOdds: (odds: OddsHashTable) => void;
 }
 
 let isInit = true;
@@ -23,12 +24,6 @@ const initialState = (
         if (!id) return;
         const updatedInfo = {
             ...info,
-            ...(typeof info.matchTime === 'number' && {
-                matchTime: timestampToString(info.matchTime, 'M-DD HH:mm')
-            }),
-            ...(typeof info.startTime === 'number' && {
-                startTime: timestampToString(info.startTime, 'YYYY-M-DD HH:mm')
-            }),
             ...(typeof info.handicapCurrent === 'number' && {
                 handicapCurrent: convertHandicap(info.handicapCurrent)
             }),
@@ -60,10 +55,71 @@ const initialState = (
                 newContestInfo[id] = updatedInfo;
             }
 
-            // eslint-disable-next-line -- test info
-            console.log('New global store', newContestInfo);
+            // console.log('New global store', newContestInfo);
 
             return { ...state, contestInfo: newContestInfo };
+        });
+    },
+
+    setContestOdds: (odds: OddsHashTable) => {
+        Object.keys(odds).forEach(matchId => {
+            Object.keys(odds[matchId]).forEach(companyId => {
+                if (companyId === '3') {
+                    const obj = odds[matchId][companyId];
+                    // console.log('matchId', matchId, companyId);
+                    // console.log('odds', odds);
+                    // console.log('obj', obj);
+                    set(state => {
+                        const newContestInfo: ContestTable = { ...state.contestInfo };
+                        const updatedOdds = {
+                            ...(typeof obj.handicap.currentHandicap === 'number' && {
+                                handicapCurrent: convertHandicap(obj.handicap.currentHandicap)
+                            }),
+                            ...(typeof obj.overUnder.currentHandicap === 'number' && {
+                                overUnderCurrent: convertHandicap(obj.overUnder.currentHandicap)
+                            }),
+                            ...(typeof obj.handicap.homeCurrentOdds === 'number' && {
+                                handicapHomeCurrentOdds: truncateFloatingPoint(
+                                    obj.handicap.homeCurrentOdds,
+                                    2
+                                )
+                            }),
+                            ...(typeof obj.handicap.awayCurrentOdds === 'number' && {
+                                handicapAwayCurrentOdds: truncateFloatingPoint(
+                                    obj.handicap.awayCurrentOdds,
+                                    2
+                                )
+                            }),
+                            ...(typeof obj.overUnder.currentUnderOdds === 'number' && {
+                                overUnderUnderCurrentOdds: truncateFloatingPoint(
+                                    obj.overUnder.currentUnderOdds,
+                                    2
+                                )
+                            }),
+                            ...(typeof obj.overUnder.currentOverOdds === 'number' && {
+                                overUnderOverCurrentOdds: truncateFloatingPoint(
+                                    obj.overUnder.currentOverOdds,
+                                    2
+                                )
+                            })
+                        } as Partial<ContestInfo>;
+
+                        if (Object.hasOwnProperty.call(newContestInfo, matchId)) {
+                            newContestInfo[matchId] = {
+                                ...newContestInfo[matchId],
+                                ...updatedOdds
+                            };
+                        } else {
+                            newContestInfo[matchId] = updatedOdds;
+                        }
+
+                        // eslint-disable-next-line -- test info
+                        console.log('New global odd store', newContestInfo);
+
+                        return { ...state, contestInfo: newContestInfo };
+                    });
+                }
+            });
         });
     }
 });

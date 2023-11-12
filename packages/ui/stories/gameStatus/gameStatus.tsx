@@ -5,7 +5,8 @@ import style from './gameStatus.module.scss';
 
 interface GameStatusProps extends React.HTMLAttributes<HTMLDivElement> {
     status: number;
-    startTime: string;
+    startTime: number;
+    injuryTime?: string;
 }
 
 function useGameTime({ startTime, status }: GameStatusProps) {
@@ -22,7 +23,7 @@ function useGameTime({ startTime, status }: GameStatusProps) {
         if (status === 1 || status === 3) {
             timerRef.current = setInterval(() => {
                 setTriggerUpdate(u => !u);
-            }, 30000);
+            }, 10000);
         } else if (timerRef.current) {
             clearInterval(timerRef.current);
         }
@@ -37,7 +38,7 @@ function useGameTime({ startTime, status }: GameStatusProps) {
     return realTimeStatus;
 }
 
-function GameStatus({ startTime, status, ...props }: GameStatusProps) {
+function GameStatus({ startTime, status, injuryTime = '', ...props }: GameStatusProps) {
     const realTimeStatus = useGameTime({ startTime, status });
 
     return (
@@ -48,7 +49,7 @@ function GameStatus({ startTime, status, ...props }: GameStatusProps) {
                 }`}
             >
                 {realTimeStatus.time || realTimeStatus.text}
-                {realTimeStatus.time ? '' : ''}
+                {Number(injuryTime) > 0 && realTimeStatus.time ? `+${injuryTime}'` : ''}
             </p>
         </div>
     );

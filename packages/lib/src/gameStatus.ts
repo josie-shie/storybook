@@ -3,19 +3,18 @@ import dayjs from 'dayjs';
 
 // const HALF_BREAK_TIME = 15;
 
-export const handleStartTime = (startTime: string, endTime?: string) => {
+export const handleStartTime = (startTime: number, endTime?: number) => {
     if (!startTime) return 0;
-    const start = dayjs(startTime);
-    const end = endTime ? dayjs(endTime) : dayjs();
+    const start = dayjs(startTime * 1000);
+    const end = endTime ? dayjs(endTime * 1000) : dayjs();
     const diffMinutes = end.diff(start, 'minute');
-
     return diffMinutes;
 };
 
 export const handleGameTime = (
-    startTime: string,
+    startTime: number,
     state: number,
-    endTime?: string
+    endTime?: number
 ): {
     state:
         | 'notYet'
@@ -37,13 +36,23 @@ export const handleGameTime = (
         return { state: 'notYet', text: '未' };
     }
     if (state === 1) {
-        return { state: 'playing', time: handleStartTime(startTime, endTime) };
+        return {
+            state: 'playing',
+            time:
+                handleStartTime(startTime, endTime) >= 45 ? 45 : handleStartTime(startTime, endTime)
+        };
     }
     if (state === 2) {
         return { state: 'midfielder', text: '中场' };
     }
     if (state === 3) {
-        return { state: 'playing', time: handleStartTime(startTime, endTime) + 45 };
+        return {
+            state: 'playing',
+            time:
+                handleStartTime(startTime, endTime) + 45 >= 90
+                    ? 90
+                    : handleStartTime(startTime, endTime) + 45
+        };
     }
     if (state === 4) {
         return { state: 'playoff', text: '加' };
@@ -72,9 +81,9 @@ export const handleGameTime = (
     return { state: 'unknow', text: '未知' };
 };
 
-export const handleMatchDateTime = (startTime: string) => {
+export const handleMatchDateTime = (startTime: number) => {
     if (!startTime) return '';
-    const inputDate = dayjs.unix(parseInt(startTime));
+    const inputDate = dayjs(startTime * 1000);
     const now = dayjs();
 
     if (now.format('YYYY/MM/DD') === inputDate.format('YYYY/MM/DD')) {

@@ -1,6 +1,12 @@
 import type { MqttClient } from 'mqtt';
 import * as mqtt from 'mqtt';
-import { deProto, deProtoOdds, deProtoDetailEvent, deProtoDetailTechnicList } from './prtobuf';
+import {
+    deProto,
+    deProtoOdds,
+    deProtoOddsChange,
+    deProtoDetailEvent,
+    deProtoDetailTechnicList
+} from './prtobuf';
 
 interface OriginalContestInfo {
     leagueChsShort: string;
@@ -27,74 +33,6 @@ interface OriginalContestInfo {
     state: number;
     color: string;
     countryCn: string;
-}
-
-interface OddChangType {
-    match: {
-        matchId: number;
-        homeScore: number;
-        awayScore: number;
-        state: number;
-    };
-    handicapHalfList: {
-        matchId: number;
-        companyId: number;
-        currentHandicap: number;
-        homeCurrentOdds: number;
-        awayCurrentOdds: number;
-        oddsChangeTime: number;
-        oddsType: number;
-    }[];
-    handicapList: {
-        matchId: number;
-        companyId: number;
-        currentHandicap: number;
-        homeCurrentOdds: number;
-        awayCurrentOdds: number;
-        isMaintained: boolean;
-        isInProgress: boolean;
-        oddsChangeTime: number;
-        isClosed: boolean;
-        oddsType: number;
-    }[];
-    overUnderHalfList: {
-        matchId: number;
-        companyId: number;
-        currentHandicap: number;
-        currentOverOdds: number;
-        currentUnderOdds: number;
-        oddsChangeTime: number;
-        oddsType: number;
-    }[];
-    overUnderList: {
-        matchId: number;
-        companyId: number;
-        currentHandicap: number;
-        currentOverOdds: number;
-        currentUnderOdds: number;
-        oddsChangeTime: number;
-        isClosed: boolean;
-        oddsType: number;
-    }[];
-    europeOddsHalfList: {
-        matchId: number;
-        companyId: number;
-        currentHandicap: number;
-        currentOverOdds: number;
-        currentUnderOdds: number;
-        oddsChangeTime: number;
-        isClosed: boolean;
-        oddsType: number;
-    }[];
-    europeOddsList: {
-        matchId: number;
-        companyId: number;
-        currentHandicap: number;
-        currentOverOdds: number;
-        currentUnderOdds: number;
-        oddsChangeTime: number;
-        oddsType: number;
-    }[];
 }
 
 interface TechnicalInfoData {
@@ -172,7 +110,8 @@ interface EventInfoData {
 
 let client: MqttClient;
 const useMessageQueue: ((data: OriginalContestInfo) => void)[] = [];
-const useOddsQueue: ((data: OddChangType) => void)[] = [];
+const useOddsQueue: ((data: OddsType) => void)[] = [];
+const useOddsChangeQueue: ((data: OddChangeType) => void)[] = [];
 const useTechnicalQueue: ((data: TechnicalInfoData) => void)[] = [];
 const useEventQueue: ((data: EventInfoData) => void)[] = [];
 let init = true;
@@ -199,9 +138,260 @@ const handleContestMessage = async (message: Buffer) => {
         messageMethod(decodedMessage as unknown as OriginalContestInfo);
     }
 
-    // eslint-disable-next-line no-console -- Check mqtt message
-    console.log('[MQTT On contest message]: ', decodedMessage);
+    // console.log('[MQTT On contest message ContestMessage]: ', decodedMessage);
 };
+
+export type OddChangeMatch = Partial<{
+    matchId: number;
+    homeScore: number;
+    awayScore: number;
+    state: number;
+}>;
+
+export type OddsMatch = OddChangeMatch &
+    Partial<{
+        matchTime: number;
+        startTime: number;
+        leagueId: number;
+        leagueEn: string;
+        leagueChs: string;
+        leagueCht: string;
+        homeEn: string;
+        homeChs: string;
+        homeCht: string;
+        awayEn: string;
+        awayChs: string;
+        awayCht: string;
+        homeId: number;
+        awayId: number;
+        homeRank: string;
+        awayRank: string;
+        isNeutral: boolean;
+        homeRed: number;
+        awayRed: number;
+    }>;
+
+export type OddChangeHandicapHalf = Partial<{
+    matchId: number;
+    companyId: number;
+    currentHandicap: number;
+    homeCurrentOdds: number;
+    awayCurrentOdds: number;
+    oddsChangeTime: number;
+    oddsType: number;
+}>;
+
+export type OddsHandicapHalf = OddChangeHandicapHalf &
+    Partial<{
+        initialHandicap: number;
+        homeInitialOdds: number;
+        awayInitialOdds: number;
+    }>;
+
+export type OddChangeHandicap = Partial<{
+    matchId: number;
+    companyId: number;
+    currentHandicap: number;
+    homeCurrentOdds: number;
+    awayCurrentOdds: number;
+    isMaintained: boolean;
+    isInProgress: boolean;
+    oddsChangeTime: number;
+    isClosed: boolean;
+    oddsType: number;
+}>;
+
+export type OddsHandicap = OddChangeHandicap &
+    Partial<{
+        initialHandicap: number;
+        homeInitialOdds: number;
+        awayInitialOdds: number;
+    }>;
+
+export type OddChangeOverUnderHalf = Partial<{
+    matchId: number;
+    companyId: number;
+    currentHandicap: number;
+    currentOverOdds: number;
+    currentUnderOdds: number;
+    oddsChangeTime: number;
+    oddsType: number;
+}>;
+
+export type OddsOverUnderHalf = OddChangeOverUnderHalf &
+    Partial<{
+        initialHandicap: number;
+        homeInitialOdds: number;
+        awayInitialOdds: number;
+    }>;
+
+export type OddChangeOverUnder = Partial<{
+    matchId: number;
+    companyId: number;
+    currentHandicap: number;
+    currentOverOdds: number;
+    currentUnderOdds: number;
+    oddsChangeTime: number;
+    isClosed: boolean;
+    oddsType: number;
+}>;
+
+export type OddsOverUnder = OddChangeOverUnder &
+    Partial<{
+        initialHandicap: number;
+        homeInitialOdds: number;
+        awayInitialOdds: number;
+    }>;
+
+export type OddChangeEuropeOddsHalf = Partial<{
+    matchId: number;
+    companyId: number;
+    currentHomeOdds: number;
+    currentDrawOdds: number;
+    currentAwayOdds: number;
+    oddsChangeTime: number;
+    isClosed: boolean;
+    oddsType: number;
+}>;
+
+export type OddsEuropeOddsHalf = OddChangeEuropeOddsHalf &
+    Partial<{
+        initialHandicap: number;
+        homeInitialOdds: number;
+        awayInitialOdds: number;
+    }>;
+
+export type OddChangeEuropeOdds = Partial<{
+    matchId: number;
+    companyId: number;
+    currentHomeOdds: number;
+    currentDrawOdds: number;
+    currentAwayOdds: number;
+    oddsChangeTime: number;
+    oddsType: number;
+    isClosed: boolean;
+}>;
+
+export type OddsEuropeOdds = OddChangeEuropeOdds &
+    Partial<{
+        initialHandicap: number;
+        homeInitialOdds: number;
+        awayInitialOdds: number;
+    }>;
+
+export interface OddChangeType {
+    match?: OddChangeMatch;
+    handicapHalfList?: OddChangeHandicapHalf[];
+    handicapList?: OddChangeHandicap[];
+    overUnderHalfList?: OddChangeOverUnderHalf[];
+    overUnderList?: OddChangeOverUnder[];
+    europeOddsHalfList?: OddChangeEuropeOddsHalf[];
+    europeOddsList?: OddChangeEuropeOdds[];
+}
+
+export interface OddsType {
+    match?: OddsMatch;
+    handicapHalfList?: OddsHandicapHalf[];
+    handicapList?: OddsHandicap[];
+    overUnderHalfList?: OddsOverUnderHalf[];
+    overUnderList?: OddsOverUnder[];
+    europeOddsHalfList?: OddsEuropeOddsHalf[];
+    europeOddsList?: OddsEuropeOdds[];
+}
+
+export type OddsChangeHashTable = Record<
+    string,
+    Record<
+        string,
+        {
+            handicapHalf: OddChangeHandicapHalf;
+            handicap: OddChangeHandicap;
+            overUnderHalf: OddChangeOverUnderHalf;
+            overUnder: OddChangeOverUnder;
+            europeOddsHalf: OddChangeEuropeOddsHalf;
+            europeOdds: OddChangeEuropeOdds;
+        }
+    >
+>;
+
+export type OddsHashTable = Record<
+    string,
+    Record<
+        string,
+        {
+            handicapHalf: OddChangeHandicapHalf;
+            handicap: OddChangeHandicap;
+            overUnderHalf: OddChangeOverUnderHalf;
+            overUnder: OddChangeOverUnder;
+            europeOddsHalf: OddChangeEuropeOddsHalf;
+            europeOdds: OddChangeEuropeOdds;
+        }
+    >
+>;
+
+export type KeyMap =
+    | 'handicapHalf'
+    | 'handicap'
+    | 'overUnderHalf'
+    | 'overUnder'
+    | 'europeOddsHalf'
+    | 'europeOdds';
+
+interface ListWithIdAndCompany {
+    matchId?: number;
+    companyId?: number;
+    [key: string]: unknown; // 允许任何其他属性
+}
+
+export function integrateData(
+    lists: ListWithIdAndCompany[],
+    type: KeyMap,
+    hashTable: OddsChangeHashTable | OddsHashTable
+) {
+    lists.forEach(item => {
+        const { matchId = 0, companyId = 0, ...rest } = item;
+
+        if (matchId && companyId) {
+            if (!hashTable[matchId] as boolean) {
+                hashTable[matchId] = {};
+            }
+
+            if (!hashTable[matchId][companyId] as boolean) {
+                hashTable[matchId][companyId] = {
+                    handicapHalf: {},
+                    handicap: {},
+                    overUnderHalf: {},
+                    overUnder: {},
+                    europeOddsHalf: {},
+                    europeOdds: {}
+                };
+            }
+
+            hashTable[matchId][companyId][type] = { ...rest };
+        }
+    });
+}
+
+function createHashTable(data: OddChangeType | OddsType) {
+    const hashTable = {};
+    const {
+        handicapHalfList = [],
+        handicapList = [],
+        overUnderHalfList = [],
+        overUnderList = [],
+        europeOddsHalfList = [],
+        europeOddsList = []
+    } = data;
+
+    integrateData(handicapHalfList, 'handicapHalf', hashTable);
+    integrateData(handicapList, 'handicap', hashTable);
+    integrateData(overUnderHalfList, 'overUnderHalf', hashTable);
+    integrateData(overUnderList, 'overUnder', hashTable);
+    integrateData(europeOddsHalfList, 'europeOddsHalf', hashTable);
+    integrateData(europeOddsList, 'europeOdds', hashTable);
+
+    return hashTable;
+}
 
 const handleOddsMessage = async (message: Buffer) => {
     const messageObject = await deProtoOdds(message);
@@ -209,10 +399,26 @@ const handleOddsMessage = async (message: Buffer) => {
         messageObject as unknown as Record<string, unknown>
     );
     for (const messageMethod of useOddsQueue) {
-        messageMethod(decodedMessage as unknown as OddChangType);
+        const formatDecodedMessage = createHashTable(decodedMessage);
+        messageMethod(formatDecodedMessage);
     }
+
     // eslint-disable-next-line no-console -- Check mqtt message
     console.log('[MQTT On odds message]: ', decodedMessage);
+};
+
+const handleOddsChangeMessage = async (message: Buffer) => {
+    const messageObject = await deProtoOddsChange(message);
+    const decodedMessage = toSerializableObject(
+        messageObject as unknown as Record<string, unknown>
+    );
+
+    for (const messageMethod of useOddsChangeQueue) {
+        const formatDecodedMessage = createHashTable(decodedMessage);
+        messageMethod(formatDecodedMessage);
+    }
+    // eslint-disable-next-line no-console -- Check mqtt message
+    console.log('[MQTT On odds change message]: ', decodedMessage);
 };
 
 const handleDetailEventMessage = async (message: Buffer) => {
@@ -226,8 +432,7 @@ const handleDetailEventMessage = async (message: Buffer) => {
         messageMethod(decodedMessage as unknown as EventInfoData);
     }
 
-    // eslint-disable-next-line no-console -- Check mqtt message
-    console.log(`[MQTT On detail EventList message]: `, decodedMessage);
+    // console.log(`[MQTT On detail EventList message]: `, decodedMessage);
 };
 
 const handleDetailTechnicListMessage = async (message: Buffer) => {
@@ -241,8 +446,7 @@ const handleDetailTechnicListMessage = async (message: Buffer) => {
         messageMethod(decodedMessage as unknown as TechnicalInfoData);
     }
 
-    // eslint-disable-next-line no-console -- Check mqtt message
-    console.log(`[MQTT On detail TechnicList message]: `, decodedMessage);
+    // console.log(`[MQTT On detail TechnicList message]: `, decodedMessage);
 };
 
 export const mqttService = {
@@ -253,13 +457,15 @@ export const mqttService = {
                 // eslint-disable-next-line no-console -- Check lifecycle
                 console.log('Mqtt connected');
                 client.subscribe('updatematch');
+                client.subscribe('updateasia_odds');
                 client.subscribe('updateasia_odds_change');
                 client.subscribe('updateevent');
                 client.subscribe('updatetechnic');
             });
             client.on('message', (topic, message) => {
                 if (topic === 'updatematch') void handleContestMessage(message);
-                if (topic === 'updateasia_odds_change') void handleOddsMessage(message);
+                if (topic === 'updateasia_odds') void handleOddsMessage(message);
+                if (topic === 'updateasia_odds_change') void handleOddsChangeMessage(message);
                 if (topic === 'updateevent') void handleDetailEventMessage(message);
                 if (topic === 'updatetechnic') void handleDetailTechnicListMessage(message);
             });
@@ -270,8 +476,11 @@ export const mqttService = {
     getMessage: (onMessage: (data: OriginalContestInfo) => void) => {
         useMessageQueue.push(onMessage);
     },
-    getOdds: (onMessage: (data: OddChangType) => void) => {
+    getOdds: (onMessage: (data: OddsType) => void) => {
         useOddsQueue.push(onMessage);
+    },
+    getOddsChange: (onMessage: (data: OddChangeType) => void) => {
+        useOddsChangeQueue.push(onMessage);
     },
     getTechnicList: (onMessage: (data: TechnicalInfoData) => void) => {
         useTechnicalQueue.push(onMessage);

@@ -112,7 +112,7 @@ const initialState = (set: (data: Partial<SituationState>) => void) => ({
     lineupInfo: {} as LineupList,
     companyLiveOddsDetail: {} as CompanyLiveDetailResponse,
     isOddsDetailDrawerOpen: false,
-    oddsDeatilDrawerTabValue: 'halfHandicap',
+    oddsDeatilDrawerTabValue: 'fullHandicap',
     companyId: 3,
     setCompanyId: (companyId: number) => {
         set({ companyId });

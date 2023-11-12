@@ -5,6 +5,7 @@ import HotStreakListItem from '../components/hotStreak/hotStreakListItem';
 import UserSwitch from '../components/userSwitch/userSwitch';
 import Rule from '../components/rule/rule';
 import Streak from '../components/hotStreak/img/streak.png';
+import { creatMasterRankStore } from './masterRankStore';
 import style from './masterRank.module.scss';
 import Avatar from '@/components/avatar/avatar';
 
@@ -15,50 +16,59 @@ function RankList() {
         currentStreak: 9,
         highestStreak: 14
     };
-    const list = [
-        {
-            ranking: 1,
-            name: '老梁聊球',
-            currentStreak: 9,
-            highestStreak: 14
-        },
-        {
-            ranking: 2,
-            name: '老梁聊球',
-            currentStreak: 10,
-            highestStreak: 7
-        },
-        {
-            ranking: 3,
-            name: '老梁聊球',
-            currentStreak: 4,
-            highestStreak: 4
-        },
-        {
-            ranking: 4,
-            name: '老梁聊球',
-            currentStreak: 6,
-            highestStreak: 3
-        },
-        {
-            ranking: 5,
-            name: '老梁聊球',
-            currentStreak: 4,
-            highestStreak: 3
-        },
-        {
-            ranking: 6,
-            name: '老梁聊球',
-            currentStreak: 7,
-            highestStreak: 2
-        },
-        {
-            ranking: 7,
-            name: '老梁聊球',
-            currentStreak: 4,
-            highestStreak: 0
-        }
-    ];
+    creatMasterRankStore({
+        masterRankList: [
+            {
+                ranking: 1,
+                avatar: '',
+                name: '老梁聊球',
+                currentStreak: 9,
+                highestStreak: 14
+            },
+            {
+                ranking: 2,
+                avatar: '',
+                name: '老梁聊球',
+                currentStreak: 10,
+                highestStreak: 7
+            },
+            {
+                ranking: 3,
+                avatar: '',
+                name: '老梁聊球',
+                currentStreak: 4,
+                highestStreak: 4
+            },
+            {
+                ranking: 4,
+                avatar: '',
+                name: '老梁聊球',
+                currentStreak: 6,
+                highestStreak: 3
+            },
+            {
+                ranking: 5,
+                avatar: '',
+                name: '老梁聊球',
+                currentStreak: 4,
+                highestStreak: 3
+            },
+            {
+                ranking: 6,
+                avatar: '',
+                name: '老梁聊球',
+                currentStreak: 7,
+                highestStreak: 2
+            },
+            {
+                ranking: 7,
+                avatar: '',
+                name: '老梁聊球',
+                currentStreak: 4,
+                highestStreak: 0
+            }
+        ]
+    });
 
     return (
         <div className={style.masterRank}>
@@ -96,16 +106,7 @@ function RankList() {
                     </div>
                 </div>
             </div>
-            {list.map(item => (
-                <div key={item.ranking}>
-                    <HotStreakListItem
-                        currentStreak={item.currentStreak}
-                        highestStreak={item.highestStreak}
-                        name={item.name}
-                        ranking={item.ranking}
-                    />
-                </div>
-            ))}
+            <HotStreakListItem />
         </div>
     );
 }

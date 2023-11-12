@@ -1,6 +1,7 @@
 'use client';
 import type { ReactNode } from 'react';
 import { useState } from 'react';
+import { usePathname } from 'next/navigation';
 import { Tabs, Tab } from 'ui';
 import Image from 'next/image';
 import style from './dashboard.module.scss';
@@ -11,8 +12,9 @@ import HeaderTitleFilter from '@/components/header/headerTitleFilter';
 
 function DetailLayout({ children }: { children: ReactNode }) {
     const [showFilter, setShowFilter] = useState(false);
+    const route = usePathname().split('/');
     const tabStyle = {
-        gap: 8,
+        gap: 4,
         swiperOpen: true,
         scrolling: true,
         buttonRadius: 30
@@ -20,19 +22,23 @@ function DetailLayout({ children }: { children: ReactNode }) {
     const tabList = [
         {
             label: '讓球大小',
-            to: '/recommend/bigData/resultDetail/handicap'
+            to: '/recommend/bigData/resultDetail/handicap',
+            params: 'handicap'
         },
         {
             label: '15分鐘進球',
-            to: '/recommend/bigData/resultDetail/minutes'
+            to: '/recommend/bigData/resultDetail/minutes',
+            params: 'minutes'
         },
         {
             label: '進球數區間',
-            to: '/recommend/bigData/resultDetail/range'
+            to: '/recommend/bigData/resultDetail/range',
+            params: 'range'
         },
         {
             label: '全場波膽',
-            to: '/recommend/bigData/resultDetail/bodan'
+            to: '/recommend/bigData/resultDetail/bodan',
+            params: 'bodan'
         }
     ];
 
@@ -62,7 +68,7 @@ function DetailLayout({ children }: { children: ReactNode }) {
                     {tabList.map(item => {
                         return (
                             <Tab key={item.label} label={item.label} to={item.to}>
-                                {children}
+                                {item.params === route[route.length - 1] ? children : ''}
                             </Tab>
                         );
                     })}

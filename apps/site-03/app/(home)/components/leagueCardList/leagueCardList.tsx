@@ -1,6 +1,7 @@
 import { Tab, Tabs } from 'ui';
 import type { StaticImageData } from 'next/image';
 import Image from 'next/image';
+import { timestampToString } from 'lib';
 import { useHomeStore } from '../../homeStore';
 import playButtonImg from './img/playButton.png';
 import planImg from './img/plan.png';
@@ -10,7 +11,7 @@ import style from './leagueCardList.module.scss';
 interface Match {
     matchId: number;
     leagueChsShort: string;
-    startTime: string;
+    startTime: number;
     state: number;
     homeChs: string;
     awayChs: string;
@@ -73,7 +74,9 @@ function LeagueCard({ match }: MatchProps) {
             <div className={style.matchInfo}>
                 <div className={style.leagueInfo}>
                     <div className={`${style.text} ${style.liveText}`}>{match.leagueChsShort}</div>
-                    <div className={style.time}>{match.startTime}</div>
+                    <div className={style.time}>
+                        {timestampToString(match.startTime, 'YYYY-M-DD HH:mm')}
+                    </div>
                     <StateComponent state={match.state} />
                 </div>
                 <div className={style.clubInfo}>

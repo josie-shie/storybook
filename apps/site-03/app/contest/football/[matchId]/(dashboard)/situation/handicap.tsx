@@ -132,7 +132,7 @@ function NotStarted({
 
 function Handicap() {
     const handicapData = useSituationStore.use.handicapsData();
-    const [handicapRadio, setHandicapRadio] = useState<RadioType>('half');
+    const [handicapRadio, setHandicapRadio] = useState<RadioType>('full');
     const [handicapSwitch, setHandicapSwitch] = useState(3);
     const setCompanyId = useSituationStore.use.setCompanyId();
     const setDrawerTabValue = useSituationStore.use.setOddsDeatilDrawerTabValue();

@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { motion } from 'framer-motion';
 import style from './handicapTips.module.scss';
 import iconHot from './img/hot.png';
 import teamLogo from './img/homeTeam.png';
@@ -42,9 +43,9 @@ function HandicapTips({ betType = 'total', betStatus = 'small', gamesNumber, hot
                     <Image alt="teamLogo" className={style.team} src={teamLogo} width={28} />
                     大連人連輸3場
                 </div>
-                <button className={style.button} type="button">
+                <motion.button className={style.button} type="button" whileTap={{ scale: 0.9 }}>
                     詳情
-                </button>
+                </motion.button>
             </div>
         </div>
     );

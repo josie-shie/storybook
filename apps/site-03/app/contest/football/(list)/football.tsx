@@ -15,6 +15,7 @@ function ContestList() {
     const contestList = useContestListStore.use.contestList();
     const contestInfo = useContestListStore.use.contestInfo();
     const globalStore = useContestInfoStore.use.contestInfo();
+    const filterList = useContestListStore.use.filterList();
 
     const searchParams = useSearchParams();
     const status = searchParams.get('status') || 'all';
@@ -28,7 +29,14 @@ function ContestList() {
     };
 
     const filterByStatus = (list: number[], statusFunc: (state: number) => boolean) => {
+        const filterGroup = filterList.group === 'league' ? 'leagueChsShort' : 'countryCn';
         return list.filter(item => {
+            if (
+                Object.keys(filterList.selectedTable).length > 0 &&
+                !filterList.selectedTable[contestInfo[item][filterGroup]]
+            ) {
+                return false;
+            }
             const state =
                 Object.hasOwnProperty.call(globalStore, item) &&
                 globalStore[item].state !== undefined
@@ -84,17 +92,20 @@ function ContestList() {
                     return <GameCard key={matchId} matchId={matchId} />;
                 })}
                 {status === 'all' && displayNotYetList.length > 0 && (
-                    <li className={style.line}>尚未開賽</li>
+                    <li className={style.line}>尚未开赛</li>
                 )}
                 {displayNotYetList.map(matchId => {
                     return <GameCard key={matchId} matchId={matchId} />;
                 })}
                 {status === 'all' && displayFinishList.length > 0 && (
-                    <li className={style.line}>完賽</li>
+                    <li className={style.line}>完赛</li>
                 )}
                 {displayFinishList.map(matchId => {
                     return <GameCard key={matchId} matchId={matchId} />;
                 })}
+                {status !== 'all' && displayList.length === 0 && (
+                    <li className={style.noneContest}>暂无赛事</li>
+                )}
             </ul>
             {((status === 'all' && rows.finish < finishList.length) ||
                 (status !== 'all' && rows.full < currentList.length)) && (
