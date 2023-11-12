@@ -1,13 +1,15 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { handleStartTime } from 'lib';
-import type { HandicapsInfo } from 'data-center';
+import type { ContestInfo, GetSingleMatchResponse, HandicapsInfo } from 'data-center';
 import { useContestDetailStore } from '../../contestDetailStore';
 import { useSituationStore } from '../../situationStore';
+import { CompareOdds } from '../../../(list)/components/gameCard';
 import style from './situation.module.scss';
 import rightBlack from './img/right_black.png';
 import TextRadio from '@/components/textSwitch/textSwitch';
 import ButtonSwitch from '@/components/textSwitch/buttonSwitch';
+import { useContestInfoStore } from '@/app/contestInfoStore';
 
 const switchOptins = [
     { label: 'CROW*', value: 3 },
@@ -27,7 +29,9 @@ function InProgress({
     setDrawerTabValue,
     handicapRadio,
     setCompanyId,
-    handicapSwitch
+    handicapSwitch,
+    contestInfo,
+    matchDetail
 }: {
     targetHandicap: HandicapsInfo[];
     setIsOddsDetailDrawerOpen: (value: boolean) => void;
@@ -35,8 +39,9 @@ function InProgress({
     handicapRadio: RadioType;
     setCompanyId: (value: number) => void;
     handicapSwitch: number;
+    contestInfo: Partial<ContestInfo> | null;
+    matchDetail: GetSingleMatchResponse;
 }) {
-    const matchDetail = useContestDetailStore.use.matchDetail();
     return (
         <>
             {targetHandicap.map((now, idx) => (
@@ -53,10 +58,31 @@ function InProgress({
                         <p>{now.awayInitialOdds}</p>
                     </div>
                     <div className="td">
-                        <p>{now.homeCurrentOdds}</p>
-                        <p>{now.currentHandicap}</p>
-                        <p>
-                            <span>{now.awayCurrentOdds}</span>
+                        <div>
+                            <CompareOdds
+                                value={
+                                    (contestInfo?.state !== 0 &&
+                                        contestInfo?.handicapHomeCurrentOdds) ||
+                                    now.homeCurrentOdds
+                                }
+                            />
+                        </div>
+                        <div>
+                            <CompareOdds
+                                value={
+                                    (contestInfo?.state === 0 && contestInfo.handicapCurrent) ||
+                                    now.currentHandicap
+                                }
+                            />
+                        </div>
+                        <div className={style.arrowColumn}>
+                            <CompareOdds
+                                value={
+                                    (contestInfo?.state === 0 &&
+                                        contestInfo.handicapAwayCurrentOdds) ||
+                                    now.awayCurrentOdds
+                                }
+                            />
                             <Image
                                 alt=""
                                 height={14}
@@ -70,7 +96,7 @@ function InProgress({
                                 src={rightBlack.src}
                                 width={14}
                             />
-                        </p>
+                        </div>
                     </div>
                 </div>
             ))}
@@ -84,7 +110,8 @@ function NotStarted({
     setDrawerTabValue,
     handicapRadio,
     setCompanyId,
-    handicapSwitch
+    handicapSwitch,
+    contestInfo
 }: {
     targetHandicap: HandicapsInfo[];
     setIsOddsDetailDrawerOpen: (value: boolean) => void;
@@ -92,6 +119,7 @@ function NotStarted({
     handicapRadio: RadioType;
     setCompanyId: (value: number) => void;
     handicapSwitch: number;
+    contestInfo: Partial<ContestInfo> | null;
 }) {
     return (
         <>
@@ -105,10 +133,31 @@ function NotStarted({
                         <p>{before.awayInitialOdds}</p>
                     </div>
                     <div className="td">
-                        <p>{before.homeCurrentOdds}</p>
-                        <p>{before.currentHandicap}</p>
-                        <p>
-                            <span>{before.awayCurrentOdds}</span>
+                        <div>
+                            <CompareOdds
+                                value={
+                                    (contestInfo?.state === 0 &&
+                                        contestInfo.handicapHomeCurrentOdds) ||
+                                    before.homeCurrentOdds
+                                }
+                            />
+                        </div>
+                        <div>
+                            <CompareOdds
+                                value={
+                                    (contestInfo?.state === 0 && contestInfo.handicapCurrent) ||
+                                    before.currentHandicap
+                                }
+                            />
+                        </div>
+                        <div className={style.arrowColumn}>
+                            <CompareOdds
+                                value={
+                                    (contestInfo?.state === 0 &&
+                                        contestInfo.handicapAwayCurrentOdds) ||
+                                    before.awayCurrentOdds
+                                }
+                            />
                             <Image
                                 alt=""
                                 height={14}
@@ -122,7 +171,7 @@ function NotStarted({
                                 src={rightBlack.src}
                                 width={14}
                             />
-                        </p>
+                        </div>
                     </div>
                 </div>
             ))}
@@ -132,8 +181,12 @@ function NotStarted({
 
 function Handicap() {
     const handicapData = useSituationStore.use.handicapsData();
+
     const [handicapRadio, setHandicapRadio] = useState<RadioType>('full');
     const [handicapSwitch, setHandicapSwitch] = useState(3);
+    const matchDetail = useContestDetailStore.use.matchDetail();
+    const contestInfo = useContestInfoStore.use.contestInfo()[matchDetail.matchId];
+
     const setCompanyId = useSituationStore.use.setCompanyId();
     const setDrawerTabValue = useSituationStore.use.setOddsDeatilDrawerTabValue();
     const setIsOddsDetailDrawerOpen = useSituationStore.use.setIsOddsDetailDrawerOpen();
@@ -143,6 +196,7 @@ function Handicap() {
     };
 
     const targetHandicap = handicapData[handicapRadio][handicapSwitch];
+
     const hasData: boolean =
         typeof targetHandicap === 'undefined' ||
         targetHandicap.inProgress.length + targetHandicap.notStarted.length === 0;
@@ -186,14 +240,17 @@ function Handicap() {
                     ) : (
                         <>
                             <InProgress
+                                contestInfo={contestInfo}
                                 handicapRadio={handicapRadio}
                                 handicapSwitch={handicapSwitch}
+                                matchDetail={matchDetail}
                                 setCompanyId={setCompanyId}
                                 setDrawerTabValue={setDrawerTabValue}
                                 setIsOddsDetailDrawerOpen={setIsOddsDetailDrawerOpen}
                                 targetHandicap={targetHandicap.inProgress}
                             />
                             <NotStarted
+                                contestInfo={contestInfo}
                                 handicapRadio={handicapRadio}
                                 handicapSwitch={handicapSwitch}
                                 setCompanyId={setCompanyId}

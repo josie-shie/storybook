@@ -44,7 +44,7 @@ const compareNumbers = (previous: number, current: number): string => {
     return 'equal';
 };
 
-function CompareOdds({
+export function CompareOdds({
     value,
     defaultColor = ''
 }: {

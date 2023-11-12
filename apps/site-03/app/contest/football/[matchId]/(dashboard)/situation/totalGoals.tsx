@@ -1,13 +1,15 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { handleStartTime } from 'lib';
-import type { TotalGoalsInfo } from 'data-center';
+import type { ContestInfo, GetSingleMatchResponse, TotalGoalsInfo } from 'data-center';
 import { useContestDetailStore } from '../../contestDetailStore';
 import { useSituationStore } from '../../situationStore';
+import { CompareOdds } from '../../../(list)/components/gameCard';
 import style from './situation.module.scss';
 import rightBlack from './img/right_black.png';
 import TextRadio from '@/components/textSwitch/textSwitch';
 import ButtonSwitch from '@/components/textSwitch/buttonSwitch';
+import { useContestInfoStore } from '@/app/contestInfoStore';
 
 const switchOptins = [
     { label: 'CROW*', value: 3 },
@@ -27,7 +29,9 @@ function InProgress({
     setDrawerTabValue,
     totalGoalsRadio,
     setCompanyId,
-    totalGoalsSwitch
+    totalGoalsSwitch,
+    contestInfo,
+    matchDetail
 }: {
     targetTotalGoals: TotalGoalsInfo[];
     setIsOddsDetailDrawerOpen: (value: boolean) => void;
@@ -35,8 +39,9 @@ function InProgress({
     totalGoalsRadio: RadioType;
     setCompanyId: (value: number) => void;
     totalGoalsSwitch: number;
+    contestInfo: Partial<ContestInfo> | null;
+    matchDetail: GetSingleMatchResponse;
 }) {
-    const matchDetail = useContestDetailStore.use.matchDetail();
     return (
         <>
             {targetTotalGoals.map((now, idx) => (
@@ -53,10 +58,31 @@ function InProgress({
                         <p>{now.underInitialOdds}</p>
                     </div>
                     <div className="td">
-                        <p>{now.overCurrentOdds}</p>
-                        <p>{now.currentHandicap}</p>
-                        <p>
-                            {now.underCurrentOdds}
+                        <div>
+                            <CompareOdds
+                                value={
+                                    (contestInfo?.state !== 0 &&
+                                        contestInfo?.overUnderOverCurrentOdds) ||
+                                    now.overCurrentOdds
+                                }
+                            />
+                        </div>
+                        <div>
+                            <CompareOdds
+                                value={
+                                    (contestInfo?.state !== 0 && contestInfo?.overUnderCurrent) ||
+                                    now.currentHandicap
+                                }
+                            />
+                        </div>
+                        <div className={style.arrowColumn}>
+                            <CompareOdds
+                                value={
+                                    (contestInfo?.state !== 0 &&
+                                        contestInfo?.overUnderUnderCurrentOdds) ||
+                                    now.underCurrentOdds
+                                }
+                            />
                             <Image
                                 alt=""
                                 height={14}
@@ -70,7 +96,7 @@ function InProgress({
                                 src={rightBlack.src}
                                 width={14}
                             />
-                        </p>
+                        </div>
                     </div>
                 </div>
             ))}
@@ -84,7 +110,8 @@ function NotStarted({
     setDrawerTabValue,
     totalGoalsRadio,
     setCompanyId,
-    totalGoalsSwitch
+    totalGoalsSwitch,
+    contestInfo
 }: {
     targetTotalGoals: TotalGoalsInfo[];
     setIsOddsDetailDrawerOpen: (value: boolean) => void;
@@ -92,6 +119,7 @@ function NotStarted({
     totalGoalsRadio: RadioType;
     setCompanyId: (value: number) => void;
     totalGoalsSwitch: number;
+    contestInfo: Partial<ContestInfo> | null;
 }) {
     return (
         <>
@@ -105,10 +133,31 @@ function NotStarted({
                         <p>{before.underInitialOdds}</p>
                     </div>
                     <div className="td">
-                        <p>{before.overCurrentOdds}</p>
-                        <p>{before.currentHandicap}</p>
-                        <p>
-                            {before.underCurrentOdds}
+                        <div>
+                            <CompareOdds
+                                value={
+                                    (contestInfo?.state === 0 &&
+                                        contestInfo.overUnderOverCurrentOdds) ||
+                                    before.overCurrentOdds
+                                }
+                            />
+                        </div>
+                        <div>
+                            <CompareOdds
+                                value={
+                                    (contestInfo?.state === 0 && contestInfo.overUnderCurrent) ||
+                                    before.currentHandicap
+                                }
+                            />
+                        </div>
+                        <div className={style.arrowColumn}>
+                            <CompareOdds
+                                value={
+                                    (contestInfo?.state === 0 &&
+                                        contestInfo.overUnderUnderCurrentOdds) ||
+                                    before.underCurrentOdds
+                                }
+                            />
                             <Image
                                 alt=""
                                 height={14}
@@ -122,7 +171,7 @@ function NotStarted({
                                 src={rightBlack.src}
                                 width={14}
                             />
-                        </p>
+                        </div>
                     </div>
                 </div>
             ))}
@@ -137,6 +186,8 @@ function TotalGoals() {
     const [totalGoalsRadio, setTotalGoalsRadio] = useState<RadioType>('full');
     const setDrawerTabValue = useSituationStore.use.setOddsDeatilDrawerTabValue();
     const setIsOddsDetailDrawerOpen = useSituationStore.use.setIsOddsDetailDrawerOpen();
+    const matchDetail = useContestDetailStore.use.matchDetail();
+    const contestInfo = useContestInfoStore.use.contestInfo()[matchDetail.matchId];
 
     const handleChangeSwitch = (switchValue: number) => {
         setTotalGoalsSwitch(switchValue);
@@ -187,6 +238,8 @@ function TotalGoals() {
                     ) : (
                         <>
                             <InProgress
+                                contestInfo={contestInfo}
+                                matchDetail={matchDetail}
                                 setCompanyId={setCompanyId}
                                 setDrawerTabValue={setDrawerTabValue}
                                 setIsOddsDetailDrawerOpen={setIsOddsDetailDrawerOpen}
@@ -195,6 +248,7 @@ function TotalGoals() {
                                 totalGoalsSwitch={totalGoalsSwitch}
                             />
                             <NotStarted
+                                contestInfo={contestInfo}
                                 setCompanyId={setCompanyId}
                                 setDrawerTabValue={setDrawerTabValue}
                                 setIsOddsDetailDrawerOpen={setIsOddsDetailDrawerOpen}
