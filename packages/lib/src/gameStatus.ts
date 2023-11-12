@@ -8,7 +8,7 @@ export const handleStartTime = (startTime: number, endTime?: number) => {
     const start = dayjs(startTime * 1000);
     const end = endTime ? dayjs(endTime * 1000) : dayjs();
     const diffMinutes = end.diff(start, 'minute');
-    return diffMinutes;
+    return diffMinutes || 1;
 };
 
 export const handleGameTime = (
