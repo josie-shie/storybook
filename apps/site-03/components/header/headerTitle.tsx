@@ -28,7 +28,7 @@ function HeaderTitle({ title, total }: HeaderProps) {
                     />
                     <div className={style.text}>{title}</div>
                 </div>
-                <Profile total={total} />
+                {total ? <Profile total={total} /> : null}
             </div>
         </div>
     );

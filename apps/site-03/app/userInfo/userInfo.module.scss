@@ -1,0 +1,171 @@
+@import 'variables';
+
+.userInfo {
+    height: calc(100vh - 113px);
+    background: #f8f8f8;
+    overflow: auto;
+    margin-top: -12px;
+    padding-top: 12px;
+
+    .container {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        flex-direction: column;
+        margin-top: -12px;
+        padding: 12px 12px 48px 12px;
+        background: linear-gradient(to right, #2c5eb2 0%, #3a82fb 100%);
+
+        .detail {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            width: 100%;
+            gap: 10px;
+
+            .content {
+                display: flex;
+                flex-direction: column;
+                flex: 1;
+                gap: 4px;
+
+                .top {
+                    display: flex;
+                    justify-content: space-between;
+                    gap: 4px;
+
+                    .name {
+                        color: #fff;
+                        font-size: 14px;
+                        font-weight: 500;
+                        margin-right: 2px;
+                    }
+
+                    .tags {
+                        display: flex;
+                        gap: 4px;
+                    }
+                }
+
+                .middle {
+                    color: #fff;
+                    font-size: 14px;
+                    font-weight: 500;
+                }
+
+                .bottom {
+                    display: flex;
+                    gap: 4px;
+
+                    span {
+                        color: #fff;
+                        font-size: 12px;
+                        font-weight: 400;
+                    }
+                }
+            }
+        }
+
+        .introduction {
+            margin-top: 12px;
+            font-size: 14px;
+            font-weight: 300;
+            color: rgba(255 255 255 / 70%);
+        }
+
+        .trade {
+            width: 100%;
+            margin-top: 12px;
+
+            .tradeDetail {
+                display: block;
+                margin-left: auto;
+                padding: 4px 12px;
+                color: #4489ff;
+                font-size: 14px;
+                background: #fff;
+                border: none;
+                border-radius: 30px;
+            }
+
+            .item {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin: 8px 0;
+                padding: 8px 12px;
+                border: 1px solid rgba(255 2552 255 / 30%);
+                border-radius: 8px;
+
+                .text {
+                    display: flex;
+                    align-items: center;
+                    color: #fff;
+                    font-size: 14px;
+
+                    span {
+                        color: rgba(255 255 255 / 70%);
+                        margin-left: 8px;
+                    }
+                }
+
+                .button {
+                    color: #fff;
+                    font-size: 14px;
+                    padding: 4px 12px;
+                    border: 1px solid #fff;
+                    border-radius: 30px;
+                }
+            }
+        }
+    }
+
+    .myDetail {
+        margin-top: -48px;
+        padding: 0 12px;
+
+        .business {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 24px;
+            background: #fff;
+            border-radius: 8px;
+
+            .item {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 4px;
+
+                .text {
+                    font-size: 14px;
+                    color: #222;
+                }
+            }
+        }
+
+        .mySetting {
+            padding: 12px;
+            margin-top: 8px;
+            background: #fff;
+            border-radius: 8px;
+
+            ul {
+                display: flex;
+                flex-direction: column;
+
+                li {
+                    color: #222;
+                    font-size: 14px;
+                    padding: 14px 0;
+                    border-bottom: 1px solid #f3f3f3;
+
+                    &:last-child {
+                        border-bottom: none;
+                    }
+                }
+            }
+        }
+    }
+}
