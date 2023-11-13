@@ -5,6 +5,7 @@ import type {
     TechnicalInfo,
     EventInfo
 } from 'data-center';
+import type { OddsHashTable } from 'lib';
 import { mqttService } from 'lib';
 import { useEffect } from 'react';
 import { creatSituationStore, useSituationStore } from '../../situationStore';
@@ -26,6 +27,74 @@ interface EventInfoData {
     event: EventInfo[];
 }
 
+interface OddChangType {
+    match: {
+        matchId: number;
+        homeScore: number;
+        awayScore: number;
+        state: number;
+    };
+    handicapHalfList: {
+        matchId: number;
+        companyId: number;
+        currentHandicap: number;
+        homeCurrentOdds: number;
+        awayCurrentOdds: number;
+        oddsChangeTime: number;
+        oddsType: number;
+    }[];
+    handicapList: {
+        matchId: number;
+        companyId: number;
+        currentHandicap: number;
+        homeCurrentOdds: number;
+        awayCurrentOdds: number;
+        isMaintained: boolean;
+        isInProgress: boolean;
+        oddsChangeTime: number;
+        isClosed: boolean;
+        oddsType: number;
+    }[];
+    overUnderHalfList: {
+        matchId: number;
+        companyId: number;
+        currentHandicap: number;
+        currentOverOdds: number;
+        currentUnderOdds: number;
+        oddsChangeTime: number;
+        oddsType: number;
+    }[];
+    overUnderList: {
+        matchId: number;
+        companyId: number;
+        currentHandicap: number;
+        currentOverOdds: number;
+        currentUnderOdds: number;
+        oddsChangeTime: number;
+        isClosed: boolean;
+        oddsType: number;
+    }[];
+    europeOddsHalfList: {
+        matchId: number;
+        companyId: number;
+        currentHandicap: number;
+        currentOverOdds: number;
+        currentUnderOdds: number;
+        oddsChangeTime: number;
+        isClosed: boolean;
+        oddsType: number;
+    }[];
+    europeOddsList: {
+        matchId: number;
+        companyId: number;
+        currentHandicap: number;
+        currentOverOdds: number;
+        currentUnderOdds: number;
+        oddsChangeTime: number;
+        oddsType: number;
+    }[];
+}
+
 function Situation({
     situationData,
     companyLiveOddsDetail
@@ -41,6 +110,8 @@ function Situation({
     const updateTechnical = useSituationStore.use.setTechnical();
     const updateEvent = useSituationStore.use.setEvents();
     const matchDetail = useContestDetailStore.use.matchDetail();
+    const setOddChange = useSituationStore.use.setOddChange();
+    const setOdds = useSituationStore.use.setOdds();
 
     useEffect(() => {
         const syncTechnicalGlobalStore = (message: Partial<TechnicalInfoData>) => {
@@ -78,8 +149,23 @@ function Situation({
                 updateEvent({ eventList, eventInfo });
             }
         };
+
+        const syncOddChange = (message: OddChangType) => {
+            if (message.match.matchId === matchDetail.matchId) {
+                setOddChange({ oddChangeData: message });
+            }
+        };
+
+        const syncOdds = (message: Partial<OddsHashTable>) => {
+            if (message[matchDetail.matchId]) {
+                setOdds(message, matchDetail.matchId);
+            }
+        };
+
         mqttService.getTechnicList(syncTechnicalGlobalStore);
         mqttService.getEventList(syncEventGlobalStore);
+        mqttService.getOdds(syncOddChange);
+        mqttService.getOdds(syncOdds);
     }, []);
 
     return (
