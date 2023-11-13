@@ -243,7 +243,6 @@ function TopArea({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId: 
                 </div>
                 <div className={style.status}>
                     <GameStatus
-                        injuryTime={syncData.injuryTime || contestInfo.injuryTime}
                         startTime={contestInfo.startTime}
                         status={syncData.state || contestInfo.state}
                     />
