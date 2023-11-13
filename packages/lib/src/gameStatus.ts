@@ -8,7 +8,7 @@ export const handleStartTime = (startTime: number, endTime?: number) => {
     const start = dayjs(startTime * 1000);
     const end = endTime ? dayjs(endTime * 1000) : dayjs();
     const diffMinutes = end.diff(start, 'minute');
-    return diffMinutes;
+    return diffMinutes || 1;
 };
 
 export const handleGameTime = (
@@ -29,7 +29,7 @@ export const handleGameTime = (
         | 'discontinue'
         | 'putOff'
         | 'unknow';
-    time?: number;
+    time?: string;
     text?: string;
 } => {
     if (state === 0) {
@@ -39,7 +39,9 @@ export const handleGameTime = (
         return {
             state: 'playing',
             time:
-                handleStartTime(startTime, endTime) >= 45 ? 45 : handleStartTime(startTime, endTime)
+                handleStartTime(startTime, endTime) > 45
+                    ? `45+${handleStartTime(startTime, endTime) - 45}'`
+                    : `${handleStartTime(startTime, endTime)}'`
         };
     }
     if (state === 2) {
@@ -49,9 +51,9 @@ export const handleGameTime = (
         return {
             state: 'playing',
             time:
-                handleStartTime(startTime, endTime) + 45 >= 90
-                    ? 90
-                    : handleStartTime(startTime, endTime) + 45
+                handleStartTime(startTime, endTime) + 45 > 90
+                    ? `90+${handleStartTime(startTime, endTime) - 45}'`
+                    : `${handleStartTime(startTime, endTime) + 45}'`
         };
     }
     if (state === 4) {

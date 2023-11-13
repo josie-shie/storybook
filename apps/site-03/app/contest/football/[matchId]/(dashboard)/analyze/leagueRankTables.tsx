@@ -69,16 +69,18 @@ function LeagueRankTable({ teamName, tableData }: LeagueRankTableProps) {
                             <div className="td" style={{ flex: 'initial', width: '45px' }}>
                                 {item.desc}
                             </div>
-                            <div className="td">{item.totalCount}</div>
-                            <div className="td">{item.winCount}</div>
-                            <div className="td">{item.drawCount}</div>
-                            <div className="td">{item.loseCount}</div>
-                            <div className="td">{item.getScore}</div>
-                            <div className="td">{item.loseScore}</div>
-                            <div className="td">{item.goalDifference}</div>
-                            <div className={`td ${style.highlight}`}>{item.integral}</div>
-                            <div className="td">{item.rank}</div>
-                            <div className={`td ${style.highlight}`}>{item.winRate}%</div>
+                            <div className="td">{item.totalCount || '-'}</div>
+                            <div className="td">{item.winCount || '-'}</div>
+                            <div className="td">{item.drawCount || '-'}</div>
+                            <div className="td">{item.loseCount || '-'}</div>
+                            <div className="td">{item.getScore || '-'}</div>
+                            <div className="td">{item.loseScore || '-'}</div>
+                            <div className="td">{item.goalDifference || '-'}</div>
+                            <div className={`td ${style.highlight}`}>{item.integral || '-'}</div>
+                            <div className="td">{item.rank || '-'}</div>
+                            <div className={`td ${style.highlight}`}>
+                                {item.winRate ? `${item.winRate}%` : '-'}
+                            </div>
                         </div>
                     ))}
                 </div>

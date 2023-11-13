@@ -27,23 +27,12 @@ const statusStyleMap = {
     '-14': 'notYet'
 };
 
-function GameDetail() {
+function GameDetail({ matchId }: { matchId: number }) {
     const matchDetail = useContestDetailStore.use.matchDetail();
     const globalStore = useContestInfoStore.use.contestInfo();
-    const homeLiveScore =
-        typeof globalStore[matchDetail.matchId] !== 'undefined'
-            ? globalStore[matchDetail.matchId].homeScore || matchDetail.homeScore
-            : matchDetail.homeScore;
+    const syncData = Object.hasOwnProperty.call(globalStore, matchId) ? globalStore[matchId] : {};
 
-    const awayLiveScore =
-        typeof globalStore[matchDetail.matchId] !== 'undefined'
-            ? globalStore[matchDetail.matchId].awayScore || matchDetail.awayScore
-            : matchDetail.awayScore;
-
-    const liveState =
-        typeof globalStore[matchDetail.matchId] !== 'undefined'
-            ? globalStore[matchDetail.matchId].state || matchDetail.state
-            : matchDetail.state;
+    const liveState = syncData.state || matchDetail.state;
 
     return (
         <div className={style.gameStatus}>
@@ -55,8 +44,8 @@ function GameDetail() {
                     status={liveState}
                 />
 
-                <div className={style.homeScore}>{homeLiveScore}</div>
-                <div className={style.awayScore}>{awayLiveScore}</div>
+                <div className={style.homeScore}>{syncData.homeScore || matchDetail.homeScore}</div>
+                <div className={style.awayScore}>{syncData.awayScore || matchDetail.awayScore}</div>
             </div>
 
             <div className={style.textHolder}>
@@ -70,10 +59,12 @@ function GameDetail() {
 
 function LiveBox({
     contestDetail,
-    backHistory
+    backHistory,
+    matchId
 }: {
     contestDetail: GetSingleMatchResponse;
     backHistory?: boolean;
+    matchId: number;
 }) {
     createContestDetailStore({ matchDetail: contestDetail });
     const { homeChs, homeLogo, awayChs, awayLogo } = useContestDetailStore.use.matchDetail();
@@ -98,7 +89,7 @@ function LiveBox({
                         <p className={style.teamName}>{homeChs}</p>
                     </div>
                     <div className={style.score}>
-                        <GameDetail />
+                        <GameDetail matchId={matchId} />
                     </div>
                     <div className={style.team}>
                         <div className={style.circleBg}>

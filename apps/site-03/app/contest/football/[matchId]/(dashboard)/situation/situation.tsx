@@ -126,14 +126,20 @@ function Situation({
                 };
 
                 for (const event of message.event) {
-                    eventList.push(event.time);
+                    const eventTime = `${event.time}${
+                        event.overtime !== '0' ? `+${event.overtime}` : ''
+                    }`;
+
+                    if (!eventList.includes(eventTime)) {
+                        eventList.push(eventTime);
+                    }
 
                     if (event.isHome) {
-                        eventInfo.isHome[event.time] = {
+                        eventInfo.isHome[eventTime] = {
                             ...event
                         };
                     } else {
-                        eventInfo.isAway[event.time] = {
+                        eventInfo.isAway[eventTime] = {
                             ...event
                         };
                     }
