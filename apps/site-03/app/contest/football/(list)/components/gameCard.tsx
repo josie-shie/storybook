@@ -2,7 +2,7 @@ import type { ContestInfo } from 'data-center';
 import Image from 'next/image';
 import { GameStatus } from 'ui';
 import { parseMatchInfo } from 'lib';
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import Link from 'next/link';
 import { useContestListStore } from '../contestListStore';
 import style from './gameCard.module.scss';
@@ -54,6 +54,7 @@ function CompareOdds({
 }) {
     const [previousValue, setPreviousValue] = useState(value);
     const [color, setColor] = useState(defaultColor);
+    const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
     const stringCompare = useCallback((previous: string, current: string): string => {
         const previousNumber = convertStringToNumber(previous);
@@ -64,6 +65,10 @@ function CompareOdds({
 
     const setStyleBasedOnComparison = useCallback(
         (comparisonResult: string) => {
+            if (timeoutRef.current) {
+                clearTimeout(timeoutRef.current);
+            }
+
             switch (comparisonResult) {
                 case 'greater':
                     setColor('red');
@@ -77,6 +82,10 @@ function CompareOdds({
                 default:
                     setColor('');
             }
+
+            timeoutRef.current = setTimeout(() => {
+                setColor(defaultColor);
+            }, 5000);
         },
         [defaultColor]
     );
@@ -94,6 +103,14 @@ function CompareOdds({
         }
         setPreviousValue(value);
     }, [value, previousValue, stringCompare, setStyleBasedOnComparison]);
+
+    useEffect(() => {
+        return () => {
+            if (timeoutRef.current) {
+                clearTimeout(timeoutRef.current);
+            }
+        };
+    }, []);
 
     return <p className={style[color]}>{value}</p>;
 }
