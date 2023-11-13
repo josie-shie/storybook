@@ -3,12 +3,13 @@ import { Tab, Tabs } from 'ui';
 import { usePathname } from 'next/navigation';
 import { Suspense, type ReactNode } from 'react';
 import style from './contestDetail.module.scss';
+import MessageBoard from './(dashboard)/messageBoard/messageBoard';
 import Loading from '@/components/loading/loading';
 
 function TabBar({ children, matchId }: { children: ReactNode; matchId: number }) {
     const tabStyle = {
         gap: 0,
-        swiperOpen: false,
+        swiperOpen: true,
         buttonRadius: 0
     };
 
@@ -51,6 +52,7 @@ function TabBar({ children, matchId }: { children: ReactNode; matchId: number })
         <div className={style.contestDetail}>
             <Tabs
                 buttonRadius={tabStyle.buttonRadius}
+                defaultValue={route[route.length - 1] === matchId.toString() ? 0 : undefined}
                 gap={tabStyle.gap}
                 position="center"
                 styling="underline"
@@ -59,11 +61,12 @@ function TabBar({ children, matchId }: { children: ReactNode; matchId: number })
                 {tabList.map(item => {
                     return (
                         <Tab key={item.label} label={item.label} to={item.to}>
-                            {item.params === route[route.length - 1] ? (
+                            {item.params === route[route.length - 1] && (
                                 <Suspense fallback={<Loading />}>{children}</Suspense>
-                            ) : (
-                                ''
                             )}
+
+                            {route[route.length - 1] === matchId.toString() &&
+                                item.params === 'messageBoard' && <MessageBoard />}
                         </Tab>
                     );
                 })}
