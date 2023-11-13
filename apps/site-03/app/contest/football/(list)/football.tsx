@@ -3,13 +3,25 @@ import { getContestList, type GetContestListResponse } from 'data-center';
 import { useEffect, useState } from 'react';
 import { InfiniteScroll } from 'ui';
 import CircularProgress from '@mui/material/CircularProgress';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 import dayjs from 'dayjs';
 import GameCard from './components/gameCard';
 import style from './football.module.scss';
 import { creatContestListStore, useContestListStore } from './contestListStore';
 import Filter from './components/filter';
+import BaseDatePicker from './components/baseDatePicker/baseDatePicker';
 import { useContestInfoStore } from '@/app/contestInfoStore';
+
+function formatDate(date: Date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const seconds = String(date.getSeconds()).padStart(2, '0');
+
+    return `${year}/${month}/${day} ${hours}:${minutes}:${seconds}`;
+}
 
 function ContestList() {
     const [rows, setRows] = useState({ full: 20, notYet: 0, finish: 0 });
@@ -153,9 +165,44 @@ function ContestList() {
 function Football({ todayContest }: { todayContest: GetContestListResponse }) {
     creatContestListStore(todayContest);
 
+    const searchParams = useSearchParams();
+    const status = searchParams.get('status');
+    const router = useRouter();
+    const resultDate = searchParams.get('resultsDate') || null;
+    const scheduleDate = searchParams.get('scheduleDate') || null;
+
+    const handleDate = (date: Date) => {
+        const dateFormat = formatDate(date);
+        if (status === 'result') {
+            router.push(`?status=${status}&resultsDate=${dateFormat}`);
+            return;
+        }
+        if (status === 'schedule') {
+            router.push(`?status=${status}&scheduleDate=${dateFormat}`);
+        }
+    };
+
     return (
         <>
             <div className={style.football}>
+                {status === 'schedule' && (
+                    <BaseDatePicker
+                        defaultDate={dayjs(scheduleDate).toDate()}
+                        direction="schedule"
+                        onDateChange={date => {
+                            handleDate(date);
+                        }}
+                    />
+                )}
+                {status === 'result' && (
+                    <BaseDatePicker
+                        defaultDate={dayjs(resultDate).toDate()}
+                        direction="result"
+                        onDateChange={date => {
+                            handleDate(date);
+                        }}
+                    />
+                )}
                 <ContestList />
             </div>
             <Filter />
