@@ -1,12 +1,13 @@
 import type { ContestInfo } from 'data-center';
 import Image from 'next/image';
 import { GameStatus } from 'ui';
-import { parseMatchInfo, timestampToString } from 'lib';
+import { parseMatchInfo } from 'lib';
 import { useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
 import { useContestListStore } from '../contestListStore';
 import style from './gameCard.module.scss';
 import Flag from './img/flag.png';
+import { useFormattedTime } from './useFormattedTime';
 import { useContestInfoStore } from '@/app/contestInfoStore';
 
 function ExtraInfo({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId: number }) {
@@ -227,18 +228,17 @@ function TeamInfo({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId:
 function TopArea({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId: number }) {
     const globalStore = useContestInfoStore.use.contestInfo();
     const syncData = Object.hasOwnProperty.call(globalStore, matchId) ? globalStore[matchId] : {};
-
+    const currentMatchTime = useFormattedTime({
+        timeStamp: contestInfo.matchTime,
+        formattedString: 'HH:mm'
+    });
     return (
         <div className={style.topArea}>
             <div className={style.left}>
                 <div className={style.league} style={{ color: contestInfo.color }}>
                     {contestInfo.leagueChsShort}
                 </div>
-                <div className={style.time}>
-                    {contestInfo.matchTime
-                        ? timestampToString(contestInfo.matchTime, 'HH:mm')
-                        : null}
-                </div>
+                <div className={style.time}>{contestInfo.matchTime ? currentMatchTime : null}</div>
             </div>
             <div className={style.mid}>
                 <div className={style.corner}>
