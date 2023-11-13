@@ -23,7 +23,11 @@ function WinLoseTable({ dataList }: { dataList?: WinDrawLoseType[] }) {
                     {dataList.map(data => (
                         <div className="tr" key={data.oddsChangeTime}>
                             <div className="td">
-                                <GameStatus startTime={matchDetail.startTime} status={data.state} />
+                                <GameStatus
+                                    className=""
+                                    startTime={matchDetail.startTime}
+                                    status={data.state}
+                                />
                             </div>
                             <div className="td">
                                 {data.homeScore}-{data.awayScore}

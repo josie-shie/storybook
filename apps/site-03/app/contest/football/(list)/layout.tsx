@@ -116,7 +116,7 @@ function ContestListLayout({ children }: { children: ReactNode }) {
                 <Tabs
                     buttonRadius={tabStyle.buttonRadius}
                     gap={tabStyle.gap}
-                    position="center"
+                    position="spaceBetween"
                     styling="button"
                     swiperOpen={tabStyle.swiperOpen}
                 >

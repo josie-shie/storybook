@@ -158,7 +158,6 @@ function Handicap() {
                         handleChangeSwitch(switchValue);
                     }}
                     options={switchOptins}
-                    outline
                     value={handicapSwitch}
                 />
 

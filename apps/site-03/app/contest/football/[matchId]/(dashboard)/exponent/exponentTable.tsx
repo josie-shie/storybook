@@ -28,7 +28,6 @@ function ExponentTable() {
                         setSelectedOption(switchValue);
                     }}
                     options={options}
-                    outline
                     value={selectedOption}
                 />
                 <TextRadio

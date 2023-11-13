@@ -2,6 +2,9 @@ import type { Metadata } from 'next';
 import { getContestList } from 'data-center';
 import Football from './football';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export const metadata: Metadata = {
     title: '賽事 | Sport'
 };

@@ -20,33 +20,35 @@ function FilterSection({ group, onClose }: { group: 'league' | 'country'; onClos
         onClose();
     };
 
+    const filterList = Object.entries(filterInfo[group].infoObj)
+        .sort((a, b) => a[0].localeCompare(b[0]))
+        .map(([key, value]) => {
+            return (
+                <div key={key}>
+                    <h3>{key}</h3>
+                    <ul>
+                        {value.map(item => (
+                            <motion.li
+                                className={`${style.item} ${
+                                    filterSelected[group][item] ? style.selected : ''
+                                }`}
+                                key={item}
+                                onClick={() => {
+                                    filterPick(item, group);
+                                }}
+                                whileTap={{ scale: 0.9 }}
+                            >
+                                {item}
+                            </motion.li>
+                        ))}
+                    </ul>
+                </div>
+            );
+        });
+
     return (
         <>
-            <div className={style.list}>
-                {Object.entries(filterInfo[group].infoObj)
-                    .sort((a, b) => a[0].localeCompare(b[0]))
-                    .map(([key, value]) => (
-                        <div key={key}>
-                            <h3>{key}</h3>
-                            <ul>
-                                {value.map(item => (
-                                    <motion.li
-                                        className={`${style.item} ${
-                                            filterSelected[group][item] ? style.selected : ''
-                                        }`}
-                                        key={item}
-                                        onClick={() => {
-                                            filterPick(item, group);
-                                        }}
-                                        whileTap={{ scale: 0.9 }}
-                                    >
-                                        {item}
-                                    </motion.li>
-                                ))}
-                            </ul>
-                        </div>
-                    ))}
-            </div>
+            <div className={style.list}>{filterList}</div>
             <div className={style.tool}>
                 <div className={style.functionButton}>
                     <motion.button

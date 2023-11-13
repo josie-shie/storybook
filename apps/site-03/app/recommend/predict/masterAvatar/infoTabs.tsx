@@ -1,6 +1,7 @@
 'use client';
 import { Tab, Tabs, ProgressBar } from 'ui';
 import ReactEcharts from 'echarts-for-react';
+import { creatMasterStore } from '../masterStore';
 import AnalysisItem from '../components/analysisItem/analysisItem';
 import MasterItem from '../components/masterItem/masterItem';
 import BettingPlan from '../components/bettingPlan/bettingPlan';
@@ -13,68 +14,70 @@ function InfoTabs() {
         buttonRadius: 0
     };
 
-    const masterList = [
-        {
-            id: 12,
-            name: '老梁聊球',
-            hotStreak: 2,
-            ranking: 10,
-            followed: false,
-            unlockNumber: 1800,
-            fansNumber: 34516,
-            description: '资深足彩分析师，15年足彩经验，对各个赛事都有涉足。长期关注！'
-        },
-        {
-            id: 17,
-            name: '柯侯配',
-            hotStreak: 6,
-            ranking: 7,
-            followed: true,
-            unlockNumber: 2200,
-            fansNumber: 54321,
-            description: '资深足彩分析师，15年足彩经验，对各个赛事都有涉足。长期关注！'
-        },
-        {
-            id: 18,
-            name: '柯侯配',
-            hotStreak: 6,
-            ranking: 7,
-            followed: true,
-            unlockNumber: 2200,
-            fansNumber: 54321,
-            description: '资深足彩分析师，15年足彩经验，对各个赛事都有涉足。长期关注！'
-        },
-        {
-            id: 19,
-            name: '柯侯配',
-            hotStreak: 6,
-            ranking: 7,
-            followed: true,
-            unlockNumber: 2200,
-            fansNumber: 54321,
-            description: '资深足彩分析师，15年足彩经验，对各个赛事都有涉足。长期关注！'
-        },
-        {
-            id: 20,
-            name: '柯侯配',
-            hotStreak: 6,
-            ranking: 7,
-            followed: true,
-            unlockNumber: 2200,
-            fansNumber: 54321,
-            description: '资深足彩分析师，15年足彩经验，对各个赛事都有涉足。长期关注！'
-        },
-        {
-            id: 21,
-            name: '柯侯配',
-            hotStreak: 6,
-            ranking: 7,
-            followed: true,
-            unlockNumber: 2200,
-            fansNumber: 54321,
-            description: '资深足彩分析师，15年足彩经验，对各个赛事都有涉足。长期关注！'
-        }
-    ];
+    creatMasterStore({
+        masterItem: [
+            {
+                id: 12,
+                name: '老梁聊球',
+                hotStreak: 2,
+                ranking: 10,
+                followed: false,
+                unlockNumber: 1800,
+                fansNumber: 34516,
+                description: '资深足彩分析师，15年足彩经验，对各个赛事都有涉足。长期关注！'
+            },
+            {
+                id: 17,
+                name: '柯侯配',
+                hotStreak: 6,
+                ranking: 7,
+                followed: true,
+                unlockNumber: 2200,
+                fansNumber: 54321,
+                description: '资深足彩分析师，15年足彩经验，对各个赛事都有涉足。长期关注！'
+            },
+            {
+                id: 18,
+                name: '柯侯配',
+                hotStreak: 6,
+                ranking: 7,
+                followed: true,
+                unlockNumber: 2200,
+                fansNumber: 54321,
+                description: '资深足彩分析师，15年足彩经验，对各个赛事都有涉足。长期关注！'
+            },
+            {
+                id: 19,
+                name: '柯侯配',
+                hotStreak: 6,
+                ranking: 7,
+                followed: true,
+                unlockNumber: 2200,
+                fansNumber: 54321,
+                description: '资深足彩分析师，15年足彩经验，对各个赛事都有涉足。长期关注！'
+            },
+            {
+                id: 20,
+                name: '柯侯配',
+                hotStreak: 6,
+                ranking: 7,
+                followed: true,
+                unlockNumber: 2200,
+                fansNumber: 54321,
+                description: '资深足彩分析师，15年足彩经验，对各个赛事都有涉足。长期关注！'
+            },
+            {
+                id: 21,
+                name: '柯侯配',
+                hotStreak: 6,
+                ranking: 7,
+                followed: true,
+                unlockNumber: 2200,
+                fansNumber: 54321,
+                description: '资深足彩分析师，15年足彩经验，对各个赛事都有涉足。长期关注！'
+            }
+        ]
+    });
 
     const chartOption = {
         tooltip: {
@@ -240,9 +243,7 @@ function InfoTabs() {
                 </Tab>
                 <Tab label="关注">
                     <div className={style.tabContest}>
-                        {masterList.map(item => (
-                            <MasterItem item={item} key={item.id} />
-                        ))}
+                        <MasterItem />
                     </div>
                 </Tab>
             </Tabs>

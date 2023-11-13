@@ -1,6 +1,6 @@
 'use client';
 import { usePathname } from 'next/navigation';
-import type { ReactNode } from 'react';
+import { useEffect, type ReactNode } from 'react';
 import Image from 'next/image';
 import LogoImg from './img/logo.png';
 import style from './home.module.scss';
@@ -8,6 +8,7 @@ import HeaderLogo from '@/components/header/headerLogo';
 import HeaderTitle from '@/components/header/headerTitle';
 import Footer from '@/components/footer/footer';
 import { Tabs } from '@/components/tabs/tabs';
+import { version } from '@/package.json';
 
 function NormalLayout({ children }: { children: ReactNode }) {
     const headerProps = {
@@ -45,6 +46,14 @@ function HomeLayout({ children }: { children: ReactNode }) {
     const pathname = usePathname();
 
     const isArticlePage = /^\/news\/[^/]+$/.test(pathname);
+
+    useEffect(() => {
+        // eslint-disable-next-line -- log version
+        console.info(
+            `version: %c${version}`,
+            'color:white;background:#ff9f19;padding: 2px 0.5em; border-radius: 10px'
+        );
+    }, []);
 
     if (isArticlePage) {
         return <ArticleLayout>{children}</ArticleLayout>;
