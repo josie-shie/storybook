@@ -4,9 +4,9 @@ import { handleStartTime } from 'lib';
 import type { GetSingleMatchResponse, TotalGoalsInfo } from 'data-center';
 import { useContestDetailStore } from '../../contestDetailStore';
 import { useSituationStore } from '../../situationStore';
-import { CompareOdds } from '../../../(list)/components/gameCard';
 import style from './situation.module.scss';
 import rightBlack from './img/right_black.png';
+import { CompareOdds } from '@/app/contest/football/(list)/components/compareOdds';
 import TextRadio from '@/components/textSwitch/textSwitch';
 import ButtonSwitch from '@/components/textSwitch/buttonSwitch';
 
