@@ -5,6 +5,7 @@ import type {
     TechnicalInfo,
     EventInfo
 } from 'data-center';
+import type { OddsHashTable } from 'lib';
 import { mqttService } from 'lib';
 import { useEffect } from 'react';
 import { creatSituationStore, useSituationStore } from '../../situationStore';
@@ -110,6 +111,7 @@ function Situation({
     const updateEvent = useSituationStore.use.setEvents();
     const matchDetail = useContestDetailStore.use.matchDetail();
     const setOddChange = useSituationStore.use.setOddChange();
+    const setOdds = useSituationStore.use.setOdds();
 
     useEffect(() => {
         const syncTechnicalGlobalStore = (message: Partial<TechnicalInfoData>) => {
@@ -154,9 +156,16 @@ function Situation({
             }
         };
 
+        const syncOdds = (message: Partial<OddsHashTable>) => {
+            if (message[matchDetail.matchId]) {
+                setOdds(message, matchDetail.matchId);
+            }
+        };
+
         mqttService.getTechnicList(syncTechnicalGlobalStore);
         mqttService.getEventList(syncEventGlobalStore);
         mqttService.getOdds(syncOddChange);
+        mqttService.getOdds(syncOdds);
     }, []);
 
     return (
