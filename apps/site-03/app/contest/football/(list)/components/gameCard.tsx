@@ -1,12 +1,13 @@
 import type { ContestInfo } from 'data-center';
 import Image from 'next/image';
 import { GameStatus } from 'ui';
-import { parseMatchInfo, timestampToString } from 'lib';
-import { useEffect, useState, useCallback } from 'react';
+import { parseMatchInfo } from 'lib';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import Link from 'next/link';
 import { useContestListStore } from '../contestListStore';
 import style from './gameCard.module.scss';
 import Flag from './img/flag.png';
+import { useFormattedTime } from './useFormattedTime';
 import { useContestInfoStore } from '@/app/contestInfoStore';
 
 function ExtraInfo({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId: number }) {
@@ -53,6 +54,7 @@ function CompareOdds({
 }) {
     const [previousValue, setPreviousValue] = useState(value);
     const [color, setColor] = useState(defaultColor);
+    const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
     const stringCompare = useCallback((previous: string, current: string): string => {
         const previousNumber = convertStringToNumber(previous);
@@ -63,6 +65,10 @@ function CompareOdds({
 
     const setStyleBasedOnComparison = useCallback(
         (comparisonResult: string) => {
+            if (timeoutRef.current) {
+                clearTimeout(timeoutRef.current);
+            }
+
             switch (comparisonResult) {
                 case 'greater':
                     setColor('red');
@@ -76,6 +82,10 @@ function CompareOdds({
                 default:
                     setColor('');
             }
+
+            timeoutRef.current = setTimeout(() => {
+                setColor(defaultColor);
+            }, 5000);
         },
         [defaultColor]
     );
@@ -93,6 +103,14 @@ function CompareOdds({
         }
         setPreviousValue(value);
     }, [value, previousValue, stringCompare, setStyleBasedOnComparison]);
+
+    useEffect(() => {
+        return () => {
+            if (timeoutRef.current) {
+                clearTimeout(timeoutRef.current);
+            }
+        };
+    }, []);
 
     return <p className={style[color]}>{value}</p>;
 }
@@ -130,7 +148,7 @@ function OddsInfo({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId:
             </span>
             <span className={style.mid}>
                 <p>
-                    {(syncData.state || contestInfo.state) >= 1 &&
+                    {(syncData.state || contestInfo.state) >= 2 &&
                     (syncData.state || contestInfo.state) <= 5 ? (
                         <>
                             {syncData.homeHalfScore || contestInfo.homeHalfScore} -{' '}
@@ -227,18 +245,17 @@ function TeamInfo({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId:
 function TopArea({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId: number }) {
     const globalStore = useContestInfoStore.use.contestInfo();
     const syncData = Object.hasOwnProperty.call(globalStore, matchId) ? globalStore[matchId] : {};
-
+    const currentMatchTime = useFormattedTime({
+        timeStamp: contestInfo.matchTime,
+        formattedString: 'HH:mm'
+    });
     return (
         <div className={style.topArea}>
             <div className={style.left}>
                 <div className={style.league} style={{ color: contestInfo.color }}>
                     {contestInfo.leagueChsShort}
                 </div>
-                <div className={style.time}>
-                    {contestInfo.matchTime
-                        ? timestampToString(contestInfo.matchTime, 'HH:mm')
-                        : null}
-                </div>
+                <div className={style.time}>{contestInfo.matchTime ? currentMatchTime : null}</div>
             </div>
             <div className={style.mid}>
                 <div className={style.corner}>
