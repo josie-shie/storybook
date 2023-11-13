@@ -23,10 +23,10 @@ const CustomTabs = styled(Tabs)<{ length: number }>(
 `
 );
 
-function BaseTabs({ value, options, onChange, outline = false }: SwitchProps) {
+function BaseTabs({ value, options, onChange }: SwitchProps) {
     return (
         <CustomTabs
-            className={`${style.baseTab} ${outline && style.outline}`}
+            className={style.baseTab}
             length={options.length}
             onChange={(e, changeValue) => {
                 onChange(changeValue as number | string);

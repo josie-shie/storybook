@@ -28,20 +28,12 @@ function Header({ back }: { back: () => void }) {
     const layoutDisplayed = useContestDetailStore.use.layoutDisplayed();
 
     const globalStore = useContestInfoStore.use.contestInfo();
-    const homeLiveScore =
-        typeof globalStore[matchDetail.matchId] !== 'undefined'
-            ? globalStore[matchDetail.matchId].homeScore || matchDetail.homeScore
-            : matchDetail.homeScore;
 
-    const awayLiveScore =
-        typeof globalStore[matchDetail.matchId] !== 'undefined'
-            ? globalStore[matchDetail.matchId].awayScore || matchDetail.awayScore
-            : matchDetail.awayScore;
+    const syncData = Object.hasOwnProperty.call(globalStore, matchDetail.matchId)
+        ? globalStore[matchDetail.matchId]
+        : {};
 
-    const liveState =
-        typeof globalStore[matchDetail.matchId] !== 'undefined'
-            ? globalStore[matchDetail.matchId].state || matchDetail.state
-            : matchDetail.state;
+    const liveState = syncData.state || matchDetail.state;
 
     return (
         <>
@@ -54,8 +46,6 @@ function Header({ back }: { back: () => void }) {
                     <p className={style.league}>
                         {matchDetail.leagueChsShort}
                         {matchDetail.kind === 1 && ` 第${matchDetail.roundCn}轮`}
-                        {matchDetail.kind === 2 &&
-                            ` ${matchDetail.roundCn} ${matchDetail.grouping}`}
                     </p>
                 </div>
                 <Image alt="share_icon" height={24} src={ShareIcon} width={24} />
@@ -67,13 +57,14 @@ function Header({ back }: { back: () => void }) {
                 <Image alt="back_icon" height={24} onClick={back} src={BackIcon} width={24} />
                 <div className={style.scoreBar}>
                     <TeamLogo alt="" height={24} src={matchDetail.homeLogo} width={24} />
-                    <p className={style.score}>{homeLiveScore}</p>
+                    <p className={style.score}>{syncData.homeScore || matchDetail.homeScore}</p>
                     <GameStatus
                         className={`gameTime ${statusStyleMap[matchDetail.state]}`}
+                        injuryTime={syncData.injuryTime || matchDetail.injuryTime}
                         startTime={matchDetail.startTime}
                         status={liveState}
                     />
-                    <p className={style.score}>{awayLiveScore}</p>
+                    <p className={style.score}>{syncData.awayScore || matchDetail.awayScore}</p>
                     <TeamLogo alt="" height={24} src={matchDetail.awayLogo} width={24} />
                 </div>
                 <Image alt="share_icon" height={24} src={ShareIcon} width={24} />
