@@ -131,7 +131,7 @@ function OddsInfo({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId:
             </span>
             <span className={style.mid}>
                 <p>
-                    {(syncData.state || contestInfo.state) >= 1 &&
+                    {(syncData.state || contestInfo.state) >= 2 &&
                     (syncData.state || contestInfo.state) <= 5 ? (
                         <>
                             {syncData.homeHalfScore || contestInfo.homeHalfScore} -{' '}
