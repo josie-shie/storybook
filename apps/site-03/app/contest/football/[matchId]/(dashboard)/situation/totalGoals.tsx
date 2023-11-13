@@ -158,7 +158,6 @@ function TotalGoals() {
                         handleChangeSwitch(switchValue);
                     }}
                     options={switchOptins}
-                    outline
                     value={totalGoalsSwitch}
                 />
 
