@@ -40,7 +40,6 @@ function GameDetail({ matchId }: { matchId: number }) {
             <div className={style.gameScore}>
                 <GameStatus
                     className={`gameTime ${statusStyleMap[matchDetail.state]}`}
-                    injuryTime={syncData.injuryTime || matchDetail.injuryTime}
                     startTime={matchDetail.startTime}
                     status={liveState}
                 />

@@ -60,7 +60,6 @@ function Header({ back }: { back: () => void }) {
                     <p className={style.score}>{syncData.homeScore || matchDetail.homeScore}</p>
                     <GameStatus
                         className={`gameTime ${statusStyleMap[matchDetail.state]}`}
-                        injuryTime={syncData.injuryTime || matchDetail.injuryTime}
                         startTime={matchDetail.startTime}
                         status={liveState}
                     />
