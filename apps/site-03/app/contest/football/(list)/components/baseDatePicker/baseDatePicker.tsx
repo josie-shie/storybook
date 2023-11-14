@@ -22,7 +22,7 @@ type DateDirection = 'schedule' | 'result';
 interface BaseDatePickerProps {
     direction?: DateDirection;
     onDateChange?: (date: Date) => void;
-    defaultDate?: Date;
+    defaultDate: Date;
 }
 
 const MONTH_DAY = 'MM-DD';
@@ -97,9 +97,7 @@ function BaseDatePicker({
     };
 
     useEffect(() => {
-        handleDateSelection(
-            dayjs(defaultDate).isValid() ? dayjs(defaultDate).toDate() : new Date()
-        );
+        handleDateSelection(dayjs(defaultDate).isValid() ? defaultDate : new Date());
     }, [dates, defaultDate, direction, handleDateSelection]);
 
     const minDate =
