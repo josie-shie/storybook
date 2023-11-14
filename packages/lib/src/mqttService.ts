@@ -319,12 +319,12 @@ export type OddsHashTable = Record<
     Record<
         string,
         {
-            handicapHalf: OddChangeHandicapHalf;
-            handicap: OddChangeHandicap;
-            overUnderHalf: OddChangeOverUnderHalf;
-            overUnder: OddChangeOverUnder;
-            europeOddsHalf: OddChangeEuropeOddsHalf;
-            europeOdds: OddChangeEuropeOdds;
+            handicapHalf: OddsHandicapHalf;
+            handicap: OddsHandicap;
+            overUnderHalf: OddsOverUnderHalf;
+            overUnder: OddsOverUnder;
+            europeOddsHalf: OddsEuropeOddsHalf;
+            europeOdds: OddsEuropeOdds;
         }
     >
 >;
