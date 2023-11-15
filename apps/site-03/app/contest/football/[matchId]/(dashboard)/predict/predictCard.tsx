@@ -21,7 +21,7 @@ function PredictCard({ predictInfo }: PredictCardProps) {
                         <div className={style.tag}>
                             <Tag
                                 icon={<Image alt="" height={10} src={hotIcon} width={8} />}
-                                text="9連紅"
+                                text="9连红"
                             />
                             <Tag
                                 background="#4489FF"
@@ -38,7 +38,7 @@ function PredictCard({ predictInfo }: PredictCardProps) {
                         </span>
                         <span>{predictInfo.price}元</span>
                     </div>
-                    <p className={style.unlockTotal}>已有{predictInfo.unlockTotal}人解鎖</p>
+                    <p className={style.unlockTotal}>已有{predictInfo.unlockTotal}人解锁</p>
                 </div>
             </div>
             <h3 className={style.title}>

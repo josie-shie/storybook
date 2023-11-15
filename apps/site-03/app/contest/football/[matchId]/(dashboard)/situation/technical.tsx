@@ -72,7 +72,7 @@ function Technical() {
             <div className="dataTable">
                 <div className="tableHead">
                     <div className="tr">
-                        <div className="th">即時</div>
+                        <div className="th">即时</div>
                     </div>
                 </div>
                 <div className="tableBody">

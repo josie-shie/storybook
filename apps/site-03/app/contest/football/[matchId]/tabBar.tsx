@@ -31,7 +31,6 @@ function TabBar({ children, matchId }: { children: ReactNode; matchId: number })
         //     to: `/contest/football/${matchId}/textBroadcast`,
         //     params: 'textBroadcast'
         // },
-
         {
             label: '分析',
             to: `/contest/football/${matchId}/analyze`,
