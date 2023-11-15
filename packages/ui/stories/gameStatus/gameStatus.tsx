@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { handleGameTime } from 'lib';
 import style from './gameStatus.module.scss';
 
@@ -15,24 +15,41 @@ function useGameTime({ startTime, status }: GameStatusProps) {
         text?: string;
     }>({ time: undefined, state: '', text: '' });
     const timerRef = useRef<NodeJS.Timeout | null>(null);
-    const [triggerUpdate, setTriggerUpdate] = useState(false);
+    const startTimer = useCallback(() => {
+        if (status === 1 || status === 3) {
+            if (!timerRef.current) {
+                timerRef.current = setInterval(() => {
+                    setRealTimeStatus(handleGameTime(startTime, status));
+                }, 10000);
+            }
+        }
+    }, [startTime, status]);
+
+    const stopTimer = () => {
+        if (timerRef.current) {
+            clearInterval(timerRef.current);
+            timerRef.current = null;
+        }
+    };
+
+    const handleVisibilityChange = useCallback(() => {
+        if (document.visibilityState === 'visible') {
+            startTimer();
+        } else {
+            stopTimer();
+        }
+    }, [startTimer]);
 
     useEffect(() => {
         setRealTimeStatus(handleGameTime(startTime, status));
-        if (status === 1 || status === 3) {
-            timerRef.current = setInterval(() => {
-                setTriggerUpdate(u => !u);
-            }, 10000);
-        } else if (timerRef.current) {
-            clearInterval(timerRef.current);
-        }
+        startTimer();
+        document.addEventListener('visibilitychange', handleVisibilityChange);
 
         return () => {
-            if (timerRef.current) {
-                clearInterval(timerRef.current);
-            }
+            stopTimer();
+            document.removeEventListener('visibilitychange', handleVisibilityChange);
         };
-    }, [startTime, status, triggerUpdate]);
+    }, [handleVisibilityChange, startTime, startTimer, status]);
 
     return realTimeStatus;
 }
