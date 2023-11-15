@@ -1,14 +1,57 @@
 'use client';
-import type { GetContestListResponse } from 'data-center';
-import { useSearchParams } from 'next/navigation';
-import { useState } from 'react';
+import { getContestList, type GetContestListResponse } from 'data-center';
+import { useEffect, useState } from 'react';
 import { InfiniteScroll } from 'ui';
 import CircularProgress from '@mui/material/CircularProgress';
+import { useSearchParams, useRouter } from 'next/navigation';
 import GameCard from './components/gameCard';
 import style from './football.module.scss';
 import { creatContestListStore, useContestListStore } from './contestListStore';
 import Filter from './components/filter';
+import BaseDatePicker from './components/baseDatePicker/baseDatePicker';
 import { useContestInfoStore } from '@/app/contestInfoStore';
+
+function DatePicker() {
+    const searchParams = useSearchParams();
+    const status = searchParams.get('status');
+    const router = useRouter();
+    const resultsDate = searchParams.get('resultsDate') || Date.now();
+    const scheduleDate = searchParams.get('scheduleDate') || Date.now();
+    const handleDate = (date: Date) => {
+        const dateFormat = date.getTime();
+
+        if (status === 'result') {
+            router.push(`?status=${status}&resultsDate=${dateFormat}`);
+            return;
+        }
+        if (status === 'schedule') {
+            router.push(`?status=${status}&scheduleDate=${dateFormat}`);
+        }
+    };
+
+    return (
+        <>
+            {status === 'schedule' && (
+                <BaseDatePicker
+                    defaultDate={new Date(Number(scheduleDate))}
+                    direction="schedule"
+                    onDateChange={date => {
+                        handleDate(date);
+                    }}
+                />
+            )}
+            {status === 'result' && (
+                <BaseDatePicker
+                    defaultDate={new Date(Number(resultsDate))}
+                    direction="result"
+                    onDateChange={date => {
+                        handleDate(date);
+                    }}
+                />
+            )}
+        </>
+    );
+}
 
 function ContestList() {
     const [rows, setRows] = useState({ full: 20, notYet: 0, finish: 0 });
@@ -16,15 +59,38 @@ function ContestList() {
     const contestInfo = useContestListStore.use.contestInfo();
     const globalStore = useContestInfoStore.use.contestInfo();
     const filterList = useContestListStore.use.filterList();
+    const setContestList = useContestListStore.use.setContestList();
+    const setContestInfo = useContestListStore.use.setContestInfo();
 
     const searchParams = useSearchParams();
     const status = searchParams.get('status') || 'all';
+    const resultsDate = searchParams.get('resultsDate');
+    const scheduleDate = searchParams.get('scheduleDate');
+
+    const fetchContestdata = async (timestamp: number) => {
+        try {
+            const todayContest = await getContestList(timestamp);
+            if (!todayContest.success) {
+                return new Error();
+            }
+
+            setContestList({ contestList: todayContest.data.contestList });
+            setContestInfo({ contestInfo: todayContest.data.contestInfo });
+        } catch (error) {
+            return new Error();
+        }
+    };
+
+    useEffect(() => {
+        const dateString = scheduleDate || resultsDate || Date.now();
+        void fetchContestdata(Math.floor(Number(dateString) / 1000));
+    }, [resultsDate, scheduleDate]);
 
     const statusTable: Record<string, (state: number) => boolean> = {
         all: state => state >= 1 && state < 5,
         progress: state => state >= 1 && state <= 5,
         notyet: state => state === 0,
-        scheule: state => state === 0,
+        schedule: state => state === 0,
         result: state => state === -1
     };
 
@@ -125,6 +191,7 @@ function Football({ todayContest }: { todayContest: GetContestListResponse }) {
     return (
         <>
             <div className={style.football}>
+                <DatePicker />
                 <ContestList />
             </div>
             <Filter />
