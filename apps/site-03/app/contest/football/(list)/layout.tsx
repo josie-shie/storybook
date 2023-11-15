@@ -48,8 +48,8 @@ function ContestListLayout({ children }: { children: ReactNode }) {
         },
         {
             label: '赛程',
-            to: '/contest/football?status=scheule',
-            status: 'scheule'
+            to: '/contest/football?status=schedule',
+            status: 'schedule'
         },
         {
             label: '赛果',
