@@ -1,4 +1,4 @@
-import { fetcher, truncateFloatingPoint, handicapToString } from 'lib';
+import { fetcher, truncateFloatingPoint } from 'lib';
 import { z } from 'zod';
 import { handleApiError } from '../common';
 import type { ReturnData } from '../common';
@@ -23,8 +23,8 @@ const HandicapsInfoSchema = z.object({
 
 type OriginalHandicapsInfo = z.infer<typeof HandicapsInfoSchema>;
 type HandicapsInfo = Omit<OriginalHandicapsInfo, 'initialHandicap' | 'currentHandicap'> & {
-    initialHandicap: string;
-    currentHandicap: string;
+    initialHandicap: number;
+    currentHandicap: number;
 };
 
 const TotalGoalsInfoSchema = z.object({
@@ -46,8 +46,8 @@ const TotalGoalsInfoSchema = z.object({
 
 type OriginalTotalGoalsInfo = z.infer<typeof TotalGoalsInfoSchema>;
 type TotalGoalsInfo = Omit<OriginalTotalGoalsInfo, 'initialHandicap' | 'currentHandicap'> & {
-    initialHandicap: string;
-    currentHandicap: string;
+    initialHandicap: number;
+    currentHandicap: number;
 };
 
 const WinDrawLoseSchema = z.object({
@@ -183,8 +183,8 @@ export const getExponent = async (
                     awayInitialOdds: truncateFloatingPoint(item.awayInitialOdds, 2),
                     homeCurrentOdds: truncateFloatingPoint(item.homeCurrentOdds, 2),
                     awayCurrentOdds: truncateFloatingPoint(item.awayCurrentOdds, 2),
-                    initialHandicap: handicapToString(item.initialHandicap),
-                    currentHandicap: handicapToString(item.currentHandicap)
+                    initialHandicap: item.initialHandicap,
+                    currentHandicap: item.currentHandicap
                 };
             }
         }
@@ -200,8 +200,8 @@ export const getExponent = async (
                     awayInitialOdds: truncateFloatingPoint(item.awayInitialOdds, 2),
                     homeCurrentOdds: truncateFloatingPoint(item.homeCurrentOdds, 2),
                     awayCurrentOdds: truncateFloatingPoint(item.awayCurrentOdds, 2),
-                    initialHandicap: handicapToString(item.initialHandicap),
-                    currentHandicap: handicapToString(item.currentHandicap)
+                    initialHandicap: item.initialHandicap,
+                    currentHandicap: item.currentHandicap
                 };
             }
         }
@@ -229,8 +229,8 @@ export const getExponent = async (
                     underInitialOdds: truncateFloatingPoint(item.underInitialOdds, 2),
                     overCurrentOdds: truncateFloatingPoint(item.overCurrentOdds, 2),
                     underCurrentOdds: truncateFloatingPoint(item.underCurrentOdds, 2),
-                    initialHandicap: handicapToString(item.initialHandicap),
-                    currentHandicap: handicapToString(item.currentHandicap)
+                    initialHandicap: item.initialHandicap,
+                    currentHandicap: item.currentHandicap
                 };
             }
         }
@@ -246,8 +246,8 @@ export const getExponent = async (
                     underInitialOdds: truncateFloatingPoint(item.underInitialOdds, 2),
                     overCurrentOdds: truncateFloatingPoint(item.overCurrentOdds, 2),
                     underCurrentOdds: truncateFloatingPoint(item.underCurrentOdds, 2),
-                    initialHandicap: handicapToString(item.initialHandicap),
-                    currentHandicap: handicapToString(item.currentHandicap)
+                    initialHandicap: item.initialHandicap,
+                    currentHandicap: item.currentHandicap
                 };
             }
         }

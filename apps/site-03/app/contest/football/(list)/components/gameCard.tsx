@@ -1,12 +1,13 @@
 import type { ContestInfo } from 'data-center';
 import Image from 'next/image';
 import { GameStatus } from 'ui';
-import { parseMatchInfo, timestampToString } from 'lib';
-import { useEffect, useState, useCallback } from 'react';
+import { parseMatchInfo } from 'lib';
 import Link from 'next/link';
 import { useContestListStore } from '../contestListStore';
 import style from './gameCard.module.scss';
 import Flag from './img/flag.png';
+import { useFormattedTime } from './useFormattedTime';
+import { CompareOdds } from './compareOdds';
 import { useContestInfoStore } from '@/app/contestInfoStore';
 
 function ExtraInfo({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId: number }) {
@@ -27,106 +28,40 @@ function ExtraInfo({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId
     );
 }
 
-const convertStringToNumber = (input: string): number => {
-    if (input.includes('/')) {
-        const parts = input.split('/').map(Number);
-        return (parts[0] + parts[1]) / 2;
-    }
-    return Number(input);
-};
-
-const compareNumbers = (previous: number, current: number): string => {
-    if (current > previous) {
-        return 'greater';
-    } else if (current < previous) {
-        return 'lesser';
-    }
-    return 'equal';
-};
-
-function CompareOdds({
-    value,
-    defaultColor = ''
-}: {
-    value: string | number;
-    defaultColor?: string;
-}) {
-    const [previousValue, setPreviousValue] = useState(value);
-    const [color, setColor] = useState(defaultColor);
-
-    const stringCompare = useCallback((previous: string, current: string): string => {
-        const previousNumber = convertStringToNumber(previous);
-        const currentNumber = convertStringToNumber(current);
-
-        return compareNumbers(previousNumber, currentNumber);
-    }, []);
-
-    const setStyleBasedOnComparison = useCallback(
-        (comparisonResult: string) => {
-            switch (comparisonResult) {
-                case 'greater':
-                    setColor('red');
-                    break;
-                case 'lesser':
-                    setColor('green');
-                    break;
-                case 'equal':
-                    setColor(defaultColor);
-                    break;
-                default:
-                    setColor('');
-            }
-        },
-        [defaultColor]
-    );
-
-    useEffect(() => {
-        if (previousValue === value) {
-            return;
-        }
-        if (typeof value === 'string' && typeof previousValue === 'string') {
-            const result = stringCompare(previousValue, value);
-            setStyleBasedOnComparison(result);
-        } else if (typeof value === 'number' && typeof previousValue === 'number') {
-            const result = compareNumbers(previousValue, value);
-            setStyleBasedOnComparison(result);
-        }
-        setPreviousValue(value);
-    }, [value, previousValue, stringCompare, setStyleBasedOnComparison]);
-
-    return <p className={style[color]}>{value}</p>;
-}
-
 function OddsInfo({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId: number }) {
     const globalStore = useContestInfoStore.use.contestInfo();
     const syncData = Object.hasOwnProperty.call(globalStore, matchId) ? globalStore[matchId] : {};
 
     return (
         <div className={style.oddsInfo}>
-            {syncData.handicapHomeCurrentOdds ||
-            syncData.handicapAwayCurrentOdds ||
-            contestInfo.handicapHomeCurrentOdds ||
-            contestInfo.handicapAwayCurrentOdds ? (
-                <span className={`${style.odd} ${style.left}`}>
-                    <CompareOdds
-                        value={
-                            syncData.handicapHomeCurrentOdds || contestInfo.handicapHomeCurrentOdds
-                        }
-                    />
-                    <CompareOdds
-                        defaultColor="blue"
-                        value={syncData.handicapCurrent || contestInfo.handicapCurrent}
-                    />
-                    <CompareOdds
-                        value={
-                            syncData.handicapAwayCurrentOdds || contestInfo.handicapAwayCurrentOdds
-                        }
-                    />
-                </span>
-            ) : null}
+            <span className={`${style.odd} ${style.left}`}>
+                {syncData.handicapHomeCurrentOdds ||
+                syncData.handicapAwayCurrentOdds ||
+                contestInfo.handicapHomeCurrentOdds ||
+                contestInfo.handicapAwayCurrentOdds ? (
+                    <>
+                        <CompareOdds
+                            value={
+                                syncData.handicapHomeCurrentOdds ||
+                                contestInfo.handicapHomeCurrentOdds
+                            }
+                        />
+                        <CompareOdds
+                            defaultColor="blue"
+                            value={syncData.handicapCurrent || contestInfo.handicapCurrent}
+                        />
+                        <CompareOdds
+                            value={
+                                syncData.handicapAwayCurrentOdds ||
+                                contestInfo.handicapAwayCurrentOdds
+                            }
+                        />
+                    </>
+                ) : null}
+            </span>
             <span className={style.mid}>
                 <p>
-                    {(syncData.state || contestInfo.state) >= 1 &&
+                    {(syncData.state || contestInfo.state) >= 2 &&
                     (syncData.state || contestInfo.state) <= 5 ? (
                         <>
                             {syncData.homeHalfScore || contestInfo.homeHalfScore} -{' '}
@@ -135,29 +70,31 @@ function OddsInfo({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId:
                     ) : null}
                 </p>
             </span>
-            {syncData.overUnderUnderCurrentOdds ||
-            syncData.overUnderOverCurrentOdds ||
-            contestInfo.overUnderUnderCurrentOdds ||
-            contestInfo.overUnderOverCurrentOdds ? (
-                <span className={style.odd}>
-                    <CompareOdds
-                        value={
-                            syncData.overUnderUnderCurrentOdds ||
-                            contestInfo.overUnderUnderCurrentOdds
-                        }
-                    />
-                    <CompareOdds
-                        defaultColor="blue"
-                        value={syncData.overUnderCurrent || contestInfo.overUnderCurrent}
-                    />
-                    <CompareOdds
-                        value={
-                            syncData.overUnderOverCurrentOdds ||
-                            contestInfo.overUnderOverCurrentOdds
-                        }
-                    />
-                </span>
-            ) : null}
+            <span className={style.odd}>
+                {syncData.overUnderUnderCurrentOdds ||
+                syncData.overUnderOverCurrentOdds ||
+                contestInfo.overUnderUnderCurrentOdds ||
+                contestInfo.overUnderOverCurrentOdds ? (
+                    <>
+                        <CompareOdds
+                            value={
+                                syncData.overUnderUnderCurrentOdds ||
+                                contestInfo.overUnderUnderCurrentOdds
+                            }
+                        />
+                        <CompareOdds
+                            defaultColor="blue"
+                            value={syncData.overUnderCurrent || contestInfo.overUnderCurrent}
+                        />
+                        <CompareOdds
+                            value={
+                                syncData.overUnderOverCurrentOdds ||
+                                contestInfo.overUnderOverCurrentOdds
+                            }
+                        />
+                    </>
+                ) : null}
+            </span>
         </div>
     );
 }
@@ -221,18 +158,17 @@ function TeamInfo({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId:
 function TopArea({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId: number }) {
     const globalStore = useContestInfoStore.use.contestInfo();
     const syncData = Object.hasOwnProperty.call(globalStore, matchId) ? globalStore[matchId] : {};
-
+    const currentMatchTime = useFormattedTime({
+        timeStamp: contestInfo.matchTime,
+        formattedString: 'HH:mm'
+    });
     return (
         <div className={style.topArea}>
             <div className={style.left}>
                 <div className={style.league} style={{ color: contestInfo.color }}>
                     {contestInfo.leagueChsShort}
                 </div>
-                <div className={style.time}>
-                    {contestInfo.matchTime
-                        ? timestampToString(contestInfo.matchTime, 'HH:mm')
-                        : null}
-                </div>
+                <div className={style.time}>{contestInfo.matchTime ? currentMatchTime : null}</div>
             </div>
             <div className={style.mid}>
                 <div className={style.corner}>
@@ -243,7 +179,6 @@ function TopArea({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId: 
                 </div>
                 <div className={style.status}>
                     <GameStatus
-                        injuryTime={syncData.injuryTime || contestInfo.injuryTime}
                         startTime={contestInfo.startTime}
                         status={syncData.state || contestInfo.state}
                     />

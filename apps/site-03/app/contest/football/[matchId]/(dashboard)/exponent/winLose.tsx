@@ -2,10 +2,42 @@ import { useContestDetailStore } from '../../contestDetailStore';
 import { useExponentStore } from '../../exponentStore';
 import style from './exponent.module.scss';
 
+const getOddsClassName = (initialOdds: number, currentOdds: number): string => {
+    if (initialOdds === currentOdds) return '';
+    return initialOdds > currentOdds ? 'greenText' : 'redText';
+};
+
+function NoData() {
+    return (
+        <div className={style.handicap}>
+            <div className="dataTable">
+                <div className="tableHead">
+                    <div className="tr">
+                        <div className="th">公司</div>
+                        <div className="th" />
+                        <div className="th">主勝</div>
+                        <div className="th">平局</div>
+                        <div className="th">客勝</div>
+                    </div>
+                </div>
+                <div className="tableBody">
+                    <div className="tr">
+                        <div className="td">暂无数据</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
+
 function Victory() {
     const exponentData = useExponentStore.use.exponentData();
     const totalGoalsRadio = useExponentStore.use.totalGoalsRadio();
     const companyNameMap = useContestDetailStore.use.companyNameMap();
+
+    if (!exponentData) return <NoData />;
+
+    const dataList = exponentData.winLoseData[totalGoalsRadio];
 
     return (
         <div className={style.winLose}>
@@ -20,62 +52,45 @@ function Victory() {
                     </div>
                 </div>
                 <div className="tableBody">
-                    {exponentData
-                        ? exponentData.winLoseData[totalGoalsRadio].list.map(companyId => (
-                              <div className="company" key={companyId}>
-                                  <div className="tr">
-                                      <div className="td">{companyNameMap[companyId]}</div>
-                                      <div className="td">初</div>
-                                      <div className="td">
-                                          {
-                                              exponentData.winLoseData[totalGoalsRadio].info[
-                                                  companyId
-                                              ].initialHomeOdds
-                                          }
-                                      </div>
-                                      <div className="td">
-                                          {
-                                              exponentData.winLoseData[totalGoalsRadio].info[
-                                                  companyId
-                                              ].initialDrawOdds
-                                          }
-                                      </div>
-                                      <div className="td">
-                                          {
-                                              exponentData.winLoseData[totalGoalsRadio].info[
-                                                  companyId
-                                              ].initialHomeOdds
-                                          }
-                                      </div>
-                                  </div>
-                                  <div className="tr">
-                                      <div className="td" />
-                                      <div className="td">即</div>
-                                      <div className="td">
-                                          {
-                                              exponentData.winLoseData[totalGoalsRadio].info[
-                                                  companyId
-                                              ].currentHomeOdds
-                                          }
-                                      </div>
-                                      <div className="td">
-                                          {
-                                              exponentData.winLoseData[totalGoalsRadio].info[
-                                                  companyId
-                                              ].currentDrawOdds
-                                          }
-                                      </div>
-                                      <div className="td">
-                                          {
-                                              exponentData.winLoseData[totalGoalsRadio].info[
-                                                  companyId
-                                              ].currentAwayOdds
-                                          }
-                                      </div>
-                                  </div>
-                              </div>
-                          ))
-                        : null}
+                    {dataList.list.map(companyId => (
+                        <div className="company" key={companyId}>
+                            <div className="tr">
+                                <div className="td">{companyNameMap[companyId]}</div>
+                                <div className="td">初</div>
+                                <div className="td">{dataList.info[companyId].initialHomeOdds}</div>
+                                <div className="td">{dataList.info[companyId].initialDrawOdds}</div>
+                                <div className="td">{dataList.info[companyId].initialAwayOdds}</div>
+                            </div>
+                            <div className="tr">
+                                <div className="td" />
+                                <div className="td">即</div>
+                                <div
+                                    className={`td ${getOddsClassName(
+                                        dataList.info[companyId].initialHomeOdds,
+                                        dataList.info[companyId].currentHomeOdds
+                                    )}`}
+                                >
+                                    {dataList.info[companyId].currentHomeOdds}
+                                </div>
+                                <div
+                                    className={`td ${getOddsClassName(
+                                        dataList.info[companyId].initialDrawOdds,
+                                        dataList.info[companyId].currentDrawOdds
+                                    )}`}
+                                >
+                                    {dataList.info[companyId].currentDrawOdds}
+                                </div>
+                                <div
+                                    className={`td ${getOddsClassName(
+                                        dataList.info[companyId].initialDrawOdds,
+                                        dataList.info[companyId].initialAwayOdds
+                                    )}`}
+                                >
+                                    {dataList.info[companyId].currentAwayOdds}
+                                </div>
+                            </div>
+                        </div>
+                    ))}
                 </div>
             </div>
         </div>

@@ -146,9 +146,9 @@
         }
 
         .mid {
-            margin: 0 12px;
             text-align: center;
             justify-content: center;
+            width: 64px;
         }
 
         .odd {
@@ -158,18 +158,6 @@
 
         p {
             margin: 0 2px;
-        }
-
-        .blue {
-            color: $primary;
-        }
-
-        .green {
-            color: #5dca82;
-        }
-
-        .red {
-            color: #e85251;
         }
     }
 
