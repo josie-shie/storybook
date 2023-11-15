@@ -353,7 +353,30 @@ function Tabs({
                                 to?: string;
                             }>;
                             if (tab.props.to) {
-                                router.push(tab.props.to);
+                                const currentSearchParams = new URLSearchParams(
+                                    window.location.search
+                                );
+                                const tabSearchParams = new URLSearchParams(
+                                    new URL(tab.props.to, window.location.href).search
+                                );
+
+                                // 目前只有state=schedule會用到日期 先判斷不是schedule的狀態都先刪除scheduleDate
+                                if (tabSearchParams.get('status') !== 'schedule') {
+                                    currentSearchParams.delete('scheduleDate');
+                                } else {
+                                    const scheduleDate = currentSearchParams.get('scheduleDate');
+                                    if (scheduleDate) {
+                                        tabSearchParams.set('scheduleDate', scheduleDate);
+                                    }
+                                }
+
+                                tabSearchParams.forEach((value, key) => {
+                                    currentSearchParams.set(key, value);
+                                });
+
+                                const search = currentSearchParams.toString();
+                                const url = `${tab.props.to.split('?')[0]}?${search}`;
+                                router.push(url);
                             }
                         }
                     }}
