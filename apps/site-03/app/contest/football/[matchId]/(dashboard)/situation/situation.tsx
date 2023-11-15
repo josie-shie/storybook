@@ -151,7 +151,7 @@ function Situation({
         };
 
         const syncOddChange = (message: OddChangType) => {
-            if (message.match.matchId === matchDetail.matchId) {
+            if (message[matchDetail.matchId]) {
                 setOddChange({ oddChangeData: message });
             }
         };
