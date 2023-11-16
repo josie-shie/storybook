@@ -2,9 +2,10 @@
 import { IconSearch } from '@tabler/icons-react';
 import Image from 'next/image';
 import PeriodListItem from '../components/period/periodListItem';
-import Soccer from '../components/period/img/soccerblue.png';
+import Soccer from '../components/period/img/soccerWhite.png';
 import UserSwitch from '../components/userSwitch/userSwitch';
 import Rule from '../components/rule/rule';
+import weekBackground from '../img/weekBg.png';
 import { creatRankStore } from './rankStore';
 import style from './rank.module.scss';
 import Avatar from '@/components/avatar/avatar';
@@ -13,7 +14,7 @@ function Rank() {
     creatRankStore({
         rankList: [
             {
-                ranking: 5,
+                ranking: 1,
                 avatar: '',
                 name: '老梁聊球',
                 record: 0,
@@ -22,7 +23,7 @@ function Rank() {
                 winRate: 98
             },
             {
-                ranking: 4,
+                ranking: 2,
                 avatar: '',
                 name: '老董聊球',
                 record: 0,
@@ -31,7 +32,7 @@ function Rank() {
                 winRate: 98
             },
             {
-                ranking: 1,
+                ranking: 3,
                 avatar: '',
                 name: '老衲聊球',
                 record: 0,
@@ -40,7 +41,7 @@ function Rank() {
                 winRate: 97
             },
             {
-                ranking: 6,
+                ranking: 4,
                 avatar: '',
                 name: '老薛聊球',
                 record: 0,
@@ -49,7 +50,7 @@ function Rank() {
                 winRate: 50
             },
             {
-                ranking: 2,
+                ranking: 5,
                 avatar: '',
                 name: '老王聊球',
                 record: 0,
@@ -58,7 +59,7 @@ function Rank() {
                 winRate: 40
             },
             {
-                ranking: 2,
+                ranking: 6,
                 avatar: '',
                 name: '老李聊球',
                 record: 0,
@@ -91,8 +92,9 @@ function Rank() {
                 </div>
             </div>
             <div className={style.userRank}>
+                <Image alt="" className={style.background} src={weekBackground} width={366} />
                 <div className={style.ranking}>
-                    你排名<span>24</span>
+                    週排名<span>24</span>
                 </div>
                 <div className={style.container}>
                     <div className={style.avatarContainer}>
@@ -103,8 +105,7 @@ function Rank() {
                         <div className={style.detail}>
                             <div>战绩: {userData.record}场</div>
                             <div>
-                                胜负: <span className={style.victory}>{userData.victory}</span>/
-                                {userData.defeat}
+                                胜负: {userData.victory}/{userData.defeat}
                             </div>
                         </div>
                     </div>
