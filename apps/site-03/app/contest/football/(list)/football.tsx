@@ -61,6 +61,7 @@ function ContestList() {
     const filterList = useContestListStore.use.filterList();
     const setContestList = useContestListStore.use.setContestList();
     const setContestInfo = useContestListStore.use.setContestInfo();
+    const setFilterInit = useContestListStore.use.setFilterInit();
 
     const searchParams = useSearchParams();
     const status = searchParams.get('status') || 'all';
@@ -150,6 +151,9 @@ function ContestList() {
             }));
         }
     };
+    useEffect(() => {
+        setFilterInit({ contestInfo, contestList: status === 'all' ? contestList : currentList });
+    }, [contestInfo, status]);
 
     return (
         <>
