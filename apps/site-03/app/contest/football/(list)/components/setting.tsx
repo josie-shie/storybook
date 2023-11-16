@@ -91,7 +91,7 @@ function Setting({
         <BottomDrawer isOpen={isOpen} onClose={onClose} onOpen={onOpen}>
             <div className={style.setting}>
                 <div className={style.topLine} />
-                <h2 className={style.settingTitle}>比賽設置</h2>
+                <h2 className={style.settingTitle}>比赛设置</h2>
                 <div className={style.item}>
                     <span>进球提示</span>
                     <span>

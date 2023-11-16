@@ -20,10 +20,10 @@ function ExtraInfo({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId
 
     return (
         <div className={style.extraInfo}>
-            {extraObj.regularTime?.minutes ? `${extraObj.regularTime.minutes} 分鐘` : ''} [
+            {extraObj.regularTime?.minutes ? `${extraObj.regularTime.minutes} 分钟` : ''} [
             {extraObj.regularTime?.score}]{' '}
             {extraObj.extraTime?.type ? `${extraObj.extraTime.type},` : ''}
-            {extraObj.extraTime?.score ? `, 現在比分[${extraObj.extraTime.score}]` : ''}
+            {extraObj.extraTime?.score ? `, 现在比分[${extraObj.extraTime.score}]` : ''}
         </div>
     );
 }
@@ -102,9 +102,6 @@ function OddsInfo({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId:
 function TeamInfo({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId: number }) {
     const globalStore = useContestInfoStore.use.contestInfo();
     const syncData = Object.hasOwnProperty.call(globalStore, matchId) ? globalStore[matchId] : {};
-    // if (syncData.matchId)
-
-    // console.log(syncData, contestInfo.awayChs, contestInfo.homeChs, '此賽事更新');
 
     return (
         <div className={style.teamInfo}>

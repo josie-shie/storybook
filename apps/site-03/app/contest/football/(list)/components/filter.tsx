@@ -118,19 +118,20 @@ function Filter() {
     return (
         <BottomDrawer isOpen={isOpen === 'open'} onClose={onClose} onOpen={onOpen}>
             <div className={style.filter}>
-                <h2>賽事篩選</h2>
+                <h2>赛事筛选</h2>
                 <div className={style.tab}>
                     <Tabs
                         buttonRadius={tabStyle.buttonRadius}
+                        defaultValue={1}
                         gap={tabStyle.gap}
                         position="center"
                         styling="underline"
                         swiperOpen={tabStyle.swiperOpen}
                     >
-                        <Tab label="賽事">
+                        <Tab label="赛事">
                             <FilterSection group="league" onClose={onClose} />
                         </Tab>
-                        <Tab label="國家">
+                        <Tab label="国家">
                             <FilterSection group="country" onClose={onClose} />
                         </Tab>
                     </Tabs>

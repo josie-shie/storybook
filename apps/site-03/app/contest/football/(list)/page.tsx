@@ -6,7 +6,7 @@ export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
 export const metadata: Metadata = {
-    title: '賽事 | Sport'
+    title: '赛事 | Sport'
 };
 
 async function Page() {
