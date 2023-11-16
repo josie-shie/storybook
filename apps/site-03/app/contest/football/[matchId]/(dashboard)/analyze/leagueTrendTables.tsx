@@ -47,7 +47,7 @@ function LeagueTrendTable({
                     <div className="td" style={{ flex: 'initial', width: '45px' }}>
                         全场
                     </div>
-                    <div className="td">赛</div>
+                    <div className="td">赢</div>
                     <div className="td">走水</div>
                     <div className="td">输</div>
                     <div className="td">赢%</div>

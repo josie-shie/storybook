@@ -101,33 +101,41 @@ function GameEvent() {
                 <div className="tableBody">
                     <div className="tr">
                         <div className="td">
-                            <div className="timeLine">
-                                {eventList.map(time => (
-                                    <div className="timeEvent" key={time}>
-                                        <div className="left">
-                                            {typeof eventInfo.isHome[time] !== 'undefined' ? (
-                                                <>
-                                                    {eventInfo.isHome[time].kind === 11
-                                                        ? swapEvent(eventInfo.isHome[time].nameChs)
-                                                        : eventInfo.isHome[time].nameChs}
-                                                    {kindIconMap[eventInfo.isHome[time].kind]}
-                                                </>
-                                            ) : null}
+                            {eventList.length > 0 ? (
+                                <div className="timeLine">
+                                    {eventList.map(time => (
+                                        <div className="timeEvent" key={time}>
+                                            <div className="left">
+                                                {typeof eventInfo.isHome[time] !== 'undefined' ? (
+                                                    <>
+                                                        {eventInfo.isHome[time].kind === 11
+                                                            ? swapEvent(
+                                                                  eventInfo.isHome[time].nameChs
+                                                              )
+                                                            : eventInfo.isHome[time].nameChs}
+                                                        {kindIconMap[eventInfo.isHome[time].kind]}
+                                                    </>
+                                                ) : null}
+                                            </div>
+                                            <div className="time">{time}&#39;</div>
+                                            <div className="right">
+                                                {typeof eventInfo.isAway[time] !== 'undefined' ? (
+                                                    <>
+                                                        {eventInfo.isAway[time].kind === 11
+                                                            ? swapEvent(
+                                                                  eventInfo.isAway[time].nameChs
+                                                              )
+                                                            : eventInfo.isAway[time].nameChs}
+                                                        {kindIconMap[eventInfo.isAway[time].kind]}
+                                                    </>
+                                                ) : null}
+                                            </div>
                                         </div>
-                                        <div className="time">{time}&#39;</div>
-                                        <div className="right">
-                                            {typeof eventInfo.isAway[time] !== 'undefined' ? (
-                                                <>
-                                                    {eventInfo.isAway[time].kind === 11
-                                                        ? swapEvent(eventInfo.isAway[time].nameChs)
-                                                        : eventInfo.isAway[time].nameChs}
-                                                    {kindIconMap[eventInfo.isAway[time].kind]}
-                                                </>
-                                            ) : null}
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
+                                    ))}
+                                </div>
+                            ) : (
+                                '暂无数据'
+                            )}
                         </div>
                     </div>
                     <div className="tr">
