@@ -1,16 +1,46 @@
 'use client';
 import { IconSearch } from '@tabler/icons-react';
 import Image from 'next/image';
+import { useSearchParams } from 'next/navigation';
 import PeriodListItem from '../components/period/periodListItem';
 import Soccer from '../components/period/img/soccerWhite.png';
 import UserSwitch from '../components/userSwitch/userSwitch';
 import Rule from '../components/rule/rule';
 import weekBackground from '../img/weekBg.png';
+import monthBackground from '../img/monthBg.png';
+import seasonBackground from '../img/seasonBg.png';
 import { creatRankStore } from './rankStore';
 import style from './rank.module.scss';
 import Avatar from '@/components/avatar/avatar';
 
+const periodMap = {
+    week: '週',
+    month: '月',
+    season: '季'
+};
+
+const tagMap = {
+    week: '#276ce1',
+    month: '#3d7f53',
+    season: '#cc4d2e'
+};
+
+const periodBackgroundMap = {
+    week: weekBackground,
+    month: monthBackground,
+    season: seasonBackground
+};
+interface PeriodBackgroundMap {
+    week: string;
+    month: string;
+    season: string;
+}
+
 function Rank() {
+    const searchParams = useSearchParams();
+    const currentPeriod = searchParams.get('status') as keyof PeriodBackgroundMap;
+    const periodTagColor = tagMap[currentPeriod];
+
     creatRankStore({
         rankList: [
             {
@@ -92,9 +122,14 @@ function Rank() {
                 </div>
             </div>
             <div className={style.userRank}>
-                <Image alt="" className={style.background} src={weekBackground} width={366} />
-                <div className={style.ranking}>
-                    週排名<span>24</span>
+                <Image
+                    alt=""
+                    className={style.background}
+                    src={periodBackgroundMap[currentPeriod]}
+                    width={366}
+                />
+                <div className={style.ranking} style={{ background: periodTagColor }}>
+                    {periodMap[currentPeriod]}排名<span>24</span>
                 </div>
                 <div className={style.container}>
                     <div className={style.avatarContainer}>
