@@ -22,7 +22,9 @@ function NoData() {
                 </div>
                 <div className="tableBody">
                     <div className="tr">
-                        <div className="td">暂无数据</div>
+                        <div className="td" style={{ width: '100%' }}>
+                            暂无数据
+                        </div>
                     </div>
                 </div>
             </div>
@@ -35,9 +37,9 @@ function Victory() {
     const totalGoalsRadio = useExponentStore.use.totalGoalsRadio();
     const companyNameMap = useContestDetailStore.use.companyNameMap();
 
-    if (!exponentData) return <NoData />;
+    const dataList = exponentData?.winLoseData[totalGoalsRadio];
 
-    const dataList = exponentData.winLoseData[totalGoalsRadio];
+    if (!dataList || dataList.list.length === 0) return <NoData />;
 
     return (
         <div className={style.winLose}>
