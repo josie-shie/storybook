@@ -2,7 +2,7 @@ import Drawer from '@mui/material/Drawer';
 import Image from 'next/image';
 import { Tab, Tabs } from 'ui';
 import type { HandicapsInfo, TotalGoalsInfo, WinDrawLoseType } from 'data-center';
-import { getCompanyLiveOddsDetail } from 'data-center';
+import { getOddsRunning } from 'data-center';
 import { useEffect } from 'react';
 import leftBlackIcon from '../../img/left_black.png';
 import { useContestDetailStore } from '../../../../contestDetailStore';
@@ -73,7 +73,7 @@ function HandicapDrawer() {
 
     const fetchCompanyLiveOddsDetail = async () => {
         try {
-            const res = await getCompanyLiveOddsDetail(matchDetail.matchId, companyId);
+            const res = await getOddsRunning(matchDetail.matchId, companyId, 'HANDICAP');
             if (!res.success) {
                 throw new Error();
             }
