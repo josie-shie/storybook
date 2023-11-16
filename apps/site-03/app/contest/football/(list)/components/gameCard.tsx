@@ -61,11 +61,11 @@ function OddsInfo({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId:
             </span>
             <span className={style.mid}>
                 <p>
-                    {(syncData.state || contestInfo.state) >= 2 &&
-                    (syncData.state || contestInfo.state) <= 5 ? (
+                    {(syncData.state || contestInfo.state) < 0 ||
+                    (syncData.state || contestInfo.state) > 2 ? (
                         <>
-                            {syncData.homeHalfScore || contestInfo.homeHalfScore} -{' '}
-                            {syncData.awayHalfScore || contestInfo.awayHalfScore}
+                            ({syncData.homeHalfScore || contestInfo.homeHalfScore} -{' '}
+                            {syncData.awayHalfScore || contestInfo.awayHalfScore})
                         </>
                     ) : null}
                 </p>
@@ -122,8 +122,7 @@ function TeamInfo({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId:
                 {contestInfo.homeChs}
             </div>
             <div className={style.score}>
-                {(syncData.state || contestInfo.state) >= 1 &&
-                (syncData.state || contestInfo.state) <= 5 ? (
+                {(syncData.state || contestInfo.state) !== 0 ? (
                     <>
                         {syncData.homeScore || contestInfo.homeScore} -{' '}
                         {syncData.awayScore || contestInfo.awayScore}
