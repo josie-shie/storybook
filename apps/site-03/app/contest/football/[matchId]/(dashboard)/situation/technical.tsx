@@ -76,17 +76,23 @@ function Technical() {
                     </div>
                 </div>
                 <div className="tableBody">
-                    {technicalList.map((technic, idx) => (
-                        <div className="tr" key={`technic_${idx.toString()}`}>
-                            <div className={`td ${numberRatio(technic.home, technic.away)}`}>
-                                {technic.home}
+                    {technicalList.length > 0 ? (
+                        technicalList.map((technic, idx) => (
+                            <div className="tr" key={`technic_${idx.toString()}`}>
+                                <div className={`td ${numberRatio(technic.home, technic.away)}`}>
+                                    {technic.home}
+                                </div>
+                                <div className="td">{technicMap[technic.technicType]}</div>
+                                <div className={`td ${numberRatio(technic.away, technic.home)}`}>
+                                    {technic.away}
+                                </div>
                             </div>
-                            <div className="td">{technicMap[technic.technicType]}</div>
-                            <div className={`td ${numberRatio(technic.away, technic.home)}`}>
-                                {technic.away}
-                            </div>
+                        ))
+                    ) : (
+                        <div className="tr">
+                            <div className="td">暂无数据</div>
                         </div>
-                    ))}
+                    )}
                 </div>
             </div>
         </div>
