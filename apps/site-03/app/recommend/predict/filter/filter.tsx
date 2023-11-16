@@ -52,7 +52,7 @@ function Filter() {
                     type="button"
                     whileTap={{ scale: 0.9 }}
                 >
-                    <span>篩選</span>
+                    <span>筛选</span>
                     <IconFilter color="#4489FF" size={16} />
                 </motion.button>
             </div>
