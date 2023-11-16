@@ -55,8 +55,6 @@ const initialState = (
                 newContestInfo[id] = updatedInfo;
             }
 
-            // console.log('New global store', newContestInfo);
-
             return { ...state, contestInfo: newContestInfo };
         });
     },
@@ -66,9 +64,6 @@ const initialState = (
             Object.keys(odds[matchId]).forEach(companyId => {
                 if (companyId === '3') {
                     const obj = odds[matchId][companyId];
-                    // console.log('matchId', matchId, companyId);
-                    // console.log('odds', odds);
-                    // console.log('obj', obj);
                     set(state => {
                         const newContestInfo: ContestTable = { ...state.contestInfo };
                         const updatedOdds = {
@@ -112,9 +107,6 @@ const initialState = (
                         } else {
                             newContestInfo[matchId] = updatedOdds;
                         }
-
-                        // eslint-disable-next-line -- test info
-                        console.log('New global odd store', newContestInfo);
 
                         return { ...state, contestInfo: newContestInfo };
                     });

@@ -137,8 +137,6 @@ const handleContestMessage = async (message: Buffer) => {
     for (const messageMethod of useMessageQueue) {
         messageMethod(decodedMessage as unknown as OriginalContestInfo);
     }
-
-    // console.log('[MQTT On contest message ContestMessage]: ', decodedMessage);
 };
 
 export type OddChangeMatch = Partial<{
@@ -402,9 +400,6 @@ const handleOddsMessage = async (message: Buffer) => {
         const formatDecodedMessage = createHashTable(decodedMessage);
         messageMethod(formatDecodedMessage);
     }
-
-    // eslint-disable-next-line no-console -- Check mqtt message
-    console.log('[MQTT On odds message]: ', decodedMessage);
 };
 
 const handleOddsChangeMessage = async (message: Buffer) => {
@@ -417,8 +412,6 @@ const handleOddsChangeMessage = async (message: Buffer) => {
         const formatDecodedMessage = createHashTable(decodedMessage);
         messageMethod(formatDecodedMessage);
     }
-    // eslint-disable-next-line no-console -- Check mqtt message
-    console.log('[MQTT On odds change message]: ', decodedMessage);
 };
 
 const handleDetailEventMessage = async (message: Buffer) => {
@@ -431,8 +424,6 @@ const handleDetailEventMessage = async (message: Buffer) => {
     for (const messageMethod of useEventQueue) {
         messageMethod(decodedMessage as unknown as EventInfoData);
     }
-
-    // console.log(`[MQTT On detail EventList message]: `, decodedMessage);
 };
 
 const handleDetailTechnicListMessage = async (message: Buffer) => {
@@ -445,8 +436,6 @@ const handleDetailTechnicListMessage = async (message: Buffer) => {
     for (const messageMethod of useTechnicalQueue) {
         messageMethod(decodedMessage as unknown as TechnicalInfoData);
     }
-
-    // console.log(`[MQTT On detail TechnicList message]: `, decodedMessage);
 };
 
 export const mqttService = {

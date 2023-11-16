@@ -23,7 +23,7 @@ interface ContestList extends InitState {
     filterList: { group: GroupType; selectedTable: Record<string, boolean> };
     setContestList: ({ contestList }: { contestList: ContestListType }) => void;
     setContestInfo: ({ contestInfo }: { contestInfo: ContestInfoType }) => void;
-    setFilterInit: ({ league, country }: { league: FilterMap; country: FilterMap }) => void;
+    setFilterInit: ({ contestInfo, contestList }: InitState) => void;
     setFilterSelected: (name: string, group: GroupType) => void;
     setFilterList: (group: GroupType) => void;
     selectAll: (group: GroupType) => void;
@@ -33,6 +33,39 @@ interface ContestList extends InitState {
 
 let isInit = true;
 let useContestListStore: StoreWithSelectors<ContestList>;
+
+const formatCounterAndSelected = (league: FilterMap, country: FilterMap) => {
+    const filterSelected = {
+        league: {},
+        country: {}
+    };
+    const filterCounter = {
+        league: 0,
+        country: 0
+    };
+
+    Object.values(league.infoObj).forEach((value: string[]) => {
+        value.forEach(leagueName => {
+            filterSelected.league[leagueName] = true;
+            filterCounter.league += league.countMap[leagueName] || 0;
+        });
+    });
+    Object.values(country.infoObj).forEach((value: string[]) => {
+        value.forEach(countryName => {
+            filterSelected.country[countryName] = true;
+            filterCounter.country += country.countMap[countryName] || 0;
+        });
+    });
+
+    return { filterSelected, filterCounter };
+};
+
+const initFilter = (contestInfo: ContestInfoType) => {
+    const league = formatFilterMap(contestInfo, 'leagueChsShort');
+    const country = formatFilterMap(contestInfo, 'countryCn');
+    const { filterSelected, filterCounter } = formatCounterAndSelected(league, country);
+    return { filterSelected, filterCounter, league, country };
+};
 
 const initialState = (set: (updater: (state: ContestList) => Partial<ContestList>) => void) => ({
     contestList: [],
@@ -73,8 +106,35 @@ const initialState = (set: (updater: (state: ContestList) => Partial<ContestList
     setContestInfo: ({ contestInfo }: { contestInfo: ContestInfoType }) => {
         set(() => ({ contestInfo }));
     },
-    setFilterInit: (filterInfo: { league: FilterMap; country: FilterMap }) => {
-        set(() => ({ filterInfo }));
+    setFilterInit: ({ contestInfo, contestList }: InitState) => {
+        const newInfo = {};
+        for (const item of contestList) {
+            newInfo[item] = contestInfo[item];
+        }
+
+        const { filterSelected, filterCounter, league, country } = initFilter(newInfo);
+
+        const params = {
+            filterInfo: {
+                league,
+                country
+            },
+            filterSelected,
+            filterCounter,
+            filterOriginalInfo: {
+                league: filterSelected.league,
+                country: filterSelected.country,
+                counter: {
+                    league: filterCounter.league,
+                    country: filterCounter.country
+                }
+            },
+            filterList: {
+                group: 'league' as GroupType,
+                selectedTable: {}
+            }
+        };
+        set(() => params);
     },
     setFilterSelected: (name: string, group: GroupType) => {
         set(state => {
@@ -164,38 +224,9 @@ const initialState = (set: (updater: (state: ContestList) => Partial<ContestList
     }
 });
 
-const formatCounterAndSelected = (league: FilterMap, country: FilterMap) => {
-    const filterSelected = {
-        league: {},
-        country: {}
-    };
-    const filterCounter = {
-        league: 0,
-        country: 0
-    };
-
-    Object.values(league.infoObj).forEach((value: string[]) => {
-        value.forEach(leagueName => {
-            filterSelected.league[leagueName] = true;
-            filterCounter.league += league.countMap[leagueName] || 0;
-        });
-    });
-    Object.values(country.infoObj).forEach((value: string[]) => {
-        value.forEach(countryName => {
-            filterSelected.country[countryName] = true;
-            filterCounter.country += country.countMap[countryName] || 0;
-        });
-    });
-
-    return { filterSelected, filterCounter };
-};
-
 const creatContestListStore = (init: InitState) => {
     if (isInit) {
-        const league = formatFilterMap(init.contestInfo, 'leagueChsShort');
-        const country = formatFilterMap(init.contestInfo, 'countryCn');
-
-        const { filterSelected, filterCounter } = formatCounterAndSelected(league, country);
+        const { filterSelected, filterCounter, league, country } = initFilter(init.contestInfo);
 
         const params = {
             contestList: init.contestList,

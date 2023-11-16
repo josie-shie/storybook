@@ -59,7 +59,7 @@ function FilterSection({ group, onClose }: { group: 'league' | 'country'; onClos
                         type="button"
                         whileTap={{ scale: 0.9 }}
                     >
-                        全選
+                        全选
                     </motion.button>
                     <motion.button
                         className={style.button}
@@ -69,15 +69,15 @@ function FilterSection({ group, onClose }: { group: 'league' | 'country'; onClos
                         type="button"
                         whileTap={{ scale: 0.9 }}
                     >
-                        反選
+                        反选
                     </motion.button>
                 </div>
                 <div className={style.counter}>
-                    已選 <span className={style.blue}>{filterCounter[group]}</span> 場
+                    已选 <span className={style.blue}>{filterCounter[group]}</span> 场
                 </div>
 
                 <motion.div className={style.confirm} onClick={submit} whileTap={{ scale: 0.9 }}>
-                    確定
+                    确定
                 </motion.div>
             </div>
         </>
@@ -118,19 +118,20 @@ function Filter() {
     return (
         <BottomDrawer isOpen={isOpen === 'open'} onClose={onClose} onOpen={onOpen}>
             <div className={style.filter}>
-                <h2>賽事篩選</h2>
+                <h2>赛事筛选</h2>
                 <div className={style.tab}>
                     <Tabs
                         buttonRadius={tabStyle.buttonRadius}
+                        defaultValue={1}
                         gap={tabStyle.gap}
                         position="center"
                         styling="underline"
                         swiperOpen={tabStyle.swiperOpen}
                     >
-                        <Tab label="賽事">
+                        <Tab label="赛事">
                             <FilterSection group="league" onClose={onClose} />
                         </Tab>
-                        <Tab label="國家">
+                        <Tab label="国家">
                             <FilterSection group="country" onClose={onClose} />
                         </Tab>
                     </Tabs>

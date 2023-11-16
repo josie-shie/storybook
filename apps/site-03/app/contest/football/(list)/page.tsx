@@ -6,12 +6,15 @@ export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
 export const metadata: Metadata = {
-    title: '賽事 | Sport'
+    title: '赛事 | Sport'
 };
 
 async function Page() {
     const timestamp = Math.floor(Date.now() / 1000);
     const todayContest = await getContestList(timestamp);
+
+    // eslint-disable-next-line -- Timestamp for testing
+    console.log('現在時間戳記：', timestamp);
 
     if (!todayContest.success) {
         return new Error();

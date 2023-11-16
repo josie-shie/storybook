@@ -20,7 +20,7 @@ function Filter({
     return (
         <BottomDrawer isOpen={isOpen} onClose={onClose} onOpen={onOpen}>
             <div className={style.filter}>
-                <h2>賽事篩選</h2>
+                <h2>赛事筛选</h2>
                 <div className={style.tab}>
                     <Tabs
                         buttonRadius={tabStyle.buttonRadius}

@@ -159,7 +159,7 @@ function BaseDatePicker({
                             className={`${style.modalButton} ${style.confirmButton}`}
                             onClick={handleConfirmDate}
                         >
-                            確定
+                            确定
                         </Button>
                     </div>
                 </Box>

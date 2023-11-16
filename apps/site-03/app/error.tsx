@@ -10,8 +10,8 @@ export default function Error({ error }: { error: Error & { digest?: string } })
 
     return (
         <div>
-            <h2>ERROR:: Are you stupid?</h2>
-            <div>Please check your head, if you have.</div>
+            <h2>网络异常</h2>
+            <div>请稍后再试！</div>
         </div>
     );
 }
