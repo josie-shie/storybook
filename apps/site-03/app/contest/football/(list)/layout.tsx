@@ -42,22 +42,17 @@ function ContestListLayout({ children }: { children: ReactNode }) {
             status: null
         },
         {
-            label: '已開賽',
+            label: '已开赛',
             to: '/contest/football?status=progress',
             status: 'progress'
         },
         {
-            label: '未開賽',
-            to: '/contest/football?status=notyet',
-            status: 'notyet'
-        },
-        {
-            label: '賽程',
+            label: '赛程',
             to: '/contest/football?status=schedule',
             status: 'schedule'
         },
         {
-            label: '賽果',
+            label: '赛果',
             to: '/contest/football?status=result',
             status: 'result'
         }
