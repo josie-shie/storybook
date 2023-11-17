@@ -7,7 +7,7 @@ export const metadata: Metadata = {
 
 function Page() {
     return (
-        <div className="alipay">
+        <div className="wechat">
             <Alipay />
         </div>
     );
