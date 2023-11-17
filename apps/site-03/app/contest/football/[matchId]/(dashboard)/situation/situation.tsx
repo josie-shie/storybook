@@ -1,6 +1,6 @@
 'use client';
 import type { GetDetailStatusResponse, TechnicalInfo, EventInfo } from 'data-center';
-import type { OddsHashTable } from 'lib';
+import type { OddsHashTable, OddsRunningHashTable } from 'lib';
 import { mqttService } from 'lib';
 import { useEffect } from 'react';
 import { creatSituationStore, useSituationStore } from '../../situationStore';
@@ -152,10 +152,23 @@ function Situation({ situationData }: { situationData: GetDetailStatusResponse }
             }
         };
 
+        const syncOddsRunning = (message: Partial<OddsRunningHashTable>) => {
+            // eslint-disable-next-line no-console -- TODO
+            console.log('syncOddsRunning', message);
+        };
+
+        const syncOddsRunningHalf = (message: Partial<OddsRunningHashTable>) => {
+            // eslint-disable-next-line no-console -- TODO
+            console.log('syncOddsRunningHalf', message);
+        };
+
+        mqttService.oddRunningInit();
         mqttService.getTechnicList(syncTechnicalGlobalStore);
         mqttService.getEventList(syncEventGlobalStore);
         mqttService.getOdds(syncOddChange);
         mqttService.getOdds(syncOdds);
+        mqttService.getOddsRunning(syncOddsRunning);
+        mqttService.getOddsRunningHalf(syncOddsRunningHalf);
     }, []);
 
     return (

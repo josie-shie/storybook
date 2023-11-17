@@ -6,8 +6,8 @@ import Link from 'next/link';
 import { useContestListStore } from '../contestListStore';
 import style from './gameCard.module.scss';
 import Flag from './img/flag.png';
-import { useFormattedTime } from './useFormattedTime';
 import { CompareOdds } from './compareOdds';
+import { useFormattedTime } from '@/hooks/useFormattedTime';
 import { useContestInfoStore } from '@/app/contestInfoStore';
 
 function ExtraInfo({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId: number }) {
