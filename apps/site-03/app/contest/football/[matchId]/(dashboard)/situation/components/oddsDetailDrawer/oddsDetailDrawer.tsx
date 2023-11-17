@@ -5,10 +5,10 @@ import type { RequestPlayType } from 'data-center';
 import { getOddsRunning } from 'data-center';
 import { useEffect } from 'react';
 import leftBlackIcon from '../../img/left_black.png';
-import { useContestDetailStore } from '../../../../contestDetailStore';
-import { useSituationStore } from '../../../../situationStore';
 import style from './oddsDetailDrawer.module.scss';
 import OddLiveTable from './oddLiveTable';
+import { useSituationStore } from '@/app/contest/football/[matchId]/situationStore';
+import { useContestDetailStore } from '@/app/contest/football/[matchId]/contestDetailStore';
 import { useContestInfoStore } from '@/app/contestInfoStore';
 
 function ScroeBar() {
