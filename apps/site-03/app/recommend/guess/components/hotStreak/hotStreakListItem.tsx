@@ -2,6 +2,8 @@ import Image from 'next/image';
 import { useMasterRankStore } from '../../masterRank/masterRankStore';
 import style from './hotStreakListItem.module.scss';
 import Streak from './img/streak.png';
+import Crown from './img/crown.png';
+import Rank from './img/rank.png';
 import Avatar from '@/components/avatar/avatar';
 
 function HotStreakListItem() {
@@ -17,7 +19,12 @@ function HotStreakListItem() {
                 return (
                     <div className={style.hotStreakListItem} key={item.name}>
                         <div className={`${style.rankingFlag} ${rankingClass(item.ranking)}`}>
-                            {item.ranking}
+                            {item.ranking > 3 ? (
+                                <Image alt="" height={24} src={Rank} width={24} />
+                            ) : (
+                                <Image alt="" height={24} src={Crown} width={24} />
+                            )}
+                            <span>{item.ranking}</span>
                         </div>
                         <div className={style.avatarContainer}>
                             <Avatar src={item.avatar} />
@@ -48,7 +55,6 @@ function HotStreakListItem() {
                     </div>
                 );
             })}
-            ;
         </>
     );
 }

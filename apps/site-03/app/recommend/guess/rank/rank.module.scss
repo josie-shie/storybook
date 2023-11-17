@@ -29,18 +29,22 @@
     }
 
     > .userRank {
+        position: relative;
         border-radius: 8px;
-        background: #e6effe;
         margin-bottom: 12px;
         overflow: hidden;
 
+        .background {
+            position: absolute;
+        }
+
         .ranking {
+            position: relative;
             font-size: 14px;
             width: fit-content;
             padding: 0 12px;
             border-radius: 0 3px 10px 0;
             color: #fff;
-            background: #276ce1;
 
             span {
                 margin-left: 6px;
@@ -49,7 +53,9 @@
         }
 
         .container {
+            position: relative;
             display: flex;
+            color: #fff;
             padding: 8px 12px 12px;
         }
     }
@@ -75,19 +81,13 @@
 
 .name {
     font-size: 14px;
-    font-weight: 500;
 }
 
 .detail {
     font-size: 14px;
-    font-weight: 500;
-    color: #8d8d8d;
+    color: #fff;
     display: flex;
     gap: 12px;
-}
-
-.victory {
-    color: #f85640;
 }
 
 .winRateBlock {
@@ -105,7 +105,7 @@
         font-size: 20px;
         display: inline-flex;
         align-items: center;
-        color: #276ce1;
+        color: #fff;
 
         > .percent {
             font-size: 12px;

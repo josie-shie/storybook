@@ -1,4 +1,4 @@
-import Select from '../../../components/select/select';
+import Select from '@/app/contest/football/[matchId]/(dashboard)/components/select/select';
 import type {
     GameAmountProps,
     GameTypeProps,

@@ -4,7 +4,8 @@ import Image from 'next/image';
 import HotStreakListItem from '../components/hotStreak/hotStreakListItem';
 import UserSwitch from '../components/userSwitch/userSwitch';
 import Rule from '../components/rule/rule';
-import Streak from '../components/hotStreak/img/streak.png';
+import Streak from '../components/hotStreak/img/whiteStreak.png';
+import masterRankBackground from '../img/masterRankBg.png';
 import { creatMasterRankStore } from './masterRankStore';
 import style from './masterRank.module.scss';
 import Avatar from '@/components/avatar/avatar';
@@ -83,6 +84,7 @@ function RankList() {
                 </div>
             </div>
             <div className={style.userHotStreak}>
+                <Image alt="" className={style.background} src={masterRankBackground} width={366} />
                 <div className={style.ranking}>
                     你排名<span>24</span>
                 </div>

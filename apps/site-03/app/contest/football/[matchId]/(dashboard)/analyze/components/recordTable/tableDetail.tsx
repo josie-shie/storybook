@@ -1,5 +1,5 @@
-import Select from '../../../components/select/select';
 import style from './record.module.scss';
+import Select from '@/app/contest/football/[matchId]/(dashboard)/components/select/select';
 import type {
     BattleRecord,
     WinLoseResultProps,

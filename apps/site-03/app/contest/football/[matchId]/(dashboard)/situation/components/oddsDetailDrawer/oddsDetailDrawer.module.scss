@@ -16,8 +16,17 @@
         }
 
         .tr {
+            .colspan-3 {
+                flex: 3 !important;
+            }
+
+            .hidden {
+                display: none !important;
+            }
+
             .td {
                 width: 45px;
+                flex: 1;
 
                 &:nth-child(1),
                 &:nth-child(2) {

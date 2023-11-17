@@ -1,19 +1,50 @@
 'use client';
 import { IconSearch } from '@tabler/icons-react';
 import Image from 'next/image';
+import { useSearchParams } from 'next/navigation';
 import PeriodListItem from '../components/period/periodListItem';
-import Soccer from '../components/period/img/soccerblue.png';
+import Soccer from '../components/period/img/soccerWhite.png';
 import UserSwitch from '../components/userSwitch/userSwitch';
 import Rule from '../components/rule/rule';
+import weekBackground from '../img/weekBg.png';
+import monthBackground from '../img/monthBg.png';
+import seasonBackground from '../img/seasonBg.png';
 import { creatRankStore } from './rankStore';
 import style from './rank.module.scss';
 import Avatar from '@/components/avatar/avatar';
 
+const periodMap = {
+    week: '週',
+    month: '月',
+    season: '季'
+};
+
+const tagMap = {
+    week: '#276ce1',
+    month: '#3d7f53',
+    season: '#cc4d2e'
+};
+
+const periodBackgroundMap = {
+    week: weekBackground,
+    month: monthBackground,
+    season: seasonBackground
+};
+interface PeriodBackgroundMap {
+    week: string;
+    month: string;
+    season: string;
+}
+
 function Rank() {
+    const searchParams = useSearchParams();
+    const currentPeriod = searchParams.get('status') as keyof PeriodBackgroundMap;
+    const periodTagColor = tagMap[currentPeriod];
+
     creatRankStore({
         rankList: [
             {
-                ranking: 5,
+                ranking: 1,
                 avatar: '',
                 name: '老梁聊球',
                 record: 0,
@@ -22,7 +53,7 @@ function Rank() {
                 winRate: 98
             },
             {
-                ranking: 4,
+                ranking: 2,
                 avatar: '',
                 name: '老董聊球',
                 record: 0,
@@ -31,7 +62,7 @@ function Rank() {
                 winRate: 98
             },
             {
-                ranking: 1,
+                ranking: 3,
                 avatar: '',
                 name: '老衲聊球',
                 record: 0,
@@ -40,7 +71,7 @@ function Rank() {
                 winRate: 97
             },
             {
-                ranking: 6,
+                ranking: 4,
                 avatar: '',
                 name: '老薛聊球',
                 record: 0,
@@ -49,7 +80,7 @@ function Rank() {
                 winRate: 50
             },
             {
-                ranking: 2,
+                ranking: 5,
                 avatar: '',
                 name: '老王聊球',
                 record: 0,
@@ -58,7 +89,7 @@ function Rank() {
                 winRate: 40
             },
             {
-                ranking: 2,
+                ranking: 6,
                 avatar: '',
                 name: '老李聊球',
                 record: 0,
@@ -91,8 +122,14 @@ function Rank() {
                 </div>
             </div>
             <div className={style.userRank}>
-                <div className={style.ranking}>
-                    你排名<span>24</span>
+                <Image
+                    alt=""
+                    className={style.background}
+                    src={periodBackgroundMap[currentPeriod]}
+                    width={366}
+                />
+                <div className={style.ranking} style={{ background: periodTagColor }}>
+                    {periodMap[currentPeriod]}排名<span>24</span>
                 </div>
                 <div className={style.container}>
                     <div className={style.avatarContainer}>
@@ -103,8 +140,7 @@ function Rank() {
                         <div className={style.detail}>
                             <div>战绩: {userData.record}场</div>
                             <div>
-                                胜负: <span className={style.victory}>{userData.victory}</span>/
-                                {userData.defeat}
+                                胜负: {userData.victory}/{userData.defeat}
                             </div>
                         </div>
                     </div>

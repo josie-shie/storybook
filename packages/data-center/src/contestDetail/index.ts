@@ -6,7 +6,7 @@ import {
     GET_SINGLE_MATCH_QUERY,
     GET_DETAIL_STATUS_QUERY,
     GET_LIVE_TEXT_QUERY,
-    GET_COMPANY_LIVE_ODDS_DETAIL
+    GET_ODDS_RUNNING_QUERY
 } from './graphqlQueries';
 
 const SingleMatchSchema = z.object({
@@ -383,26 +383,39 @@ const GetLiveTextResultSchema = z.object({
 export type GetLiveTextResponse = GetLiveText[];
 type GetLiveTextResult = z.infer<typeof GetLiveTextResultSchema>;
 
-const CompanyLiveDetailSchema = z.object({
+const OddsRunningSchema = z.object({
     matchId: z.number(),
-    companyOdds: z.object({
+    runningTime: z.string(),
+    homeScore: z.number(),
+    awayScore: z.number(),
+    playType: z.union([z.literal('HANDICAP'), z.literal('OVERUNDER'), z.literal('EUROPE')]),
+    companyId: z.number(),
+    isClosed: z.boolean(),
+    handicap: z.number(),
+    homeOrOverOdds: z.number(),
+    awayOrUnderOdds: z.number(),
+    evenOdds: z.number(),
+    oddsChangeTime: z.number()
+});
+
+export type OddsRunningType = z.infer<typeof OddsRunningSchema>;
+
+const OddsRunningResultSchema = z.object({
+    getOddsRunning: z.object({
         companyId: z.number(),
-        companyName: z.string(),
-        fullHandicap: z.array(HandicapsInfoSchema),
-        halfHandicap: z.array(HandicapsInfoSchema),
-        fullTotalGoal: z.array(TotalGoalsInfoSchema),
-        halfTotalGoal: z.array(TotalGoalsInfoSchema),
-        fullWinDrawLose: z.array(WinDrawLoseTypeSchema),
-        halfWinDrawLose: z.array(WinDrawLoseTypeSchema)
+        oddsRunning: z.array(OddsRunningSchema)
     })
 });
 
-const CompanyLiveDetailResultSchema = z.object({
-    getCompanyLiveOdds: CompanyLiveDetailSchema
-});
-
-export type CompanyLiveDetailResult = z.infer<typeof CompanyLiveDetailResultSchema>;
-export type CompanyLiveDetailResponse = z.infer<typeof CompanyLiveDetailSchema>;
+export type OddsRunningResult = z.infer<typeof OddsRunningResultSchema>;
+export type OddsRunningResponse = z.infer<typeof OddsRunningSchema>[];
+export type RequestPlayType =
+    | 'HANDICAP'
+    | 'OVERUNDER'
+    | 'EUROPE'
+    | 'HANDICAPHALF'
+    | 'OVERUNDERHALF'
+    | 'EUROPEHALF';
 
 /**
  * 取得指定賽事
@@ -695,21 +708,23 @@ export const getLiveText = async (matchId: number): Promise<ReturnData<GetLiveTe
 /**
  * 取得公司賠率現場數據
  * - params : (matchId: number, companyId: number)
- * - returns : {@link CompanyLiveDetailResponse}
+ * - returns : {@link OddsRunningResponse}
  */
-export const getCompanyLiveOddsDetail = async (
+export const getOddsRunning = async (
     matchId: number,
-    companyId: number
-): Promise<ReturnData<CompanyLiveDetailResponse>> => {
+    companyId: number,
+    playType: RequestPlayType
+): Promise<ReturnData<OddsRunningResponse>> => {
     try {
-        const { data }: { data: CompanyLiveDetailResult } = await fetcher(
+        const { data }: { data: OddsRunningResult } = await fetcher(
             {
                 data: {
-                    query: GET_COMPANY_LIVE_ODDS_DETAIL,
+                    query: GET_ODDS_RUNNING_QUERY,
                     variables: {
                         input: {
                             matchId,
-                            companyId
+                            companyId,
+                            playType
                         }
                     }
                 }
@@ -717,11 +732,11 @@ export const getCompanyLiveOddsDetail = async (
             { cache: 'no-store' }
         );
 
-        CompanyLiveDetailResultSchema.parse(data);
+        OddsRunningResultSchema.parse(data);
 
         return {
             success: true,
-            data: data.getCompanyLiveOdds
+            data: data.getOddsRunning.oddsRunning
         };
     } catch (error) {
         return handleApiError(error);
