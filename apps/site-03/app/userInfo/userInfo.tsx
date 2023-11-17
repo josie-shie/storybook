@@ -1,5 +1,6 @@
 'use client';
 import { IconFlame } from '@tabler/icons-react';
+import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Star from './img/star.png';
 import BuyBag from './img/buyBag.png';
@@ -14,9 +15,14 @@ import Header from '@/components/header/headerTitle';
 import Footer from '@/components/footer/footer';
 
 function UserInfo() {
+    const router = useRouter();
     const headerProps = {
         title: '我的',
         total: 0
+    };
+
+    const goRecharge = () => {
+        router.push('/userInfo/recharge');
     };
 
     return (
@@ -56,7 +62,14 @@ function UserInfo() {
                                     <Image alt="" height={14} src={Star} width={14} />
                                     <span>可用馀额：</span>100
                                 </span>
-                                <span className={style.button}>充值</span>
+                                <span
+                                    className={style.button}
+                                    onClick={() => {
+                                        goRecharge();
+                                    }}
+                                >
+                                    充值
+                                </span>
                             </div>
                             <div className={style.item}>
                                 <span className={style.text}>
