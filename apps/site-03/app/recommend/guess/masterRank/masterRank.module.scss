@@ -29,18 +29,23 @@
     }
 
     .userHotStreak {
+        position: relative;
         border-radius: 8px;
-        background: #ed3a451a;
         margin-bottom: 12px;
         overflow: hidden;
 
+        .background {
+            position: absolute;
+        }
+
         .ranking {
+            position: relative;
             font-size: 14px;
             width: fit-content;
             padding: 0 12px;
             border-radius: 0 3px 10px 0;
+            background: #e00d0d;
             color: #fff;
-            background: linear-gradient(269deg, #e14e27 0.33%, #e14e27 0.34%, #ff645a 105.97%);
 
             span {
                 margin-left: 6px;
@@ -49,6 +54,7 @@
         }
 
         .container {
+            position: relative;
             display: flex;
             padding: 8px 12px 12px;
         }
@@ -68,33 +74,23 @@
 }
 
 .content {
+    color: #fff;
+
     .name {
         font-size: 14px;
-        font-weight: 500;
+        font-weight: 400;
     }
 
     .streak {
         font-size: 14px;
-        font-weight: 500;
+        font-weight: 400;
         display: flex;
         gap: 12px;
-
-        .current {
-            color: #ed3a45;
-        }
-
-        .highest {
-            color: #ed3a45;
-        }
 
         .streakIcon {
             width: 8px;
             height: auto;
             margin-right: 4px;
         }
-    }
-
-    .label {
-        color: #8d8d8d;
     }
 }
