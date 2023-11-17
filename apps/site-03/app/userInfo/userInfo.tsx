@@ -1,6 +1,7 @@
 'use client';
 import { IconFlame } from '@tabler/icons-react';
 import Image from 'next/image';
+import Link from 'next/link';
 import Star from './img/star.png';
 import BuyBag from './img/buyBag.png';
 import MyFocus from './img/myFocus.png';
@@ -48,7 +49,7 @@ function UserInfo() {
 
                     <div className={style.trade}>
                         <button className={style.tradeDetail} type="button">
-                            我的交易明細
+                            <Link href="/userInfo/tradeDetail">我的交易明細</Link>
                         </button>
                         <div className={style.list}>
                             <div className={style.item}>

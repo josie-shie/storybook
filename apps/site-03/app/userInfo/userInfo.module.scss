@@ -81,11 +81,14 @@
                 display: block;
                 margin-left: auto;
                 padding: 4px 12px;
-                color: #4489ff;
                 font-size: 14px;
                 background: #fff;
                 border: none;
                 border-radius: 30px;
+
+                > a {
+                    color: #4489ff;
+                }
             }
 
             .item {
