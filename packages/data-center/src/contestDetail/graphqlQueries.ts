@@ -296,110 +296,24 @@ export const GET_LIVE_TEXT_QUERY = `
     },
 `;
 
-export const GET_COMPANY_LIVE_ODDS_DETAIL = `
-    query getCompanyLiveOdds($input: CompanyLiveOddsRequest) {
-        getCompanyLiveOdds(input:$input) {
-            matchId
-            companyOdds {
+export const GET_ODDS_RUNNING_QUERY = `
+    query getOddsRunning($input: OddsRunningRequest!) {
+        getOddsRunning(input:$input) {
             companyId
-            companyName
-            fullHandicap {
+            oddsRunning {
                 matchId
-                companyId
-                initialHandicap
-                homeInitialOdds
-                awayInitialOdds
-                currentHandicap
-                homeCurrentOdds
-                awayCurrentOdds
-                oddsChangeTime
-                oddsType
-                state
+                runningTime
                 homeScore
                 awayScore
-                isClosed
-            }
-            halfHandicap {
-                matchId
+                playType
                 companyId
-                initialHandicap
-                homeInitialOdds
-                awayInitialOdds
-                currentHandicap
-                homeCurrentOdds
-                awayCurrentOdds
-                oddsChangeTime
-                oddsType
-                state
-                homeScore
-                awayScore
                 isClosed
-            }
-            fullTotalGoal {
-                matchId
-                companyId
-                initialHandicap
-                overInitialOdds
-                underInitialOdds
-                currentHandicap
-                overCurrentOdds
-                underCurrentOdds
+                handicap
+                homeOrOverOdds
+                awayOrUnderOdds
+                evenOdds
                 oddsChangeTime
-                oddsType
-                state
-                homeScore
-                awayScore
-                isClosed
-            }
-            halfTotalGoal {
-                matchId
-                companyId
-                initialHandicap
-                overInitialOdds
-                underInitialOdds
-                currentHandicap
-                overCurrentOdds
-                underCurrentOdds
-                oddsChangeTime
-                oddsType
-                state
-                homeScore
-                awayScore
-                isClosed
-            }
-            fullWinDrawLose {
-                matchId
-                companyId
-                initialHomeOdds
-                initialDrawOdds
-                initialAwayOdds
-                currentHomeOdds
-                currentDrawOdds
-                currentAwayOdds
-                oddsChangeTime
-                isClosed
-                oddsType
-                state
-                homeScore
-                awayScore
-            }
-            halfWinDrawLose {
-                matchId
-                companyId
-                initialHomeOdds
-                initialDrawOdds
-                initialAwayOdds
-                currentHomeOdds
-                currentDrawOdds
-                currentAwayOdds
-                oddsChangeTime
-                isClosed
-                oddsType
-                state
-                homeScore
-                awayScore
-            }
-            }
+            }   
         }
     }
 `;

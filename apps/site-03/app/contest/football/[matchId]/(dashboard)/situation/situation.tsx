@@ -1,10 +1,5 @@
 'use client';
-import type {
-    GetDetailStatusResponse,
-    CompanyLiveDetailResponse,
-    TechnicalInfo,
-    EventInfo
-} from 'data-center';
+import type { GetDetailStatusResponse, TechnicalInfo, EventInfo } from 'data-center';
 import type { OddsHashTable } from 'lib';
 import { mqttService } from 'lib';
 import { useEffect } from 'react';
@@ -95,16 +90,10 @@ interface OddChangType {
     }[];
 }
 
-function Situation({
-    situationData,
-    companyLiveOddsDetail
-}: {
-    situationData: GetDetailStatusResponse;
-    companyLiveOddsDetail: CompanyLiveDetailResponse;
-}) {
+function Situation({ situationData }: { situationData: GetDetailStatusResponse }) {
     creatSituationStore({
         ...situationData,
-        companyLiveOddsDetail
+        liveOddsData: []
     });
 
     const updateTechnical = useSituationStore.use.setTechnical();
@@ -119,6 +108,7 @@ function Situation({
                 updateTechnical({ technical: message.technicStat });
             }
         };
+
         const syncEventGlobalStore = (message: Partial<EventInfoData>) => {
             if (message.matchId === matchDetail.matchId && message.event) {
                 const eventList: string[] = [];
