@@ -398,6 +398,8 @@ const OddsRunningSchema = z.object({
     oddsChangeTime: z.number()
 });
 
+export type OddsRunningType = z.infer<typeof OddsRunningSchema>;
+
 const OddsRunningResultSchema = z.object({
     getOddsRunning: z.object({
         companyId: z.number(),
@@ -406,7 +408,7 @@ const OddsRunningResultSchema = z.object({
 });
 
 export type OddsRunningResult = z.infer<typeof OddsRunningResultSchema>;
-export type CompanyLiveDetailResponse = z.infer<typeof OddsRunningSchema>[];
+export type OddsRunningResponse = z.infer<typeof OddsRunningSchema>[];
 export type RequestPlayType =
     | 'HANDICAP'
     | 'OVERUNDER'
@@ -706,13 +708,13 @@ export const getLiveText = async (matchId: number): Promise<ReturnData<GetLiveTe
 /**
  * 取得公司賠率現場數據
  * - params : (matchId: number, companyId: number)
- * - returns : {@link CompanyLiveDetailResponse}
+ * - returns : {@link OddsRunningResponse}
  */
 export const getOddsRunning = async (
     matchId: number,
     companyId: number,
     playType: RequestPlayType
-): Promise<ReturnData<CompanyLiveDetailResponse>> => {
+): Promise<ReturnData<OddsRunningResponse>> => {
     try {
         const { data }: { data: OddsRunningResult } = await fetcher(
             {

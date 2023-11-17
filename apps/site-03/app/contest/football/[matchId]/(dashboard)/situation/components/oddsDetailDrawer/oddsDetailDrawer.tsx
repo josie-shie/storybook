@@ -1,25 +1,15 @@
 import Drawer from '@mui/material/Drawer';
 import Image from 'next/image';
 import { Tab, Tabs } from 'ui';
-import type { HandicapsInfo, TotalGoalsInfo, WinDrawLoseType } from 'data-center';
+import type { RequestPlayType } from 'data-center';
 import { getOddsRunning } from 'data-center';
 import { useEffect } from 'react';
 import leftBlackIcon from '../../img/left_black.png';
 import { useContestDetailStore } from '../../../../contestDetailStore';
 import { useSituationStore } from '../../../../situationStore';
 import style from './oddsDetailDrawer.module.scss';
-import HandicapTable from './handicapTable';
-import TotalGoalTable from './totalGoalTable';
-import WinLoseTable from './winLoseTable';
+import OddLiveTable from './oddLiveTable';
 import { useContestInfoStore } from '@/app/contestInfoStore';
-
-type TabTpye =
-    | 'fullHandicap'
-    | 'halfHandicap'
-    | 'fullTotalGoal'
-    | 'halfTotalGoal'
-    | 'fullWinDrawLose'
-    | 'halfWinDrawLose';
 
 function ScroeBar() {
     const matchDetail = useContestDetailStore.use.matchDetail();
@@ -51,8 +41,8 @@ function HandicapDrawer() {
     const matchDetail = useContestDetailStore.use.matchDetail();
     const tabValue = useSituationStore.use.oddsDeatilDrawerTabValue();
     const setTabValue = useSituationStore.use.setOddsDeatilDrawerTabValue();
-    const companyLiveOddsDetail = useSituationStore.use.companyLiveOddsDetail();
-    const setCompanyOddsDetail = useSituationStore.use.setCompanyLiveOddsDetail();
+    const liveOddsData = useSituationStore.use.liveOddsData();
+    const setLiveOddsData = useSituationStore.use.setLiveOddsData();
     const companyNameMap = useContestDetailStore.use.companyNameMap();
     const companyId = useSituationStore.use.companyId();
 
@@ -63,29 +53,31 @@ function HandicapDrawer() {
     };
 
     const tabList = [
-        { label: '全让球', value: 'fullHandicap' },
-        { label: '半让球', value: 'halfHandicap' },
-        { label: '全总进球', value: 'fullTotalGoal' },
-        { label: '半总进球', value: 'halfTotalGoal' },
-        { label: '全胜平负', value: 'fullWinDrawLose' },
-        { label: '半胜平负', value: 'halfWinDrawLose' }
+        { label: '全让球', value: 'HANDICAP' },
+        { label: '半让球', value: 'HANDICAPHALF' },
+        { label: '全总进球', value: 'OVERUNDER' },
+        { label: '半总进球', value: 'OVERUNDERHALF' },
+        { label: '全胜平负', value: 'EUROPE' },
+        { label: '半胜平负', value: 'EUROPEHALF' }
     ];
 
-    const fetchCompanyLiveOddsDetail = async () => {
+    const fetchCompanyLiveOddsDetail = async (tab?: RequestPlayType) => {
         try {
-            const res = await getOddsRunning(matchDetail.matchId, companyId, 'HANDICAP');
+            const res = await getOddsRunning(matchDetail.matchId, companyId, tab || tabValue);
+
             if (!res.success) {
                 throw new Error();
             }
 
-            setCompanyOddsDetail(res.data);
+            setLiveOddsData(res.data);
         } catch (error) {
             throw new Error();
         }
     };
 
-    const handleChange = (newValue: TabTpye) => {
+    const handleChange = async (newValue: RequestPlayType) => {
         setTabValue(newValue);
+        await fetchCompanyLiveOddsDetail(newValue);
     };
 
     useEffect(() => {
@@ -131,33 +123,7 @@ function HandicapDrawer() {
                 >
                     {tabList.map(tab => (
                         <Tab key={tab.value} label={tab.label} value={tab.value}>
-                            {tabValue.includes('Handicap') && (
-                                <HandicapTable
-                                    dataList={
-                                        companyLiveOddsDetail.companyOdds[
-                                            tabValue
-                                        ] as HandicapsInfo[]
-                                    }
-                                />
-                            )}
-                            {tabValue.includes('TotalGoal') && (
-                                <TotalGoalTable
-                                    dataList={
-                                        companyLiveOddsDetail.companyOdds[
-                                            tabValue
-                                        ] as TotalGoalsInfo[]
-                                    }
-                                />
-                            )}
-                            {tabValue.includes('WinDrawLose') && (
-                                <WinLoseTable
-                                    dataList={
-                                        companyLiveOddsDetail.companyOdds[
-                                            tabValue
-                                        ] as WinDrawLoseType[]
-                                    }
-                                />
-                            )}
+                            <OddLiveTable dataList={liveOddsData} />
                         </Tab>
                     ))}
                 </Tabs>

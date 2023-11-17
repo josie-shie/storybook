@@ -7,9 +7,10 @@ import type {
     EventInfoType,
     TechnicalInfo,
     LineupList,
-    CompanyLiveDetailResponse,
     HandicapsInfo,
-    TotalGoalsInfo
+    TotalGoalsInfo,
+    OddsRunningType,
+    RequestPlayType
 } from 'data-center';
 
 interface OddChangType {
@@ -81,17 +82,17 @@ interface OddChangType {
 }
 
 interface InitState extends GetDetailStatusResponse {
-    companyLiveOddsDetail: CompanyLiveDetailResponse;
+    liveOddsData: OddsRunningType[];
 }
 
 interface SituationState extends InitState {
-    oddsDeatilDrawerTabValue: string;
+    oddsDeatilDrawerTabValue: RequestPlayType;
     isOddsDetailDrawerOpen: boolean;
     companyId: number;
     setCompanyId: (companyId: number) => void;
     setIsOddsDetailDrawerOpen: (isOpen: boolean) => void;
-    setOddsDeatilDrawerTabValue: (tabValue: string) => void;
-    setCompanyLiveOddsDetail: (detail: CompanyLiveDetailResponse) => void;
+    setOddsDeatilDrawerTabValue: (tabValue: RequestPlayType) => void;
+    setLiveOddsData: (liveOddsData: OddsRunningType[]) => void;
     setEvents: ({
         eventList,
         eventInfo
@@ -115,9 +116,9 @@ const initialState = (
     eventInfo: {} as EventInfoType,
     technical: [] as TechnicalInfo[],
     lineupInfo: {} as LineupList,
-    companyLiveOddsDetail: {} as CompanyLiveDetailResponse,
+    liveOddsData: [],
     isOddsDetailDrawerOpen: false,
-    oddsDeatilDrawerTabValue: 'fullHandicap',
+    oddsDeatilDrawerTabValue: 'HANDICAP' as RequestPlayType,
     companyId: 3,
     setCompanyId: (companyId: number) => {
         set(state => {
@@ -129,14 +130,14 @@ const initialState = (
             return { ...state, isOddsDetailDrawerOpen: isOpen };
         });
     },
-    setOddsDeatilDrawerTabValue: (tabValue: string) => {
+    setOddsDeatilDrawerTabValue: (tabValue: RequestPlayType) => {
         set(state => {
             return { ...state, oddsDeatilDrawerTabValue: tabValue };
         });
     },
-    setCompanyLiveOddsDetail: (detail: CompanyLiveDetailResponse) => {
+    setLiveOddsData: (liveOddsData: OddsRunningType[]) => {
         set(state => {
-            return { ...state, companyLiveOddsDetail: detail };
+            return { ...state, liveOddsData };
         });
     },
     setSituationData: ({

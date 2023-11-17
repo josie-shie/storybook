@@ -297,24 +297,23 @@ export const GET_LIVE_TEXT_QUERY = `
 `;
 
 export const GET_ODDS_RUNNING_QUERY = `
-    query getOddsRunning($input: OddsRunningRequest) {
+    query getOddsRunning($input: OddsRunningRequest!) {
         getOddsRunning(input:$input) {
+            companyId
+            oddsRunning {
+                matchId
+                runningTime
+                homeScore
+                awayScore
+                playType
                 companyId
-                oddsRunning {
-                    matchId
-                    runningTime
-                    homeScore
-                    awayScore
-                    playType
-                    companyId
-                    isClosed
-                    handicap
-                    homeOrOverOdds
-                    awayOrUnderOdds
-                    evenOdds
-                    oddsChangeTime
-                }
-            }
+                isClosed
+                handicap
+                homeOrOverOdds
+                awayOrUnderOdds
+                evenOdds
+                oddsChangeTime
+            }   
         }
     }
 `;
