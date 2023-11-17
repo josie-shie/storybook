@@ -2,6 +2,8 @@ import Image from 'next/image';
 import { useRankStore } from '../../rank/rankStore';
 import style from './periodListItem.module.scss';
 import Soccer from './img/soccer.png';
+import Crown from './img/crown.png';
+import Rank from './img/rank.png';
 import Avatar from '@/components/avatar/avatar';
 
 function PeriodListItem() {
@@ -18,7 +20,12 @@ function PeriodListItem() {
                 return (
                     <div className={style.periodListItem} key={item.name}>
                         <div className={`${style.rankingFlag} ${rankingClass(item.ranking)}`}>
-                            {item.ranking}
+                            {item.ranking > 3 ? (
+                                <Image alt="" height={24} src={Rank} width={24} />
+                            ) : (
+                                <Image alt="" height={24} src={Crown} width={24} />
+                            )}
+                            <span>{item.ranking}</span>
                         </div>
                         <div className={style.avatarContainer}>
                             <Avatar src={item.avatar} />
