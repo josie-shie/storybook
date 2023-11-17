@@ -162,7 +162,6 @@ function Situation({ situationData }: { situationData: GetDetailStatusResponse }
             console.log('syncOddsRunningHalf', message);
         };
 
-        mqttService.oddRunningInit();
         mqttService.getTechnicList(syncTechnicalGlobalStore);
         mqttService.getEventList(syncEventGlobalStore);
         mqttService.getOdds(syncOddChange);
