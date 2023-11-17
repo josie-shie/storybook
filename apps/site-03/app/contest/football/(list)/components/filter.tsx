@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { Tab, Tabs } from 'ui';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
-import { useCallback } from 'react';
+import { useCallback, useRef } from 'react';
 import { useContestListStore } from '../contestListStore';
 import style from './filter.module.scss';
 import BottomDrawer from '@/components/drawer/bottomDrawer';
@@ -95,6 +95,8 @@ function Filter() {
     const pathname = usePathname();
     const router = useRouter();
 
+    const tabActive = useRef(0);
+
     const createQueryString = useCallback(
         (name: string, value?: string) => {
             const params = new URLSearchParams(searchParams);
@@ -115,6 +117,10 @@ function Filter() {
         router.push(`${pathname}?${createQueryString('filter', 'open')}`);
     };
 
+    const saveTabStatus = (tab: string) => {
+        tabActive.current = tab === 'contest' ? 0 : 1;
+    };
+
     return (
         <BottomDrawer isOpen={isOpen === 'open'} onClose={onClose} onOpen={onOpen}>
             <div className={style.filter}>
@@ -122,16 +128,17 @@ function Filter() {
                 <div className={style.tab}>
                     <Tabs
                         buttonRadius={tabStyle.buttonRadius}
-                        defaultValue={1}
+                        defaultValue={tabActive.current}
                         gap={tabStyle.gap}
+                        onTabChange={saveTabStatus}
                         position="center"
                         styling="underline"
                         swiperOpen={tabStyle.swiperOpen}
                     >
-                        <Tab label="赛事">
+                        <Tab label="赛事" value="contest">
                             <FilterSection group="league" onClose={onClose} />
                         </Tab>
-                        <Tab label="国家">
+                        <Tab label="国家" value="country">
                             <FilterSection group="country" onClose={onClose} />
                         </Tab>
                     </Tabs>

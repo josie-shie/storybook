@@ -5,7 +5,9 @@ import {
     deProtoOdds,
     deProtoOddsChange,
     deProtoDetailEvent,
-    deProtoDetailTechnicList
+    deProtoDetailTechnicList,
+    deProtoOddRunning,
+    deProtoOddRunningHalf
 } from './prtobuf';
 
 interface OriginalContestInfo {
@@ -114,6 +116,9 @@ const useOddsQueue: ((data: OddsType) => void)[] = [];
 const useOddsChangeQueue: ((data: OddChangeType) => void)[] = [];
 const useTechnicalQueue: ((data: TechnicalInfoData) => void)[] = [];
 const useEventQueue: ((data: EventInfoData) => void)[] = [];
+const useOddsRunningQueue: ((data: OddsRunningHashTable) => void)[] = [];
+const useOddsRunningHalfQueue: ((data: OddsRunningHashTable) => void)[] = [];
+
 let init = true;
 
 const toSerializableObject = <T extends Record<string, unknown>>(protoObj: T): T => {
@@ -438,6 +443,131 @@ const handleDetailTechnicListMessage = async (message: Buffer) => {
     }
 };
 
+export interface OddsRunningType {
+    matchId?: number;
+    data?: {
+        id: number;
+        matchId: number;
+        time: string;
+        homeScore: number;
+        awayScore: number;
+        homeRed: number;
+        awayRed: number;
+        type: number;
+        companyId: number;
+        odds1: string;
+        odds2: string;
+        odds3: string;
+        modifytime: number;
+    }[];
+}
+
+export type OddsRunningHashTable = Record<
+    number,
+    Record<
+        number,
+        {
+            handicapHalf?: BettingData;
+            handicap?: BettingData;
+            overUnderHalf?: BettingData;
+            overUnder?: BettingData;
+        }
+    >
+>;
+
+interface BettingData {
+    id: number;
+    matchId: number;
+    time: string;
+    homeScore: number;
+    type: number;
+    companyId: number;
+    homeCurrentOdds?: number;
+    currentHandicap: number;
+    awayCurrentOdds?: number;
+    currentOverOdds?: number;
+    currentUnderOdds?: number;
+    modifytime: number;
+    isClosed: boolean;
+}
+
+function createOddRunningHashTable(oddList: OddsRunningType, isHalf: boolean) {
+    const result: OddsRunningHashTable = {};
+
+    if (oddList.data) {
+        oddList.data.forEach(item => {
+            if (item.type !== 1 && item.type !== 2 && item.type !== 6 && item.type !== 7) {
+                return;
+            }
+
+            if (!result[item.matchId] as boolean) {
+                result[item.matchId] = {};
+            }
+
+            if (!result[item.matchId][item.companyId] as boolean) {
+                result[item.matchId][item.companyId] = {};
+            }
+
+            const bettingData: BettingData = {
+                id: item.id,
+                matchId: item.matchId,
+                time: item.time,
+                homeScore: item.homeScore,
+                type: item.type,
+                companyId: item.companyId,
+                homeCurrentOdds: parseFloat(item.odds1),
+                currentHandicap: parseFloat(item.odds2),
+                awayCurrentOdds: parseFloat(item.odds3),
+                modifytime: item.modifytime,
+                isClosed: item.type === 6 || item.type === 7
+            };
+
+            if (item.type === 1 || item.type === 6) {
+                const key = isHalf ? 'handicapHalf' : 'handicap';
+                result[item.matchId][item.companyId][key] = bettingData;
+            } else {
+                bettingData.currentOverOdds = parseFloat(item.odds1);
+                bettingData.currentUnderOdds = parseFloat(item.odds3);
+                const key = isHalf ? 'overUnderHalf' : 'overUnder';
+                result[item.matchId][item.companyId][key] = bettingData;
+            }
+        });
+    }
+
+    return result;
+}
+
+const handleOddRunningMessage = async (message: Buffer) => {
+    const messageObject = await deProtoOddRunning(message);
+
+    const decodedMessage = toSerializableObject(
+        messageObject as unknown as Record<string, unknown>
+    );
+
+    for (const messageMethod of useOddsRunningQueue) {
+        const formatDecodedMessage = createOddRunningHashTable(decodedMessage, false);
+        messageMethod(formatDecodedMessage);
+    }
+    // eslint-disable-next-line no-console -- Check mqtt message
+    console.log('[MQTT On Odd Running message ContestMessage]: ', decodedMessage);
+};
+
+const handleOddRunningHalfMessage = async (message: Buffer) => {
+    const messageObject = await deProtoOddRunningHalf(message);
+
+    const decodedMessage = toSerializableObject(
+        messageObject as unknown as Record<string, unknown>
+    );
+
+    for (const messageMethod of useOddsRunningQueue) {
+        const formatDecodedMessage = createOddRunningHashTable(decodedMessage, true);
+        messageMethod(formatDecodedMessage);
+    }
+
+    // eslint-disable-next-line no-console -- Check mqtt message
+    console.log('[MQTT On Odd Running Half message ContestMessage]: ', decodedMessage);
+};
+
 export const mqttService = {
     init: () => {
         if (init) {
@@ -462,6 +592,23 @@ export const mqttService = {
         }
         return client;
     },
+    oddRunningInit: () => {
+        // eslint-disable-next-line no-console -- Check lifecycle
+        console.log('Mqtt oddRunning connected');
+        client.subscribe('updateodds_running');
+        client.subscribe('updateodds_running_half');
+
+        client.on('message', (topic, message) => {
+            if (topic === 'updateodds_running') void handleOddRunningMessage(message);
+            if (topic === 'updateodds_running_half') void handleOddRunningHalfMessage(message);
+        });
+    },
+    oddRunningDeinit: () => {
+        // eslint-disable-next-line no-console -- Check lifecycle
+        console.log('Mqtt oddRunning deinit');
+        client.unsubscribe('updateodds_running');
+        client.unsubscribe('updateodds_running_half');
+    },
     getMessage: (onMessage: (data: OriginalContestInfo) => void) => {
         useMessageQueue.push(onMessage);
     },
@@ -476,5 +623,11 @@ export const mqttService = {
     },
     getEventList: (onMessage: (data: EventInfoData) => void) => {
         useEventQueue.push(onMessage);
+    },
+    getOddsRunning: (onMessage: (data: OddsRunningHashTable) => void) => {
+        useOddsRunningQueue.push(onMessage);
+    },
+    getOddsRunningHalf: (onMessage: (data: OddsRunningHashTable) => void) => {
+        useOddsRunningHalfQueue.push(onMessage);
     }
 };

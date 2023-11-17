@@ -1,11 +1,6 @@
 'use client';
-import type {
-    GetDetailStatusResponse,
-    CompanyLiveDetailResponse,
-    TechnicalInfo,
-    EventInfo
-} from 'data-center';
-import type { OddsHashTable } from 'lib';
+import type { GetDetailStatusResponse, TechnicalInfo, EventInfo } from 'data-center';
+import type { OddsHashTable, OddsRunningHashTable } from 'lib';
 import { mqttService } from 'lib';
 import { useEffect } from 'react';
 import { creatSituationStore, useSituationStore } from '../../situationStore';
@@ -95,16 +90,10 @@ interface OddChangType {
     }[];
 }
 
-function Situation({
-    situationData,
-    companyLiveOddsDetail
-}: {
-    situationData: GetDetailStatusResponse;
-    companyLiveOddsDetail: CompanyLiveDetailResponse;
-}) {
+function Situation({ situationData }: { situationData: GetDetailStatusResponse }) {
     creatSituationStore({
         ...situationData,
-        companyLiveOddsDetail
+        liveOddsData: []
     });
 
     const updateTechnical = useSituationStore.use.setTechnical();
@@ -119,6 +108,7 @@ function Situation({
                 updateTechnical({ technical: message.technicStat });
             }
         };
+
         const syncEventGlobalStore = (message: Partial<EventInfoData>) => {
             if (message.matchId === matchDetail.matchId && message.event) {
                 const eventList: string[] = [];
@@ -162,10 +152,23 @@ function Situation({
             }
         };
 
+        const syncOddsRunning = (message: Partial<OddsRunningHashTable>) => {
+            // eslint-disable-next-line no-console -- TODO
+            console.log('syncOddsRunning', message);
+        };
+
+        const syncOddsRunningHalf = (message: Partial<OddsRunningHashTable>) => {
+            // eslint-disable-next-line no-console -- TODO
+            console.log('syncOddsRunningHalf', message);
+        };
+
+        mqttService.oddRunningInit();
         mqttService.getTechnicList(syncTechnicalGlobalStore);
         mqttService.getEventList(syncEventGlobalStore);
         mqttService.getOdds(syncOddChange);
         mqttService.getOdds(syncOdds);
+        mqttService.getOddsRunning(syncOddsRunning);
+        mqttService.getOddsRunningHalf(syncOddsRunningHalf);
     }, []);
 
     return (

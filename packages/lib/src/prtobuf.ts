@@ -21,6 +21,14 @@ let technicProtobuf: Root;
 let technicItem: Type;
 let technicInit = true;
 
+let oddsRunningProtobuf: Root;
+let oddsRunningItem: Type;
+let oddsRunningInit = true;
+
+let oddsRunningHalfProtobuf: Root;
+let oddsRunningHalfItem: Type;
+let oddsRunningHalfInit = true;
+
 /**
  * toProto method
  *
@@ -81,5 +89,27 @@ export const deProtoDetailTechnicList = async (msg: Uint8Array) => {
     }
 
     const decoded = technicItem.decode(msg);
+    return decoded;
+};
+
+export const deProtoOddRunning = async (msg: Uint8Array) => {
+    if (oddsRunningInit) {
+        oddsRunningProtobuf = await load('/odds_running.proto');
+        oddsRunningItem = oddsRunningProtobuf.lookupType('dataFetcher.OddsRunningMap');
+        oddsRunningInit = false;
+    }
+
+    const decoded = oddsRunningItem.decode(msg);
+    return decoded;
+};
+
+export const deProtoOddRunningHalf = async (msg: Uint8Array) => {
+    if (oddsRunningHalfInit) {
+        oddsRunningHalfProtobuf = await load('/odds_running_half.proto');
+        oddsRunningHalfItem = oddsRunningHalfProtobuf.lookupType('dataFetcher.OddsRunningHalfList');
+        oddsRunningHalfInit = false;
+    }
+
+    const decoded = oddsRunningHalfItem.decode(msg);
     return decoded;
 };

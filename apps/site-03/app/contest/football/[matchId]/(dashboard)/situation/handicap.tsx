@@ -15,11 +15,11 @@ const switchOptins = [
     { label: '36*', value: 8 }
 ];
 
-type TabTpye = 'fullHandicap' | 'halfHandicap';
+type TabTpye = 'HANDICAP' | 'HANDICAPHALF';
 type RadioType = 'half' | 'full';
 const handicapRadioMapping = {
-    half: 'halfHandicap',
-    full: 'fullHandicap'
+    half: 'HANDICAPHALF',
+    full: 'HANDICAP'
 };
 
 function InProgress({
@@ -42,7 +42,15 @@ function InProgress({
     return (
         <>
             {targetHandicap.map((now, idx) => (
-                <div className="tr" key={`before_${idx.toString()}`}>
+                <div
+                    className="tr"
+                    key={`before_${idx.toString()}`}
+                    onClick={() => {
+                        setIsOddsDetailDrawerOpen(true);
+                        setDrawerTabValue(handicapRadioMapping[handicapRadio] as TabTpye);
+                        setCompanyId(handicapSwitch);
+                    }}
+                >
                     <div className="td">
                         {handleStartTime(matchDetail.startTime, now.oddsChangeTime)}
                     </div>
@@ -69,19 +77,7 @@ function InProgress({
                         </div>
                         <div className={style.arrowColumn}>
                             <CompareOdds value={now.awayCurrentOdds} />
-                            <Image
-                                alt=""
-                                height={14}
-                                onClick={() => {
-                                    setIsOddsDetailDrawerOpen(true);
-                                    setDrawerTabValue(
-                                        handicapRadioMapping[handicapRadio] as TabTpye
-                                    );
-                                    setCompanyId(handicapSwitch);
-                                }}
-                                src={rightBlack.src}
-                                width={14}
-                            />
+                            <Image alt="" height={14} src={rightBlack.src} width={14} />
                         </div>
                     </div>
                 </div>
@@ -108,7 +104,15 @@ function NotStarted({
     return (
         <>
             {targetHandicap.map((before, idx) => (
-                <div className="tr" key={`before_${idx.toString()}`}>
+                <div
+                    className="tr"
+                    key={`before_${idx.toString()}`}
+                    onClick={() => {
+                        setDrawerTabValue(handicapRadioMapping[handicapRadio] as TabTpye);
+                        setIsOddsDetailDrawerOpen(true);
+                        setCompanyId(handicapSwitch);
+                    }}
+                >
                     <div className="td">未</div>
                     <div className="td">-</div>
                     <div className="td">
@@ -131,19 +135,7 @@ function NotStarted({
                         </div>
                         <div className={style.arrowColumn}>
                             <CompareOdds value={before.awayCurrentOdds} />
-                            <Image
-                                alt=""
-                                height={14}
-                                onClick={() => {
-                                    setDrawerTabValue(
-                                        handicapRadioMapping[handicapRadio] as TabTpye
-                                    );
-                                    setIsOddsDetailDrawerOpen(true);
-                                    setCompanyId(handicapSwitch);
-                                }}
-                                src={rightBlack.src}
-                                width={14}
-                            />
+                            <Image alt="" height={14} src={rightBlack.src} width={14} />
                         </div>
                     </div>
                 </div>

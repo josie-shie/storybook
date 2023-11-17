@@ -1,12 +1,12 @@
 import Image from 'next/image';
 import { GameStatus } from 'ui';
-import { timestampToString } from 'lib';
 import style from './header.module.scss';
 import BackIcon from './img/back.png';
 import ShareIcon from './img/share.png';
 import { useContestDetailStore } from './contestDetailStore';
 import TeamLogo from './components/teamLogo';
 import { useContestInfoStore } from '@/app/contestInfoStore';
+import { useFormattedTime } from '@/hooks/useFormattedTime';
 
 const statusStyleMap = {
     '0': 'notYet',
@@ -26,23 +26,24 @@ const statusStyleMap = {
 function Header({ back }: { back: () => void }) {
     const matchDetail = useContestDetailStore.use.matchDetail();
     const layoutDisplayed = useContestDetailStore.use.layoutDisplayed();
-
     const globalStore = useContestInfoStore.use.contestInfo();
-
     const syncData = Object.hasOwnProperty.call(globalStore, matchDetail.matchId)
         ? globalStore[matchDetail.matchId]
         : {};
 
     const liveState = syncData.state || matchDetail.state;
 
+    const currentMatchTime = useFormattedTime({
+        timeStamp: matchDetail.matchTime,
+        formattedString: 'M/DD HH:mm'
+    });
+
     return (
         <>
             <header className={style.header}>
                 <Image alt="back_icon" height={24} onClick={back} src={BackIcon} width={24} />
                 <div className={style.scoreboard}>
-                    <p className={style.createTime}>
-                        {timestampToString(matchDetail.startTime, 'M/DD HH:mm')}
-                    </p>
+                    <p className={style.createTime}>{currentMatchTime}</p>
                     <p className={style.league}>
                         {matchDetail.leagueChsShort}
                         {matchDetail.kind === 1 && ` 第${matchDetail.roundCn}轮`}

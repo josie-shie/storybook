@@ -8,14 +8,14 @@
     overflow: auto;
     z-index: 5;
 
-    :global(.ui-tab) {
-        :global(.ui-tab-header) {
-            :global(.ui-tabs-header) {
-                :global(.ui-button) {
+    :global .ui-tab {
+        .ui-tab-header {
+            .ui-tabs-header {
+                .ui-button {
                     flex: 1;
                     padding: 6px 24px;
 
-                    :global(.ui-tabs-header-label) {
+                    .ui-tabs-header-label {
                         font-size: 14px;
                         font-weight: 500;
                     }

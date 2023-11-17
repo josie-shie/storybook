@@ -1,14 +1,14 @@
 import type { Metadata } from 'next';
-import Edit from './edit';
+import MyAnaylsis from './myAnalysis';
 
 export const metadata: Metadata = {
-    title: '個人資料'
+    title: '個人中心'
 };
 
 function Page() {
     return (
-        <div className="userInfo">
-            <Edit />
+        <div>
+            <MyAnaylsis />
         </div>
     );
 }

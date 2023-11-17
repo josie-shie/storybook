@@ -1,0 +1,32 @@
+syntax = "proto3";
+package dataFetcher;
+option go_package = "../data_fetcher";
+
+message OddsRunningHalf {
+    int64 id = 1;            // 記錄 ID
+    int32 matchId = 2;       // 比賽 ID
+    string time = 3;         // 時間
+    int32 homeScore = 4;     // 主隊得分
+    int32 awayScore = 5;     // 客隊得分
+    int32 homeRed = 6;       // 主隊紅牌
+    int32 awayRed = 7;       // 客隊紅牌
+    int32 type = 8;          // 類型
+    // 類型說明
+    // 1：亞賠（讓球）變盤，賠率1~3：主隊賠率、讓球盤口、客隊賠率
+    // 2：大小球變盤，賠率1~3：大球賠率、盤口、小球賠率
+    // 3：統一封盤，賠率1~3：0
+    // 4：歐賠（勝平負）變盤，賠率1~3：主勝賠率、平局賠率、客勝賠率
+    // 5：歐賠（勝平負）封盤，賠率1~3：0
+    // 6：亞賠（讓球）封盤，賠率1~3：0
+    // 7：大小球封盤，賠率1~3：0
+    int32 companyId = 9;     // 公司 ID
+    string odds1 = 10;       // 賠率1
+    string odds2 = 11;       // 賠率2
+    string odds3 = 12;       // 賠率3
+    int64 modifyTime = 13;   // 變盤時間，假設這是個時間戳
+}
+
+message OddsRunningHalfList {
+    int32 matchId = 1;
+    repeated OddsRunningHalf list = 2;
+}
