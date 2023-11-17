@@ -1,0 +1,96 @@
+@import 'variables';
+
+.edit {
+    height: 100vh;
+    padding: 0 12px;
+
+    .uploadGroup {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+
+        .uploadBtn {
+            color: #4489ff;
+            font-size: 14px;
+            padding: 4px 12px;
+            border: 1px solid #4489ff;
+            border-radius: 30px;
+        }
+
+        p {
+            font-size: 12px;
+            color: #8d8d8d;
+        }
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+
+        .item {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 4px;
+
+            label,
+            .title {
+                font-size: 12px;
+                color: #757575;
+            }
+
+            input,
+            textarea {
+                width: 100%;
+                padding: 8px;
+                border: none;
+                background: #f3f3f3;
+                border-radius: 8px;
+                border: 1px solid #f3f3f3;
+
+                &:focus {
+                    border-color: #4489ff;
+                    outline: none;
+                }
+
+                &::placeholder {
+                    color: #8d8d8d;
+                    font-size: 14px;
+                }
+            }
+
+            textarea {
+                resize: none;
+                height: 64px;
+            }
+
+            .content {
+                width: 100%;
+                padding: 8px;
+                font-size: 14px;
+                color: #222;
+            }
+        }
+
+        .tip {
+            font-size: 12px;
+            color: #f85640;
+        }
+
+        .submit {
+            width: 100%;
+            margin: 15px auto;
+            padding: 10px;
+            background: #d9d9d9;
+            color: #fff;
+            border: none;
+            border-radius: 20px;
+
+            &.active {
+                background: #4489ff;
+            }
+        }
+    }
+}

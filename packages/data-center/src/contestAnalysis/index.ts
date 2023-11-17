@@ -424,10 +424,10 @@ const MatchesOverUnderHalfSchema = z.object({
 });
 const MatchesOddsDetailSchema = z.object({
     match: AsiaMatchSchema,
-    handicap: MatchesHandicapSchema,
-    handicapHalf: MatchesHandicapHalfSchema,
-    overUnder: MatchesOverUnderSchema,
-    overUnderHalf: MatchesOverUnderHalfSchema
+    handicap: z.nullable(MatchesHandicapSchema),
+    handicapHalf: z.nullable(MatchesHandicapHalfSchema),
+    overUnder: z.nullable(MatchesOverUnderSchema),
+    overUnderHalf: z.nullable(MatchesOverUnderHalfSchema)
 });
 
 const MatchesOddsDetailsSchema = z.object({
@@ -754,33 +754,33 @@ const formatRecordData = ({
             const full = {
                 ...basicInfo,
                 initial: {
-                    handicap: convertHandicap(item.handicap.initialHandicap),
-                    overUnder: convertHandicap(item.overUnder.initialHandicap),
+                    handicap: convertHandicap(item.handicap?.initialHandicap || 0),
+                    overUnder: convertHandicap(item.overUnder?.initialHandicap || 0),
                     handicapType: handleOddsType({
-                        handicap: item.handicap.initialHandicap,
-                        overUnder: item.overUnder.initialHandicap,
+                        handicap: item.handicap?.initialHandicap || 0,
+                        overUnder: item.overUnder?.initialHandicap || 0,
                         homeScore: mainScore,
                         awayScore: secondScore
                     }).handicapType,
                     overType: handleOddsType({
-                        handicap: item.handicap.initialHandicap,
-                        overUnder: item.overUnder.initialHandicap,
+                        handicap: item.handicap?.initialHandicap || 0,
+                        overUnder: item.overUnder?.initialHandicap || 0,
                         homeScore: mainScore,
                         awayScore: secondScore
                     }).overType
                 },
                 current: {
-                    handicap: convertHandicap(item.handicap.currentHandicap),
-                    overUnder: convertHandicap(item.overUnder.currentHandicap),
+                    handicap: convertHandicap(item.handicap?.currentHandicap || 0),
+                    overUnder: convertHandicap(item.overUnder?.currentHandicap || 0),
                     handicapType: handleOddsType({
-                        handicap: item.handicap.currentHandicap,
-                        overUnder: item.overUnder.currentHandicap,
+                        handicap: item.handicap?.currentHandicap || 0,
+                        overUnder: item.overUnder?.currentHandicap || 0,
                         homeScore: mainScore,
                         awayScore: secondScore
                     }).handicapType,
                     overType: handleOddsType({
-                        handicap: item.handicap.currentHandicap,
-                        overUnder: item.overUnder.currentHandicap,
+                        handicap: item.handicap?.currentHandicap || 0,
+                        overUnder: item.overUnder?.currentHandicap || 0,
                         homeScore: mainScore,
                         awayScore: secondScore
                     }).overType
@@ -790,33 +790,33 @@ const formatRecordData = ({
             const half = {
                 ...basicInfo,
                 initial: {
-                    handicap: convertHandicap(item.handicapHalf.initialHandicap),
-                    overUnder: convertHandicap(item.overUnderHalf.initialHandicap),
+                    handicap: convertHandicap(item.handicapHalf?.initialHandicap || 0),
+                    overUnder: convertHandicap(item.overUnderHalf?.initialHandicap || 0),
                     handicapType: handleOddsType({
-                        handicap: item.handicapHalf.initialHandicap,
-                        overUnder: item.overUnderHalf.initialHandicap,
+                        handicap: item.handicapHalf?.initialHandicap || 0,
+                        overUnder: item.overUnderHalf?.initialHandicap || 0,
                         homeScore: matchData?.homeScore || 0,
                         awayScore: secondScore
                     }).handicapType,
                     overType: handleOddsType({
-                        handicap: item.handicapHalf.initialHandicap,
-                        overUnder: item.overUnderHalf.initialHandicap,
+                        handicap: item.handicapHalf?.initialHandicap || 0,
+                        overUnder: item.overUnderHalf?.initialHandicap || 0,
                         homeScore: matchData?.homeScore || 0,
                         awayScore: secondScore
                     }).overType
                 },
                 current: {
-                    handicap: convertHandicap(item.handicapHalf.currentHandicap),
-                    overUnder: convertHandicap(item.overUnderHalf.currentHandicap),
+                    handicap: convertHandicap(item.handicapHalf?.currentHandicap || 0),
+                    overUnder: convertHandicap(item.overUnderHalf?.currentHandicap || 0),
                     handicapType: handleOddsType({
-                        handicap: item.handicapHalf.currentHandicap,
-                        overUnder: item.overUnderHalf.currentHandicap,
+                        handicap: item.handicapHalf?.currentHandicap || 0,
+                        overUnder: item.overUnderHalf?.currentHandicap || 0,
                         homeScore: matchData?.homeScore || 0,
                         awayScore: secondScore
                     }).handicapType,
                     overType: handleOddsType({
-                        handicap: item.handicapHalf.currentHandicap,
-                        overUnder: item.overUnderHalf.currentHandicap,
+                        handicap: item.handicapHalf?.currentHandicap || 0,
+                        overUnder: item.overUnderHalf?.currentHandicap || 0,
                         homeScore: matchData?.homeScore || 0,
                         awayScore: secondScore
                     }).overType
@@ -862,33 +862,33 @@ const formatRecordData = ({
             const full: OddsDetail = {
                 ...basicInfo,
                 initial: {
-                    handicap: convertHandicap(item.handicap.initialHandicap),
-                    overUnder: convertHandicap(item.overUnder.initialHandicap),
+                    handicap: convertHandicap(item.handicap?.initialHandicap || 0),
+                    overUnder: convertHandicap(item.overUnder?.initialHandicap || 0),
                     handicapType: handleOddsType({
-                        handicap: item.handicap.initialHandicap,
-                        overUnder: item.overUnder.initialHandicap,
+                        handicap: item.handicap?.initialHandicap || 0,
+                        overUnder: item.overUnder?.initialHandicap || 0,
                         homeScore: mainScore,
                         awayScore: secondScore
                     }).handicapType,
                     overType: handleOddsType({
-                        handicap: item.handicap.initialHandicap,
-                        overUnder: item.overUnder.initialHandicap,
+                        handicap: item.handicap?.initialHandicap || 0,
+                        overUnder: item.overUnder?.initialHandicap || 0,
                         homeScore: mainScore,
                         awayScore: secondScore
                     }).overType
                 },
                 current: {
-                    handicap: convertHandicap(item.handicap.currentHandicap),
-                    overUnder: convertHandicap(item.overUnder.currentHandicap),
+                    handicap: convertHandicap(item.handicap?.currentHandicap || 0),
+                    overUnder: convertHandicap(item.overUnder?.currentHandicap || 0),
                     handicapType: handleOddsType({
-                        handicap: item.handicap.currentHandicap,
-                        overUnder: item.overUnder.currentHandicap,
+                        handicap: item.handicap?.currentHandicap || 0,
+                        overUnder: item.overUnder?.currentHandicap || 0,
                         homeScore: mainScore,
                         awayScore: secondScore
                     }).handicapType,
                     overType: handleOddsType({
-                        handicap: item.handicap.currentHandicap,
-                        overUnder: item.overUnder.currentHandicap,
+                        handicap: item.handicap?.currentHandicap || 0,
+                        overUnder: item.overUnder?.currentHandicap || 0,
                         homeScore: mainScore,
                         awayScore: secondScore
                     }).overType
@@ -898,33 +898,33 @@ const formatRecordData = ({
             const half: OddsDetail = {
                 ...basicInfo,
                 initial: {
-                    handicap: convertHandicap(item.handicapHalf.initialHandicap),
-                    overUnder: convertHandicap(item.overUnderHalf.initialHandicap),
+                    handicap: convertHandicap(item.handicapHalf?.initialHandicap || 0),
+                    overUnder: convertHandicap(item.overUnderHalf?.initialHandicap || 0),
                     handicapType: handleOddsType({
-                        handicap: item.handicapHalf.initialHandicap,
-                        overUnder: item.overUnderHalf.initialHandicap,
+                        handicap: item.handicapHalf?.initialHandicap || 0,
+                        overUnder: item.overUnderHalf?.initialHandicap || 0,
                         homeScore: mainScore,
                         awayScore: secondScore
                     }).handicapType,
                     overType: handleOddsType({
-                        handicap: item.handicapHalf.initialHandicap,
-                        overUnder: item.overUnderHalf.initialHandicap,
+                        handicap: item.handicapHalf?.initialHandicap || 0,
+                        overUnder: item.overUnderHalf?.initialHandicap || 0,
                         homeScore: mainScore,
                         awayScore: secondScore
                     }).overType
                 },
                 current: {
-                    handicap: convertHandicap(item.handicapHalf.currentHandicap),
-                    overUnder: convertHandicap(item.overUnderHalf.currentHandicap),
+                    handicap: convertHandicap(item.handicapHalf?.currentHandicap || 0),
+                    overUnder: convertHandicap(item.overUnderHalf?.currentHandicap || 0),
                     handicapType: handleOddsType({
-                        handicap: item.handicapHalf.currentHandicap,
-                        overUnder: item.overUnderHalf.currentHandicap,
+                        handicap: item.handicapHalf?.currentHandicap || 0,
+                        overUnder: item.overUnderHalf?.currentHandicap || 0,
                         homeScore: mainScore,
                         awayScore: secondScore
                     }).handicapType,
                     overType: handleOddsType({
-                        handicap: item.handicapHalf.currentHandicap,
-                        overUnder: item.overUnderHalf.currentHandicap,
+                        handicap: item.handicapHalf?.currentHandicap || 0,
+                        overUnder: item.overUnderHalf?.currentHandicap || 0,
                         homeScore: mainScore,
                         awayScore: secondScore
                     }).overType

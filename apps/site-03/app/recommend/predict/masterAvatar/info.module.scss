@@ -5,7 +5,7 @@
     flex-direction: column;
     margin-top: -12px;
     padding: 12px 12px 45px 12px;
-    background: linear-gradient(91deg, #144ca8 0.72%, #2575fc 98.56%);
+    background: linear-gradient(to right, #2c5eb2 0%, #3a82fb 100%);
 
     .detail {
         display: flex;
@@ -30,6 +30,9 @@
             }
 
             .bottom {
+                display: flex;
+                gap: 4px;
+
                 span {
                     color: #fff;
                     font-size: 12px;

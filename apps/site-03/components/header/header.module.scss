@@ -44,3 +44,28 @@
         }
     }
 }
+
+.headerDetail {
+    position: relative;
+    width: 100%;
+    height: 54px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(to right, #2c5eb2 0%, #3a82fb 100%);
+
+    .title {
+        display: flex;
+        gap: 4px;
+        align-items: center;
+
+        .text {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #fff;
+            font-size: 14px;
+        }
+    }
+}
