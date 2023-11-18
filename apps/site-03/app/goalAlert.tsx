@@ -26,12 +26,11 @@ function GoalAlert() {
                 homeSound: localStorage.getItem('homeSound') || soundDefault.homeSound,
                 awaySound: localStorage.getItem('awaySound') || soundDefault.awaySound
             };
+            if ((!data.awayScore && !data.homeScore) || !soundData.openTip) return;
             const globalStore = useContestListGlobalStore.getState().contestInfo;
             const currentInfoStore = useContestInfoStore.getState().contestInfo;
             const contestInfo = globalStore[data.matchId];
             const currentContestInfo = currentInfoStore[data.matchId];
-
-            if ((!data.awayScore && !data.homeScore) || !soundData.openTip) return;
             if (soundData.openSound) {
                 if (data.homeScore) void soundSourceMap[soundData.homeSound].play();
                 if (data.awayScore) void soundSourceMap[soundData.awaySound].play();
