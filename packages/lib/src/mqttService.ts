@@ -224,8 +224,8 @@ export type OddChangeOverUnderHalf = Partial<{
 export type OddsOverUnderHalf = OddChangeOverUnderHalf &
     Partial<{
         initialHandicap: number;
-        homeInitialOdds: number;
-        awayInitialOdds: number;
+        initialOverOdds: number;
+        initialUnderOdds: number;
     }>;
 
 export type OddChangeOverUnder = Partial<{
@@ -242,8 +242,8 @@ export type OddChangeOverUnder = Partial<{
 export type OddsOverUnder = OddChangeOverUnder &
     Partial<{
         initialHandicap: number;
-        homeInitialOdds: number;
-        awayInitialOdds: number;
+        initialOverOdds: number;
+        initialUnderOdds: number;
     }>;
 
 export type OddChangeEuropeOddsHalf = Partial<{
@@ -480,6 +480,7 @@ interface BettingData {
     matchId: number;
     time: string;
     homeScore: number;
+    awayScore: number;
     type: number;
     companyId: number;
     homeCurrentOdds?: number;
@@ -513,6 +514,7 @@ function createOddRunningHashTable(oddList: OddsRunningType, isHalf: boolean) {
                 matchId: item.matchId,
                 time: item.time,
                 homeScore: item.homeScore,
+                awayScore: item.awayScore,
                 type: item.type,
                 companyId: item.companyId,
                 homeCurrentOdds: parseFloat(item.odds1),
@@ -549,7 +551,7 @@ const handleOddRunningMessage = async (message: Buffer) => {
         messageMethod(formatDecodedMessage);
     }
     // eslint-disable-next-line no-console -- Check mqtt message
-    console.log('[MQTT On Odd Running message ContestMessage]: ', decodedMessage);
+    // console.log('[MQTT On Odd Running message ContestMessage]: ', decodedMessage);
 };
 
 const handleOddRunningHalfMessage = async (message: Buffer) => {
@@ -559,7 +561,7 @@ const handleOddRunningHalfMessage = async (message: Buffer) => {
         messageObject as unknown as Record<string, unknown>
     );
 
-    for (const messageMethod of useOddsRunningQueue) {
+    for (const messageMethod of useOddsRunningHalfQueue) {
         const formatDecodedMessage = createOddRunningHashTable(decodedMessage, true);
         messageMethod(formatDecodedMessage);
     }

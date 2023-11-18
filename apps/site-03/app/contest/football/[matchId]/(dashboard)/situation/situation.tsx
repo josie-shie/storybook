@@ -22,74 +22,6 @@ interface EventInfoData {
     event: EventInfo[];
 }
 
-interface OddChangType {
-    match: {
-        matchId: number;
-        homeScore: number;
-        awayScore: number;
-        state: number;
-    };
-    handicapHalfList: {
-        matchId: number;
-        companyId: number;
-        currentHandicap: number;
-        homeCurrentOdds: number;
-        awayCurrentOdds: number;
-        oddsChangeTime: number;
-        oddsType: number;
-    }[];
-    handicapList: {
-        matchId: number;
-        companyId: number;
-        currentHandicap: number;
-        homeCurrentOdds: number;
-        awayCurrentOdds: number;
-        isMaintained: boolean;
-        isInProgress: boolean;
-        oddsChangeTime: number;
-        isClosed: boolean;
-        oddsType: number;
-    }[];
-    overUnderHalfList: {
-        matchId: number;
-        companyId: number;
-        currentHandicap: number;
-        currentOverOdds: number;
-        currentUnderOdds: number;
-        oddsChangeTime: number;
-        oddsType: number;
-    }[];
-    overUnderList: {
-        matchId: number;
-        companyId: number;
-        currentHandicap: number;
-        currentOverOdds: number;
-        currentUnderOdds: number;
-        oddsChangeTime: number;
-        isClosed: boolean;
-        oddsType: number;
-    }[];
-    europeOddsHalfList: {
-        matchId: number;
-        companyId: number;
-        currentHandicap: number;
-        currentOverOdds: number;
-        currentUnderOdds: number;
-        oddsChangeTime: number;
-        isClosed: boolean;
-        oddsType: number;
-    }[];
-    europeOddsList: {
-        matchId: number;
-        companyId: number;
-        currentHandicap: number;
-        currentOverOdds: number;
-        currentUnderOdds: number;
-        oddsChangeTime: number;
-        oddsType: number;
-    }[];
-}
-
 function Situation({ situationData }: { situationData: GetDetailStatusResponse }) {
     creatSituationStore({
         ...situationData,
@@ -99,8 +31,8 @@ function Situation({ situationData }: { situationData: GetDetailStatusResponse }
     const updateTechnical = useSituationStore.use.setTechnical();
     const updateEvent = useSituationStore.use.setEvents();
     const matchDetail = useContestDetailStore.use.matchDetail();
-    const setOddChange = useSituationStore.use.setOddChange();
-    const setOdds = useSituationStore.use.setOdds();
+    const setNotStartedOdds = useSituationStore.use.setNotStartedOdds();
+    const setInprogressOdds = useSituationStore.use.setInprogressOdds();
 
     useEffect(() => {
         const syncTechnicalGlobalStore = (message: Partial<TechnicalInfoData>) => {
@@ -140,35 +72,34 @@ function Situation({ situationData }: { situationData: GetDetailStatusResponse }
             }
         };
 
-        const syncOddChange = (message: OddChangType) => {
+        const syncNotStartedOdds = (message: Partial<OddsHashTable>) => {
             if (message[matchDetail.matchId]) {
-                setOddChange({ oddChangeData: message });
-            }
-        };
-
-        const syncOdds = (message: Partial<OddsHashTable>) => {
-            if (message[matchDetail.matchId]) {
-                setOdds(message, matchDetail.matchId);
+                setNotStartedOdds(message, matchDetail.matchId);
             }
         };
 
         const syncOddsRunning = (message: Partial<OddsRunningHashTable>) => {
+            if (message[matchDetail.matchId]) {
+                setInprogressOdds(message, matchDetail.matchId);
+            }
             // eslint-disable-next-line no-console -- TODO
-            console.log('syncOddsRunning', message);
+            // console.log('syncOddsRunning', message);
         };
 
         const syncOddsRunningHalf = (message: Partial<OddsRunningHashTable>) => {
+            if (message[matchDetail.matchId]) {
+                setInprogressOdds(message, matchDetail.matchId);
+            }
             // eslint-disable-next-line no-console -- TODO
-            console.log('syncOddsRunningHalf', message);
+            // console.log('syncOddsRunningHalf', message);
         };
 
         mqttService.oddRunningInit();
         mqttService.getTechnicList(syncTechnicalGlobalStore);
         mqttService.getEventList(syncEventGlobalStore);
-        mqttService.getOdds(syncOddChange);
-        mqttService.getOdds(syncOdds);
         mqttService.getOddsRunning(syncOddsRunning);
         mqttService.getOddsRunningHalf(syncOddsRunningHalf);
+        mqttService.getOdds(syncNotStartedOdds);
     }, []);
 
     return (
