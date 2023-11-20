@@ -111,6 +111,8 @@ interface EventInfoData {
 }
 
 let client: MqttClient;
+let isConnect = false;
+
 const useMessageQueue: ((data: OriginalContestInfo) => void)[] = [];
 const useOddsQueue: ((data: OddsType) => void)[] = [];
 const useOddsChangeQueue: ((data: OddChangeType) => void)[] = [];
@@ -480,6 +482,7 @@ interface BettingData {
     matchId: number;
     time: string;
     homeScore: number;
+    awayScore: number;
     type: number;
     companyId: number;
     homeCurrentOdds?: number;
@@ -513,6 +516,7 @@ function createOddRunningHashTable(oddList: OddsRunningType, isHalf: boolean) {
                 matchId: item.matchId,
                 time: item.time,
                 homeScore: item.homeScore,
+                awayScore: item.awayScore,
                 type: item.type,
                 companyId: item.companyId,
                 homeCurrentOdds: parseFloat(item.odds1),
@@ -589,19 +593,27 @@ export const mqttService = {
                 if (topic === 'updatetechnic') void handleDetailTechnicListMessage(message);
             });
             init = false;
+
+            if (isConnect) {
+                mqttService.oddRunningInit();
+            }
         }
         return client;
     },
     oddRunningInit: () => {
-        // eslint-disable-next-line no-console -- Check lifecycle
-        console.log('Mqtt oddRunning connected');
-        client.subscribe('updateodds_running');
-        client.subscribe('updateodds_running_half');
+        if (!init) {
+            // eslint-disable-next-line no-console -- Check lifecycle
+            console.log('Mqtt oddRunning connected');
+            client.subscribe('updateodds_running');
+            client.subscribe('updateodds_running_half');
 
-        client.on('message', (topic, message) => {
-            if (topic === 'updateodds_running') void handleOddRunningMessage(message);
-            if (topic === 'updateodds_running_half') void handleOddRunningHalfMessage(message);
-        });
+            client.on('message', (topic, message) => {
+                if (topic === 'updateodds_running') void handleOddRunningMessage(message);
+                if (topic === 'updateodds_running_half') void handleOddRunningHalfMessage(message);
+            });
+        } else {
+            isConnect = true;
+        }
     },
     oddRunningDeinit: () => {
         // eslint-disable-next-line no-console -- Check lifecycle
