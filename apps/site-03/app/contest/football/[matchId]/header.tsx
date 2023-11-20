@@ -56,7 +56,9 @@ function Header({ back }: { back: () => void }) {
                         {matchDetail.kind === 1 && ` 第${matchDetail.roundCn}轮`}
                     </p>
                 </div>
-                <Image alt="share_icon" height={24} src={ShareIcon} width={24} />
+                <div className={style.share_icon}>
+                    <Image alt="share_icon" height={24} src={ShareIcon} width={24} />
+                </div>
             </header>
 
             <header
@@ -81,7 +83,9 @@ function Header({ back }: { back: () => void }) {
                     <p className={style.score}>{syncData.awayScore || matchDetail.awayScore}</p>
                     <TeamLogo alt="" height={24} src={matchDetail.awayLogo} width={24} />
                 </div>
-                <Image alt="share_icon" height={24} src={ShareIcon} width={24} />
+                <div className={style.share_icon}>
+                    <Image alt="share_icon" height={24} src={ShareIcon} width={24} />
+                </div>
             </header>
         </>
     );
