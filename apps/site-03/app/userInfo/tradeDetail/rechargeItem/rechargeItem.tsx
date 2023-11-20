@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import style from './tradeItem.module.scss';
+import style from './rechargeItem.module.scss';
 import recharge from './img/recharge.png';
 // import payment from './img/payment.png';
 // import income from './img/income.png';
@@ -28,7 +28,7 @@ const statusTextMap = {
     fail: '交易失敗'
 };
 
-function TradeItem({ data }: PropsType) {
+function RechargeItem({ data }: PropsType) {
     const money = data.result > 0 ? `+${data.result}` : data.result;
     const statusStyle = statusStyleMap[data.status];
     const statusLabel = statusTextMap[data.status];
@@ -61,4 +61,4 @@ function TradeItem({ data }: PropsType) {
     );
 }
 
-export default TradeItem;
+export default RechargeItem;

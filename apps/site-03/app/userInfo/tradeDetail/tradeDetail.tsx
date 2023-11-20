@@ -1,14 +1,15 @@
 'use client';
 import { Select } from '../recharge/components/select/select';
 import style from './tradeDetail.module.scss';
-import TradeItem from './tradeItem/tradeItem';
+import RechargeItem from './rechargeItem/rechargeItem';
+import Payment from './payment/payment';
 import Header from '@/components/header/headerTitleDetail';
 
 const dateOptions = [{ label: '今天', value: 'today' }];
 
 const typeOption = [{ label: '全部', value: 'total' }];
 
-interface ItemData {
+interface RechargeData {
     currency: string;
     exchangeRate: number;
     time: string;
@@ -18,7 +19,18 @@ interface ItemData {
     overage: number;
 }
 
-const data: { id: number; type: 'recharge' | 'payment' | 'income'; data: ItemData }[] = [
+interface PaymentData {
+    type: number;
+    time: string;
+    result: number;
+    overage: number;
+}
+
+const data: {
+    id: number;
+    type: 'recharge' | 'payment' | 'income';
+    data: RechargeData | PaymentData;
+}[] = [
     {
         id: 111,
         type: 'recharge',
@@ -57,6 +69,46 @@ const data: { id: number; type: 'recharge' | 'payment' | 'income'; data: ItemDat
             status: 'fail',
             overage: 2200
         }
+    },
+    {
+        id: 444,
+        type: 'payment',
+        data: {
+            type: 1,
+            time: '2023-10-20 13:19',
+            result: -200,
+            overage: 800
+        }
+    },
+    {
+        id: 555,
+        type: 'payment',
+        data: {
+            type: 2,
+            time: '2023-10-20 13:19',
+            result: -200,
+            overage: 800
+        }
+    },
+    {
+        id: 666,
+        type: 'income',
+        data: {
+            type: 3,
+            time: '2023-10-20 13:19',
+            result: 200,
+            overage: 800
+        }
+    },
+    {
+        id: 777,
+        type: 'income',
+        data: {
+            type: 4,
+            time: '2023-10-20 13:19',
+            result: 100,
+            overage: 800
+        }
     }
 ];
 
@@ -70,11 +122,13 @@ function TradeDetail() {
                     <Select options={dateOptions} showDragBar value="today" />
                     <Select options={typeOption} showDragBar value="total" />
                 </div>
-                {data.map(item => {
-                    if (item.type === 'recharge')
-                        return <TradeItem data={item.data} key={item.id} />;
-                    return <div key={item.id}>收支</div>;
-                })}
+                {data.map(item =>
+                    item.type === 'recharge' ? (
+                        <RechargeItem data={item.data as RechargeData} key={item.id} />
+                    ) : (
+                        <Payment data={item.data as PaymentData} key={item.id} />
+                    )
+                )}
             </div>
         </>
     );
