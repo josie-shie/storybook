@@ -31,7 +31,7 @@ function ContestListLayout({ children }: { children: ReactNode }) {
 
     const tabStyle = {
         gap: 8,
-        swiperOpen: false,
+        swiperOpen: true,
         buttonRadius: 30
     };
 
