@@ -226,8 +226,8 @@ export type OddChangeOverUnderHalf = Partial<{
 export type OddsOverUnderHalf = OddChangeOverUnderHalf &
     Partial<{
         initialHandicap: number;
-        homeInitialOdds: number;
-        awayInitialOdds: number;
+        initialOverOdds: number;
+        initialUnderOdds: number;
     }>;
 
 export type OddChangeOverUnder = Partial<{
@@ -244,8 +244,8 @@ export type OddChangeOverUnder = Partial<{
 export type OddsOverUnder = OddChangeOverUnder &
     Partial<{
         initialHandicap: number;
-        homeInitialOdds: number;
-        awayInitialOdds: number;
+        initialOverOdds: number;
+        initialUnderOdds: number;
     }>;
 
 export type OddChangeEuropeOddsHalf = Partial<{
@@ -447,7 +447,23 @@ const handleDetailTechnicListMessage = async (message: Buffer) => {
 
 export interface OddsRunningType {
     matchId?: number;
+    isHalf: boolean;
     data?: {
+        id: number;
+        matchId: number;
+        time: string;
+        homeScore: number;
+        awayScore: number;
+        homeRed: number;
+        awayRed: number;
+        type: number;
+        companyId: number;
+        odds1: string;
+        odds2: string;
+        odds3: string;
+        modifytime: number;
+    }[];
+    list?: {
         id: number;
         matchId: number;
         time: string;
@@ -494,11 +510,13 @@ interface BettingData {
     isClosed: boolean;
 }
 
-function createOddRunningHashTable(oddList: OddsRunningType, isHalf: boolean) {
+function createOddRunningHashTable(oddList: OddsRunningType) {
     const result: OddsRunningHashTable = {};
 
-    if (oddList.data) {
-        oddList.data.forEach(item => {
+    const target = oddList.isHalf ? oddList.list : oddList.data;
+
+    if (target) {
+        target.forEach(item => {
             if (item.type !== 1 && item.type !== 2 && item.type !== 6 && item.type !== 7) {
                 return;
             }
@@ -527,12 +545,12 @@ function createOddRunningHashTable(oddList: OddsRunningType, isHalf: boolean) {
             };
 
             if (item.type === 1 || item.type === 6) {
-                const key = isHalf ? 'handicapHalf' : 'handicap';
+                const key = oddList.isHalf ? 'handicapHalf' : 'handicap';
                 result[item.matchId][item.companyId][key] = bettingData;
             } else {
                 bettingData.currentOverOdds = parseFloat(item.odds1);
                 bettingData.currentUnderOdds = parseFloat(item.odds3);
-                const key = isHalf ? 'overUnderHalf' : 'overUnder';
+                const key = oddList.isHalf ? 'overUnderHalf' : 'overUnder';
                 result[item.matchId][item.companyId][key] = bettingData;
             }
         });
@@ -549,11 +567,14 @@ const handleOddRunningMessage = async (message: Buffer) => {
     );
 
     for (const messageMethod of useOddsRunningQueue) {
-        const formatDecodedMessage = createOddRunningHashTable(decodedMessage, false);
+        const formatDecodedMessage = createOddRunningHashTable({
+            ...decodedMessage,
+            isHalf: false
+        });
         messageMethod(formatDecodedMessage);
     }
     // eslint-disable-next-line no-console -- Check mqtt message
-    console.log('[MQTT On Odd Running message ContestMessage]: ', decodedMessage);
+    // console.log('[MQTT On Odd Running message ContestMessage]: ', decodedMessage);
 };
 
 const handleOddRunningHalfMessage = async (message: Buffer) => {
@@ -563,8 +584,8 @@ const handleOddRunningHalfMessage = async (message: Buffer) => {
         messageObject as unknown as Record<string, unknown>
     );
 
-    for (const messageMethod of useOddsRunningQueue) {
-        const formatDecodedMessage = createOddRunningHashTable(decodedMessage, true);
+    for (const messageMethod of useOddsRunningHalfQueue) {
+        const formatDecodedMessage = createOddRunningHashTable({ ...decodedMessage, isHalf: true });
         messageMethod(formatDecodedMessage);
     }
 

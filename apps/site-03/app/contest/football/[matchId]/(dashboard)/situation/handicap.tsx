@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import Image from 'next/image';
-import { handleStartTime } from 'lib';
 import type { GetSingleMatchResponse, HandicapsInfo } from 'data-center';
-import { useContestDetailStore } from '../../contestDetailStore';
+import { convertHandicap, truncateFloatingPoint } from 'lib';
 import { useSituationStore } from '../../situationStore';
 import style from './situation.module.scss';
 import rightBlack from './img/right_black.png';
 import { CompareOdds } from '@/app/contest/football/(list)/components/compareOdds';
 import TextRadio from '@/components/textSwitch/textSwitch';
 import ButtonSwitch from '@/components/textSwitch/buttonSwitch';
+import { useContestDetailStore } from '@/app/contest/football/[matchId]/contestDetailStore';
 
 const switchOptins = [
     { label: 'CROW*', value: 3 },
@@ -22,6 +22,11 @@ const handicapRadioMapping = {
     full: 'HANDICAP'
 };
 
+type HandicapsData = HandicapsInfo &
+    Partial<{
+        time: string;
+    }>;
+
 function InProgress({
     targetHandicap,
     setIsOddsDetailDrawerOpen,
@@ -31,7 +36,7 @@ function InProgress({
     handicapSwitch,
     matchDetail
 }: {
-    targetHandicap: HandicapsInfo[];
+    targetHandicap: HandicapsData[];
     setIsOddsDetailDrawerOpen: (value: boolean) => void;
     setDrawerTabValue: (value: TabTpye) => void;
     handicapRadio: RadioType;
@@ -39,49 +44,102 @@ function InProgress({
     handicapSwitch: number;
     matchDetail: GetSingleMatchResponse;
 }) {
+    const arrowIcon = (
+        <Image
+            alt=""
+            height={14}
+            onClick={() => {
+                setIsOddsDetailDrawerOpen(true);
+                setDrawerTabValue(handicapRadioMapping[handicapRadio] as TabTpye);
+                setCompanyId(handicapSwitch);
+            }}
+            src={rightBlack.src}
+            width={14}
+        />
+    );
+
     return (
         <>
-            {targetHandicap.map((now, idx) => (
-                <div
-                    className="tr"
-                    key={`before_${idx.toString()}`}
-                    onClick={() => {
-                        setIsOddsDetailDrawerOpen(true);
-                        setDrawerTabValue(handicapRadioMapping[handicapRadio] as TabTpye);
-                        setCompanyId(handicapSwitch);
-                    }}
-                >
-                    <div className="td">
-                        {handleStartTime(matchDetail.startTime, now.oddsChangeTime)}
+            {matchDetail.state > 0 &&
+                (targetHandicap.length ? (
+                    targetHandicap.map((now, idx) => (
+                        <div
+                            className="tr"
+                            key={`before_${idx.toString()}`}
+                            onClick={() => {
+                                setIsOddsDetailDrawerOpen(true);
+                                setDrawerTabValue(handicapRadioMapping[handicapRadio] as TabTpye);
+                                setCompanyId(handicapSwitch);
+                            }}
+                        >
+                            <div className="td">{now.time}</div>
+                            <div className="td">
+                                {now.homeScore}-{now.awayScore}
+                            </div>
+                            <div className="td">
+                                <div>
+                                    <CompareOdds
+                                        value={truncateFloatingPoint(
+                                            Number(now.homeInitialOdds),
+                                            2
+                                        )}
+                                    />
+                                </div>
+                                <div>
+                                    <CompareOdds value={convertHandicap(now.initialHandicap)} />
+                                </div>
+                                <div>
+                                    <CompareOdds
+                                        value={truncateFloatingPoint(
+                                            Number(now.awayInitialOdds),
+                                            2
+                                        )}
+                                    />
+                                </div>
+                            </div>
+                            <div className="td">
+                                {now.isClosed ? (
+                                    <>
+                                        <div>封</div>
+                                        <div>{arrowIcon}</div>
+                                    </>
+                                ) : (
+                                    <>
+                                        <div>
+                                            <CompareOdds
+                                                value={truncateFloatingPoint(
+                                                    Number(now.homeCurrentOdds),
+                                                    2
+                                                )}
+                                            />
+                                        </div>
+                                        <div>
+                                            <CompareOdds
+                                                value={convertHandicap(now.currentHandicap)}
+                                            />
+                                        </div>
+                                        <div className={style.arrowColumn}>
+                                            <CompareOdds
+                                                value={truncateFloatingPoint(
+                                                    Number(now.awayCurrentOdds),
+                                                    2
+                                                )}
+                                            />
+                                            {arrowIcon}
+                                        </div>
+                                    </>
+                                )}
+                            </div>
+                        </div>
+                    ))
+                ) : (
+                    <div className="tr">
+                        <div className="td">-</div>
+                        <div className="td">-</div>
+                        <div className="td empty">-</div>
+                        <div className="td empty">-</div>
                     </div>
-                    <div className="td">
-                        {now.homeScore}-{now.awayScore}
-                    </div>
-                    <div className="td">
-                        <div>
-                            <CompareOdds value={now.homeInitialOdds} />
-                        </div>
-                        <div>
-                            <CompareOdds value={now.initialHandicap} />
-                        </div>
-                        <div>
-                            <CompareOdds value={now.awayInitialOdds} />
-                        </div>
-                    </div>
-                    <div className="td">
-                        <div>
-                            <CompareOdds value={now.homeCurrentOdds} />
-                        </div>
-                        <div>
-                            <CompareOdds value={now.currentHandicap} />
-                        </div>
-                        <div className={style.arrowColumn}>
-                            <CompareOdds value={now.awayCurrentOdds} />
-                            <Image alt="" height={14} src={rightBlack.src} width={14} />
-                        </div>
-                    </div>
-                </div>
-            ))}
+                ))}
         </>
     );
 }
@@ -94,7 +152,7 @@ function NotStarted({
     setCompanyId,
     handicapSwitch
 }: {
-    targetHandicap: HandicapsInfo[];
+    targetHandicap: HandicapsData[];
     setIsOddsDetailDrawerOpen: (value: boolean) => void;
     setDrawerTabValue: (value: TabTpye) => void;
     handicapRadio: RadioType;
@@ -149,11 +207,12 @@ function Handicap() {
 
     const [handicapRadio, setHandicapRadio] = useState<RadioType>('full');
     const [handicapSwitch, setHandicapSwitch] = useState(3);
-    const matchDetail = useContestDetailStore.use.matchDetail();
 
     const setCompanyId = useSituationStore.use.setCompanyId();
     const setDrawerTabValue = useSituationStore.use.setOddsDeatilDrawerTabValue();
     const setIsOddsDetailDrawerOpen = useSituationStore.use.setIsOddsDetailDrawerOpen();
+    const matchDetail = useContestDetailStore.use.matchDetail();
+
     const handleChangeSwitch = (switchValue: number) => {
         setHandicapSwitch(switchValue);
         setCompanyId(switchValue);
