@@ -1,13 +1,15 @@
 'use client';
-import { useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
+import { Tab, Tabs } from 'ui';
+import Image from 'next/image';
+import backLeftArrowImg from '../img/backLeftArrow.png';
 import { creatArticleStore } from './components/articleItem/articleStore';
 import AnalysisItem from './components/analysisItem/analysisItem';
 import ArticleItem from './components/articleItem/articleItem';
 import style from './myAnalysis.module.scss';
 
-function MyAnaylsis() {
-    const searchParams = useSearchParams();
-    const search = searchParams.get('status');
+function MyAnalysis() {
+    const router = useRouter();
     creatArticleStore({
         articleList: [
             {
@@ -97,24 +99,69 @@ function MyAnaylsis() {
         ]
     });
 
+    const tabStyle = {
+        gap: 8,
+        swiperOpen: true,
+        buttonRadius: 30
+    };
+
+    const createArticle = () => {
+        router.push('/userInfo/myAnalysis/createArticle');
+    };
+
     return (
-        <div className={style.myAnalysis}>
-            {search === 'unlock' ? (
-                <ArticleItem />
-            ) : (
-                <>
-                    <AnalysisItem />
-                    <AnalysisItem />
-                    <AnalysisItem />
-                    <AnalysisItem />
-                    <AnalysisItem />
-                    <AnalysisItem />
-                    <AnalysisItem />
-                    <AnalysisItem />
-                </>
-            )}
-        </div>
+        <>
+            <div className={style.placeholder}>
+                <div className={style.headerDetail}>
+                    <div className={style.title}>
+                        <Image
+                            alt=""
+                            height={24}
+                            onClick={() => {
+                                router.back();
+                            }}
+                            src={backLeftArrowImg}
+                            width={24}
+                        />
+                        <div className={style.text}>我的分析</div>
+                        <button
+                            className={style.publish}
+                            onClick={() => {
+                                createArticle();
+                            }}
+                            type="button"
+                        >
+                            发布文章
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div className={style.main}>
+                <Tabs
+                    buttonRadius={tabStyle.buttonRadius}
+                    gap={tabStyle.gap}
+                    position="center"
+                    styling="underline"
+                    swiperOpen={tabStyle.swiperOpen}
+                >
+                    <Tab label="解锁记录" to="/userInfo/myAnalysis?status=unlock">
+                        <ArticleItem />
+                    </Tab>
+                    <Tab label="我的分析" to="/userInfo/myAnalysis?status=myanalysis">
+                        <AnalysisItem />
+                        <AnalysisItem />
+                        <AnalysisItem />
+                        <AnalysisItem />
+                        <AnalysisItem />
+                        <AnalysisItem />
+                        <AnalysisItem />
+                        <AnalysisItem />
+                    </Tab>
+                </Tabs>
+            </div>
+        </>
     );
 }
 
-export default MyAnaylsis;
+export default MyAnalysis;

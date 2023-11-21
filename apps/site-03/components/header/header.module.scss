@@ -3,7 +3,8 @@
     height: 68px;
 }
 
-.header {
+.header,
+.headerNoBg {
     width: 100%;
     height: 68px;
     padding: 16px;
@@ -43,6 +44,10 @@
             align-items: center;
         }
     }
+}
+
+.headerNoBg {
+    background: transparent;
 }
 
 .headerDetail {

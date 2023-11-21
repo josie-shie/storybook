@@ -4,12 +4,15 @@ import Button from '@mui/material/Button';
 import { useRouter } from 'next/navigation';
 import type { GetSingleMatchResponse } from 'data-center';
 import { GameStatus } from 'ui';
+import md5 from 'crypto-js/md5';
+import { useState } from 'react';
 import TeamLogo from './components/teamLogo';
 import Header from './header';
 import style from './liveBox.module.scss';
 import VideoIcon from './img/video.png';
 import bgImage from './img/bg.jpg';
 import { createContestDetailStore, useContestDetailStore } from './contestDetailStore';
+import BackIcon from './img/back.png';
 import { useContestInfoStore } from '@/app/contestInfoStore';
 
 const statusStyleMap = {
@@ -57,6 +60,51 @@ function GameDetail({ matchId }: { matchId: number }) {
     );
 }
 
+function Animate({ matchId }: { matchId: number }) {
+    const [showAnimate, setShowAnimate] = useState('');
+
+    const getAnimateUrl = () => {
+        const ts = Math.floor(Date.now());
+        const accessKey = 'ADG41H3Wfx7V3JlAaVZX1klyXvBhYQGu1GuV';
+        const secretKey = 'ubAdfpqlPmbWeSjh7iDaqYRsQhRPq3W7dRAR';
+        const auth = md5(accessKey + ts + secretKey) as unknown as string;
+
+        const url = `https://zhibo.feijing88.com/animation/?matchId=${matchId}&accessKey=${accessKey}&ts=${ts}&auth=${auth}`;
+        setShowAnimate(url);
+    };
+    const back = () => {
+        setShowAnimate('');
+    };
+
+    return (
+        <>
+            <Button className={style.liveBtn} onClick={getAnimateUrl}>
+                <Image
+                    alt="video_icon"
+                    className={style.icon}
+                    height={17}
+                    src={VideoIcon}
+                    width={17}
+                />
+                <span>动画</span>
+            </Button>
+            {showAnimate ? (
+                <div className={style.animateBox}>
+                    <iframe src={showAnimate} title="sport animate" />
+                    <Image
+                        alt="back_icon"
+                        className={style.backIcon}
+                        height={24}
+                        onClick={back}
+                        src={BackIcon}
+                        width={24}
+                    />
+                </div>
+            ) : null}
+        </>
+    );
+}
+
 function LiveBox({
     contestDetail,
     backHistory,
@@ -67,6 +115,7 @@ function LiveBox({
     matchId: number;
 }) {
     createContestDetailStore({ matchDetail: contestDetail });
+
     const { homeChs, homeLogo, awayChs, awayLogo } = useContestDetailStore.use.matchDetail();
     const router = useRouter();
     const back = () => {
@@ -98,16 +147,7 @@ function LiveBox({
                         <p className={style.teamName}>{awayChs}</p>
                     </div>
                 </div>
-                <Button className={style.liveBtn}>
-                    <Image
-                        alt="video_icon"
-                        className={style.icon}
-                        height={17}
-                        src={VideoIcon}
-                        width={17}
-                    />
-                    <span>动画</span>
-                </Button>
+                <Animate matchId={matchId} />
             </div>
         </div>
     );

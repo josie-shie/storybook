@@ -4,6 +4,8 @@ import type { ReactNode } from 'react';
 import type { Metadata } from 'next';
 import GlobalStore from './globalStore';
 import MqttService from './mqttService';
+import GoalAlert from './goalAlert';
+import ContestStoreHandler from './contestStoreHandler';
 
 export const metadata: Metadata = {
     title: 'Sport',
@@ -25,6 +27,8 @@ function RootLayout({ children }: { children: ReactNode }) {
             <body>
                 <GlobalStore>
                     <MqttService>
+                        <ContestStoreHandler />
+                        <GoalAlert />
                         <main>{children}</main>
                     </MqttService>
                 </GlobalStore>

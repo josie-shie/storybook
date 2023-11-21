@@ -41,7 +41,14 @@ function Header({ back }: { back: () => void }) {
     return (
         <>
             <header className={style.header}>
-                <Image alt="back_icon" height={24} onClick={back} src={BackIcon} width={24} />
+                <Image
+                    alt="back_icon"
+                    className={style.backIcon}
+                    height={24}
+                    onClick={back}
+                    src={BackIcon}
+                    width={24}
+                />
                 <div className={style.scoreboard}>
                     <p className={style.createTime}>{currentMatchTime}</p>
                     <p className={style.league}>
@@ -55,7 +62,14 @@ function Header({ back }: { back: () => void }) {
             <header
                 className={`${style.header} ${style.headerFixed} ${!layoutDisplayed && style.show}`}
             >
-                <Image alt="back_icon" height={24} onClick={back} src={BackIcon} width={24} />
+                <Image
+                    alt="back_icon"
+                    className={style.backIcon}
+                    height={24}
+                    onClick={back}
+                    src={BackIcon}
+                    width={24}
+                />
                 <div className={style.scoreBar}>
                     <TeamLogo alt="" height={24} src={matchDetail.homeLogo} width={24} />
                     <p className={style.score}>{syncData.homeScore || matchDetail.homeScore}</p>
