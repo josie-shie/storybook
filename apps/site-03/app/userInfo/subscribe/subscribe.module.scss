@@ -1,0 +1,151 @@
+.subscribe {
+    position: relative;
+    height: 100dvh;
+
+    .background {
+        position: absolute;
+        z-index: -1;
+    }
+}
+
+.content {
+    padding: 40px 12px 0;
+}
+
+.planContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 54px;
+
+    .plan {
+        position: relative;
+        flex-grow: 1;
+        width: 48%;
+        background: transparent;
+        color: #fff;
+        padding: 16px;
+        border: 1px solid #ffffff4d;
+        border-radius: 8px;
+        transition: 0.3s;
+
+        .recommendMark {
+            position: absolute;
+            top: 16px;
+            left: -5px;
+            width: 34px;
+            height: 19px;
+        }
+
+        .text {
+            font-weight: 600;
+            text-align: center;
+
+            &:first-child {
+                margin-bottom: 8px;
+            }
+
+            > span {
+                font-size: 24px;
+                display: inline-block;
+                padding: 0 4px;
+            }
+        }
+
+        .coin {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .selectedFlag {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 30px;
+            height: 30px;
+        }
+    }
+
+    .selectedPlan {
+        background: #e6effe;
+        color: #4489ff;
+        border: 1px solid #fff;
+    }
+}
+
+.rights {
+    font-size: 14px;
+    color: #fff;
+
+    .currentPlan {
+        text-align: center;
+        margin-bottom: 2px;
+
+        .plan {
+            color: #fbb03b;
+        }
+    }
+
+    .descript {
+        text-align: center;
+
+        &::after {
+            content: '';
+            display: inline-block;
+            vertical-align: super;
+            background: #fff;
+            width: 12px;
+            height: 1px;
+            margin-left: 8px;
+        }
+
+        &::before {
+            content: '';
+            display: inline-block;
+            vertical-align: super;
+            background: #fff;
+            width: 12px;
+            height: 1px;
+            margin-right: 8px;
+        }
+    }
+
+    .list {
+        li {
+            text-align: center;
+            background: #0000001a;
+            padding: 12px;
+            border-radius: 8px;
+            margin: 12px 0;
+        }
+    }
+}
+
+.agreement {
+    font-size: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    color: #fff;
+    padding: 6px;
+    margin: 24px 0;
+
+    a {
+        color: #fbb03b;
+    }
+
+    a:visited {
+        color: #fbb03b;
+    }
+}
+
+.submit {
+    width: 100%;
+    display: block;
+    color: #4489ff;
+    padding: 10px 12px;
+    border: 0;
+    border-radius: 50px;
+}
