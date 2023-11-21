@@ -2,6 +2,7 @@
 import { IconFlame } from '@tabler/icons-react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import userInfoBg from './img/userInfoBg.png';
 import Star from './img/star.png';
 import BuyBag from './img/buyBag.png';
 import MyFocus from './img/myFocus.png';
@@ -11,14 +12,14 @@ import MyAnalyze from './img/myAnalyze.png';
 import style from './userInfo.module.scss';
 import Avatar from '@/components/avatar/avatar';
 import Tag from '@/components/tag/tag';
-import Header from '@/components/header/headerTitle';
+import Header from '@/components/header/headerTitleNoBg';
 import Footer from '@/components/footer/footer';
 
 function UserInfo() {
     const router = useRouter();
+
     const headerProps = {
-        title: '我的',
-        total: 0
+        title: '我的'
     };
 
     const goRecharge = () => {
@@ -26,8 +27,8 @@ function UserInfo() {
     };
 
     return (
-        <>
-            <Header title={headerProps.title} total={headerProps.total} />
+        <div className={style.wrapper} style={{ backgroundImage: `url(${userInfoBg.src})` }}>
+            <Header title={headerProps.title} />
             <div className={style.userInfo}>
                 <div className={style.container}>
                     <div className={style.detail}>
@@ -113,7 +114,7 @@ function UserInfo() {
                 </div>
             </div>
             <Footer />
-        </>
+        </div>
     );
 }
 

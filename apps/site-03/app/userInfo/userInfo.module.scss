@@ -1,8 +1,13 @@
 @import 'variables';
 
+.wrapper {
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-color: #f8f8f8;
+}
+
 .userInfo {
     height: calc(100vh - 113px);
-    background: #f8f8f8;
     overflow: auto;
     margin-top: -12px;
     padding-top: 12px;
@@ -14,7 +19,6 @@
         flex-direction: column;
         margin-top: -12px;
         padding: 12px 12px 48px 12px;
-        background: linear-gradient(to right, #2c5eb2 0%, #3a82fb 100%);
 
         .detail {
             display: flex;
