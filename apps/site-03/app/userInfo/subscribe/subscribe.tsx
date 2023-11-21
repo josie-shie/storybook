@@ -1,6 +1,8 @@
 'use client';
 import Image from 'next/image';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import backLeftArrowImg from '../img/backLeftArrow.png';
 import style from './subscribe.module.scss';
 import background from './img/bg.png';
 import starIcon from './img/starIcon.png';
@@ -8,7 +10,6 @@ import recommendMark from './img/recommendMark.png';
 import selected from './img/selected.png';
 import checkbox from './img/checkbox.png';
 import checkedbox from './img/checkedbox.png';
-import Header from '@/components/header/headerTitleDetail';
 
 const plansMap = [
     { planId: 1, period: '年', days: 365, price: 888 },
@@ -18,13 +19,32 @@ const plansMap = [
 ];
 
 function Subscribe() {
+    const router = useRouter();
     const [planId, setPlanId] = useState(1);
     const [isChecked, setIsChecked] = useState(false);
 
     return (
         <div className={style.subscribe}>
             <Image alt="" className={style.background} layout="fill" src={background} />
-            <Header title="開通訂閱" />
+            <div className={style.placeholder}>
+                <div className={style.headerDetail}>
+                    <div className={style.title}>
+                        <Image
+                            alt=""
+                            height={24}
+                            onClick={() => {
+                                router.back();
+                            }}
+                            src={backLeftArrowImg}
+                            width={24}
+                        />
+                        <div className={style.text}>開通訂閱</div>
+                        <button className={style.publish} type="button">
+                            關於訂閱
+                        </button>
+                    </div>
+                </div>
+            </div>
             <div className={style.content}>
                 <div className={style.planContainer}>
                     {plansMap.map(plan => (

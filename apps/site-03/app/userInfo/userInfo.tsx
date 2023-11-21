@@ -27,6 +27,10 @@ function UserInfo() {
         router.push('/userInfo/recharge');
     };
 
+    const goSubscribe = () => {
+        router.push('/userInfo/subscribe');
+    };
+
     return (
         <div className={style.wrapper} style={{ backgroundImage: `url(${userInfoBg.src})` }}>
             <Header title={headerProps.title} />
@@ -78,7 +82,14 @@ function UserInfo() {
                                     <Image alt="" height={16} src={BuyBag} width={16} />
                                     <span>您的订阅状态：</span>尚未开通
                                 </span>
-                                <span className={style.button}>开通</span>
+                                <span
+                                    className={style.button}
+                                    onClick={() => {
+                                        goSubscribe();
+                                    }}
+                                >
+                                    开通
+                                </span>
                             </div>
                         </div>
                     </div>
