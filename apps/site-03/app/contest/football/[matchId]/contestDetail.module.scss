@@ -38,5 +38,9 @@
             bottom: -1px;
             border-radius: 10px;
         }
+
+        .ui-loading {
+            height: calc(100vh - 340px);
+        }
     }
 }

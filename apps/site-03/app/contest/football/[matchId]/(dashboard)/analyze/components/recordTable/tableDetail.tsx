@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import style from './record.module.scss';
 import Select from '@/app/contest/football/[matchId]/(dashboard)/components/select/select';
 import type {
@@ -130,7 +131,9 @@ function TableDetail({
                 list.map(item => (
                     <div className="tr" key={item.matchId}>
                         <div className={`td ${style.flexColumns}`}>
-                            <div className={style.dateText}>{item.matchTime}</div>
+                            <div className={style.dateText}>
+                                {dayjs(item.matchTime).format('YY-MM-DD')}
+                            </div>
                             <div>{item.leagueName}</div>
                         </div>
                         <div
@@ -145,7 +148,8 @@ function TableDetail({
                                 <span>{item.homeScore}</span>-<span>{item.awayScore}</span>
                             </div>
                             <div className={style.halfScore}>
-                                <span>{item.homeHalfScore}</span>-<span>{item.awayHalfScore}</span>
+                                <span>({item.homeHalfScore}</span>-
+                                <span>{item.awayHalfScore})</span>
                             </div>
                         </div>
                         <div

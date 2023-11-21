@@ -37,11 +37,11 @@ function LeagueRankTable({ teamName, tableData }: LeagueRankTableProps) {
     ];
 
     return (
-        <div className={style.leagueRankTable}>
+        <div className={style.leagueRankTables}>
             <div className="dataTable">
                 <div className="tableHead">
                     <div className="tr">
-                        <div className="th">{teamName}</div>
+                        <div className="th teamName">{teamName}</div>
                     </div>
                 </div>
                 <div className="tableBody greyRow">

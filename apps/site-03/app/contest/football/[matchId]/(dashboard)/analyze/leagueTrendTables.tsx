@@ -39,7 +39,7 @@ function LeagueTrendTable({
         <div className="dataTable">
             <div className="tableHead">
                 <div className="tr">
-                    <div className="th">{teamName || '-'}</div>
+                    <div className="th teamName">{teamName || '-'}</div>
                 </div>
             </div>
             <div className="tableBody greyRow">
