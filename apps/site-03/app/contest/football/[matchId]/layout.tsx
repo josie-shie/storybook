@@ -4,6 +4,7 @@ import { getMatchDetail } from 'data-center';
 import LiveBox from './liveBox';
 import GuessBar from './guessBar';
 import TabBar from './tabBar';
+import OddMqttService from './oddMqttService';
 
 async function DetailLayout({
     children,
@@ -26,6 +27,7 @@ async function DetailLayout({
             />
             <GuessBar />
             <TabBar matchId={params.matchId}>{children}</TabBar>
+            <OddMqttService />
         </>
     );
 }

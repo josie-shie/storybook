@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import Image from 'next/image';
-import { handleStartTime } from 'lib';
 import type { GetSingleMatchResponse, TotalGoalsInfo } from 'data-center';
-import { useContestDetailStore } from '../../contestDetailStore';
+import { convertHandicap, truncateFloatingPoint } from 'lib';
 import { useSituationStore } from '../../situationStore';
 import style from './situation.module.scss';
 import rightBlack from './img/right_black.png';
 import { CompareOdds } from '@/app/contest/football/(list)/components/compareOdds';
 import TextRadio from '@/components/textSwitch/textSwitch';
 import ButtonSwitch from '@/components/textSwitch/buttonSwitch';
+import { useContestDetailStore } from '@/app/contest/football/[matchId]/contestDetailStore';
 
 const switchOptins = [
     { label: 'CROW*', value: 3 },
@@ -22,6 +22,11 @@ const handicapRadioMapping = {
     full: 'OVERUNDER'
 };
 
+type TotalGoalsData = TotalGoalsInfo &
+    Partial<{
+        time: string;
+    }>;
+
 function InProgress({
     targetTotalGoals,
     setIsOddsDetailDrawerOpen,
@@ -31,7 +36,7 @@ function InProgress({
     totalGoalsSwitch,
     matchDetail
 }: {
-    targetTotalGoals: TotalGoalsInfo[];
+    targetTotalGoals: TotalGoalsData[];
     setIsOddsDetailDrawerOpen: (value: boolean) => void;
     setDrawerTabValue: (value: TabTpye) => void;
     totalGoalsRadio: RadioType;
@@ -39,49 +44,95 @@ function InProgress({
     totalGoalsSwitch: number;
     matchDetail: GetSingleMatchResponse;
 }) {
+    const arrowIcon = (
+        <Image
+            alt=""
+            height={14}
+            onClick={() => {
+                setDrawerTabValue(handicapRadioMapping[totalGoalsRadio] as TabTpye);
+                setIsOddsDetailDrawerOpen(true);
+                setCompanyId(totalGoalsSwitch);
+            }}
+            src={rightBlack.src}
+            width={14}
+        />
+    );
+
     return (
         <>
-            {targetTotalGoals.map((now, idx) => (
-                <div
-                    className="tr"
-                    key={`before_${idx.toString()}`}
-                    onClick={() => {
-                        setDrawerTabValue(handicapRadioMapping[totalGoalsRadio] as TabTpye);
-                        setIsOddsDetailDrawerOpen(true);
-                        setCompanyId(totalGoalsSwitch);
-                    }}
-                >
-                    <div className="td">
-                        {handleStartTime(matchDetail.startTime, now.oddsChangeTime)}
+            {matchDetail.state > 0 && targetTotalGoals.length ? (
+                targetTotalGoals.map((now, idx) => (
+                    <div
+                        className="tr"
+                        key={`before_${idx.toString()}`}
+                        onClick={() => {
+                            setDrawerTabValue(handicapRadioMapping[totalGoalsRadio] as TabTpye);
+                            setIsOddsDetailDrawerOpen(true);
+                            setCompanyId(totalGoalsSwitch);
+                        }}
+                    >
+                        <div className="td">{now.time}</div>
+                        <div className="td">
+                            {now.homeScore}-{now.awayScore}
+                        </div>
+                        <div className="td">
+                            <div>
+                                <CompareOdds
+                                    value={truncateFloatingPoint(Number(now.overInitialOdds), 2)}
+                                />
+                            </div>
+                            <div>
+                                <CompareOdds value={convertHandicap(Number(now.initialHandicap))} />
+                            </div>
+                            <div>
+                                <CompareOdds
+                                    value={truncateFloatingPoint(Number(now.underInitialOdds), 2)}
+                                />
+                            </div>
+                        </div>
+                        <div className="td">
+                            {now.isClosed ? (
+                                <>
+                                    <div>封</div>
+                                    <div>{arrowIcon}</div>
+                                </>
+                            ) : (
+                                <>
+                                    <div>
+                                        <CompareOdds
+                                            value={truncateFloatingPoint(
+                                                Number(now.overCurrentOdds),
+                                                2
+                                            )}
+                                        />
+                                    </div>
+                                    <div>
+                                        <CompareOdds
+                                            value={convertHandicap(Number(now.currentHandicap))}
+                                        />
+                                    </div>
+                                    <div className={style.arrowColumn}>
+                                        <CompareOdds
+                                            value={truncateFloatingPoint(
+                                                Number(now.underCurrentOdds),
+                                                2
+                                            )}
+                                        />
+                                        {arrowIcon}
+                                    </div>
+                                </>
+                            )}
+                        </div>
                     </div>
-                    <div className="td">
-                        {now.homeScore}-{now.awayScore}
-                    </div>
-                    <div className="td">
-                        <div>
-                            <CompareOdds value={now.overInitialOdds} />
-                        </div>
-                        <div>
-                            <CompareOdds value={now.initialHandicap} />
-                        </div>
-                        <div>
-                            <CompareOdds value={now.underInitialOdds} />
-                        </div>
-                    </div>
-                    <div className="td">
-                        <div>
-                            <CompareOdds value={now.overCurrentOdds} />
-                        </div>
-                        <div>
-                            <CompareOdds value={now.currentHandicap} />
-                        </div>
-                        <div className={style.arrowColumn}>
-                            <CompareOdds value={now.underCurrentOdds} />
-                            <Image alt="" height={14} src={rightBlack.src} width={14} />
-                        </div>
-                    </div>
+                ))
+            ) : (
+                <div className="tr">
+                    <div className="td">-</div>
+                    <div className="td">-</div>
+                    <div className="td empty">-</div>
+                    <div className="td empty">-</div>
                 </div>
-            ))}
+            )}
         </>
     );
 }
