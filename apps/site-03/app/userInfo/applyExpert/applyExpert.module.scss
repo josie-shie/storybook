@@ -96,5 +96,10 @@
         border: none;
         color: #4489ff;
         background: #fff;
+        opacity: 0.3;
+
+        &.active {
+            opacity: 1;
+        }
     }
 }
