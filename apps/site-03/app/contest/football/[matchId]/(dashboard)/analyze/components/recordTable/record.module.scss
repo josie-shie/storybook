@@ -2,6 +2,9 @@
     :global {
         .dataTable {
             .tableHead {
+                border-top-left-radius: 0;
+                border-top-right-radius: 0;
+
                 .tr {
                     flex: none;
                     gap: 2px;
