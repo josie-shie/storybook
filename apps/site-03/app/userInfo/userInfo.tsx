@@ -108,7 +108,7 @@ function UserInfo() {
                         <ul>
                             <li>
                                 <ButtonBase>
-                                    <Link href="">申请成为专家</Link>
+                                    <Link href="/userInfo/applyExpert">申请成为专家</Link>
                                 </ButtonBase>
                             </li>
                             <li>
