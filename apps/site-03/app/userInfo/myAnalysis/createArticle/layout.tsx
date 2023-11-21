@@ -8,10 +8,6 @@ import style from './layout.module.scss';
 function CreatArticleLayout({ children }: { children: ReactNode }) {
     const router = useRouter();
 
-    const createArticle = () => {
-        router.push('/userInfo/myAnalysis/createArticle');
-    };
-
     return (
         <>
             <div className={style.placeholder}>
@@ -26,14 +22,7 @@ function CreatArticleLayout({ children }: { children: ReactNode }) {
                             src={backLeftArrowImg}
                             width={24}
                         />
-                        <div
-                            className={style.text}
-                            onClick={() => {
-                                createArticle();
-                            }}
-                        >
-                            发布文章
-                        </div>
+                        <div className={style.text}>发布文章</div>
                     </div>
                 </div>
             </div>

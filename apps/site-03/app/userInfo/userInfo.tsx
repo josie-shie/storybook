@@ -1,6 +1,8 @@
 'use client';
 import { IconFlame } from '@tabler/icons-react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { ButtonBase } from '@mui/material';
 import Image from 'next/image';
 import userInfoBg from './img/userInfoBg.png';
 import Star from './img/star.png';
@@ -104,11 +106,31 @@ function UserInfo() {
                     </div>
                     <div className={style.mySetting}>
                         <ul>
-                            <li>申请成为专家</li>
-                            <li>修改密码</li>
-                            <li>推薦給朋友</li>
-                            <li>聯繫客服</li>
-                            <li>常見問題</li>
+                            <li>
+                                <ButtonBase>
+                                    <Link href="">申请成为专家</Link>
+                                </ButtonBase>
+                            </li>
+                            <li>
+                                <ButtonBase>
+                                    <Link href="">修改密码</Link>
+                                </ButtonBase>
+                            </li>
+                            <li>
+                                <ButtonBase>
+                                    <Link href="/userInfo/invite">推荐给朋友</Link>
+                                </ButtonBase>
+                            </li>
+                            <li>
+                                <ButtonBase>
+                                    <Link href="">联系客服</Link>
+                                </ButtonBase>
+                            </li>
+                            <li>
+                                <ButtonBase>
+                                    <Link href="">常见问题</Link>
+                                </ButtonBase>
+                            </li>
                         </ul>
                     </div>
                 </div>

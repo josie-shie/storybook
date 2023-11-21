@@ -160,10 +160,22 @@
                 flex-direction: column;
 
                 li {
-                    color: #222;
-                    font-size: 14px;
-                    padding: 14px 0;
                     border-bottom: 1px solid #f3f3f3;
+
+                    :global(.MuiButtonBase-root) {
+                        width: 100%;
+                        justify-content: flex-start;
+                    }
+
+                    a {
+                        width: 100%;
+                        color: #222;
+                        font-size: 14px;
+                        text-align: left;
+                        padding: 14px 0;
+                        user-select: none;
+                        cursor: none;
+                    }
 
                     &:last-child {
                         border-bottom: none;
