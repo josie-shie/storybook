@@ -1,6 +1,5 @@
 'use client';
 import { creatNewsStore } from './newsStore';
-import NewsMarquee from './newsMarquee';
 import NewsList from './newsList';
 import NewsCarousel from './newsCarousel';
 import newsImage from './img/newsImg.jpeg';
@@ -58,7 +57,6 @@ function News() {
     return (
         <div className={style.news}>
             <NewsCarousel />
-            <NewsMarquee />
             <NewsList />
         </div>
     );
