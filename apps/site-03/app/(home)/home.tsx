@@ -25,7 +25,10 @@ function Home() {
                 homeChs: '欧锦U20A',
                 awayChs: '斯洛文尼亚U20',
                 homeScore: 1,
-                awayScore: 1
+                awayScore: 1,
+                roundCn: 2,
+                startTime: 1700619530,
+                leagueChsShort: '英议联'
             },
             {
                 id: 2,
@@ -36,7 +39,10 @@ function Home() {
                 homeChs: '欧锦U20A',
                 awayChs: '斯洛文尼亚U20',
                 homeScore: 1,
-                awayScore: 1
+                awayScore: 1,
+                roundCn: 2,
+                startTime: 1700619530,
+                leagueChsShort: '英议联'
             },
             {
                 id: 3,
@@ -47,7 +53,10 @@ function Home() {
                 homeChs: '欧锦U20A',
                 awayChs: '斯洛文尼亚U20',
                 homeScore: 1,
-                awayScore: 1
+                awayScore: 1,
+                roundCn: 2,
+                startTime: 1700619530,
+                leagueChsShort: '英议联'
             }
         ],
         contestList: {
