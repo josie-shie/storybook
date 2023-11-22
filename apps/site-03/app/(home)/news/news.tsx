@@ -45,6 +45,48 @@ function News() {
                 image: newsImage.src,
                 title: '神! 梅西连3战梅开二度 迈阿密国际PK大战胜出挺进8强',
                 time: '2023/5/10'
+            },
+            {
+                id: 5,
+                image: newsImage.src,
+                title: '神! 梅西连3战梅开二度 迈阿密国际PK大战胜出挺进8强',
+                time: '2023/5/10'
+            },
+            {
+                id: 6,
+                image: newsImage.src,
+                title: '神! 梅西连3战梅开二度 迈阿密国际PK大战胜出挺进8强',
+                time: '2023/5/10'
+            },
+            {
+                id: 7,
+                image: newsImage.src,
+                title: '神! 梅西连3战梅开二度 迈阿密国际PK大战胜出挺进8强',
+                time: '2023/5/10'
+            },
+            {
+                id: 8,
+                image: newsImage.src,
+                title: '神! 梅西连3战梅开二度 迈阿密国际PK大战胜出挺进8强',
+                time: '2023/5/10'
+            },
+            {
+                id: 9,
+                image: newsImage.src,
+                title: '神! 梅西连3战梅开二度 迈阿密国际PK大战胜出挺进8强',
+                time: '2023/5/10'
+            },
+            {
+                id: 10,
+                image: newsImage.src,
+                title: '神! 梅西连3战梅开二度 迈阿密国际PK大战胜出挺进8强',
+                time: '2023/5/10'
+            },
+            {
+                id: 11,
+                image: newsImage.src,
+                title: '神! 梅西连3战梅开二度 迈阿密国际PK大战胜出挺进8强',
+                time: '2023/5/10'
             }
         ],
         marqueeList: [
