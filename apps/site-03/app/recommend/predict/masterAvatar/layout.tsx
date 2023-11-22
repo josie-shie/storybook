@@ -1,0 +1,64 @@
+'use client';
+import type { ReactNode } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { Tab, Tabs } from 'ui';
+import style from './layout.module.scss';
+import Info from './info';
+import Header from '@/components/header/headerTitle';
+
+function MasterAvatarLayout({ children }: { children: ReactNode }) {
+    const searchParams = useSearchParams();
+    const status = searchParams.get('status');
+    const headerProps = {
+        title: '专家预测',
+        total: 999999
+    };
+    const tabStyle = {
+        gap: 0,
+        swiperOpen: true,
+        buttonRadius: 0
+    };
+    const tabList = [
+        {
+            label: '分析',
+            to: '/recommend/predict/masterAvatar?status=analysis',
+            status: 'analysis'
+        },
+        {
+            label: '竟猜',
+            to: '/recommend/predict/masterAvatar?status=guess',
+            status: 'guess'
+        },
+        {
+            label: '关注',
+            to: '/recommend/predict/masterAvatar?status=focus',
+            status: 'focus'
+        }
+    ];
+
+    return (
+        <>
+            <Header title={headerProps.title} total={headerProps.total} />
+            <Info />
+            <div className={style.masterAvatar}>
+                <Tabs
+                    buttonRadius={tabStyle.buttonRadius}
+                    gap={tabStyle.gap}
+                    position="center"
+                    styling="underline"
+                    swiperOpen={tabStyle.swiperOpen}
+                >
+                    {tabList.map(item => {
+                        return (
+                            <Tab key={item.label} label={item.label} to={item.to}>
+                                {item.status === status && children}
+                            </Tab>
+                        );
+                    })}
+                </Tabs>
+            </div>
+        </>
+    );
+}
+
+export default MasterAvatarLayout;

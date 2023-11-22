@@ -1,14 +1,14 @@
 import type { Metadata } from 'next';
-import MyAnaylsis from './myAnalysis';
+import MyGuess from './myGuess';
 
 export const metadata: Metadata = {
-    title: '我的分析'
+    title: '我的竟猜'
 };
 
 function Page() {
     return (
-        <div>
-            <MyAnaylsis />
+        <div className="myGuess">
+            <MyGuess />
         </div>
     );
 }

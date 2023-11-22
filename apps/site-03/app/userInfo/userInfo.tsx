@@ -88,20 +88,39 @@ function UserInfo() {
                 <div className={style.myDetail}>
                     <div className={style.business}>
                         <div className={style.item}>
-                            <Image alt="" height={32} src={MyFocus} width={32} />
-                            <span className={style.text}>我的关注</span>
+                            <ButtonBase>
+                                <Image alt="" height={32} src={MyFocus} width={32} />
+                                <Link className={style.text} href="/userInfo/myAnalysis">
+                                    我的关注
+                                </Link>
+                            </ButtonBase>
                         </div>
                         <div className={style.item}>
-                            <Image alt="" height={32} src={MyFans} width={32} />
-                            <span className={style.text}>我的粉絲</span>
+                            <ButtonBase>
+                                <Image alt="" height={32} src={MyFans} width={32} />
+                                <Link className={style.text} href="/userInfo/myAnalysis">
+                                    我的粉絲
+                                </Link>
+                            </ButtonBase>
                         </div>
                         <div className={style.item}>
-                            <Image alt="" height={32} src={MyGame} width={32} />
-                            <span className={style.text}>我的竟猜</span>
+                            <ButtonBase>
+                                <Image alt="" height={32} src={MyGame} width={32} />
+                                <Link className={style.text} href="/userInfo/myGuess">
+                                    我的竟猜
+                                </Link>
+                            </ButtonBase>
                         </div>
                         <div className={style.item}>
-                            <Image alt="" height={32} src={MyAnalyze} width={32} />
-                            <span className={style.text}>我的分析</span>
+                            <ButtonBase>
+                                <Image alt="" height={32} src={MyAnalyze} width={32} />
+                                <Link
+                                    className={style.text}
+                                    href="/userInfo/myAnalysis?status=unlock"
+                                >
+                                    我的分析
+                                </Link>
+                            </ButtonBase>
                         </div>
                     </div>
                     <div className={style.mySetting}>
