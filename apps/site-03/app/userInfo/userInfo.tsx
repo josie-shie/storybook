@@ -90,7 +90,7 @@ function UserInfo() {
                         <div className={style.item}>
                             <ButtonBase>
                                 <Image alt="" height={32} src={MyFocus} width={32} />
-                                <Link className={style.text} href="/userInfo/myAnalysis">
+                                <Link className={style.text} href="/userInfo/myFocus">
                                     我的关注
                                 </Link>
                             </ButtonBase>
@@ -98,7 +98,7 @@ function UserInfo() {
                         <div className={style.item}>
                             <ButtonBase>
                                 <Image alt="" height={32} src={MyFans} width={32} />
-                                <Link className={style.text} href="/userInfo/myAnalysis">
+                                <Link className={style.text} href="/userInfo/myFans">
                                     我的粉絲
                                 </Link>
                             </ButtonBase>
