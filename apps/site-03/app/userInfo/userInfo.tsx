@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ButtonBase } from '@mui/material';
 import Image from 'next/image';
+import Link from 'next/link';
 import userInfoBg from './img/userInfoBg.png';
 import Star from './img/star.png';
 import BuyBag from './img/buyBag.png';
@@ -26,6 +27,10 @@ function UserInfo() {
 
     const goRecharge = () => {
         router.push('/userInfo/recharge');
+    };
+
+    const goSubscribe = () => {
+        router.push('/userInfo/subscribe');
     };
 
     return (
@@ -57,7 +62,7 @@ function UserInfo() {
 
                     <div className={style.trade}>
                         <button className={style.tradeDetail} type="button">
-                            我的交易明細
+                            <Link href="/userInfo/tradeDetail">我的交易明細</Link>
                         </button>
                         <div className={style.list}>
                             <div className={style.item}>
@@ -79,7 +84,14 @@ function UserInfo() {
                                     <Image alt="" height={16} src={BuyBag} width={16} />
                                     <span>您的订阅状态：</span>尚未开通
                                 </span>
-                                <span className={style.button}>开通</span>
+                                <span
+                                    className={style.button}
+                                    onClick={() => {
+                                        goSubscribe();
+                                    }}
+                                >
+                                    开通
+                                </span>
                             </div>
                         </div>
                     </div>
