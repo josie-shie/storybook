@@ -2,6 +2,7 @@
 import Image from 'next/image';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { Dialog } from '@mui/material';
 import backLeftArrowImg from '../img/backLeftArrow.png';
 import style from './subscribe.module.scss';
 import background from './img/bg.png';
@@ -22,10 +23,50 @@ function Subscribe() {
     const router = useRouter();
     const [planId, setPlanId] = useState(1);
     const [isChecked, setIsChecked] = useState(false);
+    const [dialogOpend, setDialogOpend] = useState(false);
+    const periodLabel = plansMap.find(el => el.planId === planId)?.period;
+
+    const handleSubscribeButtonOnClick = () => {
+        setDialogOpend(true);
+    };
 
     return (
         <div className={style.subscribe}>
             <Image alt="" className={style.background} layout="fill" src={background} />
+            <Dialog
+                PaperProps={{
+                    style: {
+                        width: '300px',
+                        padding: '16px',
+                        borderRadius: '15px'
+                    }
+                }}
+                onClose={() => {
+                    setDialogOpend(false);
+                }}
+                open={dialogOpend}
+            >
+                <section className={style.dialogSection}>
+                    <div className={style.title}>
+                        支付
+                        <Image alt="" height={16} src={starIcon} width={16} />
+                        <span className={style.coin}>10</span>
+                    </div>
+                    <div className={style.title}>開通年卡訂閱</div>
+                    <div className={style.subTitle}>我的餘額: 1000金幣</div>
+                </section>
+                <div className={style.buttonContainer}>
+                    <button
+                        onClick={() => {
+                            setDialogOpend(false);
+                        }}
+                        type="button"
+                    >
+                        取消
+                    </button>
+                    <button type="button">確認支付</button>
+                </div>
+            </Dialog>
             <div className={style.placeholder}>
                 <div className={style.headerDetail}>
                     <div className={style.title}>
@@ -75,7 +116,7 @@ function Subscribe() {
                 </div>
                 <div className={style.rights}>
                     <div className={style.currentPlan}>
-                        你選擇 <span className={style.plan}>年卡方案</span>
+                        你選擇 <span className={style.plan}>{periodLabel}卡方案</span>
                     </div>
                     <div className={style.descript}>訂閱期間可享受以下權益</div>
                     <ul className={style.list}>
@@ -111,7 +152,12 @@ function Subscribe() {
                         已同意<a href="./">會員服務協議</a>
                     </div>
                 </div>
-                <button className={style.submit} type="button">
+                <button
+                    className={style.submit}
+                    disabled={!isChecked}
+                    onClick={handleSubscribeButtonOnClick}
+                    type="button"
+                >
                     立即開通
                 </button>
             </div>

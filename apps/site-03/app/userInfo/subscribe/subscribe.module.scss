@@ -12,6 +12,55 @@
     padding: 40px 12px 0;
 }
 
+.dialogSection {
+    font-size: 14px;
+    color: #222;
+
+    .title {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 4px;
+
+        > img {
+            align-self: flex-end;
+        }
+
+        .coin {
+            font-size: 16px;
+            font-weight: 600;
+            color: #4489ff;
+        }
+    }
+
+    .subTitle {
+        text-align: center;
+        color: #8d8d8d;
+        margin-top: 16px;
+    }
+}
+
+.buttonContainer {
+    display: flex;
+    margin-top: 24px;
+    gap: 10px;
+
+    > button {
+        flex-grow: 1;
+        width: 50%;
+        background: transparent;
+        color: #8d8d8d;
+        padding: 5px 20px;
+        border-radius: 50px;
+        border: 1px solid #bfbfbf;
+    }
+
+    > button:last-child {
+        color: #4489ff;
+        border-color: #4489ff;
+    }
+}
+
 .planContainer {
     display: flex;
     flex-wrap: wrap;
