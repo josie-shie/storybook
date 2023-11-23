@@ -313,7 +313,21 @@ export const GET_ODDS_RUNNING_QUERY = `
                 awayOrUnderOdds
                 evenOdds
                 oddsChangeTime
-            }   
+            }
+            oddsPrematch {
+                matchId
+                runningTime
+                homeScore
+                awayScore
+                playType
+                companyId
+                isClosed
+                handicap
+                homeOrOverOdds
+                awayOrUnderOdds
+                evenOdds
+                oddsChangeTime
+            }
         }
     }
 `;
