@@ -16,7 +16,7 @@ function ArticleItem() {
     };
 
     const goInfo = () => {
-        router.push('/recommend/predict/masterAvatar');
+        router.push('/recommend/predict/masterAvatar?status=analysis');
     };
 
     return (

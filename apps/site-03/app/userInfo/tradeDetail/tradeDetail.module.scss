@@ -1,0 +1,17 @@
+.tradeDetail {
+    width: 100%;
+    height: calc(100vh - 54px);
+    background: #f8f8f8;
+    padding: 12px 12px 0;
+    margin-top: -14px;
+}
+
+.selectBlock {
+    padding: 12px 0;
+    display: flex;
+    gap: 8px;
+
+    :global(.ui-select) {
+        background: #fff;
+    }
+}
