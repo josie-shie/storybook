@@ -9,7 +9,7 @@
 }
 
 .scoreboard {
-    height: calc(100% - 46px);
+    height: calc(100% - 26px);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -20,7 +20,7 @@
         width: 100%;
         display: flex;
         justify-content: space-between;
-        padding: 16px 18px 0;
+        padding: 18px 18px 0;
 
         .team {
             width: 100px;
@@ -34,14 +34,15 @@
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                width: 48px;
-                height: 48px;
+                width: 65px;
+                height: 65px;
                 margin-bottom: 8px;
                 background-color: #ffffff40;
                 border-radius: 50%;
 
                 img {
-                    width: 32px;
+                    width: 45px;
+                    height: 45px;
                 }
             }
 
@@ -61,7 +62,7 @@
 
         .score {
             display: flex;
-            align-items: center;
+            align-items: flex-start;
 
             .all {
                 font-size: 28px;
@@ -81,6 +82,7 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        padding-top: 20px;
 
         .textHolder {
             height: 20px;
@@ -135,8 +137,8 @@
             width: 48px;
             color: #fff;
             position: absolute;
-            top: 50%;
-            left: -86%;
+            top: 10px;
+            left: -96%;
             transform: translateY(-50%);
             text-align: center;
             font-size: 46px;
@@ -147,8 +149,8 @@
             width: 48px;
             color: #fff;
             position: absolute;
-            top: 50%;
-            right: -86%;
+            top: 10px;
+            right: -96%;
             transform: translateY(-50%);
             text-align: center;
             font-size: 46px;
@@ -170,7 +172,7 @@
         font-size: 12px;
         font-weight: 400;
         border-radius: 20px;
-        margin-bottom: 24px;
+        margin-bottom: 12px;
 
         .icon {
             margin-right: 6px;
