@@ -54,7 +54,9 @@ function CustomSelect({
                 }}
                 type="button"
             >
-                {selectedValue !== null && currentOption ? currentOption.label : placeholder}
+                <span className="ui-select-value">
+                    {selectedValue !== null && currentOption ? currentOption.label : placeholder}
+                </span>
                 <IconChevronDown />
             </button>
             <SwipeableDrawer
