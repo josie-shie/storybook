@@ -14,6 +14,7 @@ import { createHomeRecordStore } from './homeAwayRecordTable/homeRecordStore';
 import { createAwayRecordStore } from './homeAwayRecordTable/awayRecordStore';
 import BattleRecordTable from './battleRecordTable/battleRecordTable';
 import HomeAwayRecord from './homeAwayRecordTable/homeAwayRecordTable';
+import PageEndText from '@/components/pageEndText/pageEndText';
 
 interface PropsType {
     analysisData: GetAnalysisOthersResponse;
@@ -50,6 +51,7 @@ function Analyze({ analysisData, beforeGameData, leaguePointsRank }: PropsType) 
             <BattleRecordTable />
             <HomeAwayRecord />
             <WinLoseCountTable />
+            <PageEndText paddingBottom={126} paddingTop={32} />
         </>
     );
 }

@@ -1,8 +1,13 @@
 @import 'variables';
 
+.wrapper {
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-color: #f8f8f8;
+}
+
 .userInfo {
     height: calc(100vh - 113px);
-    background: #f8f8f8;
     overflow: auto;
     margin-top: -12px;
     padding-top: 12px;
@@ -14,7 +19,6 @@
         flex-direction: column;
         margin-top: -12px;
         padding: 12px 12px 48px 12px;
-        background: linear-gradient(to right, #2c5eb2 0%, #3a82fb 100%);
 
         .detail {
             display: flex;
@@ -81,11 +85,14 @@
                 display: block;
                 margin-left: auto;
                 padding: 4px 12px;
-                color: #4489ff;
                 font-size: 14px;
                 background: #fff;
                 border: none;
                 border-radius: 30px;
+
+                > a {
+                    color: #4489ff;
+                }
             }
 
             .item {
@@ -138,6 +145,12 @@
                 align-items: center;
                 gap: 4px;
 
+                :global(.MuiButtonBase-root) {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 4px;
+                }
+
                 .text {
                     font-size: 14px;
                     color: #222;
@@ -156,10 +169,22 @@
                 flex-direction: column;
 
                 li {
-                    color: #222;
-                    font-size: 14px;
-                    padding: 14px 0;
                     border-bottom: 1px solid #f3f3f3;
+
+                    :global(.MuiButtonBase-root) {
+                        width: 100%;
+                        justify-content: flex-start;
+                    }
+
+                    a {
+                        width: 100%;
+                        color: #222;
+                        font-size: 14px;
+                        text-align: left;
+                        padding: 14px 0;
+                        user-select: none;
+                        cursor: none;
+                    }
 
                     &:last-child {
                         border-bottom: none;

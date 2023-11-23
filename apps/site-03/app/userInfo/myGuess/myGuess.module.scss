@@ -1,0 +1,143 @@
+@import 'variables';
+
+.placeholder {
+    width: 100%;
+    height: 68px;
+    background: linear-gradient(to right, #2c5eb2 0%, #3a82fb 100%);
+
+    .headerDetail {
+        position: relative;
+        width: 100%;
+        height: 54px;
+        padding: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .title {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+
+            .text {
+                position: absolute;
+                left: 50%;
+                transform: translateX(-50%);
+                color: #fff;
+                font-size: 14px;
+            }
+        }
+    }
+}
+
+.myGuess {
+    height: calc(100vh - 54px);
+    margin-top: -14px;
+    padding: 8px 12px 12px;
+    overflow: auto;
+    background: #fff;
+    border-radius: 16px 16px 0 0;
+
+    .title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 10px auto;
+
+        span {
+            font-size: 18px;
+            font-weight: 600;
+            color: #222;
+        }
+
+        .record {
+            font-size: 14px;
+            font-weight: 400;
+            padding: 2px 12px;
+            color: #4489ff;
+        }
+    }
+
+    .tab {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        span {
+            padding: 6px 13px;
+            color: #9b9b9b;
+            font-size: 12px;
+            border-radius: 30px;
+            border: 1px solid #9b9b9b;
+
+            &.active {
+                color: #4489ff;
+                border-color: #4489ff;
+                background: #edf3ff;
+            }
+        }
+    }
+
+    .plan {
+        margin-top: 8px;
+    }
+
+    .recentGames {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 12px;
+    }
+
+    .detailContainer {
+        flex-grow: 1;
+        margin-left: 12px;
+    }
+
+    .detailBlock {
+        font-size: 12px;
+        font-weight: 500;
+        box-sizing: border-box;
+        color: #4a4a4a;
+        padding: 4px 8px;
+        border-radius: 8px;
+        margin-bottom: 4px;
+
+        .top,
+        .bot {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .top {
+            margin-bottom: 2px;
+        }
+
+        .bot {
+            gap: 4px;
+
+            :global(.ui-progressBar) {
+                flex-grow: 1;
+            }
+        }
+    }
+
+    .percentage {
+        display: flex;
+        gap: 4px;
+
+        .win {
+            color: #ed3a45;
+        }
+
+        .walk {
+            color: #8d8d8d;
+        }
+    }
+
+    .focusDetail {
+        background: #f3f3f3;
+        border: 1px solid #4489ff;
+    }
+}

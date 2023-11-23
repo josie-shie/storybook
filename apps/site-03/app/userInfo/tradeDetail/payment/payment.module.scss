@@ -1,0 +1,59 @@
+.payment {
+    display: flex;
+    background: #fff;
+    gap: 12px;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+}
+
+.center {
+    flex-grow: 1;
+
+    .title {
+        font-size: 14px;
+        color: #4489ff;
+        margin-bottom: 4px;
+    }
+
+    .black {
+        color: #222;
+    }
+
+    .content {
+        font-size: 12px;
+        width: 100%;
+        color: #8d8d8d;
+        margin-bottom: 4px;
+    }
+
+    .content:last-child {
+        margin-bottom: 0;
+    }
+}
+
+.right {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+
+    .money {
+        font-size: 14px;
+        font-weight: 500;
+        color: #4489ff;
+    }
+
+    .black {
+        color: #222;
+    }
+
+    .overage {
+        font-size: 12px;
+        display: flex;
+        flex-direction: column;
+        text-align: right;
+        gap: 4px;
+        color: #8d8d8d;
+    }
+}

@@ -1,0 +1,105 @@
+@import 'variables';
+
+.wrapper {
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.placeholder {
+    width: 100%;
+    height: 60px;
+
+    .headerDetail {
+        position: relative;
+        width: 100%;
+        height: 60px;
+        padding: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .title {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+
+            .text {
+                position: absolute;
+                left: 50%;
+                transform: translateX(-50%);
+                color: #fff;
+                font-size: 14px;
+            }
+        }
+    }
+}
+
+.applyExpert {
+    height: calc(100vh - 60px);
+    overflow: auto;
+    padding: 16px 12px;
+
+    .check {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 24px;
+
+        .text {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+
+            span {
+                color: #fff;
+                font-size: 14px;
+                font-weight: 600;
+            }
+        }
+    }
+
+    .process {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+        margin: 16px auto 32px;
+
+        .column {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            background: rgba(0 0 0 / 20%);
+
+            .title {
+                color: #fff;
+                font-size: 14px;
+                font-weight: 300;
+                padding-bottom: 4px;
+            }
+
+            .content {
+                color: #fff;
+                font-size: 14px;
+                opacity: 0.5;
+                font-weight: 300;
+            }
+        }
+    }
+
+    .submit {
+        display: block;
+        width: 100%;
+        padding: 10px 12px;
+        border-radius: 50px;
+        border: none;
+        color: #4489ff;
+        background: #fff;
+        opacity: 0.3;
+
+        &.active {
+            opacity: 1;
+        }
+    }
+}

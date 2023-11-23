@@ -2,7 +2,7 @@
 import type { ChangeEvent } from 'react';
 import { useState } from 'react';
 import Image from 'next/image';
-import style from './edit.module.scss';
+import style from './account.module.scss';
 import Avatar from './img/avatar.png';
 import Header from '@/components/header/headerTitleDetail';
 
@@ -57,7 +57,7 @@ function FormField({ label, type, name, value, placeholder, onChange, submitted 
     );
 }
 
-function Edit() {
+function Account() {
     const headerProps = {
         title: '个人資料'
     };
@@ -135,7 +135,7 @@ function Edit() {
     return (
         <>
             <Header title={headerProps.title} />
-            <div className={style.edit}>
+            <div className={style.account}>
                 <div className={style.uploadGroup}>
                     <Image
                         alt="大頭貼"
@@ -247,4 +247,4 @@ function Edit() {
     );
 }
 
-export default Edit;
+export default Account;
