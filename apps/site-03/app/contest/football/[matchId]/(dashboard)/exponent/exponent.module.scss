@@ -1,4 +1,4 @@
-.exponentTable {
+.exponent {
     .options {
         display: flex;
         justify-content: flex-end;
@@ -33,6 +33,12 @@
         .firstColumn {
             max-width: 45px;
         }
+    }
+
+    .exponentTable {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
     }
 }
 

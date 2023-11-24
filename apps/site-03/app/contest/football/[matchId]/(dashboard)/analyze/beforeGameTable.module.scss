@@ -1,4 +1,8 @@
 .beforeGameTable {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
     :global {
         .tableHead {
             .th {

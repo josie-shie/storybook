@@ -1,0 +1,67 @@
+.slick {
+    .tabsContainer {
+        padding: 12px;
+
+        .tabs {
+            display: flex;
+            justify-content: space-around;
+            background: #f3f3f3;
+            border-radius: 30px;
+            line-height: 32px;
+            font-size: 14px;
+            font-weight: 500;
+            border: 2px #f3f3f3 solid;
+            box-sizing: border-box;
+        }
+    }
+
+    .button {
+        li {
+            width: 100%;
+        }
+
+        button {
+            position: relative;
+            text-align: center;
+            color: #9b9b9b;
+            width: 100%;
+            height: 28px;
+            display: block;
+            line-height: 28px;
+            border-radius: 30px;
+            outline: none;
+            box-shadow: none;
+            border: none;
+
+            &::before {
+                content: '';
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                box-sizing: border-box;
+                width: 100%;
+                height: 100%;
+                transform: translate(-50%, -50%) scaleX(0.32);
+                transition-duration: 0.2s;
+                transition-property: all;
+                transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
+                border: 1px solid #edf3ff;
+                background: #4489ff;
+                opacity: 0;
+                z-index: -1;
+                border-radius: 30px;
+            }
+
+            &.selected {
+                position: relative;
+                color: #fff;
+                z-index: 1;
+
+                &::before {
+                    transform: translate(-50%, -50%) scaleX(1);
+                    opacity: 1;
+                }
+            }
+        }
+    }
+}

@@ -1,4 +1,5 @@
 import { useAnalyzeStore } from '../../analyzeStore';
+import style from './winLoseCountTable.module.scss';
 
 function WinLoseCountTable() {
     const tableData = useAnalyzeStore.use.winLoseCountData();
@@ -9,18 +10,26 @@ function WinLoseCountTable() {
         totalCount.awayAway + totalCount.awayHome + totalCount.homeAway + totalCount.homeHome;
 
     return (
-        <div>
+        <div className={style.winLoseCountTable}>
             <div className="topBar">
                 <h6 className="title">半场/全场胜负统计(近两赛季)</h6>
             </div>
             <div className="dataTable">
                 <div className="tableHead">
                     <div className="tr">
-                        <div className="th">{`主场(${totalCount.homeHome})`}</div>
-                        <div className="th">{`客场(${totalCount.homeAway})`}</div>
+                        <div className="th">{`主场${
+                            isNaN(totalCount.homeHome) ? '' : `(${totalCount.homeHome})`
+                        }`}</div>
+                        <div className="th">{`客场${
+                            isNaN(totalCount.homeAway) ? '' : `(${totalCount.homeAway})`
+                        }`}</div>
                         <div className="th" />
-                        <div className="th">{`主场(${totalCount.awayHome})`}</div>
-                        <div className="th">{`客场(${totalCount.awayAway})`}</div>
+                        <div className="th">{`主场${
+                            isNaN(totalCount.awayHome) ? '' : `(${totalCount.awayHome})`
+                        }`}</div>
+                        <div className="th">{`客场${
+                            isNaN(totalCount.awayAway) ? '' : `(${totalCount.awayAway})`
+                        }`}</div>
                     </div>
                 </div>
                 <div className="tableBody">

@@ -21,7 +21,7 @@ function ExponentTable() {
     };
 
     return (
-        <div className={style.exponentTable}>
+        <div className={style.exponent}>
             <div className={style.options}>
                 <ButtonSwitch
                     onChange={(switchValue: ExponentType) => {
@@ -37,10 +37,12 @@ function ExponentTable() {
                     value={totalGoalsRadio}
                 />
             </div>
-            <div className="topBar">
-                <h6 className="title">赛前指数</h6>
+            <div className={style.exponentTable}>
+                <div className="topBar">
+                    <h6 className="title">赛前指数</h6>
+                </div>
+                {selectedMap[selectedOption]}
             </div>
-            {selectedMap[selectedOption]}
         </div>
     );
 }

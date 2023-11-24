@@ -4,8 +4,8 @@ import style from './loading.module.scss';
 
 function Loading() {
     return (
-        <div className={style.loading}>
-            <CircularProgress style={{ color: '#4489ff' }} />
+        <div className={`ui-loading ${style.loading}`}>
+            <CircularProgress size={24} style={{ color: '#4489ff' }} />
         </div>
     );
 }

@@ -26,7 +26,7 @@ function PredictCard({ predictInfo }: PredictCardProps) {
                             <Tag
                                 background="#4489FF"
                                 color="#FFF"
-                                text={`月榜${predictInfo.rank}`}
+                                text={`月榜 ${predictInfo.rank}`}
                             />
                         </div>
                     </div>

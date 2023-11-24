@@ -1,5 +1,6 @@
 import RecordTable from '../components/recordTable/recordTable';
 import { useBattleRecordStore } from './battleRecordStore';
+import style from './battleRecordTable.module.scss';
 
 function BattleRecordTable() {
     const tableRawData = useBattleRecordStore.use.battleRecordData();
@@ -23,7 +24,7 @@ function BattleRecordTable() {
     const setOddsDetailResult = useBattleRecordStore.use.setOddsDetailResult();
 
     return (
-        <>
+        <div className={style.battleRecordTable}>
             <div className="topBar">
                 <h6 className="title">对赛往绩</h6>
             </div>
@@ -49,7 +50,7 @@ function BattleRecordTable() {
                 tableData={tableRawData}
                 winLoseResult={winLoseResult}
             />
-        </>
+        </div>
     );
 }
 

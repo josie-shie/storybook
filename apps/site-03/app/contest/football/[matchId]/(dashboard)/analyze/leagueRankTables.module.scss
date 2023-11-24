@@ -2,6 +2,10 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
+
+    .highlight {
+        color: #f85640 !important;
+    }
 }
 
 .leagueRankTable {
@@ -33,7 +37,7 @@
         }
     }
 
-    .highlight {
-        color: #f85640 !important;
+    .teamName {
+        color: #4489ff;
     }
 }

@@ -12,6 +12,9 @@ interface Slide {
     awayChs: string;
     homeScore: number;
     awayScore: number;
+    roundCn: number;
+    startTime: number;
+    leagueChsShort: string;
 }
 
 interface Contest {

@@ -403,7 +403,8 @@ export type OddsRunningType = z.infer<typeof OddsRunningSchema>;
 const OddsRunningResultSchema = z.object({
     getOddsRunning: z.object({
         companyId: z.number(),
-        oddsRunning: z.array(OddsRunningSchema)
+        oddsRunning: z.array(OddsRunningSchema),
+        oddsPrematch: z.array(OddsRunningSchema)
     })
 });
 
@@ -734,9 +735,11 @@ export const getOddsRunning = async (
 
         OddsRunningResultSchema.parse(data);
 
+        const oddsList = [...data.getOddsRunning.oddsRunning, ...data.getOddsRunning.oddsPrematch];
+
         return {
             success: true,
-            data: data.getOddsRunning.oddsRunning
+            data: oddsList
         };
     } catch (error) {
         return handleApiError(error);

@@ -9,9 +9,13 @@
     .articleContent {
         display: flex;
         flex-direction: column;
-        gap: 12px;
 
-        .publishTime {
+        .publishDetail {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+
             .time {
                 color: #8d8d8d;
                 font-size: 11px;

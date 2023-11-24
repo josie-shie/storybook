@@ -1,6 +1,6 @@
 'use client';
 import { usePathname } from 'next/navigation';
-import { useEffect, type ReactNode } from 'react';
+import { useEffect, type ReactNode, Suspense } from 'react';
 import Image from 'next/image';
 import LogoImg from './img/logo.png';
 import style from './home.module.scss';
@@ -9,6 +9,7 @@ import HeaderTitle from '@/components/header/headerTitle';
 import Footer from '@/components/footer/footer';
 import { Tabs } from '@/components/tabs/tabs';
 import { version } from '@/package.json';
+import Loading from '@/components/loading/loading';
 
 function NormalLayout({ children }: { children: ReactNode }) {
     const headerProps = {
@@ -21,7 +22,7 @@ function NormalLayout({ children }: { children: ReactNode }) {
             <HeaderLogo logo={headerProps.logo} total={headerProps.total} />
             <div className={style.home}>
                 <Tabs labels={['熱門', '快讯']} paths={['/', '/news']} />
-                {children}
+                <Suspense fallback={<Loading />}>{children}</Suspense>
             </div>
             <Footer />
         </>
