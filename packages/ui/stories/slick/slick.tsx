@@ -1,6 +1,6 @@
 'use client';
 import type { ReactNode } from 'react';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import { useRouter } from 'next/navigation';
@@ -10,7 +10,7 @@ interface SlickProps {
     children: ReactNode;
     tabs: { label: string; href: string }[];
     styling?: 'text' | 'underline' | 'button';
-    initialSlide?: number;
+    slideActive?: number;
     touchMove?: boolean;
 }
 
@@ -18,10 +18,10 @@ function Slick({
     children,
     styling = 'underline',
     tabs,
-    initialSlide = 0,
+    slideActive = 0,
     touchMove = true
 }: SlickProps) {
-    const [nav, setNav] = useState(initialSlide);
+    const [nav, setNav] = useState(slideActive);
     const slider = useRef(null);
     const router = useRouter();
 
@@ -47,6 +47,11 @@ function Slick({
         setNav(index);
         (slider.current as unknown as { slickGoTo: (index: number) => void }).slickGoTo(index);
     };
+
+    useEffect(() => {
+        if (nav === slideActive) return;
+        sliderTo(slideActive);
+    }, [slideActive]);
 
     return (
         <div className={style.slick}>

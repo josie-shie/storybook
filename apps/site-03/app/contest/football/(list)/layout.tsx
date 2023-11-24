@@ -53,7 +53,7 @@ function ContestListLayout({ children }: { children: ReactNode }) {
         }
     ];
 
-    const initialSlide = status ? tabList.findIndex(tab => tab.status === status) : 0;
+    const slideActive = status ? tabList.findIndex(tab => tab.status === status) : 0;
 
     return (
         <div className="contestListLayout">
@@ -80,7 +80,7 @@ function ContestListLayout({ children }: { children: ReactNode }) {
             </HeaderFilter>
             <div className={style.main}>
                 <Slick
-                    initialSlide={initialSlide}
+                    slideActive={slideActive}
                     styling="button"
                     tabs={tabList}
                     touchMove={!isFliterOpen}
