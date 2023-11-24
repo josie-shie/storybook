@@ -1,7 +1,7 @@
 'use client';
-import { useState, useCallback, type ReactNode } from 'react';
+import { useState, useCallback, useRef, type ReactNode } from 'react';
 import Image from 'next/image';
-import { Tab, Tabs } from 'ui';
+import { Slick } from 'ui';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import style from './layout.module.scss';
 import FilterIcon from './img/filter.png';
@@ -29,34 +29,36 @@ function ContestListLayout({ children }: { children: ReactNode }) {
         [searchParams]
     );
 
-    const tabStyle = {
-        gap: 8,
-        swiperOpen: true,
-        buttonRadius: 30
-    };
-
     const tabList = [
         {
             label: '全部',
-            to: '/contest/football',
+            href: '/contest/football',
             status: null
         },
         {
             label: '已开赛',
-            to: '/contest/football?status=progress',
+            href: '/contest/football?status=progress',
             status: 'progress'
         },
         {
             label: '赛程',
-            to: '/contest/football?status=schedule',
+            href: '/contest/football?status=schedule',
             status: 'schedule'
         },
         {
             label: '赛果',
-            to: '/contest/football?status=result',
+            href: '/contest/football?status=result',
             status: 'result'
         }
     ];
+
+    const initialSlide = useRef(() =>
+        status
+            ? tabList.findIndex(tab => {
+                  return tab.status === status;
+              })
+            : 0
+    ).current as unknown as number;
 
     return (
         <div className="contestListLayout">
@@ -82,21 +84,11 @@ function ContestListLayout({ children }: { children: ReactNode }) {
                 </div>
             </HeaderFilter>
             <div className={style.main}>
-                <Tabs
-                    buttonRadius={tabStyle.buttonRadius}
-                    gap={tabStyle.gap}
-                    position="spaceBetween"
-                    styling="button"
-                    swiperOpen={tabStyle.swiperOpen}
-                >
+                <Slick initialSlide={initialSlide} styling="button" tabs={tabList}>
                     {tabList.map(item => {
-                        return (
-                            <Tab key={item.label} label={item.label} to={item.to}>
-                                {item.status === status && children}
-                            </Tab>
-                        );
+                        return <div key={item.label}>{item.status === status && children}</div>;
                     })}
-                </Tabs>
+                </Slick>
             </div>
             <Setting
                 isOpen={showSetting}
