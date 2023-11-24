@@ -4,7 +4,6 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ButtonBase } from '@mui/material';
 import Image from 'next/image';
-import Link from 'next/link';
 import userInfoBg from './img/userInfoBg.png';
 import Star from './img/star.png';
 import BuyBag from './img/buyBag.png';
