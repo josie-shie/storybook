@@ -2,11 +2,11 @@ import type { Metadata } from 'next';
 import GuessDetail from './guessDetail';
 
 export const metadata: Metadata = {
-    title: '推薦詳情'
+    title: '推荐详情'
 };
 
 function Page() {
-    return <GuessDetail />;
+    return <GuessDetail backHistory={false} />;
 }
 
 export default Page;

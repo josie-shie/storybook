@@ -6,10 +6,12 @@ import { ProgressBar } from 'ui';
 import ReactEcharts from 'echarts-for-react';
 import backLeftArrowImg from '../img/backLeftArrow.png';
 import BettingPlan from './components/bettingPlan/bettingPlan';
+import RecordFilter from './components/recordFilter/recordFilter';
 import style from './myGuess.module.scss';
 
 function MyAnalysis() {
     const router = useRouter();
+    const [showFilter, setShowFilter] = useState(false);
     const [dateActiveTab, setDateActiveTab] = useState('日榜');
     const [planActiveTab, setPlanActiveTab] = useState('全部');
 
@@ -199,7 +201,14 @@ function MyAnalysis() {
                 </div>
                 <div className={style.title}>
                     <span>方案</span>
-                    <span className={style.record}>查看纪录</span>
+                    <span
+                        className={style.record}
+                        onClick={() => {
+                            setShowFilter(true);
+                        }}
+                    >
+                        查看纪录
+                    </span>
                 </div>
                 <div className={style.tab}>
                     <span
@@ -243,6 +252,15 @@ function MyAnalysis() {
                     <BettingPlan result="defeat" />
                 </div>
             </div>
+            <RecordFilter
+                isOpen={showFilter}
+                onClose={() => {
+                    setShowFilter(false);
+                }}
+                onOpen={() => {
+                    setShowFilter(true);
+                }}
+            />
         </>
     );
 }

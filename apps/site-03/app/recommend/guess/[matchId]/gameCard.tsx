@@ -1,10 +1,12 @@
-import { useMemo } from 'react';
 import Image from 'next/image';
 import Fire from './img/fire.png';
 import Win from './img/win.png';
 import Lose from './img/lose.png';
+import Gone from './img/gone.png';
+import BigWin from './img/BigWin.png';
+// import BigLose from './img/BigLose.png';
+// import BigGone from './img/bigGone.png';
 import Star from './img/star.png';
-import Hit from './img/hit.png';
 import style from './gameCard.module.scss';
 import Avatar from '@/components/avatar/avatar';
 import Tag from '@/components/tag/tag';
@@ -28,23 +30,6 @@ function GameCard({
 }: GameCardProps) {
     const isContentUnlocked = globalUnlock || localIsUnlocked;
 
-    // 假的走勢球
-    const randomResult = () => {
-        const outcomes = [
-            { id: 'win', component: <Image alt="winIcon" src={Win} width={18} /> },
-            { id: 'lose', component: <Image alt="loseIcon" src={Lose} width={18} /> }
-        ];
-        return outcomes[Math.floor(Math.random() * outcomes.length)];
-    };
-
-    const results = useMemo(
-        () =>
-            Array(10)
-                .fill(0)
-                .map(() => randomResult()),
-        []
-    );
-
     const tagProps = text.includes('连红')
         ? { icon: <Image alt="" src={Fire} width={8} />, text }
         : { icon: undefined, text, background: '#4489ff' };
@@ -58,20 +43,43 @@ function GameCard({
                     <Tag {...tagProps} />
                     <div className={style.league}>{league}</div>
                     <ul className={style.ballList}>
-                        {results.map(result => (
-                            <li key={result.id}>{result.component}</li>
-                        ))}
+                        <li>
+                            <Image alt="winIcon" src={Win} width={18} />
+                        </li>
+                        <li>
+                            <Image alt="loseIcon" src={Lose} width={18} />
+                        </li>
+                        <li>
+                            <Image alt="winIcon" src={Win} width={18} />
+                        </li>
+                        <li>
+                            <Image alt="loseIcon" src={Lose} width={18} />
+                        </li>
+                        <li>
+                            <Image alt="winIcon" src={Win} width={18} />
+                        </li>
+                        <li>
+                            <Image alt="loseIcon" src={Lose} width={18} />
+                        </li>
+                        <li>
+                            <Image alt="goneIcon" src={Gone} width={18} />
+                        </li>
+                        <li>
+                            <Image alt="goneIcon" src={Gone} width={18} />
+                        </li>
+                        <li>
+                            <Image alt="winIcon" src={Win} width={18} />
+                        </li>
                     </ul>
                 </div>
             </div>
             <div className={style.paid}>
                 {isContentUnlocked ? (
                     <div className={style.hit}>
-                        <Image alt="hitIcon" className={style.hitIcon} src={Hit} width={36} />
+                        <Image alt="hitIcon" height={36} src={BigWin} width={36} />
                         <div className={style.play}>一球/球半</div>
                         <div className={style.paidContent}>
                             <div className={style.play}>小</div>
-                            <div className={style.result}>勝</div>
                         </div>
                     </div>
                 ) : (

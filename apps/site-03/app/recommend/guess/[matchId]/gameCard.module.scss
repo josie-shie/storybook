@@ -1,6 +1,6 @@
 .gameCard {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
     margin-top: 24px;
     padding: 10px 0;
@@ -24,6 +24,8 @@
                 margin-top: 4px;
                 font-size: 14px;
                 font-weight: 400;
+                height: 36px;
+                line-height: 36px;
             }
 
             .ballList {
@@ -50,17 +52,10 @@
             position: relative;
             display: flex;
             align-items: flex-end;
-            justify-content: flex-end;
+            justify-content: flex-start;
             flex-direction: column;
+            gap: 4px;
             height: 100%;
-
-            .hitIcon {
-                position: absolute;
-                top: -12px;
-                width: 36px;
-                background: #fb897a;
-                border-radius: 50%;
-            }
         }
 
         .play {
@@ -73,25 +68,16 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            width: 100%;
+            background: #f3f3f3;
+            border-radius: 30px;
             margin-top: 4px;
 
             .play {
                 color: #f85640;
-                width: 35px;
-                height: 20px;
-                line-height: 20px;
+                height: 24px;
+                line-height: 24px;
                 font-size: 14px;
-                text-align: center;
-            }
-
-            .result {
-                color: #fff;
-                width: 35px;
-                height: 20px;
-                line-height: 20px;
-                background: #f85640;
-                font-size: 14px;
-                border-radius: 4px;
                 text-align: center;
             }
         }
@@ -99,10 +85,12 @@
         .noPaid {
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 4px;
-            padding: 2px 8px 4px 4px;
+            padding: 4px 8px 4px 4px;
             border: 1px solid #4489ff;
             border-radius: 30px;
+            margin-bottom: 9px;
 
             .text {
                 color: #4489ff;
