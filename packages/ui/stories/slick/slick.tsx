@@ -11,9 +11,16 @@ interface SlickProps {
     tabs: { label: string; href: string }[];
     styling?: 'text' | 'underline' | 'button';
     initialSlide?: number;
+    touchMove?: boolean;
 }
 
-function Slick({ children, styling = 'underline', tabs, initialSlide = 0 }: SlickProps) {
+function Slick({
+    children,
+    styling = 'underline',
+    tabs,
+    initialSlide = 0,
+    touchMove = true
+}: SlickProps) {
     const [nav, setNav] = useState(initialSlide);
     const slider = useRef(null);
     const router = useRouter();
@@ -22,6 +29,7 @@ function Slick({ children, styling = 'underline', tabs, initialSlide = 0 }: Slic
         dots: false,
         arrows: false,
         infinite: false,
+        touchMove,
         speed: 300,
         slidesToShow: 1,
         slidesToScroll: 1,

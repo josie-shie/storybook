@@ -1,5 +1,5 @@
 'use client';
-import { useState, useCallback, useRef, type ReactNode } from 'react';
+import { useState, useCallback, type ReactNode } from 'react';
 import Image from 'next/image';
 import { Slick } from 'ui';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
@@ -16,6 +16,7 @@ function ContestListLayout({ children }: { children: ReactNode }) {
 
     const searchParams = useSearchParams();
     const status = searchParams.get('status');
+    const isFliterOpen = searchParams.get('filter');
     const pathname = usePathname();
     const router = useRouter();
 
@@ -52,13 +53,7 @@ function ContestListLayout({ children }: { children: ReactNode }) {
         }
     ];
 
-    const initialSlide = useRef(() =>
-        status
-            ? tabList.findIndex(tab => {
-                  return tab.status === status;
-              })
-            : 0
-    ).current as unknown as number;
+    const initialSlide = status ? tabList.findIndex(tab => tab.status === status) : 0;
 
     return (
         <div className="contestListLayout">
@@ -84,7 +79,12 @@ function ContestListLayout({ children }: { children: ReactNode }) {
                 </div>
             </HeaderFilter>
             <div className={style.main}>
-                <Slick initialSlide={initialSlide} styling="button" tabs={tabList}>
+                <Slick
+                    initialSlide={initialSlide}
+                    styling="button"
+                    tabs={tabList}
+                    touchMove={!isFliterOpen}
+                >
                     {tabList.map(item => {
                         return <div key={item.label}>{item.status === status && children}</div>;
                     })}
