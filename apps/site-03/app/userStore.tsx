@@ -10,17 +10,22 @@ interface UserState extends InitState {
     setToken: (token: string) => void;
 }
 
+let isInit = true;
 let useUserStore: StoreWithSelectors<UserState>;
 
 const initialState = (set: (data: Partial<UserState>) => void) => ({
-    isLogin: false,
+    isLogin: true,
     token: '',
     setToken: (token: string) => {
         set({ token, isLogin: true });
     }
 });
 
-const creatUserStore = (init: InitState) =>
-    (useUserStore = initStore<UserState>(initialState, init));
+const creatUserStore = (init: InitState) => {
+    if (isInit) {
+        useUserStore = initStore<UserState>(initialState, init);
+        isInit = false;
+    }
+};
 
 export { creatUserStore, useUserStore };

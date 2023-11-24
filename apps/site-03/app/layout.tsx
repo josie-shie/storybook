@@ -6,6 +6,7 @@ import GlobalStore from './globalStore';
 import MqttService from './mqttService';
 import GoalAlert from './goalAlert';
 import ContestStoreHandler from './contestStoreHandler';
+import Login from '@/components/login/login';
 
 export const metadata: Metadata = {
     title: 'Sport',
@@ -29,6 +30,7 @@ function RootLayout({ children }: { children: ReactNode }) {
                     <MqttService>
                         <ContestStoreHandler />
                         <GoalAlert />
+                        <Login />
                         <main>{children}</main>
                     </MqttService>
                 </GlobalStore>

@@ -1,0 +1,161 @@
+$borderBottom: 1px solid rgba(255, 255, 255, 0.3);
+
+.login {
+    padding: 24px;
+
+    :global(.MuiInput-underline::before) {
+        border-bottom: none;
+    }
+
+    :global {
+        .MuiFormControl-root {
+            width: 100%;
+            gap: 16px;
+
+            .MuiInputBase-root {
+                ::before {
+                    border-bottom: none;
+                }
+            }
+        }
+    }
+
+    .phone {
+        display: flex;
+        width: 100%;
+        height: 44px;
+        gap: 16px;
+        border-bottom: $borderBottom;
+
+        .codeSelect {
+            padding: 0 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        :global {
+            .ui-select {
+                width: 78px;
+                height: 100%;
+                background: none;
+                border: none;
+                gap: 6px;
+                justify-content: left;
+                padding: 0;
+
+                .ui-select-value {
+                    width: 48px;
+                    text-align: left;
+                }
+            }
+        }
+
+        .phoneInput {
+            width: 100%;
+            padding: 0 6px;
+
+            ::placeholder {
+                color: #e6effe;
+                font-size: 14px;
+                font-weight: 400;
+            }
+        }
+    }
+
+    .password {
+        height: 44px;
+        display: flex;
+        padding: 0 6px;
+        gap: 6px;
+        align-items: center;
+        border-bottom: $borderBottom;
+
+        .passwordBlock {
+            display: flex;
+            align-items: center;
+
+            .passwordInput {
+                width: 246px;
+
+                ::placeholder {
+                    color: #e6effe;
+                    font-size: 14px;
+                    font-weight: 400;
+                }
+            }
+
+            .forgotPass {
+                color: #fff;
+                height: 32px;
+                padding: 4px 0 5px;
+                white-space: nowrap;
+                font-size: 12px;
+                font-weight: 500;
+            }
+        }
+    }
+
+    .vertifyCode {
+        height: 44px;
+        display: flex;
+        padding: 0 6px;
+        gap: 6px;
+        align-items: center;
+        border-bottom: $borderBottom;
+
+        .vertifyCodeBlock {
+            width: 100%;
+            display: flex;
+            align-items: center;
+
+            .vertifyCodeInput {
+                height: 100%;
+                width: 146px;
+
+                input {
+                    width: 146px;
+                }
+
+                ::placeholder {
+                    color: #e6effe;
+                    font-size: 14px;
+                    font-weight: 400;
+                }
+            }
+
+            .getVertifyCode {
+                display: flex;
+                justify-content: flex-end;
+                align-items: center;
+                height: 44px;
+                width: 100%;
+                color: #fbb03b;
+                text-align: right;
+                font-size: 12px;
+                font-weight: 500;
+            }
+        }
+    }
+
+    .agreement {
+        padding-top: 16px;
+        color: #fff;
+        font-size: 10px;
+        font-weight: 400;
+        transform: scale(0.9091);
+        margin-left: -15px;
+        text-align: left;
+    }
+}
+
+.futureTitle {
+    font-family: YouSheBiaoTiHei;
+
+    .future {
+        background: linear-gradient(91deg, #00ceff 8.31%, #0085ff 114.96%);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+}
