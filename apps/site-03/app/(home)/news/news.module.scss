@@ -1,6 +1,8 @@
 .news {
     padding: 12px;
     background: #fff;
+    height: calc(100vh - 152px);
+    overflow: scroll;
 
     .carousel {
         background-color: #fff;

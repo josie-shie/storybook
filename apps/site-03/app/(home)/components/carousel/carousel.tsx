@@ -7,6 +7,7 @@ import 'swiper/css/effect-creative';
 import { Keyboard, Pagination, Navigation, EffectCreative } from 'swiper';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
+import { timestampToMonthDay } from 'lib';
 import { useHomeStore } from '../../homeStore';
 import style from './carousel.module.scss';
 
@@ -20,11 +21,23 @@ interface Slide {
     awayChs: string;
     homeScore: number;
     awayScore: number;
+    roundCn: number;
+    startTime: number;
+    leagueChsShort: string;
 }
 
 function LiveSlide({ slideInfo }: { slideInfo: Slide }) {
     return (
         <div className={style.slideImage} style={{ backgroundImage: `url(${slideInfo.image})` }}>
+            <div className={style.detail}>
+                {slideInfo.leagueChsShort} 分组赛{slideInfo.roundCn}轮 今天
+                {timestampToMonthDay(slideInfo.startTime)}
+            </div>
+            <div className={style.middleTeamIcon}>
+                <Image alt="" height={54} src={slideInfo.homeIcon} width={54} />
+                <div className={style.verse}>VS</div>
+                <Image alt="" height={54} src={slideInfo.awayIcon} width={54} />
+            </div>
             <div className={style.contestInfo}>
                 <div className={style.team}>
                     <div className={style.contestName}>{slideInfo.leagueChs}</div>

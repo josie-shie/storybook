@@ -13,19 +13,35 @@ interface Article {
     content: ArticleContent[];
 }
 
+type NotificationType = 'success' | 'error';
+
+interface Notification {
+    type: NotificationType;
+    visible: boolean;
+    message: string;
+}
+
 interface InitState {
     article: Article | null;
 }
 
 interface ArticleState extends InitState {
-    loading: boolean;
+    notification: Notification;
+    setNotification: (notification: Notification) => void;
 }
 
 let useArticleStore: StoreWithSelectors<ArticleState>;
 
 const initialState = (set: (data: Partial<ArticleState>) => void) => ({
-    loading: false,
     article: null,
+    notification: {
+        type: 'success' as NotificationType,
+        visible: false,
+        message: ''
+    },
+    setNotification: (notification: Notification) => {
+        set({ notification });
+    },
     setArticle: (article: Article) => {
         set({ article });
     }
