@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import AuthDrawer from '../authDrawer/authDrawer';
 import style from './forgetPassword.module.scss';
+import { AuthDrawer } from '@/app/(auth)/components/authComponent/authComponent';
 
 function ForgetPassword() {
     const [isOpen, setIsOpen] = useState<boolean>(true);
