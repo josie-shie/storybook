@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import AuthDrawer from '../authDrawer/authDrawer';
 import style from './changePassword.module.scss';
+import { AuthDrawer } from '@/app/(auth)/components/authComponent/authComponent';
 
 function ChangePassword() {
     const [isOpen, setIsOpen] = useState<boolean>(true);
@@ -8,7 +8,16 @@ function ChangePassword() {
     const title = <p>修改密码</p>;
 
     return (
-        <AuthDrawer isOpen={isOpen} setIsOpen={setIsOpen} title={title}>
+        <AuthDrawer
+            isOpen={isOpen}
+            onClose={() => {
+                setIsOpen(false);
+            }}
+            onOpen={() => {
+                setIsOpen(true);
+            }}
+            title={title}
+        >
             <div className={style.changePassword} />
         </AuthDrawer>
     );

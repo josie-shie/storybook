@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import AuthDrawer from '../authDrawer/authDrawer';
 import style from './forgetPassword.module.scss';
+import { AuthDrawer } from '@/app/(auth)/components/authComponent/authComponent';
 
 function ForgetPassword() {
     const [isOpen, setIsOpen] = useState<boolean>(true);
@@ -8,7 +8,16 @@ function ForgetPassword() {
     const title = <p>忘记密码</p>;
 
     return (
-        <AuthDrawer isOpen={isOpen} setIsOpen={setIsOpen} title={title}>
+        <AuthDrawer
+            isOpen={isOpen}
+            onClose={() => {
+                setIsOpen(false);
+            }}
+            onOpen={() => {
+                setIsOpen(true);
+            }}
+            title={title}
+        >
             <div className={style.forgetPassword} />
         </AuthDrawer>
     );

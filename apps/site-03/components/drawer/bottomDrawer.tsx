@@ -6,20 +6,24 @@ function BottomDrawer({
     isOpen,
     onOpen,
     onClose,
-    children
+    children,
+    propsStyle = {
+        borderTopLeftRadius: '16px',
+        borderTopRightRadius: '16px'
+    },
+    topLineDisplay = 'initial'
 }: {
     isOpen: boolean;
     onOpen: () => void;
     onClose: () => void;
     children: ReactNode;
+    propsStyle?: React.CSSProperties;
+    topLineDisplay?: string;
 }) {
     return (
         <SwipeableDrawer
             PaperProps={{
-                style: {
-                    borderTopLeftRadius: '16px',
-                    borderTopRightRadius: '16px'
-                }
+                style: propsStyle
             }}
             anchor="bottom"
             onClose={onClose}
@@ -27,7 +31,7 @@ function BottomDrawer({
             open={isOpen}
             transitionDuration={{ enter: 300, exit: 200 }}
         >
-            <div className={style.topLine} />
+            <div className={`${style.topLine}`} style={{ display: topLineDisplay }} />
             {children}
         </SwipeableDrawer>
     );

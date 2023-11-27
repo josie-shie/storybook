@@ -1,7 +1,7 @@
 $borderBottom: 1px solid rgba(255, 255, 255, 0.3);
 
-.login {
-    padding: 24px;
+.loginDrawer {
+    height: 100%;
 
     :global(.MuiInput-underline::before) {
         border-bottom: none;
@@ -17,6 +17,32 @@ $borderBottom: 1px solid rgba(255, 255, 255, 0.3);
                     border-bottom: none;
                 }
             }
+        }
+    }
+    .header {
+        position: relative;
+        height: 84px;
+        text-align: center;
+        font-size: 30px;
+        font-weight: 400;
+        letter-spacing: 0.16px;
+        background-repeat: no-repeat;
+
+        .title {
+            display: flex;
+            align-items: center;
+            height: 100%;
+            justify-content: center;
+            color: #fff;
+            text-align: center;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .closeBtn {
+            position: absolute;
+            right: 12px;
+            top: 34px;
         }
     }
 
@@ -84,19 +110,10 @@ $borderBottom: 1px solid rgba(255, 255, 255, 0.3);
                     font-weight: 400;
                 }
             }
-
-            .forgotPass {
-                color: #fff;
-                height: 32px;
-                padding: 4px 0 5px;
-                white-space: nowrap;
-                font-size: 12px;
-                font-weight: 500;
-            }
         }
     }
 
-    .vertifyCode {
+    .vertifyCodeByImage {
         height: 44px;
         display: flex;
         padding: 0 6px;
@@ -138,6 +155,74 @@ $borderBottom: 1px solid rgba(255, 255, 255, 0.3);
         }
     }
 
+    .nickname {
+        height: 44px;
+        display: flex;
+        padding: 0 6px;
+        gap: 6px;
+        align-items: center;
+        border-bottom: $borderBottom;
+
+        .nicknameBlock {
+            display: flex;
+            align-items: center;
+
+            .nicknameInput {
+                width: 246px;
+
+                ::placeholder {
+                    color: #e6effe;
+                    font-size: 14px;
+                    font-weight: 400;
+                }
+            }
+        }
+    }
+
+    .vertifyCode {
+        height: 66px;
+        display: flex;
+        gap: 6px;
+        align-items: center;
+        flex-direction: column;
+
+        .vertifyCodeBlock {
+            padding: 0 6px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            border-bottom: $borderBottom;
+
+            .vertifyCodeInput {
+                height: 100%;
+                width: 146px;
+                padding-left: 6px;
+
+                input {
+                    width: 146px;
+                }
+
+                ::placeholder {
+                    color: #e6effe;
+                    font-size: 14px;
+                    font-weight: 400;
+                }
+            }
+
+            .getVertifyCode {
+                display: flex;
+                justify-content: flex-end;
+                align-items: center;
+                height: 44px;
+                width: 100%;
+                color: #fbb03b;
+                text-align: right;
+                font-size: 12px;
+                font-weight: 500;
+            }
+        }
+    }
+
     .agreement {
         padding-top: 16px;
         color: #fff;
@@ -146,16 +231,36 @@ $borderBottom: 1px solid rgba(255, 255, 255, 0.3);
         transform: scale(0.9091);
         margin-left: -15px;
         text-align: left;
+        padding-bottom: 102px;
     }
-}
 
-.futureTitle {
-    font-family: YouSheBiaoTiHei;
+    .disableButton {
+        opacity: 0.5;
+        color: #fff;
+        background-color: rgba(255, 255, 255, 0.3);
+    }
 
-    .future {
-        background: linear-gradient(91deg, #00ceff 8.31%, #0085ff 114.96%);
-        background-clip: text;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
+    .ableButton {
+        opacity: 1;
+        color: #276ce1;
+        background-color: #fff;
+    }
+
+    .submitButton {
+        width: 100%;
+        height: 36px;
+        padding: 10px 12px;
+        border-radius: 50px;
+    }
+
+    .errorMessage {
+        color: #fbb03b;
+        font-size: 10px;
+        font-weight: 400;
+        margin-left: -12px;
+        text-align: left;
+        width: 100%;
+        display: flex;
+        align-items: center;
     }
 }
