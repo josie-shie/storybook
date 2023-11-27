@@ -513,48 +513,44 @@ interface BettingData {
 function createOddRunningHashTable(oddList: OddsRunningType) {
     const result: OddsRunningHashTable = {};
 
-    const target = oddList.isHalf ? oddList.list : oddList.data;
+    oddList.list?.forEach(item => {
+        if (item.type !== 1 && item.type !== 2 && item.type !== 6 && item.type !== 7) {
+            return;
+        }
 
-    if (target) {
-        target.forEach(item => {
-            if (item.type !== 1 && item.type !== 2 && item.type !== 6 && item.type !== 7) {
-                return;
-            }
+        if (!result[item.matchId] as boolean) {
+            result[item.matchId] = {};
+        }
 
-            if (!result[item.matchId] as boolean) {
-                result[item.matchId] = {};
-            }
+        if (!result[item.matchId][item.companyId] as boolean) {
+            result[item.matchId][item.companyId] = {};
+        }
 
-            if (!result[item.matchId][item.companyId] as boolean) {
-                result[item.matchId][item.companyId] = {};
-            }
+        const bettingData: BettingData = {
+            id: item.id,
+            matchId: item.matchId,
+            time: item.time,
+            homeScore: item.homeScore,
+            awayScore: item.awayScore,
+            type: item.type,
+            companyId: item.companyId,
+            homeCurrentOdds: parseFloat(item.odds1),
+            currentHandicap: parseFloat(item.odds2),
+            awayCurrentOdds: parseFloat(item.odds3),
+            modifytime: item.modifytime,
+            isClosed: item.type === 6 || item.type === 7
+        };
 
-            const bettingData: BettingData = {
-                id: item.id,
-                matchId: item.matchId,
-                time: item.time,
-                homeScore: item.homeScore,
-                awayScore: item.awayScore,
-                type: item.type,
-                companyId: item.companyId,
-                homeCurrentOdds: parseFloat(item.odds1),
-                currentHandicap: parseFloat(item.odds2),
-                awayCurrentOdds: parseFloat(item.odds3),
-                modifytime: item.modifytime,
-                isClosed: item.type === 6 || item.type === 7
-            };
-
-            if (item.type === 1 || item.type === 6) {
-                const key = oddList.isHalf ? 'handicapHalf' : 'handicap';
-                result[item.matchId][item.companyId][key] = bettingData;
-            } else {
-                bettingData.currentOverOdds = parseFloat(item.odds1);
-                bettingData.currentUnderOdds = parseFloat(item.odds3);
-                const key = oddList.isHalf ? 'overUnderHalf' : 'overUnder';
-                result[item.matchId][item.companyId][key] = bettingData;
-            }
-        });
-    }
+        if (item.type === 1 || item.type === 6) {
+            const key = oddList.isHalf ? 'handicapHalf' : 'handicap';
+            result[item.matchId][item.companyId][key] = bettingData;
+        } else {
+            bettingData.currentOverOdds = parseFloat(item.odds1);
+            bettingData.currentUnderOdds = parseFloat(item.odds3);
+            const key = oddList.isHalf ? 'overUnderHalf' : 'overUnder';
+            result[item.matchId][item.companyId][key] = bettingData;
+        }
+    });
 
     return result;
 }
@@ -573,7 +569,7 @@ const handleOddRunningMessage = async (message: Buffer) => {
         });
         messageMethod(formatDecodedMessage);
     }
-    // eslint-disable-next-line no-console -- Check mqtt message
+
     // console.log('[MQTT On Odd Running message ContestMessage]: ', decodedMessage);
 };
 
