@@ -8,7 +8,16 @@ function ForgetPassword() {
     const title = <p>忘记密码</p>;
 
     return (
-        <AuthDrawer isOpen={isOpen} setIsOpen={setIsOpen} title={title}>
+        <AuthDrawer
+            isOpen={isOpen}
+            onClose={() => {
+                setIsOpen(false);
+            }}
+            onOpen={() => {
+                setIsOpen(true);
+            }}
+            title={title}
+        >
             <div className={style.forgetPassword} />
         </AuthDrawer>
     );

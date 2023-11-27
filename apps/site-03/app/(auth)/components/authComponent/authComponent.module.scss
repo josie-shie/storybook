@@ -1,6 +1,8 @@
 $borderBottom: 1px solid rgba(255, 255, 255, 0.3);
 
 .loginDrawer {
+    height: 100%;
+
     :global(.MuiInput-underline::before) {
         border-bottom: none;
     }

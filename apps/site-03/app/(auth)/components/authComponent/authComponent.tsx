@@ -1,4 +1,3 @@
-import Drawer from '@mui/material/Drawer';
 import Image from 'next/image';
 import type { ReactNode } from 'react';
 import { Button, Input } from '@mui/material';
@@ -11,6 +10,7 @@ import lockIcon from './img/lockIcon.png';
 import shieldIcon from './img/shieldIcon.png';
 import exclamationIcon from './img/exclamation.png';
 import userIcon from './img/user.png';
+import BottomDrawer from '@/components/drawer/bottomDrawer';
 
 export function NicknameInput() {
     return (
@@ -123,24 +123,22 @@ export function PhoneInput() {
 interface PropsType {
     title: ReactNode;
     isOpen: boolean;
-    setIsOpen: (isOpen: boolean) => void;
     children: ReactNode;
+    onClose: () => void;
+    onOpen: () => void;
 }
 
-export function AuthDrawer({ title, isOpen, setIsOpen, children }: PropsType) {
+export function AuthDrawer({ title, isOpen, onOpen, children, onClose }: PropsType) {
     return (
-        <Drawer
-            anchor="bottom"
-            onClose={() => {
-                setIsOpen(false);
+        <BottomDrawer
+            isOpen={isOpen}
+            onClose={onClose}
+            onOpen={onOpen}
+            propsStyle={{
+                height: '580px',
+                backgroundColor: '#1665df'
             }}
-            open={isOpen}
-            sx={{
-                '& .MuiPaper-root': {
-                    height: '580px',
-                    backgroundColor: '#1665df'
-                }
-            }}
+            topLineDisplay="none"
         >
             <div className={style.loginDrawer}>
                 <div className={style.header} style={{ backgroundImage: `url(${headerBg.src})` }}>
@@ -155,6 +153,6 @@ export function AuthDrawer({ title, isOpen, setIsOpen, children }: PropsType) {
                     {children}
                 </div>
             </div>
-        </Drawer>
+        </BottomDrawer>
     );
 }

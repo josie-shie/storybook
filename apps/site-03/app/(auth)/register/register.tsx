@@ -16,7 +16,16 @@ function Register() {
     const title = <p>注册</p>;
 
     return (
-        <AuthDrawer isOpen={isOpen} setIsOpen={setIsOpen} title={title}>
+        <AuthDrawer
+            isOpen={isOpen}
+            onClose={() => {
+                setIsOpen(false);
+            }}
+            onOpen={() => {
+                setIsOpen(true);
+            }}
+            title={title}
+        >
             <div className={style.register}>
                 <FormControl>
                     <PhoneInput />

@@ -21,7 +21,16 @@ function Login() {
     );
 
     return (
-        <AuthDrawer isOpen={isOpen} setIsOpen={setIsOpen} title={title}>
+        <AuthDrawer
+            isOpen={isOpen}
+            onClose={() => {
+                setIsOpen(false);
+            }}
+            onOpen={() => {
+                setIsOpen(true);
+            }}
+            title={title}
+        >
             <div className={style.login}>
                 <FormControl>
                     <PhoneInput />
