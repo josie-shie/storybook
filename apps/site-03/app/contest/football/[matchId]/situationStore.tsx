@@ -4,13 +4,13 @@ import type {
     GetDetailStatusResponse,
     HandicapsDataType,
     TotalGoalsDataType,
-    EventInfoType,
     TechnicalInfo,
     LineupList,
     HandicapsInfo,
     TotalGoalsInfo,
     OddsRunningType,
-    RequestPlayType
+    RequestPlayType,
+    EventInfo
 } from 'data-center';
 
 interface HandicapType {
@@ -35,13 +35,7 @@ interface SituationState extends InitState {
     setIsOddsDetailDrawerOpen: (isOpen: boolean) => void;
     setOddsDeatilDrawerTabValue: (tabValue: RequestPlayType) => void;
     setLiveOddsData: (liveOddsData: OddsRunningType[]) => void;
-    setEvents: ({
-        eventList,
-        eventInfo
-    }: {
-        eventList: string[];
-        eventInfo: EventInfoType;
-    }) => void;
+    setEvents: ({ eventList }: { eventList: EventInfo[] }) => void;
     setTechnical: ({ technical }: { technical: TechnicalInfo[] }) => void;
     setNotStartedOdds: (odds: Partial<OddsHashTable>, matchId: number) => void;
     setInprogressOdds: (odds: Partial<OddsRunningHashTable>, matchId: number) => void;
@@ -69,8 +63,7 @@ const initialState = (
         >;
     },
     totalGoalsData: {} as TotalGoalsDataType,
-    eventList: [] as string[],
-    eventInfo: {} as EventInfoType,
+    eventList: {} as EventInfo[],
     technical: [] as TechnicalInfo[],
     lineupInfo: {} as LineupList,
     liveOddsData: [],
@@ -101,7 +94,6 @@ const initialState = (
         handicapsData,
         totalGoalsData,
         eventList,
-        eventInfo,
         technical,
         lineupInfo
     }: SituationState) => {
@@ -111,15 +103,14 @@ const initialState = (
                 handicapsData,
                 totalGoalsData,
                 eventList,
-                eventInfo,
                 technical,
                 lineupInfo
             };
         });
     },
-    setEvents: ({ eventList, eventInfo }: { eventList: string[]; eventInfo: EventInfoType }) => {
+    setEvents: ({ eventList }: { eventList: EventInfo[] }) => {
         set(state => {
-            return { ...state, eventList, eventInfo };
+            return { ...state, eventList };
         });
     },
     setTechnical: ({ technical }: { technical: TechnicalInfo[] }) => {
@@ -336,13 +327,13 @@ const initialState = (
 
                     const updatedFullOdds = {
                         ...(typeof obj.handicap?.homeCurrentOdds === 'number' && {
-                            homeCurrentOdds: obj.handicap.homeCurrentOdds.toString()
+                            homeCurrentOdds: obj.handicap.homeCurrentOdds
                         }),
                         ...(typeof obj.handicap?.awayCurrentOdds === 'number' && {
-                            awayCurrentOdds: obj.handicap.awayCurrentOdds.toString()
+                            awayCurrentOdds: obj.handicap.awayCurrentOdds
                         }),
                         ...(typeof obj.handicap?.currentHandicap === 'number' && {
-                            currentHandicap: obj.handicap.currentHandicap
+                            currentHandicap: obj.handicap.currentHandicap.toString()
                         }),
                         ...(typeof obj.handicap?.time === 'string' && {
                             time: obj.handicap.time
@@ -361,15 +352,15 @@ const initialState = (
                         }),
                         ...(typeof obj.handicap?.currentHandicap === 'number' &&
                             !newHandicapData.full[Number(companyId)].inProgress.length && {
-                                initialHandicap: obj.handicap.currentHandicap
+                                initialHandicap: obj.handicap.currentHandicap.toString()
                             }),
                         ...(typeof obj.handicap?.homeCurrentOdds === 'number' &&
                             !newHandicapData.full[Number(companyId)].inProgress.length && {
-                                homeInitialOdds: obj.handicap.homeCurrentOdds.toString()
+                                homeInitialOdds: obj.handicap.homeCurrentOdds
                             }),
                         ...(typeof obj.handicap?.awayCurrentOdds === 'number' &&
                             !newHandicapData.full[Number(companyId)].inProgress.length && {
-                                awayInitialOdds: obj.handicap.awayCurrentOdds.toString()
+                                awayInitialOdds: obj.handicap.awayCurrentOdds
                             })
                     };
 
@@ -386,12 +377,12 @@ const initialState = (
                             awayScore: 0,
                             isClosed: false,
                             oddsChangeTime: 0,
-                            initialHandicap: 0,
-                            homeInitialOdds: '-',
-                            awayInitialOdds: '-',
-                            homeCurrentOdds: '-',
-                            awayCurrentOdds: '-',
-                            currentHandicap: 0,
+                            initialHandicap: '-',
+                            homeInitialOdds: 0,
+                            awayInitialOdds: 0,
+                            homeCurrentOdds: 0,
+                            awayCurrentOdds: 0,
+                            currentHandicap: '-',
                             time: '-',
                             ...updatedFullOdds
                         }) as unknown as HandicapsInfo[];
@@ -412,13 +403,13 @@ const initialState = (
 
                     const updatedHalfOdds = {
                         ...(typeof obj.handicapHalf?.homeCurrentOdds === 'number' && {
-                            homeCurrentOdds: obj.handicapHalf.homeCurrentOdds.toString()
+                            homeCurrentOdds: obj.handicapHalf.homeCurrentOdds
                         }),
                         ...(typeof obj.handicapHalf?.awayCurrentOdds === 'number' && {
-                            awayCurrentOdds: obj.handicapHalf.awayCurrentOdds.toString()
+                            awayCurrentOdds: obj.handicapHalf.awayCurrentOdds
                         }),
                         ...(typeof obj.handicapHalf?.currentHandicap === 'number' && {
-                            currentHandicap: obj.handicapHalf.currentHandicap
+                            currentHandicap: obj.handicapHalf.currentHandicap.toString()
                         }),
                         ...(typeof obj.handicapHalf?.time === 'string' && {
                             time: obj.handicapHalf.time
@@ -437,15 +428,15 @@ const initialState = (
                         }),
                         ...(typeof obj.handicapHalf?.currentHandicap === 'number' &&
                             !newHandicapData.full[Number(companyId)].inProgress.length && {
-                                initialHandicap: obj.handicapHalf.currentHandicap
+                                initialHandicap: obj.handicapHalf.currentHandicap.toString()
                             }),
                         ...(typeof obj.handicapHalf?.homeCurrentOdds === 'number' &&
                             !newHandicapData.full[Number(companyId)].inProgress.length && {
-                                homeInitialOdds: obj.handicapHalf.homeCurrentOdds.toString()
+                                homeInitialOdds: obj.handicapHalf.homeCurrentOdds
                             }),
                         ...(typeof obj.handicapHalf?.awayCurrentOdds === 'number' &&
                             !newHandicapData.full[Number(companyId)].inProgress.length && {
-                                awayInitialOdds: obj.handicapHalf.awayCurrentOdds.toString()
+                                awayInitialOdds: obj.handicapHalf.awayCurrentOdds
                             })
                     };
 
@@ -462,12 +453,12 @@ const initialState = (
                             awayScore: 0,
                             isClosed: false,
                             oddsChangeTime: 0,
-                            initialHandicap: 0,
-                            homeInitialOdds: '-',
-                            awayInitialOdds: '-',
-                            homeCurrentOdds: '-',
-                            awayCurrentOdds: '-',
-                            currentHandicap: 0,
+                            initialHandicap: '-',
+                            homeInitialOdds: 0,
+                            awayInitialOdds: 0,
+                            homeCurrentOdds: 0,
+                            awayCurrentOdds: 0,
+                            currentHandicap: '-',
                             time: '-',
                             ...updatedFullOdds
                         }) as unknown as HandicapsInfo[];

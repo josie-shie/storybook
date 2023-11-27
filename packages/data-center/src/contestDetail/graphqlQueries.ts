@@ -66,219 +66,223 @@ export const GET_DETAIL_STATUS_QUERY = `
     query getDetailStatus($input: DetailStatusInput!){
         getDetailStatus(input: $input) {
             handicapsFull {
-            company{
-                id
-                timePeriods{
-                notStarted {
-                    matchId
-                    companyId
-                    initialHandicap
-                    homeInitialOdds
-                    awayInitialOdds
-                    currentHandicap
-                    homeCurrentOdds
-                    awayCurrentOdds
-                    oddsChangeTime
-                    oddsType
-                    state
-                    homeScore
-                    awayScore
-                    isClosed
+                company {
+                    id
+                    timePeriods {
+                        notStarted {
+                            matchId
+                            companyId
+                            initialHandicap
+                            homeInitialOdds
+                            awayInitialOdds
+                            currentHandicap
+                            homeCurrentOdds
+                            awayCurrentOdds
+                            oddsChangeTime
+                            oddsType
+                            state
+                            homeScore
+                            awayScore
+                            isClosed
+                        }
+                        inProgress {
+                            matchId
+                            companyId
+                            initialHandicap
+                            homeInitialOdds
+                            awayInitialOdds
+                            currentHandicap
+                            homeCurrentOdds
+                            awayCurrentOdds
+                            oddsChangeTime
+                            oddsType
+                            state
+                            homeScore
+                            awayScore
+                            isClosed
+                        }
+                    }
                 }
-                inProgress {
-                    matchId
-                    companyId
-                    initialHandicap
-                    homeInitialOdds
-                    awayInitialOdds
-                    currentHandicap
-                    homeCurrentOdds
-                    awayCurrentOdds
-                    oddsChangeTime
-                    oddsType
-                    state
-                    homeScore
-                    awayScore
-                    isClosed
-                }
-                }
-            }
             }
             handicapsHalf {
-            company{
-                id
-                timePeriods{
-                notStarted {
-                    matchId
-                    companyId
-                    initialHandicap
-                    homeInitialOdds
-                    awayInitialOdds
-                    currentHandicap
-                    homeCurrentOdds
-                    awayCurrentOdds
-                    oddsChangeTime
-                    oddsType
-                    state
-                    homeScore
-                    awayScore
-                    isClosed
+                company {
+                    id
+                    timePeriods {
+                        notStarted {
+                            matchId
+                            companyId
+                            initialHandicap
+                            homeInitialOdds
+                            awayInitialOdds
+                            currentHandicap
+                            homeCurrentOdds
+                            awayCurrentOdds
+                            oddsChangeTime
+                            oddsType
+                            state
+                            homeScore
+                            awayScore
+                            isClosed
+                        }
+                        inProgress {
+                            matchId
+                            companyId
+                            initialHandicap
+                            homeInitialOdds
+                            awayInitialOdds
+                            currentHandicap
+                            homeCurrentOdds
+                            awayCurrentOdds
+                            oddsChangeTime
+                            oddsType
+                            state
+                            homeScore
+                            awayScore
+                            isClosed
+                        }
+                    }
                 }
-                inProgress {
-                    matchId
-                    companyId
-                    initialHandicap
-                    homeInitialOdds
-                    awayInitialOdds
-                    currentHandicap
-                    homeCurrentOdds
-                    awayCurrentOdds
-                    oddsChangeTime
-                    oddsType
-                    state
-                    homeScore
-                    awayScore
-                    isClosed
-                }
-                }
-            }
             }
             totalGoalsFull {
-            company{
-                id
-                timePeriods{
-                notStarted {
-                    matchId
-                    companyId
-                    initialHandicap
-                    overInitialOdds
-                    underInitialOdds
-                    currentHandicap
-                    overCurrentOdds
-                    underCurrentOdds
-                    oddsChangeTime
-                    oddsType
-                    state
-                    homeScore
-                    awayScore
-                    isClosed
+                company{
+                    id
+                    timePeriods{
+                        notStarted {
+                            matchId
+                            companyId
+                            initialHandicap
+                            overInitialOdds
+                            underInitialOdds
+                            currentHandicap
+                            overCurrentOdds
+                            underCurrentOdds
+                            oddsChangeTime
+                            oddsType
+                            state
+                            homeScore
+                            awayScore
+                            isClosed
+                        }
+                        inProgress {
+                            matchId
+                            companyId
+                            initialHandicap
+                            overInitialOdds
+                            underInitialOdds
+                            currentHandicap
+                            overCurrentOdds
+                            underCurrentOdds
+                            oddsChangeTime
+                            oddsType
+                            state
+                            homeScore
+                            awayScore
+                            isClosed
+                        }
+                    }
                 }
-                inProgress {
-                    matchId
-                    companyId
-                    initialHandicap
-                    overInitialOdds
-                    underInitialOdds
-                    currentHandicap
-                    overCurrentOdds
-                    underCurrentOdds
-                    oddsChangeTime
-                    oddsType
-                    state
-                    homeScore
-                    awayScore
-                    isClosed
-                }
-                }
-            }
             }
             totalGoalsHalf {
-            company{
-                id
-                timePeriods{
-                notStarted {
-                    matchId
-                    companyId
-                    initialHandicap
-                    overInitialOdds
-                    underInitialOdds
-                    currentHandicap
-                    overCurrentOdds
-                    underCurrentOdds
-                    oddsChangeTime
-                    oddsType
-                    state
-                    homeScore
-                    awayScore
-                    isClosed
+                company {
+                    id
+                    timePeriods {
+                        notStarted {
+                            matchId
+                            companyId
+                            initialHandicap
+                            overInitialOdds
+                            underInitialOdds
+                            currentHandicap
+                            overCurrentOdds
+                            underCurrentOdds
+                            oddsChangeTime
+                            oddsType
+                            state
+                            homeScore
+                            awayScore
+                            isClosed
+                        }
+                        inProgress {
+                            matchId
+                            companyId
+                            initialHandicap
+                            overInitialOdds
+                            underInitialOdds
+                            currentHandicap
+                            overCurrentOdds
+                            underCurrentOdds
+                            oddsChangeTime
+                            oddsType
+                            state
+                            homeScore
+                            awayScore
+                            isClosed
+                        }
+                    }
                 }
-                inProgress {
-                    matchId
-                    companyId
-                    initialHandicap
-                    overInitialOdds
-                    underInitialOdds
-                    currentHandicap
-                    overCurrentOdds
-                    underCurrentOdds
-                    oddsChangeTime
-                    oddsType
-                    state
-                    homeScore
-                    awayScore
-                    isClosed
-                }
-                }
-            }
             }
             events {
-            id
-            isHome
-            kind
-            time
-            nameEn
-            nameChs
-            nameCht
-            playerId
-            playerId2
-            overtime
+                id
+                matchId
+                isHome
+                kind
+                time
+                nameEn
+                nameChs
+                nameCht
+                playerId
+                playerOffOrAssistEn
+                playerOffOrAssistChs
+                playerOffOrAssistCht
+                playerId2
+                overtime
             }
             liveText {
-            id
-            content
-            time
+                id
+                content
+                time
             }
             technicalStatistics {
-            technicType
-            home
-            away
+                technicType
+                home
+                away
             }
             lineupInfo {
-            matchId
-            homeArray
-            awayArray
-            homeLineup {
-                playerId
-                nameEn
-                nameChs
-                nameCht
-                number
-                positionId
-            }
-            awayLineup {
-                playerId
-                nameEn
-                nameChs
-                nameCht
-                number
-                positionId
-            }
-            homeBackup {
-                playerId
-                nameEn
-                nameChs
-                nameCht
-                number
-                positionId
-            }
-            awayBackup {
-                playerId
-                nameEn
-                nameChs
-                nameCht
-                number
-                positionId
-            }
+                matchId
+                homeArray
+                awayArray
+                homeLineup {
+                    playerId
+                    nameEn
+                    nameChs
+                    nameCht
+                    number
+                    positionId
+                }
+                awayLineup {
+                    playerId
+                    nameEn
+                    nameChs
+                    nameCht
+                    number
+                    positionId
+                }
+                homeBackup {
+                    playerId
+                    nameEn
+                    nameChs
+                    nameCht
+                    number
+                    positionId
+                }
+                awayBackup {
+                    playerId
+                    nameEn
+                    nameChs
+                    nameCht
+                    number
+                    positionId
+                }
             }
         }
     }

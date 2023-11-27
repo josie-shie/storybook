@@ -94,20 +94,22 @@ interface TechnicalInfoData {
     }[];
 }
 
+interface EventInfo {
+    id: number;
+    isHome: boolean;
+    kind: 2 | 1 | 3 | 7 | 8 | 9 | 11 | 13 | 14;
+    nameChs: string;
+    nameCht: string;
+    nameEn: string;
+    overtime: string;
+    playerId: string;
+    playerId2: string;
+    time: string;
+}
+
 interface EventInfoData {
     matchId: number;
-    event: {
-        id: number;
-        isHome: boolean;
-        kind: 2 | 1 | 3 | 7 | 8 | 9 | 11 | 13 | 14;
-        nameChs: string;
-        nameCht: string;
-        nameEn: string;
-        overtime: string;
-        playerId: string;
-        playerId2: string;
-        time: string;
-    }[];
+    event: EventInfo[];
 }
 
 let client: MqttClient;
@@ -573,7 +575,7 @@ const handleOddRunningMessage = async (message: Buffer) => {
         });
         messageMethod(formatDecodedMessage);
     }
-    // eslint-disable-next-line no-console -- Check mqtt message
+
     // console.log('[MQTT On Odd Running message ContestMessage]: ', decodedMessage);
 };
 

@@ -19,7 +19,21 @@ interface TechnicalInfoData {
 
 interface EventInfoData {
     matchId: number;
-    event: EventInfo[];
+    event: {
+        id: number;
+        isHome: boolean;
+        kind: number;
+        nameChs: string;
+        nameCht: string;
+        nameEn: string;
+        overtime: string;
+        playerId: string;
+        playerId2: string;
+        time: string;
+        playerOffOrAssistChs?: string;
+        playerOffOrAssistEn?: string;
+        playerOffOrAssistCht?: string;
+    }[];
 }
 
 function Situation({ situationData }: { situationData: GetDetailStatusResponse }) {
@@ -43,32 +57,20 @@ function Situation({ situationData }: { situationData: GetDetailStatusResponse }
 
         const syncEventGlobalStore = (message: Partial<EventInfoData>) => {
             if (message.matchId === matchDetail.matchId && message.event) {
-                const eventList: string[] = [];
-                const eventInfo = {
-                    isAway: {},
-                    isHome: {}
+                const splitNames = (names: string) => {
+                    if (names.length === 0) return '';
+                    return names.split('↑').map((name: string) => name.replace('↓', ''));
                 };
 
-                for (const event of message.event) {
-                    const eventTime = `${event.time}${
-                        event.overtime !== '0' ? `+${event.overtime}` : ''
-                    }`;
+                message.event.forEach(event => {
+                    event.playerOffOrAssistChs = splitNames(event.nameChs)[1];
+                    event.playerOffOrAssistEn = splitNames(event.nameEn)[1];
+                    event.playerOffOrAssistCht = splitNames(event.nameCht)[1];
+                });
 
-                    if (!eventList.includes(eventTime)) {
-                        eventList.push(eventTime);
-                    }
+                const eventList = JSON.parse(JSON.stringify(message.event)) as EventInfo[];
 
-                    if (event.isHome) {
-                        eventInfo.isHome[eventTime] = {
-                            ...event
-                        };
-                    } else {
-                        eventInfo.isAway[eventTime] = {
-                            ...event
-                        };
-                    }
-                }
-                updateEvent({ eventList, eventInfo });
+                updateEvent({ eventList });
             }
         };
 
@@ -82,7 +84,7 @@ function Situation({ situationData }: { situationData: GetDetailStatusResponse }
             if (message[matchDetail.matchId]) {
                 setInprogressOdds(message, matchDetail.matchId);
             }
-            // eslint-disable-next-line no-console -- TODO
+
             // console.log('syncOddsRunning', message);
         };
 
@@ -90,7 +92,7 @@ function Situation({ situationData }: { situationData: GetDetailStatusResponse }
             if (message[matchDetail.matchId]) {
                 setInprogressOdds(message, matchDetail.matchId);
             }
-            // eslint-disable-next-line no-console -- TODO
+
             // console.log('syncOddsRunningHalf', message);
         };
 
