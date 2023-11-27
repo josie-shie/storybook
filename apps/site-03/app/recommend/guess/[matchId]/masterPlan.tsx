@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import Image from 'next/image';
-import Rule from '../components/rule/rule';
+import Rule from './components/rule/rule';
 import PaidDialog from './components/paidDialog/paidDialog';
 import GameCard from './gameCard';
 import AnalyzeColumn from './analyze';
