@@ -28,5 +28,5 @@ message OddsRunning {
 
 message OddsRunningMap {
   int32 matchId = 1;
-  repeated OddsRunning data = 2;
+  repeated OddsRunning list = 2;
 }
