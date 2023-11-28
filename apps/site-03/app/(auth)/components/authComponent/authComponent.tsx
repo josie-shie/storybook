@@ -2,6 +2,7 @@ import Image from 'next/image';
 import type { ReactNode } from 'react';
 import { Button, Input } from '@mui/material';
 import { CustomSelect } from 'ui';
+import type { FieldError, FieldValues } from 'react-hook-form';
 import style from './authComponent.module.scss';
 import closeIcon from './img/closeIcon.png';
 import headerBg from './img/headerBg.jpeg';
@@ -12,18 +13,32 @@ import exclamationIcon from './img/exclamation.png';
 import userIcon from './img/user.png';
 import BottomDrawer from '@/components/drawer/bottomDrawer';
 
-export function NicknameInput() {
+export function NicknameInput({
+    field,
+    error
+}: {
+    field: FieldValues;
+    error: FieldError | undefined;
+}) {
     return (
-        <div className={style.nickname}>
-            <Image alt="" height={24} src={userIcon.src} width={24} />
-            <div className={style.nicknameBlock}>
-                <Input
-                    className={style.nicknameInput}
-                    id="nickname"
-                    placeholder="昵称请输入2-10位中文、英文或数字"
-                />
+        <>
+            <div className={style.nickname}>
+                <Image alt="" height={24} src={userIcon.src} width={24} />
+                <div className={style.nicknameBlock}>
+                    <Input
+                        {...field}
+                        className={style.nicknameInput}
+                        disableUnderline
+                        error={Boolean(error)}
+                        id="username"
+                        placeholder="昵称请输入2-10位中文、英文或数字"
+                    />
+                </div>
             </div>
-        </div>
+            <div className={style.errorMessage}>
+                {error ? <span>昵称请输入2-10位中文、英文或数字</span> : null}
+            </div>
+        </>
     );
 }
 
@@ -36,6 +51,7 @@ export function SubmitButton({ label, disabled }: SubmitButtonPropsType) {
     return (
         <Button
             className={`${style.submitButton} ${disabled ? style.disableButton : style.ableButton}`}
+            disabled={disabled}
             fullWidth
             type="submit"
         >
@@ -50,17 +66,44 @@ export function Aggrement() {
     );
 }
 
-export function VertifyCode() {
+export function VertifyCode({
+    field,
+    error,
+    getVerificationCode,
+    vertifyDisable,
+    countDownNumber,
+    sendCodeSuccess
+}: {
+    field: FieldValues;
+    error: FieldError | undefined;
+    getVerificationCode: () => void;
+    vertifyDisable: boolean;
+    countDownNumber: number;
+    sendCodeSuccess: boolean;
+}) {
     return (
         <div className={style.vertifyCode}>
             <div className={style.vertifyCodeBlock}>
                 <Image alt="" height={24} src={shieldIcon.src} width={24} />
                 <Input
+                    {...field}
                     className={style.vertifyCodeInput}
-                    id="vertifyCode"
+                    disableUnderline
+                    error={Boolean(error)}
+                    id="verificationCode"
                     placeholder="请输入手机号码验证"
                 />
-                <p className={style.getVertifyCode}>获取验证码</p>
+                {sendCodeSuccess ? (
+                    <p className={style.getVertifyCode}>驗證碼已送出({countDownNumber})</p>
+                ) : (
+                    <Button
+                        className={style.getVertifyCode}
+                        disabled={vertifyDisable}
+                        onClick={getVerificationCode}
+                    >
+                        获取验证码
+                    </Button>
+                )}
             </div>
             <div className={style.errorMessage}>
                 <Image alt="" height={16} src={exclamationIcon.src} width={16} />
@@ -75,7 +118,12 @@ export function VertifyCodeByImage() {
         <div className={style.vertifyCodeByImage}>
             <Image alt="" height={24} src={shieldIcon.src} width={24} />
             <div className={style.vertifyCodeBlock}>
-                <Input className={style.vertifyCodeInput} id="vertifyCode" placeholder="验证码" />
+                <Input
+                    className={style.vertifyCodeInput}
+                    disableUnderline
+                    id="vertifyCode"
+                    placeholder="验证码"
+                />
                 <p className={style.getVertifyCode}>获取验证码</p>
             </div>
         </div>
@@ -85,38 +133,67 @@ export function VertifyCodeByImage() {
 interface PasswordPropsType {
     children?: ReactNode;
     placeholder: string;
+    field: FieldValues;
+    error: FieldError | undefined;
 }
 
-export function PasswordInput({ children, placeholder }: PasswordPropsType) {
+export function PasswordInput({ children, placeholder, field, error }: PasswordPropsType) {
     return (
-        <div className={style.password}>
-            <Image alt="" height={24} src={lockIcon.src} width={24} />
-            <div className={style.passwordBlock}>
-                <Input className={style.passwordInput} id="password" placeholder={placeholder} />
-                {children}
+        <>
+            <div className={style.password}>
+                <Image alt="" height={24} src={lockIcon.src} width={24} />
+                <div className={style.passwordBlock}>
+                    <Input
+                        {...field}
+                        className={style.passwordInput}
+                        disableUnderline
+                        error={Boolean(error)}
+                        id="password"
+                        placeholder={placeholder}
+                    />
+                    {children}
+                </div>
             </div>
+
+            {error ? <div className={style.errorMessage}>{placeholder}</div> : null}
+        </>
+    );
+}
+
+export function CountryCodeInput({ field }: { field: FieldValues }) {
+    const countryCodeList = [{ label: '+86', value: 86 }];
+
+    return (
+        <div className={style.codeSelect}>
+            <Image alt="" height={24} src={phoneIcon.src} width={24} />
+            <CustomSelect
+                {...field}
+                // onChange={onChange}
+                options={countryCodeList}
+                showCloseButton
+                showDragBar={false}
+                value={countryCodeList[0].value}
+            />
         </div>
     );
 }
 
-export function PhoneInput() {
-    const countryCallingCodeList = [{ label: '+86', value: 86 }];
-
+export function PhoneNumberInput({
+    field,
+    error
+}: {
+    field: FieldValues;
+    error: FieldError | undefined;
+}) {
     return (
-        <div className={style.phone}>
-            <div className={style.codeSelect}>
-                <Image alt="" height={24} src={phoneIcon.src} width={24} />
-                <CustomSelect
-                    // onChange={onChange}
-                    options={countryCallingCodeList}
-                    showCloseButton
-                    showDragBar={false}
-                    value={countryCallingCodeList[0].value}
-                />
-            </div>
-
-            <Input className={style.phoneInput} id="phoneNumber" placeholder="请输入手机号码" />
-        </div>
+        <Input
+            {...field}
+            className={style.phoneInput}
+            disableUnderline
+            error={Boolean(error)}
+            id="mobileNumber"
+            placeholder="请输入手机号码"
+        />
     );
 }
 

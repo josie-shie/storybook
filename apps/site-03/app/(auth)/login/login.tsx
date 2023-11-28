@@ -4,8 +4,6 @@ import { FormControl, Button } from '@mui/material';
 import style from './login.module.scss';
 import {
     AuthDrawer,
-    PhoneInput,
-    PasswordInput,
     VertifyCodeByImage,
     Aggrement,
     SubmitButton
@@ -33,10 +31,10 @@ function Login() {
         >
             <div className={style.login}>
                 <FormControl>
-                    <PhoneInput />
-                    <PasswordInput placeholder="6-16位英文+数字的密码">
+                    {/* <PhoneInput /> */}
+                    {/* <PasswordInput placeholder="6-16位英文+数字的密码">
                         <p className={style.forgotPass}>忘记密码</p>
-                    </PasswordInput>
+                    </PasswordInput> */}
 
                     <VertifyCodeByImage />
                 </FormControl>

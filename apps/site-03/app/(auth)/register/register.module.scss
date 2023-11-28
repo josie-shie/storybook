@@ -2,4 +2,33 @@ $borderBottom: 1px solid rgba(255, 255, 255, 0.3);
 
 .register {
     padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    .phone {
+        display: flex;
+        width: 100%;
+        gap: 6px;
+        flex-direction: column;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+
+        .input {
+            min-height: 44px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+    }
+
+    .errorMessage {
+        color: #fbb03b;
+        font-size: 10px;
+        font-weight: 400;
+        text-align: left;
+        width: 100%;
+        display: flex;
+        align-items: center;
+    }
 }

@@ -11,6 +11,7 @@ interface InitState {
 
 interface NotificationState extends InitState {
     handleClose: () => void;
+    setIsVisible: (newMessage: string, newType: NotificationType) => void;
 }
 
 let isInit = true;
@@ -22,6 +23,9 @@ const initialState = (set: (data: Partial<NotificationState>) => void) => ({
     isVisible: false,
     handleClose: () => {
         set({ isVisible: false, message: '' });
+    },
+    setIsVisible: (newMessage: string, newType: NotificationType) => {
+        set({ isVisible: true, message: newMessage, type: newType });
     }
 });
 
