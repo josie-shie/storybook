@@ -23,3 +23,9 @@ export const GET_MAIL_MEMBER_QUERY = `
         }
     }
 `;
+
+export const DELETE_MAIL_MEMBER_MUTATION = `
+    mutation deleteMailMember($input: DeleteMailMemberInput!) {
+        deleteMailMember(input: $input)
+    }
+`;
