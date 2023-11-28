@@ -2,7 +2,8 @@
 import { useState, useCallback, type ReactNode } from 'react';
 import Image from 'next/image';
 import { Slick } from 'ui';
-import { useRouter, useSearchParams, usePathname } from 'next/navigation';
+import { useRouter, useSearchParams, usePathname, useParams } from 'next/navigation';
+import { motion, AnimatePresence } from 'framer-motion';
 import style from './layout.module.scss';
 import FilterIcon from './img/filter.png';
 import SettingIcon from './img/setting.png';
@@ -11,7 +12,36 @@ import Setting from './components/setting';
 import HeaderFilter from '@/components/header/headerFilter';
 import Footer from '@/components/footer/footer';
 
-function ContestListLayout({ children }: { children: ReactNode }) {
+function InterceptingDetail({ modal }: { modal: ReactNode }) {
+    const params = useParams();
+    return (
+        <AnimatePresence>
+            {params.matchId ? (
+                <motion.div
+                    animate={{ transform: 'translateX(0)' }}
+                    exit={{ transform: 'translateX(100%)' }}
+                    initial={{ transform: 'translateX(100%)' }}
+                    key="modalDetail"
+                    style={{
+                        background: '#fff',
+                        width: '100%',
+                        position: 'fixed',
+                        top: 0,
+                        zIndex: 10,
+                        height: '100vh',
+                        overflowY: 'auto'
+                    }}
+                    transition={{ duration: 0.2 }}
+                >
+                    {' '}
+                    <div className={style.modal}>{modal}</div>
+                </motion.div>
+            ) : null}
+        </AnimatePresence>
+    );
+}
+
+function ContestListLayout({ children, modal }: { children: ReactNode; modal: ReactNode }) {
     const [showSetting, setShowSetting] = useState(false);
 
     const searchParams = useSearchParams();
@@ -101,6 +131,7 @@ function ContestListLayout({ children }: { children: ReactNode }) {
             />
 
             <Footer />
+            <InterceptingDetail modal={modal} />
         </div>
     );
 }
