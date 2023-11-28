@@ -96,12 +96,19 @@ const HandicapsInfoSchema = z.object({
 type OriginHandicapsInfo = z.infer<typeof HandicapsInfoSchema>;
 export type HandicapsInfo = Omit<
     OriginHandicapsInfo,
-    'homeInitialOdds' | 'awayInitialOdds' | 'homeCurrentOdds' | 'awayCurrentOdds'
+    | 'initialHandicap'
+    | 'currentHandicap'
+    | 'homeInitialOdds'
+    | 'awayInitialOdds'
+    | 'homeCurrentOdds'
+    | 'awayCurrentOdds'
 > & {
-    homeInitialOdds: string;
-    awayInitialOdds: string;
-    homeCurrentOdds: string;
-    awayCurrentOdds: string;
+    homeInitialOdds: number;
+    awayInitialOdds: number;
+    homeCurrentOdds: number;
+    awayCurrentOdds: number;
+    initialHandicap: string;
+    currentHandicap: string;
 };
 
 const TotalGoalsInfoSchema = z.object({
@@ -161,23 +168,16 @@ export type WinDrawLoseType = z.infer<typeof WinDrawLoseTypeSchema>;
 const EventInfoSchema = z.object({
     id: z.number(),
     isHome: z.boolean(),
-    kind: z.union([
-        z.literal(1),
-        z.literal(2),
-        z.literal(3),
-        z.literal(7),
-        z.literal(8),
-        z.literal(9),
-        z.literal(11),
-        z.literal(13),
-        z.literal(14)
-    ]),
+    kind: z.number(),
     time: z.string(),
     nameEn: z.string(),
     nameChs: z.string(),
     nameCht: z.string(),
     playerId: z.string(),
     playerId2: z.string(),
+    playerOffOrAssistEn: z.string(),
+    playerOffOrAssistChs: z.string(),
+    playerOffOrAssistCht: z.string(),
     overtime: z.string()
 });
 
@@ -350,16 +350,10 @@ export interface TotalGoalsDataType {
     >;
 }
 
-export interface EventInfoType {
-    isHome: Record<string, EventInfo>;
-    isAway: Record<string, EventInfo>;
-}
-
 export interface GetDetailStatusResponse {
     handicapsData: HandicapsDataType;
     totalGoalsData: TotalGoalsDataType;
-    eventList: string[];
-    eventInfo: EventInfoType;
+    eventList: EventInfo[];
     technical: TechnicalInfo[];
     lineupInfo: LineupList;
 }
@@ -492,23 +486,23 @@ export const getDetailStatus = async (
                     inProgress: item.timePeriods.inProgress.map(before => {
                         return {
                             ...before,
-                            homeInitialOdds: handicapToString(before.homeInitialOdds),
-                            awayInitialOdds: handicapToString(before.awayInitialOdds),
-                            homeCurrentOdds: handicapToString(before.homeCurrentOdds),
-                            awayCurrentOdds: handicapToString(before.awayCurrentOdds),
-                            initialHandicap: truncateFloatingPoint(before.initialHandicap, 2),
-                            currentHandicap: truncateFloatingPoint(before.currentHandicap, 2)
+                            homeInitialOdds: truncateFloatingPoint(before.homeInitialOdds, 2),
+                            awayInitialOdds: truncateFloatingPoint(before.awayInitialOdds, 2),
+                            homeCurrentOdds: truncateFloatingPoint(before.homeCurrentOdds, 2),
+                            awayCurrentOdds: truncateFloatingPoint(before.awayCurrentOdds, 2),
+                            initialHandicap: handicapToString(before.initialHandicap),
+                            currentHandicap: handicapToString(before.currentHandicap)
                         };
                     }),
                     notStarted: item.timePeriods.notStarted.map(before => {
                         return {
                             ...before,
-                            homeInitialOdds: handicapToString(before.homeInitialOdds),
-                            awayInitialOdds: handicapToString(before.awayInitialOdds),
-                            homeCurrentOdds: handicapToString(before.homeCurrentOdds),
-                            awayCurrentOdds: handicapToString(before.awayCurrentOdds),
-                            initialHandicap: truncateFloatingPoint(before.initialHandicap, 2),
-                            currentHandicap: truncateFloatingPoint(before.currentHandicap, 2)
+                            homeInitialOdds: truncateFloatingPoint(before.homeInitialOdds, 2),
+                            awayInitialOdds: truncateFloatingPoint(before.awayInitialOdds, 2),
+                            homeCurrentOdds: truncateFloatingPoint(before.homeCurrentOdds, 2),
+                            awayCurrentOdds: truncateFloatingPoint(before.awayCurrentOdds, 2),
+                            initialHandicap: handicapToString(before.initialHandicap),
+                            currentHandicap: handicapToString(before.currentHandicap)
                         };
                     })
                 };
@@ -520,23 +514,23 @@ export const getDetailStatus = async (
                     inProgress: item.timePeriods.inProgress.map(before => {
                         return {
                             ...before,
-                            homeInitialOdds: handicapToString(before.homeInitialOdds),
-                            awayInitialOdds: handicapToString(before.awayInitialOdds),
-                            homeCurrentOdds: handicapToString(before.homeCurrentOdds),
-                            awayCurrentOdds: handicapToString(before.awayCurrentOdds),
-                            initialHandicap: truncateFloatingPoint(before.initialHandicap, 2),
-                            currentHandicap: truncateFloatingPoint(before.currentHandicap, 2)
+                            homeInitialOdds: truncateFloatingPoint(before.homeInitialOdds, 2),
+                            awayInitialOdds: truncateFloatingPoint(before.awayInitialOdds, 2),
+                            homeCurrentOdds: truncateFloatingPoint(before.homeCurrentOdds, 2),
+                            awayCurrentOdds: truncateFloatingPoint(before.awayCurrentOdds, 2),
+                            initialHandicap: handicapToString(before.initialHandicap),
+                            currentHandicap: handicapToString(before.currentHandicap)
                         };
                     }),
                     notStarted: item.timePeriods.notStarted.map(before => {
                         return {
                             ...before,
-                            homeInitialOdds: handicapToString(before.homeInitialOdds),
-                            awayInitialOdds: handicapToString(before.awayInitialOdds),
-                            homeCurrentOdds: handicapToString(before.homeCurrentOdds),
-                            awayCurrentOdds: handicapToString(before.awayCurrentOdds),
-                            initialHandicap: truncateFloatingPoint(before.initialHandicap, 2),
-                            currentHandicap: truncateFloatingPoint(before.currentHandicap, 2)
+                            homeInitialOdds: truncateFloatingPoint(before.homeInitialOdds, 2),
+                            awayInitialOdds: truncateFloatingPoint(before.awayInitialOdds, 2),
+                            homeCurrentOdds: truncateFloatingPoint(before.homeCurrentOdds, 2),
+                            awayCurrentOdds: truncateFloatingPoint(before.awayCurrentOdds, 2),
+                            initialHandicap: handicapToString(before.initialHandicap),
+                            currentHandicap: handicapToString(before.currentHandicap)
                         };
                     })
                 };
@@ -605,40 +599,16 @@ export const getDetailStatus = async (
             }
         }
 
-        const eventList: string[] = [];
-        const eventInfo: EventInfoType = {
-            isHome: {},
-            isAway: {}
-        };
-
-        if (data.getDetailStatus.events.length > 0) {
-            for (const event of data.getDetailStatus.events) {
-                const eventTime = `${event.time}${
-                    event.overtime !== '0' ? `+${event.overtime}` : ''
-                }`;
-
-                if (!eventList.includes(eventTime)) {
-                    eventList.push(eventTime);
-                }
-
-                if (event.isHome) {
-                    eventInfo.isHome[eventTime] = event;
-                } else {
-                    eventInfo.isAway[eventTime] = event;
-                }
-            }
-        }
-
         const technical = data.getDetailStatus.technicalStatistics;
         const lineupInfo = data.getDetailStatus.lineupInfo;
+        const eventList = data.getDetailStatus.events;
 
         return {
             success: true,
             data: {
                 handicapsData,
                 totalGoalsData,
-                eventList: eventList.map(item => item),
-                eventInfo,
+                eventList,
                 technical,
                 lineupInfo
             }

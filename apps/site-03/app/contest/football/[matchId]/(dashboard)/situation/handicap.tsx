@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import type { GetSingleMatchResponse, HandicapsInfo } from 'data-center';
-import { convertHandicap, truncateFloatingPoint } from 'lib';
 import { useSituationStore } from '../../situationStore';
 import style from './situation.module.scss';
 import rightBlack from './img/right_black.png';
@@ -60,86 +59,67 @@ function InProgress({
 
     return (
         <>
-            {matchDetail.state > 0 &&
-                (targetHandicap.length ? (
-                    targetHandicap.map((now, idx) => (
-                        <div
-                            className="tr"
-                            key={`before_${idx.toString()}`}
-                            onClick={() => {
-                                setIsOddsDetailDrawerOpen(true);
-                                setDrawerTabValue(handicapRadioMapping[handicapRadio] as TabTpye);
-                                setCompanyId(handicapSwitch);
-                            }}
-                        >
-                            <div className="td">{now.time}</div>
-                            <div className="td">
-                                {now.homeScore}-{now.awayScore}
-                            </div>
-                            <div className="td">
-                                <div>
-                                    <CompareOdds
-                                        value={truncateFloatingPoint(
-                                            Number(now.homeInitialOdds),
-                                            2
-                                        )}
-                                    />
+            {matchDetail.state > 0 ||
+                (matchDetail.state === -1 &&
+                    (targetHandicap.length ? (
+                        targetHandicap.map((now, idx) => (
+                            <div
+                                className="tr"
+                                key={`before_${idx.toString()}`}
+                                onClick={() => {
+                                    setIsOddsDetailDrawerOpen(true);
+                                    setDrawerTabValue(
+                                        handicapRadioMapping[handicapRadio] as TabTpye
+                                    );
+                                    setCompanyId(handicapSwitch);
+                                }}
+                            >
+                                <div className="td">{now.time}</div>
+                                <div className="td">
+                                    {now.homeScore}-{now.awayScore}
                                 </div>
-                                <div>
-                                    <CompareOdds value={convertHandicap(now.initialHandicap)} />
+                                <div className="td">
+                                    <div className="odds">
+                                        <CompareOdds value={now.homeInitialOdds} />
+                                    </div>
+                                    <div className="odds">
+                                        <CompareOdds value={now.initialHandicap} />
+                                    </div>
+                                    <div className="odds">
+                                        <CompareOdds value={now.awayInitialOdds} />
+                                    </div>
                                 </div>
-                                <div>
-                                    <CompareOdds
-                                        value={truncateFloatingPoint(
-                                            Number(now.awayInitialOdds),
-                                            2
-                                        )}
-                                    />
+                                <div className="td">
+                                    {now.isClosed ? (
+                                        <>
+                                            <div>封</div>
+                                            <div>{arrowIcon}</div>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <div className="odds">
+                                                <CompareOdds value={now.homeCurrentOdds} />
+                                            </div>
+                                            <div className="odds">
+                                                <CompareOdds value={now.currentHandicap} />
+                                            </div>
+                                            <div className={`odds ${style.arrowColumn}`}>
+                                                <CompareOdds value={now.awayCurrentOdds} />
+                                                {arrowIcon}
+                                            </div>
+                                        </>
+                                    )}
                                 </div>
                             </div>
-                            <div className="td">
-                                {now.isClosed ? (
-                                    <>
-                                        <div>封</div>
-                                        <div>{arrowIcon}</div>
-                                    </>
-                                ) : (
-                                    <>
-                                        <div>
-                                            <CompareOdds
-                                                value={truncateFloatingPoint(
-                                                    Number(now.homeCurrentOdds),
-                                                    2
-                                                )}
-                                            />
-                                        </div>
-                                        <div>
-                                            <CompareOdds
-                                                value={convertHandicap(now.currentHandicap)}
-                                            />
-                                        </div>
-                                        <div className={style.arrowColumn}>
-                                            <CompareOdds
-                                                value={truncateFloatingPoint(
-                                                    Number(now.awayCurrentOdds),
-                                                    2
-                                                )}
-                                            />
-                                            {arrowIcon}
-                                        </div>
-                                    </>
-                                )}
-                            </div>
+                        ))
+                    ) : (
+                        <div className="tr">
+                            <div className="td">-</div>
+                            <div className="td">-</div>
+                            <div className="td empty">-</div>
+                            <div className="td empty">-</div>
                         </div>
-                    ))
-                ) : (
-                    <div className="tr">
-                        <div className="td">-</div>
-                        <div className="td">-</div>
-                        <div className="td empty">-</div>
-                        <div className="td empty">-</div>
-                    </div>
-                ))}
+                    )))}
         </>
     );
 }
@@ -174,24 +154,24 @@ function NotStarted({
                     <div className="td">未</div>
                     <div className="td">-</div>
                     <div className="td">
-                        <div>
+                        <div className="odds">
                             <CompareOdds value={before.homeInitialOdds} />
                         </div>
-                        <div>
+                        <div className="odds">
                             <CompareOdds value={before.initialHandicap} />
                         </div>
-                        <div>
+                        <div className="odds">
                             <CompareOdds value={before.awayInitialOdds} />
                         </div>
                     </div>
                     <div className="td">
-                        <div>
+                        <div className="odds">
                             <CompareOdds value={before.homeCurrentOdds} />
                         </div>
-                        <div>
+                        <div className="odds">
                             <CompareOdds value={before.currentHandicap} />
                         </div>
-                        <div className={style.arrowColumn}>
+                        <div className={`odds ${style.arrowColumn}`}>
                             <CompareOdds value={before.awayCurrentOdds} />
                             <Image alt="" height={14} src={rightBlack.src} width={14} />
                         </div>

@@ -34,6 +34,24 @@
                         padding-left: 12px;
                         padding-right: 12px;
 
+                        .odds {
+                            &:nth-child(1) {
+                                flex: 1;
+                            }
+
+                            &:nth-child(2) {
+                                flex: 1;
+                                display: flex;
+                                justify-content: center;
+                            }
+
+                            &:nth-child(3) {
+                                flex: 1;
+                                display: flex;
+                                justify-content: flex-end;
+                            }
+                        }
+
                         p {
                             display: flex;
                             align-items: center;

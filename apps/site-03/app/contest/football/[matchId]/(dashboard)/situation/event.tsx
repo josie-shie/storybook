@@ -15,18 +15,14 @@ import VideoIcon from './img/video.png';
 
 function GameEvent() {
     const matchDetail = useContestDetailStore.use.matchDetail();
+    // const eventList = useSituationStore.use.eventList();
+    // const eventInfo = useSituationStore.use.eventInfo();
     const eventList = useSituationStore.use.eventList();
-    const eventInfo = useSituationStore.use.eventInfo();
-    const swapEvent = (names: string) => {
-        if (names.length === 0) return '';
-        const splitNames = names.split('↑').map((name: string) => name.replace('↓', ''));
+    const swapEvent = (name: string, offName: string) => {
         return (
             <div className="swapPlayer">
-                {splitNames.map((name, index) => (
-                    <p className="name" key={`${name}_${index.toString()}`}>
-                        {name}
-                    </p>
-                ))}
+                <p className="name">{name}</p>
+                <p className="name">{offName}</p>
             </div>
         );
     };
@@ -103,32 +99,36 @@ function GameEvent() {
                         <div className="td">
                             {eventList.length > 0 ? (
                                 <div className="timeLine">
-                                    {eventList.map(time => (
-                                        <div className="timeEvent" key={time}>
+                                    {eventList.map(event => (
+                                        <div className="timeEvent" key={event.id}>
                                             <div className="left">
-                                                {typeof eventInfo.isHome[time] !== 'undefined' ? (
+                                                {event.isHome ? (
                                                     <>
-                                                        {eventInfo.isHome[time].kind === 11
+                                                        {event.kind === 11
                                                             ? swapEvent(
-                                                                  eventInfo.isHome[time].nameChs
+                                                                  event.nameChs,
+                                                                  event.playerOffOrAssistChs
                                                               )
-                                                            : eventInfo.isHome[time].nameChs}
-                                                        {kindIconMap[eventInfo.isHome[time].kind]}
+                                                            : event.nameChs}
+                                                        {kindIconMap[event.kind]}
                                                     </>
                                                 ) : null}
                                             </div>
-                                            <div className="time">{time}&#39;</div>
+
+                                            <div className="time">{event.time}&#39;</div>
+
                                             <div className="right">
-                                                {typeof eventInfo.isAway[time] !== 'undefined' ? (
+                                                {!event.isHome && (
                                                     <>
-                                                        {eventInfo.isAway[time].kind === 11
+                                                        {event.kind === 11
                                                             ? swapEvent(
-                                                                  eventInfo.isAway[time].nameChs
+                                                                  event.nameChs,
+                                                                  event.playerOffOrAssistChs
                                                               )
-                                                            : eventInfo.isAway[time].nameChs}
-                                                        {kindIconMap[eventInfo.isAway[time].kind]}
+                                                            : event.nameChs}
+                                                        {kindIconMap[event.kind]}
                                                     </>
-                                                ) : null}
+                                                )}
                                             </div>
                                         </div>
                                     ))}

@@ -24,15 +24,15 @@ const initialState = (set: (data: Partial<ExponentState>) => void) => ({
     loading: false,
     options: [
         {
-            label: '讓球',
+            label: '让球',
             value: 'handicapsData'
         },
         {
-            label: '勝平負',
+            label: '胜平负',
             value: 'winLoseData'
         },
         {
-            label: '進球數',
+            label: '进球数',
             value: 'totalGoalData'
         }
     ],
