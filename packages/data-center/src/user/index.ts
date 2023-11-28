@@ -68,9 +68,11 @@ export interface SendVerificationCodeLoggedInRequest {
 }
 
 const LoginResultSchema = z.object({
-    login: z.object({
-        jwtToken: z.string()
-    })
+    login: z
+        .object({
+            jwtToken: z.string()
+        })
+        .nullable()
 });
 
 export type LoginResult = z.infer<typeof LoginResultSchema>;
@@ -285,7 +287,10 @@ export const login = async ({
     verificationCode
 }: LoginRequest): Promise<ReturnData<string>> => {
     try {
-        const { data }: { data: LoginResult } = await fetcher({
+        const {
+            data,
+            errors
+        }: { data: LoginResult; errors?: { message: string; path: string[] }[] } = await fetcher({
             data: {
                 query: LOGIN_MUTATION,
                 variables: {
@@ -299,7 +304,11 @@ export const login = async ({
             }
         });
         LoginResultSchema.parse(data);
-        const access = data.login.jwtToken;
+        const access = data.login?.jwtToken;
+
+        if (errors && !access) {
+            throw new Error(errors[0].message);
+        }
 
         if (!access) {
             throw new Error('Expected jwtToken but got nothing.');

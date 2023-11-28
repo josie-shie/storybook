@@ -66,22 +66,21 @@ function Register() {
     const { countryCode, mobileNumber, password, verificationCode, username } = watch();
 
     const getVerificationCode = async () => {
-        try {
-            const res = await sendVerificationCode({
-                countryCode,
-                mobileNumber,
-                verificationType: 0,
-                checkExistingAccount: true
-            });
+        const res = await sendVerificationCode({
+            countryCode,
+            mobileNumber,
+            verificationType: 0,
+            checkExistingAccount: true
+        });
 
-            if (!res.success) {
-                throw new Error();
-            }
-            setSendCodeSuccess(true);
-            setCountDown();
-        } catch (error) {
-            console.error(error);
+        if (!res.success) {
+            const errorMessage = res.error ? res.error : '取得验证码失败';
+            setIsVisible(errorMessage, 'error');
+            return;
         }
+
+        setSendCodeSuccess(true);
+        setCountDown();
     };
 
     const setCountDown = () => {
@@ -105,20 +104,17 @@ function Register() {
     };
 
     const onSubmit = async (data: RegisterRequest) => {
-        try {
-            const res = await register(data);
+        const res = await register(data);
 
-            if (res.success) {
-                setIsOpen(false);
-                setToken(res.data);
-                setIsVisible('注册成功！', 'success');
-            } else {
-                throw new Error();
-            }
-        } catch (error) {
-            setIsVisible('注册失败，請確認資料無誤', 'error');
-            console.error(error);
+        if (!res.success) {
+            const errorMessage = res.error ? res.error : '注册失败，请确认资料无误';
+            setIsVisible(errorMessage, 'error');
+            return;
         }
+
+        setIsOpen(false);
+        setToken(res.data);
+        setIsVisible('注册成功！', 'success');
     };
 
     const isSendVerificationCodeDisable = !countryCode || !mobileNumber;
@@ -142,11 +138,7 @@ function Register() {
                 <div className={style.phone}>
                     <div className={style.input}>
                         <FormControl fullWidth sx={{ width: '120px' }}>
-                            <Controller
-                                control={control}
-                                name="countryCode"
-                                render={({ field }) => <CountryCodeInput field={field} />}
-                            />
+                            <CountryCodeInput />
                         </FormControl>
                         <FormControl fullWidth sx={{ width: '206px' }}>
                             <Controller

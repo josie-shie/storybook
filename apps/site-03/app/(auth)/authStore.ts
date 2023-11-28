@@ -14,6 +14,12 @@ interface AuthState extends InitState {
         countDownNumber: number;
         setCountDownNumber: (countDownNumber: number) => void;
     };
+    login: {
+        isOpen: boolean;
+        setIsOpen: (isOpen: boolean) => void;
+        verifyPhoto: string;
+        setVerifyPhoto: (verifyPhoto: string) => void;
+    };
 }
 
 let useAuthStore: StoreWithSelectors<AuthState>;
@@ -50,6 +56,30 @@ const initialState = (set: (updater: (state: AuthState) => Partial<AuthState>) =
                     register: {
                         ...state.register,
                         countDownNumber
+                    }
+                };
+            });
+        }
+    },
+    login: {
+        isOpen: true,
+        setIsOpen: (isOpen: boolean) => {
+            set(state => {
+                return {
+                    login: {
+                        ...state.login,
+                        isOpen
+                    }
+                };
+            });
+        },
+        verifyPhoto: '',
+        setVerifyPhoto: (verifyPhoto: string) => {
+            set(state => {
+                return {
+                    login: {
+                        ...state.login,
+                        verifyPhoto
                     }
                 };
             });

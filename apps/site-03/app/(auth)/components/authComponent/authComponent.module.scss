@@ -63,6 +63,13 @@ $borderBottom: 1px solid rgba(255, 255, 255, 0.3);
         display: flex;
         align-items: center;
         gap: 6px;
+        border-bottom: $borderBottom;
+        min-height: 44px;
+    }
+
+    .phoneNumber {
+        border-bottom: $borderBottom;
+        min-height: 44px;
     }
 
     .phoneInput {
@@ -82,7 +89,7 @@ $borderBottom: 1px solid rgba(255, 255, 255, 0.3);
         gap: 6px;
         align-items: center;
         min-height: 44px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+        border-bottom: $borderBottom;
 
         .passwordBlock {
             display: flex;
@@ -127,18 +134,22 @@ $borderBottom: 1px solid rgba(255, 255, 255, 0.3);
                     font-weight: 400;
                 }
             }
+        }
 
-            .getVertifyCode {
-                display: flex;
-                justify-content: flex-end;
-                align-items: center;
+        .verifyPhoto {
+            background-color: #fff;
+        }
 
-                width: 100%;
-                color: #fbb03b;
-                text-align: right;
-                font-size: 12px;
-                font-weight: 500;
-            }
+        .getVertifyCode {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+
+            width: 100%;
+            color: #fbb03b;
+            text-align: right;
+            font-size: 12px;
+            font-weight: 500;
         }
     }
 
@@ -148,7 +159,7 @@ $borderBottom: 1px solid rgba(255, 255, 255, 0.3);
         gap: 6px;
         align-items: center;
         min-height: 44px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+        border-bottom: $borderBottom;
 
         .nicknameBlock {
             display: flex;

@@ -1,22 +1,28 @@
 'use client';
-import { useSearchParams } from 'next/navigation';
-import type { ReactNode } from 'react';
+import { type ReactNode } from 'react';
 import { creatAuthStore } from './authStore';
 import Register from '@/app/(auth)/register/register';
 import Login from '@/app/(auth)/login/login';
+import { useUserStore } from '@/app/userStore';
+import ForgetPassword from '@/app/(auth)/forgetPassword/forgetPassword';
+import ChangePassword from '@/app/(auth)/changePassword/changePassword';
 
 function AuthDrawer() {
-    const searchParams = useSearchParams();
-    const status = searchParams.get('auth');
     creatAuthStore({
         loading: false
     });
 
+    const authQuery = useUserStore.use.authQuery();
+
     let content: ReactNode;
-    if (status === 'register') {
+    if (authQuery === 'register') {
         content = <Register />;
-    } else if (status === 'login') {
+    } else if (authQuery === 'login') {
         content = <Login />;
+    } else if (authQuery === 'forgetPassword') {
+        content = <ForgetPassword />;
+    } else if (authQuery === 'changePassword') {
+        content = <ChangePassword />;
     } else {
         content = null;
     }

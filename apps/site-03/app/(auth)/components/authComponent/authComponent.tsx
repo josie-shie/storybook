@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import type { ReactNode } from 'react';
-import { Button, Input } from '@mui/material';
+import { Button, IconButton, Input } from '@mui/material';
 import { CustomSelect } from 'ui';
 import type { FieldError, FieldValues } from 'react-hook-form';
 import style from './authComponent.module.scss';
@@ -11,6 +11,7 @@ import lockIcon from './img/lockIcon.png';
 import shieldIcon from './img/shieldIcon.png';
 import exclamationIcon from './img/exclamation.png';
 import userIcon from './img/user.png';
+import reloadIcon from './img/reloadIcon.png';
 import BottomDrawer from '@/components/drawer/bottomDrawer';
 
 export function NicknameInput({
@@ -94,7 +95,7 @@ export function VertifyCode({
                     placeholder="请输入手机号码验证"
                 />
                 {sendCodeSuccess ? (
-                    <p className={style.getVertifyCode}>驗證碼已送出({countDownNumber})</p>
+                    <p className={style.getVertifyCode}>验证码已送出({countDownNumber})</p>
                 ) : (
                     <Button
                         className={style.getVertifyCode}
@@ -113,19 +114,58 @@ export function VertifyCode({
     );
 }
 
-export function VertifyCodeByImage() {
+export function VertifyCodeByImage({
+    field,
+    error,
+    placeholder,
+    verifyPhoto,
+    vertifyDisable,
+    getVerificationCode
+}: {
+    field: FieldValues;
+    error: FieldError | undefined;
+    placeholder: string;
+    verifyPhoto: string;
+    vertifyDisable: boolean;
+    getVerificationCode: () => void;
+}) {
     return (
         <div className={style.vertifyCodeByImage}>
-            <Image alt="" height={24} src={shieldIcon.src} width={24} />
             <div className={style.vertifyCodeBlock}>
+                <Image alt="" height={24} src={shieldIcon.src} width={24} />
                 <Input
+                    {...field}
                     className={style.vertifyCodeInput}
                     disableUnderline
-                    id="vertifyCode"
-                    placeholder="验证码"
+                    error={Boolean(error)}
+                    id="verificationCode"
+                    placeholder={placeholder}
                 />
-                <p className={style.getVertifyCode}>获取验证码</p>
             </div>
+            {verifyPhoto ? (
+                <IconButton
+                    disabled={vertifyDisable}
+                    onClick={getVerificationCode}
+                    sx={{ padding: 0 }}
+                >
+                    <Image
+                        alt="verifyPhoto"
+                        className={style.verifyPhoto}
+                        height="40"
+                        src={verifyPhoto}
+                        width="120"
+                    />
+                    <Image alt="reload" height={24} src={reloadIcon.src} width={24} />
+                </IconButton>
+            ) : (
+                <Button
+                    className={style.getVertifyCode}
+                    disabled={vertifyDisable}
+                    onClick={getVerificationCode}
+                >
+                    獲取驗證碼
+                </Button>
+            )}
         </div>
     );
 }
@@ -150,6 +190,7 @@ export function PasswordInput({ children, placeholder, field, error }: PasswordP
                         error={Boolean(error)}
                         id="password"
                         placeholder={placeholder}
+                        type="password"
                     />
                     {children}
                 </div>
@@ -160,15 +201,13 @@ export function PasswordInput({ children, placeholder, field, error }: PasswordP
     );
 }
 
-export function CountryCodeInput({ field }: { field: FieldValues }) {
+export function CountryCodeInput() {
     const countryCodeList = [{ label: '+86', value: 86 }];
 
     return (
         <div className={style.codeSelect}>
             <Image alt="" height={24} src={phoneIcon.src} width={24} />
             <CustomSelect
-                {...field}
-                // onChange={onChange}
                 options={countryCodeList}
                 showCloseButton
                 showDragBar={false}
@@ -186,14 +225,16 @@ export function PhoneNumberInput({
     error: FieldError | undefined;
 }) {
     return (
-        <Input
-            {...field}
-            className={style.phoneInput}
-            disableUnderline
-            error={Boolean(error)}
-            id="mobileNumber"
-            placeholder="请输入手机号码"
-        />
+        <div className={style.phoneNumber}>
+            <Input
+                {...field}
+                className={style.phoneInput}
+                disableUnderline
+                error={Boolean(error)}
+                id="mobileNumber"
+                placeholder="请输入手机号码"
+            />
+        </div>
     );
 }
 
@@ -224,6 +265,7 @@ export function AuthDrawer({ title, isOpen, onOpen, children, onClose }: PropsTy
                         alt=""
                         className={style.closeBtn}
                         height={16}
+                        onClick={onClose}
                         src={closeIcon.src}
                         width={16}
                     />
