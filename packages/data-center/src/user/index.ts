@@ -33,9 +33,11 @@ export interface RegisterRequest {
 }
 
 const SendVerificationCodeResultSchema = z.object({
-    sendVerificationCode: z.object({
-        captcha: z.string()
-    })
+    sendVerificationCode: z
+        .object({
+            captcha: z.string()
+        })
+        .nullable()
 });
 
 type SendVerificationCodeResult = z.infer<typeof SendVerificationCodeResultSchema>;
@@ -196,22 +198,30 @@ export const sendVerificationCode = async ({
     checkExistingAccount
 }: SendVerificationCodeRequest): Promise<ReturnData<string>> => {
     try {
-        const { data }: { data: SendVerificationCodeResult } = await fetcher({
-            data: {
-                query: SEND_VERIFICATION_CODE_MUTATION,
-                variables: {
-                    input: {
-                        countryCode,
-                        mobileNumber,
-                        verificationType,
-                        checkExistingAccount
+        const {
+            data,
+            errors
+        }: { data: SendVerificationCodeResult; errors?: { message: string; path: string[] }[] } =
+            await fetcher({
+                data: {
+                    query: SEND_VERIFICATION_CODE_MUTATION,
+                    variables: {
+                        input: {
+                            countryCode,
+                            mobileNumber,
+                            verificationType,
+                            checkExistingAccount
+                        }
                     }
                 }
-            }
-        });
+            });
 
         SendVerificationCodeResultSchema.parse(data);
-        const captcha = data.sendVerificationCode.captcha;
+        const captcha = data.sendVerificationCode?.captcha;
+
+        if (errors && !captcha) {
+            throw new Error(errors[0].message);
+        }
 
         if (!captcha) {
             throw new Error('Expected captcha but got nothing.');

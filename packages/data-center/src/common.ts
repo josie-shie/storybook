@@ -17,7 +17,7 @@ export const handleApiError = (error: unknown): { success: false; error: string 
     if (error instanceof ZodError) {
         errorMessage = '<002> Data validation error.'; // 資料格式不符合預期
     } else if (error instanceof Error) {
-        errorMessage = `<003> ${error.message}.`; // 其他
+        errorMessage = error.message; // 其他
     }
     return {
         success: false,
