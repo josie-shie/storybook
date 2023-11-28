@@ -76,7 +76,7 @@ function CompetitionBox() {
                         <ul className={style.competitionList}>
                             {competitions.map(competition => (
                                 <li className={style.competition} key={competition.id}>
-                                    <Link href="/">
+                                    <Link href={`/data/league/${competition.id}`}>
                                         <Image alt="" src={cupLogo} width={32} />
                                         <p className={style.name}>{competition.name}</p>
                                     </Link>

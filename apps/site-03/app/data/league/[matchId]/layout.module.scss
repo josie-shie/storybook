@@ -1,0 +1,50 @@
+.header {
+    height: 140px;
+    position: relative;
+    padding: 44px 24px 0;
+}
+
+.backIcon {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+}
+
+.info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    section {
+        font-size: 16px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        color: #fff;
+        gap: 12px;
+    }
+
+    .select {
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        background: #00000080;
+        color: #fff;
+        padding: 6px 6px 6px 12px;
+        border-radius: 30px;
+    }
+}
+
+.tabsContainer {
+    position: relative;
+    background: #fff;
+    border-top-right-radius: 16px;
+    border-top-left-radius: 16px;
+    margin-top: -14px;
+
+    :global(.tab) {
+        padding: 6px 12px 0;
+        margin-bottom: 0;
+    }
+}
