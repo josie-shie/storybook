@@ -1,143 +1,153 @@
 $borderBottom: 1px solid rgba(255, 255, 255, 0.3);
 
-.loginDrawer {
-    height: 100%;
+.codeSelect {
+    padding: 0 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border-bottom: $borderBottom;
+    min-height: 44px;
+}
 
-    :global {
-        .MuiFormControl-root {
-            min-height: 44px;
-            justify-content: center;
+.phoneNumber {
+    border-bottom: $borderBottom;
+    min-height: 44px;
+}
 
-            .MuiInputBase-root {
-                padding: 0 6px;
-                color: #fff;
+.phoneInput {
+    width: 100%;
+    padding: 0 6px;
+
+    ::placeholder {
+        color: #e6effe;
+        font-size: 14px;
+        font-weight: 400;
+    }
+}
+
+.password {
+    display: flex;
+    padding: 0 6px;
+    gap: 6px;
+    align-items: center;
+    min-height: 44px;
+    border-bottom: $borderBottom;
+
+    .passwordBlock {
+        display: flex;
+        align-items: center;
+
+        .passwordInput {
+            width: 246px;
+
+            ::placeholder {
+                color: #e6effe;
+                font-size: 14px;
                 font-weight: 400;
             }
         }
-
-        .ui-select {
-            width: 78px;
-            height: 100%;
-            background: none;
-            border: none;
-            gap: 6px;
-            justify-content: left;
-            padding: 0;
-
-            .ui-select-value {
-                width: 48px;
-                text-align: left;
-            }
-        }
     }
+}
 
-    .header {
-        position: relative;
-        height: 84px;
-        text-align: center;
-        font-size: 30px;
-        font-weight: 400;
-        letter-spacing: 0.16px;
-        background-repeat: no-repeat;
+.vertifyCodeByImage {
+    display: flex;
+    padding: 0 6px;
+    gap: 6px;
+    align-items: center;
+    border-bottom: $borderBottom;
 
-        .title {
-            display: flex;
-            align-items: center;
-            height: 100%;
-            justify-content: center;
-            color: #fff;
-            text-align: center;
-            font-size: 16px;
-            font-weight: 600;
-        }
-
-        .closeBtn {
-            position: absolute;
-            right: 12px;
-            top: 34px;
-        }
-    }
-
-    .codeSelect {
-        padding: 0 6px;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        border-bottom: $borderBottom;
-        min-height: 44px;
-    }
-
-    .phoneNumber {
-        border-bottom: $borderBottom;
-        min-height: 44px;
-    }
-
-    .phoneInput {
+    .vertifyCodeBlock {
         width: 100%;
-        padding: 0 6px;
-
-        ::placeholder {
-            color: #e6effe;
-            font-size: 14px;
-            font-weight: 400;
-        }
-    }
-
-    .password {
         display: flex;
-        padding: 0 6px;
-        gap: 6px;
         align-items: center;
         min-height: 44px;
-        border-bottom: $borderBottom;
 
-        .passwordBlock {
-            display: flex;
-            align-items: center;
+        .vertifyCodeInput {
+            height: 100%;
+            width: 146px;
 
-            .passwordInput {
-                width: 246px;
+            input {
+                width: 146px;
+            }
 
-                ::placeholder {
-                    color: #e6effe;
-                    font-size: 14px;
-                    font-weight: 400;
-                }
+            ::placeholder {
+                color: #e6effe;
+                font-size: 14px;
+                font-weight: 400;
             }
         }
     }
 
-    .vertifyCodeByImage {
+    .verifyPhoto {
+        background-color: #fff;
+    }
+
+    .getVertifyCode {
         display: flex;
+        justify-content: flex-end;
+        align-items: center;
+
+        width: 100%;
+        color: #fbb03b;
+        text-align: right;
+        font-size: 12px;
+        font-weight: 500;
+    }
+}
+
+.nickname {
+    display: flex;
+    padding: 0 6px;
+    gap: 6px;
+    align-items: center;
+    min-height: 44px;
+    border-bottom: $borderBottom;
+
+    .nicknameBlock {
+        display: flex;
+        align-items: center;
+
+        .nicknameInput {
+            width: 246px;
+
+            ::placeholder {
+                color: #e6effe;
+                font-size: 14px;
+                font-weight: 400;
+            }
+        }
+    }
+}
+
+.vertifyCode {
+    min-height: 44px;
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    flex-direction: column;
+
+    .vertifyCodeBlock {
+        min-height: 44px;
         padding: 0 6px;
-        gap: 6px;
+        width: 100%;
+        display: flex;
         align-items: center;
         border-bottom: $borderBottom;
 
-        .vertifyCodeBlock {
-            width: 100%;
-            display: flex;
-            align-items: center;
-            min-height: 44px;
+        .vertifyCodeInput {
+            height: 100%;
+            width: 146px;
+            padding-left: 6px;
 
-            .vertifyCodeInput {
-                height: 100%;
+            input {
                 width: 146px;
-
-                input {
-                    width: 146px;
-                }
-
-                ::placeholder {
-                    color: #e6effe;
-                    font-size: 14px;
-                    font-weight: 400;
-                }
             }
-        }
 
-        .verifyPhoto {
-            background-color: #fff;
+            ::placeholder {
+                color: #e6effe;
+                font-size: 14px;
+                font-weight: 400;
+            }
         }
 
         .getVertifyCode {
@@ -152,121 +162,41 @@ $borderBottom: 1px solid rgba(255, 255, 255, 0.3);
             font-weight: 500;
         }
     }
+}
 
-    .nickname {
-        display: flex;
-        padding: 0 6px;
-        gap: 6px;
-        align-items: center;
-        min-height: 44px;
-        border-bottom: $borderBottom;
+.agreement {
+    color: #fff;
+    font-size: 10px;
+    font-weight: 400;
+    // margin-left: -15px;
+    text-align: left;
+}
 
-        .nicknameBlock {
-            display: flex;
-            align-items: center;
+.disableButton {
+    opacity: 0.5;
+    color: #fff;
+    background-color: rgba(255, 255, 255, 0.3);
+}
 
-            .nicknameInput {
-                width: 246px;
+.ableButton {
+    opacity: 1;
+    color: #276ce1;
+    background-color: #fff;
+}
 
-                ::placeholder {
-                    color: #e6effe;
-                    font-size: 14px;
-                    font-weight: 400;
-                }
-            }
-        }
-    }
+.submitButton {
+    width: 100%;
+    height: 36px;
+    padding: 10px 12px;
+    border-radius: 50px;
+}
 
-    .vertifyCode {
-        min-height: 44px;
-        display: flex;
-        gap: 6px;
-        align-items: center;
-        flex-direction: column;
-
-        .vertifyCodeBlock {
-            min-height: 44px;
-            padding: 0 6px;
-            width: 100%;
-            display: flex;
-            align-items: center;
-            border-bottom: $borderBottom;
-
-            .vertifyCodeInput {
-                height: 100%;
-                width: 146px;
-                padding-left: 6px;
-
-                input {
-                    width: 146px;
-                }
-
-                ::placeholder {
-                    color: #e6effe;
-                    font-size: 14px;
-                    font-weight: 400;
-                }
-            }
-
-            .getVertifyCode {
-                display: flex;
-                justify-content: flex-end;
-                align-items: center;
-
-                width: 100%;
-                color: #fbb03b;
-                text-align: right;
-                font-size: 12px;
-                font-weight: 500;
-            }
-        }
-    }
-
-    .agreement {
-        color: #fff;
-        font-size: 10px;
-        font-weight: 400;
-        // margin-left: -15px;
-        text-align: left;
-    }
-
-    .disableButton {
-        opacity: 0.5;
-        color: #fff;
-        background-color: rgba(255, 255, 255, 0.3);
-    }
-
-    .ableButton {
-        opacity: 1;
-        color: #276ce1;
-        background-color: #fff;
-    }
-
-    .submitButton {
-        width: 100%;
-        height: 36px;
-        padding: 10px 12px;
-        border-radius: 50px;
-    }
-
-    .errorMessage {
-        color: #fbb03b;
-        font-size: 10px;
-        font-weight: 400;
-        text-align: left;
-        width: 100%;
-        display: flex;
-        align-items: center;
-    }
-
-    input:-webkit-autofill,
-    input:-webkit-autofill:hover,
-    input:-webkit-autofill:active,
-    input:-webkit-autofill:focus {
-        background-color: #1665df !important;
-        color: #fff !important;
-        -webkit-box-shadow: 0 0 0 1000px #1665df inset !important;
-        -webkit-text-fill-color: #fff !important;
-        border: 0 !important;
-    }
+.errorMessage {
+    color: #fbb03b;
+    font-size: 10px;
+    font-weight: 400;
+    text-align: left;
+    width: 100%;
+    display: flex;
+    align-items: center;
 }

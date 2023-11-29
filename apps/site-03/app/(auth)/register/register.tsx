@@ -8,7 +8,6 @@ import { sendVerificationCode, register } from 'data-center';
 import { useAuthStore } from '../authStore';
 import style from './register.module.scss';
 import {
-    AuthDrawer,
     NicknameInput,
     PhoneNumberInput,
     VertifyCode,
@@ -36,16 +35,11 @@ const schema = yup.object().shape({
 
 function Register() {
     const setToken = useUserStore.use.setToken();
+    const setIsDrawerOpen = useAuthStore.use.setIsDrawerOpen();
     const setIsVisible = useNotificationStore.use.setIsVisible();
     const registerStore = useAuthStore.use.register();
-    const {
-        isOpen,
-        setIsOpen,
-        sendCodeSuccess,
-        setSendCodeSuccess,
-        countDownNumber,
-        setCountDownNumber
-    } = registerStore;
+    const { sendCodeSuccess, setSendCodeSuccess, countDownNumber, setCountDownNumber } =
+        registerStore;
 
     const {
         control,
@@ -112,7 +106,7 @@ function Register() {
             return;
         }
 
-        setIsOpen(false);
+        setIsDrawerOpen(false);
         setToken(res.data);
         setIsVisible('注册成功！', 'success');
     };
@@ -121,84 +115,69 @@ function Register() {
     const isRegisterDisable =
         isSendVerificationCodeDisable || !verificationCode || !username || !password;
 
-    const title = <p>注册</p>;
-
     return (
-        <AuthDrawer
-            isOpen={isOpen}
-            onClose={() => {
-                setIsOpen(false);
-            }}
-            onOpen={() => {
-                setIsOpen(true);
-            }}
-            title={title}
-        >
-            <form className={style.register} onSubmit={handleSubmit(onSubmit)}>
-                <div className={style.phone}>
-                    <div className={style.input}>
-                        <FormControl fullWidth sx={{ width: '120px' }}>
-                            <CountryCodeInput />
-                        </FormControl>
-                        <FormControl fullWidth sx={{ width: '206px' }}>
-                            <Controller
-                                control={control}
-                                name="mobileNumber"
-                                render={({ field }) => (
-                                    <PhoneNumberInput error={errors.mobileNumber} field={field} />
-                                )}
-                            />
-                        </FormControl>
-                    </div>
-                    {errors.mobileNumber ? (
-                        <div className={style.errorMessage}>请输入手机号码</div>
-                    ) : null}
+        <form className={style.register} onSubmit={handleSubmit(onSubmit)}>
+            <div className={style.phone}>
+                <div className={style.input}>
+                    <FormControl fullWidth sx={{ width: '120px' }}>
+                        <CountryCodeInput />
+                    </FormControl>
+                    <FormControl fullWidth sx={{ width: '206px' }}>
+                        <Controller
+                            control={control}
+                            name="mobileNumber"
+                            render={({ field }) => (
+                                <PhoneNumberInput error={errors.mobileNumber} field={field} />
+                            )}
+                        />
+                    </FormControl>
                 </div>
-                <FormControl fullWidth>
-                    <Controller
-                        control={control}
-                        name="verificationCode"
-                        render={({ field }) => (
-                            <VertifyCode
-                                countDownNumber={countDownNumber}
-                                error={errors.verificationCode}
-                                field={field}
-                                getVerificationCode={getVerificationCode}
-                                sendCodeSuccess={sendCodeSuccess}
-                                vertifyDisable={isSendVerificationCodeDisable}
-                            />
-                        )}
-                    />
-                </FormControl>
-                <FormControl fullWidth>
-                    <Controller
-                        control={control}
-                        name="username"
-                        render={({ field }) => (
-                            <NicknameInput error={errors.username} field={field} />
-                        )}
-                    />
-                </FormControl>
-                <FormControl fullWidth>
-                    <Controller
-                        control={control}
-                        name="password"
-                        render={({ field }) => (
-                            <PasswordInput
-                                error={errors.password}
-                                field={field}
-                                placeholder="密码请输入6-16位英文+数字"
-                            />
-                        )}
-                    />
-                </FormControl>
+                {errors.mobileNumber ? (
+                    <div className={style.errorMessage}>请输入手机号码</div>
+                ) : null}
+            </div>
+            <FormControl fullWidth>
+                <Controller
+                    control={control}
+                    name="verificationCode"
+                    render={({ field }) => (
+                        <VertifyCode
+                            countDownNumber={countDownNumber}
+                            error={errors.verificationCode}
+                            field={field}
+                            getVerificationCode={getVerificationCode}
+                            sendCodeSuccess={sendCodeSuccess}
+                            vertifyDisable={isSendVerificationCodeDisable}
+                        />
+                    )}
+                />
+            </FormControl>
+            <FormControl fullWidth>
+                <Controller
+                    control={control}
+                    name="username"
+                    render={({ field }) => <NicknameInput error={errors.username} field={field} />}
+                />
+            </FormControl>
+            <FormControl fullWidth>
+                <Controller
+                    control={control}
+                    name="password"
+                    render={({ field }) => (
+                        <PasswordInput
+                            error={errors.password}
+                            field={field}
+                            placeholder="密码请输入6-16位英文+数字"
+                        />
+                    )}
+                />
+            </FormControl>
 
-                <Aggrement />
-                <FormControl fullWidth>
-                    <SubmitButton disabled={isRegisterDisable} label="注册" />
-                </FormControl>
-            </form>
-        </AuthDrawer>
+            <Aggrement />
+            <FormControl fullWidth>
+                <SubmitButton disabled={isRegisterDisable} label="注册" />
+            </FormControl>
+        </form>
     );
 }
 

@@ -1,0 +1,84 @@
+$borderBottom: 1px solid rgba(255, 255, 255, 0.3);
+
+.loginDrawer {
+    height: 100%;
+
+    .header {
+        position: relative;
+        height: 84px;
+        text-align: center;
+        font-size: 30px;
+        font-weight: 400;
+        letter-spacing: 0.16px;
+        background-repeat: no-repeat;
+
+        .title {
+            display: flex;
+            align-items: center;
+            height: 100%;
+            justify-content: center;
+            color: #fff;
+            text-align: center;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .closeBtn {
+            position: absolute;
+            right: 12px;
+            top: 34px;
+        }
+    }
+
+    :global {
+        .MuiFormControl-root {
+            min-height: 44px;
+            justify-content: center;
+
+            .MuiInputBase-root {
+                padding: 0 6px;
+                color: #fff;
+                font-weight: 400;
+            }
+        }
+
+        .ui-select {
+            width: 78px;
+            height: 100%;
+            background: none;
+            border: none;
+            gap: 6px;
+            justify-content: left;
+            padding: 0;
+
+            .ui-select-value {
+                width: 48px;
+                text-align: left;
+            }
+        }
+    }
+
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover,
+    input:-webkit-autofill:active,
+    input:-webkit-autofill:focus {
+        background-color: #1665df !important;
+        color: #fff !important;
+        -webkit-box-shadow: 0 0 0 1000px #1665df inset !important;
+        -webkit-text-fill-color: #fff !important;
+        border: 0 !important;
+    }
+}
+
+.futureTitle {
+    font-size: 30px;
+    font-weight: 600;
+    font-family: YouSheBiaoTiHei;
+
+    .future {
+        background: linear-gradient(91deg, #00ceff 8.31%, #0085ff 114.96%);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+}

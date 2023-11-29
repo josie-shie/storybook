@@ -6,17 +6,15 @@ interface InitState {
 }
 
 interface AuthState extends InitState {
+    isDrawerOpen: boolean;
+    setIsDrawerOpen: (isOpen: boolean) => void;
     register: {
-        isOpen: boolean;
-        setIsOpen: (isOpen: boolean) => void;
         sendCodeSuccess: boolean;
         setSendCodeSuccess: (sendCodeSuccess: boolean) => void;
         countDownNumber: number;
         setCountDownNumber: (countDownNumber: number) => void;
     };
     login: {
-        isOpen: boolean;
-        setIsOpen: (isOpen: boolean) => void;
         verifyPhoto: string;
         setVerifyPhoto: (verifyPhoto: string) => void;
     };
@@ -26,18 +24,16 @@ let useAuthStore: StoreWithSelectors<AuthState>;
 
 const initialState = (set: (updater: (state: AuthState) => Partial<AuthState>) => void) => ({
     loading: false,
+    isDrawerOpen: false,
+    setIsDrawerOpen: (isDrawerOpen: boolean) => {
+        set(state => {
+            return {
+                ...state,
+                isDrawerOpen
+            };
+        });
+    },
     register: {
-        isOpen: true,
-        setIsOpen: (isOpen: boolean) => {
-            set(state => {
-                return {
-                    register: {
-                        ...state.register,
-                        isOpen
-                    }
-                };
-            });
-        },
         sendCodeSuccess: false,
         setSendCodeSuccess: (sendCodeSuccess: boolean) => {
             set(state => {
@@ -62,17 +58,6 @@ const initialState = (set: (updater: (state: AuthState) => Partial<AuthState>) =
         }
     },
     login: {
-        isOpen: true,
-        setIsOpen: (isOpen: boolean) => {
-            set(state => {
-                return {
-                    login: {
-                        ...state.login,
-                        isOpen
-                    }
-                };
-            });
-        },
         verifyPhoto: '',
         setVerifyPhoto: (verifyPhoto: string) => {
             set(state => {

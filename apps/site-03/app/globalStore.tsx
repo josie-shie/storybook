@@ -4,6 +4,7 @@ import { useSearchParams } from 'next/navigation';
 import { creatContestInfoStore } from './contestInfoStore';
 import { creatUserStore } from './userStore';
 import { creatNotificationStore } from './notificationStore';
+import { creatAuthStore } from './(auth)/authStore';
 
 function GlobalStore({ children }: { children: ReactNode }) {
     const searchParams = useSearchParams();
@@ -19,6 +20,10 @@ function GlobalStore({ children }: { children: ReactNode }) {
         type: 'success',
         isVisible: false
     });
+    creatAuthStore({
+        loading: false
+    });
+
     return <>{children}</>;
 }
 
