@@ -8,6 +8,7 @@ import searchIcon from './img/search.png';
 import Logo from './img/logo.png';
 import leagueLogo from './img/leagueLogo.png';
 import cupLogo from './img/cupLogo.png';
+import { creatDataStore } from './dataStore';
 import HeaderFilter from '@/components/header/headerFilter';
 
 const hotGames = [
@@ -91,6 +92,128 @@ function CompetitionBox() {
 }
 
 function Data() {
+    creatDataStore({
+        pointsList: [
+            {
+                id: 1,
+                ranking: 1,
+                label: 3,
+                name: '曼彻斯特城',
+                matches: 39,
+                wins: 28,
+                draws: 5,
+                losses: 5,
+                scored: 94,
+                against: 33,
+                total: 89
+            },
+            {
+                id: 2,
+                ranking: 2,
+                label: 3,
+                name: '阿森納',
+                matches: 39,
+                wins: 28,
+                draws: 5,
+                losses: 5,
+                scored: 94,
+                against: 33,
+                total: 89
+            },
+            {
+                id: 3,
+                ranking: 3,
+                label: null,
+                name: '曼彻斯特城',
+                matches: 39,
+                wins: 28,
+                draws: 5,
+                losses: 5,
+                scored: 94,
+                against: 33,
+                total: 89
+            },
+            {
+                id: 4,
+                ranking: 4,
+                label: 3,
+                name: '利物浦',
+                matches: 39,
+                wins: 28,
+                draws: 5,
+                losses: 5,
+                scored: 94,
+                against: 33,
+                total: 89
+            },
+            {
+                id: 5,
+                ranking: 5,
+                label: 2,
+                name: '布萊頓',
+                matches: 39,
+                wins: 28,
+                draws: 5,
+                losses: 5,
+                scored: 94,
+                against: 33,
+                total: 89
+            },
+            {
+                id: 6,
+                ranking: 6,
+                label: 1,
+                name: '阿斯頓維拉',
+                matches: 39,
+                wins: 28,
+                draws: 5,
+                losses: 5,
+                scored: 94,
+                against: 33,
+                total: 89
+            },
+            {
+                id: 7,
+                ranking: 7,
+                label: null,
+                name: '托特納姆熱刺',
+                matches: 39,
+                wins: 28,
+                draws: 5,
+                losses: 5,
+                scored: 94,
+                against: 33,
+                total: 89
+            },
+            {
+                id: 8,
+                ranking: 8,
+                label: null,
+                name: '布侖特福德',
+                matches: 39,
+                wins: 28,
+                draws: 5,
+                losses: 5,
+                scored: 94,
+                against: 33,
+                total: 89
+            },
+            {
+                id: 9,
+                ranking: 9,
+                label: 4,
+                name: '布侖特福德',
+                matches: 39,
+                wins: 28,
+                draws: 5,
+                losses: 5,
+                scored: 94,
+                against: 33,
+                total: 89
+            }
+        ]
+    });
+
     return (
         <div className={style.data}>
             <HeaderFilter

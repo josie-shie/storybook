@@ -1,145 +1,13 @@
 'use client';
 import { useParams } from 'next/navigation';
+import { useDataStore } from '../../dataStore';
 import style from './league.module.scss';
 import { Tabs } from '@/components/tabs/tabs';
-
-interface Item {
-    id: number;
-    ranking: number;
-    label: number | null;
-    name: string;
-    total: number;
-    wins: number;
-    draws: number;
-    losses: number;
-    scored: number;
-    against: number;
-    matches: number;
-}
 
 function League() {
     const params = useParams();
     const matchId = params.matchId as string;
-
-    const itemList: Item[] = [
-        {
-            id: 1,
-            ranking: 1,
-            label: 3,
-            name: '曼彻斯特城',
-            matches: 39,
-            wins: 28,
-            draws: 5,
-            losses: 5,
-            scored: 94,
-            against: 33,
-            total: 89
-        },
-        {
-            id: 2,
-            ranking: 2,
-            label: 3,
-            name: '阿森納',
-            matches: 39,
-            wins: 28,
-            draws: 5,
-            losses: 5,
-            scored: 94,
-            against: 33,
-            total: 89
-        },
-        {
-            id: 3,
-            ranking: 3,
-            label: null,
-            name: '曼彻斯特城',
-            matches: 39,
-            wins: 28,
-            draws: 5,
-            losses: 5,
-            scored: 94,
-            against: 33,
-            total: 89
-        },
-        {
-            id: 4,
-            ranking: 4,
-            label: 3,
-            name: '利物浦',
-            matches: 39,
-            wins: 28,
-            draws: 5,
-            losses: 5,
-            scored: 94,
-            against: 33,
-            total: 89
-        },
-        {
-            id: 5,
-            ranking: 5,
-            label: 2,
-            name: '布萊頓',
-            matches: 39,
-            wins: 28,
-            draws: 5,
-            losses: 5,
-            scored: 94,
-            against: 33,
-            total: 89
-        },
-        {
-            id: 6,
-            ranking: 6,
-            label: 1,
-            name: '阿斯頓維拉',
-            matches: 39,
-            wins: 28,
-            draws: 5,
-            losses: 5,
-            scored: 94,
-            against: 33,
-            total: 89
-        },
-        {
-            id: 7,
-            ranking: 7,
-            label: null,
-            name: '托特納姆熱刺',
-            matches: 39,
-            wins: 28,
-            draws: 5,
-            losses: 5,
-            scored: 94,
-            against: 33,
-            total: 89
-        },
-        {
-            id: 8,
-            ranking: 8,
-            label: null,
-            name: '布侖特福德',
-            matches: 39,
-            wins: 28,
-            draws: 5,
-            losses: 5,
-            scored: 94,
-            against: 33,
-            total: 89
-        },
-        {
-            id: 9,
-            ranking: 9,
-            label: 4,
-            name: '布侖特福德',
-            matches: 39,
-            wins: 28,
-            draws: 5,
-            losses: 5,
-            scored: 94,
-            against: 33,
-            total: 89
-        }
-    ];
+    const pointsList = useDataStore.use.pointsList();
 
     const labelMap = [
         { id: 1, name: '欧冠杯小组赛资格', color: '#CC141D' },
@@ -175,7 +43,7 @@ function League() {
                     </div>
                 </div>
                 <div className={style.tableBody}>
-                    {itemList.map(item => (
+                    {pointsList.map(item => (
                         <div className={style.row} key={item.id}>
                             <div
                                 className={style.mark}
