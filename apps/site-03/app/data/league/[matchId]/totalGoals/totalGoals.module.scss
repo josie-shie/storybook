@@ -16,8 +16,13 @@
             padding: 0 2px;
 
             .td {
-                width: 20%;
+                min-width: 28px;
+                width: 15%;
                 text-align: center;
+            }
+
+            .td:first-child {
+                min-width: 118px;
             }
         }
     }
@@ -34,13 +39,13 @@
             padding-right: 2px;
 
             .value {
-                width: 20%;
+                min-width: 28px;
+                width: 15%;
                 text-align: center;
             }
 
-            .value:nth-child(2),
-            .value:nth-child(4) {
-                color: #cc141d;
+            .value:first-child {
+                min-width: 118px;
             }
         }
 

@@ -16,8 +16,13 @@
             padding: 0 2px;
 
             .td {
-                width: 20%;
+                min-width: 44px;
                 text-align: center;
+
+                &:nth-child(2),
+                &:nth-child(3) {
+                    width: 25%;
+                }
             }
         }
     }
@@ -31,16 +36,16 @@
             display: flex;
             align-items: center;
             height: 38px;
-            padding-right: 2px;
+            padding: 0 2px;
 
             .value {
-                width: 20%;
+                min-width: 44px;
                 text-align: center;
-            }
 
-            .value:nth-child(2),
-            .value:nth-child(4) {
-                color: #cc141d;
+                &:nth-child(2),
+                &:nth-child(3) {
+                    width: 25%;
+                }
             }
         }
 

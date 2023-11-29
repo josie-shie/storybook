@@ -1,5 +1,5 @@
 'use client';
-import type { ReactNode } from 'react';
+import { useState, type ReactNode, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import { useRouter, useParams } from 'next/navigation';
 import headBg from './img/detailbg.png';
@@ -9,10 +9,77 @@ import down from './img/down.png';
 import style from './layout.module.scss';
 import { Tabs } from '@/components/tabs/tabs';
 
+interface DropdownOption {
+    label: string;
+    value: string | number;
+}
+
+interface DropdownProps {
+    value: string | number;
+    options: DropdownOption[];
+    onChange: (value: string | number) => void;
+}
+
+function Dropdown({ value, options, onChange }: DropdownProps) {
+    const [isOpen, setIsOpen] = useState(false);
+    const dropdownRef = useRef<HTMLButtonElement | null>(null);
+
+    const toggleDropdown = () => {
+        setIsOpen(!isOpen);
+    };
+    const handleOptionClick = (optionValue: string | number) => {
+        onChange(optionValue);
+        setIsOpen(false);
+    };
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+                setIsOpen(false);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [dropdownRef]);
+
+    return (
+        <button className={style.dropdown} onClick={toggleDropdown} ref={dropdownRef} type="button">
+            {options.find(el => el.value === value)?.label}
+            <Image alt="" src={down} width={24} />
+            <div className={`${style.select} ${isOpen ? style.open : ''}`}>
+                {options.map((option, idx) => (
+                    <div
+                        className={style.option}
+                        key={idx}
+                        onClick={() => {
+                            handleOptionClick(option.value);
+                        }}
+                    >
+                        {option.label}
+                    </div>
+                ))}
+            </div>
+        </button>
+    );
+}
+
 function DetailLayout({ children }: { children: ReactNode }) {
     const router = useRouter();
     const params = useParams();
     const matchId = params.matchId as string;
+    const [period, setPeriod] = useState(36);
+
+    const selectOptions = [
+        { label: '第36輪', value: 36 },
+        { label: '第37輪', value: 37 },
+        { label: '第38輪', value: 38 }
+    ];
+
+    const handlePeriodChange = (value: number) => {
+        setPeriod(value);
+    };
 
     return (
         <div className={style.layout}>
@@ -32,10 +99,11 @@ function DetailLayout({ children }: { children: ReactNode }) {
                         <Image alt="" src={teamLogo} width={64} />
                         斯洛文尼亚
                     </section>
-                    <div className={style.select}>
-                        2022-2023
-                        <Image alt="" src={down} width={24} />
-                    </div>
+                    <Dropdown
+                        onChange={handlePeriodChange}
+                        options={selectOptions}
+                        value={period}
+                    />
                 </div>
             </div>
             <div className={style.tabsContainer}>

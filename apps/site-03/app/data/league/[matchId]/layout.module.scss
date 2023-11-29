@@ -24,15 +24,53 @@
         gap: 12px;
     }
 
-    .select {
+    .dropdown {
+        position: relative;
         font-size: 14px;
+        min-width: 120px;
         display: flex;
+        justify-content: space-between;
         align-items: center;
         gap: 4px;
         background: #00000080;
         color: #fff;
         padding: 6px 6px 6px 12px;
+        border: 0;
         border-radius: 30px;
+
+        > .select {
+            background: #222;
+            position: absolute;
+            top: calc(100% + 2px);
+            left: 12px;
+            width: calc(100% - 18px);
+            z-index: 10;
+            padding: 0 12px;
+            border-radius: 6px;
+            box-shadow: 0 6px 9px 0 #031d4a21;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition:
+                opacity 0.2s,
+                transform 0.2s,
+                visibility 0s linear 0.2s;
+
+            &.open {
+                opacity: 1;
+                visibility: visible;
+                transform: translateY(0);
+                transition:
+                    opacity 0.2s,
+                    transform 0.2s;
+            }
+
+            > .option {
+                display: flex;
+                align-items: center;
+                height: 32px;
+            }
+        }
     }
 }
 
