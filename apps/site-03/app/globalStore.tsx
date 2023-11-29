@@ -12,7 +12,6 @@ function GlobalStore({ children }: { children: ReactNode }) {
 
     creatContestInfoStore({ contestInfo: {} });
     creatUserStore({
-        token: '',
         authQuery: query ? query : ''
     });
     creatNotificationStore({

@@ -123,6 +123,9 @@ importers:
       '@types/crypto-js':
         specifier: ^4.2.1
         version: 4.2.1
+      '@types/js-cookie':
+        specifier: ^3.0.3
+        version: 3.0.4
       '@types/react-datepicker':
         specifier: ^4.19.2
         version: 4.19.2(react-dom@18.2.0)(react@18.2.0)
@@ -144,6 +147,9 @@ importers:
       framer-motion:
         specifier: ^10.16.4
         version: 10.16.4(react-dom@18.2.0)(react@18.2.0)
+      js-cookie:
+        specifier: ^3.0.5
+        version: 3.0.5
       lib:
         specifier: workspace:*
         version: link:../../packages/lib
@@ -4686,7 +4692,6 @@ packages:
 
   /@types/js-cookie@3.0.4:
     resolution: {integrity: sha512-vMMnFF+H5KYqdd/myCzq6wLDlPpteJK+jGFgBus3Da7lw+YsDmx2C8feGTzY2M3Fo823yON+HC2CL240j4OV+w==}
-    dev: true
 
   /@types/json-schema@7.0.12:
     resolution: {integrity: sha512-Hr5Jfhc9eYOQNPYO5WLDq/n4jqijdHNlDXjuAQkkt+mWdQR+XJToOHrsD4cPaMXpn6KO7y2+wM8AZEs8VpBLVA==}

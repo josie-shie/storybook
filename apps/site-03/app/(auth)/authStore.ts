@@ -24,6 +24,12 @@ interface AuthState extends InitState {
         countDownNumber: number;
         setCountDownNumber: (countDownNumber: number) => void;
     };
+    changePassword: {
+        sendCodeSuccess: boolean;
+        setSendCodeSuccess: (sendCodeSuccess: boolean) => void;
+        countDownNumber: number;
+        setCountDownNumber: (countDownNumber: number) => void;
+    };
 }
 
 let useAuthStore: StoreWithSelectors<AuthState>;
@@ -77,6 +83,30 @@ const initialState = (set: (updater: (state: AuthState) => Partial<AuthState>) =
         }
     },
     forgetPassword: {
+        sendCodeSuccess: false,
+        setSendCodeSuccess: (sendCodeSuccess: boolean) => {
+            set(state => {
+                return {
+                    register: {
+                        ...state.register,
+                        sendCodeSuccess
+                    }
+                };
+            });
+        },
+        countDownNumber: 60,
+        setCountDownNumber: (countDownNumber: number) => {
+            set(state => {
+                return {
+                    register: {
+                        ...state.register,
+                        countDownNumber
+                    }
+                };
+            });
+        }
+    },
+    changePassword: {
         sendCodeSuccess: false,
         setSendCodeSuccess: (sendCodeSuccess: boolean) => {
             set(state => {

@@ -1,12 +1,13 @@
 import { initStore } from 'lib';
 import type { StoreWithSelectors } from 'lib';
+import Cookies from 'js-cookie';
 
 interface InitState {
-    token: string;
     authQuery: string;
 }
 
 interface UserState extends InitState {
+    token: string;
     isLogin: boolean;
     setToken: (token: string) => void;
     setAuthQuery: (authQuery: string) => void;
@@ -16,10 +17,9 @@ let isInit = true;
 let useUserStore: StoreWithSelectors<UserState>;
 
 const initialState = (set: (updater: (state: UserState) => Partial<UserState>) => void) => ({
-    isLogin: false,
-    token: '',
+    isLogin: Boolean(Cookies.get('access')),
+    token: Cookies.get('access') || '',
     setToken: (token: string) => {
-        localStorage.setItem('token', token);
         set(state => {
             return {
                 ...state,

@@ -24,12 +24,12 @@ const schema = yup.object().shape({
     verificationCode: yup.string().required(),
     newPassword: yup
         .string()
-        .matches(/^(?=.*\d)(?=.*[a-zA-Z])[a-zA-Z0-9]{6,16}$/, '請輸入6-16位英文+數字')
+        .matches(/^(?=.*\d)(?=.*[a-zA-Z])[a-zA-Z0-9]{6,16}$/, '请输入6-16位英文+数字')
         .required(),
     confirmPassword: yup
         .string()
-        .oneOf([yup.ref('newPassword')], '請輸入6-16位英文+數字')
-        .required('請再次輸入新密碼')
+        .oneOf([yup.ref('newPassword')], '请输入6-16位英文+数字')
+        .required('请再次输入新密码')
 });
 
 function ForgetPassword() {

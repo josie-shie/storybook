@@ -314,6 +314,8 @@ export const login = async ({
             throw new Error('Expected jwtToken but got nothing.');
         }
 
+        Cookies.set('access', access);
+
         return {
             success: true,
             data: access

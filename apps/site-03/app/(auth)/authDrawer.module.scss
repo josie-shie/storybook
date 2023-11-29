@@ -40,17 +40,6 @@ $borderBottom: 1px solid rgba(255, 255, 255, 0.3);
                 color: #fff;
                 font-weight: 400;
             }
-
-            input:-webkit-autofill,
-            input:-webkit-autofill:hover,
-            input:-webkit-autofill:active,
-            input:-webkit-autofill:focus {
-                background-color: #1665df !important;
-                color: #fff !important;
-                -webkit-box-shadow: 0 0 0 1000px #1665df inset !important;
-                -webkit-text-fill-color: #fff !important;
-                border: 0 !important;
-            }
         }
 
         .ui-select {
@@ -66,6 +55,17 @@ $borderBottom: 1px solid rgba(255, 255, 255, 0.3);
                 width: 48px;
                 text-align: left;
             }
+        }
+
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover,
+        input:-webkit-autofill:active,
+        input:-webkit-autofill:focus {
+            background-color: #1665df !important;
+            color: #fff !important;
+            -webkit-box-shadow: 0 0 0 1000px #1665df inset !important;
+            -webkit-text-fill-color: #fff !important;
+            border: 0 !important;
         }
     }
 }
