@@ -18,6 +18,12 @@ interface AuthState extends InitState {
         verifyPhoto: string;
         setVerifyPhoto: (verifyPhoto: string) => void;
     };
+    forgetPassword: {
+        sendCodeSuccess: boolean;
+        setSendCodeSuccess: (sendCodeSuccess: boolean) => void;
+        countDownNumber: number;
+        setCountDownNumber: (countDownNumber: number) => void;
+    };
 }
 
 let useAuthStore: StoreWithSelectors<AuthState>;
@@ -65,6 +71,30 @@ const initialState = (set: (updater: (state: AuthState) => Partial<AuthState>) =
                     login: {
                         ...state.login,
                         verifyPhoto
+                    }
+                };
+            });
+        }
+    },
+    forgetPassword: {
+        sendCodeSuccess: false,
+        setSendCodeSuccess: (sendCodeSuccess: boolean) => {
+            set(state => {
+                return {
+                    register: {
+                        ...state.register,
+                        sendCodeSuccess
+                    }
+                };
+            });
+        },
+        countDownNumber: 60,
+        setCountDownNumber: (countDownNumber: number) => {
+            set(state => {
+                return {
+                    register: {
+                        ...state.register,
+                        countDownNumber
                     }
                 };
             });

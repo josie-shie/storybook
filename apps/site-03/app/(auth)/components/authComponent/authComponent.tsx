@@ -175,9 +175,10 @@ interface PasswordPropsType {
     placeholder: string;
     field: FieldValues;
     error: FieldError | undefined;
+    id?: string;
 }
 
-export function PasswordInput({ children, placeholder, field, error }: PasswordPropsType) {
+export function PasswordInput({ children, placeholder, field, error, id }: PasswordPropsType) {
     return (
         <>
             <div className={style.password}>
@@ -188,7 +189,7 @@ export function PasswordInput({ children, placeholder, field, error }: PasswordP
                         className={style.passwordInput}
                         disableUnderline
                         error={Boolean(error)}
-                        id="password"
+                        id={id ? id : 'password'}
                         placeholder={placeholder}
                         type="password"
                     />

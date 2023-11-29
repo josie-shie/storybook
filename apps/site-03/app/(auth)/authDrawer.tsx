@@ -43,7 +43,7 @@ function AuthDrawer() {
         if (content) {
             setIsDrawerOpen(true);
         }
-    }, [content, setIsDrawerOpen]);
+    }, []);
 
     return (
         <BottomDrawer
