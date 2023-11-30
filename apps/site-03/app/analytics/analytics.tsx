@@ -3,7 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Link as ScrollLink, Element } from 'react-scroll';
 import { Tab, Tabs } from 'ui';
-import style from './data.module.scss';
+import style from './analytics.module.scss';
 import searchIcon from './img/search.png';
 import Logo from './img/logo.png';
 import leagueLogo from './img/leagueLogo.png';
@@ -91,7 +91,7 @@ function CompetitionBox() {
     );
 }
 
-function Data() {
+function Analytics() {
     creatDataStore({
         pointsList: [
             {
@@ -404,4 +404,4 @@ function Data() {
     );
 }
 
-export default Data;
+export default Analytics;

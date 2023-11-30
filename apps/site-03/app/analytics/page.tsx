@@ -1,9 +1,9 @@
-import Data from './data';
+import Analytics from './analytics';
 
 function Page() {
     return (
         <div className="data">
-            <Data />
+            <Analytics />
         </div>
     );
 }
