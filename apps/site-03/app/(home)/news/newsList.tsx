@@ -1,13 +1,14 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { timestampToString } from 'lib';
 import style from './news.module.scss';
 import { useNewsStore } from './newsStore';
 
 interface News {
-    id: number;
-    image: string;
     title: string;
-    time: string;
+    publishedAt: number;
+    id: number;
+    imagePath: string;
 }
 
 interface NewsProps {
@@ -18,16 +19,22 @@ function NewsCard({ newsInfo }: NewsProps) {
     return (
         <Link href={`/news/${newsInfo.id}`}>
             <div className={style.newsCard}>
-                <Image
-                    alt=""
-                    className={style.newsImage}
-                    height={79}
-                    src={newsInfo.image}
-                    width={120}
-                />
+                <div className={style.image}>
+                    <Image
+                        alt=""
+                        className={style.newsImage}
+                        height={79}
+                        src={newsInfo.imagePath}
+                        width={120}
+                    />
+                </div>
                 <div className={style.newsDetail}>
                     <div className={style.newsTitle}>{newsInfo.title}</div>
-                    <div className={style.newsTime}>{newsInfo.time}發佈</div>
+                    {newsInfo.publishedAt ? (
+                        <div className={style.newsTime}>
+                            {timestampToString(newsInfo.publishedAt, 'YYYY-M-DD')} 發佈
+                        </div>
+                    ) : null}
                 </div>
             </div>
         </Link>

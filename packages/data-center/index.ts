@@ -6,3 +6,4 @@ export * from './src/contestPrediction';
 export * from './src/contestExponent';
 export * from './src/contestAnalysis';
 export * from './src/notification';
+export * from './src/homeInformation';
