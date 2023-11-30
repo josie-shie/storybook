@@ -2,7 +2,11 @@ import { fetcher } from 'lib';
 import { z } from 'zod';
 import { handleApiError } from '../common';
 import type { ReturnData } from '../common';
-import { GET_MAIL_MEMBER_LIST_QUERY, GET_MAIL_MEMBER_QUERY } from './graphqlQueries';
+import {
+    GET_MAIL_MEMBER_LIST_QUERY,
+    GET_MAIL_MEMBER_QUERY,
+    DELETE_MAIL_MEMBER_MUTATION
+} from './graphqlQueries';
 
 const GetMailMemberSchema = z.object({
     mailMemberId: z.number(),
@@ -35,6 +39,10 @@ const GetMailMemberResultSchema = z.object({
 
 type GetMailMemberResult = z.infer<typeof GetMailMemberResultSchema>;
 
+export interface DeleteMailMemberRequest {
+    mailMemberIds: number[];
+}
+
 /**
  * 取得站內信列表
  * - returns : {@link GetMailMemberListResponse}
@@ -51,6 +59,8 @@ export const getMailMemberList = async (): Promise<ReturnData<GetMailMemberListR
             { cache: 'no-store' }
         );
 
+        GetMailMemberListResultSchema.parse(data);
+
         return {
             success: true,
             data: data.getMailMemberList.mailMemberList
@@ -62,6 +72,7 @@ export const getMailMemberList = async (): Promise<ReturnData<GetMailMemberListR
 
 /**
  * 取得站內信
+ * - params : {@link GetMailMemberRequest}
  * - returns : {@link GetMailMemberResponse}
  */
 export const getMailMember = async ({
@@ -82,10 +93,40 @@ export const getMailMember = async ({
             { cache: 'no-store' }
         );
 
+        GetMailMemberResultSchema.parse(data);
+
         return {
             success: true,
             data: data.getMailMember
         };
+    } catch (error) {
+        return handleApiError(error);
+    }
+};
+
+/**
+ * 刪除站內信
+ * - params : {@link DeleteMailMemberRequest}
+ */
+export const deleteMailMember = async ({
+    mailMemberIds
+}: DeleteMailMemberRequest): Promise<ReturnData<null>> => {
+    try {
+        const res: { data: null } = await fetcher(
+            {
+                data: {
+                    query: DELETE_MAIL_MEMBER_MUTATION,
+                    variables: {
+                        input: {
+                            mailMemberIds
+                        }
+                    }
+                }
+            },
+            { cache: 'no-store' }
+        );
+
+        return { success: true, data: res.data };
     } catch (error) {
         return handleApiError(error);
     }
