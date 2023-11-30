@@ -211,6 +211,152 @@ function Data() {
                 against: 33,
                 total: 89
             }
+        ],
+        scheduleList: [
+            {
+                time: '05-28 23:30',
+                status: 'finish',
+                home: '南安普敦',
+                homeScore: 4,
+                away: '利物浦',
+                awayScore: 4
+            },
+            {
+                time: '05-28 23:30',
+                status: 'finish',
+                home: '南安普敦',
+                homeScore: 4,
+                away: '利物浦',
+                awayScore: 4
+            },
+            {
+                time: '05-28 23:30',
+                status: 'finish',
+                home: '南安普敦',
+                homeScore: 4,
+                away: '利物浦',
+                awayScore: 4
+            },
+            {
+                time: '05-28 23:30',
+                status: 'finish',
+                home: '南安普敦',
+                homeScore: 4,
+                away: '利物浦',
+                awayScore: 4
+            },
+            {
+                time: '05-28 23:30',
+                status: 'finish',
+                home: '南安普敦',
+                homeScore: 4,
+                away: '利物浦',
+                awayScore: 4
+            },
+            {
+                time: '05-28 23:30',
+                status: 'finish',
+                home: '南安普敦',
+                homeScore: 4,
+                away: '利物浦',
+                awayScore: 4
+            }
+        ],
+        handicapList: [
+            {
+                team: '曼彻斯特城',
+                game: 0,
+                win: 0,
+                draw: 0,
+                lose: 0,
+                winPercent: 0,
+                drawPercent: 24,
+                losePercent: 33,
+                total: 89
+            },
+            {
+                team: '曼彻斯特城',
+                game: 0,
+                win: 0,
+                draw: 0,
+                lose: 0,
+                winPercent: 0,
+                drawPercent: 24,
+                losePercent: 33,
+                total: 89
+            }
+        ],
+        totalGoalsList: [
+            {
+                team: '曼彻斯特城',
+                game: 0,
+                big: 0,
+                draw: 0,
+                small: 0,
+                bigPercent: 0,
+                drawPercent: 24,
+                smallPercent: 33
+            },
+            {
+                team: '曼彻斯特城',
+                game: 0,
+                big: 0,
+                draw: 0,
+                small: 0,
+                bigPercent: 0,
+                drawPercent: 24,
+                smallPercent: 33
+            }
+        ],
+        topScorersList: [
+            {
+                ranking: 1,
+                member: '哈兰德',
+                team: '南安普敦',
+                score: 36,
+                homeScore: 22,
+                awayScore: 14
+            },
+            {
+                ranking: 2,
+                member: '凯恩',
+                team: '切尔西',
+                score: 36,
+                homeScore: 22,
+                awayScore: 14
+            },
+            {
+                ranking: 3,
+                member: '哈兰德',
+                team: '南安普敦',
+                score: 36,
+                homeScore: 22,
+                awayScore: 14
+            },
+            {
+                ranking: 4,
+                member: '凯恩',
+                team: '切尔西',
+                score: 36,
+                homeScore: 22,
+                awayScore: 14
+            },
+            {
+                ranking: 5,
+                member: '哈兰德',
+                team: '南安普敦',
+                score: 36,
+                homeScore: 22,
+                awayScore: 14
+            },
+            {
+                ranking: 6,
+                member: '凯恩',
+                team: '切尔西',
+                score: 36,
+                homeScore: 22,
+                awayScore: 14
+            }
         ]
     });
 
