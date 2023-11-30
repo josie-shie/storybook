@@ -33,9 +33,11 @@ export interface RegisterRequest {
 }
 
 const SendVerificationCodeResultSchema = z.object({
-    sendVerificationCode: z.object({
-        captcha: z.string()
-    })
+    sendVerificationCode: z
+        .object({
+            captcha: z.string()
+        })
+        .nullable()
 });
 
 type SendVerificationCodeResult = z.infer<typeof SendVerificationCodeResultSchema>;
@@ -66,9 +68,11 @@ export interface SendVerificationCodeLoggedInRequest {
 }
 
 const LoginResultSchema = z.object({
-    login: z.object({
-        jwtToken: z.string()
-    })
+    login: z
+        .object({
+            jwtToken: z.string()
+        })
+        .nullable()
 });
 
 export type LoginResult = z.infer<typeof LoginResultSchema>;
@@ -196,22 +200,30 @@ export const sendVerificationCode = async ({
     checkExistingAccount
 }: SendVerificationCodeRequest): Promise<ReturnData<string>> => {
     try {
-        const { data }: { data: SendVerificationCodeResult } = await fetcher({
-            data: {
-                query: SEND_VERIFICATION_CODE_MUTATION,
-                variables: {
-                    input: {
-                        countryCode,
-                        mobileNumber,
-                        verificationType,
-                        checkExistingAccount
+        const {
+            data,
+            errors
+        }: { data: SendVerificationCodeResult; errors?: { message: string; path: string[] }[] } =
+            await fetcher({
+                data: {
+                    query: SEND_VERIFICATION_CODE_MUTATION,
+                    variables: {
+                        input: {
+                            countryCode,
+                            mobileNumber,
+                            verificationType,
+                            checkExistingAccount
+                        }
                     }
                 }
-            }
-        });
+            });
 
         SendVerificationCodeResultSchema.parse(data);
-        const captcha = data.sendVerificationCode.captcha;
+        const captcha = data.sendVerificationCode?.captcha;
+
+        if (errors && !captcha) {
+            throw new Error(errors[0].message);
+        }
 
         if (!captcha) {
             throw new Error('Expected captcha but got nothing.');
@@ -275,7 +287,10 @@ export const login = async ({
     verificationCode
 }: LoginRequest): Promise<ReturnData<string>> => {
     try {
-        const { data }: { data: LoginResult } = await fetcher({
+        const {
+            data,
+            errors
+        }: { data: LoginResult; errors?: { message: string; path: string[] }[] } = await fetcher({
             data: {
                 query: LOGIN_MUTATION,
                 variables: {
@@ -289,11 +304,17 @@ export const login = async ({
             }
         });
         LoginResultSchema.parse(data);
-        const access = data.login.jwtToken;
+        const access = data.login?.jwtToken;
+
+        if (errors && !access) {
+            throw new Error(errors[0].message);
+        }
 
         if (!access) {
             throw new Error('Expected jwtToken but got nothing.');
         }
+
+        Cookies.set('access', access);
 
         return {
             success: true,
