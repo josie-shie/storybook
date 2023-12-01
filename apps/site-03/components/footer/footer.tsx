@@ -45,8 +45,8 @@ const CategoryList = [
     },
     {
         label: '消息',
-        value: '/message',
-        includedRouters: ['/message'],
+        value: '/notice',
+        includedRouters: ['/notice'],
         icon: <Image alt="" className={style.icon} src={newsIcon} />,
         activedIcon: <Image alt="" className={style.icon} src={activedNews} />
     }

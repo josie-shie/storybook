@@ -1,0 +1,93 @@
+.mailCard {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    column-gap: 8px;
+
+    .check {
+        padding: 0;
+        opacity: 0;
+        transition: opacity 0.2s ease-in-out;
+    }
+
+    .card {
+        min-width: 100%;
+        padding: 8px 12px;
+        display: flex;
+        flex-direction: column;
+        transition: all 0.2s ease-in-out;
+        border: 1px solid #d9d9d9;
+        border-radius: 8px;
+    }
+
+    .topBar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 4px;
+
+        .tag {
+            padding: 2px 6px;
+            background: linear-gradient(90deg, #4387ff 16.18%, #2173ff 65.95%);
+            color: #fff;
+            font-size: 12px;
+            border-radius: 4px;
+        }
+
+        .date {
+            font-size: 12px;
+            color: #8d8d8d;
+        }
+    }
+
+    .title {
+        max-width: 100%;
+        flex: 1;
+        padding: 0 4px;
+        margin-bottom: 4px;
+        font-size: 14px;
+        color: #4a4a4a;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+    .bottomBar {
+        padding: 0 4px;
+        display: flex;
+        align-items: center;
+        column-gap: 8px;
+
+        .content {
+            max-width: 100%;
+            flex: 1;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            color: #4a4a4a;
+            font-size: 12px;
+        }
+    }
+
+    &.isEdit {
+        .check {
+            opacity: 1;
+        }
+
+        .card {
+            min-width: calc(100% - 32px);
+        }
+    }
+
+    &.isRead {
+        .title {
+            color: #8d8d8d;
+        }
+
+        .bottomBar {
+            .content {
+                color: #8d8d8d;
+            }
+        }
+    }
+}

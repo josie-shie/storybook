@@ -1,0 +1,33 @@
+.noticeLayout {
+    :global {
+        .ui-tab-header {
+            .ui-tabs-header {
+                padding: 12px 12px 0;
+            }
+        }
+
+        .ui-button {
+            padding: 8px 0;
+            display: flex;
+            justify-content: center;
+            flex: 1;
+            border-bottom: 1px solid #d9d9d9;
+            font-size: 14px;
+        }
+
+        .ui-tab-header-liner:global(.ui-tab-header-liner) {
+            bottom: -1px;
+        }
+
+        .ui-tab-container {
+            padding: 12px;
+        }
+    }
+
+    .noticeContent {
+        background-color: #fff;
+        border-top-left-radius: 12px;
+        border-top-right-radius: 12px;
+        margin-top: -12px;
+    }
+}
