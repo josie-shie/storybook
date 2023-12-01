@@ -4,7 +4,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, FormControl } from '@mui/material';
 import type { LoginRequest } from 'data-center';
-import { sendVerificationCode, login } from 'data-center';
+import { sendVerificationCode, login, getMemberInfo } from 'data-center';
 import { useAuthStore } from '../authStore';
 import style from './login.module.scss';
 import {
@@ -38,6 +38,9 @@ function Login() {
     const { verifyPhoto, setVerifyPhoto } = loginStore;
     const setIsVisible = useNotificationStore.use.setIsVisible();
     const setAuthQuery = useUserStore.use.setAuthQuery();
+    const setUserInfo = useUserStore.use.setUserInfo();
+    const setIsLogin = useUserStore.use.setIsLogin();
+    const removeAuthQuery = useAuthStore.use.removeAuthQuery();
 
     const {
         control,
@@ -68,6 +71,9 @@ function Login() {
         setIsDrawerOpen(false);
         setToken(res.data);
         setIsVisible('登入成功！', 'success');
+        removeAuthQuery();
+
+        await getUserInfo(res.data);
     };
 
     const getVerificationCode = async () => {
@@ -85,6 +91,18 @@ function Login() {
         }
 
         setVerifyPhoto(res.data);
+    };
+
+    const getUserInfo = async (cookie: string) => {
+        const res = await getMemberInfo();
+
+        if (res.success) {
+            setUserInfo(res.data);
+            setIsLogin(true);
+            setToken(cookie);
+        } else {
+            setIsVisible('登陆已过期，请重新登陆', 'error');
+        }
     };
 
     const isSendVerificationCodeDisable = !countryCode || !mobileNumber || !password;

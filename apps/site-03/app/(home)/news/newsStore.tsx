@@ -1,23 +1,9 @@
 import { initStore } from 'lib';
 import type { StoreWithSelectors } from 'lib';
-
-interface Slide {
-    id: number;
-    image: string;
-    leagueChs: string;
-    title: string;
-}
-
-interface News {
-    id: number;
-    image: string;
-    title: string;
-    time: string;
-}
+import type { GetLeisuNewsListResponse } from 'data-center';
 
 interface InitState {
-    slideList: Slide[];
-    newsList: News[];
+    newsList: GetLeisuNewsListResponse;
     marqueeList: string[];
 }
 
@@ -25,20 +11,17 @@ interface NewsState extends InitState {
     loading: boolean;
     currentMarqueeIndex: number;
     setCurrentMarqueeIndex: (index: number) => void;
+    setNewsList: (newsList: GetLeisuNewsListResponse) => void;
 }
 
 let useNewsStore: StoreWithSelectors<NewsState>;
 
 const initialState = (set: (data: Partial<NewsState>) => void) => ({
-    slideList: [],
     marqueeList: [],
     newsList: [],
     loading: false,
     currentMarqueeIndex: 0,
-    setSlideList: (slideList: Slide[]) => {
-        set({ slideList });
-    },
-    setNewsList: (newsList: News[]) => {
+    setNewsList: (newsList: GetLeisuNewsListResponse) => {
         set({ newsList });
     },
     setMarqueeList: (marqueeList: string[]) => {

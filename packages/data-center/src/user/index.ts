@@ -98,7 +98,7 @@ export interface UpdatePasswordRequest {
 }
 
 const MemberInfoSchema = z.object({
-    uid: z.string(),
+    uid: z.number(),
     username: z.string(),
     birthday: z.number(),
     countryCode: z.string(),

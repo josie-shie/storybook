@@ -11,7 +11,7 @@ interface Fetcher<TData> {
 const handleUnauthorized = () => {
     setTimeout(() => {
         Cookies.remove('access');
-        window.location.href = '/';
+        window.location.href = '/?auth=login';
     }, 2000);
 };
 

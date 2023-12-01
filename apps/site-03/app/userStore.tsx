@@ -1,24 +1,44 @@
 import { initStore } from 'lib';
 import type { StoreWithSelectors } from 'lib';
-import Cookies from 'js-cookie';
+import type { GetMemberInfoResponse } from 'data-center';
 
 interface InitState {
     authQuery: string;
+    userInfo: GetMemberInfoResponse;
 }
 
 interface UserState extends InitState {
     token: string;
     isLogin: boolean;
+    setIsLogin: (isLogin: boolean) => void;
     setToken: (token: string) => void;
     setAuthQuery: (authQuery: string) => void;
+    setUserInfo: (userInfo: GetMemberInfoResponse) => void;
 }
 
 let isInit = true;
 let useUserStore: StoreWithSelectors<UserState>;
 
 const initialState = (set: (updater: (state: UserState) => Partial<UserState>) => void) => ({
-    isLogin: Boolean(Cookies.get('access')),
-    token: Cookies.get('access') || '',
+    userInfo: {} as GetMemberInfoResponse,
+    isLogin: false,
+    token: '',
+    setIsLogin: (isLogin: boolean) => {
+        set(state => {
+            return {
+                ...state,
+                isLogin
+            };
+        });
+    },
+    setUserInfo: (userInfo: GetMemberInfoResponse) => {
+        set(state => {
+            return {
+                ...state,
+                userInfo
+            };
+        });
+    },
     setToken: (token: string) => {
         set(state => {
             return {

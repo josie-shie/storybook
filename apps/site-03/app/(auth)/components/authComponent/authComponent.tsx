@@ -63,7 +63,7 @@ export function SubmitButton({ label, disabled }: SubmitButtonPropsType) {
 
 export function Aggrement() {
     return (
-        <p className={style.agreement}>{`登入即同意<XXX體育隱私條款>、<XXX體育用戶服務協議>`}</p>
+        <p className={style.agreement}>{`登入即同意<未来体育隐私条款>、<未来体育用户服务协议>`}</p>
     );
 }
 

@@ -1,6 +1,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import type { ReactNode } from 'react';
 import React, { useEffect, useRef, useState } from 'react';
+import style from './notification.module.scss';
 
 interface SlideTransitionProps {
     show: boolean;
@@ -59,6 +60,7 @@ function SlideTransition({ autoCloseTime, children, show = false, onClose }: Sli
             {show ? (
                 <motion.div
                     animate={entranceTransition}
+                    className={style.slideTransition__position}
                     exit={exitTransition}
                     initial={{ translateY: '-100%', opacity: 0 }}
                 >
