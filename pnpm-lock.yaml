@@ -168,6 +168,9 @@ importers:
       react-hook-form:
         specifier: ^7.48.2
         version: 7.48.2(react@18.2.0)
+      react-scroll:
+        specifier: ^1.9.0
+        version: 1.9.0(react-dom@18.2.0)(react@18.2.0)
       swiper:
         specifier: ^9.4.1
         version: 9.4.1
@@ -9037,6 +9040,10 @@ packages:
     resolution: {integrity: sha512-+WKqsK294HMSc2jEbNgpHpd0JfIBhp7rEV4aqXWqFr6AlXov+SlcgB1Fv01y2kGe3Gc8nMW7VA0SrGuSkRfIEg==}
     dev: true
 
+  /lodash.throttle@4.1.1:
+    resolution: {integrity: sha512-wIkUCfVKpVsWo3JSZlc+8MB5it+2AN5W8J7YVMST30UrvcQNZ1Okbj+rbVniijTWE6FGYy4XJq/rHkas8qJMLQ==}
+    dev: false
+
   /lodash.truncate@4.4.2:
     resolution: {integrity: sha512-jttmRe7bRse52OsWIMDLaXxWqRAmtIUccAQ3garviCqJjafXOfNMO0yMfNpdD6zbGaTU0P5Nz7e7gAT6cKmJRw==}
     dev: true
@@ -10473,6 +10480,18 @@ packages:
       use-callback-ref: 1.3.0(@types/react@18.2.5)(react@18.2.0)
       use-sidecar: 1.1.2(@types/react@18.2.5)(react@18.2.0)
     dev: true
+
+  /react-scroll@1.9.0(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-mamNcaX9Ng+JeSbBu97nWwRhYvL2oba+xR2GxvyXsbDeGP+gkYIKZ+aDMMj/n20TbV9SCWm/H7nyuNTSiXA6yA==}
+    peerDependencies:
+      react: ^15.5.4 || ^16.0.0 || ^17.0.0 || ^18.0.0
+      react-dom: ^15.5.4 || ^16.0.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      lodash.throttle: 4.1.1
+      prop-types: 15.8.1
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
 
   /react-slick@0.29.0(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-TGdOKE+ZkJHHeC4aaoH85m8RnFyWqdqRfAGkhd6dirmATXMZWAxOpTLmw2Ll/jPTQ3eEG7ercFr/sbzdeYCJXA==}
