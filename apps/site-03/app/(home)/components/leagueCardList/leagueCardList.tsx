@@ -7,6 +7,7 @@ import playButtonImg from './img/playButton.png';
 import planImg from './img/plan.png';
 import professionalImg from './img/professional.png';
 import style from './leagueCardList.module.scss';
+import { useContestInfoStore } from '@/app/contestInfoStore';
 
 interface Match {
     homeScore: number;
@@ -21,21 +22,29 @@ interface Match {
     roundCn: string;
 }
 
+interface GlobalMatch {
+    state: number | undefined;
+    homeScore: number | undefined;
+    awayScore: number | undefined;
+    startTime: number | undefined;
+}
+
 interface MatchProps {
     match: Match;
     leagueName: string;
+    globalMatchDetail: GlobalMatch;
 }
 
-function StateComponent({ state }: { state: number }) {
+function StateComponent({ state, match }: { state: number; match: Match }) {
     const stateList = [1, 2, 3, 4, 5];
 
     return (
         <div className={`${style.text} ${style.live} ${style.liveText}`}>
             {stateList.includes(state) ? (
-                <>
+                <Link href={`/contest/football/${match.matchId}?live=true`}>
                     直播中
                     <Image alt="" className={style.playButton} src={playButtonImg} />
-                </>
+                </Link>
             ) : null}
         </div>
     );
@@ -72,7 +81,7 @@ function StartedScore({
     );
 }
 
-function LeagueCard({ match, leagueName }: MatchProps) {
+function LeagueCard({ match, leagueName, globalMatchDetail }: MatchProps) {
     const optionList = [
         {
             label: '竞猜方案',
@@ -94,7 +103,7 @@ function LeagueCard({ match, leagueName }: MatchProps) {
                     <div className={style.time}>
                         {timestampToString(match.startTime, 'YYYY-M-DD HH:mm')}
                     </div>
-                    <StateComponent state={match.state} />
+                    <StateComponent match={match} state={match.state} />
                 </div>
                 <div className={style.clubInfo}>
                     <div className={style.team}>
@@ -112,10 +121,10 @@ function LeagueCard({ match, leagueName }: MatchProps) {
                             <NotStartedScore />
                         ) : (
                             <StartedScore
-                                awayScore={match.awayScore}
-                                homeScore={match.homeScore}
-                                startTime={match.startTime}
-                                state={match.state}
+                                awayScore={globalMatchDetail.awayScore || match.awayScore}
+                                homeScore={globalMatchDetail.homeScore || match.homeScore}
+                                startTime={globalMatchDetail.startTime || match.startTime}
+                                state={globalMatchDetail.state || match.state}
                             />
                         )}
                     </div>
@@ -155,6 +164,7 @@ function LeagueCardList() {
     };
 
     const matchList = useHomeStore.use.contestList();
+    const globalStore = useContestInfoStore.use.contestInfo();
 
     return (
         <div className={style.leagueCardList}>
@@ -171,6 +181,12 @@ function LeagueCardList() {
                             {matchList[Number(leagueId)].list.map(match => {
                                 return (
                                     <LeagueCard
+                                        globalMatchDetail={{
+                                            state: globalStore[match.matchId].state,
+                                            homeScore: globalStore[match.matchId].homeScore,
+                                            awayScore: globalStore[match.matchId].awayScore,
+                                            startTime: globalStore[match.matchId].startTime
+                                        }}
                                         key={match.matchId}
                                         leagueName={matchList[Number(leagueId)].leagueChsShort}
                                         match={match}

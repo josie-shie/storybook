@@ -12,6 +12,13 @@ import type { GetHomepageBannerMatch, GetHomepageBannerBanner } from 'data-cente
 import { useHomeStore } from '../../homeStore';
 import style from './carousel.module.scss';
 import liveImg from '@/app/(home)/img/live.png';
+import { useContestInfoStore } from '@/app/contestInfoStore';
+
+interface GlobalMatch {
+    homeScore: number | undefined;
+    awayScore: number | undefined;
+    startTime: number | undefined;
+}
 
 function BannerSlide({ slideInfo }: { slideInfo: GetHomepageBannerBanner }) {
     return (
@@ -22,12 +29,18 @@ function BannerSlide({ slideInfo }: { slideInfo: GetHomepageBannerBanner }) {
     );
 }
 
-function LiveSlide({ slideInfo }: { slideInfo: GetHomepageBannerMatch }) {
+function LiveSlide({
+    slideInfo,
+    globalMatchDetail
+}: {
+    slideInfo: GetHomepageBannerMatch;
+    globalMatchDetail: GlobalMatch;
+}) {
     return (
         <div className={style.slideImage} style={{ backgroundImage: `url(${liveImg.src})` }}>
             <div className={style.detail}>
                 {slideInfo.leagueChsShort} 分组赛{slideInfo.roundCn}轮 今天
-                {timestampToMonthDay(slideInfo.startTime)}
+                {timestampToMonthDay(globalMatchDetail.startTime || slideInfo.startTime)}
             </div>
             <div className={style.middleTeamIcon}>
                 <Image alt="" height={54} src={slideInfo.homeLogo} width={54} />
@@ -44,11 +57,15 @@ function LiveSlide({ slideInfo }: { slideInfo: GetHomepageBannerMatch }) {
                 <div className={style.score}>
                     <div className={style.teamScore}>
                         <Image alt="" height={20} src={slideInfo.homeLogo} width={20} />
-                        <div className={style.scoreNumber}>{slideInfo.homeScore}</div>
+                        <div className={style.scoreNumber}>
+                            {globalMatchDetail.homeScore || slideInfo.homeScore}
+                        </div>
                     </div>
                     <div className={style.teamScore}>
                         <Image alt="" height={20} src={slideInfo.awayLogo} width={20} />
-                        <div className={style.scoreNumber}>{slideInfo.awayScore}</div>
+                        <div className={style.scoreNumber}>
+                            {globalMatchDetail.awayScore || slideInfo.awayScore}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -59,6 +76,7 @@ function LiveSlide({ slideInfo }: { slideInfo: GetHomepageBannerMatch }) {
 function Carousel() {
     const slideList = useHomeStore.use.slideList();
     const bannerList = useHomeStore.use.bannerList();
+    const globalStore = useContestInfoStore.use.contestInfo();
 
     return (
         <div className={style.carousel}>
@@ -92,7 +110,14 @@ function Carousel() {
                     {slideList.map(slide => {
                         return (
                             <SwiperSlide key={slide.matchId}>
-                                <LiveSlide slideInfo={slide} />
+                                <LiveSlide
+                                    globalMatchDetail={{
+                                        homeScore: globalStore[slide.matchId].homeScore,
+                                        awayScore: globalStore[slide.matchId].awayScore,
+                                        startTime: globalStore[slide.matchId].startTime
+                                    }}
+                                    slideInfo={slide}
+                                />
                             </SwiperSlide>
                         );
                     })}
