@@ -7,7 +7,7 @@ import Profile from './components/profile/profile';
 
 interface HeaderProps {
     logo?: ReactNode;
-    total: number;
+    total: number | null;
 }
 
 function HeaderLogo({ total, logo }: HeaderProps) {

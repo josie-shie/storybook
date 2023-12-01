@@ -1,7 +1,9 @@
 'use client';
 import { usePathname } from 'next/navigation';
-import { useEffect, type ReactNode, Suspense } from 'react';
+import { type ReactNode, Suspense, useEffect } from 'react';
 import Image from 'next/image';
+import type { GetMemberInfoResponse } from 'data-center';
+import { useUserStore } from '../userStore';
 import LogoImg from './img/logo.png';
 import style from './home.module.scss';
 import HeaderLogo from '@/components/header/headerLogo';
@@ -11,10 +13,18 @@ import { Tabs } from '@/components/tabs/tabs';
 import { version } from '@/package.json';
 import Loading from '@/components/loading/loading';
 
-function NormalLayout({ children }: { children: ReactNode }) {
+function NormalLayout({
+    children,
+    userInfo,
+    isLogin
+}: {
+    children: ReactNode;
+    userInfo: GetMemberInfoResponse;
+    isLogin: boolean;
+}) {
     const headerProps = {
         logo: <Image alt="" height={13} src={LogoImg} width={66} />,
-        total: 999999
+        total: isLogin ? userInfo.balance : null
     };
 
     return (
@@ -22,17 +32,25 @@ function NormalLayout({ children }: { children: ReactNode }) {
             <HeaderLogo logo={headerProps.logo} total={headerProps.total} />
             <div className={style.home}>
                 <Tabs labels={['熱門', '快讯']} paths={['/', '/news']} />
-                <Suspense fallback={<Loading />}>{children}</Suspense>
+                <Suspense fallback={<Loading backgroundColor="#FFF" />}>{children}</Suspense>
             </div>
             <Footer />
         </>
     );
 }
 
-function ArticleLayout({ children }: { children: ReactNode }) {
+function ArticleLayout({
+    children,
+    userInfo,
+    isLogin
+}: {
+    children: ReactNode;
+    userInfo: GetMemberInfoResponse;
+    isLogin: boolean;
+}) {
     const headerProps = {
         title: '快讯',
-        total: 999999
+        total: isLogin ? userInfo.balance : 0
     };
 
     return (
@@ -45,8 +63,9 @@ function ArticleLayout({ children }: { children: ReactNode }) {
 
 function HomeLayout({ children }: { children: ReactNode }) {
     const pathname = usePathname();
-
     const isArticlePage = /^\/news\/[^/]+$/.test(pathname);
+    const userInfo = useUserStore.use.userInfo();
+    const isLogin = useUserStore.use.isLogin();
 
     useEffect(() => {
         // eslint-disable-next-line -- log version
@@ -57,10 +76,18 @@ function HomeLayout({ children }: { children: ReactNode }) {
     }, []);
 
     if (isArticlePage) {
-        return <ArticleLayout>{children}</ArticleLayout>;
+        return (
+            <ArticleLayout isLogin={isLogin} userInfo={userInfo}>
+                {children}
+            </ArticleLayout>
+        );
     }
 
-    return <NormalLayout>{children}</NormalLayout>;
+    return (
+        <NormalLayout isLogin={isLogin} userInfo={userInfo}>
+            {children}
+        </NormalLayout>
+    );
 }
 
 export default HomeLayout;
