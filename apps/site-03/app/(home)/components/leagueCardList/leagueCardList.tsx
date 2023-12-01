@@ -1,7 +1,7 @@
 import { Tab, Tabs } from 'ui';
-import type { StaticImageData } from 'next/image';
 import Image from 'next/image';
-import { timestampToString } from 'lib';
+import { timestampToString, handleGameTime } from 'lib';
+import Link from 'next/link';
 import { useHomeStore } from '../../homeStore';
 import playButtonImg from './img/playButton.png';
 import planImg from './img/plan.png';
@@ -9,33 +9,34 @@ import professionalImg from './img/professional.png';
 import style from './leagueCardList.module.scss';
 
 interface Match {
-    matchId: number;
-    leagueChsShort: string;
-    startTime: number;
-    state: number;
-    homeChs: string;
-    awayChs: string;
-    matchTime: number;
-    onlineTotal: number;
     homeScore: number;
     awayScore: number;
-    homeIcon: string | StaticImageData;
-    awayIcon: string | StaticImageData;
+    startTime: number;
+    state: number;
+    matchId: number;
+    homeChs: string;
+    homeLogo: string;
+    awayChs: string;
+    awayLogo: string;
+    roundCn: string;
 }
 
 interface MatchProps {
     match: Match;
+    leagueName: string;
 }
 
 function StateComponent({ state }: { state: number }) {
+    const stateList = [1, 2, 3, 4, 5];
+
     return (
         <div className={`${style.text} ${style.live} ${style.liveText}`}>
-            {state ? null : (
+            {stateList.includes(state) ? (
                 <>
                     直播中
                     <Image alt="" className={style.playButton} src={playButtonImg} />
                 </>
-            )}
+            ) : null}
         </div>
     );
 }
@@ -47,33 +48,49 @@ function NotStartedScore() {
 function StartedScore({
     homeScore,
     awayScore,
-    matchTime
+    startTime,
+    state
 }: {
     homeScore: number;
     awayScore: number;
-    matchTime: number | null;
+    startTime: number;
+    state: number;
 }) {
+    const getStartTime = () => {
+        return handleGameTime(startTime, state);
+    };
+
     return (
         <>
             <div className={style.scoreNumber}>
                 {homeScore}-{awayScore}
             </div>
-            <div className={style.timeTotal}>{matchTime}‘</div>
+            <div className={style.timeTotal}>
+                <span className={getStartTime().state}>{getStartTime().time}</span>
+            </div>
         </>
     );
 }
 
-function LeagueCard({ match }: MatchProps) {
+function LeagueCard({ match, leagueName }: MatchProps) {
     const optionList = [
-        { label: '競猜方案', icon: <Image alt="" height={18} src={planImg} width={18} /> },
-        { label: '專家預測', icon: <Image alt="" height={18} src={professionalImg} width={18} /> }
+        {
+            label: '竞猜方案',
+            icon: <Image alt="" height={18} src={planImg} width={18} />,
+            path: `/recommend/guess/${match.matchId}`
+        },
+        {
+            label: '专家预测',
+            icon: <Image alt="" height={18} src={professionalImg} width={18} />,
+            path: `/recommend/predict/masterList?matchId=${match.matchId}`
+        }
     ];
 
     return (
         <div className={style.leagueCard}>
             <div className={style.matchInfo}>
                 <div className={style.leagueInfo}>
-                    <div className={`${style.text} ${style.liveText}`}>{match.leagueChsShort}</div>
+                    <div className={`${style.text} ${style.liveText}`}>{leagueName}</div>
                     <div className={style.time}>
                         {timestampToString(match.startTime, 'YYYY-M-DD HH:mm')}
                     </div>
@@ -85,7 +102,7 @@ function LeagueCard({ match }: MatchProps) {
                             alt=""
                             className={style.image}
                             height={40}
-                            src={match.homeIcon}
+                            src={match.homeLogo}
                             width={40}
                         />
                         <div className={style.teamName}>{match.homeChs}</div>
@@ -97,7 +114,8 @@ function LeagueCard({ match }: MatchProps) {
                             <StartedScore
                                 awayScore={match.awayScore}
                                 homeScore={match.homeScore}
-                                matchTime={match.matchTime}
+                                startTime={match.startTime}
+                                state={match.state}
                             />
                         )}
                     </div>
@@ -106,7 +124,7 @@ function LeagueCard({ match }: MatchProps) {
                             alt=""
                             className={style.image}
                             height={40}
-                            src={match.awayIcon}
+                            src={match.awayLogo}
                             width={40}
                         />
                         <div className={style.teamName}>{match.awayChs}</div>
@@ -116,10 +134,12 @@ function LeagueCard({ match }: MatchProps) {
             <div className={style.optionList}>
                 {optionList.map(option => {
                     return (
-                        <div className={style.option} key={option.label}>
-                            {option.icon}
-                            <div className={style.text}>{option.label}</div>
-                        </div>
+                        <Link href={option.path} key={option.label}>
+                            <div className={style.option}>
+                                {option.icon}
+                                <div className={style.text}>{option.label}</div>
+                            </div>
+                        </Link>
                     );
                 })}
             </div>
@@ -145,11 +165,17 @@ function LeagueCardList() {
                 styling="button"
                 swiperOpen={tabStyle.swiperOpen}
             >
-                {Object.keys(matchList).map(leagueName => (
-                    <Tab key={leagueName} label={leagueName}>
+                {Object.keys(matchList).map(leagueId => (
+                    <Tab key={leagueId} label={matchList[Number(leagueId)].leagueChsShort}>
                         <div className={style.leagueList}>
-                            {matchList[leagueName].map(match => {
-                                return <LeagueCard key={match.matchId} match={match} />;
+                            {matchList[Number(leagueId)].list.map(match => {
+                                return (
+                                    <LeagueCard
+                                        key={match.matchId}
+                                        leagueName={matchList[Number(leagueId)].leagueChsShort}
+                                        match={match}
+                                    />
+                                );
                             })}
                         </div>
                     </Tab>
