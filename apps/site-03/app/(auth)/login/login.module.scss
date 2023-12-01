@@ -1,5 +1,23 @@
 .login {
     padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    .phone {
+        display: flex;
+        width: 100%;
+        gap: 6px;
+        flex-direction: column;
+
+        .input {
+            min-height: 44px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+    }
 
     .forgotPass {
         color: #fff;
@@ -10,17 +28,15 @@
         font-weight: 500;
     }
 
-    .buttons {
-        padding: 16px 0;
-
-        .registerButton {
-            color: #fff;
-            font-size: 14px;
-        }
+    .register {
+        color: #fff;
+        text-align: center;
+        font-size: 14px;
+        font-weight: 500;
+        padding: 2px 0;
     }
 
     .footer {
-        padding: 15px 0 32px 0;
         display: flex;
         gap: 32px;
         white-space: nowrap;
@@ -31,17 +47,8 @@
             color: #fff;
         }
     }
-}
 
-.futureTitle {
-    font-size: 30px;
-    font-weight: 600;
-    font-family: YouSheBiaoTiHei;
-
-    .future {
-        background: linear-gradient(91deg, #00ceff 8.31%, #0085ff 114.96%);
-        background-clip: text;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
+    .aggrement {
+        padding-bottom: 102px;
     }
 }
