@@ -1,7 +1,8 @@
+'use client';
 import { motion } from 'framer-motion';
 import { Tab, Tabs } from 'ui';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
-import { useCallback, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useContestListStore } from '../contestListStore';
 import style from './filter.module.scss';
 import BottomDrawer from '@/components/drawer/bottomDrawer';
@@ -85,11 +86,18 @@ function FilterSection({ group, onClose }: { group: 'league' | 'country'; onClos
 }
 
 function Filter() {
+    const [onMounted, setOnMounted] = useState(false);
+
+    useEffect(() => {
+        setOnMounted(true);
+    }, []);
+
     const tabStyle = {
         gap: 8,
         swiperOpen: true,
         buttonRadius: 30
     };
+
     const searchParams = useSearchParams();
     const isOpen = searchParams.get('filter');
     const pathname = usePathname();
@@ -122,29 +130,33 @@ function Filter() {
     };
 
     return (
-        <BottomDrawer isOpen={isOpen === 'open'} onClose={onClose} onOpen={onOpen}>
-            <div className={style.filter}>
-                <h2>赛事筛选</h2>
-                <div className={style.tab}>
-                    <Tabs
-                        buttonRadius={tabStyle.buttonRadius}
-                        defaultValue={tabActive.current}
-                        gap={tabStyle.gap}
-                        onTabChange={saveTabStatus}
-                        position="center"
-                        styling="underline"
-                        swiperOpen={tabStyle.swiperOpen}
-                    >
-                        <Tab label="赛事" value="contest">
-                            <FilterSection group="league" onClose={onClose} />
-                        </Tab>
-                        <Tab label="国家" value="country">
-                            <FilterSection group="country" onClose={onClose} />
-                        </Tab>
-                    </Tabs>
-                </div>
-            </div>
-        </BottomDrawer>
+        <>
+            {onMounted ? (
+                <BottomDrawer isOpen={isOpen === 'open'} onClose={onClose} onOpen={onOpen}>
+                    <div className={style.filter}>
+                        <h2>赛事筛选</h2>
+                        <div className={style.tab}>
+                            <Tabs
+                                buttonRadius={tabStyle.buttonRadius}
+                                defaultValue={tabActive.current}
+                                gap={tabStyle.gap}
+                                onTabChange={saveTabStatus}
+                                position="center"
+                                styling="underline"
+                                swiperOpen={tabStyle.swiperOpen}
+                            >
+                                <Tab label="赛事" value="contest">
+                                    <FilterSection group="league" onClose={onClose} />
+                                </Tab>
+                                <Tab label="国家" value="country">
+                                    <FilterSection group="country" onClose={onClose} />
+                                </Tab>
+                            </Tabs>
+                        </div>
+                    </div>
+                </BottomDrawer>
+            ) : null}
+        </>
     );
 }
 

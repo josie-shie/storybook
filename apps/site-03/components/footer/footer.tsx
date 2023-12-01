@@ -38,15 +38,15 @@ const CategoryList = [
     },
     {
         label: '數據',
-        value: '/data',
-        includedRouters: ['/data'],
+        value: '/analytics',
+        includedRouters: ['/analytics'],
         icon: <Image alt="" className={style.icon} src={dataIcon} />,
         activedIcon: <Image alt="" className={style.icon} src={activedData} />
     },
     {
         label: '消息',
-        value: '/message',
-        includedRouters: ['/message'],
+        value: '/notice',
+        includedRouters: ['/notice'],
         icon: <Image alt="" className={style.icon} src={newsIcon} />,
         activedIcon: <Image alt="" className={style.icon} src={activedNews} />
     }
