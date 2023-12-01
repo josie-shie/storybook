@@ -1,5 +1,5 @@
 export const GET_HOT_MATCH_QUERY = `
-    query getHotMatch($input: MatchInput!) {
+    query getHotMatch($input: HotMatchInput!) {
         getHotMatch(input: $input) {
             match {
                 matchId
