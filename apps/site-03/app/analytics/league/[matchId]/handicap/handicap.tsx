@@ -1,9 +1,9 @@
 'use client';
-import { useDataStore } from '../../../dataStore';
+import { useAnalyticsStore } from '../../../analyticsStore';
 import style from './handicap.module.scss';
 
 function Handicap() {
-    const handicapList = useDataStore.use.handicapList();
+    const handicapList = useAnalyticsStore.use.handicapList();
 
     return (
         <div className={style.handicap}>

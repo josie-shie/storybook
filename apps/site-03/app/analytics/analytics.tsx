@@ -8,7 +8,7 @@ import searchIcon from './img/search.png';
 import Logo from './img/logo.png';
 import leagueLogo from './img/leagueLogo.png';
 import cupLogo from './img/cupLogo.png';
-import { creatDataStore } from './dataStore';
+import { createAnalyticsStore } from './analyticsStore';
 import HeaderFilter from '@/components/header/headerFilter';
 
 const hotGames = [
@@ -92,7 +92,7 @@ function CompetitionBox() {
 }
 
 function Analytics() {
-    creatDataStore({
+    createAnalyticsStore({
         pointsList: [
             {
                 id: 1,

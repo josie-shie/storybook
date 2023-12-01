@@ -1,13 +1,13 @@
 'use client';
 import { useParams } from 'next/navigation';
-import { useDataStore } from '../../dataStore';
+import { useAnalyticsStore } from '../../analyticsStore';
 import style from './league.module.scss';
 import { Tabs } from '@/components/tabs/tabs';
 
 function League() {
     const params = useParams();
     const matchId = params.matchId as string;
-    const pointsList = useDataStore.use.pointsList();
+    const pointsList = useAnalyticsStore.use.pointsList();
 
     const labelMap = [
         { id: 1, name: '欧冠杯小组赛资格', color: '#CC141D' },

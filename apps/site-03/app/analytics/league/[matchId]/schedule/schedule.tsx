@@ -1,9 +1,9 @@
 'use client';
-import { useDataStore } from '../../../dataStore';
+import { useAnalyticsStore } from '../../../analyticsStore';
 import style from './schedule.module.scss';
 
 function Schedule() {
-    const scheduleList = useDataStore.use.scheduleList();
+    const scheduleList = useAnalyticsStore.use.scheduleList();
 
     const statusMap = {
         finish: '完场',

@@ -72,7 +72,7 @@ interface DataState extends InitState {
     setTopScorersList: (topScorersList: TopScorerItem[]) => void;
 }
 
-let useDataStore: StoreWithSelectors<DataState>;
+let useAnalyticsStore: StoreWithSelectors<DataState>;
 
 const initialState = (set: (data: Partial<DataState>) => void) => ({
     pointsList: [],
@@ -97,7 +97,7 @@ const initialState = (set: (data: Partial<DataState>) => void) => ({
     }
 });
 
-const creatDataStore = (init: InitState) =>
-    (useDataStore = initStore<DataState>(initialState, init));
+const createAnalyticsStore = (init: InitState) =>
+    (useAnalyticsStore = initStore<DataState>(initialState, init));
 
-export { creatDataStore, useDataStore };
+export { createAnalyticsStore, useAnalyticsStore };

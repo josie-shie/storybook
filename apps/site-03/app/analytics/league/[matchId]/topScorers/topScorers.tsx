@@ -1,9 +1,9 @@
 'use client';
-import { useDataStore } from '../../../dataStore';
+import { useAnalyticsStore } from '../../../analyticsStore';
 import style from './topScorers.module.scss';
 
 function TopScorers() {
-    const topScorersList = useDataStore.use.topScorersList();
+    const topScorersList = useAnalyticsStore.use.topScorersList();
 
     return (
         <div className={style.topScorers}>

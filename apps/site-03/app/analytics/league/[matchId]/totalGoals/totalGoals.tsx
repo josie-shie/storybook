@@ -1,9 +1,9 @@
 'use client';
-import { useDataStore } from '../../../dataStore';
+import { useAnalyticsStore } from '../../../analyticsStore';
 import style from './totalGoals.module.scss';
 
 function TotalGoals() {
-    const totalGoalsList = useDataStore.use.totalGoalsList();
+    const totalGoalsList = useAnalyticsStore.use.totalGoalsList();
 
     return (
         <div className={style.totalGoals}>
