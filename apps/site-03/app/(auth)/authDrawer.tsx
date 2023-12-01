@@ -16,6 +16,7 @@ function AuthDrawer() {
     const authQuery = useUserStore.use.authQuery();
     const isDrawerOpen = useAuthStore.use.isDrawerOpen();
     const setIsDrawerOpen = useAuthStore.use.setIsDrawerOpen();
+    const removeAuthQuery = useAuthStore.use.removeAuthQuery();
 
     let content: ReactNode;
     let title: ReactNode;
@@ -39,6 +40,11 @@ function AuthDrawer() {
         content = null;
     }
 
+    const closeDrawer = () => {
+        setIsDrawerOpen(false);
+        removeAuthQuery();
+    };
+
     useEffect(() => {
         if (content) {
             setIsDrawerOpen(true);
@@ -49,7 +55,7 @@ function AuthDrawer() {
         <BottomDrawer
             isOpen={isDrawerOpen}
             onClose={() => {
-                setIsDrawerOpen(false);
+                closeDrawer();
             }}
             onOpen={() => {
                 setIsDrawerOpen(true);
@@ -68,7 +74,7 @@ function AuthDrawer() {
                         className={style.closeBtn}
                         height={16}
                         onClick={() => {
-                            setIsDrawerOpen(false);
+                            closeDrawer();
                         }}
                         src={closeIcon.src}
                         width={16}

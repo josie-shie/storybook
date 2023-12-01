@@ -40,6 +40,7 @@ function Register() {
     const registerStore = useAuthStore.use.register();
     const { sendCodeSuccess, setSendCodeSuccess, countDownNumber, setCountDownNumber } =
         registerStore;
+    const removeAuthQuery = useAuthStore.use.removeAuthQuery();
 
     const {
         control,
@@ -109,6 +110,7 @@ function Register() {
         setIsDrawerOpen(false);
         setToken(res.data);
         setIsVisible('注册成功！', 'success');
+        removeAuthQuery();
     };
 
     const isSendVerificationCodeDisable = !countryCode || !mobileNumber;
