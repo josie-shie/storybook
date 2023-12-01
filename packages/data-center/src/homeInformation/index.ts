@@ -59,15 +59,8 @@ const GetHotMatchResultSchema = z.object({
 
 type GetHotMatchResult = z.infer<typeof GetHotMatchResultSchema>;
 
-/**
- * 0: 正在進行的比賽
- * 1: 未開始的比賽
- * 2: 已結束的比賽
- * 3: 所有比賽
- */
 export interface GetHotMatchListRequest {
     dateTime: number;
-    matchType: '0' | '1' | '2' | '3';
 }
 
 const GetLeisuNewsSchema = z.object({
@@ -146,7 +139,7 @@ const GetHomepageBannerResultSchema = z.object({
     })
 });
 
-export type GetHomepageBannerResultSchema = z.infer<typeof GetHomepageBannerResultSchema>;
+export type GetHomepageBannerResult = z.infer<typeof GetHomepageBannerResultSchema>;
 
 export interface GetHomepageBannerResponse {
     matchs: GetHomepageBannerMatch[];
@@ -188,9 +181,9 @@ const formatToGetHotMatchResponse = (data: GetHotMatchResult) => {
  * - returns : {@link GetHotMatchListResponse}
  * - {@link GetHotMatch}
  */
+
 export const getHotMatchList = async ({
-    dateTime,
-    matchType
+    dateTime
 }: GetHotMatchListRequest): Promise<ReturnData<GetHotMatchListResponse>> => {
     try {
         const { data }: { data: GetHotMatchResult } = await fetcher(
@@ -199,8 +192,7 @@ export const getHotMatchList = async ({
                     query: GET_HOT_MATCH_QUERY,
                     variables: {
                         input: {
-                            dateTime,
-                            matchType
+                            dateTime
                         }
                     }
                 }
@@ -292,7 +284,7 @@ export const getHomepageBanner = async ({
     dateTime
 }: GetHomepageBannerRequest): Promise<ReturnData<GetHomepageBannerResponse>> => {
     try {
-        const { data }: { data: GetHomepageBannerResultSchema } = await fetcher(
+        const { data }: { data: GetHomepageBannerResult } = await fetcher(
             {
                 data: {
                     query: GET_HOME_PAGE_BANNER_QUERY,
@@ -306,7 +298,7 @@ export const getHomepageBanner = async ({
             { cache: 'no-store' }
         );
 
-        GetLeisuNewsContentResultSchema.parse(data);
+        GetHomepageBannerResultSchema.parse(data);
 
         return {
             success: true,
