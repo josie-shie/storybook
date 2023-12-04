@@ -1,4 +1,4 @@
-export * from './src/example';
+export * from './src/chatRooms';
 export * from './src/user';
 export * from './src/contestDetail';
 export * from './src/contest';
