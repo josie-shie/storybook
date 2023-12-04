@@ -3,7 +3,7 @@ import type { StoreWithSelectors } from 'lib';
 
 type GuessTeam = 'home' | 'away';
 type GuessType = 'none' | 'win' | 'draw' | 'lose';
-type BetType = 'overUnder' | 'handicap';
+type HandicapType = 'overUnder' | 'handicap';
 
 interface Master {
     id: number;
@@ -28,10 +28,8 @@ interface ArticleDetail {
     awayTeamName: string; //客隊名稱
     content: string; //文章內容
     unlock: boolean; //是否解鎖
-    homeRate?: number; //主隊賠率
-    homeValue?: number; //大小/讓分
-    awayRate?: number; //客隊賠率
-    awayValue?: number; //大小/讓分
+    homeHandicap?: number; //大小/讓分
+    awayHandicap?: number; //大小/讓分
     guessResult?: GuessType; //已開賽競猜結果
     masterGuess?: GuessTeam; //主客場推薦
 }
@@ -43,7 +41,7 @@ interface RecommendationItem {
     dateTime: number; //比賽時間
     homeTeamName: string; //主隊名稱
     awayTeamName: string; //客隊名稱
-    betType: BetType; //盤口
+    handicap: HandicapType; //盤口
     amount: number; //解鎖費用
     lockCount: number; //已解鎖人數
 }
