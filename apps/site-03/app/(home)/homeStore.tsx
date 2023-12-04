@@ -1,42 +1,15 @@
 import { initStore } from 'lib';
 import type { StoreWithSelectors } from 'lib';
-import type { StaticImageData } from 'next/image';
-
-interface Slide {
-    id: number;
-    image: string;
-    leagueChs: string;
-    homeIcon: string;
-    awayIcon: string;
-    homeChs: string;
-    awayChs: string;
-    homeScore: number;
-    awayScore: number;
-    roundCn: number;
-    startTime: number;
-    leagueChsShort: string;
-}
-
-interface Contest {
-    matchId: number;
-    leagueChsShort: string;
-    startTime: number;
-    matchTime: number;
-    state: number;
-    homeChs: string;
-    awayChs: string;
-    onlineTotal: number;
-    homeScore: number;
-    awayScore: number;
-    homeIcon: string | StaticImageData;
-    awayIcon: string | StaticImageData;
-}
-
-type ContestList = Record<string, Contest[]>;
+import type {
+    GetHomepageBannerMatch,
+    GetHomepageBannerBanner,
+    GetHotMatchListResponse
+} from 'data-center';
 
 interface InitState {
-    slideList: Slide[];
-    contestList: ContestList;
+    slideList: GetHomepageBannerMatch[];
+    contestList: GetHotMatchListResponse;
+    bannerList: GetHomepageBannerBanner[];
 }
 
 interface HomeState extends InitState {
@@ -47,16 +20,11 @@ let useHomeStore: StoreWithSelectors<HomeState>;
 
 const initialState = (set: (data: Partial<HomeState>) => void) => ({
     slideList: [],
+    bannerList: [],
     contestList: {},
     loading: false,
-    setSlideList: (slideList: Slide[]) => {
-        set({ slideList });
-    },
     setLoading: (loading: boolean) => {
         set({ loading });
-    },
-    setContestList: (contestList: ContestList) => {
-        set({ contestList });
     }
 });
 
