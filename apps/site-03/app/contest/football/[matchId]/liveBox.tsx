@@ -1,11 +1,11 @@
 'use client';
 import Image from 'next/image';
 import Button from '@mui/material/Button';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import type { GetSingleMatchResponse } from 'data-center';
 import { GameStatus } from 'ui';
 import md5 from 'crypto-js/md5';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import TeamLogo from './components/teamLogo';
 import Header from './header';
 import style from './liveBox.module.scss';
@@ -62,6 +62,8 @@ function GameDetail({ matchId }: { matchId: number }) {
 
 function Animate({ matchId }: { matchId: number }) {
     const [showAnimate, setShowAnimate] = useState('');
+    const searchParams = useSearchParams();
+    const isShowAnimation = searchParams.get('live');
 
     const getAnimateUrl = () => {
         const ts = Math.floor(Date.now());
@@ -72,9 +74,16 @@ function Animate({ matchId }: { matchId: number }) {
         const url = `https://zhibo.feijing88.com/animation/?matchId=${matchId}&accessKey=${accessKey}&ts=${ts}&auth=${auth}`;
         setShowAnimate(url);
     };
+
     const back = () => {
         setShowAnimate('');
     };
+
+    useEffect(() => {
+        if (isShowAnimation) {
+            getAnimateUrl();
+        }
+    }, []);
 
     return (
         <>

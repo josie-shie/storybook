@@ -109,6 +109,27 @@
                             font-size: 12px;
                             font-weight: 500;
                         }
+
+                        .notYet,
+                        .undetermined,
+                        .discontinue,
+                        .putOff,
+                        .cancel {
+                            color: #8d8d8d;
+                        }
+
+                        .playing,
+                        .finish {
+                            color: #cc141d;
+                        }
+
+                        .midfielder {
+                            color: #4a4a4a;
+                        }
+
+                        .playoff {
+                            color: #fbb03b;
+                        }
                     }
 
                     .teamName {
