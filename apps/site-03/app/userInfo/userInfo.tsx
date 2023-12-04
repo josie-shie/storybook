@@ -16,9 +16,13 @@ import Avatar from '@/components/avatar/avatar';
 import Tag from '@/components/tag/tag';
 import Header from '@/components/header/headerTitleNoBg';
 import Footer from '@/components/footer/footer';
+import { useUserStore } from '@/app/userStore';
+import { useAuthStore } from '@/app/(auth)/authStore';
 
 function UserInfo() {
     const router = useRouter();
+    const setAuthQuery = useUserStore.use.setAuthQuery();
+    const setIsDrawerOpen = useAuthStore.use.setIsDrawerOpen();
 
     const headerProps = {
         title: '我的'
@@ -30,6 +34,11 @@ function UserInfo() {
 
     const goSubscribe = () => {
         router.push('/userInfo/subscribe');
+    };
+
+    const openLoginDrawer = () => {
+        setAuthQuery('changePassword');
+        setIsDrawerOpen(true);
     };
 
     return (
@@ -143,7 +152,14 @@ function UserInfo() {
                             </li>
                             <li>
                                 <ButtonBase>
-                                    <Link href="">修改密码</Link>
+                                    <Link
+                                        href=""
+                                        onClick={() => {
+                                            openLoginDrawer();
+                                        }}
+                                    >
+                                        修改密码
+                                    </Link>
                                 </ButtonBase>
                             </li>
                             <li>
