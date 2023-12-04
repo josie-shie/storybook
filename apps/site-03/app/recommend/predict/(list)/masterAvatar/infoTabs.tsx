@@ -19,6 +19,7 @@ function InfoTabs() {
         masterItem: [
             {
                 id: 12,
+                avatar: '',
                 name: '老梁聊球',
                 hotStreak: 2,
                 ranking: 10,
@@ -29,6 +30,7 @@ function InfoTabs() {
             },
             {
                 id: 17,
+                avatar: '',
                 name: '柯侯配',
                 hotStreak: 6,
                 ranking: 7,
@@ -39,6 +41,7 @@ function InfoTabs() {
             },
             {
                 id: 18,
+                avatar: '',
                 name: '柯侯配',
                 hotStreak: 6,
                 ranking: 7,
@@ -49,6 +52,7 @@ function InfoTabs() {
             },
             {
                 id: 19,
+                avatar: '',
                 name: '柯侯配',
                 hotStreak: 6,
                 ranking: 7,
@@ -59,6 +63,7 @@ function InfoTabs() {
             },
             {
                 id: 20,
+                avatar: '',
                 name: '柯侯配',
                 hotStreak: 6,
                 ranking: 7,
@@ -69,6 +74,7 @@ function InfoTabs() {
             },
             {
                 id: 21,
+                avatar: '',
                 name: '柯侯配',
                 hotStreak: 6,
                 ranking: 7,

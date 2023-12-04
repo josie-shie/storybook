@@ -106,7 +106,8 @@ function Rank() {
         record: 2,
         victory: 6,
         defeat: 4,
-        winRate: 99
+        winRate: 99,
+        personalRank: 24
     };
 
     return (
@@ -129,7 +130,7 @@ function Rank() {
                     width={366}
                 />
                 <div className={style.ranking} style={{ background: periodTagColor }}>
-                    {periodMap[currentPeriod]}排名<span>24</span>
+                    {periodMap[currentPeriod]}排名<span>{userData.personalRank}</span>
                 </div>
                 <div className={style.container}>
                     <div className={style.avatarContainer}>

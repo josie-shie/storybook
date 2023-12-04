@@ -3,6 +3,7 @@ import type { StoreWithSelectors } from 'lib';
 
 interface Master {
     id: number;
+    avatar: string;
     name: string;
     hotStreak: number;
     ranking: number;
