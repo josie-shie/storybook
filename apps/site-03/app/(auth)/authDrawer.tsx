@@ -1,6 +1,9 @@
 'use client';
 import { useEffect, type ReactNode } from 'react';
 import Image from 'next/image';
+import Cookies from 'js-cookie';
+import { getMemberInfo } from 'data-center';
+import { useNotificationStore } from '../notificationStore';
 import { useAuthStore } from './authStore';
 import style from './authDrawer.module.scss';
 import closeIcon from './components/authComponent/img/closeIcon.png';
@@ -17,6 +20,11 @@ function AuthDrawer() {
     const isDrawerOpen = useAuthStore.use.isDrawerOpen();
     const setIsDrawerOpen = useAuthStore.use.setIsDrawerOpen();
     const removeAuthQuery = useAuthStore.use.removeAuthQuery();
+    const setUserInfo = useUserStore.use.setUserInfo();
+    const setIsLogin = useUserStore.use.setIsLogin();
+    const setToken = useUserStore.use.setToken();
+    const isCookieExist = Cookies.get('access');
+    const setNotificationVisible = useNotificationStore.use.setIsVisible();
 
     let content: ReactNode;
     let title: ReactNode;
@@ -45,7 +53,31 @@ function AuthDrawer() {
         removeAuthQuery();
     };
 
+    const getUserInfo = async () => {
+        const res = await getMemberInfo();
+
+        // 曾經登陸過
+        if (isCookieExist) {
+            if (res.success) {
+                setUserInfo(res.data);
+                setIsLogin(true);
+                setToken(isCookieExist);
+                removeAuthQuery();
+            } else {
+                setNotificationVisible('登陆已过期，请重新登陆', 'error');
+            }
+            // 沒有登陸過但是有帶auth query
+        } else if (content) {
+            setIsDrawerOpen(true);
+        }
+    };
+
     useEffect(() => {
+        if (isCookieExist) {
+            void getUserInfo();
+            return;
+        }
+
         if (content) {
             setIsDrawerOpen(true);
         }

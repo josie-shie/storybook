@@ -7,7 +7,7 @@ import Profile from './components/profile/profile';
 
 interface HeaderProps {
     title: string;
-    total: number;
+    total: number | null;
 }
 
 function HeaderTitle({ title, total }: HeaderProps) {

@@ -1,12 +1,13 @@
 import type { ContestInfo } from 'data-center';
-import Image from 'next/image';
 import { GameStatus } from 'ui';
 import { parseMatchInfo } from 'lib';
 import Link from 'next/link';
+import Image from 'next/image';
+import { useEffect, useState } from 'react';
 import { useContestListStore } from '../contestListStore';
 import style from './gameCard.module.scss';
-import Flag from './img/flag.png';
 import { CompareOdds } from './compareOdds';
+import Soccer from './img/soccer.png';
 import { useFormattedTime } from '@/hooks/useFormattedTime';
 import { useContestInfoStore } from '@/app/contestInfoStore';
 
@@ -24,6 +25,53 @@ function ExtraInfo({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId
             {extraObj.regularTime?.score}]{' '}
             {extraObj.extraTime?.type ? `${extraObj.extraTime.type},` : ''}
             {extraObj.extraTime?.score ? `, 现在比分[${extraObj.extraTime.score}]` : ''}
+        </div>
+    );
+}
+
+function AnimateLine({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId: number }) {
+    const globalStore = useContestInfoStore.use.contestInfo();
+    const syncData = Object.hasOwnProperty.call(globalStore, matchId) ? globalStore[matchId] : {};
+    const [homeScoreKeep, setHomeScoreKeep] = useState(syncData.homeScore || contestInfo.homeScore);
+    const [awayScoreKeep, setAwayScoreKeep] = useState(syncData.awayScore || contestInfo.awayScore);
+
+    useEffect(() => {
+        if (syncData.homeScore !== homeScoreKeep) {
+            setTimeout(() => {
+                syncData.homeScore && setHomeScoreKeep(syncData.homeScore);
+            }, 3000);
+        }
+        if (syncData.awayScore !== awayScoreKeep) {
+            setTimeout(() => {
+                syncData.awayScore && setAwayScoreKeep(syncData.awayScore);
+            }, 3000);
+        }
+    }, [syncData.awayScore, syncData.homeScore]);
+
+    return (
+        <div className={style.animateLine}>
+            <div className={style.holder}>
+                {syncData.homeScore && homeScoreKeep !== syncData.homeScore ? (
+                    <div className={`${style.homeAnimate} ${style.bg}`}>
+                        <span className={style.goal}>进球！</span>
+                        <Image alt="soccer" height={16} src={Soccer} width={16} />
+                    </div>
+                ) : null}
+            </div>
+            <div className={style.corner}>
+                角:
+                <span className={style.ratio}>{syncData.homeCorner || contestInfo.homeCorner}</span>
+                -
+                <span className={style.ratio}>{syncData.awayCorner || contestInfo.awayCorner}</span>
+            </div>
+            <div className={style.holder}>
+                {syncData.awayScore && awayScoreKeep !== syncData.awayScore ? (
+                    <div className={`${style.awayAnimate} ${style.bg}`}>
+                        <Image alt="soccer" height={16} src={Soccer} width={16} />
+                        <span className={style.goal}>进球！</span>
+                    </div>
+                ) : null}
+            </div>
         </div>
     );
 }
@@ -60,12 +108,12 @@ function OddsInfo({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId:
                 ) : null}
             </span>
             <span className={style.mid}>
-                <p>
+                <p className={style.halfScore}>
                     {(syncData.state || contestInfo.state) < 0 ||
                     (syncData.state || contestInfo.state) > 2 ? (
                         <>
-                            ({syncData.homeHalfScore || contestInfo.homeHalfScore} -{' '}
-                            {syncData.awayHalfScore || contestInfo.awayHalfScore})
+                            {syncData.homeHalfScore || contestInfo.homeHalfScore} -{' '}
+                            {syncData.awayHalfScore || contestInfo.awayHalfScore}
                         </>
                     ) : null}
                 </p>
@@ -167,23 +215,11 @@ function TopArea({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId: 
                 <div className={style.time}>{contestInfo.matchTime ? currentMatchTime : null}</div>
             </div>
             <div className={style.mid}>
-                <div className={style.corner}>
-                    <Image alt="flag" height={12} src={Flag.src} width={12} />{' '}
-                    <span className={style.ratio}>
-                        {syncData.homeCorner || contestInfo.homeCorner}
-                    </span>
-                </div>
                 <div className={style.status}>
                     <GameStatus
                         startTime={contestInfo.startTime}
                         status={syncData.state || contestInfo.state}
                     />
-                </div>
-                <div className={style.corner}>
-                    <Image alt="flag" height={12} src={Flag.src} width={12} />{' '}
-                    <span className={style.ratio}>
-                        {syncData.awayCorner || contestInfo.awayCorner}
-                    </span>
                 </div>
             </div>
             <div className={style.video} />
@@ -201,6 +237,9 @@ function GameCard({ matchId }: { matchId: number }) {
                     <TopArea contestInfo={contestInfo} matchId={matchId} />
                     <TeamInfo contestInfo={contestInfo} matchId={matchId} />
                     <OddsInfo contestInfo={contestInfo} matchId={matchId} />
+                    {contestInfo.state !== 0 && (
+                        <AnimateLine contestInfo={contestInfo} matchId={matchId} />
+                    )}
                     <ExtraInfo contestInfo={contestInfo} matchId={matchId} />
                 </div>
             </Link>

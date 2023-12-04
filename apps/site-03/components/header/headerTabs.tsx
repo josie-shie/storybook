@@ -9,7 +9,7 @@ import Profile from './components/profile/profile';
 interface HeaderProps {
     logo?: ReactElement;
     tabList: string[];
-    total: number;
+    total: number | null;
 }
 
 function HeaderComponent({ logo, tabList, total }: HeaderProps) {

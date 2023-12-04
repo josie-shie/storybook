@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ButtonBase } from '@mui/material';
 import Image from 'next/image';
+import { useAuthStore } from '../(auth)/authStore';
+import { useUserStore } from '../userStore';
 import userInfoBg from './img/userInfoBg.png';
 import Star from './img/star.png';
 import BuyBag from './img/buyBag.png';
@@ -19,6 +21,8 @@ import Footer from '@/components/footer/footer';
 
 function UserInfo() {
     const router = useRouter();
+    const openChangePasswordDrawer = useAuthStore.use.setIsDrawerOpen();
+    const setAuthQuery = useUserStore.use.setAuthQuery();
 
     const headerProps = {
         title: '我的'
@@ -142,8 +146,13 @@ function UserInfo() {
                                 </ButtonBase>
                             </li>
                             <li>
-                                <ButtonBase>
-                                    <Link href="">修改密码</Link>
+                                <ButtonBase
+                                    onClick={() => {
+                                        setAuthQuery('changePassword');
+                                        openChangePasswordDrawer(true);
+                                    }}
+                                >
+                                    <div className={style.changePassword}>修改密码</div>
                                 </ButtonBase>
                             </li>
                             <li>
