@@ -1,14 +1,8 @@
 'use client';
 import { Select } from '../recharge/components/select/select';
 import style from './tradeDetail.module.scss';
-import RechargeItem from './rechargeItem/rechargeItem';
-import Payment from './payment/payment';
-import {
-    creatTardeDetailStore,
-    useTardeDetailStore,
-    type RechargeData,
-    type PaymentData
-} from './tradeDetailStore';
+import { creatTardeDetailStore } from './tradeDetailStore';
+import TradeDetailList from './tradeDetailList';
 import Header from '@/components/header/headerTitleDetail';
 
 const dateOptions = [{ label: '今天', value: 'today' }];
@@ -99,7 +93,6 @@ function TradeDetail() {
         ]
     });
 
-    const tradeDetailList = useTardeDetailStore.use.tradeDetailList();
     return (
         <>
             <Header title="交易明細" />
@@ -109,13 +102,7 @@ function TradeDetail() {
                     <Select options={dateOptions} showDragBar value="today" />
                     <Select options={typeOption} showDragBar value="total" />
                 </div>
-                {tradeDetailList.map(item =>
-                    item.type === 'recharge' ? (
-                        <RechargeItem data={item.data as RechargeData} key={item.id} />
-                    ) : (
-                        <Payment data={item.data as PaymentData} key={item.id} />
-                    )
-                )}
+                <TradeDetailList />
             </div>
         </>
     );
