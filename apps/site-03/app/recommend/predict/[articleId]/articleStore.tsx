@@ -3,6 +3,7 @@ import type { StoreWithSelectors } from 'lib';
 
 type GuessTeam = 'home' | 'away';
 type GuessType = 'none' | 'win' | 'draw' | 'lose';
+type BetType = 'overUnder' | 'handicap';
 
 interface Master {
     id: number;
@@ -35,31 +36,32 @@ interface ArticleDetail {
     masterGuess?: GuessTeam; //主客場推薦
 }
 
-interface RecommendLeague {
+interface RecommendationItem {
+    id: number;
     postTime: number; //發表時間
     leagueName: string; //發表時間
     dateTime: number; //比賽時間
     homeTeamName: string; //主隊名稱
     awayTeamName: string; //客隊名稱
-    betType: string; //投注
-    account: number; //解鎖費用
+    betType: BetType; //盤口
+    amount: number; //解鎖費用
     lockCount: number; //已解鎖人數
 }
 
 interface InitState {
     articleDetail: ArticleDetail;
-    recommendLeagueList: RecommendLeague[];
+    recommendationList: RecommendationItem[];
 }
 
 interface ArticleState extends InitState {
     setArticleDetail?: (articleDetail: ArticleDetail) => void;
-    setRecommendLeagueList?: (recommendLeagueList: RecommendLeague[]) => void;
+    setRecommendLeagueList?: (recommendationList: RecommendationItem[]) => void;
 }
 
 let useArticleStore: StoreWithSelectors<ArticleState>;
 
 const initialState = (set: (data: Partial<ArticleState>) => void) => ({
-    recommendLeagueList: [],
+    recommendationList: [],
     articleDetail: {
         master: {
             id: 0,
@@ -92,8 +94,8 @@ const initialState = (set: (data: Partial<ArticleState>) => void) => ({
     setArticleDetail: (articleDetail: ArticleDetail) => {
         set({ articleDetail });
     },
-    setRecommendLeagueList: (recommendLeagueList: RecommendLeague[]) => {
-        set({ recommendLeagueList });
+    setRecommendationList: (recommendationList: RecommendationItem[]) => {
+        set({ recommendationList });
     }
 });
 
