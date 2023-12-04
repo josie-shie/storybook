@@ -15,29 +15,52 @@ function RecordFilter({
     onClose: () => void;
 }) {
     const handicapTips = useDiscSelectStore.use.handicapTips();
+    const setHandicapTips = useDiscSelectStore.use.setHandicapTips();
+    const timeAscending = useDiscSelectStore.use.timeAscending();
+    const setTimeAscending = useDiscSelectStore.use.setTimeAscending();
+    const handicapAscending = useDiscSelectStore.use.handicapAscending();
+    const setHandicapAscending = useDiscSelectStore.use.setHandicapAscending();
+
+    const changeTimeSorting = () => {
+        const newHandicapTips = [...handicapTips];
+
+        newHandicapTips.sort((a, b) =>
+            !timeAscending ? a.startTime - b.startTime : b.startTime - a.startTime
+        );
+
+        setTimeAscending(!timeAscending);
+        setHandicapTips(newHandicapTips);
+    };
+
+    const changeHandicapSorting = () => {
+        const newHandicapTips = [...handicapTips];
+
+        newHandicapTips.sort((a, b) =>
+            !handicapAscending
+                ? a.longOddsTimes - b.longOddsTimes
+                : b.longOddsTimes - a.longOddsTimes
+        );
+
+        setHandicapAscending(!handicapAscending);
+        setHandicapTips(newHandicapTips);
+    };
 
     return (
         <BottomDrawer isOpen={isOpen} onClose={onClose} onOpen={onOpen}>
             <div className={style.handicapDrawer}>
                 <div className={style.title}>盘路提示</div>
                 <div className={style.sort}>
-                    <div className={style.button}>
+                    <div className={style.button} onClick={changeTimeSorting}>
                         <span>开赛时间</span>
                         <Image alt="" className={style.image} src={iconSort} />
                     </div>
-                    <div className={style.button}>
+                    <div className={style.button} onClick={changeHandicapSorting}>
                         <span>盘路</span>
                         <Image alt="" className={style.image} src={iconSort} />
                     </div>
                 </div>
                 {handicapTips.map(ele => (
-                    <HandicapTips
-                        betStatus={ele.betStatus}
-                        betType={ele.betType}
-                        gamesNumber={ele.gamesNumber}
-                        hot={ele.hot}
-                        key={ele.id}
-                    />
+                    <HandicapTips key={ele.matchId} tipsData={ele} />
                 ))}
             </div>
         </BottomDrawer>
