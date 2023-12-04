@@ -67,6 +67,11 @@ function ContestList() {
     const status = searchParams.get('status') || 'all';
     const resultsDate = searchParams.get('resultsDate');
     const scheduleDate = searchParams.get('scheduleDate');
+    const [isMounted, setIsMounted] = useState(false);
+
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
 
     const fetchContestdata = async (timestamp: number) => {
         try {
@@ -178,13 +183,14 @@ function ContestList() {
                 )}
             </ul>
             {((status === 'all' && rows.finish < finishList.length) ||
-                (status !== 'all' && rows.full < currentList.length)) && (
+                (status !== 'all' && rows.full < currentList.length)) &&
+            isMounted ? (
                 <InfiniteScroll onVisible={loadMoreList}>
                     <div className={style.loadMore}>
                         <CircularProgress size={24} />
                     </div>
                 </InfiniteScroll>
-            )}
+            ) : null}
         </>
     );
 }

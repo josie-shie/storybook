@@ -42,23 +42,6 @@
             display: flex;
             align-items: center;
 
-            .corner {
-                color: #8d8d8d;
-                font-size: 12px;
-                font-weight: 500;
-                display: flex;
-
-                > img {
-                    width: 12px;
-                    height: 12px;
-                    align-self: center;
-                }
-
-                .ratio {
-                    margin-left: 4px;
-                }
-            }
-
             .status {
                 color: $score;
                 background-color: #f3f3f3;
@@ -127,7 +110,7 @@
         .score {
             color: $score;
             letter-spacing: 2px;
-            width: 64px;
+            width: 72px;
             font-size: 16px;
             font-weight: 700;
             text-align: center;
@@ -137,9 +120,10 @@
     .oddsInfo {
         display: flex;
         margin-bottom: 6px;
-        justify-content: center;
         font-weight: 500;
         color: $text-secondary;
+        justify-content: center;
+        align-items: center;
 
         .left {
             justify-content: end;
@@ -149,6 +133,10 @@
             text-align: center;
             justify-content: center;
             width: 64px;
+
+            .halfScore {
+                font-size: 12px;
+            }
         }
 
         .odd {
@@ -161,6 +149,65 @@
         }
     }
 
+    .animateLine {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .holder {
+            flex: 1;
+            height: 20px;
+        }
+
+        .corner {
+            color: #8d8d8d;
+            text-align: center;
+            font-size: 12px;
+            font-weight: 500;
+            padding: 0 8px;
+        }
+
+        .bg {
+            height: 20px;
+            padding: 2px;
+            font-size: 0;
+            display: flex;
+            align-items: center;
+
+            .goal {
+                font-size: 12px;
+                color: #fff;
+            }
+        }
+
+        .homeAnimate {
+            text-align: right;
+            background: linear-gradient(270deg, #ed3a45 50%, rgb(237 58 69 / 0%) 94.53%);
+            border-top-right-radius: 100px;
+            border-bottom-right-radius: 100px;
+            justify-content: flex-end;
+            animation: move-to-right 1s forwards;
+
+            img {
+                display: inline;
+                animation: spin 1s linear infinite;
+            }
+        }
+
+        .awayAnimate {
+            background: linear-gradient(90deg, #ed3a45 50%, rgb(237 58 69 / 0%) 94.53%);
+            border-top-left-radius: 100px;
+            border-bottom-left-radius: 100px;
+            animation: move-to-left 1s forwards;
+
+            img {
+                display: inline;
+                margin-right: 4px;
+                animation: spin 1s linear infinite;
+            }
+        }
+    }
+
     .extraInfo {
         background-color: #f3f3f3;
         border-radius: 8px;
@@ -170,5 +217,35 @@
         color: $text-secondary;
         font-weight: 600;
         font-size: 14px;
+    }
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes move-to-right {
+    from {
+        transform: translateX(-100%);
+    }
+
+    to {
+        transform: translateX(0);
+    }
+}
+
+@keyframes move-to-left {
+    from {
+        transform: translateX(100%);
+    }
+
+    to {
+        transform: translateX(0);
     }
 }
