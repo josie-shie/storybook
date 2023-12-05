@@ -1,6 +1,8 @@
 import Cookies from 'js-cookie';
 
-export const uploadImage = async <Response>(uploadPath: '', file: File) => {
+export const uploadImage = async <Response>(file: File) => {
+    const uploadPath = process.env.NEXT_PUBLIC_UPLOAD_API_PATH;
+
     try {
         const response = await fetch(`${uploadPath}`, {
             method: 'POST',

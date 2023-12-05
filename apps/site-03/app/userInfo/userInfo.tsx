@@ -14,7 +14,7 @@ import MyFans from './img/myFans.png';
 import MyGame from './img/myGame.png';
 import MyAnalyze from './img/myAnalyze.png';
 import style from './userInfo.module.scss';
-import Avatar from '@/components/avatar/avatar';
+import defaultAvatar from './img/avatar.png';
 import Tag from '@/components/tag/tag';
 import Header from '@/components/header/headerTitleNoBg';
 import Footer from '@/components/footer/footer';
@@ -52,7 +52,17 @@ function UserInfo() {
                         }}
                     >
                         <div className={style.detail}>
-                            <Avatar borderColor="#fff" size={54} />
+                            <Image
+                                alt="大頭貼"
+                                className={style.avatar}
+                                height={54}
+                                src={
+                                    userInfo.avatarPath === '0'
+                                        ? defaultAvatar
+                                        : userInfo.avatarPath
+                                }
+                                width={54}
+                            />
                             <div className={style.content}>
                                 <div className={style.top}>
                                     <span className={style.name}>{userInfo.username}</span>
