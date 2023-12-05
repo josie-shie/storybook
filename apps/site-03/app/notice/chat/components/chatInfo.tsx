@@ -73,10 +73,12 @@ function ChatInfo() {
         };
 
         getMessageResponse(handleMessage);
-        void messageService.send({
-            action: 'get_message',
-            roomId: selectedChatData.roomId
-        });
+        if (selectedChatData.roomId) {
+            void messageService.send({
+                action: 'get_message',
+                roomId: selectedChatData.roomId
+            });
+        }
 
         return () => {
             cancelMessage(handleMessage);
