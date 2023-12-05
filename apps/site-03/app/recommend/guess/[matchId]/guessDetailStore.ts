@@ -2,7 +2,7 @@ import { initStore } from 'lib';
 import type { StoreWithSelectors } from 'lib';
 
 // 競猜詳情 上半部預測
-interface DetailType {
+export interface DetailType {
     leagueName: string; // 賽事名稱
     dateTime: string; // 日期時間
     homeTeamLogo: string;
@@ -41,12 +41,16 @@ interface MasterPlan {
     result: 'win' | 'lose' | 'draw'; // 競猜結果
 }
 
-interface GuessDetailState {
+interface InitState {
     guessesLeft: number; // 競猜剩餘次數
     unlockTrend: boolean; // 解鎖高勝率玩家風向
     detail: DetailType;
     highWinRateTrend: HighWinRateTrend;
     masterPlanList: MasterPlan[];
+}
+
+interface GuessDetailState extends InitState {
+    setDetail: (detail: DetailType) => void;
 }
 
 let useGuessDetailStore: StoreWithSelectors<GuessDetailState>;
@@ -57,12 +61,15 @@ const initialState = (set: (data: Partial<GuessDetailState>) => void) => ({
     detail: {} as DetailType,
     highWinRateTrend: {} as HighWinRateTrend,
     masterPlanList: [],
+    setDetail: (detail: DetailType) => {
+        set({ detail });
+    },
     setMasterPlanList: (masterPlanList: MasterPlan[]) => {
         set({ masterPlanList });
     }
 });
 
-const creatGuessDetailStore = (init: GuessDetailState) =>
+const creatGuessDetailStore = (init: InitState) =>
     (useGuessDetailStore = initStore<GuessDetailState>(initialState, init));
 
 export { creatGuessDetailStore, useGuessDetailStore };

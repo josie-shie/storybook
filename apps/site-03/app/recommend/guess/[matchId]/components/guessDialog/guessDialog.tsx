@@ -32,17 +32,6 @@ function GuessDialog({
     onClose,
     onConfirm
 }: GuessDialogProps) {
-    // const formatDate = (date: Date): string => {
-    //     const year = date.getFullYear();
-    //     const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    //     const day = date.getDate().toString().padStart(2, '0');
-    //     return `${year}-${month}-${day}`;
-    // };
-
-    // const today = new Date();
-    // const nextMonth = new Date();
-    // nextMonth.setMonth(today.getMonth() + 1);
-
     return (
         <Dialog
             PaperProps={{
@@ -57,6 +46,7 @@ function GuessDialog({
             onClose={onClose}
             open={openPaid}
         >
+            {/* 次數歸零時，使用另一個 layout */}
             <div className={style.guessDialog}>
                 <div className={style.game}>
                     <span>{play}</span>

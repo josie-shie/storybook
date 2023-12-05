@@ -40,12 +40,12 @@ function GuessDetail({ backHistory }: { backHistory: boolean }) {
             awayTeamLogo: '',
             awayTeamName: '北曼谷學院',
             participants: 1876,
-            guessBigSmall: 'none',
             guessHomeAway: 'none',
-            home: 888,
-            away: 28,
-            big: 888,
-            small: 28
+            guessBigSmall: 'none',
+            home: 721,
+            away: 84,
+            big: 996,
+            small: 355
         },
         highWinRateTrend: {
             trendHome: 76,
@@ -86,7 +86,7 @@ function GuessDetail({ backHistory }: { backHistory: boolean }) {
     return (
         <>
             <Header back={back} title={headerProps.title} total={headerProps.total} />
-            <VsBox isUnlocked={isUnlocked} />
+            <VsBox />
             <MasterPlan isUnlocked={isUnlocked} setIsUnlocked={setIsUnlocked} />
             <Footer />
         </>
