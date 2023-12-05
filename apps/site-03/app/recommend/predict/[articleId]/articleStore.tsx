@@ -1,9 +1,6 @@
 import { initStore } from 'lib';
 import type { StoreWithSelectors } from 'lib';
-import type { HandicapType } from '@/types/predict';
-
-type GuessTeam = 'home' | 'away';
-type GuessType = 'none' | 'win' | 'draw' | 'lose';
+import type { HandicapType, GuessType, GuessTeam } from '@/types/predict';
 
 interface Master {
     id: number;

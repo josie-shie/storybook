@@ -4,7 +4,7 @@ import { Dialog } from '@mui/material';
 import Slide from '@mui/material/Slide';
 import type { TransitionProps } from '@mui/material/transitions';
 import Image from 'next/image';
-import Star from '../../img/star.png';
+import Star from './img/star.png';
 import style from './paidDialog.module.scss';
 
 interface PaidDialogProps {

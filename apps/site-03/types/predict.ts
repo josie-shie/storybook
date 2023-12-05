@@ -15,3 +15,5 @@ export interface Predict {
 }
 
 export type HandicapType = 'overUnder' | 'handicap';
+export type GuessType = 'none' | 'win' | 'draw' | 'lose';
+export type GuessTeam = 'home' | 'away';
