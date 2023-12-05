@@ -5,6 +5,7 @@ import Logo from './img/logo.png';
 import style from './layout.module.scss';
 import { Tabs } from '@/components/tabs/tabs';
 import Header from '@/components/header/headerLogo';
+import Footer from '@/components/footer/footer';
 
 function ContestLayout({ children }: { children: ReactNode }) {
     const headerProps = {
@@ -41,6 +42,7 @@ function ContestLayout({ children }: { children: ReactNode }) {
                 </div>
                 {children}
             </div>
+            <Footer />
         </>
     );
 }

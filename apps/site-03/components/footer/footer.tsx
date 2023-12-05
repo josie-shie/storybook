@@ -24,14 +24,14 @@ const CategoryList = [
     },
     {
         label: '猜球',
-        value: '/contest/football',
-        includedRouters: ['/contest'],
+        value: '/recommend/guess',
+        includedRouters: ['/recommend'],
         icon: <Image alt="" className={style.icon} src={guessIcon} />,
         activedIcon: <Image alt="" className={style.icon} src={activeGuess} />
     },
     {
         label: '智能分析',
-        value: '/recommend/predict',
+        value: '/recommend/bigData?status=analysis',
         includedRouters: ['/recommend'],
         icon: <Image alt="" className={style.icon} src={analyzeIcon} />,
         activedIcon: <Image alt="" className={style.icon} src={activeAnalyze} />
