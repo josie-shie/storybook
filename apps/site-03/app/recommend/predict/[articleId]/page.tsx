@@ -5,8 +5,8 @@ export const metadata: Metadata = {
     title: '专家预测'
 };
 
-function Page() {
-    return <ArticleDetail />;
+function Page({ params }: { params: { articleId: string } }) {
+    return <ArticleDetail params={params} />;
 }
 
 export default Page;
