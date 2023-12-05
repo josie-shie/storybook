@@ -1,102 +1,178 @@
 'use client';
-import { useState } from 'react';
 import Image from 'next/image';
+import { timestampToMonthDay, timestampToString } from 'lib';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import NorthBangKokClubIcon from './img/northBangkokClubIcon.png';
 import ThaiUniversityClubIcon from './img/thaiUniversityClubIcon.png';
-import RecommendationItem from './recommendationItem';
+import RecommendationList from './recommendationList';
 import Star from './img/star.png';
 import Push from './img/push.png';
+import Win from './img/win.png';
+import Lose from './img/lose.png';
+import Draw from './img/draw.png';
 import style from './articleContent.module.scss';
+import { useArticleStore } from './articleStore';
+import { useUserStore } from '@/app/userStore';
+import NormalDialog from '@/components/normalDialog/normalDialog';
+import type { GuessType } from '@/types/predict';
 
-function ArticleContent() {
-    const [isUnlocked, setIsUnlocked] = useState(false);
+function Content() {
+    const userInfo = useUserStore.use.userInfo();
+    return (
+        <>
+            <div className={style.payContent}>
+                <div className={style.price}>
+                    <span className={style.text}>支付</span>
+                    <span className={style.number}>
+                        <Image alt="" className={style.image} src={Star} width={14} />
+                        {10}
+                    </span>
+                </div>
+                <span className={style.text}>开通年卡订阅</span>
+            </div>
+            <div className={style.balance}>
+                我的餘額: {userInfo.balance ? userInfo.balance : 0}金幣
+            </div>
+        </>
+    );
+}
 
-    const recommendations = [
-        {
-            id: 1,
-            time: '发表于今天 17:45',
-            leagueName: '欧锦U20A',
-            leagueTime: '09-05 16:45',
-            teamName: '德國U20A vs 斯洛文尼亚U20'
-        },
-        {
-            id: 2,
-            time: '发表于今天 17:45',
-            leagueName: '欧锦U20A',
-            leagueTime: '09-05 16:45',
-            teamName: '德國U20A vs 斯洛文尼亚U20'
-        },
-        {
-            id: 3,
-            time: '发表于今天 17:45',
-            leagueName: '欧锦U20A',
-            leagueTime: '09-05 16:45',
-            teamName: '德國U20A vs 斯洛文尼亚U20'
+function ArticleContent({ params }: { params: { articleId: string } }) {
+    const [openPaid, setOpenPaid] = useState(false);
+    const [openDialog, setOpenDialog] = useState(false);
+
+    const router = useRouter();
+
+    const article = useArticleStore.use.articleDetail();
+    const recommendationList = useArticleStore.use.recommendationList();
+
+    const unlockArticle = () => {
+        setOpenPaid(true);
+    };
+
+    const onSubmit = () => {
+        try {
+            // eslint-disable-next-line -- TODO: 取得預測文章Id,解鎖預測文章
+            console.log(params.articleId);
+            // await unLockArticle(params.articleId);
+        } catch (error) {
+            setOpenDialog(true);
+            // eslint-disable-next-line -- console error
+            console.log(error);
         }
-    ];
+        setOpenPaid(false);
+    };
+
+    const filterImage = (value: GuessType | undefined): string => {
+        if (value !== undefined) {
+            const result = {
+                none: Push.src,
+                win: Win.src,
+                draw: Draw.src,
+                lose: Lose.src
+            };
+            return result[value];
+        }
+        return Push.src;
+    };
+
+    const goSubscribe = () => {
+        setOpenDialog(false);
+        router.push('/userInfo/subscribe');
+    };
 
     return (
         <div className={style.articleContent}>
             <div className={style.container}>
-                <div className={style.time}>发表于今天 17:45</div>
-                <div className={style.title}>格鲁吉亚vs西班牙，来看我的精心推荐吧</div>
+                <div className={style.time}>发表于今天 {timestampToMonthDay(article.postTime)}</div>
+                <div className={style.title}>{article.title}</div>
                 <div className={style.article}>
-                    <div className={style.start}>赛情預測</div>
-                    <div className={style.leagueName}>歐錦U20A 7-14 01:00</div>
+                    <div className={style.leagueName}>
+                        {article.leagueName} {timestampToString(article.dateTime, 'MM-DD HH:mm')}
+                    </div>
                     <div className={style.clubInfo}>
                         <div className={style.team}>
                             <Image alt="" height={48} src={ThaiUniversityClubIcon} width={48} />
-                            <div className={style.name}>泰国国立法政大学</div>
+                            <div className={style.name}>{article.homeTeamName}</div>
                         </div>
                         <div className={style.fight}>VS</div>
                         <div className={style.team}>
                             <Image alt="" height={48} src={NorthBangKokClubIcon} width={48} />
-                            <div className={style.name}>北曼谷學院</div>
+                            <div className={style.name}>{article.awayTeamName}</div>
                         </div>
                     </div>
 
-                    {!isUnlocked && (
+                    {!article.unlock && (
                         <div className={style.paidButton}>
-                            <div className={style.content}>
-                                【推荐分析】赛事前瞻：乌兰巴托FC主队近5场3胜1平1负，台中未来客队近5场2胜2平1负，谁能更胜一筹。
-                            </div>
+                            <div className={style.content}>{article.content}</div>
                             <div className={style.buttonArea}>
                                 <div className={style.backDrop} />
                                 <div className={style.text}>
-                                    两支球队实力相当，往绩近12次交锋中都处于...
+                                    Lorem ipsum dolor sit amet consectetur.
                                 </div>
                             </div>
-                            <div
-                                className={style.button}
-                                onClick={() => {
-                                    setIsUnlocked(true);
-                                }}
-                            >
+                            <div className={style.button} onClick={unlockArticle}>
                                 <Image alt="" className={style.image} src={Star} width={14} />
                                 <span className={style.text}>10 金币解锁本场预测</span>
                             </div>
                         </div>
                     )}
 
-                    {isUnlocked ? (
+                    {article.unlock ? (
                         <div className={style.paidArea}>
-                            <article className={style.content}>
-                                两支球队实力相当，往绩近12次交锋中都处于五五开的局面，目前伊斯洛奇明斯克已经连续3场不胜，竞技状态不佳！戈梅利上一场也是惨遭大败，士气上受到打击！本场数据开出主场作战的伊斯洛奇明斯克做出-0.25力度支持，大小进球2.5的数据。以目前两队的状况来看，小编认为伊斯洛奇明斯克以微弱的主场优势小胜戈梅利。据开出主场作战的伊斯洛奇明斯克做出-0.25力度支持，大小进球2.5的数据。以目前两队的状况来看，小编认为伊斯洛奇明斯克以微弱的主
-                            </article>
+                            <article className={style.content}>{article.content}</article>
                             <div className={style.team}>
-                                <div className={`${style.table} ${style.active}`}>
-                                    <Image alt="" height={24} src={Push} width={26} />
-                                    <div className={style.header}>泰国国立法政大学</div>
+                                <div
+                                    className={`${style.table} ${
+                                        article.masterGuess === 'home' ? style.active : ''
+                                    }`}
+                                >
+                                    {article.masterGuess === 'home' && (
+                                        <Image
+                                            alt=""
+                                            height={32}
+                                            src={filterImage(article.guessResult)}
+                                            width={32}
+                                        />
+                                    )}
+                                    <div
+                                        className={`${style.header} ${
+                                            article.masterGuess === 'home'
+                                                ? style[article.guessResult ?? 'none']
+                                                : style.normal
+                                        }`}
+                                    >
+                                        {article.homeTeamName}
+                                    </div>
                                     <div className={style.score}>
-                                        <span>-0.5</span>
-                                        <span>1.925</span>
+                                        <span>{article.homeHandicap}</span>
                                     </div>
                                 </div>
-                                <div className={style.table}>
-                                    <div className={style.header}>北曼谷学院</div>
+                                <div
+                                    className={`${style.table} ${
+                                        article.masterGuess === 'away' ? style.active : ''
+                                    }`}
+                                >
+                                    {article.masterGuess === 'away' && (
+                                        <Image
+                                            alt=""
+                                            height={32}
+                                            src={filterImage(article.guessResult)}
+                                            width={32}
+                                        />
+                                    )}
+                                    <div
+                                        className={`${style.header} ${
+                                            article.masterGuess === 'away'
+                                                ? style[article.guessResult ?? 'none']
+                                                : style.normal
+                                        }`}
+                                    >
+                                        {article.awayTeamName}
+                                    </div>
                                     <div className={style.score}>
-                                        <span>+0.5</span>
-                                        <span>1.775</span>
+                                        <span>{article.awayHandicap}</span>
                                     </div>
                                 </div>
                             </div>
@@ -106,11 +182,29 @@ function ArticleContent() {
             </div>
 
             <div className={style.otherList}>
-                <div className={style.title}>Ta还推荐了... (5)</div>
-                {recommendations.map(rec => (
-                    <RecommendationItem key={rec.id} {...rec} />
-                ))}
+                <div className={style.title}>Ta还推荐了... ({recommendationList.length})</div>
+                <RecommendationList />
             </div>
+            <NormalDialog
+                cancelText="取消"
+                confirmText="確認支付"
+                content={<Content />}
+                onClose={() => {
+                    setOpenPaid(false);
+                }}
+                onConfirm={onSubmit}
+                openDialog={openPaid}
+            />
+            <NormalDialog
+                cancelText="取消"
+                confirmText="去订阅"
+                content={<div>余额不足，请订阅</div>}
+                onClose={() => {
+                    setOpenDialog(false);
+                }}
+                onConfirm={goSubscribe}
+                openDialog={openDialog}
+            />
         </div>
     );
 }

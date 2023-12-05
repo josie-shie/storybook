@@ -2,11 +2,11 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import Rule from './components/rule/rule';
-import PaidDialog from './components/paidDialog/paidDialog';
 import GameCard from './gameCard';
 import AnalyzeColumn from './analyze';
 import Title from './img/title.png';
 import style from './masterPlan.module.scss';
+import PaidDialog from '@/components/paidDialog/paidDialog';
 
 interface MasterPlanProps {
     isUnlocked: boolean;

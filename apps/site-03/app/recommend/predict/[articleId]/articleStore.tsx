@@ -1,9 +1,6 @@
 import { initStore } from 'lib';
 import type { StoreWithSelectors } from 'lib';
-
-type GuessTeam = 'home' | 'away';
-type GuessType = 'none' | 'win' | 'draw' | 'lose';
-type HandicapType = 'overUnder' | 'handicap';
+import type { HandicapType, GuessType, GuessTeam } from '@/types/predict';
 
 interface Master {
     id: number;
@@ -17,11 +14,12 @@ interface Master {
 }
 
 interface ArticleDetail {
+    id: number;
     master: Master;
-    postTime: string; //發表時間
+    postTime: number; //發表時間
     title: string; //標題
     leagueName: string; //聯賽名稱
-    dateTime: string; //比賽時間
+    dateTime: number; //比賽時間
     homeTeamLogo: string; //主隊logo
     homeTeamName: string; //主隊名稱
     awayTeamLogo: string; //客隊logo
@@ -61,6 +59,7 @@ let useArticleStore: StoreWithSelectors<ArticleState>;
 const initialState = (set: (data: Partial<ArticleState>) => void) => ({
     recommendationList: [],
     articleDetail: {
+        id: 0,
         master: {
             id: 0,
             avatar: '',
@@ -72,10 +71,10 @@ const initialState = (set: (data: Partial<ArticleState>) => void) => ({
             fansNumber: 0,
             description: ''
         },
-        postTime: '',
+        postTime: 0,
         title: '',
         leagueName: '',
-        dateTime: '',
+        dateTime: 0,
         homeTeamLogo: '',
         homeTeamName: '',
         awayTeamLogo: '',

@@ -41,6 +41,23 @@
                 color: #757575;
             }
 
+            .title {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                width: 100%;
+
+                .button {
+                    width: 48px;
+                    height: 24px;
+                    background: transparent;
+                    border: 1px solid #4489ff;
+                    border-radius: 30px;
+                    color: #4489ff;
+                    font-size: 12px;
+                }
+            }
+
             input,
             textarea {
                 width: 100%;
