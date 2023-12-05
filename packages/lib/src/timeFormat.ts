@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 
-export const timestampToString = (unixTimestamp: number, dateFormat = 'YYYY-M-DD HH:mm:ss') => {
+export const timestampToString = (unixTimestamp: number, dateFormat = 'YYYY-MM-DD HH:mm:ss') => {
     return dayjs.unix(unixTimestamp).format(dateFormat);
 };
 

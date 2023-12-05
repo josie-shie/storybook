@@ -14,18 +14,23 @@ import MyFans from './img/myFans.png';
 import MyGame from './img/myGame.png';
 import MyAnalyze from './img/myAnalyze.png';
 import style from './userInfo.module.scss';
-import Avatar from '@/components/avatar/avatar';
+import defaultAvatar from './img/avatar.png';
 import Tag from '@/components/tag/tag';
 import Header from '@/components/header/headerTitleNoBg';
 import Footer from '@/components/footer/footer';
 
 function UserInfo() {
     const router = useRouter();
+    const userInfo = useUserStore.use.userInfo();
     const openChangePasswordDrawer = useAuthStore.use.setIsDrawerOpen();
     const setAuthQuery = useUserStore.use.setAuthQuery();
 
     const headerProps = {
         title: '我的'
+    };
+
+    const editAccount = () => {
+        router.push('/userInfo/account');
     };
 
     const goRecharge = () => {
@@ -41,37 +46,54 @@ function UserInfo() {
             <Header title={headerProps.title} />
             <div className={style.userInfo}>
                 <div className={style.container}>
-                    <div className={style.detail}>
-                        <Avatar borderColor="#fff" size={54} />
-                        <div className={style.content}>
-                            <div className={style.top}>
-                                <span className={style.name}>老梁聊球</span>
-                                <div className={style.tags}>
-                                    <Tag icon={<IconFlame size={10} />} text="9連紅" />
-                                    <Tag background="#fff" color="#4489ff" text="月榜 10" />
+                    <div
+                        onClick={() => {
+                            editAccount();
+                        }}
+                    >
+                        <div className={style.detail}>
+                            <Image
+                                alt="大头贴"
+                                className={style.avatar}
+                                height={54}
+                                src={
+                                    userInfo.avatarPath === '0'
+                                        ? defaultAvatar
+                                        : userInfo.avatarPath
+                                }
+                                width={54}
+                            />
+                            <div className={style.content}>
+                                <div className={style.top}>
+                                    <span className={style.name}>{userInfo.username}</span>
+                                    <div className={style.tags}>
+                                        <Tag icon={<IconFlame size={10} />} text="9连红" />
+                                        <Tag background="#fff" color="#4489ff" text="月榜 10" />
+                                    </div>
+                                </div>
+                                <div className={style.middle}>132****789</div>
+                                <div className={style.bottom}>
+                                    <span>粉丝: 34713</span>
+                                    <span>点赞: 2355</span>
                                 </div>
                             </div>
-                            <div className={style.middle}>132****789</div>
-                            <div className={style.bottom}>
-                                <span>粉絲: 34713</span>
-                                <span>点赞: 2355</span>
-                            </div>
                         </div>
-                    </div>
 
-                    <div className={style.introduction}>
-                        资深足彩分析师，15年足彩经验，对各个赛事都有涉足。长期关注！对各个赛事都有涉足。长期关注！对各个赛事都有涉足。长期关注！
+                        <div className={style.introduction}>
+                            资深足彩分析师，15年足彩经验，对各个赛事都有涉足。长期关注！对各个赛事都有涉足。长期关注！对各个赛事都有涉足。长期关注！
+                        </div>
                     </div>
 
                     <div className={style.trade}>
                         <button className={style.tradeDetail} type="button">
-                            <Link href="/userInfo/tradeDetail">我的交易明細</Link>
+                            <Link href="/userInfo/tradeDetail">我的交易明细</Link>
                         </button>
                         <div className={style.list}>
                             <div className={style.item}>
                                 <span className={style.text}>
                                     <Image alt="" height={14} src={Star} width={14} />
-                                    <span>可用馀额：</span>100
+                                    <span>可用馀额：</span>
+                                    {userInfo.balance}
                                 </span>
                                 <span
                                     className={style.button}
@@ -114,7 +136,7 @@ function UserInfo() {
                             <ButtonBase>
                                 <Image alt="" height={32} src={MyFans} width={32} />
                                 <Link className={style.text} href="/userInfo/myFans">
-                                    我的粉絲
+                                    我的粉丝
                                 </Link>
                             </ButtonBase>
                         </div>
@@ -133,7 +155,7 @@ function UserInfo() {
                                     className={style.text}
                                     href="/userInfo/myAnalysis?status=unlock"
                                 >
-                                    我的分析
+                                    我的解锁
                                 </Link>
                             </ButtonBase>
                         </div>

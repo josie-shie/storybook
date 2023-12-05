@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import style from './record.module.scss';
-import Select from '@/app/[matchId]/(dashboard)/components/select/select';
+import Select from '@/app/football/[matchId]/(dashboard)/components/select/select';
 import type {
     BattleRecord,
     WinLoseResultProps,
