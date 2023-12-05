@@ -3,7 +3,6 @@ import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import { type GetContestListResponse } from 'data-center';
 import { useState, useCallback } from 'react';
 import Image from 'next/image';
-import { creatContestListStore } from '../../../contest/football/(list)/contestListStore';
 import Stepper from '../components/stepper/stepper';
 import BaseDatePicker from '../components/baseDatePicker/baseDatePicker';
 import { creatArticleFilterStore, useArticleFilterStore } from './createArticleStore';
@@ -12,6 +11,7 @@ import ThaiUniversityClubIcon from './img/thaiUniversityClubIcon.png';
 import Check from './img/check.png';
 import Push from './img/push.png';
 import style from './createArticle.module.scss';
+import { creatContestListStore } from '@/app/(list)/contestListStore';
 
 interface FilterListItem {
     id: number;
