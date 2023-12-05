@@ -26,14 +26,15 @@ export interface Plan {
     id: number;
     matchId: number;
     matchTime: number;
+    bettingType: 'draw' | 'size';
     leagueId: number;
     leagueName: string;
     homeTeamName: string;
     awayTeamName: string;
-    handicapOdds: number;
+    handicapOdds: string;
     overUnderOdds: number;
-    predictedPlay: string;
-    predictionResult: string;
+    predictedPlay: 'over' | 'under' | 'home' | 'away';
+    predictionResult: 'win' | 'lose' | 'draw' | 'none';
     isPaidToRead: string;
 }
 

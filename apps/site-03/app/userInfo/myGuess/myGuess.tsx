@@ -3,16 +3,15 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { useState } from 'react';
 import backLeftArrowImg from '../img/backLeftArrow.png';
-import BettingPlan from './components/bettingPlan/bettingPlan';
 import RecordFilter from './components/recordFilter/recordFilter';
 import style from './myGuess.module.scss';
 import RecentPerformance from './myGuessRecentPerformence';
+import MyGuessMyPlans from './myGuessMyPlans';
 import { creatMyGuessStoreStore } from './myGuessStore';
 
 function MyGuess() {
     const router = useRouter();
     const [showFilter, setShowFilter] = useState(false);
-    const [planActiveTab, setPlanActiveTab] = useState('全部');
 
     creatMyGuessStoreStore({
         myGuess: {
@@ -35,16 +34,90 @@ function MyGuess() {
                 }
             },
             myPlans: {
-                totale: [],
-                handicap: [],
-                size: []
+                totale: [
+                    {
+                        id: 1,
+                        matchId: 10,
+                        matchTime: 6549857483,
+                        bettingType: 'draw',
+                        leagueId: 10,
+                        leagueName: '欧锦U20A',
+                        homeTeamName: '德國U20A',
+                        awayTeamName: '斯洛文尼亚U20',
+                        handicapOdds: '受平/半',
+                        overUnderOdds: 10,
+                        predictedPlay: 'away',
+                        predictionResult: 'lose',
+                        isPaidToRead: '222'
+                    },
+                    {
+                        id: 2,
+                        matchId: 10,
+                        matchTime: 6549857483,
+                        bettingType: 'size',
+                        leagueId: 10,
+                        leagueName: '欧锦U20A',
+                        homeTeamName: '德國U20A',
+                        awayTeamName: '斯洛文尼亚U20',
+                        handicapOdds: '',
+                        overUnderOdds: 10,
+                        predictedPlay: 'over',
+                        predictionResult: 'win',
+                        isPaidToRead: '222'
+                    }
+                ],
+                handicap: [
+                    {
+                        id: 1,
+                        matchId: 10,
+                        matchTime: 6549857483,
+                        bettingType: 'draw',
+                        leagueId: 10,
+                        leagueName: '欧锦U20A',
+                        homeTeamName: '德國U20A',
+                        awayTeamName: '斯洛文尼亚U20',
+                        handicapOdds: '平/半',
+                        overUnderOdds: 10,
+                        predictedPlay: 'home',
+                        predictionResult: 'win',
+                        isPaidToRead: '222'
+                    },
+                    {
+                        id: 2,
+                        matchId: 10,
+                        matchTime: 6549857483,
+                        bettingType: 'draw',
+                        leagueId: 10,
+                        leagueName: '欧锦U20A',
+                        homeTeamName: '德國U20A',
+                        awayTeamName: '斯洛文尼亚U20',
+                        handicapOdds: '平/半',
+                        overUnderOdds: 10,
+                        predictedPlay: 'away',
+                        predictionResult: 'none',
+                        isPaidToRead: '222'
+                    }
+                ],
+                size: [
+                    {
+                        id: 2,
+                        matchId: 10,
+                        matchTime: 6549857483,
+                        bettingType: 'size',
+                        leagueId: 10,
+                        leagueName: '欧锦U20A',
+                        homeTeamName: '德國U20A',
+                        awayTeamName: '斯洛文尼亚U20',
+                        handicapOdds: '',
+                        overUnderOdds: 10,
+                        predictedPlay: 'away',
+                        predictionResult: 'win',
+                        isPaidToRead: '222'
+                    }
+                ]
             }
         }
     });
-
-    const handlePlanTabClick = (tabName: string) => {
-        setPlanActiveTab(tabName);
-    };
 
     return (
         <>
@@ -67,58 +140,7 @@ function MyGuess() {
 
             <div className={style.myGuess}>
                 <RecentPerformance />
-                <div className={style.title}>
-                    <span>方案</span>
-                    <span
-                        className={style.record}
-                        onClick={() => {
-                            setShowFilter(true);
-                        }}
-                    >
-                        查看纪录
-                    </span>
-                </div>
-                <div className={style.tab}>
-                    <span
-                        className={planActiveTab === '全部' ? style.active : ''}
-                        onClick={() => {
-                            handlePlanTabClick('全部');
-                        }}
-                    >
-                        全部
-                    </span>
-                    <span
-                        className={planActiveTab === '让球' ? style.active : ''}
-                        onClick={() => {
-                            handlePlanTabClick('让球');
-                        }}
-                    >
-                        让球
-                    </span>
-                    <span
-                        className={planActiveTab === '大小' ? style.active : ''}
-                        onClick={() => {
-                            handlePlanTabClick('大小');
-                        }}
-                    >
-                        大小
-                    </span>
-                </div>
-                <div className={style.plan}>
-                    <BettingPlan />
-                    <BettingPlan result="win" />
-                    <BettingPlan result="defeat" />
-                    <BettingPlan result="defeat" />
-                    <BettingPlan result="defeat" />
-                    <BettingPlan result="defeat" />
-                    <BettingPlan result="defeat" />
-                    <BettingPlan result="defeat" />
-                    <BettingPlan result="defeat" />
-                    <BettingPlan result="defeat" />
-                    <BettingPlan result="defeat" />
-                    <BettingPlan result="defeat" />
-                    <BettingPlan result="defeat" />
-                </div>
+                <MyGuessMyPlans setShowFilter={setShowFilter} />
             </div>
             <RecordFilter
                 isOpen={showFilter}
