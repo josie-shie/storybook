@@ -1,5 +1,5 @@
 'use client';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import type { MessageResponse } from 'lib';
 import { messageService, getMessageResponse, cancelMessage } from 'lib';
 import { useNoticeStore } from '../noticeStore';
@@ -8,15 +8,19 @@ import ChatCard from './components/chatCard';
 import ChatInfo from './components/chatInfo';
 
 function ChatList() {
+    const firstTimeRef = useRef(true);
     const editStatus = useNoticeStore.use.editStatus();
     const chatList = useNoticeStore.use.chatList();
     const setChatList = useNoticeStore.use.setChatList();
 
     useEffect(() => {
-        void messageService.send({
-            action: 'get_room_list',
-            type: 'private'
-        });
+        if (firstTimeRef.current) {
+            firstTimeRef.current = false;
+            void messageService.send({
+                action: 'get_room_list',
+                type: 'private'
+            });
+        }
     }, []);
 
     useEffect(() => {
