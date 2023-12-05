@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import FifteenMinutesChart from '../../../components/fifteenMinutesChart/fifteenMinutesChart';
+import FifteenMinutesChart from '../../components/fifteenMinutesChart/fifteenMinutesChart';
 import ContestDrawerList from '../components/contestDrawerList';
 import style from './minutes.module.scss';
 

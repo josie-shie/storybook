@@ -22,29 +22,29 @@ function DetailLayout({ children }: { children: ReactNode }) {
     const tabList = [
         {
             label: '讓球大小',
-            to: '/recommend/bigData/resultDetail/handicap',
+            to: '/bigData/resultDetail/handicap',
             params: 'handicap'
         },
         {
             label: '15分鐘進球',
-            to: '/recommend/bigData/resultDetail/minutes',
+            to: '/bigData/resultDetail/minutes',
             params: 'minutes'
         },
         {
             label: '進球數區間',
-            to: '/recommend/bigData/resultDetail/range',
+            to: '/bigData/resultDetail/range',
             params: 'range'
         },
         {
             label: '全場波膽',
-            to: '/recommend/bigData/resultDetail/bodan',
+            to: '/bigData/resultDetail/bodan',
             params: 'bodan'
         }
     ];
 
     return (
         <>
-            <HeaderTitleFilter title="分析結果">
+            <HeaderTitleFilter title="分析结果">
                 <Image
                     alt="filter"
                     className={style.mr}
