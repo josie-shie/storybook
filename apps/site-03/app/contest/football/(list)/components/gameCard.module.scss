@@ -182,7 +182,7 @@
 
         .homeAnimate {
             text-align: right;
-            background: linear-gradient(270deg, #ed3a45 50%, rgb(237 58 69 / 0%) 94.53%);
+            background: linear-gradient(270deg, #4489ff 50%, rgb(237 58 69 / 0%) 94.53%);
             border-top-right-radius: 100px;
             border-bottom-right-radius: 100px;
             justify-content: flex-end;
@@ -195,7 +195,7 @@
         }
 
         .awayAnimate {
-            background: linear-gradient(90deg, #ed3a45 50%, rgb(237 58 69 / 0%) 94.53%);
+            background: linear-gradient(90deg, #4489ff 50%, rgb(237 58 69 / 0%) 94.53%);
             border-top-left-radius: 100px;
             border-bottom-left-radius: 100px;
             animation: move-to-left 1s forwards;
