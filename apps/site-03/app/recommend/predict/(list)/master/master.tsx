@@ -10,6 +10,7 @@ function Master() {
         masterItem: [
             {
                 id: 12,
+                avatar: '',
                 name: '老梁聊球',
                 hotStreak: 2,
                 ranking: 10,
@@ -20,6 +21,7 @@ function Master() {
             },
             {
                 id: 17,
+                avatar: '',
                 name: '柯侯配',
                 hotStreak: 6,
                 ranking: 7,
