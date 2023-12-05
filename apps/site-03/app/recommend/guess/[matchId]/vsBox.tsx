@@ -2,6 +2,7 @@ import Image from 'next/image';
 import { ProgressBar } from 'ui/stories/progressBar/progressBar';
 import NorthBangKokClubIcon from './img/northBangkokClubIcon.png';
 import ThaiUniversityClubIcon from './img/thaiUniversityClubIcon.png';
+import { useGuessDetailStore } from './guessDetailStore';
 import style from './vsBox.module.scss';
 
 interface BettingProps {
@@ -71,22 +72,38 @@ function BettingColumn({
 }
 
 function VsBox({ isUnlocked }: VsBoxProps) {
+    const detailInfo = useGuessDetailStore.use.detail();
+
     return (
         <div className={style.vsBox}>
-            <div className={style.title}>歐錦U20A 7-14 01:00</div>
+            <div className={style.title}>
+                {detailInfo.leagueName} {detailInfo.dateTime}
+            </div>
             <div className={style.clubInfo}>
                 <div className={style.team}>
-                    <Image alt="" height={48} src={ThaiUniversityClubIcon} width={48} />
-                    <div className={style.name}>泰国国立法政大学</div>
+                    <Image
+                        alt=""
+                        height={48}
+                        src={detailInfo.homeTeamLogo || ThaiUniversityClubIcon}
+                        width={48}
+                    />
+                    <div className={style.name}>{detailInfo.homeTeamName}</div>
                 </div>
                 <div className={style.fight}>VS</div>
                 <div className={style.team}>
-                    <Image alt="" height={48} src={NorthBangKokClubIcon} width={48} />
-                    <div className={style.name}>北曼谷學院</div>
+                    <Image
+                        alt=""
+                        height={48}
+                        src={detailInfo.awayTeamLogo || NorthBangKokClubIcon}
+                        width={48}
+                    />
+                    <div className={style.name}>{detailInfo.awayTeamName}</div>
                 </div>
             </div>
             <div className={style.join}>
-                <span className={style.text}>1234人参与競猜，点击预测后查看风向</span>
+                <span className={style.text}>
+                    {detailInfo.participants}人参与競猜，点击预测后查看风向
+                </span>
             </div>
             <div className={style.betting}>
                 <BettingColumn

@@ -13,3 +13,5 @@ export interface Predict {
     createdAt: string;
     unlockTotal: number;
 }
+
+export type HandicapType = 'overUnder' | 'handicap';
