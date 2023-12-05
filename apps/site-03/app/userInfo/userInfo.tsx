@@ -14,18 +14,23 @@ import MyFans from './img/myFans.png';
 import MyGame from './img/myGame.png';
 import MyAnalyze from './img/myAnalyze.png';
 import style from './userInfo.module.scss';
-import Avatar from '@/components/avatar/avatar';
+import defaultAvatar from './img/avatar.png';
 import Tag from '@/components/tag/tag';
 import Header from '@/components/header/headerTitleNoBg';
 import Footer from '@/components/footer/footer';
 
 function UserInfo() {
     const router = useRouter();
+    const userInfo = useUserStore.use.userInfo();
     const openChangePasswordDrawer = useAuthStore.use.setIsDrawerOpen();
     const setAuthQuery = useUserStore.use.setAuthQuery();
 
     const headerProps = {
         title: '我的'
+    };
+
+    const editAccount = () => {
+        router.push('/userInfo/account');
     };
 
     const goRecharge = () => {
@@ -41,26 +46,42 @@ function UserInfo() {
             <Header title={headerProps.title} />
             <div className={style.userInfo}>
                 <div className={style.container}>
-                    <div className={style.detail}>
-                        <Avatar borderColor="#fff" size={54} />
-                        <div className={style.content}>
-                            <div className={style.top}>
-                                <span className={style.name}>老梁聊球</span>
-                                <div className={style.tags}>
-                                    <Tag icon={<IconFlame size={10} />} text="9連紅" />
-                                    <Tag background="#fff" color="#4489ff" text="月榜 10" />
+                    <div
+                        onClick={() => {
+                            editAccount();
+                        }}
+                    >
+                        <div className={style.detail}>
+                            <Image
+                                alt="大頭貼"
+                                className={style.avatar}
+                                height={54}
+                                src={
+                                    userInfo.avatarPath === '0'
+                                        ? defaultAvatar
+                                        : userInfo.avatarPath
+                                }
+                                width={54}
+                            />
+                            <div className={style.content}>
+                                <div className={style.top}>
+                                    <span className={style.name}>{userInfo.username}</span>
+                                    <div className={style.tags}>
+                                        <Tag icon={<IconFlame size={10} />} text="9連紅" />
+                                        <Tag background="#fff" color="#4489ff" text="月榜 10" />
+                                    </div>
+                                </div>
+                                <div className={style.middle}>132****789</div>
+                                <div className={style.bottom}>
+                                    <span>粉絲: 34713</span>
+                                    <span>点赞: 2355</span>
                                 </div>
                             </div>
-                            <div className={style.middle}>132****789</div>
-                            <div className={style.bottom}>
-                                <span>粉絲: 34713</span>
-                                <span>点赞: 2355</span>
-                            </div>
                         </div>
-                    </div>
 
-                    <div className={style.introduction}>
-                        资深足彩分析师，15年足彩经验，对各个赛事都有涉足。长期关注！对各个赛事都有涉足。长期关注！对各个赛事都有涉足。长期关注！
+                        <div className={style.introduction}>
+                            资深足彩分析师，15年足彩经验，对各个赛事都有涉足。长期关注！对各个赛事都有涉足。长期关注！对各个赛事都有涉足。长期关注！
+                        </div>
                     </div>
 
                     <div className={style.trade}>
@@ -71,7 +92,8 @@ function UserInfo() {
                             <div className={style.item}>
                                 <span className={style.text}>
                                     <Image alt="" height={14} src={Star} width={14} />
-                                    <span>可用馀额：</span>100
+                                    <span>可用馀额：</span>
+                                    {userInfo.balance}
                                 </span>
                                 <span
                                     className={style.button}
