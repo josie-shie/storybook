@@ -4,6 +4,7 @@ import type { ReactNode } from 'react';
 import type { Metadata } from 'next';
 import GlobalStore from './globalStore';
 import MqttService from './mqttService';
+import WebsocketService from './websocketService';
 import GoalAlert from './goalAlert';
 import ContestStoreHandler from './contestStoreHandler';
 import AuthDrawer from '@/app/(auth)/authDrawer';
@@ -25,15 +26,17 @@ function RootLayout({ children }: { children: ReactNode }) {
     printMemoryUsage();
 
     return (
-        <html lang="en">
+        <html lang="cn">
             <body>
                 <GlobalStore>
                     <MqttService>
-                        <ContestStoreHandler />
-                        <GoalAlert />
-                        <AuthDrawer />
-                        <Notification />
-                        <main>{children}</main>
+                        <WebsocketService>
+                            <ContestStoreHandler />
+                            <GoalAlert />
+                            <AuthDrawer />
+                            <Notification />
+                            <main>{children}</main>
+                        </WebsocketService>
                     </MqttService>
                 </GlobalStore>
             </body>

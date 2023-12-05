@@ -4,33 +4,65 @@ import Checkbox from '@mui/material/Checkbox';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import Badge from '@mui/material/Badge';
+import type { MessageRoomType } from 'lib';
+import { timestampToString } from 'lib';
 import AvatarIcon from '../img/mentorIcon.jpg';
 import style from './chatCard.module.scss';
 import { useNoticeStore } from '@/app/notice/noticeStore';
 import Avatar from '@/components/avatar/avatar';
 
-function ChatCard() {
+function ChatCard({ chatData }: { chatData: MessageRoomType }) {
     const editStatus = useNoticeStore.use.editStatus();
+    const selected = useNoticeStore.use.selected();
+    const setSelected = useNoticeStore.use.setSelected();
+    const setSelectedChatData = useNoticeStore.use.setSelectedChatData();
+
+    const handleChatInfo = () => {
+        setSelectedChatData(chatData);
+    };
+
+    const handleChange = () => {
+        if (selected.has(chatData.roomId)) {
+            setSelected(chatData.roomId, 'delete');
+        } else {
+            setSelected(chatData.roomId, 'add');
+        }
+    };
 
     return (
         <li className={`${style.chatCard}  ${editStatus && style.isEdit}`}>
             <Checkbox
+                checked={selected.has(chatData.roomId)}
                 checkedIcon={<CheckCircleOutlineIcon />}
                 className={style.check}
                 icon={<RadioButtonUncheckedIcon />}
+                onChange={handleChange}
             />
             <div className={style.card}>
                 <Badge color="error" invisible={false} variant="dot">
-                    <Avatar borderColor="#FFFFFF" size={40} src={AvatarIcon.src} />
+                    <Avatar
+                        borderColor="#FFFFFF"
+                        size={40}
+                        src={chatData.user.avatar || AvatarIcon.src}
+                    />
                 </Badge>
-                <div className={style.right}>
+                <div
+                    className={style.right}
+                    onClick={() => {
+                        handleChatInfo();
+                    }}
+                >
                     <div className={style.topBar}>
-                        <div className={style.name}>梅西</div>
-                        <p className={style.date}>2023/08/03</p>
+                        <div className={style.name}>{chatData.user.name || 'unkonw name'}</div>
+                        <p className={style.date}>
+                            {timestampToString(Number(chatData.date), 'YYYY-M-DD HH:mm')}
+                        </p>
                     </div>
                     <div className={style.bottomBar}>
                         <p className={style.content}>
-                            尊敬的用戶，即日起使用專屬鏈結999.com註冊並完成充值就贈送500元首充禮金，名額有限，行動要快。
+                            {(chatData.lastMessages.length > 0 &&
+                                chatData.lastMessages[0].content) ||
+                                '尚无信息'}
                         </p>
                     </div>
                 </div>

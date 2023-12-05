@@ -2,29 +2,39 @@
 
 import Button from '@mui/material/Button';
 import { deleteMailMember } from 'data-center';
+import { usePathname } from 'next/navigation';
 import style from './editBar.module.scss';
 import { useNoticeStore } from './noticeStore';
 import { useNotificationStore } from '@/app/notificationStore';
 
 function EditBar() {
-    const noticeData = useNoticeStore.use.noticeData();
-    const setNoticeData = useNoticeStore.use.setNoticeData();
+    const mailList = useNoticeStore.use.mailList();
+    const setMailList = useNoticeStore.use.setMailList();
     const editStatus = useNoticeStore.use.editStatus();
     const setEditStatus = useNoticeStore.use.setEditStatus();
     const selected = useNoticeStore.use.selected();
     const setSelected = useNoticeStore.use.setSelected();
     const setIsVisible = useNotificationStore.use.setIsVisible();
 
+    const route = usePathname().split('/');
+    const pathName = route[route.length - 1];
+
     const handleDeleteMail = async () => {
         if (selected.size === 0) return;
 
-        const params = { mailMemberIds: Array.from(selected) };
-        const res = await deleteMailMember(params);
-        if (res.success) {
-            setIsVisible('刪除成功！', 'success');
-            setEditStatus(false);
-            const newList = noticeData.filter(notice => !selected.has(notice.mailMemberId));
-            setNoticeData(newList);
+        if (pathName === 'notice') {
+            const params = { mailMemberIds: Array.from(selected) };
+            const res = await deleteMailMember(params as { mailMemberIds: number[] });
+            if (res.success) {
+                setIsVisible('刪除成功！', 'success');
+                setEditStatus(false);
+                const newList = mailList.filter(notice => !selected.has(notice.mailMemberId));
+                setMailList(newList);
+            }
+        } else {
+            const params = { chatRoomId: Array.from(selected) };
+            // eslint-disable-next-line no-console -- room id
+            console.log(params);
         }
     };
 
@@ -42,7 +52,7 @@ function EditBar() {
                 </Button>
                 <Button
                     onClick={() => {
-                        setSelected(0, 'all');
+                        setSelected(0, 'allMail');
                     }}
                     size="small"
                     variant="outlined"

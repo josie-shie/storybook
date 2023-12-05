@@ -9,7 +9,7 @@ import backLeftArrowImg from '../img/backLeftArrow.png';
 import style from './mailInfo.module.scss';
 
 function Header() {
-    const resetMailData = useNoticeStore.use.resetMailData();
+    const resetSelectedMailData = useNoticeStore.use.resetSelectedMailData();
 
     return (
         <div className={style.headerDetail}>
@@ -19,7 +19,7 @@ function Header() {
                     className={style.back}
                     height={24}
                     onClick={() => {
-                        resetMailData();
+                        resetSelectedMailData();
                     }}
                     src={backLeftArrowImg}
                     width={24}
@@ -32,15 +32,15 @@ function Header() {
 
 function MailInfo() {
     const [infoStatus, setInfoStatus] = useState(false);
-    const mailData = useNoticeStore.use.mailData();
+    const selectedMailData = useNoticeStore.use.selectedMailData();
 
     useEffect(() => {
-        if (mailData.mailMemberId) {
+        if (selectedMailData.mailMemberId) {
             setInfoStatus(true);
         } else {
             setInfoStatus(false);
         }
-    }, [mailData]);
+    }, [selectedMailData]);
 
     return (
         <div className={style.mailInfo}>
@@ -55,10 +55,10 @@ function MailInfo() {
                 <div className={style.outer}>
                     <div className={style.box}>
                         <div className={style.date}>
-                            {timestampToString(mailData.createdAt, 'YYYY-M-DD')}
+                            {timestampToString(selectedMailData.createdAt, 'YYYY-M-DD')}
                         </div>
-                        <h2 className={style.title}>{mailData.title}</h2>
-                        <p className={style.content}>{mailData.content}</p>
+                        <h2 className={style.title}>{selectedMailData.title}</h2>
+                        <p className={style.content}>{selectedMailData.content}</p>
                     </div>
                 </div>
             </Drawer>
