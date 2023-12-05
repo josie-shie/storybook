@@ -2,6 +2,7 @@
 import Image from 'next/image';
 import { timestampToMonthDay, timestampToString } from 'lib';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import NorthBangKokClubIcon from './img/northBangkokClubIcon.png';
 import ThaiUniversityClubIcon from './img/thaiUniversityClubIcon.png';
 import RecommendationList from './recommendationList';
@@ -12,11 +13,36 @@ import Lose from './img/lose.png';
 import Draw from './img/draw.png';
 import style from './articleContent.module.scss';
 import { useArticleStore } from './articleStore';
-import PaidDialog from '@/components/paidDialog/paidDialog';
+import { useUserStore } from '@/app/userStore';
+import NormalDialog from '@/components/normalDialog/normalDialog';
 import type { GuessType } from '@/types/predict';
+
+function Content() {
+    const userInfo = useUserStore.use.userInfo();
+    return (
+        <>
+            <div className={style.payContent}>
+                <div className={style.price}>
+                    <span className={style.text}>支付</span>
+                    <span className={style.number}>
+                        <Image alt="" className={style.image} src={Star} width={14} />
+                        {10}
+                    </span>
+                </div>
+                <span className={style.text}>开通年卡订阅</span>
+            </div>
+            <div className={style.balance}>
+                我的餘額: {userInfo.balance ? userInfo.balance : 0}金幣
+            </div>
+        </>
+    );
+}
 
 function ArticleContent({ params }: { params: { articleId: string } }) {
     const [openPaid, setOpenPaid] = useState(false);
+    const [openDialog, setOpenDialog] = useState(false);
+
+    const router = useRouter();
 
     const article = useArticleStore.use.articleDetail();
     const recommendationList = useArticleStore.use.recommendationList();
@@ -26,8 +52,15 @@ function ArticleContent({ params }: { params: { articleId: string } }) {
     };
 
     const onSubmit = () => {
-        // eslint-disable-next-line -- TODO:取得ID解鎖文章預測
-        console.log(params.articleId);
+        try {
+            // eslint-disable-next-line -- TODO: 取得預測文章Id,解鎖預測文章
+            console.log(params.articleId);
+            // await unLockArticle(params.articleId);
+        } catch (error) {
+            setOpenDialog(true);
+            // eslint-disable-next-line -- console error
+            console.log(error);
+        }
         setOpenPaid(false);
     };
 
@@ -42,6 +75,11 @@ function ArticleContent({ params }: { params: { articleId: string } }) {
             return result[value];
         }
         return Push.src;
+    };
+
+    const goSubscribe = () => {
+        setOpenDialog(false);
+        router.push('/userInfo/subscribe');
     };
 
     return (
@@ -147,14 +185,25 @@ function ArticleContent({ params }: { params: { articleId: string } }) {
                 <div className={style.title}>Ta还推荐了... ({recommendationList.length})</div>
                 <RecommendationList />
             </div>
-            <PaidDialog
-                amount={10}
-                balance={1000}
+            <NormalDialog
+                cancelText="取消"
+                confirmText="確認支付"
+                content={<Content />}
                 onClose={() => {
                     setOpenPaid(false);
                 }}
                 onConfirm={onSubmit}
-                openPaid={openPaid}
+                openDialog={openPaid}
+            />
+            <NormalDialog
+                cancelText="取消"
+                confirmText="去订阅"
+                content={<div>余额不足，请订阅</div>}
+                onClose={() => {
+                    setOpenDialog(false);
+                }}
+                onConfirm={goSubscribe}
+                openDialog={openDialog}
             />
         </div>
     );
