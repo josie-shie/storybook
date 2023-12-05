@@ -11,25 +11,38 @@
     .sort {
         display: flex;
         align-items: center;
-        justify-content: flex-start;
-        gap: 8px;
+        justify-content: space-between;
 
-        .button {
+        .orderButton {
+            display: flex;
+            gap: 8px;
+
+            .button {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 4px;
+                width: 112px;
+                height: 28px;
+                font-size: 14px;
+                color: #4489ff;
+                border: 1px solid #4489ff;
+                border-radius: 4px;
+            }
+        }
+
+        .filter {
             display: flex;
             align-items: center;
-            justify-content: center;
             gap: 4px;
-            width: 112px;
-            height: 28px;
-            font-size: 14px;
             color: #4489ff;
-            border: 1px solid #4489ff;
-            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 600;
+        }
 
-            .image {
-                width: 16px;
-                height: 16px;
-            }
+        .image {
+            width: 16px;
+            height: 16px;
         }
     }
 }
