@@ -232,7 +232,7 @@ function GameCard({ matchId }: { matchId: number }) {
 
     return (
         <li className={style.gameCard}>
-            <Link href={`/${matchId}`}>
+            <Link href={`/football/${matchId}`}>
                 <div>
                     <TopArea contestInfo={contestInfo} matchId={matchId} />
                     <TeamInfo contestInfo={contestInfo} matchId={matchId} />
