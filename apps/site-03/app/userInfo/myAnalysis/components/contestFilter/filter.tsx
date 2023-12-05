@@ -2,8 +2,8 @@ import { motion } from 'framer-motion';
 import { Tab, Tabs } from 'ui';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import { useCallback, useRef } from 'react';
-import { useContestListStore } from '../../../../contest/football/(list)/contestListStore';
 import style from './filter.module.scss';
+import { useContestListStore } from '@/app/(list)/contestListStore';
 import BottomDrawer from '@/components/drawer/bottomDrawer';
 
 function FilterSection({ group, onClose }: { group: 'league' | 'country'; onClose: () => void }) {
