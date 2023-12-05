@@ -5,7 +5,7 @@ import Link from 'next/link';
 import style from './handicapTips.module.scss';
 import iconHot from './img/hot.png';
 import teamLogo from './img/homeTeam.png';
-import { useDiscSelectStore } from '@/app/recommend/bigData/(list)/discSelectStore';
+import { useDiscSelectStore } from '@/app/bigData/(list)/discSelectStore';
 import Tag from '@/components/tag/tag';
 
 type OddsResultType = '赢' | '输' | '大' | '小';

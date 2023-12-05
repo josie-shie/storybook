@@ -50,7 +50,7 @@ function SearchRecord({ index, recordData }: PropsType) {
                     {recordData.state ? (
                         <Link
                             className={style.button}
-                            href={`/recommend/bigData/${recordData.recordId}/handicap`}
+                            href={`/bigData/${recordData.recordId}/handicap`}
                             type="button"
                         >
                             查看分析

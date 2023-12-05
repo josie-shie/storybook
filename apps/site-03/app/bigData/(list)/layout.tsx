@@ -21,11 +21,11 @@ function BigDataLayout({ children }: { children: ReactNode }) {
     const tabList = [
         {
             label: '盘路分析',
-            to: '/recommend/bigData?status=analysis'
+            to: '/bigData?status=analysis'
         },
         {
             label: '盘路提示',
-            to: '/recommend/bigData?status=tips'
+            to: '/bigData?status=tips'
         }
     ];
 
