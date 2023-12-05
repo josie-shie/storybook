@@ -7,7 +7,7 @@ import rightBlack from './img/right_black.png';
 import { CompareOdds } from '@/app/(list)/components/compareOdds';
 import TextRadio from '@/components/textSwitch/textSwitch';
 import ButtonSwitch from '@/components/textSwitch/buttonSwitch';
-import { useContestDetailStore } from '@/app/[matchId]/contestDetailStore';
+import { useContestDetailStore } from '@/app/football/[matchId]/contestDetailStore';
 
 const switchOptins = [
     { label: 'CROW*', value: 3 },
