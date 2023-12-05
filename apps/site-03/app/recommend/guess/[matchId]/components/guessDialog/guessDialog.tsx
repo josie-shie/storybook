@@ -3,6 +3,7 @@ import React from 'react';
 import { Dialog } from '@mui/material';
 import Slide from '@mui/material/Slide';
 import type { TransitionProps } from '@mui/material/transitions';
+import { useGuessDetailStore } from '../../guessDetailStore';
 import style from './guessDialog.module.scss';
 
 interface GuessDialogProps {
@@ -32,6 +33,8 @@ function GuessDialog({
     onClose,
     onConfirm
 }: GuessDialogProps) {
+    const guessesLeft = useGuessDetailStore.use.guessesLeft();
+
     return (
         <Dialog
             PaperProps={{
@@ -46,25 +49,35 @@ function GuessDialog({
             onClose={onClose}
             open={openPaid}
         >
-            {/* 次數歸零時，使用另一個 layout */}
-            <div className={style.guessDialog}>
-                <div className={style.game}>
-                    <span>{play}</span>
-                    <span>{teamName}</span>
-                    <span>受{handicap}</span>
-                </div>
-                <div className={style.useCount}>
-                    今日还可以参与 <span>5</span> 次競猜
-                </div>
-                <div className={style.footer}>
-                    <div className={style.close} onClick={onClose}>
-                        取消
-                    </div>
-                    <div className={style.confirm} onClick={onConfirm}>
-                        確認
+            {guessesLeft === 0 ? (
+                <div className={style.guessDialog}>
+                    <div className={style.useCount}>今日競猜次數次數已使用完畢</div>
+                    <div className={style.footer}>
+                        <div className={style.confirm} onClick={onClose}>
+                            關閉
+                        </div>
                     </div>
                 </div>
-            </div>
+            ) : (
+                <div className={style.guessDialog}>
+                    <div className={style.game}>
+                        <span>{play}</span>
+                        <span>{teamName}</span>
+                        <span>受{handicap}</span>
+                    </div>
+                    <div className={style.useCount}>
+                        今日还可以参与 <span>{guessesLeft}</span> 次競猜
+                    </div>
+                    <div className={style.footer}>
+                        <div className={style.close} onClick={onClose}>
+                            取消
+                        </div>
+                        <div className={style.confirm} onClick={onConfirm}>
+                            確認
+                        </div>
+                    </div>
+                </div>
+            )}
         </Dialog>
     );
 }

@@ -39,6 +39,7 @@ interface MasterPlan {
     history: ('win' | 'lose' | 'draw')[]; // 歷史戰績
     guess: 'home' | 'away' | 'big' | 'small'; // 競猜方向
     result: 'win' | 'lose' | 'draw'; // 競猜結果
+    guessValue: number; // 讓分
 }
 
 interface InitState {
