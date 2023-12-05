@@ -1,35 +1,68 @@
 import Image from 'next/image';
+import { timestampToString } from 'lib';
+import { type Plan } from '../../myGuessStore';
 import style from './bettingPlan.module.scss';
 import iconWin from './img/win.png';
-import iconDefeat from './img/defeat.png';
-import UnlockButton from '@/components/unlockButton/unlockButton';
+import iconDefeat from './img/lose.png';
 
 interface PropsType {
-    result?: 'win' | 'defeat';
+    rowData: Plan;
 }
 
 const iconMap = {
     win: <Image alt="icon" className={style.iconWin} src={iconWin} />,
-    defeat: <Image alt="icon" className={style.iconDefeat} src={iconDefeat} />
+    lose: <Image alt="icon" className={style.iconDefeat} src={iconDefeat} />,
+    draw: <Image alt="icon" className={style.iconDefeat} src={iconDefeat} />,
+    none: null
 };
 
-function BettingPlan({ result }: PropsType) {
-    const icon = result ? iconMap[result] : null;
+const messageFormat = (predictedPlay: string, item: Plan) => {
+    switch (predictedPlay) {
+        case 'over':
+            return `${item.overUnderOdds} 大`;
+        case 'under':
+            return `${item.overUnderOdds} 小`;
+        case 'home':
+            return `${item.handicapOdds} ${item.homeTeamName}`;
+        case 'away':
+            return `${item.handicapOdds} ${item.awayTeamName}`;
+    }
+};
 
+enum BettingType {
+    DRAW = 'draw',
+    SIZE = 'size'
+}
+
+function BettingPlan({ rowData }: PropsType) {
     return (
         <div className={style.bettingPlan}>
-            {icon}
+            {iconMap[rowData.predictionResult]}
             <div className={style.top}>
-                欧锦U20A
-                <span className={style.time}> | 09-05 16:45</span>
+                {rowData.leagueName}
+                <span className={style.time}>
+                    {' '}
+                    | {timestampToString(rowData.matchTime, 'MM-DD HH:mm')}
+                </span>
             </div>
             <div className={style.mid}>
-                <span className={style.plan}>让球</span>
-                <div className={style.combination}>德國U20A vs 斯洛文尼亚U20</div>
+                <span className={style.plan}>
+                    {rowData.bettingType === BettingType.DRAW ? '让球' : '大小'}
+                </span>
+                <div className={style.combination}>
+                    {rowData.homeTeamName}
+                    vs
+                    {rowData.awayTeamName}
+                </div>
             </div>
             <div className={style.bot}>
-                <div className={style.message}>2.5 大</div>
-                <UnlockButton />
+                <div
+                    className={`${style.message} ${
+                        rowData.predictionResult === 'win' && style.red
+                    }`}
+                >
+                    {messageFormat(rowData.predictedPlay, rowData)}
+                </div>
             </div>
         </div>
     );
