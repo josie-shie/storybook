@@ -30,7 +30,7 @@ function GuessDetail({ backHistory }: { backHistory: boolean }) {
     };
 
     creatGuessDetailStore({
-        guessesLeft: 5,
+        guessesLeft: 6,
         unlockTrend: false,
         detail: {
             leagueName: '歐錦U20A',
@@ -65,7 +65,8 @@ function GuessDetail({ backHistory }: { backHistory: boolean }) {
                 unlock: false,
                 history: ['win', 'lose', 'draw', 'win', 'lose', 'draw', 'win', 'lose', 'draw'],
                 guess: 'home',
-                result: 'win'
+                result: 'win',
+                guessValue: 0.5
             },
             {
                 id: 10,
@@ -78,7 +79,8 @@ function GuessDetail({ backHistory }: { backHistory: boolean }) {
                 unlock: false,
                 history: ['win', 'lose', 'draw', 'win', 'lose', 'draw', 'win', 'lose', 'draw'],
                 guess: 'home',
-                result: 'win'
+                result: 'win',
+                guessValue: 0.5
             }
         ]
     });
