@@ -1,10 +1,8 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import { Tab, Tabs } from 'ui';
 import Image from 'next/image';
 import backLeftArrowImg from '../img/backLeftArrow.png';
 import { creatArticleStore } from './components/articleItem/articleStore';
-import AnalysisItem from './components/analysisItem/analysisItem';
 import ArticleItem from './components/articleItem/articleItem';
 import style from './myAnalysis.module.scss';
 
@@ -14,7 +12,7 @@ function MyAnalysis() {
         articleList: [
             {
                 id: 116,
-                name: '老蕭聊球',
+                name: '老萧聊球',
                 unlock: true,
                 unlockNumber: 5,
                 hotStreak: 9,
@@ -22,7 +20,7 @@ function MyAnalysis() {
                 title: '【11连胜】格鲁吉亚vs西班牙，来看我的精心推荐吧',
                 cupName: '欧锦U20A',
                 cupTime: '09-05 16:45',
-                homeTeam: '德國U20A',
+                homeTeam: '德国U20A',
                 awayTeam: '斯洛文尼亚U20',
                 postTime: '17:45'
             },
@@ -36,7 +34,7 @@ function MyAnalysis() {
                 title: '【7连胜】格鲁吉亚vs西班牙，来看我的精心推荐吧',
                 cupName: '欧锦U20A',
                 cupTime: '09-05 16:45',
-                homeTeam: '德國U20A',
+                homeTeam: '德国U20A',
                 awayTeam: '斯洛文尼亚U20',
                 postTime: '17:45'
             },
@@ -50,7 +48,7 @@ function MyAnalysis() {
                 title: '【7连胜】格鲁吉亚vs西班牙，来看我的精心推荐吧',
                 cupName: '欧锦U20A',
                 cupTime: '09-05 16:45',
-                homeTeam: '德國U20A',
+                homeTeam: '德国U20A',
                 awayTeam: '斯洛文尼亚U20',
                 postTime: '17:45'
             },
@@ -64,7 +62,7 @@ function MyAnalysis() {
                 title: '【7连胜】格鲁吉亚vs西班牙，来看我的精心推荐吧',
                 cupName: '欧锦U20A',
                 cupTime: '09-05 16:45',
-                homeTeam: '德國U20A',
+                homeTeam: '德国U20A',
                 awayTeam: '斯洛文尼亚U20',
                 postTime: '17:45'
             },
@@ -78,7 +76,7 @@ function MyAnalysis() {
                 title: '【7连胜】格鲁吉亚vs西班牙，来看我的精心推荐吧',
                 cupName: '欧锦U20A',
                 cupTime: '09-05 16:45',
-                homeTeam: '德國U20A',
+                homeTeam: '德国U20A',
                 awayTeam: '斯洛文尼亚U20',
                 postTime: '17:45'
             },
@@ -92,22 +90,12 @@ function MyAnalysis() {
                 title: '【7连胜】格鲁吉亚vs西班牙，来看我的精心推荐吧',
                 cupName: '欧锦U20A',
                 cupTime: '09-05 16:45',
-                homeTeam: '德國U20A',
+                homeTeam: '德国U20A',
                 awayTeam: '斯洛文尼亚U20',
                 postTime: '17:45'
             }
         ]
     });
-
-    const tabStyle = {
-        gap: 8,
-        swiperOpen: true,
-        buttonRadius: 30
-    };
-
-    const createArticle = () => {
-        router.push('/userInfo/myAnalysis/createArticle');
-    };
 
     return (
         <>
@@ -123,42 +111,13 @@ function MyAnalysis() {
                             src={backLeftArrowImg}
                             width={24}
                         />
-                        <div className={style.text}>我的分析</div>
-                        <button
-                            className={style.publish}
-                            onClick={() => {
-                                createArticle();
-                            }}
-                            type="button"
-                        >
-                            发布文章
-                        </button>
+                        <div className={style.text}>我的解锁</div>
                     </div>
                 </div>
             </div>
 
             <div className={style.main}>
-                <Tabs
-                    buttonRadius={tabStyle.buttonRadius}
-                    gap={tabStyle.gap}
-                    position="center"
-                    styling="underline"
-                    swiperOpen={tabStyle.swiperOpen}
-                >
-                    <Tab label="解锁记录" to="/userInfo/myAnalysis?status=unlock">
-                        <ArticleItem />
-                    </Tab>
-                    <Tab label="我的分析" to="/userInfo/myAnalysis?status=myanalysis">
-                        <AnalysisItem />
-                        <AnalysisItem />
-                        <AnalysisItem />
-                        <AnalysisItem />
-                        <AnalysisItem />
-                        <AnalysisItem />
-                        <AnalysisItem />
-                        <AnalysisItem />
-                    </Tab>
-                </Tabs>
+                <ArticleItem />
             </div>
         </>
     );
