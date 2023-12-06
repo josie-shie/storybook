@@ -11,7 +11,7 @@ import Footer from '@/components/footer/footer';
 
 function NoticeLayout({ children }: { children: ReactNode }) {
     createNoticeStore({
-        noticeData: []
+        mailList: []
     });
 
     const route = usePathname().split('/');

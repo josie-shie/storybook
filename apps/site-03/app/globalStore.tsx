@@ -3,6 +3,7 @@ import type { ReactNode } from 'react';
 import { useSearchParams } from 'next/navigation';
 import type { GetMemberInfoResponse } from 'data-center';
 import { creatContestInfoStore } from './contestInfoStore';
+import { createMessageStore } from './messageStore';
 import { creatUserStore } from './userStore';
 import { creatNotificationStore } from './notificationStore';
 import { creatAuthStore } from './(auth)/authStore';
@@ -12,6 +13,7 @@ function GlobalStore({ children }: { children: ReactNode }) {
     const query = searchParams.get('auth');
 
     creatContestInfoStore({ contestInfo: {} });
+    createMessageStore({ forbiddenWords: [] });
     creatUserStore({
         authQuery: query ? query : '',
         userInfo: {} as GetMemberInfoResponse

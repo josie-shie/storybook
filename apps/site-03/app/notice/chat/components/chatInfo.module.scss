@@ -1,0 +1,97 @@
+.headerDetail {
+    position: relative;
+    width: 100vw;
+    height: 54px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(to right, #2c5eb2 0%, #3a82fb 100%);
+
+    .back {
+        cursor: pointer;
+    }
+
+    .pageTitle {
+        display: flex;
+        gap: 4px;
+        align-items: center;
+
+        .text {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #fff;
+            font-size: 14px;
+        }
+    }
+}
+
+.chatInfo {
+    width: 100vw;
+    height: 100vh;
+}
+
+.chat {
+    height: calc(100% - 54px);
+
+    :global {
+        .bfRoomContent {
+            height: calc(100% - 64px);
+            background-color: #f3f3f3;
+        }
+
+        .bfLine {
+            .bfMessage {
+                .bfName {
+                    display: none;
+                }
+
+                .bfMsg {
+                    padding: 10px;
+                    font-size: 14px;
+                    border-radius: 12px;
+                }
+            }
+
+            &.bfPersonal {
+                .bfMsg {
+                    background-color: #1782ff;
+                }
+            }
+        }
+
+        .bfRoomBottom {
+            height: 64px;
+            padding: 16px;
+            background-color: #fff;
+            box-shadow: 0 0 5px 0 rgb(0 0 0 / 25%);
+
+            .bfHolder {
+                height: 64px;
+            }
+        }
+
+        .bfEmoticonBox {
+            border: 1px #ccc solid;
+            justify-content: space-between;
+        }
+
+        .bfInput {
+            background-color: #fff;
+            color: #9b9b9b;
+        }
+
+        .bfSmile {
+            color: #4a4a4a;
+        }
+
+        .bfSendBtn {
+            color: #4a4a4a;
+        }
+
+        .bfPicture .bfPhoto {
+            color: #4a4a4a;
+        }
+    }
+}
