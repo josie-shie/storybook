@@ -11,10 +11,12 @@ import { creatAuthStore } from './(auth)/authStore';
 function GlobalStore({ children }: { children: ReactNode }) {
     const searchParams = useSearchParams();
     const query = searchParams.get('auth');
+    const invite = searchParams.get('invitCode');
 
     creatContestInfoStore({ contestInfo: {} });
     createMessageStore({ forbiddenWords: [] });
     creatUserStore({
+        inviteCode: invite ? invite : '',
         authQuery: query ? query : '',
         userInfo: {} as GetMemberInfoResponse
     });
