@@ -20,6 +20,7 @@ export interface DetailType {
 
 // 高勝率玩家風向
 interface HighWinRateTrend {
+    unlockPrice: number; // 解鎖價格
     trendHome: number; // 猜 主隊 人數
     trendAway: number; // 猜 客隊 人數
     trendBig: number; // 猜 大 人數
@@ -36,9 +37,10 @@ interface MasterPlan {
     homeTeam: string; // 主隊名
     awayTeam: string; // 客隊名
     unlock: boolean; // 是否已解鎖
+    unlockPrice: number; // 解鎖價格
     history: ('win' | 'lose' | 'draw')[]; // 歷史戰績
     guess: 'home' | 'away' | 'big' | 'small'; // 競猜方向
-    result: 'win' | 'lose' | 'draw'; // 競猜結果
+    result?: 'win' | 'lose' | 'draw'; // 競猜結果
     guessValue: number; // 讓分
 }
 
@@ -52,6 +54,9 @@ interface InitState {
 
 interface GuessDetailState extends InitState {
     setDetail: (detail: DetailType) => void;
+    setGuessesLeft: (leftNumber: number) => void;
+    setUnlockTrend: (isUnlocked: boolean) => void;
+    setMasterPlanList: (masterPlanList: MasterPlan[]) => void;
 }
 
 let useGuessDetailStore: StoreWithSelectors<GuessDetailState>;
@@ -64,6 +69,12 @@ const initialState = (set: (data: Partial<GuessDetailState>) => void) => ({
     masterPlanList: [],
     setDetail: (detail: DetailType) => {
         set({ detail });
+    },
+    setGuessesLeft: (leftNumber: number) => {
+        set({ guessesLeft: leftNumber });
+    },
+    setUnlockTrend: (isUnlocked: boolean) => {
+        set({ unlockTrend: isUnlocked });
     },
     setMasterPlanList: (masterPlanList: MasterPlan[]) => {
         set({ masterPlanList });
