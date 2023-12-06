@@ -10,52 +10,39 @@ import { useGuessDetailStore } from './guessDetailStore';
 import { useUserStore } from '@/app/userStore';
 import PaidDialog from '@/components/paidDialog/paidDialog';
 
-interface MasterPlanProps {
-    isUnlocked: boolean;
-    setIsUnlocked: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-function MasterPlan({ isUnlocked, setIsUnlocked }: MasterPlanProps) {
-    const [selectedGameId, setSelectedGameId] = useState<string | null>(null);
-    const [unlockedGames, setUnlockedGames] = useState<Set<string>>(new Set());
+function MasterPlan() {
+    const [selectedGameId, setSelectedGameId] = useState<number | null>(null);
     const [openPaid, setOpenPaid] = useState(false);
-    const [balance, setBalance] = useState<number>(0);
-    const [amount, setAmount] = useState<number>(0);
+    const [amount, setAmount] = useState(0);
     const [plan, setPlan] = useState(false);
 
     const userBalance = useUserStore.use.userInfo().balance;
-    const unlockTrendPrice = useGuessDetailStore.use.highWinRateTrend().unlockPrice;
+    const isTrendUnlocked = useGuessDetailStore.use.unlockTrend();
+    const trend = useGuessDetailStore.use.highWinRateTrend();
+    const masterPlanList = useGuessDetailStore.use.masterPlanList();
 
-    const handleGlobalClickOpen = (newBalance: number, newAmount: number, getPlan: string) => {
+    const setUnlockTrend = useGuessDetailStore.use.setUnlockTrend();
+    const setMasterPlanList = useGuessDetailStore.use.setMasterPlanList();
+
+    const handleGlobalClickOpen = (newAmount: number, getPlan: string) => {
         if (getPlan === 'single') {
             setPlan(true);
         } else if (getPlan === 'monthly') {
             setPlan(false);
         }
-        setBalance(newBalance);
         setAmount(newAmount);
         setOpenPaid(true);
     };
 
-    const handleLocalClickOpen = (
-        gameId: string,
-        newBalance: number,
-        newAmount: number,
-        getPlan: string
-    ) => {
+    const handleLocalClickOpen = (gameId: number, newAmount: number, getPlan: string) => {
         if (getPlan === 'single') {
             setPlan(true);
         } else if (getPlan === 'monthly') {
             setPlan(false);
         }
         setSelectedGameId(gameId);
-        setBalance(newBalance);
         setAmount(newAmount);
         setOpenPaid(true);
-    };
-
-    const handleGameUnlock = (gameId: string) => {
-        setUnlockedGames(prevState => new Set(prevState).add(gameId));
     };
 
     const handleClickClose = () => {
@@ -63,11 +50,14 @@ function MasterPlan({ isUnlocked, setIsUnlocked }: MasterPlanProps) {
     };
 
     const handleConfirm = () => {
-        if (selectedGameId) {
-            handleGameUnlock(selectedGameId);
+        if (typeof selectedGameId === 'number') {
+            const newMasterPlan = [...masterPlanList];
+            const index = newMasterPlan.findIndex(item => item.id === selectedGameId);
+            newMasterPlan[index].unlock = true;
+            setMasterPlanList(newMasterPlan);
             setSelectedGameId(null);
         } else {
-            setIsUnlocked(true);
+            setUnlockTrend(true);
         }
         setOpenPaid(false);
     };
@@ -83,31 +73,31 @@ function MasterPlan({ isUnlocked, setIsUnlocked }: MasterPlanProps) {
                     <Rule />
                 </div>
                 <div className={style.analyze}>
-                    {!isUnlocked ? (
+                    {isTrendUnlocked ? (
+                        <>
+                            <AnalyzeColumn awayType="客" homeType="主" />
+                            <AnalyzeColumn awayType="小" homeType="大" />
+                        </>
+                    ) : (
                         <div className={style.mask}>
                             <button
                                 onClick={() => {
-                                    handleGlobalClickOpen(userBalance, unlockTrendPrice, 'single');
+                                    handleGlobalClickOpen(trend.unlockPrice, 'single');
                                 }}
                                 type="button"
                             >
-                                {unlockTrendPrice} 金币解锁本场
+                                {trend.unlockPrice} 金币解锁本场
                             </button>
                             {/* 訂閱方案流程待改 */}
                             <button
                                 onClick={() => {
-                                    handleGlobalClickOpen(100, 200, 'monthly');
+                                    handleGlobalClickOpen(200, 'monthly');
                                 }}
                                 type="button"
                             >
                                 200 金币包月无限看
                             </button>
                         </div>
-                    ) : (
-                        <>
-                            <AnalyzeColumn awayType="客" homeType="主" />
-                            <AnalyzeColumn awayType="小" homeType="大" />
-                        </>
                     )}
                 </div>
             </div>
@@ -117,7 +107,16 @@ function MasterPlan({ isUnlocked, setIsUnlocked }: MasterPlanProps) {
                     <div className={style.title}>
                         <span>同场高手方案</span>
                     </div>
-                    <GameCard
+                    {masterPlanList.map((el, idx) => (
+                        <GameCard
+                            key={idx}
+                            onOpenPaidDialog={() => {
+                                handleLocalClickOpen(el.id, el.unlockPrice, 'single');
+                            }}
+                            plan={el}
+                        />
+                    ))}
+                    {/* <GameCard
                         globalUnlock={isUnlocked}
                         league="欧锦U20A vs 斯洛文尼亚U20"
                         localIsUnlocked={unlockedGames.has('1')}
@@ -156,12 +155,12 @@ function MasterPlan({ isUnlocked, setIsUnlocked }: MasterPlanProps) {
                             handleLocalClickOpen('4', 100, 200, 'single');
                         }}
                         text="月榜10"
-                    />
+                    /> */}
                 </div>
             </div>
             <PaidDialog
                 amount={amount}
-                balance={balance}
+                balance={userBalance}
                 onClose={handleClickClose}
                 onConfirm={handleConfirm}
                 openPaid={openPaid}
