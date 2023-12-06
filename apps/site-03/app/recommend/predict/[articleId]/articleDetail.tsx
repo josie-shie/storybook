@@ -49,7 +49,8 @@ function MasterDetail({ params }: { params: { articleId: string } }) {
             ranking: 10,
             followed: true,
             predictedPlay: 'LOCK',
-            price: 10
+            price: 10,
+            winPercent: 10
         },
         recommendationList: [
             {
