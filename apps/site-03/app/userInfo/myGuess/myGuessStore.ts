@@ -1,7 +1,6 @@
 import { initStore } from 'lib';
 import type { StoreWithSelectors } from 'lib';
 
-// 我的競猜
 interface PerformanceDetail {
     play: number;
     win: number;
@@ -21,7 +20,6 @@ export interface RecentPerformance {
     byQuarter: Performance;
 }
 
-// 我的方案
 export interface Plan {
     id: number;
     matchId: number;

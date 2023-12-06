@@ -29,11 +29,6 @@ const messageFormat = (predictedPlay: string, item: Plan) => {
     }
 };
 
-enum BettingType {
-    DRAW = 'draw',
-    SIZE = 'size'
-}
-
 function BettingPlan({ rowData }: PropsType) {
     return (
         <div className={style.bettingPlan}>
@@ -47,7 +42,7 @@ function BettingPlan({ rowData }: PropsType) {
             </div>
             <div className={style.mid}>
                 <span className={style.plan}>
-                    {rowData.bettingType === BettingType.DRAW ? '让球' : '大小'}
+                    {rowData.bettingType === 'draw' ? '让球' : '大小'}
                 </span>
                 <div className={style.combination}>
                     {rowData.homeTeamName}
