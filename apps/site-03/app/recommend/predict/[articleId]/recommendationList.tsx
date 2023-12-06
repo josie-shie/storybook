@@ -5,8 +5,7 @@ import { timestampToString, timestampToMonthDay } from 'lib';
 import style from './recommendationList.module.scss';
 import Star from './img/star.png';
 import { useArticleStore } from './articleStore';
-
-type HandicapType = 'overUnder' | 'handicap';
+import type { HandicapType } from '@/types/predict';
 
 function RecommendationItem() {
     const recommendationList = useArticleStore.use.recommendationList();
@@ -24,17 +23,17 @@ function RecommendationItem() {
                     <section className={style.item} key={item.id}>
                         <div className={style.left}>
                             <div className={style.time}>
-                                发表于今天 {timestampToMonthDay(item.postTime)}
+                                发表于今天 {timestampToMonthDay(item.createdAt)}
                             </div>
                             <div className={style.leagueName}>
                                 <span className={style.name}>{item.leagueName}</span>
                                 <span className={style.time}>
-                                    | {timestampToString(item.dateTime, 'MM-DD HH:mm')}
+                                    | {timestampToString(item.matchTime, 'MM-DD HH:mm')}
                                 </span>
                             </div>
                             <div className={style.teamName}>
                                 <span className={style.play}>
-                                    {formatHandicapName(item.handicap)}
+                                    {formatHandicapName(item.predictPlayType)}
                                 </span>
                                 <span className={style.name}>
                                     {item.homeTeamName} vs {item.awayTeamName}
@@ -42,11 +41,24 @@ function RecommendationItem() {
                             </div>
                         </div>
                         <div className={style.right}>
-                            <div className={style.noPaid}>
-                                <Image alt="" className={style.image} src={Star} width={14} />
-                                <span className={style.text}>{item.amount}元</span>
-                            </div>
-                            <div className={style.unlockMember}>已有{item.lockCount}人解鎖</div>
+                            {!item.isLock ? (
+                                <>
+                                    <div className={style.noPaid}>
+                                        <Image
+                                            alt=""
+                                            className={style.image}
+                                            src={Star}
+                                            width={14}
+                                        />
+                                        <span className={style.text}>{item.price}元</span>
+                                    </div>
+                                    <div className={style.unlockMember}>
+                                        已有{item.unlockNumber}人解鎖
+                                    </div>
+                                </>
+                            ) : (
+                                <div className={style.unlockMember}>已解鎖</div>
+                            )}
                         </div>
                     </section>
                 );
