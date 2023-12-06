@@ -42,7 +42,7 @@ function MyGuess() {
                         bettingType: 'draw',
                         leagueId: 10,
                         leagueName: '欧锦U20A',
-                        homeTeamName: '德國U20A',
+                        homeTeamName: '德国U20A',
                         awayTeamName: '斯洛文尼亚U20',
                         handicapOdds: '受平/半',
                         overUnderOdds: 10,
@@ -57,7 +57,7 @@ function MyGuess() {
                         bettingType: 'size',
                         leagueId: 10,
                         leagueName: '欧锦U20A',
-                        homeTeamName: '德國U20A',
+                        homeTeamName: '德国U20A',
                         awayTeamName: '斯洛文尼亚U20',
                         handicapOdds: '',
                         overUnderOdds: 10,
@@ -74,7 +74,7 @@ function MyGuess() {
                         bettingType: 'draw',
                         leagueId: 10,
                         leagueName: '欧锦U20A',
-                        homeTeamName: '德國U20A',
+                        homeTeamName: '德国U20A',
                         awayTeamName: '斯洛文尼亚U20',
                         handicapOdds: '平/半',
                         overUnderOdds: 10,
@@ -89,7 +89,7 @@ function MyGuess() {
                         bettingType: 'draw',
                         leagueId: 10,
                         leagueName: '欧锦U20A',
-                        homeTeamName: '德國U20A',
+                        homeTeamName: '德国U20A',
                         awayTeamName: '斯洛文尼亚U20',
                         handicapOdds: '平/半',
                         overUnderOdds: 10,
@@ -106,7 +106,7 @@ function MyGuess() {
                         bettingType: 'size',
                         leagueId: 10,
                         leagueName: '欧锦U20A',
-                        homeTeamName: '德國U20A',
+                        homeTeamName: '德国U20A',
                         awayTeamName: '斯洛文尼亚U20',
                         handicapOdds: '',
                         overUnderOdds: 10,
@@ -133,7 +133,7 @@ function MyGuess() {
                             src={backLeftArrowImg}
                             width={24}
                         />
-                        <div className={style.text}>我的竟猜</div>
+                        <div className={style.text}>我猜过的</div>
                     </div>
                 </div>
             </div>
