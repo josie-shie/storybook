@@ -48,6 +48,11 @@ interface TabsProps {
      */
     swiperOpen?: boolean;
     /**
+     * tab container padding
+     * tab內容是否無padding
+     */
+    fullBlock?: boolean;
+    /**
      * tab header background color style change
      * tab header 背景顏色
      */
@@ -79,6 +84,7 @@ function Tabs({
     styling = 'text',
     scrolling = false,
     swiperOpen = true,
+    fullBlock = false,
     buttonRadius = 50,
     onTabChange,
     ...props
@@ -245,7 +251,7 @@ function Tabs({
     }, [defaultValue, props.children]);
 
     return (
-        <div className={`ui-tab ${style.tab} ${style[position]}`}>
+        <div className={`ui-tab ${style.tab} ${fullBlock && style.fullBlock} ${style[position]}`}>
             <div className={`ui-tab-header ${style.tabHeader}`}>
                 <div
                     className={`ui-tabs-header ${style.tabsHeader} ${style[position]} ${

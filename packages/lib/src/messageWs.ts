@@ -26,6 +26,7 @@ export interface MessageItem {
 }
 export interface MessageResponse {
     action?: string;
+    status?: string;
     token?: string;
     correlationId?: string;
     roomId?: string;
@@ -76,7 +77,7 @@ const initProto = async () => {
 
 export const toProto = async (msg: MessageResponse) => {
     // eslint-disable-next-line no-console -- Check websocket message
-    console.log('[WebSocket message response]:', msg);
+    console.log('[WebSocket message request]:', msg);
     if (init) await initProto();
     const message = requestMessage.create(msg);
     const buffer = requestMessage.encode(message).finish();
