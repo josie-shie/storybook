@@ -4,13 +4,15 @@ import Image from 'next/image';
 import Logo from './img/logo.png';
 import style from './layout.module.scss';
 import { Tabs } from '@/components/tabs/tabs';
+import { useUserStore } from '@/app/userStore';
 import Header from '@/components/header/headerLogo';
 import Footer from '@/components/footer/footer';
 
 function ContestLayout({ children }: { children: ReactNode }) {
+    const userInfo = useUserStore.use.userInfo();
     const headerProps = {
         logo: <Image alt="logo" src={Logo} width={66} />,
-        total: 999999
+        total: userInfo.balance
     };
 
     return (
