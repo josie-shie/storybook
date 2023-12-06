@@ -54,14 +54,16 @@ function Slick({
     }, [slideActive]);
 
     return (
-        <div className={style.slick}>
-            <div className={style.tabsContainer}>
-                <ul className={`${style.tabs} ${style[styling]}`}>
+        <div className={`ui-slick ${style.slick}`}>
+            <div className={`ui-slick-tabs-container ${style.tabsContainer}`}>
+                <ul className={`ui-slick-tabs ${style.tabs} ${style[styling]}`}>
                     {tabs.map((item, index) => {
                         return (
-                            <li key={item.label}>
+                            <li className="ui-slick-li" key={item.label}>
                                 <button
-                                    className={nav === index ? style.selected : ''}
+                                    className={`ui-slick-button ${
+                                        nav === index ? style.selected : ''
+                                    }`}
                                     key={item.label}
                                     onClick={() => {
                                         sliderTo(index);
