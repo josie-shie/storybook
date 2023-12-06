@@ -6,7 +6,7 @@ import Avatar from '@/components/avatar/avatar';
 import Tag from '@/components/tag/tag';
 
 function Info() {
-    const master = useArticleStore.use.articleDetail().master;
+    const master = useArticleStore.use.articleDetail();
 
     const onIsFocused = () => {
         // 取消關注/新增關注
@@ -18,7 +18,7 @@ function Info() {
                 <Avatar borderColor="#fff" size={54} />
                 <div className={style.content}>
                     <div className={style.top}>
-                        <span className={style.name}>{master.name}</span>
+                        <span className={style.name}>{master.mentorName}</span>
                         <Tag icon={<IconFlame size={10} />} text={`${master.hotStreak}連紅`} />
                         <Tag background="#fff" color="#4489ff" text={`月榜 ${master.ranking}`} />
                     </div>
