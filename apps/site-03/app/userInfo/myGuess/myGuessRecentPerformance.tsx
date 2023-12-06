@@ -22,7 +22,6 @@ function ReactEchartsConponent({
     dateActiveTab: string;
     focusDetail: FocusDetailType;
 }) {
-    const rank = useMyGuessStore.use.myGuess().rank;
     const dateType = dateActiveMap[dateActiveTab as keyof typeof dateActiveMap].display;
     const chartOption = {
         tooltip: {
@@ -30,7 +29,7 @@ function ReactEchartsConponent({
             showContent: false
         },
         title: {
-            text: `{large|${rank}} \n${dateType}排名`,
+            text: `{large|${myGuessData.rank}} \n${dateType}排名`,
             left: '46%',
             top: '47%',
             textAlign: 'center',

@@ -48,7 +48,7 @@ function MyGuessMyPlans({ setShowFilter }: MyGuessMyPlansProps) {
     return (
         <>
             <div className={style.title}>
-                <span>方案</span>
+                <span>我猜过的</span>
                 <span
                     className={style.record}
                     onClick={() => {

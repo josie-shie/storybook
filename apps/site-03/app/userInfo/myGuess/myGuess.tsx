@@ -3,7 +3,7 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { useState } from 'react';
 import backLeftArrowImg from '../img/backLeftArrow.png';
-import RecordFilter from './components/recordFilter/recordFilter';
+import GuessRecord from './guessRecord/guessRecord';
 import style from './myGuess.module.scss';
 import RecentPerformance from './myGuessRecentPerformance';
 import MyGuessMyPlans from './myGuessMyPlans';
@@ -18,16 +18,19 @@ function MyGuess() {
             rank: 1,
             recentPerformance: {
                 byWeek: {
+                    rank: 0,
                     summary: { play: 100, win: 60, draw: 15, lose: 25 },
                     handicap: { play: 75, win: 50, draw: 5, lose: 20 },
                     size: { play: 25, win: 10, draw: 10, lose: 5 }
                 },
                 byMonth: {
+                    rank: 0,
                     summary: { play: 150, win: 70, draw: 30, lose: 50 },
                     handicap: { play: 100, win: 50, draw: 20, lose: 30 },
                     size: { play: 50, win: 20, draw: 10, lose: 20 }
                 },
                 byQuarter: {
+                    rank: 0,
                     summary: { play: 300, win: 200, draw: 20, lose: 80 },
                     handicap: { play: 100, win: 50, draw: 10, lose: 40 },
                     size: { play: 200, win: 150, draw: 10, lose: 40 }
@@ -133,7 +136,7 @@ function MyGuess() {
                             src={backLeftArrowImg}
                             width={24}
                         />
-                        <div className={style.text}>我猜过的</div>
+                        <div className={style.text}>我的猜球</div>
                     </div>
                 </div>
             </div>
@@ -142,7 +145,7 @@ function MyGuess() {
                 <RecentPerformance />
                 <MyGuessMyPlans setShowFilter={setShowFilter} />
             </div>
-            <RecordFilter
+            <GuessRecord
                 isOpen={showFilter}
                 onClose={() => {
                     setShowFilter(false);
