@@ -51,6 +51,11 @@
                     padding: 10px;
                     font-size: 14px;
                     border-radius: 12px;
+                    margin-bottom: 2px;
+                }
+
+                .bfDate {
+                    font-size: 12px;
                 }
             }
 
@@ -61,33 +66,64 @@
             }
         }
 
+        .bfHolder {
+            height: 64px;
+        }
+
         .bfRoomBottom {
             height: 64px;
             padding: 16px;
             background-color: #fff;
-            box-shadow: 0 0 5px 0 rgb(0 0 0 / 25%);
-
-            .bfHolder {
-                height: 64px;
-            }
+            box-shadow: 0 -1px 0 0 #d9d9d9;
         }
 
         .bfEmoticonBox {
+            height: 200px;
             border: 1px #ccc solid;
             justify-content: space-between;
+            overflow: auto;
+            box-shadow: 0 -1px 0 0 #d9d9d9;
         }
 
         .bfInput {
-            background-color: #fff;
-            color: #9b9b9b;
+            flex: 1;
+            height: 32px;
+            padding: 6px 10px;
+            margin-left: 0;
+            background-color: #f3f3f3;
+            color: #222;
+            font-size: 14px;
+            font-weight: 400;
+            line-height: normal;
+            border-top-left-radius: 6px;
+            border-bottom-left-radius: 6px;
+
+            &::placeholder {
+                color: #222;
+            }
         }
 
-        .bfSmile {
+        .bfSmileBtn {
             color: #4a4a4a;
+            margin-left: 10px;
+            margin-right: 0;
+            order: 2;
+
+            :global(.bfSmile) {
+                margin: 0;
+            }
         }
 
         .bfSendBtn {
+            display: flex;
+            align-items: center;
+            padding-right: 10px;
+            width: 34px;
+            height: 32px;
+            background-color: #f3f3f3;
             color: #4a4a4a;
+            border-top-right-radius: 6px;
+            border-bottom-right-radius: 6px;
         }
 
         .bfPicture .bfPhoto {
