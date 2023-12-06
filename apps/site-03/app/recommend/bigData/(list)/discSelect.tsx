@@ -1,7 +1,9 @@
 'use client';
+import type { ReactNode } from 'react';
 import { useEffect, useState } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import Image from 'next/image';
+import dayjs from 'dayjs';
 import Star from './img/star.png';
 import style from './disSelect.module.scss';
 import RecordFilter from './components/recordFilter/recordFilter';
@@ -9,6 +11,8 @@ import HandicapDrawer from './components/handicapDrawer/handicapDrawer';
 import { GameFilter } from './components/gameFilter/gameFilter';
 import { creatDiscSelectStore, useDiscSelectStore } from './discSelectStore';
 import { creatMatchFilterStore, useMatchFilterStore } from './matchFilterStore';
+import Datepicker from './components/datepicker/datepicker';
+import { useUserStore } from '@/app/userStore';
 
 type OddsResultType = '赢' | '输' | '大' | '小';
 interface HandicapTipType {
@@ -95,6 +99,7 @@ interface SectionSelectProps {
     placeholder: string;
     valueSelected: string;
     setSelected: (val: string) => void;
+    children?: ReactNode;
 }
 
 function SectionSelect({
@@ -103,7 +108,8 @@ function SectionSelect({
     options,
     placeholder,
     valueSelected,
-    setSelected
+    setSelected,
+    children
 }: SectionSelectProps) {
     return (
         <section className={style.items}>
@@ -119,6 +125,7 @@ function SectionSelect({
                     title={selectTitle}
                     value={valueSelected}
                 />
+                {children}
             </div>
         </section>
     );
@@ -126,17 +133,16 @@ function SectionSelect({
 
 function DiscSelect() {
     creatDiscSelectStore({
-        handicapTips: []
+        handicapTips: [],
+        recordList: []
     });
     creatMatchFilterStore({
         contestList: [],
         contestInfo: {}
     });
 
-    const router = useRouter();
     const searchParams = useSearchParams();
     const search = searchParams.get('status');
-    const [showFilter, setShowFilter] = useState(false);
     const [showHandicapDrawer, setShowHandicapDrawer] = useState(false);
 
     const [handicapOddsSelected, setHandicapOddsSelected] = useState('');
@@ -155,12 +161,15 @@ function DiscSelect() {
     const setContestList = useMatchFilterStore.use.setContestList();
     const setContestInfo = useMatchFilterStore.use.setContestInfo();
     const setFilterInit = useMatchFilterStore.use.setFilterInit();
+    const userInfo = useUserStore.use.userInfo();
+
+    const [startDate, setStartDate] = useState(0);
+    const [endDate, setEndDate] = useState(0);
+    const [teamSelected, setTeamSelected] = useState('');
+    const [teamHandicapOdds, setTeamHandicapOdds] = useState('');
+    const [showRecord, setShowRecord] = useState(false);
 
     setHandicapHints(matchList);
-
-    const goDetail = () => {
-        router.push(`/recommend/bigData/resultDetail/handicap`);
-    };
 
     const openHintsDrawer = () => {
         setContestList({
@@ -170,6 +179,48 @@ function DiscSelect() {
             contestList: matchList
         });
         setShowHandicapDrawer(true);
+    };
+
+    const updateQueryDate = (
+        startDateSelected?: number,
+        endDateSelected?: number,
+        type?: string
+    ) => {
+        if (type) {
+            setStartDate(dayjs().subtract(1, 'day').toDate().getTime());
+
+            switch (type) {
+                case 'week':
+                    setEndDate(dayjs().subtract(8, 'day').toDate().getTime());
+                    break;
+                case 'month':
+                    setEndDate(dayjs().subtract(31, 'day').toDate().getTime());
+                    break;
+                case 'season':
+                    setEndDate(dayjs().subtract(91, 'day').toDate().getTime());
+                    break;
+            }
+        } else if (startDateSelected && endDateSelected) {
+            setStartDate(startDateSelected);
+            setStartDate(endDateSelected);
+        }
+    };
+
+    const getTrendAnalysis = () => {
+        const params = {
+            mission: 'create',
+            uid: userInfo.uid,
+            handicap_side: teamSelected,
+            handicap_values: teamHandicapOdds,
+            overUnder_values: handicapOddsSelected,
+            startTime: startDate,
+            endTime: endDate
+        };
+
+        // eslint-disable-next-line -- call mqtt data
+        console.dir(params);
+
+        setShowRecord(true);
     };
 
     useEffect(() => {
@@ -184,7 +235,7 @@ function DiscSelect() {
                         <div
                             className={style.record}
                             onClick={() => {
-                                setShowFilter(true);
+                                setShowRecord(true);
                             }}
                         >
                             分析纪录
@@ -194,20 +245,26 @@ function DiscSelect() {
                             <div className={style.select}>
                                 <div className={style.selectTitle}>让方</div>
                                 <GameFilter
+                                    onChange={(val: string) => {
+                                        setTeamSelected(val);
+                                    }}
                                     options={teamList}
                                     placeholder="选择主队"
                                     showCloseButton={false}
                                     showDragBar
                                     title="选择让方"
-                                    value={null}
+                                    value={teamSelected}
                                 />
                                 <GameFilter
+                                    onChange={(val: string) => {
+                                        setTeamHandicapOdds(val);
+                                    }}
                                     options={handicapNumberList}
                                     placeholder="选择让球"
                                     showCloseButton={false}
                                     showDragBar
                                     title="选择让方"
-                                    value={null}
+                                    value={teamHandicapOdds}
                                 />
                             </div>
                         </section>
@@ -226,7 +283,9 @@ function DiscSelect() {
                             setSelected={setOverUnderSelected}
                             title="时间范围"
                             valueSelected={overUnderSelected}
-                        />
+                        >
+                            <Datepicker updateQueryDate={updateQueryDate} />
+                        </SectionSelect>
                     </>
                 ) : (
                     <SectionSelect
@@ -245,7 +304,7 @@ function DiscSelect() {
                     <button
                         className={style.search}
                         onClick={() => {
-                            goDetail();
+                            getTrendAnalysis();
                         }}
                         type="button"
                     >
@@ -261,12 +320,12 @@ function DiscSelect() {
             </div>
 
             <RecordFilter
-                isOpen={showFilter}
+                isOpen={showRecord}
                 onClose={() => {
-                    setShowFilter(false);
+                    setShowRecord(false);
                 }}
                 onOpen={() => {
-                    setShowFilter(true);
+                    setShowRecord(true);
                 }}
             />
             <HandicapDrawer
