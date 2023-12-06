@@ -23,9 +23,9 @@ function Info() {
                         <Tag background="#fff" color="#4489ff" text={`月榜 ${master.ranking}`} />
                     </div>
                     <div className={style.bottom}>
-                        <span>粉絲: {master.fansNumber} </span>
-                        <span>解鎖: {master.unlockNumber} </span>
-                        <span>猜球勝率: {master.winPercent}%</span>
+                        {master.fansNumber > 0 && <span>粉絲: {master.fansNumber} </span>}
+                        {master.unlockNumber > 0 && <span>解鎖: {master.unlockNumber} </span>}
+                        {master.winPercent > 0 && <span>猜球勝率: {master.winPercent}%</span>}
                     </div>
                 </div>
             </div>
