@@ -59,6 +59,7 @@ const UnFollowResultSchema = z.object({
 type UnFollowResult = z.infer<typeof UnFollowResultSchema>;
 
 /**
+ * 取得追蹤數、粉絲
  * - params : {@link GetFollowersRequest}
  * - returns : {@link GetFollowersResponse}
  * - {@link GetFollower}
