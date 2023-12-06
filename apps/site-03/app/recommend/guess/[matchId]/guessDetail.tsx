@@ -1,7 +1,6 @@
 'use client';
 import type { Metadata } from 'next';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
 import VsBox from './vsBox';
 import MasterPlan from './masterPlan';
 import { creatGuessDetailStore } from './guessDetailStore';
@@ -14,10 +13,9 @@ export const metadata: Metadata = {
 
 function GuessDetail({ backHistory }: { backHistory: boolean }) {
     const router = useRouter();
-    const [isUnlocked, setIsUnlocked] = useState(false);
 
     const headerProps = {
-        title: '足球竞猜',
+        title: '猜风向',
         total: 999999
     };
 
@@ -59,11 +57,12 @@ function GuessDetail({ backHistory }: { backHistory: boolean }) {
                 id: 7,
                 avatar: '',
                 name: '羅曼琉球',
-                hotStreak: 2,
+                hotStreak: 9,
                 ranking: 345,
                 homeTeam: '欧锦U20A',
                 awayTeam: '斯洛文尼亚U20',
                 unlock: false,
+                unlockPrice: 40,
                 history: ['win', 'lose', 'draw', 'win', 'lose', 'draw', 'win', 'lose', 'draw'],
                 guess: 'home',
                 result: 'win',
@@ -73,14 +72,30 @@ function GuessDetail({ backHistory }: { backHistory: boolean }) {
                 id: 10,
                 avatar: '',
                 name: '小羅聊球',
-                hotStreak: 2,
+                hotStreak: 7,
                 ranking: 345,
                 homeTeam: '欧锦U20A',
                 awayTeam: '斯洛文尼亚U20',
                 unlock: false,
-                history: ['win', 'lose', 'draw', 'win', 'lose', 'draw', 'win', 'lose', 'draw'],
+                unlockPrice: 20,
+                history: ['draw', 'draw', 'draw', 'win', 'lose', 'win', 'lose', 'lose', 'win'],
                 guess: 'home',
                 result: 'win',
+                guessValue: 0.5
+            },
+            {
+                id: 11,
+                avatar: '',
+                name: '老崔聊包',
+                hotStreak: 2,
+                ranking: 15,
+                homeTeam: '欧锦U20A',
+                awayTeam: '斯洛文尼亚U20',
+                unlock: false,
+                unlockPrice: 20,
+                history: ['lose', 'win', 'win', 'win', 'draw', 'win', 'lose', 'win', 'win'],
+                guess: 'small',
+                result: 'draw',
                 guessValue: 0.5
             }
         ]
@@ -90,7 +105,7 @@ function GuessDetail({ backHistory }: { backHistory: boolean }) {
         <>
             <Header back={back} title={headerProps.title} total={headerProps.total} />
             <VsBox />
-            <MasterPlan isUnlocked={isUnlocked} setIsUnlocked={setIsUnlocked} />
+            <MasterPlan />
             <Footer />
         </>
     );
