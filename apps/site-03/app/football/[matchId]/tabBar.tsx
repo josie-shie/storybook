@@ -52,6 +52,10 @@ function TabBar({ children, matchId }: { children: ReactNode; matchId: number })
             <Tabs
                 buttonRadius={tabStyle.buttonRadius}
                 defaultValue={route[route.length - 1] === matchId.toString() ? 0 : undefined}
+                fullBlock={
+                    route[route.length - 1] === matchId.toString() ||
+                    route[route.length - 1] === 'messageBoard'
+                }
                 gap={tabStyle.gap}
                 position="center"
                 styling="underline"
@@ -65,7 +69,9 @@ function TabBar({ children, matchId }: { children: ReactNode; matchId: number })
                             )}
 
                             {route[route.length - 1] === matchId.toString() &&
-                                item.params === 'messageBoard' && <MessageBoard />}
+                                item.params === 'messageBoard' && (
+                                    <MessageBoard matchId={matchId} />
+                                )}
                         </Tab>
                     );
                 })}

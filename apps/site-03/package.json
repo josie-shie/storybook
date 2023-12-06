@@ -11,7 +11,7 @@
         "lint:style": "stylelint app/**/*.{module.css,css,scss,module.scss}"
     },
     "dependencies": {
-        "@bf/message-board": "^1.0.26",
+        "@bf/message-board": "^1.0.29",
         "@emotion/styled": "^11.11.0",
         "@hookform/resolvers": "^3.3.2",
         "@mui/icons-material": "^5.11.0",

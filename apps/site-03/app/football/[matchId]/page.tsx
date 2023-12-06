@@ -5,8 +5,8 @@ export const metadata: Metadata = {
     title: '賽事 | Sport'
 };
 
-function Page() {
-    return <MessageBoard />;
+function Page({ params }: { params: { matchId: number } }) {
+    return <MessageBoard matchId={params.matchId} />;
 }
 
 export default Page;
