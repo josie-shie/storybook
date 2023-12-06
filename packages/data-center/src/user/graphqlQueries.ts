@@ -72,3 +72,29 @@ export const GET_INVITATION_CODE_QUERY = `
         }
     }
 `;
+
+export const GET_SUBSCRIPTION_QUERY = `
+    query getSubscriptionPlanList {
+        getSubscriptionPlanList {
+            subscriptionPlans {
+              id
+              name
+              times
+              cost
+              masterDistribution
+              masterPlan
+              expertAnalysis
+              gamePathAnalysis
+            }
+        }
+    }
+`;
+
+export const SUBSCRIBE_PLAN_MUTATION = `
+    mutation subscribePlan($input: SubscribePlanInput!) {
+        subscribePlan(input: $input) {
+            planStartAt
+            planEndAt
+        }
+    }
+`;

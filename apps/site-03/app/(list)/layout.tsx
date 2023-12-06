@@ -1,14 +1,11 @@
 'use client';
-import { useState, useCallback, type ReactNode } from 'react';
+import { type ReactNode } from 'react';
 import Image from 'next/image';
 import { Slick } from 'ui';
-import { useRouter, useSearchParams, usePathname, useParams } from 'next/navigation';
+import { useSearchParams, useParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import style from './layout.module.scss';
-import FilterIcon from './img/filter.png';
-import SettingIcon from './img/setting.png';
 import Logo from './img/logo.png';
-import Setting from './components/setting';
 import HeaderFilter from '@/components/header/headerFilter';
 import Footer from '@/components/footer/footer';
 
@@ -33,7 +30,6 @@ function InterceptingDetail({ modal }: { modal: ReactNode }) {
                     }}
                     transition={{ duration: 0.2 }}
                 >
-                    {' '}
                     <div className={style.modal}>{modal}</div>
                 </motion.div>
             ) : null}
@@ -42,23 +38,9 @@ function InterceptingDetail({ modal }: { modal: ReactNode }) {
 }
 
 function ContestListLayout({ children, modal }: { children: ReactNode; modal: ReactNode }) {
-    const [showSetting, setShowSetting] = useState(false);
-
     const searchParams = useSearchParams();
     const status = searchParams.get('status');
     const isFliterOpen = searchParams.get('filter');
-    const pathname = usePathname();
-    const router = useRouter();
-
-    const createQueryString = useCallback(
-        (name: string, value: string) => {
-            const params = new URLSearchParams(searchParams);
-            params.set(name, value);
-
-            return params.toString();
-        },
-        [searchParams]
-    );
 
     const tabList = [
         {
@@ -77,7 +59,7 @@ function ContestListLayout({ children, modal }: { children: ReactNode; modal: Re
             status: 'schedule'
         },
         {
-            label: '赛果',
+            label: '完场',
             href: '/?status=result',
             status: 'result'
         }
@@ -88,25 +70,7 @@ function ContestListLayout({ children, modal }: { children: ReactNode; modal: Re
     return (
         <div className="contestListLayout">
             <HeaderFilter logo={<Image alt="logo" height={16} src={Logo} />}>
-                <div className={style.tool}>
-                    <Image
-                        alt="filter"
-                        className={style.mr}
-                        onClick={() => {
-                            router.push(`${pathname}?${createQueryString('filter', 'open')}`);
-                        }}
-                        sizes="32"
-                        src={FilterIcon}
-                    />
-                    <Image
-                        alt="setting"
-                        onClick={() => {
-                            setShowSetting(true);
-                        }}
-                        sizes="32"
-                        src={SettingIcon}
-                    />
-                </div>
+                <div className={style.tool} />
             </HeaderFilter>
             <div className={style.main}>
                 <Slick
@@ -120,15 +84,6 @@ function ContestListLayout({ children, modal }: { children: ReactNode; modal: Re
                     })}
                 </Slick>
             </div>
-            <Setting
-                isOpen={showSetting}
-                onClose={() => {
-                    setShowSetting(false);
-                }}
-                onOpen={() => {
-                    setShowSetting(true);
-                }}
-            />
 
             <Footer />
             <InterceptingDetail modal={modal} />

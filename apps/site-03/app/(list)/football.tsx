@@ -4,12 +4,20 @@ import { useEffect, useState } from 'react';
 import { InfiniteScroll } from 'ui';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useSearchParams, useRouter } from 'next/navigation';
+import Image from 'next/image';
 import GameCard from './components/gameCard';
 import style from './football.module.scss';
 import { creatContestListStore, useContestListStore } from './contestListStore';
 import Filter from './components/filter';
 import BaseDatePicker from './components/baseDatePicker/baseDatePicker';
+import SettingIcon from './img/setting.png';
+import Setting from './components/setting';
+import FilterButton from './components/filterButton';
 import { useContestInfoStore } from '@/app/contestInfoStore';
+
+function Banner() {
+    return <div className={style.banner} />;
+}
 
 function DatePicker() {
     const searchParams = useSearchParams();
@@ -53,7 +61,7 @@ function DatePicker() {
     );
 }
 
-function ContestList() {
+function ContestList({ switchSetting }: { switchSetting: () => void }) {
     const [rows, setRows] = useState({ full: 20, notYet: 0, finish: 0 });
     const contestList = useContestListStore.use.contestList();
     const contestInfo = useContestListStore.use.contestInfo();
@@ -162,6 +170,11 @@ function ContestList() {
 
     return (
         <>
+            <Banner />
+            <div className={style.toolbar}>
+                <FilterButton />
+                <Image alt="setting" onClick={switchSetting} sizes="32" src={SettingIcon} />
+            </div>
             <ul>
                 {displayList.map(matchId => {
                     return <GameCard key={matchId} matchId={matchId} />;
@@ -197,14 +210,28 @@ function ContestList() {
 
 function Football({ todayContest }: { todayContest: GetContestListResponse }) {
     creatContestListStore(todayContest);
+    const [showSetting, setShowSetting] = useState(false);
+
+    const switchSetting = () => {
+        setShowSetting(!showSetting);
+    };
 
     return (
         <>
             <div className={style.football}>
                 <DatePicker />
-                <ContestList />
+                <ContestList switchSetting={switchSetting} />
             </div>
             <Filter />
+            <Setting
+                isOpen={showSetting}
+                onClose={() => {
+                    setShowSetting(false);
+                }}
+                onOpen={() => {
+                    setShowSetting(true);
+                }}
+            />
         </>
     );
 }
