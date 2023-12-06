@@ -1,6 +1,6 @@
 import { initStore } from 'lib';
 import type { StoreWithSelectors } from 'lib';
-import type { HandicapType, GuessType, GuessTeam, PredictType } from '@/types/predict';
+import type { GuessType, GuessTeam, HandicapType, PredictTypeWithLock } from '@/types/predict';
 
 interface ArticleDetail {
     mentorId: number; // 導師id
@@ -32,21 +32,22 @@ interface ArticleDetail {
     hotStreak: number; //連紅
     ranking: number; //月榜
     followed: boolean; //是否關注
-    predictedPlay: PredictType; //預測玩法
+    predictedPlay: PredictTypeWithLock; //預測玩法
     price: number; //解鎖金幣
     winPercent: number; //猜求勝率
 }
 
 interface RecommendationItem {
     id: number;
-    postTime: number; //發表時間
-    leagueName: string; //發表時間
-    dateTime: number; //比賽時間
+    createdAt: number; //發表時間
+    leagueName: string; //聯賽名稱
+    matchTime: number; //比賽時間
     homeTeamName: string; //主隊名稱
     awayTeamName: string; //客隊名稱
-    handicap: HandicapType; //盤口
-    amount: number; //解鎖費用
-    lockCount: number; //已解鎖人數
+    price: number; //解鎖費用
+    predictPlayType: HandicapType; //玩法
+    unlockNumber: number; //已解鎖人數,
+    isLock: boolean; //是否解鎖
 }
 
 interface InitState {
@@ -93,7 +94,7 @@ const initialState = (set: (data: Partial<ArticleState>) => void) => ({
         hotStreak: 0,
         ranking: 0,
         followed: false,
-        predictedPlay: 'LOCK' as PredictType,
+        predictedPlay: 'LOCK' as PredictTypeWithLock,
         price: 0,
         winPercent: 10
     },
