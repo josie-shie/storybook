@@ -20,6 +20,7 @@ export interface DetailType {
 
 // 高勝率玩家風向
 interface HighWinRateTrend {
+    unlockPrice: number; // 解鎖價格
     trendHome: number; // 猜 主隊 人數
     trendAway: number; // 猜 客隊 人數
     trendBig: number; // 猜 大 人數
@@ -52,6 +53,7 @@ interface InitState {
 
 interface GuessDetailState extends InitState {
     setDetail: (detail: DetailType) => void;
+    setGuessesLeft: (leftNumber: number) => void;
 }
 
 let useGuessDetailStore: StoreWithSelectors<GuessDetailState>;
@@ -64,6 +66,9 @@ const initialState = (set: (data: Partial<GuessDetailState>) => void) => ({
     masterPlanList: [],
     setDetail: (detail: DetailType) => {
         set({ detail });
+    },
+    setGuessesLeft: (leftNumber: number) => {
+        set({ guessesLeft: leftNumber });
     },
     setMasterPlanList: (masterPlanList: MasterPlan[]) => {
         set({ masterPlanList });

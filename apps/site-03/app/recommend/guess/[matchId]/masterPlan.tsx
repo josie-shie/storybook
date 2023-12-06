@@ -6,6 +6,8 @@ import GameCard from './gameCard';
 import AnalyzeColumn from './analyze';
 import Title from './img/title.png';
 import style from './masterPlan.module.scss';
+import { useGuessDetailStore } from './guessDetailStore';
+import { useUserStore } from '@/app/userStore';
 import PaidDialog from '@/components/paidDialog/paidDialog';
 
 interface MasterPlanProps {
@@ -20,6 +22,9 @@ function MasterPlan({ isUnlocked, setIsUnlocked }: MasterPlanProps) {
     const [balance, setBalance] = useState<number>(0);
     const [amount, setAmount] = useState<number>(0);
     const [plan, setPlan] = useState(false);
+
+    const userBalance = useUserStore.use.userInfo().balance;
+    const unlockTrendPrice = useGuessDetailStore.use.highWinRateTrend().unlockPrice;
 
     const handleGlobalClickOpen = (newBalance: number, newAmount: number, getPlan: string) => {
         if (getPlan === 'single') {
@@ -82,12 +87,13 @@ function MasterPlan({ isUnlocked, setIsUnlocked }: MasterPlanProps) {
                         <div className={style.mask}>
                             <button
                                 onClick={() => {
-                                    handleGlobalClickOpen(100, 10, 'single');
+                                    handleGlobalClickOpen(userBalance, unlockTrendPrice, 'single');
                                 }}
                                 type="button"
                             >
-                                10 金币解锁本场
+                                {unlockTrendPrice} 金币解锁本场
                             </button>
+                            {/* 訂閱方案流程待改 */}
                             <button
                                 onClick={() => {
                                     handleGlobalClickOpen(100, 200, 'monthly');
@@ -99,20 +105,8 @@ function MasterPlan({ isUnlocked, setIsUnlocked }: MasterPlanProps) {
                         </div>
                     ) : (
                         <>
-                            <AnalyzeColumn
-                                awayType="客"
-                                awayUser={4}
-                                homeType="主"
-                                homeUser={888}
-                                value={88}
-                            />
-                            <AnalyzeColumn
-                                awayType="小"
-                                awayUser={4}
-                                homeType="大"
-                                homeUser={888}
-                                value={88}
-                            />
+                            <AnalyzeColumn awayType="客" homeType="主" />
+                            <AnalyzeColumn awayType="小" homeType="大" />
                         </>
                     )}
                 </div>

@@ -48,10 +48,11 @@ function GuessDetail({ backHistory }: { backHistory: boolean }) {
             small: 355
         },
         highWinRateTrend: {
-            trendHome: 76,
-            trendAway: 24,
-            trendBig: 62,
-            trendSmall: 38
+            unlockPrice: 50,
+            trendHome: 176,
+            trendAway: 324,
+            trendBig: 262,
+            trendSmall: 185
         },
         masterPlanList: [
             {
