@@ -53,7 +53,7 @@ function UserInfo() {
                     >
                         <div className={style.detail}>
                             <Image
-                                alt="大頭貼"
+                                alt="大头贴"
                                 className={style.avatar}
                                 height={54}
                                 src={
@@ -67,13 +67,13 @@ function UserInfo() {
                                 <div className={style.top}>
                                     <span className={style.name}>{userInfo.username}</span>
                                     <div className={style.tags}>
-                                        <Tag icon={<IconFlame size={10} />} text="9連紅" />
+                                        <Tag icon={<IconFlame size={10} />} text="9连红" />
                                         <Tag background="#fff" color="#4489ff" text="月榜 10" />
                                     </div>
                                 </div>
                                 <div className={style.middle}>132****789</div>
                                 <div className={style.bottom}>
-                                    <span>粉絲: 34713</span>
+                                    <span>粉丝: 34713</span>
                                     <span>点赞: 2355</span>
                                 </div>
                             </div>
@@ -86,7 +86,7 @@ function UserInfo() {
 
                     <div className={style.trade}>
                         <button className={style.tradeDetail} type="button">
-                            <Link href="/userInfo/tradeDetail">我的交易明細</Link>
+                            <Link href="/userInfo/tradeDetail">我的交易明细</Link>
                         </button>
                         <div className={style.list}>
                             <div className={style.item}>
@@ -136,7 +136,7 @@ function UserInfo() {
                             <ButtonBase>
                                 <Image alt="" height={32} src={MyFans} width={32} />
                                 <Link className={style.text} href="/userInfo/myFans">
-                                    我的粉絲
+                                    我的粉丝
                                 </Link>
                             </ButtonBase>
                         </div>
@@ -155,7 +155,7 @@ function UserInfo() {
                                     className={style.text}
                                     href="/userInfo/myAnalysis?status=unlock"
                                 >
-                                    我的分析
+                                    我的解锁
                                 </Link>
                             </ButtonBase>
                         </div>

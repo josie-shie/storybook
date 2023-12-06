@@ -7,8 +7,8 @@ import { useEffect } from 'react';
 import leftBlackIcon from '../../img/left_black.png';
 import style from './oddsDetailDrawer.module.scss';
 import OddLiveTable from './oddLiveTable';
-import { useSituationStore } from '@/app/[matchId]/situationStore';
-import { useContestDetailStore } from '@/app/[matchId]/contestDetailStore';
+import { useSituationStore } from '@/app/football/[matchId]/situationStore';
+import { useContestDetailStore } from '@/app/football/[matchId]/contestDetailStore';
 import { useContestInfoStore } from '@/app/contestInfoStore';
 
 function ScroeBar() {

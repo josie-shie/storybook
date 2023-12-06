@@ -17,33 +17,33 @@ function TabBar({ children, matchId }: { children: ReactNode; matchId: number })
     const tabList = [
         {
             label: '聊天',
-            to: `/${matchId}/messageBoard`,
+            to: `/football/${matchId}/messageBoard`,
             params: 'messageBoard'
         },
         {
             label: '赛况',
-            to: `/${matchId}/situation`,
+            to: `/football/${matchId}/situation`,
             params: 'situation'
         },
         // 數據源暫無資料 先隱藏
         // {
         //     label: '直播',
-        //     to: `/${matchId}/textBroadcast`,
+        //     to: `/football/${matchId}/textBroadcast`,
         //     params: 'textBroadcast'
         // },
         {
             label: '分析',
-            to: `/${matchId}/analyze`,
+            to: `/football/${matchId}/analyze`,
             params: 'analyze'
         },
         {
             label: '预测',
-            to: `/${matchId}/predict`,
+            to: `/football/${matchId}/predict`,
             params: 'predict'
         },
         {
             label: '指数',
-            to: `/${matchId}/exponent`,
+            to: `/football/${matchId}/exponent`,
             params: 'exponent'
         }
     ];
