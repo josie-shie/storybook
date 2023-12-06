@@ -20,6 +20,7 @@ function AuthDrawer() {
     const isDrawerOpen = useAuthStore.use.isDrawerOpen();
     const setIsDrawerOpen = useAuthStore.use.setIsDrawerOpen();
     const removeAuthQuery = useAuthStore.use.removeAuthQuery();
+    const removeInvitCode = useAuthStore.use.removeInvitCode();
     const setUserInfo = useUserStore.use.setUserInfo();
     const setIsLogin = useUserStore.use.setIsLogin();
     const setToken = useUserStore.use.setToken();
@@ -51,6 +52,7 @@ function AuthDrawer() {
     const closeDrawer = () => {
         setIsDrawerOpen(false);
         removeAuthQuery();
+        removeInvitCode();
     };
 
     const getUserInfo = async () => {
@@ -63,6 +65,7 @@ function AuthDrawer() {
                 setIsLogin(true);
                 setToken(isCookieExist);
                 removeAuthQuery();
+                removeInvitCode();
             } else {
                 setNotificationVisible('登陆已过期，请重新登陆', 'error');
             }

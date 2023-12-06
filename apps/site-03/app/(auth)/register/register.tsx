@@ -35,12 +35,14 @@ const schema = yup.object().shape({
 
 function Register() {
     const setToken = useUserStore.use.setToken();
+    // const inviteCode = useUserStore.use.inviteCode(); // 邀請碼等api添加邀請碼欄位在使用
     const setIsDrawerOpen = useAuthStore.use.setIsDrawerOpen();
     const setIsVisible = useNotificationStore.use.setIsVisible();
     const registerStore = useAuthStore.use.register();
     const { sendCodeSuccess, setSendCodeSuccess, countDownNumber, setCountDownNumber } =
         registerStore;
     const removeAuthQuery = useAuthStore.use.removeAuthQuery();
+    const removeInvitCode = useAuthStore.use.removeInvitCode();
 
     const {
         control,
@@ -111,6 +113,7 @@ function Register() {
         setToken(res.data);
         setIsVisible('注册成功！', 'success');
         removeAuthQuery();
+        removeInvitCode();
     };
 
     const isSendVerificationCodeDisable = !countryCode || !mobileNumber;
