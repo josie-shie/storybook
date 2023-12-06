@@ -33,7 +33,7 @@ export interface MessageResponse {
     message?: MessageItem;
     list?: MessageItem[];
     page?: number;
-    receiver?: { uid: string };
+    receiver?: User;
     rooms?: MessageRoomType[];
     type?: string;
 }
