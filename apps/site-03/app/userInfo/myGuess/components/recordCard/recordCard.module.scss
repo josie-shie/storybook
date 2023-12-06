@@ -1,0 +1,84 @@
+.recordCard {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 10px 0;
+
+    .detail {
+        display: flex;
+        gap: 12px;
+
+        .details {
+            display: block;
+
+            > span {
+                color: #222;
+                margin-right: 4px;
+                font-size: 14px;
+                font-weight: 500;
+            }
+
+            .league {
+                color: #4a4a4a;
+                margin-top: 4px;
+                font-size: 14px;
+                font-weight: 400;
+                height: 36px;
+                line-height: 36px;
+            }
+
+            .ballList {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                margin-top: 8px;
+
+                li {
+                    line-height: 0;
+                }
+            }
+        }
+    }
+
+    .paid {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        width: 70px;
+        height: 72px;
+
+        .hit {
+            position: relative;
+            display: flex;
+            align-items: flex-end;
+            justify-content: flex-start;
+            flex-direction: column;
+            gap: 4px;
+            height: 100%;
+        }
+
+        .play {
+            color: #8d8d8d;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .paidContent {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            background: #f3f3f3;
+            border-radius: 30px;
+            margin-top: 4px;
+
+            .play {
+                color: #f85640;
+                height: 24px;
+                line-height: 24px;
+                font-size: 14px;
+                text-align: center;
+            }
+        }
+    }
+}
