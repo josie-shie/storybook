@@ -1,15 +1,17 @@
 import { initStore } from 'lib';
 import type { StoreWithSelectors } from 'lib';
+// import type { GetFollowersResponse } from 'data-center';
 
 interface FocusMember {
-    id: number;
-    name: string;
+    memberId: number;
+    username: string;
+    avatarPath: string;
+    profile: string;
+    fans: number;
+    unlocked: number;
     hotStreak: number;
     ranking: number;
     followed: boolean;
-    unlockNumber: number;
-    fansNumber: number;
-    description: string;
 }
 
 interface InitState {
@@ -17,14 +19,14 @@ interface InitState {
 }
 
 interface FocusMemberState extends InitState {
-    setFocusMemberList?: (focusMemberItem: FocusMember[]) => void;
+    setFocusMemberItem: (focusMemberItem: FocusMember[]) => void;
 }
 
 let useFocusMemberStore: StoreWithSelectors<FocusMemberState>;
 
 const initialState = (set: (data: Partial<FocusMemberState>) => void) => ({
     focusMemberItem: [],
-    setFocusMemberList: (focusMemberItem: FocusMember[]) => {
+    setFocusMemberItem: (focusMemberItem: FocusMember[]) => {
         set({ focusMemberItem });
     }
 });

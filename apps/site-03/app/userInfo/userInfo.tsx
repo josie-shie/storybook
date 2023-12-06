@@ -57,9 +57,9 @@ function UserInfo() {
                                 className={style.avatar}
                                 height={54}
                                 src={
-                                    userInfo.avatarPath === '0'
-                                        ? defaultAvatar
-                                        : userInfo.avatarPath
+                                    userInfo.avatarPath && userInfo.avatarPath !== '0'
+                                        ? userInfo.avatarPath
+                                        : defaultAvatar
                                 }
                                 width={54}
                             />
@@ -162,11 +162,11 @@ function UserInfo() {
                     </div>
                     <div className={style.mySetting}>
                         <ul>
-                            <li>
+                            {/* <li>
                                 <ButtonBase>
                                     <Link href="/userInfo/applyExpert">申请成为专家</Link>
                                 </ButtonBase>
-                            </li>
+                            </li> */}
                             <li>
                                 <ButtonBase
                                     onClick={() => {

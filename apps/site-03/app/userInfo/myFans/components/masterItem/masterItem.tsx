@@ -5,42 +5,50 @@ import style from './masterItem.module.scss';
 import Avatar from '@/components/avatar/avatar';
 import Tag from '@/components/tag/tag';
 
-interface FocusProps {
+interface FansProps {
+    uid: number;
     item: {
-        id: number;
-        name: string;
+        memberId: number;
+        username: string;
+        avatarPath: string;
+        profile: string;
+        fans: number;
+        unlocked: number;
         hotStreak: number;
         ranking: number;
         followed: boolean;
-        unlockNumber: number;
-        fansNumber: number;
-        description: string;
     };
+    onFollowToggle: (uid: number, memberId: number, followed: boolean) => void;
 }
 
-function MasterItem({ item }: FocusProps) {
+function MasterItem({ uid, item, onFollowToggle }: FansProps) {
+    const handleFollowClick = () => {
+        onFollowToggle(uid, item.memberId, !item.followed);
+    };
+
     return (
-        <div className={style.masterItem} key={item.id}>
+        <div className={style.masterItem} key={item.memberId}>
             <div className={style.info}>
                 <div className={style.avatarContainer}>
-                    <Avatar borderColor="#4489FF" size={46} />
+                    <Avatar borderColor="#4489FF" size={46} src={item.avatarPath} />
                 </div>
                 <div className={style.about}>
                     <div className={style.top}>
-                        <span>{item.name}</span>
+                        <span>{item.username}</span>
                         {item.hotStreak > 2 && (
                             <Tag icon={<IconFlame size={10} />} text={`${item.hotStreak}連紅`} />
                         )}
                         <Tag background="#4489FF" text={`月榜 ${item.ranking}`} />
                     </div>
                     <div className={style.bot}>
-                        <span>粉丝: {item.fansNumber}</span>
-                        <span>解锁: {item.unlockNumber}</span>
+                        <span>粉丝: {item.fans}</span>
+                        <span>解锁: {item.unlocked}</span>
                     </div>
                 </div>
                 {item.followed ? (
                     <motion.button
                         className={style.followedButton}
+                        onClick={handleFollowClick}
                         type="button"
                         whileTap={{ scale: 0.9 }}
                     >
@@ -49,6 +57,7 @@ function MasterItem({ item }: FocusProps) {
                 ) : (
                     <motion.button
                         className={style.followButton}
+                        onClick={handleFollowClick}
                         type="button"
                         whileTap={{ scale: 0.9 }}
                     >
@@ -56,7 +65,7 @@ function MasterItem({ item }: FocusProps) {
                     </motion.button>
                 )}
             </div>
-            <div className={style.description}>{item.description}</div>
+            <div className={style.description}>{item.profile}</div>
         </div>
     );
 }
