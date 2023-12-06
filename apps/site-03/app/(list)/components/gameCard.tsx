@@ -8,6 +8,7 @@ import { useContestListStore } from '../contestListStore';
 import style from './gameCard.module.scss';
 import { CompareOdds } from './compareOdds';
 import Soccer from './img/soccer.png';
+import Video from './img/video.jpg';
 import { useFormattedTime } from '@/hooks/useFormattedTime';
 import { useContestInfoStore } from '@/app/contestInfoStore';
 
@@ -222,7 +223,11 @@ function TopArea({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId: 
                     />
                 </div>
             </div>
-            <div className={style.video} />
+            <div className={style.video}>
+                {contestInfo.hasAnimation ? (
+                    <Image alt="animate" className={style.videoIcon} src={Video} />
+                ) : null}
+            </div>
         </div>
     );
 }

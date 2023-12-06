@@ -18,6 +18,7 @@ const ContestInfoSchema = z.object({
     homeRed: z.number(),
     homeScore: z.number(),
     homeYellow: z.number(),
+    hasAnimation: z.boolean(),
     explainEn: z.string(),
     explainCn: z.string(),
     extraExplain: z.string(),
