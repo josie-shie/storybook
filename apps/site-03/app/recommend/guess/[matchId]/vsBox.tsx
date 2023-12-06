@@ -1,77 +1,149 @@
+'use client';
 import Image from 'next/image';
 import { ProgressBar } from 'ui/stories/progressBar/progressBar';
+import { useState } from 'react';
 import NorthBangKokClubIcon from './img/northBangkokClubIcon.png';
 import ThaiUniversityClubIcon from './img/thaiUniversityClubIcon.png';
 import { useGuessDetailStore } from './guessDetailStore';
 import style from './vsBox.module.scss';
+import selectDecoration from './img/select.png';
+import GuessDialog from './components/guessDialog/guessDialog';
+import type { DetailType } from './guessDetailStore';
 
 interface BettingProps {
     play: string;
-    value: number;
-    homeUser: number;
+    detail: DetailType;
     homeType: string;
-    awayUser: number;
     awayType: string;
-    isUnlocked: boolean;
 }
 
-interface VsBoxProps {
-    isUnlocked: boolean;
-}
+function BettingColumn({ play, detail, homeType, awayType }: BettingProps) {
+    const [openGuessDialog, setOpenGuessDialog] = useState(false);
+    const [direction, setDirection] = useState('left');
+    const calculatePercentage = (a: number, b: number) => {
+        if (b === 0) {
+            return 0;
+        }
+        const percentage = Math.round((a / (a + b)) * 100);
+        return percentage;
+    };
+    const leftPercent =
+        homeType === '主'
+            ? calculatePercentage(detail.home, detail.away)
+            : calculatePercentage(detail.big, detail.small);
+    const rightPercent = 100 - leftPercent;
+    const guessStatus = homeType === '主' ? detail.guessHomeAway : detail.guessBigSmall;
+    const guessTeam = direction === 'left' ? detail.homeTeamName : detail.awayTeamName;
 
-function BettingColumn({
-    play,
-    value,
-    homeUser,
-    homeType,
-    awayUser,
-    awayType,
-    isUnlocked
-}: BettingProps) {
+    const guessesLeft = useGuessDetailStore.use.guessesLeft();
+    const setGuessDetail = useGuessDetailStore.use.setDetail();
+    const setGuessesLeft = useGuessDetailStore.use.setGuessesLeft();
+
+    const handleGuess = (guessDirection: 'left' | 'right') => {
+        setOpenGuessDialog(true);
+        setDirection(guessDirection);
+    };
+    const handleClickClose = () => {
+        setOpenGuessDialog(false);
+    };
+    const handleConfirmGuess = () => {
+        //  API addGuess
+        setOpenGuessDialog(false);
+        if (homeType === '主') {
+            const betting = direction === 'left' ? 'home' : 'away';
+            const newDetail: DetailType = { ...detail, guessHomeAway: betting };
+            setGuessDetail({ ...newDetail });
+            setGuessesLeft(guessesLeft - 1);
+        } else {
+            const betting = direction === 'left' ? 'big' : 'small';
+            const newDetail: DetailType = { ...detail, guessBigSmall: betting };
+            setGuessDetail({ ...newDetail });
+            setGuessesLeft(guessesLeft - 1);
+        }
+    };
+
     return (
         <div className={style.column}>
-            {isUnlocked ? (
-                <div className={style.unLock}>
-                    <div className={style.button}>
-                        <span className={style.team}>{homeType}</span>
-                        <span className={style.user}>{homeUser}人</span>
-                    </div>
-                    <div className={style.progress}>
-                        <div className={style.play}>
-                            <span className={style.home}>{homeUser}%</span>
-                            <span className={style.ing}>{play}</span>
-                            <span className={style.away}>{awayUser}%</span>
-                        </div>
-                        <ProgressBar
-                            background="rgba(255 255 255 / 50%)"
-                            fill="#73ddff"
-                            gapSize="large"
-                            height={8}
-                            radius
-                            skewGap
-                            value={value}
-                        />
-                    </div>
-                    <div className={style.button}>
-                        <span className={style.team}>{awayType}</span>
-                        <span className={style.user}>{awayUser}人</span>
-                    </div>
-                </div>
-            ) : (
+            <GuessDialog
+                handicap="让一球/球半"
+                onClose={handleClickClose}
+                onConfirm={handleConfirmGuess}
+                openPaid={openGuessDialog}
+                play="让分"
+                teamName={guessTeam}
+            />
+            {guessStatus === 'none' ? (
                 <>
-                    <div className={style.button}>{homeType}</div>
+                    <div
+                        className={style.button}
+                        onClick={() => {
+                            handleGuess('left');
+                        }}
+                    >
+                        {homeType}
+                    </div>
                     <div className={style.progress}>
                         <div className={style.play}>{play}</div>
                         <div className={style.line} />
                     </div>
-                    <div className={style.button}>{awayType}</div>
+                    <div
+                        className={style.button}
+                        onClick={() => {
+                            handleGuess('right');
+                        }}
+                    >
+                        {awayType}
+                    </div>
                 </>
+            ) : (
+                <div className={style.unLock}>
+                    <div
+                        className={`${style.button} ${
+                            guessStatus === 'away' || guessStatus === 'small' ? style.noSelect : ''
+                        }`}
+                    >
+                        <span className={style.team}>{homeType}</span>
+                        <span className={style.user}>{leftPercent}%</span>
+                        {(guessStatus === 'home' || guessStatus === 'big') && (
+                            <Image alt="" height={20} src={selectDecoration} width={20} />
+                        )}
+                    </div>
+                    <div className={style.progress}>
+                        <div className={style.play}>
+                            <span className={style.home}>
+                                {homeType === '主' ? detail.home : detail.big}
+                            </span>
+                            <span className={style.ing}>{play}</span>
+                            <span className={style.away}>
+                                {homeType === '主' ? detail.away : detail.small}
+                            </span>
+                        </div>
+                        <ProgressBar
+                            background="#FFFFFF4D"
+                            fill="#fff"
+                            height={8}
+                            radius
+                            value={leftPercent}
+                        />
+                    </div>
+                    <div
+                        className={`${style.button} ${
+                            guessStatus === 'home' || guessStatus === 'big' ? style.noSelect : ''
+                        }`}
+                    >
+                        <span className={style.team}>{awayType}</span>
+                        <span className={style.user}>{rightPercent}%</span>
+                        {(guessStatus === 'away' || guessStatus === 'small') && (
+                            <Image alt="" height={20} src={selectDecoration} width={20} />
+                        )}
+                    </div>
+                </div>
             )}
         </div>
     );
 }
 
-function VsBox({ isUnlocked }: VsBoxProps) {
+function VsBox() {
     const detailInfo = useGuessDetailStore.use.detail();
 
     return (
@@ -106,24 +178,8 @@ function VsBox({ isUnlocked }: VsBoxProps) {
                 </span>
             </div>
             <div className={style.betting}>
-                <BettingColumn
-                    awayType="客"
-                    awayUser={4}
-                    homeType="主"
-                    homeUser={88}
-                    isUnlocked={isUnlocked}
-                    play="一球/球半"
-                    value={88}
-                />
-                <BettingColumn
-                    awayType="小"
-                    awayUser={4}
-                    homeType="大"
-                    homeUser={88}
-                    isUnlocked={isUnlocked}
-                    play="一球/球半"
-                    value={88}
-                />
+                <BettingColumn awayType="客" detail={detailInfo} homeType="主" play="一球/球半" />
+                <BettingColumn awayType="小" detail={detailInfo} homeType="大" play="一球/球半" />
             </div>
         </div>
     );

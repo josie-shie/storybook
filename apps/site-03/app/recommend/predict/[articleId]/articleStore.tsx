@@ -1,47 +1,53 @@
 import { initStore } from 'lib';
 import type { StoreWithSelectors } from 'lib';
-import type { HandicapType, GuessType, GuessTeam } from '@/types/predict';
-
-interface Master {
-    id: number;
-    avatar: string; //頭像
-    name: string; //使用者
-    hotStreak: number; //連紅
-    ranking: number; //排行
-    followed: boolean; //是否關注
-    unlockNumber: number; //解鎖次數
-    fansNumber: number; //粉絲人數
-}
+import type { GuessType, GuessTeam, HandicapType, PredictTypeWithLock } from '@/types/predict';
 
 interface ArticleDetail {
-    id: number;
-    master: Master;
-    postTime: number; //發表時間
-    title: string; //標題
+    mentorId: number; // 導師id
+    mentorName: string; //導師名稱
+    mentorImage: string; //導師logo
+    analysisTitle: string; //文章標題
+    analysisContent: string; //文章內容
+    homeTeam: {
+        id: number; //主隊id
+        name: string; //主隊名稱
+        logo: string; //主隊logo
+    };
+    awayTeam: {
+        id: number; //客隊id
+        name: string; //客隊名稱
+        logo: string; //客隊logo
+    };
+    matchTime: number; //開賽時間
+    createdAt: number; //文章發表時間
     leagueName: string; //聯賽名稱
-    dateTime: number; //比賽時間
-    homeTeamLogo: string; //主隊logo
-    homeTeamName: string; //主隊名稱
-    awayTeamLogo: string; //客隊logo
-    awayTeamName: string; //客隊名稱
-    content: string; //文章內容
-    unlock: boolean; //是否解鎖
-    homeHandicap?: number; //大小/讓分
-    awayHandicap?: number; //大小/讓分
-    guessResult?: GuessType; //已開賽競猜結果
-    masterGuess?: GuessTeam; //主客場推薦
+    predictionResult: GuessType; //預測結果
+    playType: GuessTeam; //玩法
+    odds: {
+        handicap: number;
+        overUnder: number;
+    };
+    fansNumber: number; //粉絲人數
+    unlockNumber: number; //解鎖次數
+    hotStreak: number; //連紅
+    ranking: number; //月榜
+    followed: boolean; //是否關注
+    predictedPlay: PredictTypeWithLock; //預測玩法
+    price: number; //解鎖金幣
+    winPercent: number; //猜求勝率
 }
 
 interface RecommendationItem {
     id: number;
-    postTime: number; //發表時間
-    leagueName: string; //發表時間
-    dateTime: number; //比賽時間
+    createdAt: number; //發表時間
+    leagueName: string; //聯賽名稱
+    matchTime: number; //比賽時間
     homeTeamName: string; //主隊名稱
     awayTeamName: string; //客隊名稱
-    handicap: HandicapType; //盤口
-    amount: number; //解鎖費用
-    lockCount: number; //已解鎖人數
+    price: number; //解鎖費用
+    predictPlayType: HandicapType; //玩法
+    unlockNumber: number; //已解鎖人數,
+    isLock: boolean; //是否解鎖
 }
 
 interface InitState {
@@ -59,34 +65,38 @@ let useArticleStore: StoreWithSelectors<ArticleState>;
 const initialState = (set: (data: Partial<ArticleState>) => void) => ({
     recommendationList: [],
     articleDetail: {
-        id: 0,
-        master: {
+        mentorId: 0,
+        mentorName: '',
+        mentorImage: '',
+        analysisTitle: '',
+        analysisContent: '',
+        homeTeam: {
             id: 0,
-            avatar: '',
             name: '',
-            hotStreak: 0,
-            ranking: 0,
-            followed: false,
-            unlockNumber: 0,
-            fansNumber: 0,
-            description: ''
+            logo: ''
         },
-        postTime: 0,
-        title: '',
+        awayTeam: {
+            id: 0,
+            name: '',
+            logo: ''
+        },
+        matchTime: 0,
+        createdAt: 0,
         leagueName: '',
-        dateTime: 0,
-        homeTeamLogo: '',
-        homeTeamName: '',
-        awayTeamLogo: '',
-        awayTeamName: '',
-        content: '',
-        unlock: false,
-        homeRate: 0,
-        homeValue: 0,
-        awayRate: 0,
-        awayValue: 0,
-        guessResult: 'none' as GuessType,
-        masterGuess: 'home' as GuessTeam
+        predictionResult: 'WIN' as GuessType,
+        playType: 'HOMEAWAY' as GuessTeam,
+        odds: {
+            handicap: 0,
+            overUnder: 0
+        },
+        fansNumber: 0,
+        unlockNumber: 0,
+        hotStreak: 0,
+        ranking: 0,
+        followed: false,
+        predictedPlay: 'LOCK' as PredictTypeWithLock,
+        price: 0,
+        winPercent: 10
     },
     setArticleDetail: (articleDetail: ArticleDetail) => {
         set({ articleDetail });

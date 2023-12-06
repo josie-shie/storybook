@@ -4,6 +4,7 @@ import type { GetMemberInfoResponse } from 'data-center';
 
 interface InitState {
     authQuery: string;
+    inviteCode: string;
     userInfo: GetMemberInfoResponse;
 }
 
@@ -60,7 +61,8 @@ const initialState = (set: (updater: (state: UserState) => Partial<UserState>) =
                 authQuery
             };
         });
-    }
+    },
+    inviteCode: ''
 });
 
 const creatUserStore = (init: InitState) => {

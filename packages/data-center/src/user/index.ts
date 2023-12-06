@@ -12,7 +12,9 @@ import {
     FORGET_PASSWORD_RESET_MUTATION,
     UPDATE_PASSWORD_MUTATION,
     UPDATE_MEMBER_INFO_MUTATION,
-    GET_INVITATION_CODE_QUERY
+    GET_INVITATION_CODE_QUERY,
+    GET_SUBSCRIPTION_QUERY,
+    SUBSCRIBE_PLAN_MUTATION
 } from './graphqlQueries';
 
 const RegisterResultSchema = z.object({
@@ -131,14 +133,6 @@ export interface UpdateMemberInfoRequest {
     qqNumber: string;
     avatarPath: string;
 }
-
-const GetInvitationCodeResultSchema = z.object({
-    getInvitationCode: z.object({
-        invitation_code: z.string()
-    })
-});
-
-export type GetInvitationCodeResult = z.infer<typeof GetInvitationCodeResultSchema>;
 
 /**
  * 註冊會員
@@ -437,29 +431,135 @@ export const updateMemberInfo = async ({
     }
 };
 
+const GetInvitationCodeSchema = z.object({
+    invitation_code: z.string()
+});
+
+const GetInvitationCodeResultSchema = z.object({
+    getInvitationCode: GetInvitationCodeSchema
+});
+
+type GetInvitationCodeResult = z.infer<typeof GetInvitationCodeResultSchema>;
+export type GetInvitationCodeResponse = z.infer<typeof GetInvitationCodeSchema>;
+
 /**
  * 取得會員邀請碼
- * - returns string
+ * - returns {@link GetInvitationCodeResponse}
  */
-export const getInvitationCode = async (): Promise<ReturnData<string>> => {
+export const getInvitationCode = async (): Promise<ReturnData<GetInvitationCodeResponse>> => {
     try {
-        const { data }: { data: GetInvitationCodeResult } = await fetcher({
-            data: {
-                query: GET_INVITATION_CODE_QUERY
-            }
-        });
+        const { data }: { data: GetInvitationCodeResult } = await fetcher(
+            {
+                data: { query: GET_INVITATION_CODE_QUERY }
+            },
+            { cache: 'no-store' }
+        );
 
         GetInvitationCodeResultSchema.parse(data);
-        const invitationCode = data.getInvitationCode.invitation_code;
 
-        if (!invitationCode) {
-            throw new Error('Expected invitation_code but got nothing.');
-        }
+        return { success: true, data: data.getInvitationCode };
+    } catch (error) {
+        return handleApiError(error);
+    }
+};
 
-        return {
-            success: true,
-            data: invitationCode
-        };
+const ServicePlanSchema = z.object({
+    planType: z.union([z.literal('DAY'), z.literal('UNLIMITED')]),
+    times: z.number()
+});
+
+export type ServicePlan = z.infer<typeof ServicePlanSchema>;
+
+const GetSubscriptionPlanSchema = z.object({
+    id: z.number(),
+    name: z.string(),
+    times: z.number(),
+    cost: z.number(),
+    masterDistribution: ServicePlanSchema,
+    masterPlan: ServicePlanSchema,
+    expertAnalysis: ServicePlanSchema,
+    gamePathAnalysis: ServicePlanSchema
+});
+
+const GetSubscriptionPlanListResultSchema = z.object({
+    getSubscriptionPlanList: z.object({
+        subscriptionPlans: z.array(GetSubscriptionPlanSchema)
+    })
+});
+
+type GetSubscriptionPlanListResult = z.infer<typeof GetSubscriptionPlanListResultSchema>;
+export type GetSubscriptionPlan = z.infer<typeof GetSubscriptionPlanSchema>;
+export type GetSubscriptionPlanListResponse = GetSubscriptionPlan[];
+
+/**
+ * 取得訂閱方案列表
+ * - returns {@link GetSubscriptionPlanListResponse}
+ * {@link GetSubscriptionPlan} {@link ServicePlan}
+ */
+export const getSubscriptionPlanList = async (): Promise<
+    ReturnData<GetSubscriptionPlanListResponse>
+> => {
+    try {
+        const { data }: { data: GetSubscriptionPlanListResult } = await fetcher(
+            {
+                data: { query: GET_SUBSCRIPTION_QUERY }
+            },
+            { cache: 'no-store' }
+        );
+
+        GetSubscriptionPlanListResultSchema.parse(data);
+
+        return { success: true, data: data.getSubscriptionPlanList.subscriptionPlans };
+    } catch (error) {
+        return handleApiError(error);
+    }
+};
+
+export interface SubscribePlanRequest {
+    memberId: number;
+    planId: number;
+}
+
+const SubscribePlanSchema = z.object({
+    planStartAt: z.number(),
+    planEndAt: z.number()
+});
+
+const SubscribePlanSchemaResultSchema = z.object({
+    subscribePlan: SubscribePlanSchema
+});
+
+type SubscribePlanSchemaResult = z.infer<typeof SubscribePlanSchemaResultSchema>;
+export type SubscribePlanResponse = z.infer<typeof SubscribePlanSchema>;
+
+/**
+ * 訂閱方案
+ * - params {@link SubscribePlanRequest}
+ * - returns {@link SubscribePlanResponse}
+ */
+export const subscribePlan = async ({
+    memberId,
+    planId
+}: SubscribePlanRequest): Promise<ReturnData<SubscribePlanResponse>> => {
+    try {
+        const { data }: { data: SubscribePlanSchemaResult } = await fetcher(
+            {
+                data: {
+                    query: SUBSCRIBE_PLAN_MUTATION,
+                    variables: {
+                        input: {
+                            memberId,
+                            planId
+                        }
+                    }
+                }
+            },
+            { cache: 'no-store' }
+        );
+
+        SubscribePlanSchemaResultSchema.parse(data);
+
+        return { success: true, data: data.subscribePlan };
     } catch (error) {
         return handleApiError(error);
     }

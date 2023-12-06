@@ -8,8 +8,8 @@ import MailInfo from './components/mailInfo';
 
 function MailList() {
     const editStatus = useNoticeStore.use.editStatus();
-    const setNoticeData = useNoticeStore.use.setNoticeData();
-    const noticeData = useNoticeStore.use.noticeData();
+    const setMailList = useNoticeStore.use.setMailList();
+    const mailList = useNoticeStore.use.mailList();
 
     useEffect(() => {
         const getMailList = async () => {
@@ -18,7 +18,7 @@ function MailList() {
                 console.error(res.error);
                 return;
             }
-            setNoticeData(res.data);
+            setMailList(res.data);
         };
 
         void getMailList();
@@ -26,8 +26,8 @@ function MailList() {
 
     return (
         <ul className={`${style.noticeList} ${editStatus && style.isEdit}`}>
-            {noticeData.map(notice => (
-                <MailCard key={notice.mailMemberId} notice={notice} />
+            {mailList.map(mail => (
+                <MailCard key={mail.mailMemberId} mailData={mail} />
             ))}
         </ul>
     );

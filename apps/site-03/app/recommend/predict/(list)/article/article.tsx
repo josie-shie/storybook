@@ -12,7 +12,7 @@ function ArticleItem() {
     const articleList = useArticleStore.use.articleList();
 
     const goDetail = () => {
-        router.push('/recommend/predict/1');
+        router.push('/recommend/predict/275');
     };
 
     const goInfo = () => {

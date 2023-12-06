@@ -14,6 +14,7 @@ export interface Predict {
     unlockTotal: number;
 }
 
+export type GuessType = 'NONE' | 'WIN' | 'DRAW' | 'LOSE';
+export type GuessTeam = 'HOMEAWAY' | 'OVERUNDER';
+export type PredictTypeWithLock = 'HOME' | 'AWAY' | 'OVER' | 'UNDER' | 'LOCK';
 export type HandicapType = 'overUnder' | 'handicap';
-export type GuessType = 'none' | 'win' | 'draw' | 'lose';
-export type GuessTeam = 'home' | 'away';

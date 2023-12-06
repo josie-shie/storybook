@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import style from './avatar.module.scss';
-import defaultImgSrc from './img/mayci.png';
+import defaultImgSrc from './img/avatar.png';
 
 interface PropsType {
     src?: string;

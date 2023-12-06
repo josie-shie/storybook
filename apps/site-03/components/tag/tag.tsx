@@ -14,7 +14,7 @@ function Tag({ icon, text, gradient, color, background }: PropsType) {
 
     if (!icon && !text) return null;
     return (
-        <div className={`${style.tag} ${gradientClass}`} style={{ background, color }}>
+        <div className={`baseTag ${style.tag} ${gradientClass}`} style={{ background, color }}>
             {icon ? <span className={style.tagIcon}>{icon}</span> : null}
             <span>{text}</span>
         </div>

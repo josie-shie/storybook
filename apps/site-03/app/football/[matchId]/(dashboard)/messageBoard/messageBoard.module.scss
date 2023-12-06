@@ -1,0 +1,98 @@
+.messageBoard {
+    position: relative;
+    width: 100%;
+    padding-top: 10px;
+    height: calc(100vh - 316px);
+
+    :global {
+        .bfRoomContent {
+            height: calc(100% - 64px);
+            padding: 2px 10px 8px;
+            row-gap: 12px;
+
+            .bfGroupLi {
+                margin: 0;
+                font-size: 14px;
+                font-weight: 500;
+                line-height: normal;
+
+                .bfOwn {
+                    color: #ba2830;
+                }
+
+                .bfOther {
+                    color: #4489ff;
+                }
+
+                .bfGroupMessage {
+                    font-weight: 400;
+                    color: #4a4a4a;
+                }
+            }
+        }
+
+        .bfHolder {
+            height: 64px;
+        }
+
+        .bfRoomBottom {
+            height: 64px;
+            padding: 16px;
+            background-color: #fff;
+            box-shadow: 0 -1px 0 0 #d9d9d9;
+        }
+
+        .bfEmoticonBox {
+            height: 200px;
+            border: 1px #ccc solid;
+            justify-content: space-between;
+            overflow: auto;
+            box-shadow: 0 -1px 0 0 #d9d9d9;
+        }
+
+        .bfInput {
+            flex: 1;
+            height: 32px;
+            padding: 6px 10px;
+            margin-left: 0;
+            background-color: #f3f3f3;
+            color: #222;
+            font-size: 14px;
+            font-weight: 400;
+            line-height: normal;
+            border-top-left-radius: 6px;
+            border-bottom-left-radius: 6px;
+
+            &::placeholder {
+                color: #222;
+            }
+        }
+
+        .bfSmileBtn {
+            color: #4a4a4a;
+            margin-left: 10px;
+            margin-right: 0;
+            order: 2;
+
+            :global(.bfSmile) {
+                margin: 0;
+            }
+        }
+
+        .bfSendBtn {
+            display: flex;
+            align-items: center;
+            padding-right: 10px;
+            width: 34px;
+            height: 32px;
+            background-color: #f3f3f3;
+            color: #4a4a4a;
+            border-top-right-radius: 6px;
+            border-bottom-right-radius: 6px;
+        }
+
+        .bfPicture .bfPhoto {
+            color: #4a4a4a;
+        }
+    }
+}

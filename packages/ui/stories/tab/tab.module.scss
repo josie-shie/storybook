@@ -26,6 +26,14 @@
         }
     }
 
+    &.fullBlock {
+        :global(.swiper) {
+            :global(.swiper-slide) {
+                padding: 0;
+            }
+        }
+    }
+
     .tabHeader {
         position: relative;
 
@@ -93,7 +101,7 @@
             }
 
             .text {
-                font-family: 'PingFang TC';
+                font-family: 'PingFang TC', sans-serif;
                 font-style: normal;
                 font-weight: 600;
                 opacity: 0.4;
