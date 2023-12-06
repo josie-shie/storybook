@@ -55,29 +55,29 @@
             font-weight: 400;
             text-align: center;
 
-            &::before {
-                content: '';
-                position: absolute;
-                top: 50%;
-                left: -36%;
-                transform: translateY(-50%);
-                display: block;
-                width: 33%;
-                height: 1px;
-                background: rgba(255 255 255 / 60%);
-            }
+            // &::before {
+            //     content: '';
+            //     position: absolute;
+            //     top: 50%;
+            //     left: -36%;
+            //     transform: translateY(-50%);
+            //     display: block;
+            //     width: 33%;
+            //     height: 1px;
+            //     background: rgba(255 255 255 / 60%);
+            // }
 
-            &::after {
-                content: '';
-                position: absolute;
-                top: 50%;
-                right: -36%;
-                transform: translateY(-50%);
-                display: block;
-                width: 33%;
-                height: 1px;
-                background: rgba(255 255 255 / 60%);
-            }
+            // &::after {
+            //     content: '';
+            //     position: absolute;
+            //     top: 50%;
+            //     right: -36%;
+            //     transform: translateY(-50%);
+            //     display: block;
+            //     width: 33%;
+            //     height: 1px;
+            //     background: rgba(255 255 255 / 60%);
+            // }
         }
     }
 
@@ -96,9 +96,8 @@
                 font-weight: 500;
                 color: #fff;
                 padding: 15px 23px;
-                border-radius: 4px;
+                border-radius: 8px;
                 border: 1px solid rgba(255 255 255 / 60%);
-                background: rgba(255 255 255 / 20%);
             }
 
             .progress {
@@ -129,6 +128,7 @@
                 flex: 1;
 
                 .button {
+                    position: relative;
                     display: flex;
                     flex-direction: column;
                     align-items: center;
@@ -136,12 +136,22 @@
                     width: 64px;
                     height: 54px;
                     padding: 0;
-                    border: none;
 
                     .user {
                         font-size: 12px;
                         font-weight: 400;
                     }
+
+                    > img {
+                        position: absolute;
+                        right: 0;
+                        bottom: 0;
+                    }
+                }
+
+                .noSelect {
+                    background: #fff3;
+                    border-color: #fff3;
                 }
 
                 .progress {
@@ -170,27 +180,6 @@
 
                     :global(.ui-progressBar) {
                         width: 100%;
-                    }
-                }
-            }
-
-            &:first-child {
-                .unLock {
-                    .button {
-                        &:first-child {
-                            background: #fff;
-                            color: #000;
-                        }
-                    }
-                }
-            }
-            &:last-child {
-                .unLock {
-                    .button {
-                        &:last-child {
-                            background: #fff;
-                            color: #000;
-                        }
                     }
                 }
             }
