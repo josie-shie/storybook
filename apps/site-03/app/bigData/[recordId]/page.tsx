@@ -1,12 +1,12 @@
 import type { Metadata } from 'next';
-import BigDataDetail from './bigDataDetail';
+import Handicap from './(dashboard)/handicap/handicap';
 
 export const metadata: Metadata = {
     title: '分析结果'
 };
 
 function Page() {
-    return <BigDataDetail />;
+    return <Handicap />;
 }
 
 export default Page;

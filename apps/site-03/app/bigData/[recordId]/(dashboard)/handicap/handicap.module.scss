@@ -12,9 +12,17 @@
     }
 
     .eChat {
-        padding: 22px 0 8px 0;
+        padding: 8px 0;
         border: 2px solid #f3f3f3;
         border-radius: 12px;
+
+        .dateRange {
+            color: #bfbfbf;
+            font-size: 12px;
+            font-weight: 600;
+            padding-left: 12px;
+            padding-bottom: 8px;
+        }
 
         ul {
             display: flex;
