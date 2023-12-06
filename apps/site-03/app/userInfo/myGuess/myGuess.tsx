@@ -5,7 +5,7 @@ import { useState } from 'react';
 import backLeftArrowImg from '../img/backLeftArrow.png';
 import RecordFilter from './components/recordFilter/recordFilter';
 import style from './myGuess.module.scss';
-import RecentPerformance from './myGuessRecentPerformence';
+import RecentPerformance from './myGuessRecentPerformance';
 import MyGuessMyPlans from './myGuessMyPlans';
 import { creatMyGuessStoreStore } from './myGuessStore';
 
