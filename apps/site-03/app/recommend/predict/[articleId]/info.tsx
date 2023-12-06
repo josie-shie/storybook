@@ -24,7 +24,8 @@ function Info() {
                     </div>
                     <div className={style.bottom}>
                         <span>粉絲: {master.fansNumber} </span>
-                        <span>解鎖: {master.unlockNumber}</span>
+                        <span>解鎖: {master.unlockNumber} </span>
+                        <span>猜球勝率: {master.winPercent}%</span>
                     </div>
                 </div>
             </div>

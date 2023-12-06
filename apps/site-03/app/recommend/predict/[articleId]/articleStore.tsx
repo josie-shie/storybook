@@ -34,6 +34,7 @@ interface ArticleDetail {
     followed: boolean; //是否關注
     predictedPlay: PredictType; //預測玩法
     price: number; //解鎖金幣
+    winPercent: number; //猜求勝率
 }
 
 interface RecommendationItem {
@@ -93,7 +94,8 @@ const initialState = (set: (data: Partial<ArticleState>) => void) => ({
         ranking: 0,
         followed: false,
         predictedPlay: 'LOCK' as PredictType,
-        price: 0
+        price: 0,
+        winPercent: 10
     },
     setArticleDetail: (articleDetail: ArticleDetail) => {
         set({ articleDetail });
