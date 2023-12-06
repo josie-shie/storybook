@@ -9,6 +9,8 @@ import MessageRoom from '@bf/message-board';
 import '@bf/message-board/style.css';
 import { useNoticeStore } from '../../noticeStore';
 import backLeftArrowImg from '../../img/backLeftArrow.png';
+import SentIcon from '../img/sent.png';
+import SmileIcon from '../img/smile.png';
 import style from './chatInfo.module.scss';
 import { useLockBodyScroll } from '@/hooks/lockScroll';
 import { useMessageStore } from '@/app/messageStore';
@@ -75,6 +77,11 @@ function ChatInfo() {
         getMessageResponse(handleMessage);
         if (selectedChatData.roomId) {
             void messageService.send({
+                receiver: selectedChatData.user,
+                correlationId: `c${getRandomInt(1, 10000)}`,
+                action: 'join_room'
+            });
+            void messageService.send({
                 action: 'get_message',
                 roomId: selectedChatData.roomId
             });
@@ -82,6 +89,17 @@ function ChatInfo() {
 
         return () => {
             cancelMessage(handleMessage);
+            if (selectedChatData.roomId) {
+                void messageService.send({
+                    roomId: selectedChatData.roomId,
+                    correlationId: `c${getRandomInt(1, 10000)}`,
+                    action: 'leave_room'
+                });
+                void messageService.send({
+                    action: 'get_room_list',
+                    type: 'private'
+                });
+            }
         };
     }, [selectedChatData.roomId]);
 
@@ -117,7 +135,13 @@ function ChatInfo() {
                                 addMessage={addMessage}
                                 messagesList={messagesList}
                                 sendBtn
+                                sendIcon={
+                                    <Image alt="sent" height={24} src={SentIcon} width={24} />
+                                }
                                 silence={forbiddenWords}
+                                smileIcon={
+                                    <Image alt="sent" height={24} src={SmileIcon} width={24} />
+                                }
                                 uid={String(userInfo.uid) || ''}
                             />
                         </div>
