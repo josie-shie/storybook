@@ -2,14 +2,15 @@ import { initStore } from 'lib';
 import type { StoreWithSelectors } from 'lib';
 
 interface FansMember {
-    id: number;
-    name: string;
+    memberId: number;
+    username: string;
+    avatarPath: string;
+    profile: string;
+    fans: number;
+    unlocked: number;
     hotStreak: number;
     ranking: number;
     followed: boolean;
-    unlockNumber: number;
-    fansNumber: number;
-    description: string;
 }
 
 interface InitState {
@@ -17,14 +18,14 @@ interface InitState {
 }
 
 interface FansMemberState extends InitState {
-    setFansMemberList?: (fansMemberItem: FansMember[]) => void;
+    setFansMemberItem: (fansMemberItem: FansMember[]) => void;
 }
 
 let useFansMemberStore: StoreWithSelectors<FansMemberState>;
 
 const initialState = (set: (data: Partial<FansMemberState>) => void) => ({
     fansMemberItem: [],
-    setFansMemberList: (fansMemberItem: FansMember[]) => {
+    setFansMemberItem: (fansMemberItem: FansMember[]) => {
         set({ fansMemberItem });
     }
 });

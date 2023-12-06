@@ -93,7 +93,7 @@ function Account() {
             intro: Boolean('')
         };
         setSubmittedState(newSubmittedState);
-    }, [userInfo, setFormState]);
+    }, [userInfo, setFormState, setImgSrc, setSubmittedState]);
 
     const uploadImg = async (event: ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
@@ -108,12 +108,12 @@ function Account() {
                 const data: UploadResponse = await uploadImage(file);
                 if (data.filePath) {
                     setImgUpload(data.filePath);
+                    setIsVisible('上传成功', 'success');
                 } else {
-                    // 處理錯誤情況
-                    console.error('上傳失敗，未收到正確的響應');
+                    setIsVisible('上传失敗', 'error');
                 }
             } catch (error) {
-                console.error('上傳圖片過程中發生錯誤', error);
+                console.error('上传图片过程中发生错误', error);
             }
         }
     };
@@ -160,10 +160,7 @@ function Account() {
         const dateValue = new Date(formState.birthday);
 
         const obj: UpdateMemberInfoRequest = {
-            avatarPath:
-                userInfo.avatarPath && userInfo.avatarPath !== '0'
-                    ? userInfo.avatarPath
-                    : imgUpload,
+            avatarPath: imgUpload || userInfo.avatarPath,
             birthday: userInfo.birthday || dateValue.getTime() / 1000,
             wechat: formState.wechat,
             qqNumber: formState.qq
