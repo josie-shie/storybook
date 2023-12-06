@@ -41,6 +41,7 @@ function Login() {
     const setUserInfo = useUserStore.use.setUserInfo();
     const setIsLogin = useUserStore.use.setIsLogin();
     const removeAuthQuery = useAuthStore.use.removeAuthQuery();
+    const removeInvitCode = useAuthStore.use.removeInvitCode();
 
     const {
         control,
@@ -72,6 +73,7 @@ function Login() {
         setToken(res.data);
         setIsVisible('登入成功！', 'success');
         removeAuthQuery();
+        removeInvitCode();
 
         await getUserInfo(res.data);
     };

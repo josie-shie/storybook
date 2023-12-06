@@ -1,27 +1,35 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { getInvitationCode } from 'data-center';
 import FullBg from '../img/fullbg.png';
 import backLeftArrowImg from '../img/backLeftArrow.png';
 import Friend from '../img/friend.png';
-import { createIntiveStore, useInviteStore } from './inviteStore';
+import { useInviteStore } from './inviteStore';
 import CustomModal from './components/customModal/customModal';
 import style from './invite.module.scss';
 
 function Invite() {
     const router = useRouter();
     const [modalShow, setModalShow] = useState(false);
+    const invitedCount = useInviteStore.use.invitedCount();
+    const totalCoins = useInviteStore.use.totalCoins();
+    const inviteCode = useInviteStore.use.inviteCode();
+    const setInviteCode = useInviteStore.use.setInviteCode();
 
-    createIntiveStore({
-        invite: {
-            invitedCount: 2,
-            totalCoins: 20,
-            inviteLink: 'www.google.com'
-        }
-    });
+    useEffect(() => {
+        const getInviteCode = async () => {
+            const res = await getInvitationCode();
+            if (!res.success) {
+                console.error(res.error);
+                return;
+            }
+            setInviteCode(res.data.invitation_code);
+        };
 
-    const userInvite = useInviteStore.use.invite();
+        void getInviteCode();
+    }, [setInviteCode]);
 
     const coypLink = async (textToCopy: string) => {
         try {
@@ -66,14 +74,13 @@ function Invite() {
                             <div className={style.item}>
                                 <span>成功邀请</span>
                                 <span>
-                                    <span className={style.number}>{userInvite.invitedCount}</span>
-                                    人
+                                    <span className={style.number}>{invitedCount}</span>人
                                 </span>
                             </div>
                             <div className={style.item}>
                                 <span>累积获得</span>
                                 <span>
-                                    <span className={style.number}>{userInvite.totalCoins}</span>
+                                    <span className={style.number}>{totalCoins}</span>
                                     金币
                                 </span>
                             </div>
@@ -81,7 +88,10 @@ function Invite() {
                         <div
                             className={style.copy}
                             onClick={() => {
-                                void coypLink(userInvite.inviteLink);
+                                const protocol = window.location.protocol;
+                                const host = window.location.host;
+                                const baseUrl = `${protocol}//${host}`;
+                                void coypLink(`${baseUrl}/?auth=register&invitCode=${inviteCode}`);
                             }}
                         >
                             复制邀请连结

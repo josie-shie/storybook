@@ -1,93 +1,53 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import { getFollowers, updateFollow, unFollow } from 'data-center';
 import backLeftArrowImg from '../img/backLeftArrow.png';
-import { creatFansMemberStore, useFansMemberStore } from './myFansStore';
+import { useFansMemberStore } from './myFansStore';
 import MasterItem from './components/masterItem/masterItem';
 import style from './myFans.module.scss';
+import { useNotificationStore } from '@/app/notificationStore';
+import { useUserStore } from '@/app/userStore';
 
-interface FocusData {
-    id: number;
-    name: string;
+interface FansData {
+    memberId: number;
+    username: string;
+    avatarPath: string;
+    profile: string;
+    fans: number;
+    unlocked: number;
     hotStreak: number;
     ranking: number;
     followed: boolean;
-    unlockNumber: number;
-    fansNumber: number;
-    description: string;
 }
 
 function MyFocus() {
     const router = useRouter();
     const [searchTerm, setSearchTerm] = useState<string>('');
+    const setIsVisible = useNotificationStore.use.setIsVisible();
+    const userInfo = useUserStore.use.userInfo();
+    const fansMemberItem = useFansMemberStore.use.fansMemberItem();
+    const setFansMemberItem = useFansMemberStore.use.setFansMemberItem();
+    const [filteredMasterItems, setFilteredMasterItems] = useState<FansData[]>(fansMemberItem);
 
-    creatFansMemberStore({
-        fansMemberItem: [
-            {
-                id: 12,
-                name: '老梁聊球',
-                hotStreak: 2,
-                ranking: 10,
-                followed: false,
-                unlockNumber: 1800,
-                fansNumber: 34516,
-                description: '资深足彩分析师，15年足彩经验，对各个赛事都有涉足。长期关注！'
-            },
-            {
-                id: 17,
-                name: '柯侯配',
-                hotStreak: 6,
-                ranking: 7,
-                followed: true,
-                unlockNumber: 2200,
-                fansNumber: 54321,
-                description: '资深足彩分析师，15年足彩经验，对各个赛事都有涉足。长期关注！'
-            },
-            {
-                id: 18,
-                name: '柯侯配',
-                hotStreak: 6,
-                ranking: 7,
-                followed: true,
-                unlockNumber: 2200,
-                fansNumber: 54321,
-                description: '资深足彩分析师，15年足彩经验，对各个赛事都有涉足。长期关注！'
-            },
-            {
-                id: 19,
-                name: '柯侯配',
-                hotStreak: 6,
-                ranking: 7,
-                followed: true,
-                unlockNumber: 2200,
-                fansNumber: 54321,
-                description: '资深足彩分析师，15年足彩经验，对各个赛事都有涉足。长期关注！'
-            },
-            {
-                id: 20,
-                name: '柯侯配',
-                hotStreak: 6,
-                ranking: 7,
-                followed: true,
-                unlockNumber: 2200,
-                fansNumber: 54321,
-                description: '资深足彩分析师，15年足彩经验，对各个赛事都有涉足。长期关注！'
-            },
-            {
-                id: 21,
-                name: '柯侯配',
-                hotStreak: 6,
-                ranking: 7,
-                followed: true,
-                unlockNumber: 2200,
-                fansNumber: 54321,
-                description: '资深足彩分析师，15年足彩经验，对各个赛事都有涉足。长期关注！'
+    useEffect(() => {
+        setFilteredMasterItems(fansMemberItem);
+    }, [fansMemberItem]);
+
+    // 我的關注列表先接上，但還缺三個欄位，暫時先不使用
+    useEffect(() => {
+        const getFollowersList = async () => {
+            const res = await getFollowers({ memberId: userInfo.uid, isFans: false });
+            if (!res.success) {
+                console.error(res.error);
             }
-        ]
-    });
-    const fansMemberItem = useFansMemberStore.use.fansMemberItem() as FocusData[];
-    const [filteredMasterItems, setFilteredMasterItems] = useState<FocusData[]>(fansMemberItem);
+            // console.log(res.data);
+            // setFocusMemberItem(res.data);
+        };
+
+        void getFollowersList();
+    }, [userInfo]);
 
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(event.target.value);
@@ -101,9 +61,26 @@ function MyFocus() {
 
     const handleSearch = () => {
         const filteredItems = fansMemberItem.filter(item =>
-            item.name.toLowerCase().includes(searchTerm.toLowerCase())
+            item.username.toLowerCase().includes(searchTerm.toLowerCase())
         );
         setFilteredMasterItems(filteredItems);
+    };
+
+    const toggleFollow = async (uid: number, memberId: number, followed: boolean) => {
+        const apiFunction = followed ? updateFollow : unFollow;
+        const action = followed ? '关注成功' : '取消关注';
+        const errorMessage = '发生错误';
+
+        const res = await apiFunction({ followerId: uid, followedId: memberId });
+        if (res.success) {
+            setIsVisible(action, 'success');
+            const updatedItems = fansMemberItem.map(item =>
+                item.memberId === memberId ? { ...item, followed: !item.followed } : item
+            );
+            setFansMemberItem(updatedItems);
+        } else {
+            setIsVisible(errorMessage, 'error');
+        }
     };
 
     return (
@@ -139,7 +116,12 @@ function MyFocus() {
                     </button>
                 </div>
                 {filteredMasterItems.map(item => (
-                    <MasterItem item={item} key={item.id} />
+                    <MasterItem
+                        item={item}
+                        key={item.memberId}
+                        onFollowToggle={toggleFollow}
+                        uid={userInfo.uid}
+                    />
                 ))}
             </div>
         </>
