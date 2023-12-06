@@ -4,6 +4,9 @@ import Win from './img/win.png';
 import Lose from './img/lose.png';
 import Gone from './img/gone.png';
 import Star from './img/star.png';
+import BigWin from './img/bigWin.png';
+import BigLose from './img/bigLose.png';
+import BigGone from './img/bigGone.png';
 import style from './gameCard.module.scss';
 import Avatar from '@/components/avatar/avatar';
 import Tag from '@/components/tag/tag';
@@ -36,9 +39,9 @@ function GameCard({ plan, onOpenPaidDialog }: GameCardProps) {
         draw: <Image alt="goneIcon" src={Gone} width={18} />
     };
     const resultIconMap = {
-        win: <Image alt="" height={36} src="" width={36} />,
-        lose: <Image alt="" height={36} src="" width={36} />,
-        draw: <Image alt="" height={36} src="" width={36} />
+        win: <Image alt="" height={36} src={BigWin} width={36} />,
+        lose: <Image alt="" height={36} src={BigLose} width={36} />,
+        draw: <Image alt="" height={36} src={BigGone} width={36} />
     };
     const guessWayMap = { home: '主', away: '客', big: '大', small: '小' };
     const showHotStreak = plan.hotStreak > 4; // 邏輯待確認
