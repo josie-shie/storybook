@@ -22,3 +22,24 @@
     text-align: center;
     line-height: 48px;
 }
+
+.banner {
+    background-color: #f3f3f3;
+    aspect-ratio: 6 / 1;
+    width: calc(100% - 24px);
+    border-radius: 8px;
+    margin: 0 12px;
+}
+
+.toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 12px;
+    margin: 12px 0 8px;
+
+    img {
+        width: 16px;
+        height: 16px;
+    }
+}
