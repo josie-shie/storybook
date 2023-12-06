@@ -2,91 +2,122 @@
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { useState } from 'react';
-import { ProgressBar } from 'ui';
-import ReactEcharts from 'echarts-for-react';
 import backLeftArrowImg from '../img/backLeftArrow.png';
-import BettingPlan from './components/bettingPlan/bettingPlan';
 import RecordFilter from './components/recordFilter/recordFilter';
 import style from './myGuess.module.scss';
+import RecentPerformance from './myGuessRecentPerformance';
+import MyGuessMyPlans from './myGuessMyPlans';
+import { creatMyGuessStoreStore } from './myGuessStore';
 
-function MyAnalysis() {
+function MyGuess() {
     const router = useRouter();
     const [showFilter, setShowFilter] = useState(false);
-    const [dateActiveTab, setDateActiveTab] = useState('日榜');
-    const [planActiveTab, setPlanActiveTab] = useState('全部');
 
-    const chartOption = {
-        tooltip: {
-            trigger: 'item',
-            showContent: false
-        },
-        title: {
-            text: '{large|1} \n周排名',
-            left: '46%',
-            top: '47%',
-            textAlign: 'center',
-            textVerticalAlign: 'middle',
-            textStyle: {
-                fontSize: 12, // 調整字體大小
-                fontWeight: 'bold',
-                lineHeight: 20,
-                rich: {
-                    large: {
-                        fontSize: 24,
-                        fontWeight: 'bold'
-                    }
+    creatMyGuessStoreStore({
+        myGuess: {
+            rank: 1,
+            recentPerformance: {
+                byWeek: {
+                    summary: { play: 100, win: 60, draw: 15, lose: 25 },
+                    handicap: { play: 75, win: 50, draw: 5, lose: 20 },
+                    size: { play: 25, win: 10, draw: 10, lose: 5 }
+                },
+                byMonth: {
+                    summary: { play: 150, win: 70, draw: 30, lose: 50 },
+                    handicap: { play: 100, win: 50, draw: 20, lose: 30 },
+                    size: { play: 50, win: 20, draw: 10, lose: 20 }
+                },
+                byQuarter: {
+                    summary: { play: 300, win: 200, draw: 20, lose: 80 },
+                    handicap: { play: 100, win: 50, draw: 10, lose: 40 },
+                    size: { play: 200, win: 150, draw: 10, lose: 40 }
                 }
-            }
-        },
-        series: [
-            {
-                name: 'Access From',
-                type: 'pie',
-                radius: ['60%', '85%'],
-                label: {
-                    show: false,
-                    position: 'center'
-                },
-                emphasis: {
-                    label: {
-                        show: false,
-                        fontSize: 40,
-                        fontWeight: 'bold',
-                        color: 'transparent'
-                    },
-                    scaleSize: 4
-                },
-                labelLine: {
-                    show: false
-                },
-                data: [
+            },
+            myPlans: {
+                totale: [
                     {
-                        value: 548,
-                        name: 'Plan1',
-                        itemStyle: { color: '#F3F3F3', borderWidth: 2, borderColor: '#fff' }
+                        id: 1,
+                        matchId: 10,
+                        matchTime: 6549857483,
+                        bettingType: 'draw',
+                        leagueId: 10,
+                        leagueName: '欧锦U20A',
+                        homeTeamName: '德国U20A',
+                        awayTeamName: '斯洛文尼亚U20',
+                        handicapOdds: '受平/半',
+                        overUnderOdds: 10,
+                        predictedPlay: 'away',
+                        predictionResult: 'lose',
+                        isPaidToRead: '222'
                     },
                     {
-                        value: 415,
-                        name: 'Plan2',
-                        itemStyle: { color: '#BFBFBF', borderWidth: 2, borderColor: '#fff' }
+                        id: 2,
+                        matchId: 10,
+                        matchTime: 6549857483,
+                        bettingType: 'size',
+                        leagueId: 10,
+                        leagueName: '欧锦U20A',
+                        homeTeamName: '德国U20A',
+                        awayTeamName: '斯洛文尼亚U20',
+                        handicapOdds: '',
+                        overUnderOdds: 10,
+                        predictedPlay: 'over',
+                        predictionResult: 'win',
+                        isPaidToRead: '222'
+                    }
+                ],
+                handicap: [
+                    {
+                        id: 1,
+                        matchId: 10,
+                        matchTime: 6549857483,
+                        bettingType: 'draw',
+                        leagueId: 10,
+                        leagueName: '欧锦U20A',
+                        homeTeamName: '德国U20A',
+                        awayTeamName: '斯洛文尼亚U20',
+                        handicapOdds: '平/半',
+                        overUnderOdds: 10,
+                        predictedPlay: 'home',
+                        predictionResult: 'win',
+                        isPaidToRead: '222'
                     },
                     {
-                        value: 680,
-                        name: 'Plan3',
-                        itemStyle: { color: '#ED3A45', borderWidth: 2, borderColor: '#fff' }
+                        id: 2,
+                        matchId: 10,
+                        matchTime: 6549857483,
+                        bettingType: 'draw',
+                        leagueId: 10,
+                        leagueName: '欧锦U20A',
+                        homeTeamName: '德国U20A',
+                        awayTeamName: '斯洛文尼亚U20',
+                        handicapOdds: '平/半',
+                        overUnderOdds: 10,
+                        predictedPlay: 'away',
+                        predictionResult: 'none',
+                        isPaidToRead: '222'
+                    }
+                ],
+                size: [
+                    {
+                        id: 2,
+                        matchId: 10,
+                        matchTime: 6549857483,
+                        bettingType: 'size',
+                        leagueId: 10,
+                        leagueName: '欧锦U20A',
+                        homeTeamName: '德国U20A',
+                        awayTeamName: '斯洛文尼亚U20',
+                        handicapOdds: '',
+                        overUnderOdds: 10,
+                        predictedPlay: 'away',
+                        predictionResult: 'win',
+                        isPaidToRead: '222'
                     }
                 ]
             }
-        ]
-    };
-
-    const handleTabClick = (tabName: string) => {
-        setDateActiveTab(tabName);
-    };
-
-    const handlePlanTabClick = (tabName: string) => {
-        setPlanActiveTab(tabName);
-    };
+        }
+    });
 
     return (
         <>
@@ -97,160 +128,19 @@ function MyAnalysis() {
                             alt=""
                             height={24}
                             onClick={() => {
-                                router.back();
+                                router.push('/userInfo');
                             }}
                             src={backLeftArrowImg}
                             width={24}
                         />
-                        <div className={style.text}>我的竟猜</div>
+                        <div className={style.text}>我猜过的</div>
                     </div>
                 </div>
             </div>
 
             <div className={style.myGuess}>
-                <div className={style.title}>
-                    <span>近期战绩</span>
-                    <div className={style.tab}>
-                        <span
-                            className={dateActiveTab === '日榜' ? style.active : ''}
-                            onClick={() => {
-                                handleTabClick('日榜');
-                            }}
-                        >
-                            日榜
-                        </span>
-                        <span
-                            className={dateActiveTab === '周榜' ? style.active : ''}
-                            onClick={() => {
-                                handleTabClick('周榜');
-                            }}
-                        >
-                            周榜
-                        </span>
-                        <span
-                            className={dateActiveTab === '月榜' ? style.active : ''}
-                            onClick={() => {
-                                handleTabClick('月榜');
-                            }}
-                        >
-                            月榜
-                        </span>
-                    </div>
-                </div>
-                <div className={style.recentGames}>
-                    <ReactEcharts option={chartOption} style={{ width: 120, height: 120 }} />
-                    <div className={style.detailContainer}>
-                        <div className={`${style.detailBlock} ${style.focusDetail}`}>
-                            <div className={style.top}>
-                                <div className={style.total}>共100场</div>
-                                <div className={style.percentage}>
-                                    <div className={style.win}>胜 50</div>
-                                    <div className={style.walk}>走 10</div>
-                                    <div className={style.defeat}>負 40</div>
-                                </div>
-                            </div>
-                            <div className={style.bot}>
-                                <div className={style.winRate}>勝率 50%</div>
-                                <ProgressBar
-                                    background="#8D8D8D"
-                                    gapSize="small"
-                                    height={4}
-                                    radius
-                                />
-                            </div>
-                        </div>
-                        <div className={style.detailBlock}>
-                            <div className={style.top}>
-                                <div className={style.total}>讓球75场</div>
-                                <div className={style.percentage}>
-                                    <div className={style.win}>胜 50</div>
-                                    <div className={style.walk}>走 10</div>
-                                    <div className={style.defeat}>負 40</div>
-                                </div>
-                            </div>
-                            <div className={style.bot}>
-                                <div className={style.winRate}>勝率 50%</div>
-                                <ProgressBar
-                                    background="#8D8D8D"
-                                    gapSize="small"
-                                    height={4}
-                                    radius
-                                />
-                            </div>
-                        </div>
-                        <div className={style.detailBlock}>
-                            <div className={style.top}>
-                                <div className={style.total}>大小25场</div>
-                                <div className={style.percentage}>
-                                    <div className={style.win}>胜 50</div>
-                                    <div className={style.walk}>走 10</div>
-                                    <div className={style.defeat}>負 40</div>
-                                </div>
-                            </div>
-                            <div className={style.bot}>
-                                <div className={style.winRate}>勝率 50%</div>
-                                <ProgressBar
-                                    background="#8D8D8D"
-                                    gapSize="small"
-                                    height={4}
-                                    radius
-                                />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className={style.title}>
-                    <span>方案</span>
-                    <span
-                        className={style.record}
-                        onClick={() => {
-                            setShowFilter(true);
-                        }}
-                    >
-                        查看纪录
-                    </span>
-                </div>
-                <div className={style.tab}>
-                    <span
-                        className={planActiveTab === '全部' ? style.active : ''}
-                        onClick={() => {
-                            handlePlanTabClick('全部');
-                        }}
-                    >
-                        全部
-                    </span>
-                    <span
-                        className={planActiveTab === '让球' ? style.active : ''}
-                        onClick={() => {
-                            handlePlanTabClick('让球');
-                        }}
-                    >
-                        让球
-                    </span>
-                    <span
-                        className={planActiveTab === '大小' ? style.active : ''}
-                        onClick={() => {
-                            handlePlanTabClick('大小');
-                        }}
-                    >
-                        大小
-                    </span>
-                </div>
-                <div className={style.plan}>
-                    <BettingPlan />
-                    <BettingPlan result="win" />
-                    <BettingPlan result="defeat" />
-                    <BettingPlan result="defeat" />
-                    <BettingPlan result="defeat" />
-                    <BettingPlan result="defeat" />
-                    <BettingPlan result="defeat" />
-                    <BettingPlan result="defeat" />
-                    <BettingPlan result="defeat" />
-                    <BettingPlan result="defeat" />
-                    <BettingPlan result="defeat" />
-                    <BettingPlan result="defeat" />
-                    <BettingPlan result="defeat" />
-                </div>
+                <RecentPerformance />
+                <MyGuessMyPlans setShowFilter={setShowFilter} />
             </div>
             <RecordFilter
                 isOpen={showFilter}
@@ -265,4 +155,4 @@ function MyAnalysis() {
     );
 }
 
-export default MyAnalysis;
+export default MyGuess;

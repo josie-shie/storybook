@@ -26,8 +26,20 @@ interface Option {
     value: string;
 }
 
+interface Record {
+    recordId: number;
+    recordTime: number;
+    handicap: string;
+    odds: string;
+    overUnder: string;
+    startDate: number;
+    endDate: number;
+    state: number;
+}
+
 interface InitState {
     handicapTips: HandicapTipType[];
+    recordList: Record[];
 }
 
 interface DiscSelectState extends InitState {
@@ -43,6 +55,7 @@ interface DiscSelectState extends InitState {
     setTimeAscending: (timeAscending: boolean) => void;
     handicapAscending: boolean;
     setHandicapAscending: (handicapAscending: boolean) => void;
+    setRecordList: (recordList: Record[]) => void;
 }
 
 let useDiscSelectStore: StoreWithSelectors<DiscSelectState>;
@@ -63,6 +76,10 @@ const initialState = (set: (data: Partial<DiscSelectState>) => void) => ({
     handicapAscending: false,
     setHandicapAscending: (handicapAscending: boolean) => {
         set({ handicapAscending });
+    },
+    recordList: [],
+    setRecordList: (recordList: Record[]) => {
+        set({ recordList });
     },
     teamList: [
         {
