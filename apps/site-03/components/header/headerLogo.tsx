@@ -6,8 +6,10 @@ import logoIconImg from './img/logoIcon.png';
 import Profile from './components/profile/profile';
 import Notice from './components/notice/notice';
 import Logo from './img/logo.png';
+import { useUserStore } from '@/app/userStore';
 
 function HeaderLogo() {
+    const userInfoIsLoading = useUserStore.use.userInfoIsLoading();
     return (
         <div className={style.placeholder}>
             <div className={style.header} style={{ backgroundImage: `url(${dotBackground.src})` }}>
@@ -17,10 +19,12 @@ function HeaderLogo() {
                         <Image alt="logo" src={Logo} width={66} />
                     </div>
                 </Link>
-                <div className={style.userOption}>
-                    <Notice />
-                    <Profile />
-                </div>
+                {!userInfoIsLoading && (
+                    <div className={style.userOption}>
+                        <Notice />
+                        <Profile />
+                    </div>
+                )}
             </div>
         </div>
     );
