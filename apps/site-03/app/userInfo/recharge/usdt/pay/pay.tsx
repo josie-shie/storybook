@@ -10,7 +10,6 @@ import Copy from '../../img/copy.png';
 import backLeftArrowImg from '../../img/backLeftArrow.png';
 import CustomModal from '../../components/customModal/customModal';
 import style from './pay.module.scss';
-// import Header from '@/components/header/headerTitleDetail';
 
 interface PayProps {
     amount: string;

@@ -72,7 +72,7 @@ function Subscribe() {
                             alt=""
                             height={24}
                             onClick={() => {
-                                router.back();
+                                router.push('/userInfo');
                             }}
                             src={backLeftArrowImg}
                             width={24}

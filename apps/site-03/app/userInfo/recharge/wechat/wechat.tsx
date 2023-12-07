@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import WechatIcon from '../img/wechat.png';
 import Pay from './pay/pay';
@@ -7,6 +8,10 @@ import style from './wechat.module.scss';
 import Header from '@/components/header/headerTitleDetail';
 
 function Wechat() {
+    const router = useRouter();
+    const back = () => {
+        router.push('/userInfo');
+    };
     const headerProps = {
         title: '微信支付充值'
     };
@@ -38,7 +43,7 @@ function Wechat() {
         <>
             {!pay ? (
                 <>
-                    <Header title={headerProps.title} />
+                    <Header back={back} title={headerProps.title} />
                     <div className={style.wechat}>
                         <div className={style.payArea}>
                             <div className={style.title}>
