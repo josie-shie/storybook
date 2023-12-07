@@ -11,7 +11,13 @@
     display: flex;
     gap: 8px;
 
-    :global(.ui-select) {
-        background: #fff;
+    .filerButton {
+        min-width: 112px;
+        height: 28px;
+        padding: 4px 8px;
+        font-size: 14px;
+        border: 1px solid #4489ff;
+        color: #4489ff;
+        border-radius: 4px;
     }
 }

@@ -1,19 +1,28 @@
 'use client';
+import { useState } from 'react';
+import { Button } from '@mui/material';
 import { useRouter } from 'next/navigation';
-import { Select } from '../recharge/components/select/select';
 import style from './tradeDetail.module.scss';
 import { creatTardeDetailStore } from './tradeDetailStore';
 import TradeDetailList from './tradeDetailList';
+import DateRangeOption from './components/dateRangeDrawer/dateRangeOption';
+import TradeTypeOption from './components/tradeTypeDrawer/tradeTypeDrawer';
 import Header from '@/components/header/headerTitleDetail';
-
-const dateOptions = [{ label: '今天', value: 'today' }];
-const typeOption = [{ label: '全部', value: 'total' }];
 
 function TradeDetail() {
     const router = useRouter();
     const back = () => {
         router.push('/userInfo');
     };
+    const [isDateRangeOpen, setDateRangeOpen] = useState(false);
+    // const [dateRange, setDateRange] = useState<(number | null)[]>([]);
+    const [isTradeTypeOpen, setTradeTypeOpen] = useState(false);
+    // const [tradeType, setTradeType] = useState();
+
+    const openOption = (value: 'dateRange' | 'tradeType') => {
+        value === 'dateRange' ? setDateRangeOpen(true) : setTradeTypeOpen(true);
+    };
+
     creatTardeDetailStore({
         tradeDetailList: [
             {
@@ -100,14 +109,38 @@ function TradeDetail() {
 
     return (
         <>
-            <Header back={back} title="交易明細" />
+            <Header back={back} title="交易明细" />
             <div className={style.tradeDetail}>
-                <p>交易明細</p>
+                <p>交易明细</p>
                 <div className={style.selectBlock}>
-                    <Select options={dateOptions} showDragBar value="today" />
-                    <Select options={typeOption} showDragBar value="total" />
+                    <Button
+                        className={style.filerButton}
+                        onClick={() => {
+                            openOption('dateRange');
+                        }}
+                    >
+                        开赛时间
+                    </Button>
+                    <Button
+                        className={style.filerButton}
+                        onClick={() => {
+                            openOption('tradeType');
+                        }}
+                    >
+                        盘路
+                    </Button>
                 </div>
                 <TradeDetailList />
+                <DateRangeOption
+                    isDateRangeOpen={isDateRangeOpen}
+                    // setDateRange={setDateRange}
+                    setDateRangeOpen={setDateRangeOpen}
+                />
+                <TradeTypeOption
+                    isTradeTypeOpen={isTradeTypeOpen}
+                    // setTradeType={setTradeType}
+                    setTradeTypeOpen={setTradeTypeOpen}
+                />
             </div>
         </>
     );
