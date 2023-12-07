@@ -16,7 +16,7 @@ import {
     PAY_FOR_POST_MUTATION
 } from './graphqlQueries';
 
-interface GetTodayGuessMatchesRequest {
+export interface GetTodayGuessMatchesRequest {
     memberId: number;
 }
 
@@ -57,6 +57,7 @@ type GetTodayGuessMatchesResult = z.infer<typeof GetTodayGuessMatchesResultSchem
  * 取得當前競猜賽事列表
  * - params {@link GetTodayGuessMatchesRequest}
  * - returns {@link GetTodayGuessMatchesResponse}
+ * {@link GetTodayGuessMatch}
  */
 export const getTodayGuessMatches = async ({
     memberId
@@ -83,6 +84,7 @@ export const getTodayGuessMatches = async ({
         return handleApiError(error);
     }
 };
+
 interface GetGuessRankRequest {
     memberId: number;
     rankType: 0 | 1 | 2 | 3;
@@ -160,7 +162,7 @@ const GetGuessRankResultSchema = z.object({
 type GetGuessRankResult = z.infer<typeof GetGuessRankResultSchema>;
 
 /**
- * 取得當前競猜賽事列表
+ * 取得競猜排行榜
  * - params {@link GetGuessRankRequest}
  * - returns {@link GetGuessRankResponse}
  * - {@link GuessRank} {@link MemberRank}
