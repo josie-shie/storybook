@@ -17,9 +17,9 @@ function MyGuess() {
             recentPerformance: {
                 byWeek: {
                     rank: 0,
-                    summary: { play: 100, win: 60, draw: 15, lose: 25 },
-                    handicap: { play: 75, win: 50, draw: 5, lose: 20 },
-                    size: { play: 25, win: 10, draw: 10, lose: 5 }
+                    summary: { play: 100, win: 50, draw: 0, lose: 50 },
+                    handicap: { play: 75, win: 50, draw: 0, lose: 25 },
+                    size: { play: 25, win: 10, draw: 0, lose: 15 }
                 },
                 byMonth: {
                     rank: 0,

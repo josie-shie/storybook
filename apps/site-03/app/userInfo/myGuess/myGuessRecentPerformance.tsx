@@ -94,8 +94,8 @@ function MyGuessRecentPerformence() {
     const [dateActiveTab, setDateActiveTab] = useState(dateActiveMap.byWeek.value);
     const [focusDetail, setFocusDetail] = useState<FocusDetailType>('summary');
 
-    const formatRate = (play: number, win: number) => {
-        const winRate = (win / play) * 100;
+    const formatRate = (lose: number, win: number) => {
+        const winRate = (win / (lose + win)) * 100;
         return Number.isInteger(winRate) ? winRate : winRate.toFixed(1);
     };
 
@@ -154,7 +154,7 @@ function MyGuessRecentPerformence() {
                         <div className={style.bot}>
                             <div className={style.winRate}>
                                 勝率
-                                {formatRate(myGuessData.summary.play, myGuessData.summary.win)}%
+                                {formatRate(myGuessData.summary.lose, myGuessData.summary.win)}%
                             </div>
                             <ProgressBar
                                 background="#8D8D8D"
@@ -184,7 +184,7 @@ function MyGuessRecentPerformence() {
                         <div className={style.bot}>
                             <div className={style.winRate}>
                                 勝率
-                                {formatRate(myGuessData.handicap.play, myGuessData.handicap.win)}%
+                                {formatRate(myGuessData.handicap.lose, myGuessData.handicap.win)}%
                             </div>
                             <ProgressBar
                                 background="#8D8D8D"
@@ -214,7 +214,7 @@ function MyGuessRecentPerformence() {
                         <div className={style.bot}>
                             <div className={style.winRate}>
                                 勝率
-                                {formatRate(myGuessData.size.play, myGuessData.size.win)}%
+                                {formatRate(myGuessData.size.lose, myGuessData.size.win)}%
                             </div>
                             <ProgressBar
                                 background="#8D8D8D"

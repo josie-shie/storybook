@@ -45,7 +45,7 @@ function MyGuessMyPlans() {
                 guessValue: 0.5
             },
             {
-                id: 10,
+                id: 3,
                 avatar: '',
                 name: '小羅聊球',
                 hotStreak: 2,
@@ -57,7 +57,7 @@ function MyGuessMyPlans() {
                 guessValue: 0.5
             },
             {
-                id: 10,
+                id: 2,
                 avatar: '',
                 name: '小羅聊球',
                 hotStreak: 2,
@@ -69,7 +69,7 @@ function MyGuessMyPlans() {
                 guessValue: 0.5
             },
             {
-                id: 10,
+                id: 1,
                 avatar: '',
                 name: '小羅聊球',
                 hotStreak: 2,
