@@ -1,5 +1,5 @@
 export const GET_TODAY_GUESS_MATCHES_QUERY = `
-    query getTodayGuessMatches($memberId){
+    query getTodayGuessMatches($memberId: Int!){
         getTodayGuessMatches(memberId: $memberId) {
             matches {
                 matchId
