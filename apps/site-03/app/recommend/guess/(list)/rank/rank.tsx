@@ -2,6 +2,8 @@
 // import { IconSearch } from '@tabler/icons-react';
 import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
+// import { getGuessRank } from 'data-center';
+// import { useEffect } from 'react';
 import PeriodListItem from '../components/period/periodListItem';
 import Soccer from '../components/period/img/soccerWhite.png';
 import UserSwitch from '../components/userSwitch/userSwitch';
@@ -116,6 +118,18 @@ function Rank() {
         winRate: 99,
         personalRank: 24
     };
+
+    // useEffect(() => {
+    //     async function fetchGuessRank() {
+    //         const memberRank = await getGuessRank({ memberId: 17, rankType: 1 });
+    //         if (memberRank.success) {
+    //             // setLiis
+    //             console.log('memberRank', memberRank);
+    //         }
+    //         // setFalse
+    //     }
+    //     void fetchGuessRank();
+    // }, []);
 
     return (
         <div className={style.rank}>

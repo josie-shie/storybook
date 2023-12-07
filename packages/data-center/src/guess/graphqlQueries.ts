@@ -30,7 +30,7 @@ export const GET_TODAY_GUESS_MATCHES_QUERY = `
 
 export const GET_GUESS_RANK_QUERY = `
     query getGuessRank($inputs: GetGuessRankInput!){
-        getGuessRank(memberId: $inputs) {
+        getGuessRank(input: $inputs) {
             guessRank {
                 memberId
                 memberName
