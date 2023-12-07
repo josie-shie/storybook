@@ -1,24 +1,26 @@
-import type { ReactElement, ReactNode } from 'react';
+import type { ReactNode } from 'react';
+import Link from 'next/link';
 import Image from 'next/image';
 import dotBackground from './img/dotBackground.png';
 import style from './header.module.scss';
 import logoIconImg from './img/logoIcon.png';
+import Logo from './img/logo.png';
 
 interface HeaderProps {
-    logo?: ReactElement | string;
     children?: ReactNode;
 }
 
-function HeaderComponent({ logo, children }: HeaderProps) {
+function HeaderComponent({ children }: HeaderProps) {
     return (
         <div className={style.placeholder}>
             <div className={style.header} style={{ backgroundImage: `url(${dotBackground.src})` }}>
-                <a href="/">
-                    <div className={style.logo}>
-                        <Image alt="" height={24} src={logoIconImg} width={24} />
-                        <div className={style.icon}>{logo}</div>
+                <Link className={style.logo} href="/">
+                    <Image alt="" height={24} src={logoIconImg} width={24} />
+                    <div className={style.icon}>
+                        <Image alt="logo" src={Logo} width={66} />
                     </div>
-                </a>
+                </Link>
+
                 {children}
             </div>
         </div>

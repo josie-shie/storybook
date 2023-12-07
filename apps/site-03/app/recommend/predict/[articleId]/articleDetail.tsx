@@ -11,8 +11,7 @@ export const metadata: Metadata = {
 
 function MasterDetail({ params }: { params: { articleId: string } }) {
     const headerProps = {
-        title: '专家预测',
-        total: 999999
+        title: '专家预测'
     };
 
     creatArticleStore({
@@ -93,7 +92,7 @@ function MasterDetail({ params }: { params: { articleId: string } }) {
     });
     return (
         <>
-            <Header title={headerProps.title} total={headerProps.total} />
+            <Header title={headerProps.title} />
             <Info />
             <ArticleContent params={params} />
         </>

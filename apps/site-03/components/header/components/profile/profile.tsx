@@ -1,22 +1,19 @@
 import Image from 'next/image';
-import type { ReactNode } from 'react';
 import Link from 'next/link';
 import profileIcon from '../../img/profileIcon.png';
 import style from './profile.module.scss';
 import { useUserStore } from '@/app/userStore';
 import { useAuthStore } from '@/app/(auth)/authStore';
 
-interface ProfileProps {
-    total: number | ReactNode;
-}
-
 function formatNumberWithCommas(total: number): string {
     return total.toString().replace(/\B(?=(?<temp1>\d{3})+(?!\d))/g, ',');
 }
 
-function Profile({ total }: ProfileProps) {
+function Profile() {
     const setAuthQuery = useUserStore.use.setAuthQuery();
     const setIsDrawerOpen = useAuthStore.use.setIsDrawerOpen();
+    const userInfo = useUserStore.use.userInfo();
+    const isLogin = useUserStore.use.isLogin();
 
     const openLoginDrawer = () => {
         setAuthQuery('login');
@@ -27,8 +24,8 @@ function Profile({ total }: ProfileProps) {
         <div className={style.profile}>
             <Image alt="" className={style.icon} height={24} src={profileIcon} width={24} />
             <div className={style.totalNumber}>
-                {typeof total === 'number' ? (
-                    <Link href="/userInfo">{formatNumberWithCommas(total)}</Link>
+                {isLogin ? (
+                    <Link href="/userInfo">{formatNumberWithCommas(userInfo.balance)}</Link>
                 ) : (
                     <div
                         className={style.loginButton}

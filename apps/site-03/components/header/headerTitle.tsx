@@ -4,13 +4,13 @@ import pureBackground from './img/pureBackground.png';
 import style from './header.module.scss';
 import backLeftArrowImg from './img/backLeftArrow.png';
 import Profile from './components/profile/profile';
+import Notice from './components/notice/notice';
 
 interface HeaderProps {
     title: string;
-    total: number | null;
 }
 
-function HeaderTitle({ title, total }: HeaderProps) {
+function HeaderTitle({ title }: HeaderProps) {
     const router = useRouter();
 
     return (
@@ -28,7 +28,10 @@ function HeaderTitle({ title, total }: HeaderProps) {
                     />
                     <div className={style.text}>{title}</div>
                 </div>
-                {total ? <Profile total={total} /> : null}
+                <div className={style.userOption}>
+                    <Notice />
+                    <Profile />
+                </div>
             </div>
         </div>
     );

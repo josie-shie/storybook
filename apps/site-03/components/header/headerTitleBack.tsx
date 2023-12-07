@@ -3,14 +3,14 @@ import pureBackground from './img/pureBackground.png';
 import style from './header.module.scss';
 import backLeftArrowImg from './img/backLeftArrow.png';
 import Profile from './components/profile/profile';
+import Notice from './components/notice/notice';
 
 interface HeaderProps {
     title: string;
-    total: number | null;
     back: () => void;
 }
 
-function HeaderTitle({ title, total, back }: HeaderProps) {
+function HeaderTitle({ title, back }: HeaderProps) {
     return (
         <div className={style.placeholder}>
             <div className={style.header} style={{ backgroundImage: `url(${pureBackground.src})` }}>
@@ -18,7 +18,10 @@ function HeaderTitle({ title, total, back }: HeaderProps) {
                     <Image alt="" height={24} onClick={back} src={backLeftArrowImg} width={24} />
                     <div className={style.text}>{title}</div>
                 </div>
-                {total ? <Profile total={total} /> : null}
+                <div className={style.userOption}>
+                    <Notice />
+                    <Profile />
+                </div>
             </div>
         </div>
     );

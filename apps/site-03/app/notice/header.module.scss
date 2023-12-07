@@ -1,43 +1,10 @@
-.placeholder {
-    width: 100%;
-    height: 68px;
-}
-
-.noticeHeader {
-    width: 100%;
-    height: 68px;
-    padding: 16px;
-    padding-bottom: 28px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background-color: #136aff;
-    background-repeat: no-repeat;
-    background-size: cover;
-
-    & > div {
-        flex: 1;
-    }
-
-    .title {
-        color: #fff;
-        font-size: 16px;
-        font-weight: 500;
-        text-align: center;
-    }
-
-    .edit {
-        text-align: right;
-
-        :global(.MuiButtonBase-root) {
-            min-width: initial;
-            padding: 4px 12px;
-            color: #fff;
-            font-size: 14px;
-            font-weight: 500;
-            border: 1px solid #fff;
-            border-radius: 20px;
-            line-height: normal;
-        }
-    }
+.editBtn:global(.MuiButtonBase-root) {
+    min-width: initial;
+    padding: 4px 12px;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 500;
+    border: 1px solid #fff;
+    border-radius: 20px;
+    line-height: normal;
 }

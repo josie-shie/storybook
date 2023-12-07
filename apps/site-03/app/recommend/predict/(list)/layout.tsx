@@ -1,18 +1,12 @@
 'use client';
 import type { ReactNode } from 'react';
 import { usePathname } from 'next/navigation';
-import Image from 'next/image';
-import Logo from './img/logo.png';
 import style from './layout.module.scss';
 import { Tabs } from '@/components/tabs/tabs';
 import Header from '@/components/header/headerLogo';
 import Footer from '@/components/footer/footer';
 
 function PredictLayout({ children }: { children: ReactNode }) {
-    const headerProps = {
-        logo: <Image alt="logo" src={Logo} width={66} />,
-        total: 999999
-    };
     const pathname = usePathname();
     const isMasterListRoute = pathname.includes('masterList');
     const isMasterAvatarRoute = pathname.includes('masterAvatar');
@@ -24,7 +18,7 @@ function PredictLayout({ children }: { children: ReactNode }) {
 
     return (
         <>
-            <Header logo={headerProps.logo} total={headerProps.total} />
+            <Header />
             <div className={style.predict}>
                 <div className={style.layoutTab}>
                     <Tabs
