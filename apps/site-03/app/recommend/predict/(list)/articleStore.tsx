@@ -1,19 +1,21 @@
 import { initStore } from 'lib';
 import type { StoreWithSelectors } from 'lib';
+import type { GuessType } from '@/types/predict';
 
 interface Article {
     id: number;
-    name: string;
-    unlock: boolean;
+    mentorName: string;
+    isLock: boolean;
     unlockNumber: number;
     hotStreak: number;
     ranking: number;
-    title: string;
-    cupName: string;
-    cupTime: string;
-    homeTeam: string;
-    awayTeam: string;
-    postTime: string;
+    analysisTitle: string;
+    leagueName: string;
+    matchTime: number;
+    awayTeamName: string;
+    homeTeamName: string;
+    createdAt: number;
+    predictionResult: GuessType;
 }
 
 interface InitState {

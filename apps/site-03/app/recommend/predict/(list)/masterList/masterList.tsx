@@ -35,7 +35,7 @@ function ArticleItem() {
                                 <Avatar borderColor="#4489FF" />
                             </div>
                             <div className={style.userInfo}>
-                                <div className={style.userName}>{item.name}</div>
+                                <div className={style.userName}>{item.mentorName}</div>
                                 <div className={style.tagsContainer}>
                                     {item.hotStreak > 2 && (
                                         <Tag
@@ -47,7 +47,7 @@ function ArticleItem() {
                                 </div>
                             </div>
                             <div className={style.unlockStatus}>
-                                {item.unlock ? (
+                                {item.isLock ? (
                                     <span className={style.unlocked}>已解鎖</span>
                                 ) : (
                                     <>
@@ -59,17 +59,17 @@ function ArticleItem() {
                                 )}
                             </div>
                         </div>
-                        <div className={style.title}>{item.title}</div>
+                        <div className={style.title}>{item.analysisTitle}</div>
                         <div className={style.game} onClick={goDetail}>
                             <div className={style.detail}>
-                                {item.cupName}
-                                <span className={style.time}> | {item.cupTime}</span>
+                                {item.leagueName}
+                                <span className={style.time}> | {item.matchTime}</span>
                             </div>
                             <div className={style.combination}>
-                                {item.homeTeam} vs {item.awayTeam}
+                                {item.homeTeamName} vs {item.awayTeamName}
                             </div>
                         </div>
-                        <div className={style.postTime}>发表于 {item.postTime}</div>
+                        <div className={style.postTime}>发表于 {item.createdAt}</div>
                     </div>
                 );
             })}
@@ -82,87 +82,93 @@ function MasterDetail() {
         articleList: [
             {
                 id: 116,
-                name: '老蕭聊球',
-                unlock: false,
+                mentorName: '老蕭聊球',
+                isLock: true,
                 unlockNumber: 5,
                 hotStreak: 9,
                 ranking: 10,
-                title: '【11连胜】格鲁吉亚vs西班牙，来看我的精心推荐吧',
-                cupName: '欧锦U20A',
-                cupTime: '09-05 16:45',
-                homeTeam: '德國U20A',
-                awayTeam: '斯洛文尼亚U20',
-                postTime: '17:45'
+                analysisTitle: '【11连胜】格鲁吉亚vs西班牙，来看我的精心推荐吧',
+                leagueName: '欧锦U20A',
+                matchTime: 1698667200,
+                awayTeamName: '德國U20A',
+                homeTeamName: '斯洛文尼亚U20',
+                createdAt: 1698667200,
+                predictionResult: 'WIN'
+            },
+            {
+                id: 116,
+                mentorName: '老蕭聊球',
+                isLock: true,
+                unlockNumber: 5,
+                hotStreak: 9,
+                ranking: 10,
+                analysisTitle: '【11连胜】格鲁吉亚vs西班牙，来看我的精心推荐吧',
+                leagueName: '欧锦U20A',
+                matchTime: 1698667200,
+                awayTeamName: '德國U20A',
+                homeTeamName: '斯洛文尼亚U20',
+                createdAt: 1698667200,
+                predictionResult: 'WIN'
             },
             {
                 id: 563,
-                name: '老梁聊球',
-                unlock: false,
+                mentorName: '老梁聊球',
+                isLock: true,
                 unlockNumber: 5,
                 hotStreak: 2,
                 ranking: 10,
-                title: '【7连胜】格鲁吉亚vs西班牙，来看我的精心推荐吧',
-                cupName: '欧锦U20A',
-                cupTime: '09-05 16:45',
-                homeTeam: '德國U20A',
-                awayTeam: '斯洛文尼亚U20',
-                postTime: '17:45'
+                analysisTitle: '【7连胜】格鲁吉亚vs西班牙，来看我的精心推荐吧',
+                leagueName: '欧锦U20A',
+                matchTime: 1698667200,
+                awayTeamName: '德國U20A',
+                homeTeamName: '斯洛文尼亚U20',
+                createdAt: 1698667200,
+                predictionResult: 'NONE'
             },
             {
-                id: 564,
-                name: '老梁聊球',
-                unlock: true,
+                id: 563,
+                mentorName: '老梁聊球',
+                isLock: true,
                 unlockNumber: 5,
                 hotStreak: 2,
                 ranking: 10,
-                title: '【7连胜】格鲁吉亚vs西班牙，来看我的精心推荐吧',
-                cupName: '欧锦U20A',
-                cupTime: '09-05 16:45',
-                homeTeam: '德國U20A',
-                awayTeam: '斯洛文尼亚U20',
-                postTime: '17:45'
+                analysisTitle: '【7连胜】格鲁吉亚vs西班牙，来看我的精心推荐吧',
+                leagueName: '欧锦U20A',
+                matchTime: 1698667200,
+                awayTeamName: '德國U20A',
+                homeTeamName: '斯洛文尼亚U20',
+                createdAt: 1698667200,
+                predictionResult: 'NONE'
             },
             {
-                id: 565,
-                name: '老梁聊球',
-                unlock: true,
+                id: 563,
+                mentorName: '老梁聊球',
+                isLock: true,
                 unlockNumber: 5,
                 hotStreak: 2,
                 ranking: 10,
-                title: '【7连胜】格鲁吉亚vs西班牙，来看我的精心推荐吧',
-                cupName: '欧锦U20A',
-                cupTime: '09-05 16:45',
-                homeTeam: '德國U20A',
-                awayTeam: '斯洛文尼亚U20',
-                postTime: '17:45'
+                analysisTitle: '【7连胜】格鲁吉亚vs西班牙，来看我的精心推荐吧',
+                leagueName: '欧锦U20A',
+                matchTime: 1698667200,
+                awayTeamName: '德國U20A',
+                homeTeamName: '斯洛文尼亚U20',
+                createdAt: 1698667200,
+                predictionResult: 'NONE'
             },
             {
-                id: 566,
-                name: '老梁聊球',
-                unlock: true,
+                id: 563,
+                mentorName: '老梁聊球',
+                isLock: true,
                 unlockNumber: 5,
                 hotStreak: 2,
                 ranking: 10,
-                title: '【7连胜】格鲁吉亚vs西班牙，来看我的精心推荐吧',
-                cupName: '欧锦U20A',
-                cupTime: '09-05 16:45',
-                homeTeam: '德國U20A',
-                awayTeam: '斯洛文尼亚U20',
-                postTime: '17:45'
-            },
-            {
-                id: 567,
-                name: '老梁聊球',
-                unlock: false,
-                unlockNumber: 5,
-                hotStreak: 2,
-                ranking: 10,
-                title: '【7连胜】格鲁吉亚vs西班牙，来看我的精心推荐吧',
-                cupName: '欧锦U20A',
-                cupTime: '09-05 16:45',
-                homeTeam: '德國U20A',
-                awayTeam: '斯洛文尼亚U20',
-                postTime: '17:45'
+                analysisTitle: '【7连胜】格鲁吉亚vs西班牙，来看我的精心推荐吧',
+                leagueName: '欧锦U20A',
+                matchTime: 1698667200,
+                awayTeamName: '德國U20A',
+                homeTeamName: '斯洛文尼亚U20',
+                createdAt: 1698667200,
+                predictionResult: 'NONE'
             }
         ]
     });
