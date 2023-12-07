@@ -9,7 +9,7 @@ function RecordContent() {
     return (
         <div className={style.guessRecord}>
             <div className={style.title}>
-                <span>競猜瀏覽紀錄</span>
+                <span>竞猜浏览纪录</span>
             </div>
             {guessRecordList.map(item => (
                 <RecordCard key={item.id} recordItem={item} />
