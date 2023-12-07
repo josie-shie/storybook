@@ -1,128 +1,64 @@
 'use client';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import backLeftArrowImg from '../img/backLeftArrow.png';
 import style from './subscribe.module.scss';
 import background from './img/bg.png';
+import Title from './img/title.png';
+import PayTitle from './img/payTitle.png';
+import Vip from './img/vip.png';
+import Arrow from './img/arrow.png';
+import ActiveArrow from './img/activeArrow.png';
 import starIcon from './img/starIcon.png';
-import recommendMark from './img/recommendMark.png';
-import selected from './img/selected.png';
 import checkbox from './img/checkbox.png';
 import checkedbox from './img/checkedbox.png';
-import BaseDialog from '@/components/baseDialog/baseDialog';
-
-const plansMap = [
-    { planId: 1, period: '年', days: 365, price: 888 },
-    { planId: 2, period: '季', days: 120, price: 288 },
-    { planId: 3, period: '双月', days: 60, price: 188 },
-    { planId: 4, period: '月', days: 30, price: 88 }
-];
-
-type DialogStatus = 'confirm' | 'completed' | 'deficiency';
+import { useSubscribeStore } from './subscribeStore';
 
 function Subscribe() {
     const router = useRouter();
-    const [planId, setPlanId] = useState(1);
-    const [isChecked, setIsChecked] = useState(false);
-    const [dialogOpend, setDialogOpend] = useState(false);
-    const [dialogStatus, setDialogStatus] = useState<DialogStatus>('confirm');
+    const switchRef = useRef<HTMLDivElement | null>(null);
+    const planList = useSubscribeStore.use.planList();
+    const planId = useSubscribeStore.use.planId();
+    const isVip = useSubscribeStore.use.isVip();
+    const isChecked = useSubscribeStore.use.isChecked();
+    const setPlanId = useSubscribeStore.use.setPlanId();
+    const setIsVip = useSubscribeStore.use.setIsVip();
+    const setIsChecked = useSubscribeStore.use.setIsChecked();
+    const [indicatorStyle, setIndicatorStyle] = useState({ left: '0', width: '98px' });
 
-    const periodLabel = plansMap.find(el => el.planId === planId)?.period;
+    const handlePlanClick = (id: number) => {
+        setPlanId(id);
+        setIsVip(false);
+    };
+
+    const handleVipClick = () => {
+        setIsVip(!isVip);
+        setPlanId(0);
+    };
 
     const handleSubscribeButtonOnClick = () => {
-        setDialogOpend(true);
+        router.push('https://www.newebpay.com/');
     };
 
-    const handleConfirmOnClick = () => {
-        setDialogStatus('completed');
-    };
-
-    const handleDialogContent = () => {
-        switch (dialogStatus) {
-            case 'confirm':
-                return (
-                    <>
-                        <section className={style.dialogSection}>
-                            <div className={style.title}>
-                                支付
-                                <Image alt="" height={16} src={starIcon} width={16} />
-                                <span className={style.coin}>10</span>
-                            </div>
-                            <div className={style.title}>開通{periodLabel}卡訂閱</div>
-                            <div className={style.subTitle}>我的餘額: 1000金幣</div>
-                        </section>
-                        <div className={style.buttonContainer}>
-                            <button
-                                onClick={() => {
-                                    setDialogOpend(false);
-                                }}
-                                type="button"
-                            >
-                                取消
-                            </button>
-                            <button onClick={handleConfirmOnClick} type="button">
-                                確認支付
-                            </button>
-                        </div>
-                    </>
-                );
-            case 'completed':
-                return (
-                    <>
-                        <section className={style.dialogSection}>
-                            <div className={style.title}>您的{periodLabel}卡訂閱已開通</div>
-                            <div className={style.subTitle}>生效期間: 2023-8-30~2023-12-31</div>
-                        </section>
-                        <div className={style.buttonContainer}>
-                            <button
-                                onClick={() => {
-                                    setDialogOpend(false);
-                                }}
-                                type="button"
-                            >
-                                確認
-                            </button>
-                        </div>
-                    </>
-                );
-            case 'deficiency':
-                return (
-                    <>
-                        <section className={style.dialogSection}>
-                            <div className={style.title}>餘額不足，請充值</div>
-                        </section>
-                        <div className={style.buttonContainer}>
-                            <button
-                                onClick={() => {
-                                    setDialogOpend(false);
-                                }}
-                                type="button"
-                            >
-                                取消
-                            </button>
-                            <button onClick={handleConfirmOnClick} type="button">
-                                去充值
-                            </button>
-                        </div>
-                    </>
-                );
-            default:
-                return null;
+    const updateIndicator = () => {
+        const switchElement = switchRef.current;
+        if (switchElement) {
+            const activeElement = switchElement.querySelector(`.${style.active}`);
+            if (activeElement && activeElement instanceof HTMLElement) {
+                setIndicatorStyle({
+                    left: `${activeElement.offsetLeft}px`,
+                    width: `${activeElement.offsetWidth}px`
+                });
+            }
         }
     };
+
+    useEffect(updateIndicator, [planId]);
 
     return (
         <div className={style.subscribe}>
             <Image alt="" className={style.background} layout="fill" src={background} />
-            <BaseDialog
-                onClose={() => {
-                    setDialogOpend(false);
-                }}
-                open={dialogOpend}
-            >
-                {handleDialogContent()}
-            </BaseDialog>
             <div className={style.placeholder}>
                 <div className={style.headerDetail}>
                     <div className={style.title}>
@@ -137,49 +73,88 @@ function Subscribe() {
                         />
                         <div className={style.text}>開通訂閱</div>
                         <button className={style.publish} type="button">
-                            關於訂閱
+                            说明
                         </button>
                     </div>
                 </div>
             </div>
+            <div className={style.vipBlock}>
+                <Image alt="" className={style.title} src={Title} />
+                <Image alt="" className={style.vip} src={Vip} />
+                <div className={style.block}>
+                    <button
+                        className={`${style.button} ${isVip ? style.active : ''}`}
+                        onClick={handleVipClick}
+                        type="button"
+                    >
+                        {isVip ? (
+                            <Image alt="" height={6} src={ActiveArrow} width={9} />
+                        ) : (
+                            <Image alt="" height={6} src={Arrow} width={9} />
+                        )}
+                        <span>{isVip ? '选择VIP方案' : '选择'}</span>
+                    </button>
+                </div>
+            </div>
             <div className={style.content}>
-                <div className={style.planContainer}>
-                    {plansMap.map(plan => (
+                <Image alt="" className={style.title} src={PayTitle} />
+                <div className={style.planContainer} ref={switchRef}>
+                    {planList.map(plan => (
                         <div
-                            className={`${style.plan} ${
-                                planId === plan.planId ? style.selectedPlan : ''
+                            className={`${style.wrapper} ${
+                                planId === plan.planId ? style.active : ''
                             }`}
                             key={plan.planId}
-                            onClick={() => {
-                                setPlanId(plan.planId);
-                            }}
                         >
-                            <div className={style.text}>
-                                {plan.period}卡 {plan.days} 天
+                            <div
+                                className={`${style.plan} ${
+                                    planId === plan.planId ? style.selectedPlan : ''
+                                }`}
+                                onClick={() => {
+                                    handlePlanClick(plan.planId);
+                                }}
+                            >
+                                <div className={style.discount}>{plan.discount}</div>
+                                <div className={style.text}>
+                                    {planId === plan.planId && (
+                                        <Image
+                                            alt=""
+                                            className={style.icon}
+                                            height={16}
+                                            src={starIcon}
+                                            width={16}
+                                        />
+                                    )}
+                                    <span className={style.bold}>{plan.period}</span>
+                                    <span className={style.light}>平台币</span>
+                                </div>
+                                <div className={`${style.text} ${style.coin}`}>
+                                    <span>{plan.price}</span> 元
+                                </div>
+                                <button className={style.selectedFlag} type="button">
+                                    {planId === plan.planId && (
+                                        <Image alt="" height={6} src={Arrow} width={9} />
+                                    )}
+                                    <span>选择</span>
+                                </button>
                             </div>
-                            <div className={`${style.text} ${style.coin}`}>
-                                <Image alt="" height={16} src={starIcon} width={16} />
-                                <span>{plan.price}</span> 金幣
-                            </div>
-                            {planId === plan.planId && (
-                                <Image alt="" className={style.selectedFlag} src={selected} />
-                            )}
-                            {plan.planId === 1 && (
-                                <Image alt="" className={style.recommendMark} src={recommendMark} />
-                            )}
                         </div>
                     ))}
+                    {!isVip ? (
+                        <div className={`indicator ${style.indicator}`} style={indicatorStyle} />
+                    ) : null}
                 </div>
-                <div className={style.rights}>
-                    <div className={style.currentPlan}>
-                        你選擇 <span className={style.plan}>{periodLabel}卡方案</span>
-                    </div>
-                    <div className={style.descript}>訂閱期間可享受以下權益</div>
+                <div
+                    className={`${style.rights} ${planId === 1 ? style.firstRaduis : ''} ${
+                        planId === 4 ? style.lastRaduis : ''
+                    } `}
+                >
+                    <div className={style.descript}>充值金币可以购买以下内容</div>
                     <ul className={style.list}>
-                        <li>所有賽事高手分布免費解鎖</li>
-                        <li>每日可免費查看2則高手方案</li>
-                        <li>每日可免費解鎖1篇專家預測文章</li>
-                        <li>不限次數使用盤路分析功能</li>
+                        <li> - 所有赛事高手分配免费解锁</li>
+                        <li> - 每日可免费查看2则高手方案</li>
+                        <li> - 每日可免费解锁1篇专家预测文章</li>
+                        <li> - 不限次数使用盘路分析功能</li>
                     </ul>
                 </div>
                 <div className={style.agreement}>
