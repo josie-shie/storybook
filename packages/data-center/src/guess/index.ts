@@ -16,7 +16,7 @@ import {
     PAY_FOR_POST_MUTATION
 } from './graphqlQueries';
 
-interface GetTodayGuessMatchesRequest {
+export interface GetTodayGuessMatchesRequest {
     memberId: number;
 }
 
@@ -43,7 +43,14 @@ const GetTodayGuessMatchSchema = z.object({
 });
 
 export type GetTodayGuessMatch = z.infer<typeof GetTodayGuessMatchSchema>;
-export type GetTodayGuessMatchesResponse = GetTodayGuessMatch[];
+
+export type ContestGuessInfo = Record<number, GetTodayGuessMatch>;
+
+type ContestGuessList = number[];
+export interface GetTodayGuessMatchesResponse {
+    contestGuessList: ContestGuessList;
+    contestGuessInfo: ContestGuessInfo;
+}
 
 const GetTodayGuessMatchesResultSchema = z.object({
     getTodayGuessMatches: z.object({
@@ -57,6 +64,7 @@ type GetTodayGuessMatchesResult = z.infer<typeof GetTodayGuessMatchesResultSchem
  * 取得當前競猜賽事列表
  * - params {@link GetTodayGuessMatchesRequest}
  * - returns {@link GetTodayGuessMatchesResponse}
+ * {@link ContestGuessList} {@link ContestGuessInfo}{@link GetTodayGuessMatch}
  */
 export const getTodayGuessMatches = async ({
     memberId
@@ -75,14 +83,24 @@ export const getTodayGuessMatches = async ({
         );
 
         GetTodayGuessMatchesResultSchema.parse(data);
+
+        const contestGuessList: ContestGuessList = [];
+        const contestGuessInfo: ContestGuessInfo = {};
+
+        for (const item of data.getTodayGuessMatches.matches) {
+            contestGuessList.push(item.matchId);
+            contestGuessInfo[item.matchId] = { ...item };
+        }
+
         return {
             success: true,
-            data: data.getTodayGuessMatches.matches
+            data: { contestGuessList, contestGuessInfo }
         };
     } catch (error) {
         return handleApiError(error);
     }
 };
+
 interface GetGuessRankRequest {
     memberId: number;
     rankType: 0 | 1 | 2 | 3;
@@ -160,7 +178,7 @@ const GetGuessRankResultSchema = z.object({
 type GetGuessRankResult = z.infer<typeof GetGuessRankResultSchema>;
 
 /**
- * 取得當前競猜賽事列表
+ * 取得競猜排行榜
  * - params {@link GetGuessRankRequest}
  * - returns {@link GetGuessRankResponse}
  * - {@link GuessRank} {@link MemberRank}
