@@ -79,7 +79,7 @@ function Contest({ todayContest }: { todayContest: GetContestListResponse }) {
                     <Rule />
                 </div>
             </div> */}
-            <Image alt="" src={Banner} />
+            <Image alt="" className={style.banner} src={Banner} />
             <ContestList />
         </div>
     );

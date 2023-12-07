@@ -170,6 +170,7 @@
             align-items: center;
             justify-content: center;
             border-radius: 32px;
+            font-family: 'PingFang SC';
 
             span {
                 font-size: 14px;
@@ -204,7 +205,7 @@
                     width: 1px;
                     position: absolute;
                     top: 3px;
-                    left: 45px;
+                    left: 43px;
                     background-color: #d3d3d3;
                 }
 
@@ -214,7 +215,7 @@
                     width: 1px;
                     position: absolute;
                     top: 3px;
-                    right: 45px;
+                    right: 43px;
                     background-color: #d3d3d3;
                 }
             }
