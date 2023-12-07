@@ -1,9 +1,32 @@
 .contestDrawerList {
-    h2 {
-        padding: 8px 0;
-        color: #4489ff;
-        text-align: center;
-        border-bottom: 1px solid #f3f3f3;
+    .header {
+        position: relative;
+
+        h2 {
+            padding: 8px 0;
+            color: #4489ff;
+            text-align: center;
+            border-bottom: 1px solid #f3f3f3;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .filter {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            color: #4489ff;
+            font-size: 14px;
+            font-weight: 600;
+            position: absolute;
+            top: 8px;
+            right: 12px;
+
+            .image {
+                width: 16px;
+                height: 16px;
+            }
+        }
     }
 
     .cardList {

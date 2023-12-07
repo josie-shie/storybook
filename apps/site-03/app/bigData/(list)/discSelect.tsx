@@ -291,7 +291,7 @@ function DiscSelect() {
                     <SectionSelect
                         options={playList}
                         placeholder="选择全场大小球"
-                        selectTitle="选择全场大小球"
+                        selectTitle=""
                         setSelected={setHintsSelected}
                         title="玩法筛选"
                         valueSelected={hintsSelected}
