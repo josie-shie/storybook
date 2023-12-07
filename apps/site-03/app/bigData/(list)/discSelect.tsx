@@ -1,7 +1,7 @@
 'use client';
 import type { ReactNode } from 'react';
 import { useEffect, useState } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import dayjs from 'dayjs';
 import { mqttService } from 'lib';
@@ -14,6 +14,7 @@ import { creatDiscSelectStore, useDiscSelectStore } from './discSelectStore';
 import { creatMatchFilterStore, useMatchFilterStore } from './matchFilterStore';
 import Datepicker from './components/datepicker/datepicker';
 import { useUserStore } from '@/app/userStore';
+import NormalDialog from '@/components/normalDialog/normalDialog';
 
 type OddsResultType = '赢' | '输' | '大' | '小';
 interface HandicapTipType {
@@ -142,9 +143,11 @@ function DiscSelect() {
         contestInfo: {}
     });
 
+    const router = useRouter();
     const searchParams = useSearchParams();
     const search = searchParams.get('status');
     const [showHandicapDrawer, setShowHandicapDrawer] = useState(false);
+    const [openDialog, setOpenDialog] = useState(false);
 
     const [handicapOddsSelected, setHandicapOddsSelected] = useState('');
     const setHandicapHints = useDiscSelectStore.use.setHandicapTips();
@@ -380,6 +383,23 @@ function DiscSelect() {
                 onOpen={() => {
                     setShowHandicapDrawer(true);
                 }}
+            />
+            <NormalDialog
+                cancelText="取消"
+                confirmText="马上升级"
+                content={
+                    <div className={style.dialogContent}>
+                        <p className={style.text}>今日可用次数已用完，</p>
+                        <p className={style.text}>升级为VIP会员即可无限次使用！</p>
+                    </div>
+                }
+                onClose={() => {
+                    setOpenDialog(false);
+                }}
+                onConfirm={() => {
+                    router.push('/userInfo/subscribe');
+                }}
+                openDialog={openDialog}
             />
         </>
     );
