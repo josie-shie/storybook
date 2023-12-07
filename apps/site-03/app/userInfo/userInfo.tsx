@@ -1,5 +1,7 @@
 'use client';
 import { IconFlame } from '@tabler/icons-react';
+import { useEffect } from 'react';
+import { getMemberInfo } from 'data-center';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ButtonBase } from '@mui/material';
@@ -22,6 +24,7 @@ import Footer from '@/components/footer/footer';
 function UserInfo() {
     const router = useRouter();
     const userInfo = useUserStore.use.userInfo();
+    const setUserInfo = useUserStore.use.setUserInfo();
     const openChangePasswordDrawer = useAuthStore.use.setIsDrawerOpen();
     const setAuthQuery = useUserStore.use.setAuthQuery();
 
@@ -33,13 +36,24 @@ function UserInfo() {
         router.push('/userInfo/account');
     };
 
-    const goRecharge = () => {
-        router.push('/userInfo/recharge');
-    };
+    // const goRecharge = () => {
+    //     router.push('/userInfo/recharge');
+    // };
 
     const goSubscribe = () => {
         router.push('/userInfo/subscribe');
     };
+
+    const getUserInfo = async () => {
+        const res = await getMemberInfo();
+        if (res.success) {
+            setUserInfo(res.data);
+        }
+    };
+
+    useEffect(() => {
+        void getUserInfo();
+    }, []);
 
     return (
         <div className={style.wrapper} style={{ backgroundImage: `url(${userInfoBg.src})` }}>
@@ -75,6 +89,7 @@ function UserInfo() {
                                 <div className={style.bottom}>
                                     <span>粉丝: 34713</span>
                                     <span>点赞: 2355</span>
+                                    <span>猜球胜率: 50%</span>
                                 </div>
                             </div>
                         </div>
@@ -95,14 +110,14 @@ function UserInfo() {
                                     <span>可用馀额：</span>
                                     {userInfo.balance}
                                 </span>
-                                <span
+                                {/* <span
                                     className={style.button}
                                     onClick={() => {
                                         goRecharge();
                                     }}
                                 >
                                     充值
-                                </span>
+                                </span> */}
                             </div>
                             <div className={style.item}>
                                 <span className={style.text}>

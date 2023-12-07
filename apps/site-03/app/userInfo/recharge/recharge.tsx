@@ -1,6 +1,7 @@
 'use client';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import style from './recharge.module.scss';
 import Usdt from './img/usdt.png';
 import Wechat from './img/wechat.png';
@@ -8,13 +9,17 @@ import Alipay from './img/alipay.png';
 import Header from '@/components/header/headerTitleDetail';
 
 function Recharge() {
+    const router = useRouter();
     const headerProps = {
         title: '请选择充值方式'
+    };
+    const back = () => {
+        router.push('/userInfo');
     };
 
     return (
         <>
-            <Header title={headerProps.title} />
+            <Header back={back} title={headerProps.title} />
             <div className={style.recharge}>
                 <ul>
                     <li>

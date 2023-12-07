@@ -1,12 +1,17 @@
 'use client';
 import { useState } from 'react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import AlipayIcon from '../img/alipay.png';
 import Pay from './pay/pay';
 import style from './alipay.module.scss';
 import Header from '@/components/header/headerTitleDetail';
 
 function Wechat() {
+    const router = useRouter();
+    const back = () => {
+        router.push('/userInfo');
+    };
     const headerProps = {
         title: '支付宝充值'
     };
@@ -38,7 +43,7 @@ function Wechat() {
         <>
             {!pay ? (
                 <>
-                    <Header title={headerProps.title} />
+                    <Header back={back} title={headerProps.title} />
                     <div className={style.alipay}>
                         <div className={style.payArea}>
                             <div className={style.title}>
