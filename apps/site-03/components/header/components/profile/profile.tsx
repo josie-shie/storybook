@@ -24,7 +24,7 @@ function Profile() {
         <div className={style.profile}>
             <Image alt="" className={style.icon} height={24} src={profileIcon} width={24} />
             <div className={style.totalNumber}>
-                {isLogin ? (
+                {isLogin && typeof userInfo.balance === 'number' ? (
                     <Link href="/userInfo">{formatNumberWithCommas(userInfo.balance)}</Link>
                 ) : (
                     <div
