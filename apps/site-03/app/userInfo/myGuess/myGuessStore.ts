@@ -9,6 +9,7 @@ interface PerformanceDetail {
 }
 
 export interface Performance {
+    rank: number;
     summary: PerformanceDetail;
     handicap: PerformanceDetail;
     size: PerformanceDetail;
@@ -18,6 +19,19 @@ export interface RecentPerformance {
     byWeek: Performance;
     byMonth: Performance;
     byQuarter: Performance;
+}
+
+export interface RecordItem {
+    id: number;
+    avatar: string;
+    name: string;
+    hotStreak: number;
+    homeTeam: string;
+    awayTeam: string;
+    history: ('win' | 'lose' | 'draw')[];
+    guess: 'home' | 'away' | 'big' | 'small';
+    result: 'win' | 'lose' | 'draw';
+    guessValue: number;
 }
 
 export interface Plan {
@@ -42,17 +56,32 @@ export interface MyPlans {
     size: Plan[];
 }
 
+export interface RecordItem {
+    id: number;
+    avatar: string;
+    name: string;
+    hotStreak: number;
+    homeTeam: string;
+    awayTeam: string;
+    history: ('win' | 'lose' | 'draw')[];
+    guess: 'home' | 'away' | 'big' | 'small';
+    result: 'win' | 'lose' | 'draw';
+    guessValue: number;
+}
+
 interface InitState {
     myGuess: {
         rank: number;
         myPlans: MyPlans;
         recentPerformance: RecentPerformance;
+        guessRecordList: RecordItem[];
     };
 }
 
 interface MyGuessState extends InitState {
-    setMyPlans?: (myPlans: MyPlans) => void;
-    setRecentPerformance?: (recentPerformance: RecentPerformance) => void;
+    setMyPlans: (myPlans: MyPlans) => void;
+    setRecentPerformance: (recentPerformance: RecentPerformance) => void;
+    setGuessRecordList: (guessRecordList: RecordItem[]) => void;
 }
 
 let useMyGuessStore: StoreWithSelectors<MyGuessState>;
@@ -62,16 +91,19 @@ const initialState = (set: (updater: (state: MyGuessState) => Partial<MyGuessSta
         rank: 0,
         recentPerformance: {
             byWeek: {
+                rank: 0,
                 summary: { play: 0, win: 0, draw: 0, lose: 0 },
                 handicap: { play: 0, win: 0, draw: 0, lose: 0 },
                 size: { play: 0, win: 0, draw: 0, lose: 0 }
             },
             byMonth: {
+                rank: 0,
                 summary: { play: 0, win: 0, draw: 0, lose: 0 },
                 handicap: { play: 0, win: 0, draw: 0, lose: 0 },
                 size: { play: 0, win: 0, draw: 0, lose: 0 }
             },
             byQuarter: {
+                rank: 0,
                 summary: { play: 0, win: 0, draw: 0, lose: 0 },
                 handicap: { play: 0, win: 0, draw: 0, lose: 0 },
                 size: { play: 0, win: 0, draw: 0, lose: 0 }
@@ -81,13 +113,8 @@ const initialState = (set: (updater: (state: MyGuessState) => Partial<MyGuessSta
             totale: [],
             handicap: [],
             size: []
-        }
-    },
-    setRank: (rank: number) => {
-        set(state => ({
-            ...state,
-            myGuess: { ...state.myGuess, rank }
-        }));
+        },
+        guessRecordList: []
     },
     setMyPlans: (myPlans: MyPlans) => {
         set(state => ({
@@ -99,6 +126,12 @@ const initialState = (set: (updater: (state: MyGuessState) => Partial<MyGuessSta
         set(state => ({
             ...state,
             myGuess: { ...state.myGuess, recentPerformance }
+        }));
+    },
+    setGuessRecordList: (guessRecordList: RecordItem[]) => {
+        set(state => ({
+            ...state,
+            myGuess: { ...state.myGuess, guessRecordList }
         }));
     }
 });
