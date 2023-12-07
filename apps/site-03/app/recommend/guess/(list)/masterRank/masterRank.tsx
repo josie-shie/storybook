@@ -18,55 +18,70 @@ function RankList() {
         highestStreak: 14
     };
     creatMasterRankStore({
+        onlyShowToday: true,
         masterRankList: [
             {
+                id: 1,
                 ranking: 1,
                 avatar: '',
                 name: '老梁聊球',
                 currentStreak: 9,
-                highestStreak: 14
+                highestStreak: 14,
+                isToday: true
             },
             {
+                id: 2,
                 ranking: 2,
                 avatar: '',
                 name: '老梁聊球',
                 currentStreak: 10,
-                highestStreak: 7
+                highestStreak: 7,
+                isToday: true
             },
             {
+                id: 3,
                 ranking: 3,
                 avatar: '',
                 name: '老梁聊球',
                 currentStreak: 4,
-                highestStreak: 4
+                highestStreak: 4,
+                isToday: true
             },
             {
+                id: 4,
                 ranking: 4,
                 avatar: '',
                 name: '老梁聊球',
                 currentStreak: 6,
-                highestStreak: 3
+                highestStreak: 3,
+                isToday: true
             },
             {
+                id: 5,
                 ranking: 5,
                 avatar: '',
                 name: '老梁聊球',
                 currentStreak: 4,
-                highestStreak: 3
+                highestStreak: 3,
+                isToday: true
             },
             {
+                id: 6,
                 ranking: 6,
                 avatar: '',
                 name: '老梁聊球',
                 currentStreak: 7,
-                highestStreak: 2
+                highestStreak: 2,
+                isToday: true
             },
             {
+                id: 7,
                 ranking: 7,
                 avatar: '',
                 name: '老梁聊球',
                 currentStreak: 4,
-                highestStreak: 0
+                highestStreak: 0,
+                isToday: false
             }
         ]
     });
