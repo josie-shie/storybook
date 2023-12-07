@@ -35,7 +35,9 @@ const ContestInfoSchema = z.object({
     handicapAwayCurrentOdds: z.number(),
     overUnderCurrent: z.number(),
     overUnderOverCurrentOdds: z.number(),
-    overUnderUnderCurrentOdds: z.number()
+    overUnderUnderCurrentOdds: z.number(),
+    homeLogo: z.string(),
+    awayLogo: z.string()
 });
 
 export type OriginalContestInfo = z.infer<typeof ContestInfoSchema>;
