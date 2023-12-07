@@ -21,16 +21,18 @@ const tabList = [
     }
 ];
 
-function MyGuessMyPlans() {
-    const [planActiveTab, setPlanActiveTab] = useState('totale');
-    const openRecord = useMyGuessStore.use.setOpen();
+interface MyGuessMyPlansProps {
+    setIsOpenRecord: (arg: boolean) => void;
+}
 
+function MyGuessMyPlans({ setIsOpenRecord }: MyGuessMyPlansProps) {
+    const [planActiveTab, setPlanActiveTab] = useState('totale');
     const handlePlanTabClick = (tabName: string) => {
         setPlanActiveTab(tabName);
     };
 
     const handleOpenRecord = () => {
-        openRecord(true);
+        setIsOpenRecord(true);
     };
 
     const myPlansData = useMyGuessStore.use.myGuess().myPlans[planActiveTab as keyof MyPlans];

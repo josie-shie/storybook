@@ -1,5 +1,6 @@
 'use client';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import Image from 'next/image';
 import backLeftArrowImg from '../img/backLeftArrow.png';
 import GuessRecord from './guessRecord/guessRecord';
@@ -10,10 +11,11 @@ import { creatMyGuessStoreStore } from './myGuessStore';
 
 function MyGuess() {
     const router = useRouter();
+    const [isOpenRecord, setIsOpenRecord] = useState(false);
+
     creatMyGuessStoreStore({
         myGuess: {
             rank: 1,
-            isOpen: false,
             recentPerformance: {
                 byWeek: {
                     rank: 0,
@@ -126,9 +128,9 @@ function MyGuess() {
 
             <div className={style.myGuess}>
                 <RecentPerformance />
-                <MyGuessMyPlans />
+                <MyGuessMyPlans setIsOpenRecord={setIsOpenRecord} />
             </div>
-            <GuessRecord />
+            <GuessRecord isOpenRecord={isOpenRecord} setIsOpenRecord={setIsOpenRecord} />
         </>
     );
 }

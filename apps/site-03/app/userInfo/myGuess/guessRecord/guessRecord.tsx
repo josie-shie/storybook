@@ -23,9 +23,12 @@ function RecordContent() {
     );
 }
 
-function GuessRecord() {
-    const isOpenRecord = useMyGuessStore.use.myGuess().isOpen;
-    const setIsOpenRecord = useMyGuessStore.use.setOpen();
+interface GuessRecordProps {
+    isOpenRecord: boolean;
+    setIsOpenRecord: (arg: boolean) => void;
+}
+
+function GuessRecord({ isOpenRecord, setIsOpenRecord }: GuessRecordProps) {
     const setGuessRecordList = useMyGuessStore.use.setGuessRecordList();
     const [isLoading, setIsLoading] = useState(true);
 

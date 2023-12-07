@@ -71,7 +71,6 @@ export interface RecordItem {
 
 interface InitState {
     myGuess: {
-        isOpen: boolean;
         rank: number;
         myPlans: MyPlans;
         recentPerformance: RecentPerformance;
@@ -80,7 +79,6 @@ interface InitState {
 }
 
 interface MyGuessState extends InitState {
-    setOpen: (isOpen: boolean) => void;
     setMyPlans: (myPlans: MyPlans) => void;
     setRecentPerformance: (recentPerformance: RecentPerformance) => void;
     setGuessRecordList: (guessRecordList: RecordItem[]) => void;
@@ -90,7 +88,6 @@ let useMyGuessStore: StoreWithSelectors<MyGuessState>;
 
 const initialState = (set: (updater: (state: MyGuessState) => Partial<MyGuessState>) => void) => ({
     myGuess: {
-        isOpen: false,
         rank: 0,
         recentPerformance: {
             byWeek: {
@@ -118,12 +115,6 @@ const initialState = (set: (updater: (state: MyGuessState) => Partial<MyGuessSta
             size: []
         },
         guessRecordList: []
-    },
-    setOpen: (isOpen: boolean) => {
-        set(state => ({
-            ...state,
-            myGuess: { ...state.myGuess, isOpen }
-        }));
     },
     setMyPlans: (myPlans: MyPlans) => {
         set(state => ({
