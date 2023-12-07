@@ -74,18 +74,11 @@ function ArticleContent({ params }: { params: { articleId: string } }) {
         return result[value];
     };
 
-    const adjustHomeHandicap = (val: number) => {
-        if (val > 0) {
-            return '-';
+    const adjustHandicap = (val: number) => {
+        if (article.playType === 'HOMEAWAY') {
+            return val > 0 ? '-' : '+';
         }
-        return '+';
-    };
-
-    const adjustAwayHandicap = (val: number) => {
-        if (val > 0) {
-            return '+';
-        }
-        return '-';
+        return val > 0 ? '+' : '-';
     };
 
     const goSubscribe = () => {
@@ -166,7 +159,7 @@ function ArticleContent({ params }: { params: { articleId: string } }) {
                                     </div>
                                     <div className={style.score}>
                                         <span>
-                                            {adjustHomeHandicap(
+                                            {adjustHandicap(
                                                 article.playType === 'HOMEAWAY'
                                                     ? article.odds.handicap
                                                     : article.odds.overUnder
@@ -207,7 +200,7 @@ function ArticleContent({ params }: { params: { articleId: string } }) {
                                     </div>
                                     <div className={style.score}>
                                         <span>
-                                            {adjustAwayHandicap(
+                                            {adjustHandicap(
                                                 article.playType === 'HOMEAWAY'
                                                     ? article.odds.handicap
                                                     : article.odds.overUnder

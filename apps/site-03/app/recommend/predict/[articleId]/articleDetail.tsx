@@ -11,8 +11,7 @@ export const metadata: Metadata = {
 
 function MasterDetail({ params }: { params: { articleId: string } }) {
     const headerProps = {
-        title: '专家预测',
-        total: 999999
+        title: '专家预测'
     };
 
     creatArticleStore({
@@ -55,42 +54,45 @@ function MasterDetail({ params }: { params: { articleId: string } }) {
         recommendationList: [
             {
                 id: 1,
-                postTime: 1701679456,
+                createdAt: 1701679456,
                 leagueName: '欧锦U20A',
-                dateTime: 1701679456,
+                matchTime: 1701679456,
                 homeTeamName: '德國U20A',
                 awayTeamName: '斯洛文尼亚U20',
-                handicap: 'handicap',
-                amount: 20,
-                lockCount: 5
+                price: 20,
+                predictPlayType: 'overUnder',
+                unlockNumber: 8,
+                isLock: true
             },
             {
                 id: 2,
-                postTime: 1701679456,
+                createdAt: 1701679456,
                 leagueName: '欧锦U20A',
-                dateTime: 1701679456,
+                matchTime: 1701679456,
                 homeTeamName: '德國U20A',
                 awayTeamName: '斯洛文尼亚U20',
-                handicap: 'handicap',
-                amount: 20,
-                lockCount: 5
+                price: 20,
+                predictPlayType: 'overUnder',
+                unlockNumber: 8,
+                isLock: true
             },
             {
                 id: 3,
-                postTime: 1701679456,
+                createdAt: 1701679456,
                 leagueName: '欧锦U20A',
-                dateTime: 1701679456,
+                matchTime: 1701679456,
                 homeTeamName: '德國U20A',
                 awayTeamName: '斯洛文尼亚U20',
-                handicap: 'overUnder',
-                amount: 20,
-                lockCount: 5
+                price: 20,
+                predictPlayType: 'handicap',
+                unlockNumber: 8,
+                isLock: false
             }
         ]
     });
     return (
         <>
-            <Header title={headerProps.title} total={headerProps.total} />
+            <Header title={headerProps.title} />
             <Info />
             <ArticleContent params={params} />
         </>

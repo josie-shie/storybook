@@ -35,7 +35,9 @@ function BettingColumn({ play, detail, homeType, awayType }: BettingProps) {
     const guessStatus = homeType === '主' ? detail.guessHomeAway : detail.guessBigSmall;
     const guessTeam = direction === 'left' ? detail.homeTeamName : detail.awayTeamName;
 
-    const setGuess = useGuessDetailStore.use.setDetail();
+    const guessesLeft = useGuessDetailStore.use.guessesLeft();
+    const setGuessDetail = useGuessDetailStore.use.setDetail();
+    const setGuessesLeft = useGuessDetailStore.use.setGuessesLeft();
 
     const handleGuess = (guessDirection: 'left' | 'right') => {
         setOpenGuessDialog(true);
@@ -50,11 +52,13 @@ function BettingColumn({ play, detail, homeType, awayType }: BettingProps) {
         if (homeType === '主') {
             const betting = direction === 'left' ? 'home' : 'away';
             const newDetail: DetailType = { ...detail, guessHomeAway: betting };
-            setGuess({ ...newDetail });
+            setGuessDetail({ ...newDetail });
+            setGuessesLeft(guessesLeft - 1);
         } else {
             const betting = direction === 'left' ? 'big' : 'small';
             const newDetail: DetailType = { ...detail, guessBigSmall: betting };
-            setGuess({ ...newDetail });
+            setGuessDetail({ ...newDetail });
+            setGuessesLeft(guessesLeft - 1);
         }
     };
 

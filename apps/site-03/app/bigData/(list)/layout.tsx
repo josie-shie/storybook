@@ -1,18 +1,13 @@
 'use client';
-import type { ReactNode } from 'react';
-import { usePathname } from 'next/navigation';
+import { Suspense, type ReactNode } from 'react';
 import { Tab, Tabs } from 'ui';
-import Image from 'next/image';
-import Logo from './img/logo.png';
 import AnimationData from './animationData';
 import style from './layout.module.scss';
 import Footer from '@/components/footer/footer';
 import Header from '@/components/header/headerLogo';
+import Loading from '@/components/loading/loading';
 
 function BigDataLayout({ children }: { children: ReactNode }) {
-    const pathname = usePathname();
-    const isBigDataDetail = pathname.includes('resultDetail');
-
     const tabStyle = {
         gap: 8,
         swiperOpen: true,
@@ -29,18 +24,9 @@ function BigDataLayout({ children }: { children: ReactNode }) {
         }
     ];
 
-    const headerProps = {
-        logo: <Image alt="logo" height={13} src={Logo} width={66} />,
-        total: 999999
-    };
-
-    if (isBigDataDetail) {
-        return <>{children}</>;
-    }
-
     return (
         <>
-            <Header logo={headerProps.logo} total={headerProps.total} />
+            <Header />
             <AnimationData />
             <div className={style.main}>
                 <Tabs
@@ -53,7 +39,7 @@ function BigDataLayout({ children }: { children: ReactNode }) {
                     {tabList.map(item => {
                         return (
                             <Tab key={item.label} label={item.label} to={item.to}>
-                                {children}
+                                <Suspense fallback={<Loading />}>{children}</Suspense>
                             </Tab>
                         );
                     })}

@@ -2,25 +2,28 @@
 
 import { useEffect, useState, useRef } from 'react';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
 import { cancelMessage, getMessageResponse, messageService, getRandomInt } from 'lib';
 import type { MessageResponse, MessageItem } from 'lib';
 import MessageRoom from '@bf/message-board';
 import '@bf/message-board/style.css';
 import type { Message } from '@bf/message-board/types';
+import Skeleton from '@mui/material/Skeleton';
 import style from './messageBoard.module.scss';
 import SentIcon from './img/sent.png';
 import SmileIcon from './img/smile.png';
 import { useMessageStore } from '@/app/messageStore';
 import { useUserStore } from '@/app/userStore';
+import { useAuthStore } from '@/app/(auth)/authStore';
 
 function MessageBoard({ matchId }: { matchId: number }) {
     const firstTimeRef = useRef(true);
-    const router = useRouter();
     const userInfo = useUserStore.use.userInfo();
     const isLogin = useUserStore.use.isLogin();
     const forbiddenWords = useMessageStore.use.forbiddenWords();
     const [messageList, setMessageList] = useState<MessageItem[]>([]);
+    const setIsDrawerOpen = useAuthStore.use.setIsDrawerOpen();
+    const setAuthQuery = useUserStore.use.setAuthQuery();
+    const chatSkeleton = Array(16).fill(null);
 
     useEffect(() => {
         const handleMsgRes = (data: MessageResponse) => {
@@ -72,7 +75,8 @@ function MessageBoard({ matchId }: { matchId: number }) {
 
     const addMessage = (message: Message) => {
         if (!isLogin) {
-            router.push('?auth=login');
+            setAuthQuery('login');
+            setIsDrawerOpen(true);
             return;
         }
 
@@ -93,18 +97,32 @@ function MessageBoard({ matchId }: { matchId: number }) {
     };
 
     return (
-        <div className={style.messageBoard}>
-            <MessageRoom
-                addMessage={addMessage}
-                group
-                messagesList={messageList}
-                sendBtn
-                sendIcon={<Image alt="sent" height={24} src={SentIcon} width={24} />}
-                silence={forbiddenWords}
-                smileIcon={<Image alt="sent" height={24} src={SmileIcon} width={24} />}
-                uid={String(userInfo.uid) || ''}
-            />
-        </div>
+        <>
+            {firstTimeRef.current ? (
+                <div className={style.chatSkeleton}>
+                    {chatSkeleton.map((_, idx) => (
+                        <Skeleton
+                            height={20}
+                            key={`skeleton_${idx.toString()}`}
+                            variant="rounded"
+                        />
+                    ))}
+                </div>
+            ) : (
+                <div className={style.messageBoard}>
+                    <MessageRoom
+                        addMessage={addMessage}
+                        group
+                        messagesList={messageList}
+                        sendBtn
+                        sendIcon={<Image alt="sent" height={24} src={SentIcon} width={24} />}
+                        silence={forbiddenWords}
+                        smileIcon={<Image alt="sent" height={24} src={SmileIcon} width={24} />}
+                        uid={String(userInfo.uid) || ''}
+                    />
+                </div>
+            )}
+        </>
     );
 }
 

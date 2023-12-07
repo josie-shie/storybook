@@ -168,12 +168,11 @@ function MasterDetail() {
     });
 
     const headerProps = {
-        title: '专家分析观点',
-        total: 999999
+        title: '专家分析观点'
     };
     return (
         <>
-            <Header title={headerProps.title} total={headerProps.total} />
+            <Header title={headerProps.title} />
             <div className={style.masterList}>
                 <ArticleItem />
             </div>

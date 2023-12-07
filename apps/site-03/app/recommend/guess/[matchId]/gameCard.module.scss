@@ -38,6 +38,10 @@
                     line-height: 0;
                 }
             }
+
+            :global(.baseTag) {
+                margin-right: 4px;
+            }
         }
     }
 
