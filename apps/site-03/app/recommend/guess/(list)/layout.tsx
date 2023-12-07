@@ -17,16 +17,6 @@ function ContestLayout({ children }: { children: ReactNode }) {
         <>
             <Header logo={headerProps.logo} total={headerProps.total} />
             <div className={style.guess}>
-                <div className={style.layoutTab}>
-                    <Tabs
-                        labels={['竟猜', '专家预测', '大数据分析']}
-                        paths={[
-                            '/recommend/guess',
-                            '/recommend/predict',
-                            '/recommend/bigData?status=analysis'
-                        ]}
-                    />
-                </div>
                 <div className={style.childrenTab}>
                     <Tabs
                         labels={['賽事', '週榜', '月榜', '季榜', '連紅榜']}
