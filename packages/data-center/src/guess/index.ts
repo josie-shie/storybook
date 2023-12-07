@@ -16,10 +16,6 @@ import {
     PAY_FOR_POST_MUTATION
 } from './graphqlQueries';
 
-export interface GetTodayGuessMatchesRequest {
-    memberId: number;
-}
-
 const GetTodayGuessMatchSchema = z.object({
     matchId: z.number(),
     leagueId: z.number(),
@@ -39,14 +35,16 @@ const GetTodayGuessMatchSchema = z.object({
     overUnderUnderOdds: z.number(),
     totalNum: z.number(),
     guessed: z.boolean(),
-    state: z.number()
+    state: z.number(),
+    homeLogo: z.string(),
+    awayLogo: z.string()
 });
 
 export type GetTodayGuessMatch = z.infer<typeof GetTodayGuessMatchSchema>;
 
 export type ContestGuessInfo = Record<number, GetTodayGuessMatch>;
 
-type ContestGuessList = number[];
+export type ContestGuessList = number[];
 export interface GetTodayGuessMatchesResponse {
     contestGuessList: ContestGuessList;
     contestGuessInfo: ContestGuessInfo;
@@ -62,21 +60,15 @@ type GetTodayGuessMatchesResult = z.infer<typeof GetTodayGuessMatchesResultSchem
 
 /**
  * 取得當前競猜賽事列表
- * - params {@link GetTodayGuessMatchesRequest}
  * - returns {@link GetTodayGuessMatchesResponse}
  * {@link ContestGuessList} {@link ContestGuessInfo}{@link GetTodayGuessMatch}
  */
-export const getTodayGuessMatches = async ({
-    memberId
-}: GetTodayGuessMatchesRequest): Promise<ReturnData<GetTodayGuessMatchesResponse>> => {
+export const getTodayGuessMatches = async (): Promise<ReturnData<GetTodayGuessMatchesResponse>> => {
     try {
         const { data }: { data: GetTodayGuessMatchesResult } = await fetcher(
             {
                 data: {
-                    query: GET_TODAY_GUESS_MATCHES_QUERY,
-                    variables: {
-                        memberId
-                    }
+                    query: GET_TODAY_GUESS_MATCHES_QUERY
                 }
             },
             { cache: 'no-store' }

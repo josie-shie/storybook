@@ -1,6 +1,7 @@
 'use client';
 import type { ChangeEvent } from 'react';
 import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import type { UpdateMemberInfoRequest } from 'data-center';
 import { timestampToString, uploadImage } from 'lib';
@@ -55,7 +56,7 @@ function Account() {
     const headerProps = {
         title: '个人資料'
     };
-
+    const router = useRouter();
     const userInfo = useUserStore.use.userInfo();
     const formState = useAccountStore.use.formState();
     const submittedState = useAccountStore.use.submittedState();
@@ -68,6 +69,10 @@ function Account() {
     const setImgUpload = useAccountStore.use.setImgUpload();
     const setIsSubmitted = useAccountStore.use.setIsSubmitted();
     const setIsVisible = useNotificationStore.use.setIsVisible();
+
+    const back = () => {
+        router.push('/userInfo');
+    };
 
     useEffect(() => {
         if (userInfo.avatarPath && userInfo.avatarPath !== '0') {
@@ -189,7 +194,7 @@ function Account() {
 
     return (
         <>
-            <Header title={headerProps.title} />
+            <Header back={back} title={headerProps.title} />
             <div className={style.account}>
                 <div className={style.uploadGroup}>
                     <Image

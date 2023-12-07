@@ -1,4 +1,5 @@
 'use client';
+import { useRouter } from 'next/navigation';
 import { Select } from '../recharge/components/select/select';
 import style from './tradeDetail.module.scss';
 import { creatTardeDetailStore } from './tradeDetailStore';
@@ -9,6 +10,10 @@ const dateOptions = [{ label: '今天', value: 'today' }];
 const typeOption = [{ label: '全部', value: 'total' }];
 
 function TradeDetail() {
+    const router = useRouter();
+    const back = () => {
+        router.push('/userInfo');
+    };
     creatTardeDetailStore({
         tradeDetailList: [
             {
@@ -95,7 +100,7 @@ function TradeDetail() {
 
     return (
         <>
-            <Header title="交易明細" />
+            <Header back={back} title="交易明細" />
             <div className={style.tradeDetail}>
                 <p>交易明細</p>
                 <div className={style.selectBlock}>

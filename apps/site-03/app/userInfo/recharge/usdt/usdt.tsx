@@ -1,6 +1,7 @@
 'use client';
 import { useState } from 'react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import UsdtIcon from '../img/usdt.png';
 import { Select } from '../components/select/select';
 import Pay from './pay/pay';
@@ -43,6 +44,10 @@ function BlockChain({ selectTitle, options, onSelectChain }: SectionSelectProps)
 }
 
 function Usdt() {
+    const router = useRouter();
+    const back = () => {
+        router.push('/userInfo');
+    };
     const headerProps = {
         title: '虚拟货币(USDT)充值'
     };
@@ -95,7 +100,7 @@ function Usdt() {
         <>
             {!pay ? (
                 <>
-                    <Header title={headerProps.title} />
+                    <Header back={back} title={headerProps.title} />
                     <div className={style.usdt}>
                         <div className={style.payArea}>
                             <div className={style.title}>

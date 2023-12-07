@@ -110,11 +110,11 @@ function DetailLayout({ children }: { children: ReactNode }) {
                 <Tabs
                     labels={['積分', '賽程', '讓球', '總進球', '射手榜']}
                     paths={[
-                        `/data/league/${matchId}`,
-                        `/data/league/${matchId}/schedule`,
-                        `/data/league/${matchId}/handicap`,
-                        `/data/league/${matchId}/totalGoals`,
-                        `/data/league/${matchId}/topScorers`
+                        `/analytics/league/${matchId}`,
+                        `/analytics/league/${matchId}/schedule`,
+                        `/analytics/league/${matchId}/handicap`,
+                        `/analytics/league/${matchId}/totalGoals`,
+                        `/analytics/league/${matchId}/topScorers`
                     ]}
                 />
             </div>

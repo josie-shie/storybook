@@ -26,6 +26,7 @@ function AuthDrawer() {
     const setToken = useUserStore.use.setToken();
     const isCookieExist = Cookies.get('access');
     const setNotificationVisible = useNotificationStore.use.setIsVisible();
+    const setUserInfoIsLoading = useUserStore.use.setUserInfoIsLoading();
 
     let content: ReactNode;
     let title: ReactNode;
@@ -84,6 +85,7 @@ function AuthDrawer() {
         if (content) {
             setIsDrawerOpen(true);
         }
+        setUserInfoIsLoading(false);
     }, []);
 
     return (
@@ -97,7 +99,8 @@ function AuthDrawer() {
             }}
             propsStyle={{
                 height: '580px',
-                backgroundColor: '#1665df'
+                backgroundColor: '#1665df',
+                borderRadius: '16px 16px 0 0'
             }}
             topLineDisplay="none"
         >

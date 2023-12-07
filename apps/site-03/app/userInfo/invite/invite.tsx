@@ -9,10 +9,12 @@ import Friend from '../img/friend.png';
 import { useInviteStore } from './inviteStore';
 import CustomModal from './components/customModal/customModal';
 import style from './invite.module.scss';
+import { useUserStore } from '@/app/userStore';
 
 function Invite() {
     const router = useRouter();
     const [modalShow, setModalShow] = useState(false);
+    const userInfo = useUserStore.use.userInfo();
     const invitedCount = useInviteStore.use.invitedCount();
     const totalCoins = useInviteStore.use.totalCoins();
     const inviteCode = useInviteStore.use.inviteCode();
@@ -91,7 +93,9 @@ function Invite() {
                                 const protocol = window.location.protocol;
                                 const host = window.location.host;
                                 const baseUrl = `${protocol}//${host}`;
-                                void coypLink(`${baseUrl}/?auth=register&invitCode=${inviteCode}`);
+                                void coypLink(
+                                    `${userInfo.username}邀請您一起獲得<未來體育平台(站名)>88元紅包,點擊網址後註冊加入即可獲得最新賽事預測、賽事智能分析服務: ${baseUrl}/?auth=register&invitCode=${inviteCode}`
+                                );
                             }}
                         >
                             复制邀请连结

@@ -1,18 +1,19 @@
 import Image from 'next/image';
 import { timestampToString } from 'lib';
 import { type Plan } from '../../myGuessStore';
+import BigGone from '../img/bigGone.png';
+import BigWin from '../img/bigWin.png';
+import BigLose from '../img/bigLose.png';
 import style from './bettingPlan.module.scss';
-import iconWin from './img/win.png';
-import iconDefeat from './img/lose.png';
 
 interface PropsType {
     rowData: Plan;
 }
 
 const iconMap = {
-    win: <Image alt="icon" className={style.iconWin} src={iconWin} />,
-    lose: <Image alt="icon" className={style.iconDefeat} src={iconDefeat} />,
-    draw: <Image alt="icon" className={style.iconDefeat} src={iconDefeat} />,
+    win: <Image alt="icon" className={style.iconWin} src={BigWin} />,
+    lose: <Image alt="icon" className={style.iconDefeat} src={BigLose} />,
+    draw: <Image alt="icon" className={style.iconDefeat} src={BigGone} />,
     none: null
 };
 

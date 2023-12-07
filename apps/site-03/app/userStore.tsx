@@ -11,7 +11,9 @@ interface InitState {
 interface UserState extends InitState {
     token: string;
     isLogin: boolean;
+    userInfoIsLoading: boolean;
     setIsLogin: (isLogin: boolean) => void;
+    setUserInfoIsLoading: (userInfoIsLoading: boolean) => void;
     setToken: (token: string) => void;
     setAuthQuery: (authQuery: string) => void;
     setUserInfo: (userInfo: GetMemberInfoResponse) => void;
@@ -22,6 +24,7 @@ let useUserStore: StoreWithSelectors<UserState>;
 
 const initialState = (set: (updater: (state: UserState) => Partial<UserState>) => void) => ({
     userInfo: {} as GetMemberInfoResponse,
+    userInfoIsLoading: true,
     isLogin: false,
     token: '',
     setIsLogin: (isLogin: boolean) => {
@@ -36,7 +39,16 @@ const initialState = (set: (updater: (state: UserState) => Partial<UserState>) =
         set(state => {
             return {
                 ...state,
-                userInfo
+                userInfo,
+                userInfoIsLoading: false
+            };
+        });
+    },
+    setUserInfoIsLoading: (userInfoIsLoading: boolean) => {
+        set(state => {
+            return {
+                ...state,
+                userInfoIsLoading
             };
         });
     },
