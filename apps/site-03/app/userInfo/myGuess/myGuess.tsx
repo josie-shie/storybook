@@ -29,9 +29,9 @@ function MyGuess() {
                 },
                 byQuarter: {
                     rank: 0,
-                    summary: { play: 300, win: 200, draw: 20, lose: 80 },
-                    handicap: { play: 100, win: 50, draw: 10, lose: 40 },
-                    size: { play: 200, win: 150, draw: 10, lose: 40 }
+                    summary: { play: 100, win: 50, draw: 10, lose: 40 },
+                    handicap: { play: 100, win: 20, draw: 40, lose: 40 },
+                    size: { play: 100, win: 50, draw: 20, lose: 30 }
                 }
             },
             myPlans: {
@@ -69,12 +69,12 @@ function MyGuess() {
                 ],
                 handicap: [
                     {
-                        id: 1,
+                        id: 22,
                         matchId: 10,
                         matchTime: 6549857483,
                         bettingType: 'draw',
                         leagueId: 10,
-                        leagueName: '欧锦U20A',
+                        leagueName: '欧锦U20A111',
                         homeTeamName: '德国U20A',
                         awayTeamName: '斯洛文尼亚U20',
                         handicapOdds: '平/半',
@@ -84,12 +84,12 @@ function MyGuess() {
                         isPaidToRead: '222'
                     },
                     {
-                        id: 2,
+                        id: 23,
                         matchId: 10,
                         matchTime: 6549857483,
                         bettingType: 'draw',
                         leagueId: 10,
-                        leagueName: '欧锦U20A',
+                        leagueName: '欧锦U20A111',
                         homeTeamName: '德国U20A',
                         awayTeamName: '斯洛文尼亚U20',
                         handicapOdds: '平/半',
@@ -99,23 +99,7 @@ function MyGuess() {
                         isPaidToRead: '222'
                     }
                 ],
-                size: [
-                    {
-                        id: 2,
-                        matchId: 10,
-                        matchTime: 6549857483,
-                        bettingType: 'size',
-                        leagueId: 10,
-                        leagueName: '欧锦U20A',
-                        homeTeamName: '德国U20A',
-                        awayTeamName: '斯洛文尼亚U20',
-                        handicapOdds: '',
-                        overUnderOdds: 10,
-                        predictedPlay: 'away',
-                        predictionResult: 'win',
-                        isPaidToRead: '222'
-                    }
-                ]
+                size: []
             },
             guessRecordList: []
         }

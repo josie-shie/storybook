@@ -1,6 +1,7 @@
 import RecordCard from '../components/recordCard/recordCard';
 import { useMyGuessStore } from '../myGuessStore';
 import style from './guessRecord.module.scss';
+import NoData from '@/components/baseNoData/noData';
 import BottomDrawer from '@/components/drawer/bottomDrawer';
 
 function RecordContent() {
@@ -11,9 +12,11 @@ function RecordContent() {
             <div className={style.title}>
                 <span>竞猜浏览纪录</span>
             </div>
-            {guessRecordList.map(item => (
-                <RecordCard key={item.id} recordItem={item} />
-            ))}
+            {guessRecordList.length > 0 ? (
+                guessRecordList.map(item => <RecordCard key={item.id} recordItem={item} />)
+            ) : (
+                <NoData />
+            )}
         </div>
     );
 }

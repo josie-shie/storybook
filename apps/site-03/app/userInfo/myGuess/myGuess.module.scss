@@ -49,24 +49,38 @@
     }
 
     .btnTab {
-        :global(.ui-slick) {
-            :global(.ui-slick-tabs-container) {
-                padding-left: 0;
-
-                :global(.ui-slick-tabs) {
+        :global(.ui-tab) {
+            :global(.ui-tab-header) {
+                :global(.ui-tabs-header) {
                     justify-content: flex-start;
                     gap: 8px;
                     background: none;
                     border: none;
 
-                    :global(.ui-slick-li) {
-                        width: fit-content;
+                    :global(.ui-button) {
+                        font-size: 12px;
+                        border-radius: 30px;
+                        border: 1px solid #9b9b9b;
+                        padding: 6px 13px;
+                        max-width: 48px !important;
+                        height: 31px;
+                        font-weight: 600;
 
-                        :global(.ui-slick-button) {
-                            font-size: 12px;
-                            border-radius: 30px;
-                            border: 1px solid #9b9b9b;
-                            width: 48px;
+                        :global(.ui-tabs-header-label) {
+                            text-wrap: nowrap;
+                        }
+
+                        &::before {
+                            display: none;
+                        }
+
+                        &:global(.ui-active) {
+                            border: 1px solid #4489ff;
+
+                            &::before {
+                                transform: none;
+                                opacity: 1;
+                            }
                         }
                     }
                 }
