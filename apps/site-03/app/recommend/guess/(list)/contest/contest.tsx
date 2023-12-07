@@ -2,8 +2,7 @@
 import { useEffect, useState } from 'react';
 import { InfiniteScroll } from 'ui';
 import CircularProgress from '@mui/material/CircularProgress';
-import { getContestList, type GetContestListResponse } from 'data-center';
-// import Rule from '../components/rule/rule';
+import { getTodayGuessMatches, type GetTodayGuessMatchesResponse } from 'data-center';
 import Image from 'next/image';
 import Banner from '../img/banner.png';
 import { creatGuessContestListStore, useGuessContestListStore } from './contestStore';
@@ -12,27 +11,26 @@ import style from './contest.module.scss';
 
 function ContestList() {
     const [rows, setRows] = useState({ full: 20, notYet: 0, finish: 0 });
-    const contestList = useGuessContestListStore.use.contestList();
-    const setContestList = useGuessContestListStore.use.setContestList();
-    const setContestInfo = useGuessContestListStore.use.setContestInfo();
+    const contestList = useGuessContestListStore.use.contestGuessList();
+    const setContestList = useGuessContestListStore.use.setContestGuessList();
+    const setContestInfo = useGuessContestListStore.use.setContestGuessInfo();
 
-    const fetchContestdata = async (timestamp: number) => {
+    const fetchContestGuessData = async () => {
         try {
-            const todayContest = await getContestList(timestamp);
-            if (!todayContest.success) {
+            const todayGuess = await getTodayGuessMatches({ memberId: 1 });
+            if (!todayGuess.success) {
                 return new Error();
             }
 
-            setContestList({ contestList: todayContest.data.contestList });
-            setContestInfo({ contestInfo: todayContest.data.contestInfo });
+            setContestList({ contestGuessList: todayGuess.data.contestGuessList });
+            setContestInfo({ contestGuessInfo: todayGuess.data.contestGuessInfo });
         } catch (error) {
             return new Error();
         }
     };
 
     useEffect(() => {
-        const dateString = Date.now();
-        void fetchContestdata(Math.floor(Number(dateString) / 1000));
+        void fetchContestGuessData();
     }, []);
 
     const displayList = contestList.slice(0, rows.full);
@@ -69,16 +67,11 @@ function ContestList() {
     );
 }
 
-function Contest({ todayContest }: { todayContest: GetContestListResponse }) {
-    creatGuessContestListStore(todayContest);
+function Contest({ todayGuess }: { todayGuess: GetTodayGuessMatchesResponse }) {
+    creatGuessContestListStore(todayGuess);
 
     return (
         <div className={style.contest}>
-            {/* <div className={style.control}>
-                <div className={style.right}>
-                    <Rule />
-                </div>
-            </div> */}
             <Image alt="" className={style.banner} src={Banner} />
             <ContestList />
         </div>
