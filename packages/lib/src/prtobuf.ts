@@ -1,5 +1,6 @@
 import type { Root, Type } from 'protobufjs';
 import { load } from 'protobufjs';
+import type { AnalysisRequest } from './mqttService';
 
 let changeProtobuf: Root;
 let changeItem: Type;
@@ -118,10 +119,22 @@ export const deProtoOddRunningHalf = async (msg: Uint8Array) => {
     return decoded;
 };
 
+export const toProtoAnalysis = async (msg: AnalysisRequest) => {
+    if (analysisInit) {
+        analysisProtobuf = await load('/personal_analysis.proto');
+        analysisItem = analysisProtobuf.lookupType('data_center.MqttMessage');
+        analysisInit = false;
+    }
+
+    const message = analysisItem.create(msg);
+    const buffer = analysisItem.encode(message).finish();
+    return buffer;
+};
+
 export const deProtoAnalysis = async (msg: Uint8Array) => {
     if (analysisInit) {
         analysisProtobuf = await load('/personal_analysis.proto');
-        analysisItem = analysisProtobuf.lookupType('dataFetcher.MqttMessage');
+        analysisItem = analysisProtobuf.lookupType('data_center.MqttMessage');
         analysisInit = false;
     }
 

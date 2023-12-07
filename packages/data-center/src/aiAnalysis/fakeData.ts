@@ -54,14 +54,14 @@ export const BigDataRecordList: BigDataRecordListResponse = [
         state: 0
     },
     {
-        recordId: 1,
+        recordId: 2,
         recordTime: 1701919911,
         handicap: 'away',
         odds: '',
         overUnder: '4+',
         startDate: 1701771917,
         endDate: 1701919911,
-        state: 0
+        state: 1
     }
 ];
 

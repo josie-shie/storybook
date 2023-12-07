@@ -8,10 +8,11 @@ import {
     deProtoDetailTechnicList,
     deProtoOddRunning,
     deProtoOddRunningHalf,
-    deProtoAnalysis
+    deProtoAnalysis,
+    toProtoAnalysis
 } from './prtobuf';
 
-interface AnalysisRequest {
+export interface AnalysisRequest {
     mission: string;
     uid: number;
     handicap_side: string;
@@ -21,9 +22,9 @@ interface AnalysisRequest {
     endTime: number;
 }
 
-interface AnalysisResponse {
+export interface AnalysisResponse {
     mission: string;
-    uid: number;
+    memberId: number;
     ticket_id: number;
     handicap_side: string;
     handicap_values: string;
@@ -700,9 +701,11 @@ export const mqttService = {
     getAnalysis: (onMessage: (data: AnalysisResponse) => void) => {
         useAnalysisQueue.push(onMessage);
     },
-    publishAnalysis: (data: AnalysisRequest) => {
+    publishAnalysis: async (data: AnalysisRequest) => {
         if (!init) {
-            client.publish('analytical/analysis', JSON.stringify(data), { qos: 2 }, error => {
+            const res = await toProtoAnalysis(data);
+            const bufferData = Buffer.from(res);
+            client.publish('analytical/analysis', bufferData, { qos: 2 }, error => {
                 if (error) {
                     console.error(error);
                 } else {

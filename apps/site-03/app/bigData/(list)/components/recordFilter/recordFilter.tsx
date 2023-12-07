@@ -1,8 +1,22 @@
 import { useEffect } from 'react';
+import { getBigDataRecordList } from 'data-center';
+import { mqttService } from 'lib';
 import SearchRecord from '../searchRecord/searchRecord';
 import { useDiscSelectStore } from '../../discSelectStore';
 import style from './recordFilter.module.scss';
 import BottomDrawer from '@/components/drawer/bottomDrawer';
+import { useNotificationStore } from '@/app/notificationStore';
+import { useUserStore } from '@/app/userStore';
+
+interface AnalysisResponse {
+    mission: string;
+    memberId: number;
+    ticket_id: number;
+    handicap_side: string;
+    handicap_values: string;
+    overUnder_values: string;
+    time_ranges: string;
+}
 
 function RecordFilter({
     isOpen,
@@ -15,31 +29,41 @@ function RecordFilter({
 }) {
     const setRecordList = useDiscSelectStore.use.setRecordList();
     const recordList = useDiscSelectStore.use.recordList();
+    const updateRecord = useDiscSelectStore.use.updateRecord();
+    const setIsNotificationVisible = useNotificationStore.use.setIsVisible();
+    const userInfo = useUserStore.use.userInfo();
+
+    const fetchRecordList = async () => {
+        const res = await getBigDataRecordList();
+
+        if (!res.success) {
+            const errorMessage = res.error ? res.error : '取得资料失败，请稍后再试';
+            setIsNotificationVisible(errorMessage, 'error');
+            return;
+        }
+
+        setRecordList(res.data);
+    };
 
     useEffect(() => {
-        setRecordList([
-            {
-                recordId: 1,
-                recordTime: 1701771917,
-                handicap: 'home',
-                odds: '1',
-                overUnder: '1',
-                startDate: 1701771917,
-                endDate: 1701771917,
-                state: 0
-            },
-            {
-                recordId: 2,
-                recordTime: 1701771917,
-                handicap: 'away',
-                odds: '4+',
-                overUnder: '1',
-                startDate: 1701771917,
-                endDate: 1701771917,
-                state: 1
+        if (isOpen) {
+            void fetchRecordList();
+        }
+    }, [isOpen]);
+
+    // 監聽MQTT是否推送已經有處理完成的分析結果
+    useEffect(() => {
+        const syncAnalysisStore = (message: Partial<AnalysisResponse>) => {
+            if (message.memberId === userInfo.uid && message.mission === 'done') {
+                const record = recordList.find(item => item.recordId === message.ticket_id);
+                if (record) {
+                    updateRecord(record.recordId);
+                }
             }
-        ]);
-    }, [setRecordList]);
+        };
+
+        mqttService.getAnalysis(syncAnalysisStore);
+    }, []);
 
     return (
         <BottomDrawer isOpen={isOpen} onClose={onClose} onOpen={onOpen}>

@@ -56,30 +56,55 @@ interface DiscSelectState extends InitState {
     handicapAscending: boolean;
     setHandicapAscending: (handicapAscending: boolean) => void;
     setRecordList: (recordList: Record[]) => void;
+    updateRecord: (recordId: number) => void;
 }
 
 let useDiscSelectStore: StoreWithSelectors<DiscSelectState>;
 
-const initialState = (set: (data: Partial<DiscSelectState>) => void) => ({
+const initialState = (
+    set: (updater: (state: DiscSelectState) => Partial<DiscSelectState>) => void
+) => ({
     handicapTips: [],
     setHandicapTips: (handicapTips: HandicapTipType[]) => {
-        set({ handicapTips });
+        set(state => {
+            return { ...state, handicapTips };
+        });
     },
     hintsSelected: '',
     setHintsSelected: (hintsSelected: string) => {
-        set({ hintsSelected });
+        set(state => {
+            return { ...state, hintsSelected };
+        });
     },
     timeAscending: false,
     setTimeAscending: (timeAscending: boolean) => {
-        set({ timeAscending });
+        set(state => {
+            return { ...state, timeAscending };
+        });
     },
     handicapAscending: false,
     setHandicapAscending: (handicapAscending: boolean) => {
-        set({ handicapAscending });
+        set(state => {
+            return { ...state, handicapAscending };
+        });
     },
     recordList: [],
     setRecordList: (recordList: Record[]) => {
-        set({ recordList });
+        set(state => {
+            return { ...state, recordList };
+        });
+    },
+    updateRecord: (recordId: number) => {
+        set(prevState => {
+            const updatedRecordList = prevState.recordList.map(record => {
+                if (record.recordId === recordId) {
+                    return { ...record, state: 1 };
+                }
+                return record;
+            });
+
+            return { ...prevState, recordList: updatedRecordList };
+        });
     },
     teamList: [
         {

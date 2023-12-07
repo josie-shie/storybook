@@ -252,10 +252,7 @@ function DiscSelect() {
             endTime: getEndDate || endDate
         };
 
-        // eslint-disable-next-line -- call mqtt data
-        console.dir(params);
-
-        mqttService.publishAnalysis(params);
+        void mqttService.publishAnalysis(params);
 
         setShowRecord(true);
     };
