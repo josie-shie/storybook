@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { InfiniteScroll } from 'ui';
 import CircularProgress from '@mui/material/CircularProgress';
 import { getContestList, type GetContestListResponse } from 'data-center';
-import Rule from '../components/rule/rule';
+// import Rule from '../components/rule/rule';
 import { creatGuessContestListStore, useGuessContestListStore } from './contestStore';
 import GameCard from './gameCard';
 import style from './contest.module.scss';
@@ -72,11 +72,11 @@ function Contest({ todayContest }: { todayContest: GetContestListResponse }) {
 
     return (
         <div className={style.contest}>
-            <div className={style.control}>
+            {/* <div className={style.control}>
                 <div className={style.right}>
                     <Rule />
                 </div>
-            </div>
+            </div> */}
             <ContestList />
         </div>
     );
