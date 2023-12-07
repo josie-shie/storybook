@@ -1,20 +1,16 @@
-import { getContestList } from 'data-center';
+import { getTodayGuessMatches } from 'data-center';
 import Contest from './contest/contest';
 
 async function Page() {
-    const timestamp = Math.floor(Date.now() / 1000);
-    const todayContest = await getContestList(timestamp);
+    const todayGuess = await getTodayGuessMatches({ memberId: 1 });
 
-    // eslint-disable-next-line -- Timestamp for testing
-    console.log('現在時間戳記：', timestamp);
-
-    if (!todayContest.success) {
+    if (!todayGuess.success) {
         return new Error();
     }
 
     return (
         <div className="recommendContest">
-            <Contest todayContest={todayContest.data} />
+            <Contest todayGuess={todayGuess.data} />
         </div>
     );
 }

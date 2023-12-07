@@ -46,7 +46,7 @@ export type GetTodayGuessMatch = z.infer<typeof GetTodayGuessMatchSchema>;
 
 export type ContestGuessInfo = Record<number, GetTodayGuessMatch>;
 
-type ContestGuessList = number[];
+export type ContestGuessList = number[];
 export interface GetTodayGuessMatchesResponse {
     contestGuessList: ContestGuessList;
     contestGuessInfo: ContestGuessInfo;
