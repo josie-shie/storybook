@@ -4,6 +4,8 @@ import { InfiniteScroll } from 'ui';
 import CircularProgress from '@mui/material/CircularProgress';
 import { getContestList, type GetContestListResponse } from 'data-center';
 // import Rule from '../components/rule/rule';
+import Image from 'next/image';
+import Banner from '../img/banner.png';
 import { creatGuessContestListStore, useGuessContestListStore } from './contestStore';
 import GameCard from './gameCard';
 import style from './contest.module.scss';
@@ -77,6 +79,7 @@ function Contest({ todayContest }: { todayContest: GetContestListResponse }) {
                     <Rule />
                 </div>
             </div> */}
+            <Image alt="" src={Banner} />
             <ContestList />
         </div>
     );
