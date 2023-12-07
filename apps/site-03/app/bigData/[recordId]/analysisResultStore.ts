@@ -3,6 +3,22 @@ import { initStore, timestampToString } from 'lib';
 import type { StoreWithSelectors } from 'lib';
 import { getISOWeek, parseISO } from 'date-fns';
 
+export interface Match {
+    startTime: number;
+    matchId: number;
+    countryCn: string;
+    leagueId: number;
+    leagueChsShort: string;
+    homeChs: string;
+    awayChs: string;
+    homeScore: number;
+    awayScore: number;
+    homeHalfScore: number;
+    awayHalfScore: number;
+    isFamous: boolean; // 是否熱門賽事
+    leagueLevel: number;
+}
+
 export interface AnalysisResult {
     // 全場讓球
     fullHandicapUpper: number[]; // full的讓球的“上”的所有的賽事matchId
@@ -144,14 +160,12 @@ function groupSameWeek(dayListData: Record<string, Statistics>) {
 interface InitState {
     analysisResultData: AnalysisResult;
     recordList: RecordType[];
-    handicapEchart: HandicapEchartType;
 }
 
 interface AnalysisResultState extends InitState {
-    queryMatchList: number[];
+    handicapEchart: HandicapEchartType;
     recordData: RecordType;
     setRecordData: (recordData: RecordType) => void;
-    setQueryMatchList: (queryMatchList: number[]) => void;
     setRecordList: (recordList: RecordType[]) => void;
     setHandicapEchart: (analysisResultData: AnalysisResult) => void;
 }
@@ -180,16 +194,41 @@ const initialState = (
             };
         });
     },
-    queryMatchList: [],
-    setQueryMatchList: (queryMatchList: number[]) => {
+    matchList: [],
+    setMatchList: (matchList: Match[]) => {
         set(state => {
             return {
                 ...state,
-                queryMatchList
+                matchList
             };
         });
     },
-    handicapEchart: {} as HandicapEchartType,
+    handicapEchart: {
+        full: {
+            day: {
+                handicap: {} as Record<string, Statistics>,
+                overUnder: {} as Record<string, Statistics>,
+                moneyLine: {} as Record<string, Statistics>
+            },
+            week: {
+                handicap: {} as Record<string, Statistics>,
+                overUnder: {} as Record<string, Statistics>,
+                moneyLine: {} as Record<string, Statistics>
+            }
+        },
+        half: {
+            day: {
+                handicap: {} as Record<string, Statistics>,
+                overUnder: {} as Record<string, Statistics>,
+                moneyLine: {} as Record<string, Statistics>
+            },
+            week: {
+                handicap: {} as Record<string, Statistics>,
+                overUnder: {} as Record<string, Statistics>,
+                moneyLine: {} as Record<string, Statistics>
+            }
+        }
+    },
     setHandicapEchart: (analysisResultData: AnalysisResult) => {
         set(state => {
             const fullHanicapUpperDates = analysisResultData.fullHandicapUpperDaily.map(timestamp =>

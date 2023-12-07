@@ -4,13 +4,13 @@ import style from './goalRangeChart.module.scss';
 interface ChartType {
     class: string;
     label: string;
-    value: number;
+    value: number[];
     color: string;
 }
 
 function GoalRangeChart({ chartList }: { chartList: ChartType[] }) {
     const seriesList = chartList.map(item => ({
-        value: item.value,
+        value: item.value.length,
         name: item.label,
         itemStyle: { borderWidth: 2, borderColor: '#fff', color: item.color }
     }));

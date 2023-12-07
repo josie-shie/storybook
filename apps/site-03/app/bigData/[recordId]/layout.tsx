@@ -6,8 +6,8 @@ import { Tabs, Tab } from 'ui';
 import { timestampToString } from 'lib';
 import style from './dashboard.module.scss';
 import Filter from './components/filter/filter';
-import type { HandicapEchartType } from './analysisResultStore';
 import { createAnalysisResultStore, useAnalyticsResultStore } from './analysisResultStore';
+import { creatMatchFilterStore } from './matchFilterStore';
 import HeaderTitleFilter from '@/components/header/headerTitleFilter';
 
 const resultList = {
@@ -144,8 +144,11 @@ const record = [
 function DetailLayout({ children }: { children: ReactNode }) {
     createAnalysisResultStore({
         analysisResultData: resultList,
-        recordList: record,
-        handicapEchart: {} as HandicapEchartType
+        recordList: record
+    });
+    creatMatchFilterStore({
+        contestList: [],
+        contestInfo: {}
     });
 
     const [showFilter, setShowFilter] = useState(false);
@@ -159,11 +162,11 @@ function DetailLayout({ children }: { children: ReactNode }) {
     const recordData = recordList.find(item => item.recordId.toString() === params.recordId);
 
     useEffect(() => {
-        setHandicapEchart(resultList);
         if (recordData) {
+            setHandicapEchart(resultList);
             setRecordData(recordData);
         }
-    }, []);
+    }, [recordData, setHandicapEchart, setRecordData]);
 
     if (!params.recordId || !recordData) {
         router.push(`/bigData?status=analysis`);

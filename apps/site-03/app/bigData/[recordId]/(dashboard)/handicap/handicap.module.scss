@@ -12,15 +12,39 @@
     }
 
     .eChat {
-        padding: 8px 0;
+        padding: 8px 12px;
         border: 2px solid #f3f3f3;
         border-radius: 12px;
+
+        :global {
+            .switch {
+                width: 174px;
+                border: 0;
+                gap: 8px;
+
+                span:not(.active) {
+                    border-radius: 30px;
+                    border: 1px solid #9b9b9b;
+                    color: #9b9b9b;
+                }
+
+                .active {
+                    color: #4489ff;
+                    border-radius: 30px;
+                    border: 1px solid #4489ff;
+                    background: #edf3ff;
+                }
+
+                .indicator {
+                    display: none;
+                }
+            }
+        }
 
         .dateRange {
             color: #bfbfbf;
             font-size: 12px;
             font-weight: 600;
-            padding-left: 12px;
             padding-bottom: 8px;
         }
 
@@ -28,7 +52,6 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 12px;
 
             li {
                 display: flex;
