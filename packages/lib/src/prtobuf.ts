@@ -29,6 +29,10 @@ let oddsRunningHalfProtobuf: Root;
 let oddsRunningHalfItem: Type;
 let oddsRunningHalfInit = true;
 
+let analysisProtobuf: Root;
+let analysisItem: Type;
+let analysisInit = true;
+
 /**
  * toProto method
  *
@@ -111,5 +115,16 @@ export const deProtoOddRunningHalf = async (msg: Uint8Array) => {
     }
 
     const decoded = oddsRunningHalfItem.decode(msg);
+    return decoded;
+};
+
+export const deProtoAnalysis = async (msg: Uint8Array) => {
+    if (analysisInit) {
+        analysisProtobuf = await load('/personal_analysis.proto');
+        analysisItem = analysisProtobuf.lookupType('dataFetcher.MqttMessage');
+        analysisInit = false;
+    }
+
+    const decoded = analysisItem.decode(msg);
     return decoded;
 };

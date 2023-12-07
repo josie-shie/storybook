@@ -7,8 +7,29 @@ import {
     deProtoDetailEvent,
     deProtoDetailTechnicList,
     deProtoOddRunning,
-    deProtoOddRunningHalf
+    deProtoOddRunningHalf,
+    deProtoAnalysis
 } from './prtobuf';
+
+interface AnalysisRequest {
+    mission: string;
+    uid: number;
+    handicap_side: string;
+    handicap_values: string;
+    overUnder_values: string;
+    startTime: number;
+    endTime: number;
+}
+
+interface AnalysisResponse {
+    mission: string;
+    uid: number;
+    ticket_id: number;
+    handicap_side: string;
+    handicap_values: string;
+    overUnder_values: string;
+    time_ranges: string;
+}
 
 interface OriginalContestInfo {
     leagueChsShort: string;
@@ -122,6 +143,7 @@ const useTechnicalQueue: ((data: TechnicalInfoData) => void)[] = [];
 const useEventQueue: ((data: EventInfoData) => void)[] = [];
 const useOddsRunningQueue: ((data: OddsRunningHashTable) => void)[] = [];
 const useOddsRunningHalfQueue: ((data: OddsRunningHashTable) => void)[] = [];
+const useAnalysisQueue: ((data: AnalysisResponse) => void)[] = [];
 
 let init = true;
 
@@ -447,6 +469,18 @@ const handleDetailTechnicListMessage = async (message: Buffer) => {
     }
 };
 
+const handleAnalysisMessage = async (message: Buffer) => {
+    const messageObject = await deProtoAnalysis(message);
+
+    const decodedMessage = toSerializableObject(
+        messageObject as unknown as Record<string, unknown>
+    );
+
+    for (const messageMethod of useAnalysisQueue) {
+        messageMethod(decodedMessage as unknown as AnalysisResponse);
+    }
+};
+
 export interface OddsRunningType {
     matchId?: number;
     isHalf: boolean;
@@ -603,6 +637,7 @@ export const mqttService = {
                 client.subscribe('updateasia_odds_change');
                 client.subscribe('updateevent');
                 client.subscribe('updatetechnic');
+                client.subscribe('analytical/analysis');
             });
             client.on('message', (topic, message) => {
                 if (topic === 'updatematch') void handleContestMessage(message);
@@ -610,6 +645,7 @@ export const mqttService = {
                 if (topic === 'updateasia_odds_change') void handleOddsChangeMessage(message);
                 if (topic === 'updateevent') void handleDetailEventMessage(message);
                 if (topic === 'updatetechnic') void handleDetailTechnicListMessage(message);
+                if (topic === 'analytical/analysis') void handleAnalysisMessage(message);
             });
             init = false;
 
@@ -660,5 +696,23 @@ export const mqttService = {
     },
     getOddsRunningHalf: (onMessage: (data: OddsRunningHashTable) => void) => {
         useOddsRunningHalfQueue.push(onMessage);
+    },
+    getAnalysis: (onMessage: (data: AnalysisResponse) => void) => {
+        useAnalysisQueue.push(onMessage);
+    },
+    publishAnalysis: (data: AnalysisRequest) => {
+        if (!init) {
+            client.publish('analytical/analysis', JSON.stringify(data), { qos: 2 }, error => {
+                if (error) {
+                    console.error(error);
+                } else {
+                    // eslint-disable-next-line -- success console
+                    console.log('Success Published');
+                }
+            });
+        } else {
+            // eslint-disable-next-line -- error console
+            console.log('mqtt not init');
+        }
     }
 };

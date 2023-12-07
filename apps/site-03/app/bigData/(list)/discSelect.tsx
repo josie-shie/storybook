@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import dayjs from 'dayjs';
+import { mqttService } from 'lib';
 import Star from './img/star.png';
 import style from './disSelect.module.scss';
 import RecordFilter from './components/recordFilter/recordFilter';
@@ -146,11 +147,8 @@ function DiscSelect() {
     const [showHandicapDrawer, setShowHandicapDrawer] = useState(false);
 
     const [handicapOddsSelected, setHandicapOddsSelected] = useState('');
-    const [overUnderSelected, setOverUnderSelected] = useState('');
     const setHandicapHints = useDiscSelectStore.use.setHandicapTips();
 
-    const hintsSelected = useDiscSelectStore.use.hintsSelected();
-    const setHintsSelected = useDiscSelectStore.use.setHintsSelected();
     const teamList = useDiscSelectStore.use.teamList();
     const handicapNumberList = useDiscSelectStore.use.handicapNumberList();
     const overUnderNumberList = useDiscSelectStore.use.overUnderNumberList();
@@ -163,11 +161,13 @@ function DiscSelect() {
     const setFilterInit = useMatchFilterStore.use.setFilterInit();
     const userInfo = useUserStore.use.userInfo();
 
+    const [hintsSelected, setHintsSelected] = useState('');
     const [startDate, setStartDate] = useState(0);
     const [endDate, setEndDate] = useState(0);
     const [teamSelected, setTeamSelected] = useState('');
     const [teamHandicapOdds, setTeamHandicapOdds] = useState('');
     const [showRecord, setShowRecord] = useState(false);
+    const [timeRange, setTimeRange] = useState('');
 
     setHandicapHints(matchList);
 
@@ -207,18 +207,39 @@ function DiscSelect() {
     };
 
     const getTrendAnalysis = () => {
+        let getStartDate = 0;
+        let getEndDate = 0;
+
+        switch (timeRange) {
+            case 'week':
+                getStartDate = dayjs().subtract(1, 'day').unix();
+                getEndDate = dayjs().subtract(7, 'day').unix();
+                break;
+            case 'month':
+                getStartDate = dayjs().subtract(1, 'day').unix();
+                getEndDate = dayjs().subtract(30, 'day').unix();
+
+                break;
+            case 'season':
+                getStartDate = dayjs().subtract(1, 'day').unix();
+                getEndDate = dayjs().subtract(120, 'day').unix();
+                break;
+        }
+
         const params = {
             mission: 'create',
             uid: userInfo.uid,
             handicap_side: teamSelected,
             handicap_values: teamHandicapOdds,
             overUnder_values: handicapOddsSelected,
-            startTime: startDate,
-            endTime: endDate
+            startTime: getStartDate || startDate,
+            endTime: getEndDate || endDate
         };
 
         // eslint-disable-next-line -- call mqtt data
         console.dir(params);
+
+        mqttService.publishAnalysis(params);
 
         setShowRecord(true);
     };
@@ -280,9 +301,9 @@ function DiscSelect() {
                             options={dateList}
                             placeholder="选择时间"
                             selectTitle="区间"
-                            setSelected={setOverUnderSelected}
+                            setSelected={setTimeRange}
                             title="时间范围"
-                            valueSelected={overUnderSelected}
+                            valueSelected={timeRange}
                         >
                             <Datepicker updateQueryDate={updateQueryDate} />
                         </SectionSelect>
@@ -329,6 +350,7 @@ function DiscSelect() {
                 }}
             />
             <HandicapDrawer
+                hintsSelected={hintsSelected}
                 isOpen={showHandicapDrawer}
                 onClose={() => {
                     setShowHandicapDrawer(false);

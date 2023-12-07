@@ -1,0 +1,15 @@
+syntax = "proto3";
+package data_center;
+option go_package = "../data_center";
+
+
+message MqttMessage {
+  string mission = 1;             // 任務
+  uint64 uid = 2;                 // 用户ID
+  uint64 ticketId = 3;           // tickey ID
+  string handicap_side = 4;       // 让球方
+  string handicapValues = 5;     // 让球数
+  string overUnderValues = 6;    // 大小球
+  int64 startTime = 7;           // 开始时间
+  int64 endTime = 8;             // 结束时间
+}
