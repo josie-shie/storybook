@@ -168,10 +168,18 @@ function DiscSelect() {
     const [teamHandicapOdds, setTeamHandicapOdds] = useState('');
     const [showRecord, setShowRecord] = useState(false);
     const [timeRange, setTimeRange] = useState('');
+    const [analysisError, setAnalysisError] = useState('');
+    const [hintsError, setHintsError] = useState('');
 
     setHandicapHints(matchList);
 
     const openHintsDrawer = () => {
+        if (!hintsSelected) {
+            setHintsError('请选择大小球类别');
+            return;
+        }
+
+        setHintsError('');
         setContestList({
             contestList: matchList
         });
@@ -207,6 +215,14 @@ function DiscSelect() {
     };
 
     const getTrendAnalysis = () => {
+        if (!timeRange) {
+            setAnalysisError('请选择时间区间');
+            return;
+        } else if ((!teamSelected || !teamHandicapOdds) && !handicapOddsSelected) {
+            setAnalysisError('让方或盘口需至少选择一种');
+            return;
+        }
+
         let getStartDate = 0;
         let getEndDate = 0;
 
@@ -322,21 +338,27 @@ function DiscSelect() {
                     数据中心将会汇整出符合您条件设定，在时间区间内开出相同盘口的赛事
                 </div>
                 {search === 'analysis' ? (
-                    <button
-                        className={style.search}
-                        onClick={() => {
-                            getTrendAnalysis();
-                        }}
-                        type="button"
-                    >
-                        <Image alt="" height={14} src={Star} width={14} />
-                        获得趋势分析
-                    </button>
+                    <>
+                        <div className={style.error}>{analysisError}</div>
+                        <button
+                            className={style.search}
+                            onClick={() => {
+                                getTrendAnalysis();
+                            }}
+                            type="button"
+                        >
+                            <Image alt="" height={14} src={Star} width={14} />
+                            获得趋势分析
+                        </button>
+                    </>
                 ) : (
-                    <button className={style.search} onClick={openHintsDrawer} type="button">
-                        <Image alt="" height={14} src={Star} width={14} />
-                        获得盘路提示
-                    </button>
+                    <>
+                        <div className={style.error}>{hintsError}</div>
+                        <button className={style.search} onClick={openHintsDrawer} type="button">
+                            <Image alt="" height={14} src={Star} width={14} />
+                            获得盘路提示
+                        </button>
+                    </>
                 )}
             </div>
 
