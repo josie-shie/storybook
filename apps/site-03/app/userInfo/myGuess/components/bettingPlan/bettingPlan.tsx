@@ -1,9 +1,9 @@
 import Image from 'next/image';
 import { timestampToString } from 'lib';
 import { type Plan } from '../../myGuessStore';
-import BigGone from '../img/BigGone.png';
-import BigWin from '../img/BigWin.png';
-import BigLose from '../img/BigLose.png';
+import BigGone from '../img/bigGone.png';
+import BigWin from '../img/bigWin.png';
+import BigLose from '../img/bigLose.png';
 import style from './bettingPlan.module.scss';
 
 interface PropsType {
