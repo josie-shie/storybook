@@ -96,3 +96,11 @@
         }
     }
 }
+
+.chatSkeleton {
+    height: 100%;
+    padding: 14px 10px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 12px;
+}

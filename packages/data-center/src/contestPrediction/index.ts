@@ -61,7 +61,10 @@ const PostsInfoPostResultSchema = z.object({
 
 type OriginalPostsInfoPostResult = z.infer<typeof PostsInfoPostResultSchema>;
 
-type GetMatchPost = Omit<OriginalPostsInfoPostResult, 'matchTime' | 'createdAt' | 'updatedAt'> & {
+export type GetMatchPost = Omit<
+    OriginalPostsInfoPostResult,
+    'matchTime' | 'createdAt' | 'updatedAt'
+> & {
     matchTime: string;
     createdAt: string;
     updatedAt: string;
