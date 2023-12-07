@@ -8,6 +8,7 @@ import Avatar from '@/components/avatar/avatar';
 
 function HotStreakListItem() {
     const masterRankList = useMasterRankStore.use.masterRankList();
+    const onlyShowToday = useMasterRankStore.use.onlyShowToday();
 
     const rankingClass = (ranking: number) => {
         return ranking > 0 && ranking < 6 ? style[`ranking${ranking}`] : '';
@@ -16,8 +17,10 @@ function HotStreakListItem() {
     return (
         <>
             {masterRankList.map(item => {
+                if (onlyShowToday && !item.isToday) return null;
+
                 return (
-                    <div className={style.hotStreakListItem} key={item.name}>
+                    <div className={style.hotStreakListItem} key={item.id}>
                         <div className={`${style.rankingFlag} ${rankingClass(item.ranking)}`}>
                             {item.ranking > 3 ? (
                                 <Image alt="" height={24} src={Rank} width={24} />

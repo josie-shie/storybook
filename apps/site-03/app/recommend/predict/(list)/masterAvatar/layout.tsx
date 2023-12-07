@@ -10,8 +10,7 @@ function MasterAvatarLayout({ children }: { children: ReactNode }) {
     const searchParams = useSearchParams();
     const status = searchParams.get('status');
     const headerProps = {
-        title: '专家预测',
-        total: 999999
+        title: '专家预测'
     };
     const tabStyle = {
         gap: 0,
@@ -38,7 +37,7 @@ function MasterAvatarLayout({ children }: { children: ReactNode }) {
 
     return (
         <>
-            <Header title={headerProps.title} total={headerProps.total} />
+            <Header title={headerProps.title} />
             <Info />
             <div className={style.masterAvatar}>
                 <Tabs

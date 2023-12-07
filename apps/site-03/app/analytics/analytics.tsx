@@ -5,7 +5,6 @@ import { Link as ScrollLink, Element } from 'react-scroll';
 import { Tab, Tabs } from 'ui';
 import style from './analytics.module.scss';
 import searchIcon from './img/search.png';
-import Logo from './img/logo.png';
 import leagueLogo from './img/leagueLogo.png';
 import cupLogo from './img/cupLogo.png';
 import { createAnalyticsStore } from './analyticsStore';
@@ -362,9 +361,7 @@ function Analytics() {
 
     return (
         <div className={style.data}>
-            <HeaderFilter
-                logo={<Image alt="logo" className={style.logoText} height={16} src={Logo} />}
-            >
+            <HeaderFilter>
                 <Image alt="search" className={style.searchIcon} src={searchIcon} width={32} />
             </HeaderFilter>
             <div className={style.main}>

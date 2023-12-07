@@ -1,5 +1,5 @@
 'use client';
-import { IconSearch } from '@tabler/icons-react';
+// import { IconSearch } from '@tabler/icons-react';
 import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
 import PeriodListItem from '../components/period/periodListItem';
@@ -42,6 +42,7 @@ function Rank() {
     const periodTagColor = tagMap[currentPeriod];
 
     creatRankStore({
+        onlyShowToday: true,
         rankList: [
             {
                 ranking: 1,
@@ -50,7 +51,8 @@ function Rank() {
                 record: 0,
                 victory: 10,
                 defeat: 5,
-                winRate: 98
+                winRate: 98,
+                isToday: true
             },
             {
                 ranking: 2,
@@ -59,7 +61,8 @@ function Rank() {
                 record: 0,
                 victory: 0,
                 defeat: 3,
-                winRate: 98
+                winRate: 98,
+                isToday: true
             },
             {
                 ranking: 3,
@@ -68,7 +71,8 @@ function Rank() {
                 record: 0,
                 victory: 4,
                 defeat: 3,
-                winRate: 97
+                winRate: 97,
+                isToday: true
             },
             {
                 ranking: 4,
@@ -77,7 +81,8 @@ function Rank() {
                 record: 0,
                 victory: 7,
                 defeat: 3,
-                winRate: 50
+                winRate: 50,
+                isToday: true
             },
             {
                 ranking: 5,
@@ -86,7 +91,8 @@ function Rank() {
                 record: 0,
                 victory: 5,
                 defeat: 2,
-                winRate: 40
+                winRate: 40,
+                isToday: true
             },
             {
                 ranking: 6,
@@ -95,7 +101,8 @@ function Rank() {
                 record: 0,
                 victory: 3,
                 defeat: 5,
-                winRate: 30
+                winRate: 30,
+                isToday: false
             }
         ]
     });
@@ -115,10 +122,11 @@ function Rank() {
             <div className={style.control}>
                 <UserSwitch />
                 <div className={style.right}>
-                    <div className={style.search}>
+                    {/* 1.5版先不做搜尋 */}
+                    {/* <div className={style.search}>
                         <IconSearch size={16} />
                         <span>搜尋</span>
-                    </div>
+                    </div> */}
                     <Rule />
                 </div>
             </div>

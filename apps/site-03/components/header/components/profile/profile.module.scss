@@ -2,6 +2,7 @@
     display: flex;
     align-items: center;
     position: relative;
+    cursor: pointer;
 
     .icon {
         color: transparent;
@@ -13,7 +14,7 @@
         width: 66px;
         height: 20px;
         border-radius: 0 4px 4px 0;
-        background: rgba(255, 255, 255, 0.8);
+        background: rgb(255 255 255 / 80%);
         color: #222;
         font-size: 11px;
         transform: scale(0.9167);

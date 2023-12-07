@@ -15,8 +15,7 @@ function GuessDetail({ backHistory }: { backHistory: boolean }) {
     const router = useRouter();
 
     const headerProps = {
-        title: '猜风向',
-        total: 999999
+        title: '猜风向'
     };
 
     const back = () => {
@@ -103,7 +102,7 @@ function GuessDetail({ backHistory }: { backHistory: boolean }) {
 
     return (
         <>
-            <Header back={back} title={headerProps.title} total={headerProps.total} />
+            <Header back={back} title={headerProps.title} />
             <VsBox />
             <MasterPlan />
             <Footer />

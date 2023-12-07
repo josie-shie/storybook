@@ -1,18 +1,13 @@
 'use client';
 import { Suspense, type ReactNode } from 'react';
 import { Tab, Tabs } from 'ui';
-import Image from 'next/image';
-import Logo from './img/logo.png';
 import AnimationData from './animationData';
 import style from './layout.module.scss';
 import Footer from '@/components/footer/footer';
 import Header from '@/components/header/headerLogo';
 import Loading from '@/components/loading/loading';
-import { useUserStore } from '@/app/userStore';
 
 function BigDataLayout({ children }: { children: ReactNode }) {
-    const userInfo = useUserStore.use.userInfo();
-
     const tabStyle = {
         gap: 8,
         swiperOpen: true,
@@ -29,13 +24,9 @@ function BigDataLayout({ children }: { children: ReactNode }) {
         }
     ];
 
-    const headerProps = {
-        logo: <Image alt="logo" height={13} src={Logo} width={66} />,
-        total: userInfo.balance
-    };
     return (
         <>
-            <Header logo={headerProps.logo} total={headerProps.total} />
+            <Header />
             <AnimationData />
             <div className={style.main}>
                 <Tabs
