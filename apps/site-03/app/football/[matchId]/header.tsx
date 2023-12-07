@@ -27,6 +27,7 @@ function Header({ back }: { back: () => void }) {
     const matchDetail = useContestDetailStore.use.matchDetail();
     const layoutDisplayed = useContestDetailStore.use.layoutDisplayed();
     const globalStore = useContestInfoStore.use.contestInfo();
+
     const syncData = Object.hasOwnProperty.call(globalStore, matchDetail.matchId)
         ? globalStore[matchDetail.matchId]
         : {};

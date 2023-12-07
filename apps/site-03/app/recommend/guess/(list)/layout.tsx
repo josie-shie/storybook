@@ -1,21 +1,14 @@
 'use client';
 import type { ReactNode } from 'react';
-import Image from 'next/image';
-import Logo from './img/logo.png';
 import style from './layout.module.scss';
 import { Tabs } from '@/components/tabs/tabs';
 import Header from '@/components/header/headerLogo';
 import Footer from '@/components/footer/footer';
 
 function ContestLayout({ children }: { children: ReactNode }) {
-    const headerProps = {
-        logo: <Image alt="logo" src={Logo} width={66} />,
-        total: 999999
-    };
-
     return (
         <>
-            <Header logo={headerProps.logo} total={headerProps.total} />
+            <Header />
             <div className={style.guess}>
                 <div className={style.childrenTab}>
                     <Tabs

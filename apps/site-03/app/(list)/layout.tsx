@@ -1,12 +1,10 @@
 'use client';
 import { type ReactNode } from 'react';
-import Image from 'next/image';
 import { Slick } from 'ui';
 import { useSearchParams, useParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import style from './layout.module.scss';
-import Logo from './img/logo.png';
-import HeaderFilter from '@/components/header/headerFilter';
+import Header from '@/components/header/headerLogo';
 import Footer from '@/components/footer/footer';
 
 function InterceptingDetail({ modal }: { modal: ReactNode }) {
@@ -69,9 +67,7 @@ function ContestListLayout({ children, modal }: { children: ReactNode; modal: Re
 
     return (
         <div className="contestListLayout">
-            <HeaderFilter logo={<Image alt="logo" height={16} src={Logo} />}>
-                <div className={style.tool} />
-            </HeaderFilter>
+            <Header />
             <div className={style.main}>
                 <Slick
                     slideActive={slideActive}

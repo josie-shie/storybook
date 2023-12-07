@@ -23,7 +23,7 @@
 
         .text {
             color: #fff;
-            font-family: 'YouSheBiaoTiHei', sans-serif;
+            font-family: YouSheBiaoTiHei, sans-serif;
             font-size: 22px;
             font-weight: 400;
             line-height: 102%;
@@ -73,4 +73,10 @@
             font-size: 14px;
         }
     }
+}
+
+.userOption {
+    display: flex;
+    align-items: center;
+    column-gap: 8px;
 }
