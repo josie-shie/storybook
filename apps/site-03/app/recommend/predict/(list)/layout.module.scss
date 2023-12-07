@@ -21,11 +21,11 @@
         :global(.tab) {
             :global(.header) {
                 padding: 0 12px;
+                margin-top: 10px;
 
                 :global(.tabs) {
                     padding: 2px;
                     gap: 2px;
-                    background: #f3f3f3;
                     border-radius: 24px;
 
                     :global(.item) {
@@ -44,5 +44,10 @@
                 }
             }
         }
+    }
+
+    .banner {
+        display: block;
+        margin: auto;
     }
 }
