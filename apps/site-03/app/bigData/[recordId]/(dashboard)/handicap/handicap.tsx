@@ -3,8 +3,9 @@ import { Switch } from 'ui/stories/switch/switch';
 import { useEffect, useState } from 'react';
 import { timestampToString } from 'lib';
 import dayjs from 'dayjs';
+import { useParams } from 'next/navigation';
 import ContestDrawerList from '../components/contestDrawerList';
-import type { HandicapEchartType, Statistics, Match } from '../../analysisResultStore';
+import type { Statistics, Match } from '../../analysisResultStore';
 import { useAnalyticsResultStore } from '../../analysisResultStore';
 import { useMatchFilterStore } from '../../matchFilterStore';
 import TextRadio from './switch/textSwitch';
@@ -38,7 +39,7 @@ function TableCell({
     openMatchListDrawer
 }: {
     label: string;
-    cellValue: number[];
+    cellValue?: number[];
     selectedType: string;
     openMatchListDrawer: (matchIdsList: number[], selectedType: string, odds: string) => void;
 }) {
@@ -46,16 +47,19 @@ function TableCell({
         <div className={`${style.cell} ${label === '下' && style.odd}`}>
             <span
                 onClick={() => {
-                    openMatchListDrawer(cellValue, selectedType, label);
+                    openMatchListDrawer(cellValue || [], selectedType, label);
                 }}
             >
-                {label} {cellValue.length}
+                {label} {cellValue ? cellValue.length : null}
             </span>
         </div>
     );
 }
 
 function Handicap() {
+    const params = useParams();
+    const setRecordData = useAnalyticsResultStore.use.setRecordData();
+    const recordList = useAnalyticsResultStore.use.recordList();
     const setContestList = useMatchFilterStore.use.setContestList();
     const setContestInfo = useMatchFilterStore.use.setContestInfo();
     const contestInfo = useMatchFilterStore.use.contestInfo();
@@ -66,17 +70,18 @@ function Handicap() {
     const [showList, setShowList] = useState(false);
     const analysisRecord = useAnalyticsResultStore.use.analysisResultData();
     const handicapEchart = useAnalyticsResultStore.use.handicapEchart();
-    const recordData = useAnalyticsResultStore.use.recordData();
-    const [chartData, setChartData] = useState<HandicapEchartType | null>(null);
+    const analysisData = useAnalyticsResultStore.use.analysisResultData();
+    const setHandicapEchart = useAnalyticsResultStore.use.setHandicapEchart();
     const [matchList, setMatchList] = useState<Match[]>([]);
     const [selectedResult, setSelectedResult] = useState({
         type: '',
         odds: ''
     });
+    const recordData = recordList.find(item => item.recordId.toString() === params.recordId);
 
     useEffect(() => {
-        setChartData(handicapEchart);
-    }, [handicapEchart]);
+        setHandicapEchart(analysisData);
+    }, [analysisData, setHandicapEchart]);
 
     const calculateHeight = (data: Record<string, Statistics>, date: string) => {
         const total = data[date].upper + data[date].draw + data[date].lower;
@@ -109,6 +114,12 @@ function Handicap() {
         setFilterInit();
     }, [contestInfo, setFilterInit]);
 
+    useEffect(() => {
+        if (recordData) {
+            setRecordData(recordData);
+        }
+    }, [recordData, setRecordData]);
+
     return (
         <>
             <div className={style.handicap}>
@@ -135,7 +146,7 @@ function Handicap() {
                     </div>
                 </div>
                 <div className={style.eChat}>
-                    {recordData.startDate && recordData.endDate ? (
+                    {recordData ? (
                         <p className={style.dateRange}>
                             {timestampToString(recordData.startDate, 'YYYY-MM-DD')} ~{' '}
                             {timestampToString(recordData.endDate, 'YYYY-MM-DD')}
@@ -143,46 +154,44 @@ function Handicap() {
                     ) : null}
 
                     <ul>
-                        {chartData
-                            ? Object.keys(
-                                  chartData[handicapRadio][currentSwitch][playTypeSwitch]
-                              ).map((date, index) => {
-                                  const heights = calculateHeight(
-                                      handicapEchart[handicapRadio][currentSwitch][playTypeSwitch],
-                                      date
-                                  );
+                        {Object.keys(
+                            handicapEchart[handicapRadio][currentSwitch][playTypeSwitch]
+                        ).map((date, index) => {
+                            const heights = calculateHeight(
+                                handicapEchart[handicapRadio][currentSwitch][playTypeSwitch],
+                                date
+                            );
 
-                                  return (
-                                      <li key={date}>
-                                          <span className={style.bar}>
-                                              <span
-                                                  className={style.top}
-                                                  style={{ height: `${heights.upperHeight}%` }}
-                                              />
-                                              <span
-                                                  className={style.middle}
-                                                  style={{ height: `${heights.drawHeight}%` }}
-                                              />
-                                              <span
-                                                  className={style.bottom}
-                                                  style={{ height: `${heights.lowerHeight}%` }}
-                                              />
-                                          </span>
-                                          <span className={style.text}>
-                                              {currentSwitch === 'week'
-                                                  ? `W${
-                                                        Object.keys(
-                                                            chartData[handicapRadio][currentSwitch][
-                                                                playTypeSwitch
-                                                            ]
-                                                        ).length - index
-                                                    }`
-                                                  : dayjs(date).format('MM-DD')}
-                                          </span>
-                                      </li>
-                                  );
-                              })
-                            : null}
+                            return (
+                                <li key={date}>
+                                    <span className={style.bar}>
+                                        <span
+                                            className={style.top}
+                                            style={{ height: `${heights.upperHeight}%` }}
+                                        />
+                                        <span
+                                            className={style.middle}
+                                            style={{ height: `${heights.drawHeight}%` }}
+                                        />
+                                        <span
+                                            className={style.bottom}
+                                            style={{ height: `${heights.lowerHeight}%` }}
+                                        />
+                                    </span>
+                                    <span className={style.text}>
+                                        {currentSwitch === 'week'
+                                            ? `W${
+                                                  Object.keys(
+                                                      handicapEchart[handicapRadio][currentSwitch][
+                                                          playTypeSwitch
+                                                      ]
+                                                  ).length - index
+                                              }`
+                                            : dayjs(date).format('MM-DD')}
+                                    </span>
+                                </li>
+                            );
+                        })}
                     </ul>
                     <Switch
                         onChange={(value: PlayTypeValue) => {
