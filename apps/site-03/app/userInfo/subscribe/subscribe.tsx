@@ -22,14 +22,20 @@ function Subscribe() {
     const planId = useSubscribeStore.use.planId();
     const isVip = useSubscribeStore.use.isVip();
     const isChecked = useSubscribeStore.use.isChecked();
+    const masterPlan = useSubscribeStore.use.masterPlan();
+    const unlockArticle = useSubscribeStore.use.unlockArticle();
     const setPlanId = useSubscribeStore.use.setPlanId();
     const setIsVip = useSubscribeStore.use.setIsVip();
     const setIsChecked = useSubscribeStore.use.setIsChecked();
+    const setMasterPlan = useSubscribeStore.use.setMasterPlan();
+    const setUnlockArticle = useSubscribeStore.use.setUnlockArticle();
     const [indicatorStyle, setIndicatorStyle] = useState({ left: '0', width: '98px' });
 
-    const handlePlanClick = (id: number) => {
+    const handlePlanClick = (id: number, plan: number, unlock: number) => {
         setPlanId(id);
         setIsVip(false);
+        setMasterPlan(plan);
+        setUnlockArticle(unlock);
     };
 
     const handleVipClick = () => {
@@ -111,7 +117,7 @@ function Subscribe() {
                                     planId === plan.planId ? style.selectedPlan : ''
                                 }`}
                                 onClick={() => {
-                                    handlePlanClick(plan.planId);
+                                    handlePlanClick(plan.planId, plan.freePlan, plan.unlock);
                                 }}
                             >
                                 <div className={style.discount}>{plan.discount}</div>
@@ -152,8 +158,8 @@ function Subscribe() {
                     <div className={style.descript}>充值金币可以购买以下内容</div>
                     <ul className={style.list}>
                         <li> - 所有赛事高手分配免费解锁</li>
-                        <li> - 每日可免费查看2则高手方案</li>
-                        <li> - 每日可免费解锁1篇专家预测文章</li>
+                        <li> - 每日可免费查看{isVip ? '无限' : masterPlan}则高手方案</li>
+                        <li> - 每日可免费解锁{isVip ? '无限' : unlockArticle}篇专家预测文章</li>
                         <li> - 不限次数使用盘路分析功能</li>
                     </ul>
                 </div>
