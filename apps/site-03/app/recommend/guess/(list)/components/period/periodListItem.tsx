@@ -8,6 +8,7 @@ import Avatar from '@/components/avatar/avatar';
 
 function PeriodListItem() {
     const rankList = useRankStore.use.rankList();
+    const onlyShowToday = useRankStore.use.onlyShowToday();
 
     const rankingClass = (ranking: number) => {
         return ranking > 0 && ranking < 6 ? style[`ranking${ranking}`] : '';
@@ -17,6 +18,8 @@ function PeriodListItem() {
         <>
             {rankList.map(item => {
                 const hasHighWinRate = typeof item.winRate === 'number' && item.winRate >= 90;
+                if (onlyShowToday && !item.isToday) return null;
+
                 return (
                     <div className={style.periodListItem} key={item.name}>
                         <div className={`${style.rankingFlag} ${rankingClass(item.ranking)}`}>

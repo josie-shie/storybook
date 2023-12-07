@@ -1,5 +1,5 @@
 'use client';
-import { IconSearch } from '@tabler/icons-react';
+// import { IconSearch } from '@tabler/icons-react';
 import Image from 'next/image';
 import HotStreakListItem from '../components/hotStreak/hotStreakListItem';
 import UserSwitch from '../components/userSwitch/userSwitch';
@@ -76,10 +76,11 @@ function RankList() {
             <div className={style.control}>
                 <UserSwitch />
                 <div className={style.right}>
-                    <div className={style.search}>
+                    {/* 1.5版先不做搜尋 */}
+                    {/* <div className={style.search}>
                         <IconSearch size={16} />
                         <span>搜尋</span>
-                    </div>
+                    </div> */}
                     <Rule />
                 </div>
             </div>
