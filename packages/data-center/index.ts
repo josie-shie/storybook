@@ -9,3 +9,4 @@ export * from './src/notification';
 export * from './src/homeInformation';
 export * from './src/account';
 export * from './src/guess';
+export * from './src/aiAnalysis';

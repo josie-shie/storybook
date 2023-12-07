@@ -5,15 +5,15 @@ export const GET_ODDS_HINT_LIST_QUERY = `
         getBigdataHint(input: $input) {
             list {
                 matchId
-                matchTime
+                startTime: matchTime 
                 countryId
-                countryName
+                countryCn: countryName
                 leagueId
-                leagueName
+                leagueChsShort: leagueName 
                 homeId
-                homeName
+                homeChs: homeName 
                 awayId
-                awayName
+                awayChs: awayName 
                 longOddsTeamId
                 longOddsType
                 longOddsTimes
