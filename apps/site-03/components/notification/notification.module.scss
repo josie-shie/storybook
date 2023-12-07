@@ -1,8 +1,30 @@
 .slideTransition__position {
     position: fixed;
-    top: 10px;
+    bottom: 24px;
     width: 100%;
     padding: 10px;
     margin: auto;
     z-index: 1201;
+
+    :global {
+        .MuiPaper-root {
+            &:global(.MuiAlert-standardSuccess) {
+                background-color: #4a4a4a;
+                color: #fff;
+
+                .MuiAlert-icon {
+                    color: #fff;
+                }
+            }
+
+            &:global(.MuiAlert-standardError) {
+                background-color: #ffcfcf;
+                color: #f85640;
+
+                .MuiAlert-icon {
+                    color: #f85640;
+                }
+            }
+        }
+    }
 }
