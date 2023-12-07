@@ -65,6 +65,8 @@ export const GET_CONTEST_LIST_QUERY = `
                 overUnderOverCurrentOdds
                 overUnderUnderCurrentOdds
                 hasAnimation
+                homeLogo
+                awayLogo
             }
         }
     }
