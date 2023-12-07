@@ -43,7 +43,14 @@ const GetTodayGuessMatchSchema = z.object({
 });
 
 export type GetTodayGuessMatch = z.infer<typeof GetTodayGuessMatchSchema>;
-export type GetTodayGuessMatchesResponse = GetTodayGuessMatch[];
+
+export type ContestGuessInfo = Record<number, GetTodayGuessMatch>;
+
+type ContestGuessList = number[];
+export interface GetTodayGuessMatchesResponse {
+    contestGuessList: ContestGuessList;
+    contestGuessInfo: ContestGuessInfo;
+}
 
 const GetTodayGuessMatchesResultSchema = z.object({
     getTodayGuessMatches: z.object({
@@ -57,7 +64,7 @@ type GetTodayGuessMatchesResult = z.infer<typeof GetTodayGuessMatchesResultSchem
  * 取得當前競猜賽事列表
  * - params {@link GetTodayGuessMatchesRequest}
  * - returns {@link GetTodayGuessMatchesResponse}
- * {@link GetTodayGuessMatch}
+ * {@link ContestGuessList} {@link ContestGuessInfo}{@link GetTodayGuessMatch}
  */
 export const getTodayGuessMatches = async ({
     memberId
@@ -76,9 +83,18 @@ export const getTodayGuessMatches = async ({
         );
 
         GetTodayGuessMatchesResultSchema.parse(data);
+
+        const contestGuessList: ContestGuessList = [];
+        const contestGuessInfo: ContestGuessInfo = {};
+
+        for (const item of data.getTodayGuessMatches.matches) {
+            contestGuessList.push(item.matchId);
+            contestGuessInfo[item.matchId] = { ...item };
+        }
+
         return {
             success: true,
-            data: data.getTodayGuessMatches.matches
+            data: { contestGuessList, contestGuessInfo }
         };
     } catch (error) {
         return handleApiError(error);
