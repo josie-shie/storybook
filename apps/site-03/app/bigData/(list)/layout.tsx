@@ -8,8 +8,11 @@ import style from './layout.module.scss';
 import Footer from '@/components/footer/footer';
 import Header from '@/components/header/headerLogo';
 import Loading from '@/components/loading/loading';
+import { useUserStore } from '@/app/userStore';
 
 function BigDataLayout({ children }: { children: ReactNode }) {
+    const userInfo = useUserStore.use.userInfo();
+
     const tabStyle = {
         gap: 8,
         swiperOpen: true,
@@ -28,7 +31,7 @@ function BigDataLayout({ children }: { children: ReactNode }) {
 
     const headerProps = {
         logo: <Image alt="logo" height={13} src={Logo} width={66} />,
-        total: 999999
+        total: userInfo.balance
     };
     return (
         <>

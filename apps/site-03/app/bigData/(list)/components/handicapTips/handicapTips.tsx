@@ -30,14 +30,14 @@ interface HandicapTipType {
 
 interface PropsType {
     tipsData: HandicapTipType;
+    hintsSelected: string;
 }
 
 const backgroundColorMap = { 赢: '#FF4F4F', 输: '#9B9B9B', 大: '#4489FF', 小: '#FF844F' };
 const commentColorMap = { 赢: '#ED3A45', 输: '#8D8D8D', 大: '#222222', 小: '#222222' };
 const textMap = { 赢: '紅', 输: '输', 大: '大', 小: '小' };
 
-function HandicapTips({ tipsData }: PropsType) {
-    const hintsSelected = useDiscSelectStore.use.hintsSelected();
+function HandicapTips({ tipsData, hintsSelected }: PropsType) {
     const playList = useDiscSelectStore.use.playList();
     const playWay = playList.find(item => item.value === hintsSelected);
 

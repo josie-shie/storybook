@@ -12,11 +12,13 @@ import BottomDrawer from '@/components/drawer/bottomDrawer';
 function RecordFilter({
     isOpen,
     onOpen,
-    onClose
+    onClose,
+    hintsSelected
 }: {
     isOpen: boolean;
     onOpen: () => void;
     onClose: () => void;
+    hintsSelected: string;
 }) {
     const handicapTips = useDiscSelectStore.use.handicapTips();
     const contestInfo = useMatchFilterStore.use.contestInfo();
@@ -99,7 +101,11 @@ function RecordFilter({
                         </div>
                     </div>
                     {displayList.map(ele => (
-                        <HandicapTips key={ele.matchId} tipsData={ele} />
+                        <HandicapTips
+                            hintsSelected={hintsSelected}
+                            key={ele.matchId}
+                            tipsData={ele}
+                        />
                     ))}
                 </div>
             </BottomDrawer>
