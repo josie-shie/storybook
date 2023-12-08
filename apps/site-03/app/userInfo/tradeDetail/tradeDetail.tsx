@@ -1,9 +1,10 @@
 'use client';
 import { useState } from 'react';
-import { Button } from '@mui/material';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import style from './tradeDetail.module.scss';
 import { creatTardeDetailStore } from './tradeDetailStore';
+import FilterIcon from './img/filterIcon.png';
 import TradeDetailList from './tradeDetailList';
 import DateRangeOption from './components/dateRangeDrawer/dateRangeOption';
 import TradeTypeOption from './components/tradeTypeDrawer/tradeTypeDrawer';
@@ -113,22 +114,24 @@ function TradeDetail() {
             <div className={style.tradeDetail}>
                 <p>交易明细</p>
                 <div className={style.selectBlock}>
-                    <Button
-                        className={style.filerButton}
+                    <div
+                        className={style.filterButton}
                         onClick={() => {
                             openOption('dateRange');
                         }}
                     >
-                        开赛时间
-                    </Button>
-                    <Button
-                        className={style.filerButton}
+                        <span> 开赛时间</span>
+                        <Image alt="filterIcon" src={FilterIcon} />
+                    </div>
+                    <div
+                        className={style.filterButton}
                         onClick={() => {
                             openOption('tradeType');
                         }}
                     >
-                        盘路
-                    </Button>
+                        <span>盘路</span>
+                        <Image alt="filterIcon" src={FilterIcon} />
+                    </div>
                 </div>
                 <TradeDetailList />
                 <DateRangeOption
