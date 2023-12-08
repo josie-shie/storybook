@@ -139,10 +139,14 @@ function Handicap() {
                         {Object.keys(
                             handicapEchart[handicapRadio][currentSwitch][playTypeSwitch]
                         ).map((date, index) => {
-                            const heights = calculateHeight(
-                                handicapEchart[handicapRadio][currentSwitch][playTypeSwitch],
-                                date
-                            );
+                            const currentData =
+                                handicapEchart[handicapRadio][currentSwitch][playTypeSwitch];
+                            const heights = calculateHeight(currentData, date);
+
+                            const total =
+                                currentData[date].draw +
+                                currentData[date].lower +
+                                currentData[date].upper;
 
                             return (
                                 <li key={date}>
@@ -161,15 +165,23 @@ function Handicap() {
                                         />
                                     </span>
                                     <span className={style.text}>
-                                        {currentSwitch === 'week'
-                                            ? `W${
-                                                  Object.keys(
-                                                      handicapEchart[handicapRadio][currentSwitch][
-                                                          playTypeSwitch
-                                                      ]
-                                                  ).length - index
-                                              }`
-                                            : dayjs(date).format('MM-DD')}
+                                        {currentSwitch === 'week' ? (
+                                            <>
+                                                <span>{`W${
+                                                    Object.keys(
+                                                        handicapEchart[handicapRadio][
+                                                            currentSwitch
+                                                        ][playTypeSwitch]
+                                                    ).length - index
+                                                }`}</span>
+                                                <div>{total}场</div>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <span>{dayjs(date).format('MM-DD')}</span>
+                                                <div>{total}场</div>
+                                            </>
+                                        )}
                                     </span>
                                 </li>
                             );
