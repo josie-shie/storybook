@@ -61,7 +61,7 @@ function GameFilter({
                 >
                     {selectedValue !== null && currentOption ? currentOption.label : placeholder}
                 </button>
-                {children}
+                <span className={style.datepicker}>{children}</span>
             </div>
 
             <SwipeableDrawer
