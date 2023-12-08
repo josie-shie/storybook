@@ -51,7 +51,7 @@ const UpdateFollowResultSchema = z.object({
 type UpdateFollowResult = z.infer<typeof UpdateFollowResultSchema>;
 
 const UnFollowResultSchema = z.object({
-    deleteMailMember: z.object({
+    deleteFollow: z.object({
         responseCode: z.number()
     })
 });
@@ -155,7 +155,7 @@ export const unFollow = async ({
 
         UnFollowResultSchema.parse(data);
 
-        return { success: true, data: data.deleteMailMember };
+        return { success: true, data: data.deleteFollow };
     } catch (error) {
         return handleApiError(error);
     }

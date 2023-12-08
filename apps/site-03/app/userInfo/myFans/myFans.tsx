@@ -9,6 +9,7 @@ import MasterItem from './components/masterItem/masterItem';
 import style from './myFans.module.scss';
 import { useNotificationStore } from '@/app/notificationStore';
 import { useUserStore } from '@/app/userStore';
+import NoData from '@/components/baseNoData/noData';
 
 interface FansData {
     memberId: number;
@@ -38,7 +39,7 @@ function MyFocus() {
     // 我的關注列表先接上，但還缺三個欄位，暫時先不使用
     useEffect(() => {
         const getFollowersList = async () => {
-            const res = await getFollowers({ memberId: userInfo.uid, isFans: false });
+            const res = await getFollowers({ memberId: userInfo.uid, isFans: true });
             if (!res.success) {
                 console.error(res.error);
             }
@@ -115,14 +116,22 @@ function MyFocus() {
                         搜索
                     </button>
                 </div>
-                {filteredMasterItems.map(item => (
-                    <MasterItem
-                        item={item}
-                        key={item.memberId}
-                        onFollowToggle={toggleFollow}
-                        uid={userInfo.uid}
-                    />
-                ))}
+                {filteredMasterItems.length > 0 ? (
+                    <div className={style.filteredMasterItems}>
+                        {filteredMasterItems.map(item => {
+                            return (
+                                <MasterItem
+                                    item={item}
+                                    key={item.memberId}
+                                    onFollowToggle={toggleFollow}
+                                    uid={userInfo.uid}
+                                />
+                            );
+                        })}
+                    </div>
+                ) : (
+                    <NoData />
+                )}
             </div>
         </>
     );

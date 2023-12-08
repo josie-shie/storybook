@@ -9,6 +9,7 @@ import MasterItem from './components/masterItem/masterItem';
 import style from './myFocus.module.scss';
 import { useNotificationStore } from '@/app/notificationStore';
 import { useUserStore } from '@/app/userStore';
+import NoData from '@/components/baseNoData/noData';
 
 interface FocusData {
     memberId: number;
@@ -115,14 +116,22 @@ function MyFocus() {
                         搜索
                     </button>
                 </div>
-                {filteredMasterItems.map(item => (
-                    <MasterItem
-                        item={item}
-                        key={item.memberId}
-                        onFollowToggle={toggleFollow}
-                        uid={userInfo.uid}
-                    />
-                ))}
+                {filteredMasterItems.length > 0 ? (
+                    <div className={style.filteredMasterItems}>
+                        {filteredMasterItems.map(item => {
+                            return (
+                                <MasterItem
+                                    item={item}
+                                    key={item.memberId}
+                                    onFollowToggle={toggleFollow}
+                                    uid={userInfo.uid}
+                                />
+                            );
+                        })}
+                    </div>
+                ) : (
+                    <NoData />
+                )}
             </div>
         </>
     );
