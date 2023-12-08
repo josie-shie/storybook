@@ -16,11 +16,14 @@ import DateIcon from './img/date.png';
 registerLocale('zh-CN', zhCN);
 
 function Datepicker({
+    openModal,
+    setOpenModal,
     updateQueryDate
 }: {
+    openModal: boolean;
+    setOpenModal: (openModal: boolean) => void;
     updateQueryDate: (startDate: number, endDate: number) => void;
 }) {
-    const [openModal, setOpenModal] = useState(false);
     const [startDate, setStartDate] = useState<Date | null>(new Date());
     const [endDate, setEndDate] = useState<Date | null>(new Date());
 
@@ -46,11 +49,7 @@ function Datepicker({
     return (
         <>
             <Box className={style.baseDatePicker}>
-                <IconButton
-                    onClick={() => {
-                        setOpenModal(true);
-                    }}
-                >
+                <IconButton>
                     <Image alt="" height={24} src={DateIcon} width={24} />
                 </IconButton>
             </Box>

@@ -32,6 +32,8 @@ interface SectionSelectProps {
     valueSelected: string;
     setSelected: (val: string) => void;
     children?: ReactNode;
+    openDatePicker?: boolean;
+    setOpenDatePicker?: (openDatePicker: boolean) => void;
 }
 
 function SectionSelect({
@@ -41,7 +43,8 @@ function SectionSelect({
     placeholder,
     valueSelected,
     setSelected,
-    children
+    children,
+    setOpenDatePicker
 }: SectionSelectProps) {
     return (
         <section className={style.items}>
@@ -52,12 +55,14 @@ function SectionSelect({
                     onChange={setSelected}
                     options={options}
                     placeholder={placeholder}
+                    setOpenDatePicker={setOpenDatePicker}
                     showCloseButton={false}
                     showDragBar
                     title={selectTitle}
                     value={valueSelected}
-                />
-                {children}
+                >
+                    {children}
+                </GameFilter>
             </div>
         </section>
     );
@@ -95,6 +100,7 @@ function DiscSelect() {
     const [timeRange, setTimeRange] = useState('');
     const [analysisError, setAnalysisError] = useState('');
     const [hintsError, setHintsError] = useState('');
+    const [openDatePicker, setOpenDatePicker] = useState(false);
 
     const openHintsDrawer = async () => {
         if (!hintsSelected) {
@@ -143,7 +149,7 @@ function DiscSelect() {
             }
         } else if (startDateSelected && endDateSelected) {
             setStartDate(startDateSelected);
-            setStartDate(endDateSelected);
+            setEndDate(endDateSelected);
         }
     };
 
@@ -161,17 +167,17 @@ function DiscSelect() {
 
         switch (timeRange) {
             case 'week':
-                getStartDate = dayjs().subtract(1, 'day').unix();
-                getEndDate = dayjs().subtract(7, 'day').unix();
+                getStartDate = dayjs().subtract(7, 'day').unix();
+                getEndDate = dayjs().subtract(1, 'day').unix();
                 break;
             case 'month':
-                getStartDate = dayjs().subtract(1, 'day').unix();
-                getEndDate = dayjs().subtract(30, 'day').unix();
+                getStartDate = dayjs().subtract(30, 'day').unix();
+                getEndDate = dayjs().subtract(1, 'day').unix();
 
                 break;
             case 'season':
-                getStartDate = dayjs().subtract(1, 'day').unix();
-                getEndDate = dayjs().subtract(120, 'day').unix();
+                getStartDate = dayjs().subtract(120, 'day').unix();
+                getEndDate = dayjs().subtract(1, 'day').unix();
                 break;
         }
 
@@ -244,14 +250,20 @@ function DiscSelect() {
                             valueSelected={handicapOddsSelected}
                         />
                         <SectionSelect
+                            openDatePicker={openDatePicker}
                             options={dateList}
                             placeholder="选择时间"
                             selectTitle="区间"
+                            setOpenDatePicker={setOpenDatePicker}
                             setSelected={setTimeRange}
                             title="时间范围"
                             valueSelected={timeRange}
                         >
-                            <Datepicker updateQueryDate={updateQueryDate} />
+                            <Datepicker
+                                openModal={openDatePicker}
+                                setOpenModal={setOpenDatePicker}
+                                updateQueryDate={updateQueryDate}
+                            />
                         </SectionSelect>
                     </>
                 ) : (
