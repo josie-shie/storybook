@@ -1,6 +1,8 @@
 'use client';
 // import { IconSearch } from '@tabler/icons-react';
 import Image from 'next/image';
+import { useEffect } from 'react';
+import { getGuessRank } from 'data-center';
 import HotStreakListItem from '../components/hotStreak/hotStreakListItem';
 import UserSwitch from '../components/userSwitch/userSwitch';
 import Rule from '../components/rule/rule';
@@ -9,28 +11,8 @@ import Streak from '../components/hotStreak/img/whiteStreak.png';
 import { creatMasterRankStore, useMasterRankStore } from './masterRankStore';
 import style from './masterRank.module.scss';
 import Avatar from '@/components/avatar/avatar';
-import { useEffect } from 'react';
-import { getGuessRank } from 'data-center';
 
-function RankList() {
-    creatMasterRankStore({
-        member: {
-            memberId: 0,
-            memberName: '-',
-            memberLevel: 0,
-            memberAvatar: '',
-            ranking: 0,
-            today: false,
-            totalMatches: 0,
-            totalWin: 0,
-            totalLose: 0,
-            hitRate: 0,
-            currentMaxWinStreak: 0,
-            historyMaxWinStreak: 0
-        },
-        onlyShowToday: true,
-        masterRankList: []
-    });
+function UserMasterRank() {
     const memberInfo = useMasterRankStore.use.member();
     const setMember = useMasterRankStore.use.setMember();
     const setMasterRankList = useMasterRankStore.use.setMasterRankList();
@@ -51,6 +33,57 @@ function RankList() {
     }, []);
 
     return (
+        <div className={style.userHotStreak}>
+            <Image alt="" className={style.background} src={masterRankBackground} width={366} />
+            <div className={style.ranking}>
+                你排名<span>{memberInfo.ranking === 0 ? '-' : memberInfo.ranking}</span>
+            </div>
+            <div className={style.container}>
+                <div className={style.avatarContainer}>
+                    <Avatar src={memberInfo.memberAvatar} />
+                </div>
+                <div className={style.content}>
+                    <div className={style.name}>{memberInfo.memberName}</div>
+                    <div className={style.streak}>
+                        <div className={style.current}>
+                            <Image alt="streakIcon" className={style.streakIcon} src={Streak} />
+                            <span className={style.label}>当前:</span>{' '}
+                            {memberInfo.currentMaxWinStreak}連紅
+                        </div>
+                        <div className={style.highest}>
+                            <Image alt="streakIcon" className={style.streakIcon} src={Streak} />
+                            <span className={style.label}>历史最高:</span>{' '}
+                            {memberInfo.historyMaxWinStreak}
+                            連紅
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+function RankList() {
+    creatMasterRankStore({
+        member: {
+            memberId: 0,
+            memberName: '-',
+            memberLevel: 0,
+            memberAvatar: '',
+            ranking: 0,
+            today: false,
+            totalMatches: 0,
+            totalWin: 0,
+            totalLose: 0,
+            hitRate: 0,
+            currentMaxWinStreak: 0,
+            historyMaxWinStreak: 0
+        },
+        onlyShowToday: true,
+        masterRankList: []
+    });
+
+    return (
         <div className={style.masterRank}>
             <div className={style.control}>
                 <UserSwitch />
@@ -63,33 +96,7 @@ function RankList() {
                     <Rule />
                 </div>
             </div>
-            <div className={style.userHotStreak}>
-                <Image alt="" className={style.background} src={masterRankBackground} width={366} />
-                <div className={style.ranking}>
-                    你排名<span>{memberInfo.ranking === 0 ? '-' : memberInfo.ranking}</span>
-                </div>
-                <div className={style.container}>
-                    <div className={style.avatarContainer}>
-                        <Avatar src={memberInfo.memberAvatar} />
-                    </div>
-                    <div className={style.content}>
-                        <div className={style.name}>{memberInfo.memberName}</div>
-                        <div className={style.streak}>
-                            <div className={style.current}>
-                                <Image alt="streakIcon" className={style.streakIcon} src={Streak} />
-                                <span className={style.label}>当前:</span>{' '}
-                                {memberInfo.currentMaxWinStreak}連紅
-                            </div>
-                            <div className={style.highest}>
-                                <Image alt="streakIcon" className={style.streakIcon} src={Streak} />
-                                <span className={style.label}>历史最高:</span>{' '}
-                                {memberInfo.historyMaxWinStreak}
-                                連紅
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <UserMasterRank />
             <HotStreakListItem />
         </div>
     );
