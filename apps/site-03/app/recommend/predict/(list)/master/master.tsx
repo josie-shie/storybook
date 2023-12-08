@@ -1,10 +1,14 @@
 'use client';
+
+import { useState } from 'react';
 import MasterItem from '../components/masterItem/masterItem';
 import WeekButton from '../components/weekButton/weekButton';
 import { creatMasterStore } from './masterStore';
 import style from './master.module.scss';
 
 function Master() {
+    const [isActive, setIsActive] = useState<number[]>([]);
+
     creatMasterStore({
         masterItem: [
             {
@@ -32,9 +36,19 @@ function Master() {
         ]
     });
 
+    const updateActive = (value: number) => {
+        setIsActive(current => {
+            const isExist = current.includes(value);
+            if (isExist) {
+                return current.filter(item => item !== value);
+            }
+            return [...current, value];
+        });
+    };
+
     return (
         <div className={style.master}>
-            <WeekButton />
+            <WeekButton isActive={isActive} updateActive={updateActive} />
             <MasterItem />
         </div>
     );
