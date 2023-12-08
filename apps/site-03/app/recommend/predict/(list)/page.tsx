@@ -1,4 +1,7 @@
+'use client';
+
 import Image from 'next/image';
+import { useState } from 'react';
 import Article from './article/article';
 import Banner from './img/banner.png';
 import Filter from './img/filter.png';
@@ -6,6 +9,17 @@ import style from './page.module.scss';
 import WeekButton from './components/weekButton/weekButton';
 
 function Page() {
+    const [isActive, setIsActive] = useState<number[]>([]);
+
+    const updateActive = (value: number) => {
+        setIsActive(current => {
+            const isExist = current.includes(value);
+            if (isExist) {
+                return current.filter(item => item !== value);
+            }
+            return [...current, value];
+        });
+    };
     return (
         <>
             <Image alt="" className={style.banner} src={Banner} />
@@ -14,7 +28,7 @@ function Page() {
                 <Image alt="" src={Filter} />
             </div>
             <div className={style.button}>
-                <WeekButton />
+                <WeekButton isActive={isActive} updateActive={updateActive} />
             </div>
             <div className="recommendPredict">
                 <Article />
