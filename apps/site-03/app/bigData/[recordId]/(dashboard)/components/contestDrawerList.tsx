@@ -2,6 +2,7 @@ import { timestampToString } from 'lib';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import type { Match } from '../../analysisResultStore';
 import MatchFilterDrawer from '../../components/matchFilterDrawer/matchFilterDrawer';
 import { useMatchFilterStore } from '../../matchFilterStore';
@@ -89,7 +90,11 @@ function ContestDrawerList({
 
                     <div className={style.cardList}>
                         {displayList.map(match => (
-                            <section className={style.contesntList} key={match.matchId}>
+                            <Link
+                                className={style.contesntList}
+                                href={`/football/${match.matchId}/analyze`}
+                                key={match.matchId}
+                            >
                                 <div className={style.title}>
                                     <span className={style.sport}>{match.leagueChsShort}</span>
                                     <span className={style.time}>
@@ -112,7 +117,7 @@ function ContestDrawerList({
                                         <div className={style.name}>{match.awayChs}</div>
                                     </div>
                                 </div>
-                            </section>
+                            </Link>
                         ))}
                     </div>
                 </div>
