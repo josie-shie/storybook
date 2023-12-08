@@ -4,7 +4,7 @@ import BottomDrawer from '@/components/drawer/bottomDrawer';
 
 interface DateRangeProps {
     isDateRangeOpen: boolean;
-    setDateRangeOpen: (arg: boolean) => void;
+    setIsDateRangeOpen: (arg: boolean) => void;
 }
 
 type MapType = Record<
@@ -15,7 +15,7 @@ type MapType = Record<
     }
 >;
 
-function DateRangeOption({ isDateRangeOpen, setDateRangeOpen }: DateRangeProps) {
+function DateRangeOption({ isDateRangeOpen, setIsDateRangeOpen }: DateRangeProps) {
     // const getDateRange = (days: number) => {
     //     const today = new Date();
     //     const pastDate = new Date();
@@ -39,19 +39,19 @@ function DateRangeOption({ isDateRangeOpen, setDateRangeOpen }: DateRangeProps) 
         }
     };
 
-    // const handleChangeDate = (key: keyof typeof DateMap) => {
-    //     setDateRange(DateMap[key].value);
-    //     setDateRangeOpen(false);
-    // };
+    const handleChangeDate = () => {
+        // setDateRange(DateMap[key].value);
+        setIsDateRangeOpen(false);
+    };
 
     return (
         <BottomDrawer
             isOpen={isDateRangeOpen}
             onClose={() => {
-                setDateRangeOpen(false);
+                setIsDateRangeOpen(false);
             }}
             onOpen={() => {
-                setDateRangeOpen(true);
+                setIsDateRangeOpen(true);
             }}
         >
             <div className={style.dateRangeDrawer}>
@@ -63,9 +63,9 @@ function DateRangeOption({ isDateRangeOpen, setDateRangeOpen }: DateRangeProps) 
                         <Button
                             className={style.filterButton}
                             key={key}
-                            // onClick={() => {
-                            //     handleChangeDate(key);
-                            // }}
+                            onClick={() => {
+                                handleChangeDate();
+                            }}
                         >
                             {value.label}
                         </Button>

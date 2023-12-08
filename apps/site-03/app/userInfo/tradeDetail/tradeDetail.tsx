@@ -15,13 +15,13 @@ function TradeDetail() {
     const back = () => {
         router.push('/userInfo');
     };
-    const [isDateRangeOpen, setDateRangeOpen] = useState(false);
+    const [isDateRangeOpen, setIsDateRangeOpen] = useState(false);
+    const [isTradeTypeOpen, setIsTradeTypeOpen] = useState(false);
     // const [dateRange, setDateRange] = useState<(number | null)[]>([]);
-    const [isTradeTypeOpen, setTradeTypeOpen] = useState(false);
     // const [tradeType, setTradeType] = useState();
 
     const openOption = (value: 'dateRange' | 'tradeType') => {
-        value === 'dateRange' ? setDateRangeOpen(true) : setTradeTypeOpen(true);
+        value === 'dateRange' ? setIsDateRangeOpen(true) : setIsTradeTypeOpen(true);
     };
 
     creatTardeDetailStore({
@@ -137,12 +137,12 @@ function TradeDetail() {
                 <DateRangeOption
                     isDateRangeOpen={isDateRangeOpen}
                     // setDateRange={setDateRange}
-                    setDateRangeOpen={setDateRangeOpen}
+                    setIsDateRangeOpen={setIsDateRangeOpen}
                 />
                 <TradeTypeOption
                     isTradeTypeOpen={isTradeTypeOpen}
                     // setTradeType={setTradeType}
-                    setTradeTypeOpen={setTradeTypeOpen}
+                    setIsTradeTypeOpen={setIsTradeTypeOpen}
                 />
             </div>
         </>

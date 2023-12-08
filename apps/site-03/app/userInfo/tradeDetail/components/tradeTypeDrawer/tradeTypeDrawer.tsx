@@ -5,7 +5,7 @@ import BottomDrawer from '@/components/drawer/bottomDrawer';
 interface TradeTypeProps {
     isTradeTypeOpen: boolean;
     // setTradeType: Dispatch<SetStateAction<string | undefined>>;
-    setTradeTypeOpen: (arg: boolean) => void;
+    setIsTradeTypeOpen: (arg: boolean) => void;
 }
 
 type MapType = Record<
@@ -16,7 +16,7 @@ type MapType = Record<
     }
 >;
 
-function TradeTypeDrawer({ isTradeTypeOpen, setTradeTypeOpen }: TradeTypeProps) {
+function TradeTypeDrawer({ isTradeTypeOpen, setIsTradeTypeOpen }: TradeTypeProps) {
     const TradeTypeMap: MapType = {
         pay: {
             label: '支出',
@@ -32,19 +32,19 @@ function TradeTypeDrawer({ isTradeTypeOpen, setTradeTypeOpen }: TradeTypeProps) 
         }
     };
 
-    // const handleChangeDate = (key: keyof typeof TradeTypeMap) => {
-    //     setTradeType(TradeTypeMap[key].value);
-    //     setTradeTypeOpen(false);
-    // };
+    const handleChangeDate = () => {
+        // setTradeType(TradeTypeMap[key].value);
+        setIsTradeTypeOpen(false);
+    };
 
     return (
         <BottomDrawer
             isOpen={isTradeTypeOpen}
             onClose={() => {
-                setTradeTypeOpen(false);
+                setIsTradeTypeOpen(false);
             }}
             onOpen={() => {
-                setTradeTypeOpen(true);
+                setIsTradeTypeOpen(true);
             }}
         >
             <div className={style.dateRangeDrawer}>
@@ -56,9 +56,9 @@ function TradeTypeDrawer({ isTradeTypeOpen, setTradeTypeOpen }: TradeTypeProps) 
                         <Button
                             className={style.filterButton}
                             key={key}
-                            // onClick={() => {
-                            //     handleChangeDate(key as keyof MapType);
-                            // }}
+                            onClick={() => {
+                                handleChangeDate();
+                            }}
                         >
                             {value.label}
                         </Button>
