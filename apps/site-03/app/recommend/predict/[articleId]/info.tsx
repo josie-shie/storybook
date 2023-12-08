@@ -19,17 +19,38 @@ function Info() {
                 <div className={style.content}>
                     <div className={style.top}>
                         <span className={style.name}>{master.mentorName}</span>
+                    </div>
+                    <div>
                         <Tag icon={<IconFlame size={10} />} text={`${master.hotStreak}連紅`} />
-                        <Tag background="#fff" color="#4489ff" text={`月榜 ${master.ranking}`} />
+                        {master.tag.quarterRanking > 0 && (
+                            <Tag
+                                background="#fff"
+                                color="#4489ff"
+                                text={`季榜 ${master.tag.quarterRanking}`}
+                            />
+                        )}
+                        {master.tag.monthRanking > 0 && (
+                            <Tag
+                                background="#fff"
+                                color="#4489ff"
+                                text={`月榜 ${master.tag.monthRanking}`}
+                            />
+                        )}
+                        {master.tag.weekRanking > 0 && (
+                            <Tag
+                                background="#fff"
+                                color="#4489ff"
+                                text={`周榜 ${master.tag.weekRanking}`}
+                            />
+                        )}
                     </div>
                     <div className={style.bottom}>
                         {master.fansNumber > 0 && <span>粉絲: {master.fansNumber} </span>}
                         {master.unlockNumber > 0 && <span>解鎖: {master.unlockNumber} </span>}
-                        {master.winPercent > 0 && <span>猜球勝率: {master.winPercent}%</span>}
+                        {master.winPercent > 0 && <span>近一季猜球胜率: {master.winPercent}%</span>}
                     </div>
                 </div>
             </div>
-
             <div
                 className={master.followed ? style.focused : style.focus}
                 onClick={() => {

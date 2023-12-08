@@ -49,7 +49,14 @@ function MasterDetail({ params }: { params: { articleId: string } }) {
             followed: true,
             predictedPlay: 'LOCK',
             price: 10,
-            winPercent: 10
+            winPercent: 10,
+            tag: {
+                weekRanking: 10,
+                monthRanking: 0,
+                quarterRanking: 0,
+                winMaxAccurateStreak: 8,
+                quarterHitRate: 10
+            }
         },
         recommendationList: [
             {

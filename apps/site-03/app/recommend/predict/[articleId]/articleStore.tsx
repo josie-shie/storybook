@@ -34,7 +34,14 @@ interface ArticleDetail {
     followed: boolean; //是否關注
     predictedPlay: PredictTypeWithLock; //預測玩法
     price: number; //解鎖金幣
-    winPercent: number; //猜求勝率
+    winPercent: number; //猜求勝率,
+    tag: {
+        weekRanking: number; //週榜排名
+        monthRanking: number; //月榜排名
+        quarterRanking: number; //季榜排名
+        winMaxAccurateStreak: number; //連紅榜
+        quarterHitRate: number; //近一季猜球勝率
+    };
 }
 
 interface RecommendationItem {
@@ -96,7 +103,14 @@ const initialState = (set: (data: Partial<ArticleState>) => void) => ({
         followed: false,
         predictedPlay: 'LOCK' as PredictTypeWithLock,
         price: 0,
-        winPercent: 10
+        winPercent: 10,
+        tag: {
+            weekRanking: 0, //週榜排名
+            monthRanking: 0, //月榜排名
+            quarterRanking: 0, //季榜排名
+            winMaxAccurateStreak: 8, //連紅榜
+            quarterHitRate: 0 //近一季猜球勝率
+        }
     },
     setArticleDetail: (articleDetail: ArticleDetail) => {
         set({ articleDetail });
