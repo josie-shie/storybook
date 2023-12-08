@@ -205,6 +205,10 @@ const initialState = (
         {
             label: '最近一季',
             value: 'season'
+        },
+        {
+            label: '選擇時間區間',
+            value: 'setRange'
         }
     ],
     playList: [
