@@ -8,10 +8,19 @@ import style from './header.module.scss';
 interface HeaderProps {
     title: string;
     children?: ReactNode;
+    backHandler?: () => void;
 }
 
-function HeaderComponent({ title, children }: HeaderProps) {
+function HeaderComponent({ title, children, backHandler }: HeaderProps) {
     const router = useRouter();
+
+    const handleBackClick = () => {
+        if (backHandler) {
+            backHandler();
+        } else {
+            router.back();
+        }
+    };
 
     return (
         <div className={style.placeholder}>
@@ -20,9 +29,7 @@ function HeaderComponent({ title, children }: HeaderProps) {
                     <Image
                         alt=""
                         height={24}
-                        onClick={() => {
-                            router.back();
-                        }}
+                        onClick={handleBackClick}
                         src={backLeftArrowImg}
                         width={24}
                     />

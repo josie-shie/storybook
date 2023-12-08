@@ -1,9 +1,8 @@
 import { initStore, formatFilterMap } from 'lib';
 import type { StoreWithSelectors, FilterMap } from 'lib';
-// import type { ContestInfoType, ContestListType } from 'data-center';
+import type { BigDataHint } from 'data-center';
 
 type ContestInfoType = Record<number, Contest>;
-type OddsResultType = '赢' | '输' | '大' | '小';
 
 interface Contest {
     startTime: number;
@@ -18,24 +17,6 @@ interface Contest {
     homeHalfScore?: number;
     awayHalfScore?: number;
     isFamous: boolean;
-    leagueLevel: number;
-}
-
-interface HandicapTipType {
-    startTime: number;
-    matchId: number;
-    countryCn: string;
-    leagueId: number;
-    leagueChsShort: string;
-    homeId: number;
-    homeChs: string;
-    awayId: number;
-    awayChs: string;
-    teamId: number;
-    teamChs: string; // 哪一隊連
-    oddsResult: OddsResultType; // 輸、贏、大、小
-    longOddsTimes: number; // n場
-    isFamous: boolean; // 是否熱門賽事
     leagueLevel: number;
 }
 
@@ -58,8 +39,8 @@ interface ContestList extends InitState {
     filterCounter: { league: number; country: number };
     filterSelected: { league: Record<string, boolean>; country: Record<string, boolean> };
     filterList: { group: GroupType; selectedTable: Record<string, boolean> };
-    setContestList: ({ contestList }: { contestList: Contest[] | HandicapTipType[] }) => void;
-    setContestInfo: ({ contestList }: { contestList: Contest[] | HandicapTipType[] }) => void;
+    setContestList: ({ contestList }: { contestList: Contest[] | BigDataHint[] }) => void;
+    setContestInfo: ({ contestList }: { contestList: Contest[] | BigDataHint[] }) => void;
     setFilterInit: () => void;
     setFilterSelected: (name: string, group: GroupType) => void;
     setFilterList: (group: GroupType) => void;
@@ -137,10 +118,10 @@ const initialState = (set: (updater: (state: ContestList) => Partial<ContestList
         group: 'league' as GroupType,
         selectedTable: {}
     },
-    setContestList: ({ contestList }: { contestList: Contest[] | HandicapTipType[] }) => {
+    setContestList: ({ contestList }: { contestList: Contest[] | BigDataHint[] }) => {
         set(state => {
             const newContestList: number[] = [];
-            contestList.forEach((match: Contest | HandicapTipType) => {
+            contestList.forEach((match: Contest | BigDataHint) => {
                 newContestList.push(match.matchId);
             });
             return {
@@ -149,10 +130,10 @@ const initialState = (set: (updater: (state: ContestList) => Partial<ContestList
             };
         });
     },
-    setContestInfo: ({ contestList }: { contestList: Contest[] | HandicapTipType[] }) => {
+    setContestInfo: ({ contestList }: { contestList: Contest[] | BigDataHint[] }) => {
         set(state => {
             const newContestInfo: ContestInfoType = {};
-            contestList.forEach((match: Contest | HandicapTipType) => {
+            contestList.forEach((match: Contest | BigDataHint) => {
                 newContestInfo[match.matchId] = {
                     ...match
                 };

@@ -1,5 +1,4 @@
 'use client';
-import Link from 'next/link';
 import Image from 'next/image';
 import banner from './img/banner.png';
 import dataText from './img/dataText.png';
@@ -30,13 +29,6 @@ function AnimationData() {
 
     return (
         <div className={style.animationData}>
-            <div className={style.tab}>
-                <Link href="/recommend/guess">竟猜</Link>
-                <Link href="/recommend/predict">专家预测</Link>
-                <Link className={style.active} href="/recommend/bigData">
-                    大数据分析
-                </Link>
-            </div>
             <div className={style.banner}>
                 <Image alt="banner" src={banner} />
                 <div className={style.animate}>

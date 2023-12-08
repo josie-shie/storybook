@@ -1,29 +1,13 @@
 'use client';
 import { useEffect, useState } from 'react';
+import { getAiAnalysisContestList } from 'data-center';
 import GoalRangeChart from '../../components/goalRangeChart/goalRangeChart';
 import ContestDrawerList from '../components/contestDrawerList';
 import type { Match } from '../../analysisResultStore';
 import { useAnalyticsResultStore } from '../../analysisResultStore';
 import { useMatchFilterStore } from '../../matchFilterStore';
 import style from './range.module.scss';
-
-const matchs = [
-    {
-        startTime: 1699280450,
-        matchId: 2504100,
-        countryCn: '科威特',
-        leagueId: 923,
-        leagueChsShort: '科威甲',
-        homeChs: 'Al沙希尔',
-        awayChs: '伯根',
-        homeScore: 3,
-        awayScore: 0,
-        homeHalfScore: 3,
-        awayHalfScore: 0,
-        isFamous: true,
-        leagueLevel: 1
-    }
-];
+import { useNotificationStore } from '@/app/notificationStore';
 
 function TableCell({
     cellValue,
@@ -54,10 +38,8 @@ function Range() {
     const setFilterInit = useMatchFilterStore.use.setFilterInit();
     const [showList, setShowList] = useState(false);
     const [matchList, setMatchList] = useState<Match[]>([]);
-    const [selectedResult, setSelectedResult] = useState({
-        type: '',
-        odds: ''
-    });
+    const [selectedResult, setSelectedResult] = useState({ type: '', odds: '' });
+    const setIsNotificationVisible = useNotificationStore.use.setIsVisible();
     const analysisRecord = useAnalyticsResultStore.use.analysisResultData();
     const headers = [
         {
@@ -86,21 +68,32 @@ function Range() {
         }
     ];
 
+    const fetchMatchList = async (matchIdList: number[]) => {
+        const res = await getAiAnalysisContestList({ matchIds: matchIdList });
+
+        if (!res.success) {
+            const errorMessage = res.error ? res.error : '取得资料失败，请稍后再试';
+            setIsNotificationVisible(errorMessage, 'error');
+            return;
+        }
+
+        setMatchList(res.data);
+
+        setContestList({
+            contestList: res.data
+        });
+        setContestInfo({
+            contestList: res.data
+        });
+        setShowList(true);
+    };
+
     const openMatchListDrawer = (matchIdsList: number[], selectedType: string) => {
-        // eslint-disable-next-line -- for api request
-        console.dir(matchIdsList);
-        setMatchList(matchs);
         setSelectedResult({
             type: selectedType,
             odds: ''
         });
-        setContestList({
-            contestList: matchs
-        });
-        setContestInfo({
-            contestList: matchs
-        });
-        setShowList(true);
+        void fetchMatchList(matchIdsList);
     };
 
     useEffect(() => {
