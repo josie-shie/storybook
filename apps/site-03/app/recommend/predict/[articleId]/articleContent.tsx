@@ -117,7 +117,7 @@ function ArticleContent({ params }: { params: { articleId: string } }) {
                             <div className={style.buttonArea}>
                                 <div className={style.backDrop} />
                                 <div className={style.text}>
-                                    Lorem ipsum dolor sit amet consectetur.
+                                    Lorem ipsum dolor sit amet consectetur consect.
                                 </div>
                             </div>
                             <div className={style.button} onClick={unlockArticle}>

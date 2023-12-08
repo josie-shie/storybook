@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { timestampToString, timestampToMonthDay } from 'lib';
+import { useRouter } from 'next/navigation';
 import style from './recommendationList.module.scss';
 import Star from './img/star.png';
 import { useArticleStore } from './articleStore';
@@ -16,11 +17,23 @@ function RecommendationItem() {
         };
         return list[type];
     };
+
+    const router = useRouter();
+
+    const goDetail = (num: number) => {
+        router.push(`/recommend/predict/${num}`);
+    };
     return (
         <>
             {recommendationList.map(item => {
                 return (
-                    <section className={style.item} key={item.id}>
+                    <section
+                        className={style.item}
+                        key={item.id}
+                        onClick={() => {
+                            goDetail(item.id);
+                        }}
+                    >
                         <div className={style.left}>
                             <div className={style.time}>
                                 发表于今天 {timestampToMonthDay(item.createdAt)}
