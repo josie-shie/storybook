@@ -146,8 +146,26 @@ export const GET_MEMBER_INDIVIDUAL_GUESS_MATCHES_QUERY = `
     query getMemberIndividualGuessMatches($input: GetMemberIndividualGuessMatchesInput!){
         getMemberIndividualGuessMatches(input: $input) {
             guessType
-            guessMatchList
-            pagination
+            guessMatchList {
+                id
+                matchId
+                matchTime
+                leagueId
+                leagueName
+                homeTeamName
+                awayTeamName
+                playType
+                handicapOdds
+                handicapInChinese
+                overUnderOdds
+                predictedPlay
+                predictionResult
+                isPaidToRead
+            }
+            pagination {
+                pageCount
+                totalCount
+            }
         }
     }
 `;

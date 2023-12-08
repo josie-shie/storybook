@@ -423,6 +423,8 @@ const MemberIndividualGuessMatchSchema = z.object({
     homeTeamName: z.string(),
     awayTeamName: z.string(),
     handicapOdds: z.number(),
+    playType: z.string(),
+    handicapInChinese: z.string(),
     overUnderOdds: z.number(),
     predictedPlay: PredictedPlaySchema,
     predictionResult: PredictionResultSchema,

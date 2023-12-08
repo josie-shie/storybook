@@ -1,5 +1,6 @@
 import { initStore } from 'lib';
 import type { StoreWithSelectors } from 'lib';
+import type { TagType } from 'data-center';
 
 interface PerformanceDetail {
     play: number;
@@ -21,74 +22,80 @@ export interface RecentPerformance {
     byQuarter: Performance;
 }
 
+interface Pagination {
+    pageCount: number;
+    totalCount: number;
+}
+
+type PredictionResultType = 'WIN' | 'LOSE' | 'DRAW' | 'NONE';
+type PredictedPlayType = 'OVER' | 'UNDER' | 'HOME' | 'AWAY' | 'LOCK' | 'HANDICAP' | 'OVERUNDER';
+// 競猜玩法 ( 0: 全部, 1: 讓球, 2: 大小球 )
+export type GuessType = 0 | 1 | 2;
+
 export interface RecordItem {
-    id: number;
-    avatar: string;
-    name: string;
-    hotStreak: number;
-    homeTeam: string;
-    awayTeam: string;
-    history: ('win' | 'lose' | 'draw')[];
-    guess: 'home' | 'away' | 'big' | 'small';
-    result: 'win' | 'lose' | 'draw';
-    guessValue: number;
+    recordMemberId: number;
+    avatarPath: string;
+    memberName: string;
+    homeTeamName: string;
+    awayTeamName: string;
+    latestPredictionResult: PredictionResultType[];
+    predictedPlay: PredictedPlayType;
+    predictionResult: PredictionResultType;
+    matchId: number;
+    matchTime: number;
+    leagueId: number;
+    leagueName: string;
+    handicapOdds: number;
+    overUnderOdds: number;
+    viewingTime: number;
+    highlights: TagType;
 }
 
 export interface Plan {
     id: number;
     matchId: number;
     matchTime: number;
-    bettingType: 'draw' | 'size';
     leagueId: number;
     leagueName: string;
     homeTeamName: string;
     awayTeamName: string;
-    handicapOdds: string;
+    playType: string;
+    handicapOdds: number;
     overUnderOdds: number;
-    predictedPlay: 'over' | 'under' | 'home' | 'away';
-    predictionResult: 'win' | 'lose' | 'draw' | 'none';
-    isPaidToRead: string;
+    handicapInChinese: string;
+    predictedPlay: PredictedPlayType;
+    predictionResult: PredictionResultType;
+    isPaidToRead: boolean;
 }
 
 export interface MyPlans {
-    totale: Plan[];
-    handicap: Plan[];
-    size: Plan[];
+    guessType: GuessType;
+    guessMatchList: Plan[];
+    pagination: Pagination;
 }
-
-export interface RecordItem {
-    id: number;
-    avatar: string;
-    name: string;
-    hotStreak: number;
-    homeTeam: string;
-    awayTeam: string;
-    history: ('win' | 'lose' | 'draw')[];
-    guess: 'home' | 'away' | 'big' | 'small';
-    result: 'win' | 'lose' | 'draw';
-    guessValue: number;
+export interface GuessRecordList {
+    recordList: RecordItem[];
+    pagination: Pagination;
 }
 
 interface InitState {
     myGuess: {
-        rank: number;
         myPlans: MyPlans;
         recentPerformance: RecentPerformance;
-        guessRecordList: RecordItem[];
+        guessRecordList: GuessRecordList;
     };
 }
 
 interface MyGuessState extends InitState {
     setMyPlans: (myPlans: MyPlans) => void;
     setRecentPerformance: (recentPerformance: RecentPerformance) => void;
-    setGuessRecordList: (guessRecordList: RecordItem[]) => void;
+    setGuessRecordList: (guessRecordList: GuessRecordList) => void;
 }
 
 let useMyGuessStore: StoreWithSelectors<MyGuessState>;
 
 const initialState = (set: (updater: (state: MyGuessState) => Partial<MyGuessState>) => void) => ({
     myGuess: {
-        rank: 0,
         recentPerformance: {
             byWeek: {
                 rank: 0,
@@ -110,11 +117,20 @@ const initialState = (set: (updater: (state: MyGuessState) => Partial<MyGuessSta
             }
         },
         myPlans: {
-            totale: [],
-            handicap: [],
-            size: []
+            guessType: 0,
+            guessMatchList: [],
+            pagination: {
+                pageCount: 0,
+                totalCount: 0
+            }
         },
-        guessRecordList: []
+        guessRecordList: {
+            recordList: [],
+            pagination: {
+                pageCount: 0,
+                totalCount: 0
+            }
+        }
     },
     setMyPlans: (myPlans: MyPlans) => {
         set(state => ({
@@ -128,7 +144,7 @@ const initialState = (set: (updater: (state: MyGuessState) => Partial<MyGuessSta
             myGuess: { ...state.myGuess, recentPerformance }
         }));
     },
-    setGuessRecordList: (guessRecordList: RecordItem[]) => {
+    setGuessRecordList: (guessRecordList: GuessRecordList) => {
         set(state => ({
             ...state,
             myGuess: { ...state.myGuess, guessRecordList }

@@ -1,9 +1,12 @@
 'use client';
 import { ProgressBar } from 'ui';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ReactEcharts from 'echarts-for-react';
+import { getMemberIndividualGuess } from 'data-center';
 import { useMyGuessStore, type RecentPerformance, type Performance } from './myGuessStore';
 import style from './myGuess.module.scss';
+import Loading from '@/components/loading/loading';
+import { useUserStore } from '@/app/userStore';
 
 const dateActiveMap = {
     byWeek: { display: '周', value: 'byWeek' },
@@ -90,17 +93,13 @@ function ReactEchartsConponent({
     return <ReactEcharts option={chartOption} style={{ width: 120, height: 120 }} />;
 }
 
-function MyGuessRecentPerformence() {
-    const [dateActiveTab, setDateActiveTab] = useState(dateActiveMap.byWeek.value);
+function RecentPerformenceContent({ dateActiveTab }: { dateActiveTab: string }) {
     const [focusDetail, setFocusDetail] = useState<FocusDetailType>('summary');
 
     const formatRate = (lose: number, win: number) => {
+        if (lose === 0 && win === 0) return 0;
         const winRate = (win / (lose + win)) * 100;
         return Number.isInteger(winRate) ? winRate : winRate.toFixed(1);
-    };
-
-    const handleTabClick = (tabName: string) => {
-        setDateActiveTab(tabName);
     };
 
     const handleChangeFocusDetail = (value: FocusDetailType) => {
@@ -109,7 +108,128 @@ function MyGuessRecentPerformence() {
 
     const myGuessData =
         useMyGuessStore.use.myGuess().recentPerformance[dateActiveTab as keyof RecentPerformance];
+    return (
+        <>
+            <ReactEchartsConponent
+                dateActiveTab={dateActiveTab}
+                focusDetail={focusDetail}
+                myGuessData={myGuessData}
+            />
+            <div className={style.detailContainer}>
+                <div
+                    className={`${style.detailBlock} ${
+                        focusDetail === 'summary' && style.focusDetail
+                    }`}
+                    onClick={() => {
+                        handleChangeFocusDetail('summary');
+                    }}
+                >
+                    <div className={style.top}>
+                        <div className={style.total}>共{myGuessData.summary.play}场</div>
+                        <div className={style.percentage}>
+                            <div className={style.win}>胜 {myGuessData.summary.win}</div>
+                            <div className={style.walk}>走 {myGuessData.summary.draw}</div>
+                            <div className={style.defeat}>負 {myGuessData.summary.lose}</div>
+                        </div>
+                    </div>
+                    <div className={style.bot}>
+                        <div className={style.winRate}>
+                            勝率
+                            {formatRate(myGuessData.summary.lose, myGuessData.summary.win)}%
+                        </div>
+                        <ProgressBar
+                            background="#8D8D8D"
+                            gapSize="small"
+                            height={4}
+                            radius
+                            value={myGuessData.summary.win}
+                        />
+                    </div>
+                </div>
+                <div
+                    className={`${style.detailBlock} ${
+                        focusDetail === 'size' && style.focusDetail
+                    }`}
+                    onClick={() => {
+                        handleChangeFocusDetail('size');
+                    }}
+                >
+                    <div className={style.top}>
+                        <div className={style.total}>讓球{myGuessData.handicap.play}场</div>
+                        <div className={style.percentage}>
+                            <div className={style.win}>胜 {myGuessData.handicap.win}</div>
+                            <div className={style.walk}>走 {myGuessData.handicap.draw}</div>
+                            <div className={style.defeat}>負 {myGuessData.handicap.lose}</div>
+                        </div>
+                    </div>
+                    <div className={style.bot}>
+                        <div className={style.winRate}>
+                            勝率
+                            {formatRate(myGuessData.handicap.lose, myGuessData.handicap.win)}%
+                        </div>
+                        <ProgressBar
+                            background="#8D8D8D"
+                            gapSize="small"
+                            height={4}
+                            radius
+                            value={myGuessData.handicap.win}
+                        />
+                    </div>
+                </div>
+                <div
+                    className={`${style.detailBlock} ${
+                        focusDetail === 'handicap' && style.focusDetail
+                    }`}
+                    onClick={() => {
+                        handleChangeFocusDetail('handicap');
+                    }}
+                >
+                    <div className={style.top}>
+                        <div className={style.total}>大小{myGuessData.size.play}场</div>
+                        <div className={style.percentage}>
+                            <div className={style.win}>胜 {myGuessData.size.win}</div>
+                            <div className={style.walk}>走 {myGuessData.size.lose}</div>
+                            <div className={style.defeat}>負 {myGuessData.size.lose}</div>
+                        </div>
+                    </div>
+                    <div className={style.bot}>
+                        <div className={style.winRate}>
+                            勝率
+                            {formatRate(myGuessData.size.lose, myGuessData.size.win)}%
+                        </div>
+                        <ProgressBar
+                            background="#8D8D8D"
+                            gapSize="small"
+                            height={4}
+                            radius
+                            value={myGuessData.size.win}
+                        />
+                    </div>
+                </div>
+            </div>
+        </>
+    );
+}
 
+function MyGuessRecentPerformence() {
+    const [dateActiveTab, setDateActiveTab] = useState(dateActiveMap.byWeek.value);
+    const handleTabClick = (tabName: string) => {
+        setDateActiveTab(tabName);
+    };
+    const [isPerformanceLoading, setIsPerformanceLoading] = useState(false);
+    const uid = useUserStore.use.userInfo().uid;
+    const setRecentPerformance = useMyGuessStore.use.setRecentPerformance();
+
+    useEffect(() => {
+        const getPerformanceData = async () => {
+            setIsPerformanceLoading(true);
+            const performanceData = await getMemberIndividualGuess({ memberId: uid });
+            if (performanceData.success) setRecentPerformance(performanceData.data);
+            setIsPerformanceLoading(false);
+        };
+
+        if (uid) void getPerformanceData();
+    }, [setRecentPerformance, uid]);
     return (
         <>
             <div className={style.title}>
@@ -117,7 +237,9 @@ function MyGuessRecentPerformence() {
                 <div className={style.tab}>
                     {Object.entries(dateActiveMap).map(([key, value]) => (
                         <span
-                            className={dateActiveTab === value.value ? style.active : ''}
+                            className={`${dateActiveTab === value.value && style.active} ${
+                                isPerformanceLoading && style.disable
+                            }`}
                             key={key}
                             onClick={() => {
                                 handleTabClick(value.value);
@@ -129,103 +251,13 @@ function MyGuessRecentPerformence() {
                 </div>
             </div>
             <div className={style.recentGames}>
-                <ReactEchartsConponent
-                    dateActiveTab={dateActiveTab}
-                    focusDetail={focusDetail}
-                    myGuessData={myGuessData}
-                />
-                <div className={style.detailContainer}>
-                    <div
-                        className={`${style.detailBlock} ${
-                            focusDetail === 'summary' && style.focusDetail
-                        }`}
-                        onClick={() => {
-                            handleChangeFocusDetail('summary');
-                        }}
-                    >
-                        <div className={style.top}>
-                            <div className={style.total}>共{myGuessData.summary.play}场</div>
-                            <div className={style.percentage}>
-                                <div className={style.win}>胜 {myGuessData.summary.win}</div>
-                                <div className={style.walk}>走 {myGuessData.summary.draw}</div>
-                                <div className={style.defeat}>負 {myGuessData.summary.lose}</div>
-                            </div>
-                        </div>
-                        <div className={style.bot}>
-                            <div className={style.winRate}>
-                                勝率
-                                {formatRate(myGuessData.summary.lose, myGuessData.summary.win)}%
-                            </div>
-                            <ProgressBar
-                                background="#8D8D8D"
-                                gapSize="small"
-                                height={4}
-                                radius
-                                value={myGuessData.summary.win}
-                            />
-                        </div>
+                {isPerformanceLoading ? (
+                    <div className={style.loderBox}>
+                        <Loading />
                     </div>
-                    <div
-                        className={`${style.detailBlock} ${
-                            focusDetail === 'size' && style.focusDetail
-                        }`}
-                        onClick={() => {
-                            handleChangeFocusDetail('size');
-                        }}
-                    >
-                        <div className={style.top}>
-                            <div className={style.total}>讓球{myGuessData.handicap.play}场</div>
-                            <div className={style.percentage}>
-                                <div className={style.win}>胜 {myGuessData.handicap.win}</div>
-                                <div className={style.walk}>走 {myGuessData.handicap.draw}</div>
-                                <div className={style.defeat}>負 {myGuessData.handicap.lose}</div>
-                            </div>
-                        </div>
-                        <div className={style.bot}>
-                            <div className={style.winRate}>
-                                勝率
-                                {formatRate(myGuessData.handicap.lose, myGuessData.handicap.win)}%
-                            </div>
-                            <ProgressBar
-                                background="#8D8D8D"
-                                gapSize="small"
-                                height={4}
-                                radius
-                                value={myGuessData.handicap.win}
-                            />
-                        </div>
-                    </div>
-                    <div
-                        className={`${style.detailBlock} ${
-                            focusDetail === 'handicap' && style.focusDetail
-                        }`}
-                        onClick={() => {
-                            handleChangeFocusDetail('handicap');
-                        }}
-                    >
-                        <div className={style.top}>
-                            <div className={style.total}>大小{myGuessData.size.play}场</div>
-                            <div className={style.percentage}>
-                                <div className={style.win}>胜 {myGuessData.size.win}</div>
-                                <div className={style.walk}>走 {myGuessData.size.lose}</div>
-                                <div className={style.defeat}>負 {myGuessData.size.lose}</div>
-                            </div>
-                        </div>
-                        <div className={style.bot}>
-                            <div className={style.winRate}>
-                                勝率
-                                {formatRate(myGuessData.size.lose, myGuessData.size.win)}%
-                            </div>
-                            <ProgressBar
-                                background="#8D8D8D"
-                                gapSize="small"
-                                height={4}
-                                radius
-                                value={myGuessData.size.win}
-                            />
-                        </div>
-                    </div>
-                </div>
+                ) : (
+                    <RecentPerformenceContent dateActiveTab={dateActiveTab} />
+                )}
             </div>
         </>
     );
