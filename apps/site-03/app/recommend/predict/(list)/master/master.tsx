@@ -1,9 +1,8 @@
 'use client';
-import Image from 'next/image';
 import MasterItem from '../components/masterItem/masterItem';
+import WeekButton from '../components/weekButton/weekButton';
 import { creatMasterStore } from './masterStore';
 import style from './master.module.scss';
-import masterImage from './masterPredict.png';
 
 function Master() {
     creatMasterStore({
@@ -35,7 +34,7 @@ function Master() {
 
     return (
         <div className={style.master}>
-            <Image alt="master" className={style.banner} src={masterImage} />
+            <WeekButton />
             <MasterItem />
         </div>
     );

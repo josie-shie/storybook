@@ -17,6 +17,7 @@ import { useAuthStore } from '@/app/(auth)/authStore';
 
 function MessageBoard({ matchId }: { matchId: number }) {
     const firstTimeRef = useRef(true);
+    const readyChat = useRef(false);
     const userInfo = useUserStore.use.userInfo();
     const isLogin = useUserStore.use.isLogin();
     const forbiddenWords = useMessageStore.use.forbiddenWords();
@@ -27,6 +28,8 @@ function MessageBoard({ matchId }: { matchId: number }) {
 
     useEffect(() => {
         const handleMsgRes = (data: MessageResponse) => {
+            if (!readyChat.current) readyChat.current = true;
+
             if (data.action === 'new_message' && data.roomId === matchId.toString()) {
                 setMessageList(prev => {
                     if (data.message) {
@@ -48,6 +51,7 @@ function MessageBoard({ matchId }: { matchId: number }) {
         getMessageResponse(handleMsgRes);
 
         if (firstTimeRef.current) {
+            firstTimeRef.current = false;
             void messageService.send({
                 roomId: matchId.toString(),
                 correlationId: `c${getRandomInt(1, 10000)}`,
@@ -62,14 +66,13 @@ function MessageBoard({ matchId }: { matchId: number }) {
         }
         return () => {
             cancelMessage(handleMsgRes);
-            if (!firstTimeRef.current) {
+            if (readyChat.current) {
                 void messageService.send({
                     roomId: matchId.toString(),
                     correlationId: `c${getRandomInt(1, 10000)}`,
                     action: 'leave_room'
                 });
             }
-            firstTimeRef.current = false;
         };
     }, [matchId]);
 
@@ -98,17 +101,7 @@ function MessageBoard({ matchId }: { matchId: number }) {
 
     return (
         <>
-            {firstTimeRef.current ? (
-                <div className={style.chatSkeleton}>
-                    {chatSkeleton.map((_, idx) => (
-                        <Skeleton
-                            height={20}
-                            key={`skeleton_${idx.toString()}`}
-                            variant="rounded"
-                        />
-                    ))}
-                </div>
-            ) : (
+            {readyChat.current ? (
                 <div className={style.messageBoard}>
                     <MessageRoom
                         addMessage={addMessage}
@@ -120,6 +113,16 @@ function MessageBoard({ matchId }: { matchId: number }) {
                         smileIcon={<Image alt="sent" height={24} src={SmileIcon} width={24} />}
                         uid={String(userInfo.uid) || ''}
                     />
+                </div>
+            ) : (
+                <div className={style.chatSkeleton}>
+                    {chatSkeleton.map((_, idx) => (
+                        <Skeleton
+                            height={20}
+                            key={`skeleton_${idx.toString()}`}
+                            variant="rounded"
+                        />
+                    ))}
                 </div>
             )}
         </>

@@ -56,7 +56,7 @@ function HandicapTips({ tipsData, hintsSelected }: PropsType) {
                     連{tipsData.longOddsType}
                     {tipsData.longOddsTimes}場
                 </div>
-                <Link href={`/contest/football/${tipsData.matchId}`}>
+                <Link href={`football/${tipsData.matchId}`}>
                     <motion.button className={style.button} type="button" whileTap={{ scale: 0.9 }}>
                         詳情
                     </motion.button>

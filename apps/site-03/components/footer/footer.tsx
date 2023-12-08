@@ -25,7 +25,7 @@ const CategoryList = [
     {
         label: '猜球',
         value: '/recommend/guess',
-        includedRouters: ['/recommend'],
+        includedRouters: ['/recommend/guess'],
         icon: <Image alt="" className={style.icon} src={guessIcon} />,
         activedIcon: <Image alt="" className={style.icon} src={activeGuess} />
     },
@@ -39,7 +39,7 @@ const CategoryList = [
     {
         label: '专家',
         value: '/recommend/predict',
-        includedRouters: ['/recommend'],
+        includedRouters: ['/recommend/predict'],
         icon: <Image alt="" className={style.icon} src={recommendIcon} />,
         activedIcon: <Image alt="" className={style.icon} src={activeRecommend} />
     },

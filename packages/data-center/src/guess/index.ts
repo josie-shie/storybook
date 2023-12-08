@@ -290,11 +290,31 @@ const MemberIndividualGuessRecordSchema = z.object({
     overUnderLose: z.number()
 });
 
-export type MemberIndividualGuessRecord = z.infer<typeof MemberIndividualGuessRecordSchema>;
+export interface MemberIndividualGuessRecord {
+    rank: number;
+    summary: {
+        play: number;
+        win: number;
+        draw: number;
+        lose: number;
+    };
+    handicap: {
+        play: number;
+        win: number;
+        draw: number;
+        lose: number;
+    };
+    size: {
+        play: number;
+        win: number;
+        draw: number;
+        lose: number;
+    };
+}
 export interface GetMemberIndividualGuessResponse {
-    weekRecord: MemberIndividualGuessRecord;
-    monthRecord: MemberIndividualGuessRecord;
-    quarterRecord: MemberIndividualGuessRecord;
+    byWeek: MemberIndividualGuessRecord;
+    byMonth: MemberIndividualGuessRecord;
+    byQuarter: MemberIndividualGuessRecord;
 }
 
 const GetMemberIndividualGuessResultSchema = z.object({
@@ -332,10 +352,76 @@ export const getMemberIndividualGuess = async ({
         );
 
         GetMemberIndividualGuessResultSchema.parse(data);
+        const { weekRecord, monthRecord, quarterRecord } = data.getMemberIndividualGuess;
 
+        const formattedData = {
+            byWeek: {
+                rank: weekRecord.rank,
+                summary: {
+                    play: weekRecord.totalPlay,
+                    win: weekRecord.totalPlayWin,
+                    draw: weekRecord.totalPlayDraw,
+                    lose: weekRecord.totalPlayLose
+                },
+                handicap: {
+                    play: weekRecord.handicapPlay,
+                    win: weekRecord.handicapWin,
+                    draw: weekRecord.handicapDraw,
+                    lose: weekRecord.handicapDraw
+                },
+                size: {
+                    play: weekRecord.overUnderPlay,
+                    win: weekRecord.overUnderWin,
+                    draw: weekRecord.handicapDraw,
+                    lose: weekRecord.handicapLose
+                }
+            },
+            byMonth: {
+                rank: monthRecord.rank,
+                summary: {
+                    play: monthRecord.totalPlay,
+                    win: monthRecord.totalPlayWin,
+                    draw: monthRecord.totalPlayDraw,
+                    lose: monthRecord.totalPlayLose
+                },
+                handicap: {
+                    play: monthRecord.handicapPlay,
+                    win: monthRecord.handicapWin,
+                    draw: monthRecord.handicapDraw,
+                    lose: monthRecord.handicapDraw
+                },
+                size: {
+                    play: monthRecord.overUnderPlay,
+                    win: monthRecord.overUnderWin,
+                    draw: monthRecord.handicapDraw,
+                    lose: monthRecord.handicapLose
+                }
+            },
+            byQuarter: {
+                rank: quarterRecord.rank,
+                summary: {
+                    play: quarterRecord.totalPlay,
+                    win: quarterRecord.totalPlayWin,
+                    draw: quarterRecord.totalPlayDraw,
+                    lose: quarterRecord.totalPlayLose
+                },
+                handicap: {
+                    play: quarterRecord.handicapPlay,
+                    win: quarterRecord.handicapWin,
+                    draw: quarterRecord.handicapDraw,
+                    lose: quarterRecord.handicapDraw
+                },
+                size: {
+                    play: quarterRecord.overUnderPlay,
+                    win: quarterRecord.overUnderWin,
+                    draw: quarterRecord.handicapDraw,
+                    lose: quarterRecord.handicapLose
+                }
+            }
+        };
         return {
             success: true,
-            data: data.getMemberIndividualGuess
+            data: formattedData
         };
     } catch (error) {
         return handleApiError(error);
@@ -545,6 +631,8 @@ type GetProDistribResult = z.infer<typeof GetProDistribResultSchema>;
 
 /**
  * 取得高手分佈
+ * - params {@link GetProDistribRequest}
+ * - returns {@link GetProDistribResponse}
  */
 export const getProDistrib = async ({
     matchId,

@@ -8,13 +8,56 @@ import {
     DELETE_FOLLOW_MUTATION
 } from './graphqlQueries';
 
+const TagsSchema = z.object({
+    id: z.number(),
+    tagName: z.string(),
+    note: z.string(),
+    colorCode: z.string(),
+    weekHitRecentTen: z.number(),
+    weekMaxAccurateStreak: z.number(),
+    weekHitMatches: z.number(),
+    weekTotalMatches: z.number(),
+    weekHitRate: z.number(),
+    weekHitRateDisplay: z.string(),
+    weekRanking: z.number(),
+    weekHistoryMaxWinStreak: z.number(),
+    monthHitRecentTen: z.number(),
+    monthMaxAccurateStreak: z.number(),
+    monthHitMatches: z.number(),
+    monthTotalMatches: z.number(),
+    monthHitRate: z.number(),
+    monthHitRateDisplay: z.string(),
+    monthRanking: z.number(),
+    monthHistoryMaxWinStreak: z.number(),
+    quarterHitRecentTen: z.number(),
+    quarterMaxAccurateStreak: z.number(),
+    quarterHitMatches: z.number(),
+    quarterTotalMatches: z.number(),
+    quarterHitRate: z.number(),
+    quarterHitRateDisplay: z.string(),
+    quarterRanking: z.number(),
+    quarterHistoryMaxWinStreak: z.number(),
+    winHitRecentTen: z.number(),
+    winMaxAccurateStreak: z.number(),
+    winHitMatches: z.number(),
+    winTotalMatches: z.number(),
+    winHitRate: z.number(),
+    winHitRateDisplay: z.string(),
+    winRanking: z.number(),
+    winHistoryMaxWinStreak: z.number()
+});
+
+export type Tags = z.infer<typeof TagsSchema>;
+
 const FollowersSchema = z.object({
     memberId: z.number(),
     username: z.string(),
     avatarPath: z.string(),
     profile: z.string(),
     fans: z.number(),
-    unlocked: z.number()
+    unlocked: z.number(),
+    isFollowed: z.boolean(),
+    tags: TagsSchema
 });
 
 export type GetFollower = z.infer<typeof FollowersSchema>;
@@ -62,7 +105,7 @@ type UnFollowResult = z.infer<typeof UnFollowResultSchema>;
  * 取得追蹤數、粉絲
  * - params : {@link GetFollowersRequest}
  * - returns : {@link GetFollowersResponse}
- * - {@link GetFollower}
+ * - {@link GetFollower} {@link Tags}
  */
 export const getFollowers = async ({
     memberId,
