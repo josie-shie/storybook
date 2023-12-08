@@ -17,7 +17,7 @@ function ContestList() {
 
     const fetchContestGuessData = async () => {
         try {
-            const todayGuess = await getTodayGuessMatches({ memberId: 1 });
+            const todayGuess = await getTodayGuessMatches();
             if (!todayGuess.success) {
                 return new Error();
             }

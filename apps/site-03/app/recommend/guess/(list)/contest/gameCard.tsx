@@ -35,8 +35,14 @@ function GameCard({ matchId }: { matchId: number }) {
                         <span> {contestInfo.matchTime ? currentMatchTime : null}</span>
                     </div>
                     <div className={style.team}>
-                        <div>{contestInfo.homeName}</div>
-                        <div className={style.awayTeamName}>{contestInfo.awayName}</div>
+                        <div className={style.homeTeamName}>
+                            <Image alt="" height={20} src={contestInfo.homeLogo} width={20} />
+                            {contestInfo.homeName}
+                        </div>
+                        <div className={style.awayTeamName}>
+                            <Image alt="" height={20} src={contestInfo.awayLogo} width={20} />
+                            {contestInfo.awayName}
+                        </div>
                     </div>
                 </div>
                 <div className={style.right}>
