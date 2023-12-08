@@ -1,25 +1,6 @@
+import type { BigDataHintListResponse } from 'data-center';
 import { initStore } from 'lib';
 import type { StoreWithSelectors } from 'lib';
-
-type OddsResultType = '赢' | '输' | '大' | '小';
-
-interface HandicapTipType {
-    startTime: number;
-    matchId: number;
-    countryCn: string;
-    leagueId: number;
-    leagueChsShort: string;
-    homeId: number;
-    homeChs: string;
-    awayId: number;
-    awayChs: string;
-    teamId: number;
-    teamChs: string; // 哪一隊連
-    oddsResult: OddsResultType; // 輸、贏、大、小
-    longOddsTimes: number; // n場
-    isFamous: boolean; // 是否熱門賽事
-    leagueLevel: number;
-}
 
 interface Option {
     label: string;
@@ -38,12 +19,12 @@ interface Record {
 }
 
 interface InitState {
-    handicapTips: HandicapTipType[];
+    handicapTips: BigDataHintListResponse;
     recordList: Record[];
 }
 
 interface DiscSelectState extends InitState {
-    setHandicapTips: (handicapTips: HandicapTipType[]) => void;
+    setHandicapTips: (handicapTips: BigDataHintListResponse) => void;
     teamList: Option[];
     handicapNumberList: Option[];
     overUnderNumberList: Option[];
@@ -65,7 +46,7 @@ const initialState = (
     set: (updater: (state: DiscSelectState) => Partial<DiscSelectState>) => void
 ) => ({
     handicapTips: [],
-    setHandicapTips: (handicapTips: HandicapTipType[]) => {
+    setHandicapTips: (handicapTips: BigDataHintListResponse) => {
         set(state => {
             return { ...state, handicapTips };
         });

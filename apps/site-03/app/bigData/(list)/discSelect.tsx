@@ -5,89 +5,19 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import dayjs from 'dayjs';
 import { mqttService } from 'lib';
+import type { OddsHintRequest } from 'data-center';
+import { getBigdataHint } from 'data-center';
 import Star from './img/star.png';
 import style from './disSelect.module.scss';
 import RecordFilter from './components/recordFilter/recordFilter';
 import HandicapDrawer from './components/handicapDrawer/handicapDrawer';
 import { GameFilter } from './components/gameFilter/gameFilter';
-import { creatDiscSelectStore, useDiscSelectStore } from './discSelectStore';
-import { creatMatchFilterStore, useMatchFilterStore } from './matchFilterStore';
+import { useDiscSelectStore } from './discSelectStore';
+import { useMatchFilterStore } from './matchFilterStore';
 import Datepicker from './components/datepicker/datepicker';
 import { useUserStore } from '@/app/userStore';
 import NormalDialog from '@/components/normalDialog/normalDialog';
-
-type OddsResultType = '赢' | '输' | '大' | '小';
-interface HandicapTipType {
-    startTime: number;
-    matchId: number;
-    countryCn: string;
-    leagueId: number;
-    leagueChsShort: string;
-    homeId: number;
-    homeChs: string;
-    awayId: number;
-    awayChs: string;
-    teamId: number;
-    teamChs: string; // 哪一隊連
-    oddsResult: OddsResultType; // 輸、贏、大、小
-    longOddsTimes: number; // n場
-    isFamous: boolean; // 是否熱門賽事
-    leagueLevel: number;
-}
-
-const matchList = [
-    {
-        startTime: 1701400376,
-        matchId: 2504100,
-        countryCn: '科威特',
-        leagueId: 923,
-        leagueChsShort: '科威甲',
-        homeId: 3669,
-        homeChs: '苏拉比卡',
-        awayId: 3674,
-        awayChs: '阿尔塔达孟',
-        teamId: 3674,
-        teamChs: '阿尔塔达孟',
-        oddsResult: '输', // 輸、贏、大、小
-        longOddsTimes: 4, // n場
-        isFamous: true, // 是否熱門賽事
-        leagueLevel: 0
-    },
-    {
-        startTime: 1701300376,
-        matchId: 25041011,
-        countryCn: '日本',
-        leagueId: 924,
-        leagueChsShort: '日本',
-        homeId: 3669,
-        homeChs: '苏拉比卡',
-        awayId: 3674,
-        awayChs: '阿尔塔达孟',
-        teamId: 3674,
-        teamChs: '阿尔塔达孟',
-        oddsResult: '赢', // 輸、贏、大、小
-        longOddsTimes: 1, // n場
-        isFamous: false, // 是否熱門賽事
-        leagueLevel: 0
-    },
-    {
-        startTime: 1701300376,
-        matchId: 25041012,
-        countryCn: '中国',
-        leagueId: 925,
-        leagueChsShort: '中國',
-        homeId: 3669,
-        homeChs: '苏拉比卡',
-        awayId: 3674,
-        awayChs: '阿尔塔达孟',
-        teamId: 3674,
-        teamChs: '阿尔塔达孟',
-        oddsResult: '赢', // 輸、贏、大、小
-        longOddsTimes: 1, // n場
-        isFamous: false, // 是否熱門賽事
-        leagueLevel: 0
-    }
-] as HandicapTipType[];
+import { useNotificationStore } from '@/app/notificationStore';
 
 interface OptionType {
     label: string;
@@ -134,15 +64,6 @@ function SectionSelect({
 }
 
 function DiscSelect() {
-    creatDiscSelectStore({
-        handicapTips: [],
-        recordList: []
-    });
-    creatMatchFilterStore({
-        contestList: [],
-        contestInfo: {}
-    });
-
     const router = useRouter();
     const searchParams = useSearchParams();
     const search = searchParams.get('status');
@@ -150,7 +71,7 @@ function DiscSelect() {
     const [openDialog, setOpenDialog] = useState(false);
 
     const [handicapOddsSelected, setHandicapOddsSelected] = useState('');
-    const setHandicapHints = useDiscSelectStore.use.setHandicapTips();
+    const setHandicapTips = useDiscSelectStore.use.setHandicapTips();
 
     const teamList = useDiscSelectStore.use.teamList();
     const handicapNumberList = useDiscSelectStore.use.handicapNumberList();
@@ -163,6 +84,7 @@ function DiscSelect() {
     const setContestInfo = useMatchFilterStore.use.setContestInfo();
     const setFilterInit = useMatchFilterStore.use.setFilterInit();
     const userInfo = useUserStore.use.userInfo();
+    const setIsNotificationVisible = useNotificationStore.use.setIsVisible();
 
     const [hintsSelected, setHintsSelected] = useState('');
     const [startDate, setStartDate] = useState(0);
@@ -174,20 +96,28 @@ function DiscSelect() {
     const [analysisError, setAnalysisError] = useState('');
     const [hintsError, setHintsError] = useState('');
 
-    setHandicapHints(matchList);
-
-    const openHintsDrawer = () => {
+    const openHintsDrawer = async () => {
         if (!hintsSelected) {
             setHintsError('请选择大小球类别');
             return;
         }
 
         setHintsError('');
+
+        const res = await getBigdataHint(hintsSelected as unknown as OddsHintRequest);
+
+        if (!res.success) {
+            const errorMessage = res.error ? res.error : '取得盘路提示资料失败，请稍后再试';
+            setIsNotificationVisible(errorMessage, 'error');
+            return;
+        }
+
+        setHandicapTips(res.data);
         setContestList({
-            contestList: matchList
+            contestList: res.data
         });
         setContestInfo({
-            contestList: matchList
+            contestList: res.data
         });
         setShowHandicapDrawer(true);
     };
