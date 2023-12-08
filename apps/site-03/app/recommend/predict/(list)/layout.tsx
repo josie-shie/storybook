@@ -1,10 +1,7 @@
 'use client';
 import type { ReactNode } from 'react';
-import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import style from './layout.module.scss';
-import WeekButton from './components/weekButton/weekButton';
-import Banner from './img/banner.png';
 import { Tabs } from '@/components/tabs/tabs';
 import Header from '@/components/header/headerLogo';
 import Footer from '@/components/footer/footer';
@@ -30,8 +27,7 @@ function PredictLayout({ children }: { children: ReactNode }) {
                         styling="button"
                     />
                 </div>
-                <Image alt="" className={style.banner} src={Banner} />
-                <WeekButton />
+
                 {children}
             </div>
             <Footer />
