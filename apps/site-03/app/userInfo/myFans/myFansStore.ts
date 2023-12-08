@@ -1,31 +1,20 @@
 import { initStore } from 'lib';
 import type { StoreWithSelectors } from 'lib';
-
-interface FansMember {
-    memberId: number;
-    username: string;
-    avatarPath: string;
-    profile: string;
-    fans: number;
-    unlocked: number;
-    hotStreak: number;
-    ranking: number;
-    followed: boolean;
-}
+import type { GetFollowersResponse } from 'data-center';
 
 interface InitState {
-    fansMemberItem: FansMember[];
+    fansMemberItem: GetFollowersResponse;
 }
 
 interface FansMemberState extends InitState {
-    setFansMemberItem: (fansMemberItem: FansMember[]) => void;
+    setFansMemberItem: (fansMemberItem: GetFollowersResponse) => void;
 }
 
 let useFansMemberStore: StoreWithSelectors<FansMemberState>;
 
 const initialState = (set: (data: Partial<FansMemberState>) => void) => ({
     fansMemberItem: [],
-    setFansMemberItem: (fansMemberItem: FansMember[]) => {
+    setFansMemberItem: (fansMemberItem: GetFollowersResponse) => {
         set({ fansMemberItem });
     }
 });

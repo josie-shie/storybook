@@ -140,39 +140,36 @@ function UserInfo() {
                 <div className={style.myDetail}>
                     <div className={style.business}>
                         <div className={style.item}>
-                            <ButtonBase>
-                                <Image alt="" height={32} src={MyFocus} width={32} />
-                                <Link className={style.text} href="/userInfo/myFocus">
-                                    我的关注
-                                </Link>
-                            </ButtonBase>
+                            <Link className={style.text} href="/userInfo/myFocus">
+                                <ButtonBase>
+                                    <Image alt="" height={32} src={MyFocus} width={32} />
+                                    <span>我的关注</span>
+                                </ButtonBase>
+                            </Link>
                         </div>
                         <div className={style.item}>
-                            <ButtonBase>
-                                <Image alt="" height={32} src={MyFans} width={32} />
-                                <Link className={style.text} href="/userInfo/myFans">
-                                    我的粉丝
-                                </Link>
-                            </ButtonBase>
+                            <Link className={style.text} href="/userInfo/myFans">
+                                <ButtonBase>
+                                    <Image alt="" height={32} src={MyFans} width={32} />
+                                    <span>我的粉丝</span>
+                                </ButtonBase>
+                            </Link>
                         </div>
                         <div className={style.item}>
-                            <ButtonBase>
-                                <Image alt="" height={32} src={MyGame} width={32} />
-                                <Link className={style.text} href="/userInfo/myGuess">
-                                    我的竟猜
-                                </Link>
-                            </ButtonBase>
+                            <Link className={style.text} href="/userInfo/myGuess">
+                                <ButtonBase>
+                                    <Image alt="" height={32} src={MyGame} width={32} />
+                                    <span>我的竟猜</span>
+                                </ButtonBase>
+                            </Link>
                         </div>
                         <div className={style.item}>
-                            <ButtonBase>
-                                <Image alt="" height={32} src={MyAnalyze} width={32} />
-                                <Link
-                                    className={style.text}
-                                    href="/userInfo/myAnalysis?status=unlock"
-                                >
-                                    我的解锁
-                                </Link>
-                            </ButtonBase>
+                            <Link className={style.text} href="/userInfo/myAnalysis?status=unlock">
+                                <ButtonBase>
+                                    <Image alt="" height={32} src={MyAnalyze} width={32} />
+                                    <span>我的解锁</span>
+                                </ButtonBase>
+                            </Link>
                         </div>
                     </div>
                     <div className={style.mySetting}>
@@ -197,11 +194,11 @@ function UserInfo() {
                                     <Link href="/userInfo/invite">推荐给朋友</Link>
                                 </ButtonBase>
                             </li>
-                            <li>
+                            {/* <li>
                                 <ButtonBase>
                                     <Link href="">联系客服</Link>
                                 </ButtonBase>
-                            </li>
+                            </li> */}
                             <li>
                                 <ButtonBase>
                                     <Link href="">常见问题</Link>
