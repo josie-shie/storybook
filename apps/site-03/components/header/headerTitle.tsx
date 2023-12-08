@@ -5,12 +5,14 @@ import style from './header.module.scss';
 import backLeftArrowImg from './img/backLeftArrow.png';
 import Profile from './components/profile/profile';
 import Notice from './components/notice/notice';
+import { useUserStore } from '@/app/userStore';
 
 interface HeaderProps {
     title: string;
 }
 
 function HeaderTitle({ title }: HeaderProps) {
+    const userInfoIsLoading = useUserStore.use.userInfoIsLoading();
     const router = useRouter();
 
     return (
@@ -28,10 +30,12 @@ function HeaderTitle({ title }: HeaderProps) {
                     />
                     <div className={style.text}>{title}</div>
                 </div>
-                <div className={style.userOption}>
-                    <Notice />
-                    <Profile />
-                </div>
+                {!userInfoIsLoading && (
+                    <div className={style.userOption}>
+                        <Notice />
+                        <Profile />
+                    </div>
+                )}
             </div>
         </div>
     );

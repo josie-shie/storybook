@@ -1,5 +1,9 @@
 .contest {
-    padding: 14px 12px;
+    padding: 0 14px 12px;
+
+    .banner {
+        margin-bottom: 8px;
+    }
 
     .control {
         display: flex;
@@ -14,7 +18,7 @@
             gap: 8px;
 
             span {
-                font-family: PingFang SC;
+                font-family: 'PingFang SC';
                 font-size: 14px;
                 font-weight: 500;
             }

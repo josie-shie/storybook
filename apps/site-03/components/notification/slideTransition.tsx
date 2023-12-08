@@ -14,7 +14,7 @@ function SlideTransition({ autoCloseTime, children, show = false, onClose }: Sli
     const [closeTime, setCloseTime] = useState(3000);
 
     const entranceTransition = {
-        translateY: ['0%', '30%', '0%'],
+        translateY: ['0%', '-30%', '0%'],
         opacity: [0, 1, 1],
         transition: {
             duration: 0.5,
@@ -23,7 +23,7 @@ function SlideTransition({ autoCloseTime, children, show = false, onClose }: Sli
     };
 
     const exitTransition = {
-        translateY: ['0%', '30%', '-100%'],
+        translateY: ['0%', '-30%', '100%'],
         opacity: 0,
         transition: {
             duration: 0.3,

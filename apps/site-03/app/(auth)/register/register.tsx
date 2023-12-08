@@ -114,6 +114,8 @@ function Register() {
         setIsVisible('注册成功！', 'success');
         removeAuthQuery();
         removeInvitCode();
+
+        location.reload();
     };
 
     const isSendVerificationCodeDisable = !countryCode || !mobileNumber;

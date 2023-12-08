@@ -4,6 +4,7 @@ import style from './header.module.scss';
 import backLeftArrowImg from './img/backLeftArrow.png';
 import Profile from './components/profile/profile';
 import Notice from './components/notice/notice';
+import { useUserStore } from '@/app/userStore';
 
 interface HeaderProps {
     title: string;
@@ -11,6 +12,7 @@ interface HeaderProps {
 }
 
 function HeaderTitle({ title, back }: HeaderProps) {
+    const userInfoIsLoading = useUserStore.use.userInfoIsLoading();
     return (
         <div className={style.placeholder}>
             <div className={style.header} style={{ backgroundImage: `url(${pureBackground.src})` }}>
@@ -18,10 +20,12 @@ function HeaderTitle({ title, back }: HeaderProps) {
                     <Image alt="" height={24} onClick={back} src={backLeftArrowImg} width={24} />
                     <div className={style.text}>{title}</div>
                 </div>
-                <div className={style.userOption}>
-                    <Notice />
-                    <Profile />
-                </div>
+                {!userInfoIsLoading && (
+                    <div className={style.userOption}>
+                        <Notice />
+                        <Profile />
+                    </div>
+                )}
             </div>
         </div>
     );

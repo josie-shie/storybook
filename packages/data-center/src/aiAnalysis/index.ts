@@ -39,15 +39,15 @@ export type BigDataRecord = z.infer<typeof BigDataRecordSchema>;
 export type BigDataRecordListResponse = BigDataRecord[];
 
 const OddsHintSchema = z.object({
-    matchTime: z.number(),
+    startTime: z.number(),
     matchId: z.number(),
-    countryName: z.string(),
+    countryCn: z.string(),
     leagueId: z.number(),
-    leagueName: z.string(),
+    leagueChsShort: z.string(),
     homeId: z.number(),
-    homeName: z.string(),
+    homeChs: z.string(),
     awayId: z.number(),
-    awayName: z.string(),
+    awayChs: z.string(),
     longOddsTeamId: z.number(),
     longOddsType: z.string(),
     longOddsTimes: z.number(),

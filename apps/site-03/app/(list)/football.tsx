@@ -20,11 +20,13 @@ function Banner() {
 }
 
 function DatePicker() {
+    const [isMounted, setIsMounted] = useState(false);
     const searchParams = useSearchParams();
     const status = searchParams.get('status');
     const router = useRouter();
     const resultsDate = searchParams.get('resultsDate') || Date.now();
     const scheduleDate = searchParams.get('scheduleDate') || Date.now();
+
     const handleDate = (date: Date) => {
         const dateFormat = date.getTime();
 
@@ -37,25 +39,33 @@ function DatePicker() {
         }
     };
 
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
+
     return (
         <>
-            {status === 'schedule' && (
-                <BaseDatePicker
-                    defaultDate={new Date(Number(scheduleDate))}
-                    direction="schedule"
-                    onDateChange={date => {
-                        handleDate(date);
-                    }}
-                />
-            )}
-            {status === 'result' && (
-                <BaseDatePicker
-                    defaultDate={new Date(Number(resultsDate))}
-                    direction="result"
-                    onDateChange={date => {
-                        handleDate(date);
-                    }}
-                />
+            {(status === 'schedule' || status === 'result') && (
+                <div className={style.dateHolder}>
+                    {status === 'schedule' && isMounted ? (
+                        <BaseDatePicker
+                            defaultDate={new Date(Number(scheduleDate))}
+                            direction="schedule"
+                            onDateChange={date => {
+                                handleDate(date);
+                            }}
+                        />
+                    ) : null}
+                    {status === 'result' && isMounted ? (
+                        <BaseDatePicker
+                            defaultDate={new Date(Number(resultsDate))}
+                            direction="result"
+                            onDateChange={date => {
+                                handleDate(date);
+                            }}
+                        />
+                    ) : null}
+                </div>
             )}
         </>
     );

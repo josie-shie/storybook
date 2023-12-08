@@ -22,7 +22,6 @@ function ReactEchartsConponent({
     dateActiveTab: string;
     focusDetail: FocusDetailType;
 }) {
-    const rank = useMyGuessStore.use.myGuess().rank;
     const dateType = dateActiveMap[dateActiveTab as keyof typeof dateActiveMap].display;
     const chartOption = {
         tooltip: {
@@ -30,7 +29,7 @@ function ReactEchartsConponent({
             showContent: false
         },
         title: {
-            text: `{large|${rank}} \n${dateType}排名`,
+            text: `{large|${myGuessData.rank}} \n${dateType}排名`,
             left: '46%',
             top: '47%',
             textAlign: 'center',
@@ -95,8 +94,8 @@ function MyGuessRecentPerformence() {
     const [dateActiveTab, setDateActiveTab] = useState(dateActiveMap.byWeek.value);
     const [focusDetail, setFocusDetail] = useState<FocusDetailType>('summary');
 
-    const formatRate = (play: number, win: number) => {
-        const winRate = (win / play) * 100;
+    const formatRate = (lose: number, win: number) => {
+        const winRate = (win / (lose + win)) * 100;
         return Number.isInteger(winRate) ? winRate : winRate.toFixed(1);
     };
 
@@ -155,7 +154,7 @@ function MyGuessRecentPerformence() {
                         <div className={style.bot}>
                             <div className={style.winRate}>
                                 勝率
-                                {formatRate(myGuessData.summary.play, myGuessData.summary.win)}%
+                                {formatRate(myGuessData.summary.lose, myGuessData.summary.win)}%
                             </div>
                             <ProgressBar
                                 background="#8D8D8D"
@@ -185,7 +184,7 @@ function MyGuessRecentPerformence() {
                         <div className={style.bot}>
                             <div className={style.winRate}>
                                 勝率
-                                {formatRate(myGuessData.handicap.play, myGuessData.handicap.win)}%
+                                {formatRate(myGuessData.handicap.lose, myGuessData.handicap.win)}%
                             </div>
                             <ProgressBar
                                 background="#8D8D8D"
@@ -215,7 +214,7 @@ function MyGuessRecentPerformence() {
                         <div className={style.bot}>
                             <div className={style.winRate}>
                                 勝率
-                                {formatRate(myGuessData.size.play, myGuessData.size.win)}%
+                                {formatRate(myGuessData.size.lose, myGuessData.size.win)}%
                             </div>
                             <ProgressBar
                                 background="#8D8D8D"

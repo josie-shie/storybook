@@ -1,6 +1,6 @@
 export const GET_TODAY_GUESS_MATCHES_QUERY = `
-    query getTodayGuessMatches($memberId: Int!){
-        getTodayGuessMatches(memberId: $memberId) {
+    query getTodayGuessMatches{
+        getTodayGuessMatches{
             matches {
                 matchId
                 leagueId
@@ -21,6 +21,8 @@ export const GET_TODAY_GUESS_MATCHES_QUERY = `
                 totalNum
                 guessed
                 state
+                homeLogo
+                awayLogo
             }
         }
     }
