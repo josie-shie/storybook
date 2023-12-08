@@ -98,3 +98,34 @@ export const SUBSCRIBE_PLAN_MUTATION = `
         }
     }
 `;
+
+export const GET_UNLOCKED_MUTATION = `
+    mutation getUnlockedPost($input: SubscribePlanInput!) {
+        getUnlockedPost(input: $input) {
+            list {
+                postId
+                analysisTitle
+                analysisContent
+                predictionResult
+                mentorId
+                mentorName
+                avatarPath
+                matchId
+                leagueId
+                leagueName
+                homeTeamId
+                homeTeamName
+                awayTeamId
+                awayTeamName
+                matchTime
+                createdAt
+                predictStat
+                memberTags {
+                    memberId
+                    type
+                    ranking
+                }  
+            }
+        }
+    }
+`;
