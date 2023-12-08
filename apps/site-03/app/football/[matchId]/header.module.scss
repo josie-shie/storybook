@@ -1,5 +1,5 @@
 .header {
-    padding: 10px 16px 24px 16px;
+    padding: 10px 16px 24px;
     height: 60px;
     width: 100%;
     display: flex;
@@ -12,12 +12,14 @@
         position: fixed;
         top: -46px;
         left: 0;
+        opacity: 0;
         background-color: #0a0a0a;
-        transition: top 0.3s;
+        transition: all 0.3s ease-in-out;
         padding: 0 16px;
 
         &.show {
             top: 0;
+            opacity: 1;
         }
     }
 
