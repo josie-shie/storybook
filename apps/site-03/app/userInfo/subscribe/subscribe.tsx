@@ -42,7 +42,7 @@ function Subscribe() {
     };
 
     const handleVipClick = () => {
-        setIsVip(!isVip);
+        setIsVip(true);
         setPlanId(0);
     };
 
