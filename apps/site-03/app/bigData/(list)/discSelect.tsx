@@ -1,91 +1,23 @@
 'use client';
 import type { ReactNode } from 'react';
 import { useEffect, useState } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import dayjs from 'dayjs';
+import { mqttService } from 'lib';
+import type { OddsHintRequest } from 'data-center';
+import { getBigdataHint } from 'data-center';
 import Star from './img/star.png';
 import style from './disSelect.module.scss';
 import RecordFilter from './components/recordFilter/recordFilter';
 import HandicapDrawer from './components/handicapDrawer/handicapDrawer';
 import { GameFilter } from './components/gameFilter/gameFilter';
-import { creatDiscSelectStore, useDiscSelectStore } from './discSelectStore';
-import { creatMatchFilterStore, useMatchFilterStore } from './matchFilterStore';
+import { useDiscSelectStore } from './discSelectStore';
+import { useMatchFilterStore } from './matchFilterStore';
 import Datepicker from './components/datepicker/datepicker';
 import { useUserStore } from '@/app/userStore';
-
-type OddsResultType = '赢' | '输' | '大' | '小';
-interface HandicapTipType {
-    startTime: number;
-    matchId: number;
-    countryCn: string;
-    leagueId: number;
-    leagueChsShort: string;
-    homeId: number;
-    homeChs: string;
-    awayId: number;
-    awayChs: string;
-    teamId: number;
-    teamChs: string; // 哪一隊連
-    oddsResult: OddsResultType; // 輸、贏、大、小
-    longOddsTimes: number; // n場
-    isFamous: boolean; // 是否熱門賽事
-    leagueLevel: number;
-}
-
-const matchList = [
-    {
-        startTime: 1701400376,
-        matchId: 2504100,
-        countryCn: '科威特',
-        leagueId: 923,
-        leagueChsShort: '科威甲',
-        homeId: 3669,
-        homeChs: '苏拉比卡',
-        awayId: 3674,
-        awayChs: '阿尔塔达孟',
-        teamId: 3674,
-        teamChs: '阿尔塔达孟',
-        oddsResult: '输', // 輸、贏、大、小
-        longOddsTimes: 4, // n場
-        isFamous: true, // 是否熱門賽事
-        leagueLevel: 0
-    },
-    {
-        startTime: 1701300376,
-        matchId: 25041011,
-        countryCn: '日本',
-        leagueId: 924,
-        leagueChsShort: '日本',
-        homeId: 3669,
-        homeChs: '苏拉比卡',
-        awayId: 3674,
-        awayChs: '阿尔塔达孟',
-        teamId: 3674,
-        teamChs: '阿尔塔达孟',
-        oddsResult: '赢', // 輸、贏、大、小
-        longOddsTimes: 1, // n場
-        isFamous: false, // 是否熱門賽事
-        leagueLevel: 0
-    },
-    {
-        startTime: 1701300376,
-        matchId: 25041012,
-        countryCn: '中国',
-        leagueId: 925,
-        leagueChsShort: '中國',
-        homeId: 3669,
-        homeChs: '苏拉比卡',
-        awayId: 3674,
-        awayChs: '阿尔塔达孟',
-        teamId: 3674,
-        teamChs: '阿尔塔达孟',
-        oddsResult: '赢', // 輸、贏、大、小
-        longOddsTimes: 1, // n場
-        isFamous: false, // 是否熱門賽事
-        leagueLevel: 0
-    }
-] as HandicapTipType[];
+import NormalDialog from '@/components/normalDialog/normalDialog';
+import { useNotificationStore } from '@/app/notificationStore';
 
 interface OptionType {
     label: string;
@@ -100,6 +32,8 @@ interface SectionSelectProps {
     valueSelected: string;
     setSelected: (val: string) => void;
     children?: ReactNode;
+    openDatePicker?: boolean;
+    setOpenDatePicker?: (openDatePicker: boolean) => void;
 }
 
 function SectionSelect({
@@ -109,7 +43,8 @@ function SectionSelect({
     placeholder,
     valueSelected,
     setSelected,
-    children
+    children,
+    setOpenDatePicker
 }: SectionSelectProps) {
     return (
         <section className={style.items}>
@@ -120,37 +55,29 @@ function SectionSelect({
                     onChange={setSelected}
                     options={options}
                     placeholder={placeholder}
+                    setOpenDatePicker={setOpenDatePicker}
                     showCloseButton={false}
                     showDragBar
                     title={selectTitle}
                     value={valueSelected}
-                />
-                {children}
+                >
+                    {children}
+                </GameFilter>
             </div>
         </section>
     );
 }
 
 function DiscSelect() {
-    creatDiscSelectStore({
-        handicapTips: [],
-        recordList: []
-    });
-    creatMatchFilterStore({
-        contestList: [],
-        contestInfo: {}
-    });
-
+    const router = useRouter();
     const searchParams = useSearchParams();
     const search = searchParams.get('status');
     const [showHandicapDrawer, setShowHandicapDrawer] = useState(false);
+    const [openDialog, setOpenDialog] = useState(false);
 
     const [handicapOddsSelected, setHandicapOddsSelected] = useState('');
-    const [overUnderSelected, setOverUnderSelected] = useState('');
-    const setHandicapHints = useDiscSelectStore.use.setHandicapTips();
+    const setHandicapTips = useDiscSelectStore.use.setHandicapTips();
 
-    const hintsSelected = useDiscSelectStore.use.hintsSelected();
-    const setHintsSelected = useDiscSelectStore.use.setHintsSelected();
     const teamList = useDiscSelectStore.use.teamList();
     const handicapNumberList = useDiscSelectStore.use.handicapNumberList();
     const overUnderNumberList = useDiscSelectStore.use.overUnderNumberList();
@@ -162,21 +89,41 @@ function DiscSelect() {
     const setContestInfo = useMatchFilterStore.use.setContestInfo();
     const setFilterInit = useMatchFilterStore.use.setFilterInit();
     const userInfo = useUserStore.use.userInfo();
+    const setIsNotificationVisible = useNotificationStore.use.setIsVisible();
 
+    const [hintsSelected, setHintsSelected] = useState('');
     const [startDate, setStartDate] = useState(0);
     const [endDate, setEndDate] = useState(0);
     const [teamSelected, setTeamSelected] = useState('');
     const [teamHandicapOdds, setTeamHandicapOdds] = useState('');
     const [showRecord, setShowRecord] = useState(false);
+    const [timeRange, setTimeRange] = useState('');
+    const [analysisError, setAnalysisError] = useState('');
+    const [hintsError, setHintsError] = useState('');
+    const [openDatePicker, setOpenDatePicker] = useState(false);
 
-    setHandicapHints(matchList);
+    const openHintsDrawer = async () => {
+        if (!hintsSelected) {
+            setHintsError('请选择大小球类别');
+            return;
+        }
 
-    const openHintsDrawer = () => {
+        setHintsError('');
+
+        const res = await getBigdataHint(hintsSelected as unknown as OddsHintRequest);
+
+        if (!res.success) {
+            const errorMessage = res.error ? res.error : '取得盘路提示资料失败，请稍后再试';
+            setIsNotificationVisible(errorMessage, 'error');
+            return;
+        }
+
+        setHandicapTips(res.data);
         setContestList({
-            contestList: matchList
+            contestList: res.data
         });
         setContestInfo({
-            contestList: matchList
+            contestList: res.data
         });
         setShowHandicapDrawer(true);
     };
@@ -202,23 +149,49 @@ function DiscSelect() {
             }
         } else if (startDateSelected && endDateSelected) {
             setStartDate(startDateSelected);
-            setStartDate(endDateSelected);
+            setEndDate(endDateSelected);
         }
     };
 
     const getTrendAnalysis = () => {
+        if (!timeRange) {
+            setAnalysisError('请选择时间区间');
+            return;
+        } else if ((!teamSelected || !teamHandicapOdds) && !handicapOddsSelected) {
+            setAnalysisError('让方或盘口需至少选择一种');
+            return;
+        }
+
+        let getStartDate = 0;
+        let getEndDate = 0;
+
+        switch (timeRange) {
+            case 'week':
+                getStartDate = dayjs().subtract(7, 'day').unix();
+                getEndDate = dayjs().subtract(1, 'day').unix();
+                break;
+            case 'month':
+                getStartDate = dayjs().subtract(30, 'day').unix();
+                getEndDate = dayjs().subtract(1, 'day').unix();
+
+                break;
+            case 'season':
+                getStartDate = dayjs().subtract(120, 'day').unix();
+                getEndDate = dayjs().subtract(1, 'day').unix();
+                break;
+        }
+
         const params = {
             mission: 'create',
             uid: userInfo.uid,
             handicap_side: teamSelected,
             handicap_values: teamHandicapOdds,
             overUnder_values: handicapOddsSelected,
-            startTime: startDate,
-            endTime: endDate
+            startTime: getStartDate || startDate,
+            endTime: getEndDate || endDate
         };
 
-        // eslint-disable-next-line -- call mqtt data
-        console.dir(params);
+        void mqttService.publishAnalysis(params);
 
         setShowRecord(true);
     };
@@ -277,14 +250,20 @@ function DiscSelect() {
                             valueSelected={handicapOddsSelected}
                         />
                         <SectionSelect
+                            openDatePicker={openDatePicker}
                             options={dateList}
                             placeholder="选择时间"
                             selectTitle="区间"
-                            setSelected={setOverUnderSelected}
+                            setOpenDatePicker={setOpenDatePicker}
+                            setSelected={setTimeRange}
                             title="时间范围"
-                            valueSelected={overUnderSelected}
+                            valueSelected={timeRange}
                         >
-                            <Datepicker updateQueryDate={updateQueryDate} />
+                            <Datepicker
+                                openModal={openDatePicker}
+                                setOpenModal={setOpenDatePicker}
+                                updateQueryDate={updateQueryDate}
+                            />
                         </SectionSelect>
                     </>
                 ) : (
@@ -301,21 +280,27 @@ function DiscSelect() {
                     数据中心将会汇整出符合您条件设定，在时间区间内开出相同盘口的赛事
                 </div>
                 {search === 'analysis' ? (
-                    <button
-                        className={style.search}
-                        onClick={() => {
-                            getTrendAnalysis();
-                        }}
-                        type="button"
-                    >
-                        <Image alt="" height={14} src={Star} width={14} />
-                        获得趋势分析
-                    </button>
+                    <>
+                        <div className={style.error}>{analysisError}</div>
+                        <button
+                            className={style.search}
+                            onClick={() => {
+                                getTrendAnalysis();
+                            }}
+                            type="button"
+                        >
+                            <Image alt="" height={14} src={Star} width={14} />
+                            获得趋势分析
+                        </button>
+                    </>
                 ) : (
-                    <button className={style.search} onClick={openHintsDrawer} type="button">
-                        <Image alt="" height={14} src={Star} width={14} />
-                        获得盘路提示
-                    </button>
+                    <>
+                        <div className={style.error}>{hintsError}</div>
+                        <button className={style.search} onClick={openHintsDrawer} type="button">
+                            <Image alt="" height={14} src={Star} width={14} />
+                            获得盘路提示
+                        </button>
+                    </>
                 )}
             </div>
 
@@ -329,6 +314,7 @@ function DiscSelect() {
                 }}
             />
             <HandicapDrawer
+                hintsSelected={hintsSelected}
                 isOpen={showHandicapDrawer}
                 onClose={() => {
                     setShowHandicapDrawer(false);
@@ -336,6 +322,23 @@ function DiscSelect() {
                 onOpen={() => {
                     setShowHandicapDrawer(true);
                 }}
+            />
+            <NormalDialog
+                cancelText="取消"
+                confirmText="马上升级"
+                content={
+                    <div className={style.dialogContent}>
+                        <p className={style.text}>今日可用次数已用完，</p>
+                        <p className={style.text}>升级为VIP会员即可无限次使用！</p>
+                    </div>
+                }
+                onClose={() => {
+                    setOpenDialog(false);
+                }}
+                onConfirm={() => {
+                    router.push('/userInfo/subscribe');
+                }}
+                openDialog={openDialog}
             />
         </>
     );

@@ -1,4 +1,5 @@
 import { SwipeableDrawer } from '@mui/material';
+import type { ReactNode } from 'react';
 import { useState } from 'react';
 import style from './gameFilter.module.scss';
 
@@ -15,6 +16,8 @@ interface PropsType {
     showDragBar?: boolean;
     showCloseButton?: boolean;
     onChange?: (value: OptionType['value']) => void;
+    children?: ReactNode;
+    setOpenDatePicker?: (openModal: boolean) => void;
 }
 
 function GameFilter({
@@ -24,7 +27,9 @@ function GameFilter({
     placeholder = '請選擇',
     showDragBar,
     showCloseButton,
-    onChange
+    onChange,
+    children,
+    setOpenDatePicker
 }: PropsType) {
     const [isOpen, setIsOpen] = useState(false);
     const [selectedValue, setSelectedValue] = useState<OptionType['value'] | null>(initialValue);
@@ -46,15 +51,19 @@ function GameFilter({
 
     return (
         <>
-            <button
-                className={`ui-select ${style.selectButton}`}
-                onClick={() => {
-                    setIsOpen(!isOpen);
-                }}
-                type="button"
-            >
-                {selectedValue !== null && currentOption ? currentOption.label : placeholder}
-            </button>
+            <div className={style.inputGroup}>
+                <button
+                    className={`ui-select ${style.selectButton}`}
+                    onClick={() => {
+                        setIsOpen(!isOpen);
+                    }}
+                    type="button"
+                >
+                    {selectedValue !== null && currentOption ? currentOption.label : placeholder}
+                </button>
+                {children}
+            </div>
+
             <SwipeableDrawer
                 PaperProps={{
                     style: {
@@ -82,6 +91,9 @@ function GameFilter({
                                         selectedValue === opt.value ? style.selected : ''
                                     }`}
                                     onClick={() => {
+                                        if (opt.value === 'setRange') {
+                                            setOpenDatePicker && setOpenDatePicker(true);
+                                        }
                                         handleClick(opt.value);
                                     }}
                                     type="button"

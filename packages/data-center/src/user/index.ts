@@ -14,7 +14,8 @@ import {
     UPDATE_MEMBER_INFO_MUTATION,
     GET_INVITATION_CODE_QUERY,
     GET_SUBSCRIPTION_QUERY,
-    SUBSCRIBE_PLAN_MUTATION
+    SUBSCRIBE_PLAN_MUTATION,
+    GET_UNLOCKED_MUTATION
 } from './graphqlQueries';
 
 const RegisterResultSchema = z.object({
@@ -560,6 +561,82 @@ export const subscribePlan = async ({
         SubscribePlanSchemaResultSchema.parse(data);
 
         return { success: true, data: data.subscribePlan };
+    } catch (error) {
+        return handleApiError(error);
+    }
+};
+
+export interface GetUnlockedPostRequest {
+    memberId: number;
+}
+
+const MemberTagsSchema = z.object({
+    memberId: z.number(),
+    type: z.number(),
+    ranking: z.number()
+});
+
+const GetUnlockedPostSchema = z.object({
+    postId: z.number(),
+    analysisTitle: z.string(),
+    analysisContent: z.string(),
+    predictionResult: z.string(),
+    mentorId: z.number(),
+    mentorName: z.string(),
+    avatarPath: z.string(),
+    matchId: z.number(),
+    leagueId: z.number(),
+    leagueName: z.string(),
+    homeTeamId: z.number(),
+    homeTeamName: z.string(),
+    awayTeamId: z.number(),
+    awayTeamName: z.string(),
+    matchTime: z.string(),
+    createdAt: z.string(),
+    predictStat: z.string(),
+    memberTags: z.array(MemberTagsSchema)
+});
+
+export type MemberTag = z.infer<typeof MemberTagsSchema>;
+
+export type GetUnlockedPost = z.infer<typeof GetUnlockedPostSchema>;
+
+const GetUnlockedPostResultSchema = z.object({
+    getUnlockedPost: z.object({
+        list: z.array(GetUnlockedPostSchema)
+    })
+});
+
+type GetUnlockedPostResult = z.infer<typeof GetUnlockedPostResultSchema>;
+export type GetUnlockedPostResponse = GetUnlockedPost[];
+
+/**
+ * 取得已解鎖的文章列表
+ * - params {@link GetUnlockedPostRequest}
+ * - returns {@link GetUnlockedPostResponse}
+ * {@link GetUnlockedPost} {@link MemberTag}
+ */
+export const getUnlockedPost = async ({
+    memberId
+}: GetUnlockedPostRequest): Promise<ReturnData<GetUnlockedPostResponse>> => {
+    try {
+        const { data }: { data: GetUnlockedPostResult } = await fetcher(
+            {
+                data: {
+                    query: GET_UNLOCKED_MUTATION,
+                    variables: {
+                        input: {
+                            memberId
+                        }
+                    }
+                }
+            },
+            { cache: 'no-store' }
+        );
+
+        GetUnlockedPostResultSchema.parse(data);
+
+        return { success: true, data: data.getUnlockedPost.list };
     } catch (error) {
         return handleApiError(error);
     }

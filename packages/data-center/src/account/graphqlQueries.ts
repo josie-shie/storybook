@@ -22,8 +22,8 @@ export const UPDATE_FOLLOW_MUTATION = `
 `;
 
 export const DELETE_FOLLOW_MUTATION = `
-    mutation deleteMailMember($input: MyFollowInput!) {
-        deleteMailMember(input: $input){
+    mutation deleteFollow($input: MyFollowInput!) {
+        deleteFollow(input: $input){
             responseCode
         }
     }

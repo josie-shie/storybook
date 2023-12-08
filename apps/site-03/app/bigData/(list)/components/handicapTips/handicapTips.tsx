@@ -2,48 +2,31 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { timestampToString } from 'lib';
 import Link from 'next/link';
+import type { BigDataHint } from 'data-center';
 import style from './handicapTips.module.scss';
 import iconHot from './img/hot.png';
 import teamLogo from './img/homeTeam.png';
 import { useDiscSelectStore } from '@/app/bigData/(list)/discSelectStore';
 import Tag from '@/components/tag/tag';
 
-type OddsResultType = '赢' | '输' | '大' | '小';
-
-interface HandicapTipType {
-    startTime: number;
-    matchId: number;
-    countryCn: string;
-    leagueId: number;
-    leagueChsShort: string;
-    homeId: number;
-    homeChs: string;
-    awayId: number;
-    awayChs: string;
-    teamId: number;
-    teamChs: string; // 哪一隊連
-    oddsResult: OddsResultType; // 輸、贏、大、小
-    longOddsTimes: number; // n場
-    isFamous: boolean; // 是否熱門賽事
-    leagueLevel: number;
-}
-
 interface PropsType {
-    tipsData: HandicapTipType;
+    tipsData: BigDataHint;
+    hintsSelected: string;
 }
+
+type OddsType = '赢' | '输' | '大' | '小';
 
 const backgroundColorMap = { 赢: '#FF4F4F', 输: '#9B9B9B', 大: '#4489FF', 小: '#FF844F' };
 const commentColorMap = { 赢: '#ED3A45', 输: '#8D8D8D', 大: '#222222', 小: '#222222' };
 const textMap = { 赢: '紅', 输: '输', 大: '大', 小: '小' };
 
-function HandicapTips({ tipsData }: PropsType) {
-    const hintsSelected = useDiscSelectStore.use.hintsSelected();
+function HandicapTips({ tipsData, hintsSelected }: PropsType) {
     const playList = useDiscSelectStore.use.playList();
     const playWay = playList.find(item => item.value === hintsSelected);
 
-    const tagLabel = textMap[tipsData.oddsResult];
-    const tagBgColor = backgroundColorMap[tipsData.oddsResult];
-    const commentColor = commentColorMap[tipsData.oddsResult];
+    const tagLabel = textMap[tipsData.longOddsType as OddsType];
+    const tagBgColor = backgroundColorMap[tipsData.longOddsType as OddsType];
+    const commentColor = commentColorMap[tipsData.longOddsType as OddsType];
 
     return (
         <div className={style.handicapTips}>
@@ -67,7 +50,10 @@ function HandicapTips({ tipsData }: PropsType) {
             <div className={style.result}>
                 <div className={style.comment} style={{ color: commentColor }}>
                     <Image alt="teamLogo" className={style.team} src={teamLogo} width={28} />
-                    {tipsData.teamChs}連{tipsData.oddsResult}
+                    {tipsData.longOddsTeamId === tipsData.homeId
+                        ? tipsData.homeChs
+                        : tipsData.awayChs}
+                    連{tipsData.longOddsType}
                     {tipsData.longOddsTimes}場
                 </div>
                 <Link href={`/contest/football/${tipsData.matchId}`}>

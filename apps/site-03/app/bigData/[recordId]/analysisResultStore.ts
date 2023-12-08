@@ -105,7 +105,7 @@ export interface AnalysisResult {
     };
 }
 
-interface RecordType {
+export interface BigDataRecordListResponse {
     recordId: number;
     recordTime: number;
     handicap: string;
@@ -159,14 +159,15 @@ function groupSameWeek(dayListData: Record<string, Statistics>) {
 
 interface InitState {
     analysisResultData: AnalysisResult;
-    recordList: RecordType[];
+    recordList: BigDataRecordListResponse[];
+    recordData: BigDataRecordListResponse;
 }
 
 interface AnalysisResultState extends InitState {
     handicapEchart: HandicapEchartType;
-    recordData: RecordType;
-    setRecordData: (recordData: RecordType) => void;
-    setRecordList: (recordList: RecordType[]) => void;
+    setAnalysisResultData: (analysisResultData: AnalysisResult) => void;
+    setRecordData: (recordData: BigDataRecordListResponse) => void;
+    setRecordList: (recordList: BigDataRecordListResponse[]) => void;
     setHandicapEchart: (analysisResultData: AnalysisResult) => void;
 }
 
@@ -177,8 +178,8 @@ const initialState = (
 ) => ({
     analysisResultData: {} as AnalysisResult,
     recordList: [],
-    recordData: {} as RecordType,
-    setRecordData: (recordData: RecordType) => {
+    recordData: {} as BigDataRecordListResponse,
+    setRecordData: (recordData: BigDataRecordListResponse) => {
         set(state => {
             return {
                 ...state,
@@ -186,7 +187,7 @@ const initialState = (
             };
         });
     },
-    setRecordList: (recordList: RecordType[]) => {
+    setRecordList: (recordList: BigDataRecordListResponse[]) => {
         set(state => {
             return {
                 ...state,
@@ -483,6 +484,14 @@ const initialState = (
             return {
                 ...state,
                 handicapEchart: chartData
+            };
+        });
+    },
+    setAnalysisResultData: (analysisResultData: AnalysisResult) => {
+        set(state => {
+            return {
+                ...state,
+                analysisResultData
             };
         });
     }
