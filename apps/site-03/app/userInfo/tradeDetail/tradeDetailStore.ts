@@ -1,10 +1,12 @@
 import { initStore } from 'lib';
 import type { StoreWithSelectors } from 'lib';
 
+export type DateOption = 'all' | 'today' | 'week' | 'month' | 'threeMonths';
+export type TradeTypeOption = 'all' | 'deposit' | 'inCome' | 'expend';
 export interface RechargeData {
     currency: string;
     exchangeRate: number;
-    time: string;
+    time: number;
     tradeNumber: string;
     result: number;
     status: 'inProgress' | 'fail' | 'completed';
@@ -13,14 +15,19 @@ export interface RechargeData {
 
 export interface PaymentData {
     type: number;
-    time: string;
+    time: number;
     result: number;
     overage: number;
 }
 
+interface OptionType {
+    label: string;
+    value: string;
+}
+
 export interface TradeDetailItem {
     id: number;
-    type: 'recharge' | 'payment' | 'income';
+    tradeType: Omit<TradeTypeOption, 'all'>;
     data: RechargeData | PaymentData;
 }
 
@@ -29,19 +36,68 @@ interface InitState {
 }
 
 interface TradeDetailState extends InitState {
-    setFansMemberList?: (tradeDetailList: TradeDetailItem[]) => void;
+    setTradeDetailList: (tradeDetailList: TradeDetailItem[]) => void;
+    dateOption: OptionType[];
+    tradeOption: OptionType[];
 }
 
-let useTardeDetailStore: StoreWithSelectors<TradeDetailState>;
-
-const initialState = (set: (data: Partial<TradeDetailState>) => void) => ({
+const initialState = (
+    set: (updater: (state: TradeDetailState) => Partial<TradeDetailState>) => void
+) => ({
     tradeDetailList: [],
+    dateOption: [
+        {
+            label: '全部時間',
+            value: 'all'
+        },
+        {
+            label: '今日',
+            value: 'today'
+        },
+        {
+            label: '最近一週',
+            value: 'week'
+        },
+        {
+            label: '最近一个月',
+            value: 'month'
+        },
+        {
+            label: '最近三个月',
+            value: 'threeMonths'
+        }
+    ],
+    tradeOption: [
+        {
+            label: '全部分类',
+            value: 'all'
+        },
+        {
+            label: '充值',
+            value: 'deposit'
+        },
+        {
+            label: '收入',
+            value: 'inCome'
+        },
+        {
+            label: '支付',
+            value: 'expend'
+        }
+    ],
     setTradeDetailList: (tradeDetailList: TradeDetailItem[]) => {
-        set({ tradeDetailList });
+        set(state => {
+            return {
+                ...state,
+                tradeDetailList
+            };
+        });
     }
 });
 
+let useTardeDetailStore: StoreWithSelectors<TradeDetailState>;
+
 const creatTardeDetailStore = (init: InitState) =>
-    (useTardeDetailStore = initStore<InitState>(initialState, init));
+    (useTardeDetailStore = initStore<TradeDetailState>(initialState, init));
 
 export { creatTardeDetailStore, useTardeDetailStore };
