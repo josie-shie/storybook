@@ -1,10 +1,15 @@
 'use client';
 // import { IconFlame } from '@tabler/icons-react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useCallback } from 'react';
 import { timestampToString } from 'lib';
+import Image from 'next/image';
 import style from './articleItem.module.scss';
-import Avatar from '@/components/avatar/avatar';
 // import Tag from '@/components/tag/tag';
+import Win from './img/win.png';
+import Lose from './img/lose.png';
+import Draw from './img/draw.png';
+import Avatar from '@/components/avatar/avatar';
 
 interface MemberTags {
     memberId: number;
@@ -37,19 +42,41 @@ interface GetUnlockPostProps {
 
 function ArticleItem({ item }: GetUnlockPostProps) {
     const router = useRouter();
+    const searchParams = useSearchParams();
 
-    const goDetail = () => {
-        router.push('/recommend/predict/1');
+    const createQueryString = useCallback(
+        (name: string, value?: string) => {
+            const params = new URLSearchParams(searchParams);
+            if (value) {
+                params.set(name, value);
+            } else {
+                params.delete(name);
+            }
+
+            return params.toString();
+        },
+        [searchParams]
+    );
+
+    const goDetail = (id: number) => {
+        router.push(`/recommend/predict/${id}`);
     };
 
-    const goInfo = () => {
-        router.push('/recommend/predict/masterAvatar');
+    const goInfo = (id: number) => {
+        router.push(
+            `/recommend/predict/masterAvatar?${createQueryString('mentorId', id.toString())}`
+        );
     };
 
     return (
         <div className={style.articleItem}>
             <div className={style.user}>
-                <div className={style.avatarContainer} onClick={goInfo}>
+                <div
+                    className={style.avatarContainer}
+                    onClick={() => {
+                        goInfo(item.postId);
+                    }}
+                >
                     <Avatar borderColor="#4489FF" />
                 </div>
                 <div className={style.userInfo}>
@@ -85,7 +112,12 @@ function ArticleItem({ item }: GetUnlockPostProps) {
                 </div>
             </div>
             <div className={style.title}>{item.analysisTitle}</div>
-            <div className={style.game} onClick={goDetail}>
+            <div
+                className={style.game}
+                onClick={() => {
+                    goDetail(item.postId);
+                }}
+            >
                 <div className={style.detail}>
                     {item.leagueName}
                     <span className={style.time}>
@@ -96,6 +128,15 @@ function ArticleItem({ item }: GetUnlockPostProps) {
                 <div className={style.combination}>
                     {item.homeTeamName} vs {item.awayTeamName}
                 </div>
+                {item.predictionResult === 'WIN' && (
+                    <Image alt="" height={36} src={Win} width={36} />
+                )}
+                {item.predictionResult === 'LOSE' && (
+                    <Image alt="" height={36} src={Lose} width={36} />
+                )}
+                {item.predictionResult === 'DRAW' && (
+                    <Image alt="" height={36} src={Draw} width={36} />
+                )}
             </div>
             <div className={style.postTime}>
                 发表于 {timestampToString(item.createdAt, 'YYYY-M-DD')}
