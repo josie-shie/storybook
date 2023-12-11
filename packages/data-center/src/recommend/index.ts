@@ -306,7 +306,9 @@ export const getPostDetail = async ({
                 data: {
                     query: GET_POST_DETAIL_QUERY,
                     variables: {
-                        postId
+                        input: {
+                            postId
+                        }
                     }
                 }
             },
