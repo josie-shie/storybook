@@ -1,39 +1,37 @@
 import { Button } from '@mui/material';
+import type { Dispatch, SetStateAction } from 'react';
+import { useTardeDetailStore, type TradeTypeOption } from '../../tradeDetailStore';
 import style from './tradeTypeDrawer.module.scss';
 import BottomDrawer from '@/components/drawer/bottomDrawer';
 
 interface TradeTypeProps {
+    tradeType: TradeTypeOption;
     isTradeTypeOpen: boolean;
-    // setTradeType: Dispatch<SetStateAction<string | undefined>>;
+    setTradeType: Dispatch<SetStateAction<TradeTypeOption>>;
     setIsTradeTypeOpen: (arg: boolean) => void;
+    handleChangeOption: ({
+        start,
+        end,
+        type
+    }: {
+        start?: number;
+        end?: number;
+        type?: TradeTypeOption;
+    }) => void;
 }
 
-type MapType = Record<
-    'pay' | 'deposite' | 'income',
-    {
-        label: string;
-        value: string;
-    }
->;
+function TradeTypeDrawer({
+    isTradeTypeOpen,
+    setIsTradeTypeOpen,
+    tradeType,
+    setTradeType,
+    handleChangeOption
+}: TradeTypeProps) {
+    const tradeOption = useTardeDetailStore.use.tradeOption();
 
-function TradeTypeDrawer({ isTradeTypeOpen, setIsTradeTypeOpen }: TradeTypeProps) {
-    const TradeTypeMap: MapType = {
-        pay: {
-            label: '支出',
-            value: 'pay'
-        },
-        deposite: {
-            label: '充值',
-            value: 'deposite'
-        },
-        income: {
-            label: '收入',
-            value: 'income'
-        }
-    };
-
-    const handleChangeDate = () => {
-        // setTradeType(TradeTypeMap[key].value);
+    const handleChangeType = (type: TradeTypeOption) => {
+        setTradeType(type);
+        handleChangeOption({ type });
         setIsTradeTypeOpen(false);
     };
 
@@ -52,15 +50,17 @@ function TradeTypeDrawer({ isTradeTypeOpen, setIsTradeTypeOpen }: TradeTypeProps
                     <span>選擇交易類別</span>
                 </div>
                 <div className={style.buttomBlock}>
-                    {Object.entries(TradeTypeMap).map(([key, value]) => (
+                    {tradeOption.map(option => (
                         <Button
-                            className={style.filterButton}
-                            key={key}
+                            className={`${style.filterButton} ${
+                                tradeType === option.value && style.active
+                            }`}
+                            key={option.value}
                             onClick={() => {
-                                handleChangeDate();
+                                handleChangeType(option.value as TradeTypeOption);
                             }}
                         >
-                            {value.label}
+                            {option.label}
                         </Button>
                     ))}
                 </div>
