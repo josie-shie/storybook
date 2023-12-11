@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { useRef, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Dialog, DialogTitle } from '@mui/material';
+import { getSubscriptionPlanList, subscribePlan } from 'data-center';
 import backLeftArrowImg from '../img/backLeftArrow.png';
 import style from './subscribe.module.scss';
 import background from './img/bg.png';
@@ -15,13 +16,17 @@ import starIcon from './img/starIcon.png';
 import checkbox from './img/checkbox.png';
 import checkedbox from './img/checkedbox.png';
 import { useSubscribeStore } from './subscribeStore';
+import { useUserStore } from '@/app/userStore';
+import { useNotificationStore } from '@/app/notificationStore';
 
 function Subscribe() {
     const router = useRouter();
     const switchRef = useRef<HTMLDivElement | null>(null);
     const [intro, setIntro] = useState(false);
     const [protocol, setProtocol] = useState(false);
+    const userInfo = useUserStore.use.userInfo();
     const planList = useSubscribeStore.use.planList();
+    const yearPlanList = useSubscribeStore.use.yearPlanList();
     const planId = useSubscribeStore.use.planId();
     const isVip = useSubscribeStore.use.isVip();
     const isChecked = useSubscribeStore.use.isChecked();
@@ -32,7 +37,20 @@ function Subscribe() {
     const setIsChecked = useSubscribeStore.use.setIsChecked();
     const setMasterPlan = useSubscribeStore.use.setMasterPlan();
     const setUnlockArticle = useSubscribeStore.use.setUnlockArticle();
+    const setYearPlanList = useSubscribeStore.use.setYearPlanList();
+    const setIsVisible = useNotificationStore.use.setIsVisible();
     const [indicatorStyle, setIndicatorStyle] = useState({ left: '0', width: '98px' });
+
+    useEffect(() => {
+        const getYearSubscribe = async () => {
+            const res = await getSubscriptionPlanList();
+            if (res.success) {
+                setYearPlanList(res.data);
+            }
+        };
+
+        void getYearSubscribe();
+    }, [setYearPlanList]);
 
     const handlePlanClick = (id: number, plan: number, unlock: number) => {
         setPlanId(id);
@@ -46,8 +64,13 @@ function Subscribe() {
         setPlanId(0);
     };
 
-    const handleSubscribeButtonOnClick = () => {
-        router.push('https://www.newebpay.com/');
+    const handleSubscribeButtonOnClick = async () => {
+        const res = await subscribePlan({ memberId: userInfo.uid, planId: yearPlanList[0].id });
+        if (res.success) {
+            router.push('https://www.newebpay.com/');
+        } else {
+            setIsVisible('余额不足', 'error');
+        }
     };
 
     const handleIntroOpen = () => {

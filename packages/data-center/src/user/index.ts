@@ -473,7 +473,7 @@ const ServicePlanSchema = z.object({
 export type ServicePlan = z.infer<typeof ServicePlanSchema>;
 
 const GetSubscriptionPlanSchema = z.object({
-    id: z.number(),
+    id: z.string(),
     name: z.string(),
     times: z.number(),
     cost: z.number(),
@@ -519,7 +519,7 @@ export const getSubscriptionPlanList = async (): Promise<
 
 export interface SubscribePlanRequest {
     memberId: number;
-    planId: number;
+    planId: string;
 }
 
 const SubscribePlanSchema = z.object({

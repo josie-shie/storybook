@@ -81,10 +81,22 @@ export const GET_SUBSCRIPTION_QUERY = `
               name
               times
               cost
-              masterDistribution
-              masterPlan
-              expertAnalysis
-              gamePathAnalysis
+              masterDistribution {
+                planType 
+                times
+              }
+              masterPlan {
+                planType
+                times
+              }
+              expertAnalysis {
+                planType
+                times
+              }
+              gamePathAnalysis {
+                planType
+                times
+              }
             }
         }
     }

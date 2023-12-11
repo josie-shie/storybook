@@ -4,6 +4,7 @@ import { creatSubscriberStore } from './subscribeStore';
 
 function SubscribeLayout({ children }: { children: ReactNode }) {
     creatSubscriberStore({
+        yearPlanList: [],
         planList: [
             { planId: 1, period: 200, discount: '体验包', price: 120, freePlan: 2, unlock: 1 },
             { planId: 2, period: 600, discount: '5折', price: 280, freePlan: 6, unlock: 4 },

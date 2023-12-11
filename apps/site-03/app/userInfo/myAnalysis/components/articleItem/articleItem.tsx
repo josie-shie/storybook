@@ -54,15 +54,31 @@ function ArticleItem({ item }: GetUnlockPostProps) {
                 </div>
                 <div className={style.userInfo}>
                     <div className={style.userName}>{item.mentorName}</div>
-                    {/* <div className={style.tagsContainer}>
-                        {item.hotStreak > 2 && (
+                    {/* 等後端補上參數後使用不然會報錯 */}
+                    {/* {item.tags.winHistoryMaxWinStreak > 3 && (
                             <Tag
                                 icon={<IconFlame size={10} />}
-                                text={`${item.hotStreak}連紅`}
+                                text={`${item.tags.winHistoryMaxWinStreak}连红`}
                             />
                         )}
-                        <Tag background="#4489FF" text={`月榜 ${item.ranking}`} />
-                    </div> */}
+                        {item.tags.weekHistoryMaxWinStreak > 3 && (
+                            <Tag
+                                background={item.tags.colorCode}
+                                text={`周榜 ${item.tags.weekHistoryMaxWinStreak}`}
+                            />
+                        )}
+                        {item.tags.monthHistoryMaxWinStreak > 3 && (
+                            <Tag
+                                background={item.tags.colorCode}
+                                text={`月榜 ${item.tags.monthHistoryMaxWinStreak}`}
+                            />
+                        )}
+                        {item.tags.quarterHistoryMaxWinStreak > 3 && (
+                            <Tag
+                                background={item.tags.colorCode}
+                                text={`季榜 ${item.tags.quarterHistoryMaxWinStreak}`}
+                            />
+                        )} */}
                 </div>
                 <div className={style.unlockStatus}>
                     <span className={style.unlocked}>已解鎖</span>
