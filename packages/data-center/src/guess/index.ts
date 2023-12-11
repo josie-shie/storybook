@@ -213,7 +213,7 @@ export interface GetGuessProportionRequest {
 
 const GuessItemSchema = z.object({
     peopleNum: z.number(),
-    itemType: z.union([z.literal('SELECTED'), z.literal('UNSELECTED'), z.literal('NONE')])
+    itemType: z.union([z.literal('selected'), z.literal('unselected'), z.literal('')])
 });
 
 const GetGuessProportionSchema = z.object({

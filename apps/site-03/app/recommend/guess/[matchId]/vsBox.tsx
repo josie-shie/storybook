@@ -1,7 +1,9 @@
 'use client';
 import Image from 'next/image';
 import { ProgressBar } from 'ui/stories/progressBar/progressBar';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { getMatchDetail, getGuessProportion } from 'data-center';
+import { useParams } from 'next/navigation';
 import NorthBangKokClubIcon from './img/northBangkokClubIcon.png';
 import ThaiUniversityClubIcon from './img/thaiUniversityClubIcon.png';
 import { useGuessDetailStore } from './guessDetailStore';
@@ -144,7 +146,71 @@ function BettingColumn({ play, detail, homeType, awayType }: BettingProps) {
 }
 
 function VsBox() {
+    const matchId = useParams().matchId;
     const detailInfo = useGuessDetailStore.use.detail();
+    const setDetailInfo = useGuessDetailStore.use.setDetail();
+    const setGuessesLeft = useGuessDetailStore.use.setGuessesLeft();
+
+    const covertGuessStatus = (isHandicap: boolean, status: 'selected' | 'unselected' | '') => {
+        if (isHandicap) {
+            switch (status) {
+                case 'selected':
+                    return 'home';
+                case 'unselected':
+                    return 'away';
+                case '':
+                default:
+                    return 'none';
+            }
+        } else {
+            switch (status) {
+                case 'selected':
+                    return 'big';
+                case 'unselected':
+                    return 'small';
+                case '':
+                default:
+                    return 'none';
+            }
+        }
+    };
+
+    useEffect(() => {
+        async function fetchMatchDetail() {
+            const matchDetail = await getMatchDetail(Number(matchId));
+            const guessProportion = await getGuessProportion({
+                matchId: Number(matchId),
+                memberId: 16 // TODO: memberId 從 useInfo Store
+            });
+            if (matchDetail.success && guessProportion.success) {
+                const baseData = matchDetail.data;
+                const guessData = guessProportion.data;
+                setDetailInfo({
+                    leagueName: baseData.leagueChsShort,
+                    dateTime: `${baseData.matchTime}`,
+                    homeTeamLogo: baseData.homeLogo,
+                    homeTeamName: baseData.homeChs,
+                    awayTeamLogo: baseData.awayLogo,
+                    awayTeamName: baseData.awayChs,
+                    participants: 1276, // 參與競猜人數(getGuessProportion API 欄位待新增)
+                    guessHomeAway: covertGuessStatus(true, guessData.home.itemType) as
+                        | 'home'
+                        | 'away'
+                        | 'none',
+                    guessBigSmall: covertGuessStatus(false, guessData.over.itemType) as
+                        | 'big'
+                        | 'small'
+                        | 'none',
+                    home: guessData.home.peopleNum,
+                    away: guessData.away.peopleNum,
+                    big: guessData.over.peopleNum,
+                    small: guessData.under.peopleNum
+                });
+                setGuessesLeft(guessData.remainingGuessTimes);
+            }
+        }
+        void fetchMatchDetail();
+    }, [matchId]);
 
     return (
         <div className={style.vsBox}>
