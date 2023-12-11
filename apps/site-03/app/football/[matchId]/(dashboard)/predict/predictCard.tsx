@@ -1,12 +1,12 @@
 import Image from 'next/image';
-import type { GetMatchPost } from 'data-center';
+import type { GetPredictionMatchPost } from 'data-center';
 import style from './predict.module.scss';
 import hotIcon from './img/hot.png';
 import coinIcon from './img/coin.png';
 import Avatar from '@/components/avatar/avatar';
 import Tag from '@/components/tag/tag';
 
-function PredictCard({ predictInfo }: { predictInfo: GetMatchPost }) {
+function PredictCard({ predictInfo }: { predictInfo: GetPredictionMatchPost }) {
     return (
         <div className={style.predictCard}>
             <div className={style.mentor}>

@@ -17,11 +17,11 @@ function PeriodListItem() {
     return (
         <>
             {rankList.map(item => {
-                const hasHighWinRate = typeof item.winRate === 'number' && item.winRate >= 90;
-                if (onlyShowToday && !item.isToday) return null;
+                const hasHighWinRate = item.hitRate >= 90;
+                if (onlyShowToday && !item.today) return null;
 
                 return (
-                    <div className={style.periodListItem} key={item.name}>
+                    <div className={style.periodListItem} key={item.memberId}>
                         <div className={`${style.rankingFlag} ${rankingClass(item.ranking)}`}>
                             {item.ranking > 3 ? (
                                 <Image alt="" height={24} src={Rank} width={24} />
@@ -31,15 +31,15 @@ function PeriodListItem() {
                             <span>{item.ranking}</span>
                         </div>
                         <div className={style.avatarContainer}>
-                            <Avatar src={item.avatar} />
+                            <Avatar src={item.memberAvatar} />
                         </div>
                         <div className={style.content}>
-                            <div className={style.name}>{item.name}</div>
+                            <div className={style.name}>{item.memberName}</div>
                             <div className={style.detail}>
-                                <div>战绩: {item.record}场</div>
+                                <div>战绩: {item.totalMatches}场</div>
                                 <div>
-                                    胜负: <span className={style.victory}>{item.victory}</span>/
-                                    {item.defeat}
+                                    胜负: <span className={style.victory}>{item.totalWin}</span>/
+                                    {item.totalLose}
                                 </div>
                             </div>
                         </div>
@@ -52,7 +52,7 @@ function PeriodListItem() {
                                     hasHighWinRate ? style.redFill : ''
                                 }`}
                             >
-                                <span>{item.winRate}</span>
+                                <span>{item.hitRate}</span>
                                 <span className={style.percent}>%</span>
                             </span>
                         </div>

@@ -17,10 +17,10 @@ function HotStreakListItem() {
     return (
         <>
             {masterRankList.map(item => {
-                if (onlyShowToday && !item.isToday) return null;
+                if (onlyShowToday && !item.today) return null;
 
                 return (
-                    <div className={style.hotStreakListItem} key={item.id}>
+                    <div className={style.hotStreakListItem} key={item.memberId}>
                         <div className={`${style.rankingFlag} ${rankingClass(item.ranking)}`}>
                             {item.ranking > 3 ? (
                                 <Image alt="" height={24} src={Rank} width={24} />
@@ -30,10 +30,10 @@ function HotStreakListItem() {
                             <span>{item.ranking}</span>
                         </div>
                         <div className={style.avatarContainer}>
-                            <Avatar src={item.avatar} />
+                            <Avatar src={item.memberAvatar} />
                         </div>
                         <div className={style.content}>
-                            <div className={style.name}>{item.name}</div>
+                            <div className={style.name}>{item.memberName}</div>
                             <div className={style.streak}>
                                 <div className={style.current}>
                                     <Image
@@ -41,7 +41,8 @@ function HotStreakListItem() {
                                         className={style.streakIcon}
                                         src={Streak}
                                     />
-                                    <span className={style.label}>当前:</span> {item.currentStreak}
+                                    <span className={style.label}>当前:</span>{' '}
+                                    {item.currentMaxWinStreak}
                                     連紅
                                 </div>
                                 <div className={style.highest}>
@@ -51,7 +52,7 @@ function HotStreakListItem() {
                                         src={Streak}
                                     />
                                     <span className={style.label}>历史最高:</span>{' '}
-                                    {item.highestStreak}連紅
+                                    {item.historyMaxWinStreak}連紅
                                 </div>
                             </div>
                         </div>

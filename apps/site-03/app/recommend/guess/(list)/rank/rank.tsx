@@ -1,35 +1,15 @@
 'use client';
 // import { IconSearch } from '@tabler/icons-react';
-import Image from 'next/image';
+import { getGuessRank } from 'data-center';
+import { useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import PeriodListItem from '../components/period/periodListItem';
-import Soccer from '../components/period/img/soccerWhite.png';
 import UserSwitch from '../components/userSwitch/userSwitch';
 import Rule from '../components/rule/rule';
-import weekBackground from '../img/weekBg.png';
-import monthBackground from '../img/monthBg.png';
-import seasonBackground from '../img/seasonBg.png';
-import { creatRankStore } from './rankStore';
+import { creatRankStore, useRankStore } from './rankStore';
 import style from './rank.module.scss';
-import Avatar from '@/components/avatar/avatar';
+import UserRank from './userRank';
 
-const periodMap = {
-    week: '週',
-    month: '月',
-    season: '季'
-};
-
-const tagMap = {
-    week: '#276ce1',
-    month: '#3d7f53',
-    season: '#cc4d2e'
-};
-
-const periodBackgroundMap = {
-    week: weekBackground,
-    month: monthBackground,
-    season: seasonBackground
-};
 interface PeriodBackgroundMap {
     week: string;
     month: string;
@@ -39,83 +19,47 @@ interface PeriodBackgroundMap {
 function Rank() {
     const searchParams = useSearchParams();
     const currentPeriod = searchParams.get('status') as keyof PeriodBackgroundMap;
-    const periodTagColor = tagMap[currentPeriod];
+    const rankTypeMap: Record<string, 0 | 1 | 2> = {
+        week: 0,
+        month: 1,
+        season: 2
+    };
 
     creatRankStore({
+        member: {
+            memberId: 0,
+            memberName: '-',
+            memberLevel: 0,
+            memberAvatar: '',
+            ranking: 0,
+            today: false,
+            totalMatches: 0,
+            totalWin: 0,
+            totalLose: 0,
+            hitRate: 0,
+            currentMaxWinStreak: 0,
+            historyMaxWinStreak: 0
+        },
         onlyShowToday: true,
-        rankList: [
-            {
-                ranking: 1,
-                avatar: '',
-                name: '老梁聊球',
-                record: 0,
-                victory: 10,
-                defeat: 5,
-                winRate: 98,
-                isToday: true
-            },
-            {
-                ranking: 2,
-                avatar: '',
-                name: '老董聊球',
-                record: 0,
-                victory: 0,
-                defeat: 3,
-                winRate: 98,
-                isToday: true
-            },
-            {
-                ranking: 3,
-                avatar: '',
-                name: '老衲聊球',
-                record: 0,
-                victory: 4,
-                defeat: 3,
-                winRate: 97,
-                isToday: true
-            },
-            {
-                ranking: 4,
-                avatar: '',
-                name: '老薛聊球',
-                record: 0,
-                victory: 7,
-                defeat: 3,
-                winRate: 50,
-                isToday: true
-            },
-            {
-                ranking: 5,
-                avatar: '',
-                name: '老王聊球',
-                record: 0,
-                victory: 5,
-                defeat: 2,
-                winRate: 40,
-                isToday: true
-            },
-            {
-                ranking: 6,
-                avatar: '',
-                name: '老李聊球',
-                record: 0,
-                victory: 3,
-                defeat: 5,
-                winRate: 30,
-                isToday: false
-            }
-        ]
+        rankList: []
     });
+    const setMember = useRankStore.use.setMember();
+    const setRankList = useRankStore.use.setRankList();
 
-    const userData = {
-        avatar: undefined,
-        name: '郭台銘',
-        record: 2,
-        victory: 6,
-        defeat: 4,
-        winRate: 99,
-        personalRank: 24
-    };
+    useEffect(() => {
+        async function fetchGuessRank() {
+            const memberRank = await getGuessRank({
+                memberId: 17, // 會員 ID 待改
+                rankType: rankTypeMap[currentPeriod]
+            });
+            if (memberRank.success) {
+                const data = memberRank.data;
+                setMember(data.memberRank);
+                setRankList(data.guessRank);
+            }
+        }
+        void fetchGuessRank();
+    }, [currentPeriod]);
 
     return (
         <div className={style.rank}>
@@ -130,38 +74,7 @@ function Rank() {
                     <Rule />
                 </div>
             </div>
-            <div className={style.userRank}>
-                <Image
-                    alt=""
-                    className={style.background}
-                    src={periodBackgroundMap[currentPeriod]}
-                    width={366}
-                />
-                <div className={style.ranking} style={{ background: periodTagColor }}>
-                    {periodMap[currentPeriod]}排名<span>{userData.personalRank}</span>
-                </div>
-                <div className={style.container}>
-                    <div className={style.avatarContainer}>
-                        <Avatar src={userData.avatar} />
-                    </div>
-                    <div className={style.content}>
-                        <div className={style.name}>{userData.name}</div>
-                        <div className={style.detail}>
-                            <div>战绩: {userData.record}场</div>
-                            <div>
-                                胜负: {userData.victory}/{userData.defeat}
-                            </div>
-                        </div>
-                    </div>
-                    <div className={style.winRateBlock}>
-                        <Image alt="icon" className={style.icon} src={Soccer} />
-                        <span className={style.winRate}>
-                            <span>{userData.winRate}</span>
-                            <span className={style.percent}>%</span>
-                        </span>
-                    </div>
-                </div>
-            </div>
+            <UserRank />
             <PeriodListItem />
         </div>
     );
