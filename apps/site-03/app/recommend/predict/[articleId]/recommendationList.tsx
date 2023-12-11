@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { timestampToString, timestampToMonthDay } from 'lib';
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import style from './recommendationList.module.scss';
 import Star from './img/star.png';
 import { useArticleStore } from './articleStore';
@@ -18,21 +18,14 @@ function RecommendationItem() {
         return list[type];
     };
 
-    const router = useRouter();
-
-    const goDetail = (num: number) => {
-        router.push(`/recommend/predict/${num}`);
-    };
     return (
         <>
             {recommendationList.map(item => {
                 return (
-                    <section
+                    <Link
                         className={style.item}
+                        href={`/recommend/predict/${item.id}`}
                         key={item.id}
-                        onClick={() => {
-                            goDetail(item.id);
-                        }}
                     >
                         <div className={style.left}>
                             <div className={style.time}>
@@ -73,7 +66,7 @@ function RecommendationItem() {
                                 <div className={style.unlockMember}>已解鎖</div>
                             )}
                         </div>
-                    </section>
+                    </Link>
                 );
             })}
         </>
