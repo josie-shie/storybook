@@ -2,6 +2,8 @@ import { fetcher } from 'lib';
 import { z } from 'zod';
 import { handleApiError } from '../common';
 import type { ReturnData } from '../common';
+import { PredictedPlaySchema, PredictionResultSchema } from '../commonType';
+import type { PredictedPlay } from '../commonType';
 import {
     GET_TODAY_GUESS_MATCHES_QUERY,
     GET_GUESS_RANK_QUERY,
@@ -444,14 +446,8 @@ const MemberIndividualGuessMatchSchema = z.object({
     awayTeamName: z.string(),
     handicapOdds: z.number(),
     overUnderOdds: z.number(),
-    predictedPlay: z.union([
-        z.literal('HOME'),
-        z.literal('AWAY'),
-        z.literal('OVER'),
-        z.literal('UNDER'),
-        z.literal('LOCK')
-    ]),
-    predictionResult: z.string(),
+    predictedPlay: PredictedPlaySchema,
+    predictionResult: PredictionResultSchema,
     isPaidToRead: z.boolean()
 });
 
@@ -548,19 +544,8 @@ const ProGuessSchema = z.object({
     memberRanking: z.number(),
     records: z.union([z.literal('WIN'), z.literal('LOSE'), z.literal('DRAW'), z.literal('NONE')]),
     predictedType: z.union([z.literal('HANDICAP'), z.literal('OVERUNDER')]),
-    predictedPlay: z.union([
-        z.literal('HOME'),
-        z.literal('AWAY'),
-        z.literal('OVER'),
-        z.literal('UNDER'),
-        z.literal('LOCK')
-    ]),
-    predictionResult: z.union([
-        z.literal('WIN'),
-        z.literal('LOSE'),
-        z.literal('DRAW'),
-        z.literal('NONE')
-    ])
+    predictedPlay: PredictedPlaySchema,
+    predictionResult: PredictionResultSchema
 });
 
 const GetProGuessResultSchema = z.object({
@@ -665,7 +650,7 @@ export const getProDistrib = async ({
 
 export interface AddGuessRequest {
     matchId: number;
-    predictedPlay: 'HOME' | 'AWAY' | 'OVER' | 'UNDER' | 'LOCK';
+    predictedPlay: PredictedPlay;
 }
 
 /**

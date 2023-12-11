@@ -3,6 +3,7 @@ import Cookies from 'js-cookie';
 import { z } from 'zod';
 import { handleApiError } from '../common';
 import type { ReturnData } from '../common';
+import { PredictionResultSchema } from '../commonType';
 import {
     REGISTER_MUTATION,
     SEND_VERIFICATION_CODE_MUTATION,
@@ -580,7 +581,7 @@ const GetUnlockedPostSchema = z.object({
     postId: z.number(),
     analysisTitle: z.string(),
     analysisContent: z.string(),
-    predictionResult: z.string(),
+    predictionResult: PredictionResultSchema,
     mentorId: z.number(),
     mentorName: z.string(),
     avatarPath: z.string(),
