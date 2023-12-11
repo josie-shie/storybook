@@ -2,7 +2,7 @@ import { fetcher } from 'lib';
 import { z } from 'zod';
 import { handleApiError } from '../common';
 import type { ReturnData } from '../common';
-import { PredictionResultSchema, PredictedPlaySchema } from '../commonType';
+import { PredictionResultSchema, PredictedPlaySchema, TagSchema } from '../commonType';
 import {
     GET_INDEX_POSTS_QUERY,
     GET_MENTOR_POSTS_QUERY,
@@ -16,45 +16,6 @@ export interface GetIndexPostsRequest {
     currentPage: number;
     pageSize: number;
 }
-
-const TagSchema = z.object({
-    id: z.number(),
-    tagName: z.string(),
-    note: z.string(),
-    colorCode: z.string(),
-    weekHitRecentTen: z.number(),
-    weekMaxAccurateStreak: z.number(),
-    weekHitMatches: z.number(),
-    weekTotalMatches: z.number(),
-    weekHitRate: z.number(),
-    weekHitRateDisplay: z.string(),
-    weekRanking: z.number(),
-    weekHistoryMaxWinStreak: z.number(),
-    monthHitRecentTen: z.number(),
-    monthMaxAccurateStreak: z.number(),
-    monthHitMatches: z.number(),
-    monthTotalMatches: z.number(),
-    monthHitRate: z.number(),
-    monthHitRateDisplay: z.string(),
-    monthRanking: z.number(),
-    monthHistoryMaxWinStreak: z.number(),
-    quarterHitRecentTen: z.number(),
-    quarterMaxAccurateStreak: z.number(),
-    quarterHitMatches: z.number(),
-    quarterTotalMatches: z.number(),
-    quarterHitRate: z.number(),
-    quarterHitRateDisplay: z.string(),
-    quarterRanking: z.number(),
-    quarterHistoryMaxWinStreak: z.number(),
-    winHitRecentTen: z.number(),
-    winMaxAccurateStreak: z.number(),
-    winHitMatches: z.number(),
-    winTotalMatches: z.number(),
-    winHitRate: z.number(),
-    winHitRateDisplay: z.string(),
-    winRanking: z.number(),
-    winHistoryMaxWinStreak: z.number()
-});
 
 const RecommendPostSchema = z.object({
     id: z.number(),
