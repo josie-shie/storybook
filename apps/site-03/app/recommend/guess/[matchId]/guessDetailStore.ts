@@ -11,7 +11,7 @@ export interface DetailType {
     awayTeamName: string;
     participants: number; // 參與競猜人數
     guessHomeAway: 'home' | 'away' | 'none'; // 猜 主客
-    guessBigSmall: 'big' | 'small' | 'none'; // 猜 大小
+    guessBigSmall: 'over' | 'under' | 'none'; // 猜 大小
     home: number; // 猜 主隊 人數
     away: number; // 猜 客隊 人數
     big: number; // 猜 大 人數

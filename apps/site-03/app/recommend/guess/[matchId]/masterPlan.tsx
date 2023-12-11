@@ -116,46 +116,6 @@ function MasterPlan() {
                             plan={el}
                         />
                     ))}
-                    {/* <GameCard
-                        globalUnlock={isUnlocked}
-                        league="欧锦U20A vs 斯洛文尼亚U20"
-                        localIsUnlocked={unlockedGames.has('1')}
-                        name="老梁聊球"
-                        onOpenPaidDialog={() => {
-                            handleLocalClickOpen('1', 100, 200, 'single');
-                        }}
-                        text="9连红"
-                    />
-                    <GameCard
-                        globalUnlock={isUnlocked}
-                        league="欧锦U20A vs 斯洛文尼亚U20"
-                        localIsUnlocked={unlockedGames.has('2')}
-                        name="老梁聊球"
-                        onOpenPaidDialog={() => {
-                            handleLocalClickOpen('2', 100, 200, 'single');
-                        }}
-                        text="月榜10"
-                    />
-                    <GameCard
-                        globalUnlock={isUnlocked}
-                        league="欧锦U20A vs 斯洛文尼亚U20"
-                        localIsUnlocked={unlockedGames.has('3')}
-                        name="老梁聊球"
-                        onOpenPaidDialog={() => {
-                            handleLocalClickOpen('3', 100, 200, 'single');
-                        }}
-                        text="月榜10"
-                    />
-                    <GameCard
-                        globalUnlock={isUnlocked}
-                        league="欧锦U20A vs 斯洛文尼亚U20"
-                        localIsUnlocked={unlockedGames.has('4')}
-                        name="老梁聊球"
-                        onOpenPaidDialog={() => {
-                            handleLocalClickOpen('4', 100, 200, 'single');
-                        }}
-                        text="月榜10"
-                    /> */}
                 </div>
             </div>
             <PaidDialog

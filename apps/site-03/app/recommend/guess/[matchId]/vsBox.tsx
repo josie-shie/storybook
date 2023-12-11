@@ -2,7 +2,7 @@
 import Image from 'next/image';
 import { ProgressBar } from 'ui/stories/progressBar/progressBar';
 import { useEffect, useState } from 'react';
-import { getMatchDetail, getGuessProportion } from 'data-center';
+import { getMatchDetail, getGuessProportion, addGuess } from 'data-center';
 import { useParams } from 'next/navigation';
 import NorthBangKokClubIcon from './img/northBangkokClubIcon.png';
 import ThaiUniversityClubIcon from './img/thaiUniversityClubIcon.png';
@@ -20,6 +20,7 @@ interface BettingProps {
 }
 
 function BettingColumn({ play, detail, homeType, awayType }: BettingProps) {
+    const matchId = useParams().matchId;
     const [openGuessDialog, setOpenGuessDialog] = useState(false);
     const [direction, setDirection] = useState('left');
     const calculatePercentage = (a: number, b: number) => {
@@ -48,17 +49,25 @@ function BettingColumn({ play, detail, homeType, awayType }: BettingProps) {
     const handleClickClose = () => {
         setOpenGuessDialog(false);
     };
-    const handleConfirmGuess = () => {
+    const handleConfirmGuess = async () => {
         //  API addGuess
         setOpenGuessDialog(false);
         if (homeType === '主') {
             const betting = direction === 'left' ? 'home' : 'away';
             const newDetail: DetailType = { ...detail, guessHomeAway: betting };
+            await addGuess({
+                matchId: Number(matchId),
+                predictedPlay: betting.toUpperCase() as 'HOME' | 'AWAY'
+            });
             setGuessDetail({ ...newDetail });
             setGuessesLeft(guessesLeft - 1);
         } else {
-            const betting = direction === 'left' ? 'big' : 'small';
+            const betting = direction === 'left' ? 'over' : 'under';
             const newDetail: DetailType = { ...detail, guessBigSmall: betting };
+            await addGuess({
+                matchId: Number(matchId),
+                predictedPlay: betting.toUpperCase() as 'OVER' | 'UNDER'
+            });
             setGuessDetail({ ...newDetail });
             setGuessesLeft(guessesLeft - 1);
         }
@@ -101,12 +110,12 @@ function BettingColumn({ play, detail, homeType, awayType }: BettingProps) {
                 <div className={style.unLock}>
                     <div
                         className={`${style.button} ${
-                            guessStatus === 'away' || guessStatus === 'small' ? style.noSelect : ''
+                            guessStatus === 'away' || guessStatus === 'under' ? style.noSelect : ''
                         }`}
                     >
                         <span className={style.team}>{homeType}</span>
                         <span className={style.user}>{leftPercent}%</span>
-                        {(guessStatus === 'home' || guessStatus === 'big') && (
+                        {(guessStatus === 'home' || guessStatus === 'over') && (
                             <Image alt="" height={20} src={selectDecoration} width={20} />
                         )}
                     </div>
@@ -130,12 +139,12 @@ function BettingColumn({ play, detail, homeType, awayType }: BettingProps) {
                     </div>
                     <div
                         className={`${style.button} ${
-                            guessStatus === 'home' || guessStatus === 'big' ? style.noSelect : ''
+                            guessStatus === 'home' || guessStatus === 'over' ? style.noSelect : ''
                         }`}
                     >
                         <span className={style.team}>{awayType}</span>
                         <span className={style.user}>{rightPercent}%</span>
-                        {(guessStatus === 'away' || guessStatus === 'small') && (
+                        {(guessStatus === 'away' || guessStatus === 'under') && (
                             <Image alt="" height={20} src={selectDecoration} width={20} />
                         )}
                     </div>
@@ -165,9 +174,9 @@ function VsBox() {
         } else {
             switch (status) {
                 case 'selected':
-                    return 'big';
+                    return 'over';
                 case 'unselected':
-                    return 'small';
+                    return 'under';
                 case '':
                 default:
                     return 'none';
@@ -198,8 +207,8 @@ function VsBox() {
                         | 'away'
                         | 'none',
                     guessBigSmall: covertGuessStatus(false, guessData.over.itemType) as
-                        | 'big'
-                        | 'small'
+                        | 'over'
+                        | 'under'
                         | 'none',
                     home: guessData.home.peopleNum,
                     away: guessData.away.peopleNum,
