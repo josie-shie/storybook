@@ -1,89 +1,86 @@
 'use client';
 // import { IconSearch } from '@tabler/icons-react';
 import Image from 'next/image';
+import { useEffect } from 'react';
+import { getGuessRank } from 'data-center';
 import HotStreakListItem from '../components/hotStreak/hotStreakListItem';
 import UserSwitch from '../components/userSwitch/userSwitch';
 import Rule from '../components/rule/rule';
 import masterRankBackground from '../img/masterRankBg.png';
 import Streak from '../components/hotStreak/img/whiteStreak.png';
-import { creatMasterRankStore } from './masterRankStore';
+import { creatMasterRankStore, useMasterRankStore } from './masterRankStore';
 import style from './masterRank.module.scss';
 import Avatar from '@/components/avatar/avatar';
 
-function RankList() {
-    const user = {
-        ranking: 87,
-        name: '郭台銘',
-        currentStreak: 9,
-        highestStreak: 14
-    };
-    creatMasterRankStore({
-        onlyShowToday: true,
-        masterRankList: [
-            {
-                id: 1,
-                ranking: 1,
-                avatar: '',
-                name: '老梁聊球',
-                currentStreak: 9,
-                highestStreak: 14,
-                isToday: true
-            },
-            {
-                id: 2,
-                ranking: 2,
-                avatar: '',
-                name: '老梁聊球',
-                currentStreak: 10,
-                highestStreak: 7,
-                isToday: true
-            },
-            {
-                id: 3,
-                ranking: 3,
-                avatar: '',
-                name: '老梁聊球',
-                currentStreak: 4,
-                highestStreak: 4,
-                isToday: true
-            },
-            {
-                id: 4,
-                ranking: 4,
-                avatar: '',
-                name: '老梁聊球',
-                currentStreak: 6,
-                highestStreak: 3,
-                isToday: true
-            },
-            {
-                id: 5,
-                ranking: 5,
-                avatar: '',
-                name: '老梁聊球',
-                currentStreak: 4,
-                highestStreak: 3,
-                isToday: true
-            },
-            {
-                id: 6,
-                ranking: 6,
-                avatar: '',
-                name: '老梁聊球',
-                currentStreak: 7,
-                highestStreak: 2,
-                isToday: true
-            },
-            {
-                id: 7,
-                ranking: 7,
-                avatar: '',
-                name: '老梁聊球',
-                currentStreak: 4,
-                highestStreak: 0,
-                isToday: false
+function UserMasterRank() {
+    const memberInfo = useMasterRankStore.use.member();
+    const setMember = useMasterRankStore.use.setMember();
+    const setMasterRankList = useMasterRankStore.use.setMasterRankList();
+
+    useEffect(() => {
+        async function fetchMasterRank() {
+            const masterRank = await getGuessRank({
+                memberId: 17, // 會員 ID 待改
+                rankType: 3
+            });
+            if (masterRank.success) {
+                const data = masterRank.data;
+                setMember(data.memberRank);
+                setMasterRankList(data.guessRank);
             }
-        ]
+        }
+        void fetchMasterRank();
+    }, []);
+
+    return (
+        <div className={style.userHotStreak}>
+            <Image alt="" className={style.background} src={masterRankBackground} width={366} />
+            <div className={style.ranking}>
+                你排名<span>{memberInfo.ranking === 0 ? '-' : memberInfo.ranking}</span>
+            </div>
+            <div className={style.container}>
+                <div className={style.avatarContainer}>
+                    <Avatar src={memberInfo.memberAvatar} />
+                </div>
+                <div className={style.content}>
+                    <div className={style.name}>{memberInfo.memberName}</div>
+                    <div className={style.streak}>
+                        <div className={style.current}>
+                            <Image alt="streakIcon" className={style.streakIcon} src={Streak} />
+                            <span className={style.label}>当前:</span>{' '}
+                            {memberInfo.currentMaxWinStreak}連紅
+                        </div>
+                        <div className={style.highest}>
+                            <Image alt="streakIcon" className={style.streakIcon} src={Streak} />
+                            <span className={style.label}>历史最高:</span>{' '}
+                            {memberInfo.historyMaxWinStreak}
+                            連紅
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+function RankList() {
+    creatMasterRankStore({
+        member: {
+            memberId: 0,
+            memberName: '-',
+            memberLevel: 0,
+            memberAvatar: '',
+            ranking: 0,
+            today: false,
+            totalMatches: 0,
+            totalWin: 0,
+            totalLose: 0,
+            hitRate: 0,
+            currentMaxWinStreak: 0,
+            historyMaxWinStreak: 0
+        },
+        onlyShowToday: true,
+        masterRankList: []
     });
 
     return (
@@ -99,31 +96,7 @@ function RankList() {
                     <Rule />
                 </div>
             </div>
-            <div className={style.userHotStreak}>
-                <Image alt="" className={style.background} src={masterRankBackground} width={366} />
-                <div className={style.ranking}>
-                    你排名<span>24</span>
-                </div>
-                <div className={style.container}>
-                    <div className={style.avatarContainer}>
-                        <Avatar />
-                    </div>
-                    <div className={style.content}>
-                        <div className={style.name}>{user.name}</div>
-                        <div className={style.streak}>
-                            <div className={style.current}>
-                                <Image alt="streakIcon" className={style.streakIcon} src={Streak} />
-                                <span className={style.label}>当前:</span> {user.currentStreak}連紅
-                            </div>
-                            <div className={style.highest}>
-                                <Image alt="streakIcon" className={style.streakIcon} src={Streak} />
-                                <span className={style.label}>历史最高:</span> {user.highestStreak}
-                                連紅
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <UserMasterRank />
             <HotStreakListItem />
         </div>
     );

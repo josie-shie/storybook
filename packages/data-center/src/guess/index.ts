@@ -99,27 +99,27 @@ interface GetGuessRankRequest {
     // 排行榜類型 0:週，1:月，2:季，3:連紅
 }
 
-const GetGuessRankSchema = z.object({
-    matchId: z.number(),
-    leagueId: z.number(),
-    leagueName: z.string(),
-    homeId: z.number(),
-    homeName: z.string(),
-    awayId: z.number(),
-    awayName: z.string(),
-    matchTime: z.number(),
-    homeScore: z.number(),
-    awayScore: z.number(),
-    handicap: z.number(),
-    handicapHomeOdds: z.number(),
-    handicapAwayOdds: z.number(),
-    overUnder: z.number(),
-    overUnderOverOdds: z.number(),
-    overUnderUnderOdds: z.number(),
-    totalNum: z.number(),
-    guessed: z.boolean(),
-    state: z.number()
-});
+// const GetGuessRankSchema = z.object({
+//     matchId: z.number(),
+//     leagueId: z.number(),
+//     leagueName: z.string(),
+//     homeId: z.number(),
+//     homeName: z.string(),
+//     awayId: z.number(),
+//     awayName: z.string(),
+//     matchTime: z.number(),
+//     homeScore: z.number(),
+//     awayScore: z.number(),
+//     handicap: z.number(),
+//     handicapHomeOdds: z.number(),
+//     handicapAwayOdds: z.number(),
+//     overUnder: z.number(),
+//     overUnderOverOdds: z.number(),
+//     overUnderUnderOdds: z.number(),
+//     totalNum: z.number(),
+//     guessed: z.boolean(),
+//     state: z.number()
+// });
 
 const GuessRankSchema = z.object({
     memberId: z.number(),
@@ -195,7 +195,7 @@ export const getGuessRank = async ({
             { cache: 'no-store' }
         );
 
-        GetGuessRankSchema.parse(data);
+        GetGuessRankResultSchema.parse(data);
 
         return {
             success: true,
