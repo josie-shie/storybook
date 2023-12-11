@@ -6,15 +6,55 @@ import { PredictionResultSchema, PredictedPlaySchema } from '../commonType';
 import {
     GET_INDEX_POSTS_QUERY,
     GET_MENTOR_POSTS_QUERY,
-    GET_MATCH_POST_QUERY,
+    // GET_MATCH_POST_QUERY,
     GET_POST_DETAIL_QUERY,
-    GET_MENTOR_LIST_QUERY
+    GET_MENTOR_LIST_QUERY,
+    GET_POST_LIST_QUERY
 } from './graphqlQueries';
 
 export interface GetIndexPostsRequest {
     currentPage: number;
     pageSize: number;
 }
+
+const TagSchema = z.object({
+    id: z.number(),
+    tagName: z.string(),
+    note: z.string(),
+    colorCode: z.string(),
+    weekHitRecentTen: z.number(),
+    weekMaxAccurateStreak: z.number(),
+    weekHitMatches: z.number(),
+    weekTotalMatches: z.number(),
+    weekHitRate: z.number(),
+    weekHitRateDisplay: z.string(),
+    weekRanking: z.number(),
+    weekHistoryMaxWinStreak: z.number(),
+    monthHitRecentTen: z.number(),
+    monthMaxAccurateStreak: z.number(),
+    monthHitMatches: z.number(),
+    monthTotalMatches: z.number(),
+    monthHitRate: z.number(),
+    monthHitRateDisplay: z.string(),
+    monthRanking: z.number(),
+    monthHistoryMaxWinStreak: z.number(),
+    quarterHitRecentTen: z.number(),
+    quarterMaxAccurateStreak: z.number(),
+    quarterHitMatches: z.number(),
+    quarterTotalMatches: z.number(),
+    quarterHitRate: z.number(),
+    quarterHitRateDisplay: z.string(),
+    quarterRanking: z.number(),
+    quarterHistoryMaxWinStreak: z.number(),
+    winHitRecentTen: z.number(),
+    winMaxAccurateStreak: z.number(),
+    winHitMatches: z.number(),
+    winTotalMatches: z.number(),
+    winHitRate: z.number(),
+    winHitRateDisplay: z.string(),
+    winRanking: z.number(),
+    winHistoryMaxWinStreak: z.number()
+});
 
 const RecommendPostSchema = z.object({
     id: z.number(),
@@ -50,7 +90,14 @@ const RecommendPostSchema = z.object({
     weekHitRate: z.string(),
     shortAnalysisContent: z.string(),
     lastTenAnalysisWinCount: z.number(),
-    lastTenAnalysisWinCountStr: z.string()
+    lastTenAnalysisWinCountStr: z.string(),
+    countryId: z.number(),
+    countryName: z.string(),
+    analysisContent: z.string(),
+    unlockCounts: z.string(),
+    articleCount: z.number(),
+    isUnlocked: z.boolean(),
+    tag: TagSchema
 });
 
 const GetIndexPostsResultSchema = z.object({
@@ -167,108 +214,71 @@ export const getMentorPosts = async ({
     }
 };
 
-export interface GetMatchPostsRequest {
-    currentPage: number;
-    pageSize: number;
-    matchId: number;
-}
+//  remove it if no where using
 
-const GetMatchPostsResultSchema = z.object({
-    getMatchPosts: z.object({
-        posts: z.array(RecommendPostSchema),
-        total_page_count: z.number()
-    })
-});
+// export interface GetMatchPostsRequest {
+//     currentPage: number;
+//     pageSize: number;
+//     matchId: number;
+// }
 
-type GetMatchPostsResult = z.infer<typeof GetMatchPostsResultSchema>;
+// const GetMatchPostsResultSchema = z.object({
+//     getMatchPosts: z.object({
+//         posts: z.array(RecommendPostSchema),
+//         total_page_count: z.number()
+//     })
+// });
 
-export interface GetMatchPostsResponse {
-    list: RecommendPost[];
-    total: number;
-}
+// type GetMatchPostsResult = z.infer<typeof GetMatchPostsResultSchema>;
 
-/**
- * 取得指定賽事文章
- * - params : {@link GetMatchPostsRequest}
- * - returns : {@link GetMatchPostsResponse}
- * - {@link GetMailMemberResponse}
- */
-export const getMatchPosts = async ({
-    currentPage,
-    pageSize,
-    matchId
-}: GetMatchPostsRequest): Promise<ReturnData<GetMatchPostsResponse>> => {
-    try {
-        const { data }: { data: GetMatchPostsResult } = await fetcher(
-            {
-                data: {
-                    query: GET_MATCH_POST_QUERY,
-                    variables: {
-                        current_page: currentPage,
-                        page_size: pageSize,
-                        match_id: matchId
-                    }
-                }
-            },
-            { cache: 'no-store' }
-        );
+// export interface GetMatchPostsResponse {
+//     list: RecommendPost[];
+//     total: number;
+// }
 
-        GetMatchPostsResultSchema.parse(data);
+// /**
+//  * 取得指定賽事文章
+//  * - params : {@link GetMatchPostsRequest}
+//  * - returns : {@link GetMatchPostsResponse}
+//  * - {@link GetMailMemberResponse}
+//  */
+// export const getMatchPosts = async ({
+//     currentPage,
+//     pageSize,
+//     matchId
+// }: GetMatchPostsRequest): Promise<ReturnData<GetMatchPostsResponse>> => {
+//     try {
+//         const { data }: { data: GetMatchPostsResult } = await fetcher(
+//             {
+//                 data: {
+//                     query: GET_MATCH_POST_QUERY,
+//                     variables: {
+//                         current_page: currentPage,
+//                         page_size: pageSize,
+//                         match_id: matchId
+//                     }
+//                 }
+//             },
+//             { cache: 'no-store' }
+//         );
 
-        return {
-            success: true,
-            data: {
-                list: data.getMatchPosts.posts,
-                total: data.getMatchPosts.total_page_count
-            }
-        };
-    } catch (error) {
-        return handleApiError(error);
-    }
-};
+//         GetMatchPostsResultSchema.parse(data);
+
+//         return {
+//             success: true,
+//             data: {
+//                 list: data.getMatchPosts.posts,
+//                 total: data.getMatchPosts.total_page_count
+//             }
+//         };
+//     } catch (error) {
+//         return handleApiError(error);
+//     }
+// };
 
 export interface GetPostDetailRequest {
     postId: number;
 }
-
-const TagSchema = z.object({
-    id: z.number(),
-    tagName: z.string(),
-    note: z.string(),
-    colorCode: z.string(),
-    weekHitRecentTen: z.number(),
-    weekMaxAccurateStreak: z.number(),
-    weekHitMatches: z.number(),
-    weekTotalMatches: z.number(),
-    weekHitRate: z.number(),
-    weekHitRateDisplay: z.string(),
-    weekRanking: z.number(),
-    weekHistoryMaxWinStreak: z.number(),
-    monthHitRecentTen: z.number(),
-    monthMaxAccurateStreak: z.number(),
-    monthHitMatches: z.number(),
-    monthTotalMatches: z.number(),
-    monthHitRate: z.number(),
-    monthHitRateDisplay: z.string(),
-    monthRanking: z.number(),
-    monthHistoryMaxWinStreak: z.number(),
-    quarterHitRecentTen: z.number(),
-    quarterMaxAccurateStreak: z.number(),
-    quarterHitMatches: z.number(),
-    quarterTotalMatches: z.number(),
-    quarterHitRate: z.number(),
-    quarterHitRateDisplay: z.string(),
-    quarterRanking: z.number(),
-    quarterHistoryMaxWinStreak: z.number(),
-    winHitRecentTen: z.number(),
-    winMaxAccurateStreak: z.number(),
-    winHitMatches: z.number(),
-    winTotalMatches: z.number(),
-    winHitRate: z.number(),
-    winHitRateDisplay: z.string(),
-    winRanking: z.number(),
-    winHistoryMaxWinStreak: z.number()
-});
 
 const TeamInfoSchema = z.object({
     id: z.number(),
@@ -325,7 +335,7 @@ type GetPostDetailResult = z.infer<typeof GetPostDetailResultSchema>;
  * 取得推薦文章詳情
  * - params : {@link GetPostDetailRequest}
  * - returns : {@link GetPostDetailResponse}
-= */
+ */
 export const getPostDetail = async ({
     postId
 }: GetPostDetailRequest): Promise<ReturnData<GetPostDetailResponse>> => {
@@ -406,6 +416,79 @@ export const getMentorList = async ({
         return {
             success: true,
             data: data.getMentorList.list
+        };
+    } catch (error) {
+        return handleApiError(error);
+    }
+};
+
+export interface GetPostListRequest {
+    memberId: number;
+    postFilter:
+        | 'league'
+        | 'match'
+        | 'mentor'
+        | 'all'
+        | 'weekly'
+        | 'monthly'
+        | 'quarterly'
+        | 'winStreak';
+    filterId: 'leagueId' | 'matchId' | 'mentorId';
+    currentPage: number;
+    pageSize: number;
+}
+
+const GetPostListSchema = z.object({
+    posts: z.array(RecommendPostSchema),
+    totalPage: z.number(),
+    totalArticle: z.number()
+});
+
+const GetPostListResultSchema = z.object({
+    getPostList: GetPostListSchema
+});
+
+export type GetPostListResult = z.infer<typeof GetPostListResultSchema>;
+
+export type GetPostListResponse = z.infer<typeof GetPostListSchema>;
+
+/**
+ * 專家-取得文章列表
+ * - params - {@link GetPostListResult}
+ * - returns - {@link GetPostListResponse}
+ * - {@link RecommendPost}
+ */
+export const getPostList = async ({
+    memberId,
+    postFilter,
+    filterId,
+    currentPage,
+    pageSize
+}: GetPostListRequest): Promise<ReturnData<GetPostListResponse>> => {
+    try {
+        const { data }: { data: GetPostListResult } = await fetcher(
+            {
+                data: {
+                    query: GET_POST_LIST_QUERY,
+                    variables: {
+                        input: {
+                            memberId,
+                            postFilter,
+                            filterId,
+                            currentPage,
+                            pageSize
+                        }
+                    }
+                }
+            },
+            { cache: 'no-store' }
+        );
+
+        GetPostListResultSchema.parse(data);
+
+        return {
+            success: true,
+            data: data.getPostList
         };
     } catch (error) {
         return handleApiError(error);
