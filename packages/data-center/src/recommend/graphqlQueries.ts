@@ -132,7 +132,7 @@ export const GET_MATCH_POST_QUERY = `
 
 export const GET_POST_DETAIL_QUERY = `
     query getPostDetail($input: PostDetailInput!) {
-        getPostDetail(input: { postId: 1 }) {
+        getPostDetail(input: $input) {
             id
             matchId
             leagueId
