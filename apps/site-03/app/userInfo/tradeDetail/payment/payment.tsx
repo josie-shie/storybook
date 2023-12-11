@@ -1,15 +1,11 @@
 import Image from 'next/image';
+import { type PaymentData } from '../tradeDetailStore';
 import style from './payment.module.scss';
 import incomeIcon from './img/income.png';
 import paymentIcon from './img/payment.png';
 
 interface PropsType {
-    data: {
-        type: number;
-        time: string;
-        result: number;
-        overage: number;
-    };
+    data: PaymentData;
 }
 
 const typeMap = {

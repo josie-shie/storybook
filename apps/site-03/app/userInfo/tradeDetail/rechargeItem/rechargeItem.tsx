@@ -1,19 +1,12 @@
 import Image from 'next/image';
+import { type RechargeData } from '../tradeDetailStore';
 import style from './rechargeItem.module.scss';
 import recharge from './img/recharge.png';
 // import payment from './img/payment.png';
 // import income from './img/income.png';
 
 interface PropsType {
-    data: {
-        currency: string;
-        exchangeRate: number;
-        time: string;
-        tradeNumber: string;
-        result: number;
-        status: 'inProgress' | 'fail' | 'completed';
-        overage: number;
-    };
+    data: RechargeData;
 }
 
 const statusStyleMap = {
