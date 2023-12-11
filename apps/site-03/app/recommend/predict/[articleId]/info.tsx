@@ -15,13 +15,16 @@ function Info() {
     return (
         <section className={style.info}>
             <div className={style.detail}>
-                <Avatar borderColor="#fff" size={54} />
+                <Avatar borderColor="#fff" size={54} src={master.mentorImage} />
                 <div className={style.content}>
                     <div className={style.top}>
                         <span className={style.name}>{master.mentorName}</span>
                     </div>
                     <div>
-                        <Tag icon={<IconFlame size={10} />} text={`${master.hotStreak}連紅`} />
+                        <Tag
+                            icon={<IconFlame size={10} />}
+                            text={`${master.tag.winMaxAccurateStreak} 連紅`}
+                        />
                         {master.tag.quarterRanking > 0 && (
                             <Tag
                                 background="#fff"
@@ -47,7 +50,9 @@ function Info() {
                     <div className={style.bottom}>
                         {master.fansNumber > 0 && <span>粉絲: {master.fansNumber} </span>}
                         {master.unlockNumber > 0 && <span>解鎖: {master.unlockNumber} </span>}
-                        {master.winPercent > 0 && <span>近一季猜球胜率: {master.winPercent}%</span>}
+                        {master.tag.quarterHitRate > 0 && (
+                            <span>近一季猜球胜率: {master.tag.quarterHitRate}%</span>
+                        )}
                     </div>
                 </div>
             </div>

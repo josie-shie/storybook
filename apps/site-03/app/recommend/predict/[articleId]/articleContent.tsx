@@ -74,11 +74,13 @@ function ArticleContent({ params }: { params: { articleId: string } }) {
         return result[value];
     };
 
-    const adjustHandicap = (val: number) => {
+    const adjustHandicap = (val: number, type: string) => {
         if (article.playType === 'HOMEAWAY') {
-            return val > 0 ? '-' : '+';
+            if (type === 'home') {
+                return val > 0 ? '-' : '+';
+            }
+            return val > 0 ? '+' : '-';
         }
-        return val > 0 ? '+' : '-';
     };
 
     const goSubscribe = () => {
@@ -162,7 +164,8 @@ function ArticleContent({ params }: { params: { articleId: string } }) {
                                             {adjustHandicap(
                                                 article.playType === 'HOMEAWAY'
                                                     ? article.odds.handicap
-                                                    : article.odds.overUnder
+                                                    : article.odds.overUnder,
+                                                'home'
                                             )}
                                             {convertHandicap(
                                                 article.playType === 'HOMEAWAY'
@@ -203,7 +206,8 @@ function ArticleContent({ params }: { params: { articleId: string } }) {
                                             {adjustHandicap(
                                                 article.playType === 'HOMEAWAY'
                                                     ? article.odds.handicap
-                                                    : article.odds.overUnder
+                                                    : article.odds.overUnder,
+                                                'away'
                                             )}
                                             {convertHandicap(
                                                 article.playType === 'HOMEAWAY'
