@@ -4,7 +4,7 @@ import { handleApiError } from '../common';
 import type { ReturnData } from '../common';
 import { GET_MATCH_POSTS_QUERY } from './graphqlQueries';
 
-export interface GetMatchPostsRequest {
+export interface GetPredictionMatchPostsRequest {
     currentPage: number;
     pageSize: number;
     matchId: number;
@@ -61,7 +61,7 @@ const PostsInfoPostResultSchema = z.object({
 
 type OriginalPostsInfoPostResult = z.infer<typeof PostsInfoPostResultSchema>;
 
-export type GetMatchPost = Omit<
+export type GetPredictionMatchPost = Omit<
     OriginalPostsInfoPostResult,
     'matchTime' | 'createdAt' | 'updatedAt'
 > & {
@@ -70,28 +70,28 @@ export type GetMatchPost = Omit<
     updatedAt: string;
 };
 
-export type GetMatchPostsResponse = GetMatchPost[];
+export type GetPredictionMatchPostsResponse = GetPredictionMatchPost[];
 
-const GetMatchPostsResultSchema = z.object({
+const GetPredictionMatchPostsResultSchema = z.object({
     getMatchPosts: z.object({
         posts: z.array(PostsInfoPostResultSchema),
         total_page_count: z.number()
     })
 });
 
-type GetMatchPostsResult = z.infer<typeof GetMatchPostsResultSchema>;
+type GetPredictionMatchPostsResult = z.infer<typeof GetPredictionMatchPostsResultSchema>;
 
 /**
  * 取得指定賽事預測(推薦)文章列表
- * - param : {@link GetMatchPostsRequest}
- * - returns : {@link GetMatchPostsResponse}
- * - {@link GetMatchPost}
+ * - param : {@link GetPredictionMatchPostsRequest}
+ * - returns : {@link GetPredictionMatchPostsResponse}
+ * - {@link GetPredictionMatchPost}
  */
-export const getMatchPosts = async (
-    input: GetMatchPostsRequest
-): Promise<ReturnData<GetMatchPostsResponse>> => {
+export const getPredictionMatchPosts = async (
+    input: GetPredictionMatchPostsRequest
+): Promise<ReturnData<GetPredictionMatchPostsResponse>> => {
     try {
-        const { data }: { data: GetMatchPostsResult } = await fetcher(
+        const { data }: { data: GetPredictionMatchPostsResult } = await fetcher(
             {
                 data: {
                     query: GET_MATCH_POSTS_QUERY,
@@ -107,10 +107,10 @@ export const getMatchPosts = async (
             { cache: 'no-store' }
         );
 
-        GetMatchPostsResultSchema.parse(data);
+        GetPredictionMatchPostsResultSchema.parse(data);
 
         const { posts } = data.getMatchPosts;
-        const formatDateTime: GetMatchPostsResponse = posts.map(item => ({
+        const formatDateTime: GetPredictionMatchPostsResponse = posts.map(item => ({
             ...item,
             matchTime: timestampToString(item.matchTime),
             createdAt: timestampToString(item.createdAt),
