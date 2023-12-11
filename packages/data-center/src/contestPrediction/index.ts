@@ -2,6 +2,7 @@ import { fetcher, timestampToString } from 'lib';
 import { z } from 'zod';
 import { handleApiError } from '../common';
 import type { ReturnData } from '../common';
+import { PredictedPlaySchema, PredictionResultSchema } from '../commonType';
 import { GET_MATCH_POSTS_QUERY } from './graphqlQueries';
 
 export interface GetMatchPostsRequest {
@@ -9,20 +10,6 @@ export interface GetMatchPostsRequest {
     pageSize: number;
     matchId: number;
 }
-
-const PredictedPlaySchema = z.union([
-    z.literal('HOME'),
-    z.literal('AWAY'),
-    z.literal('OVER'),
-    z.literal('UNDER')
-]);
-
-const PredictionResultSchema = z.union([
-    z.literal('NONE'),
-    z.literal('WIN'),
-    z.literal('LOSE'),
-    z.literal('DRAW')
-]);
 
 const PostsInfoPostResultSchema = z.object({
     id: z.number(),

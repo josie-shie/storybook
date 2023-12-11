@@ -2,6 +2,7 @@ import { fetcher } from 'lib';
 import { z } from 'zod';
 import { handleApiError } from '../common';
 import type { ReturnData } from '../common';
+import { PredictionResultSchema, PredictedPlaySchema } from '../commonType';
 import {
     GET_INDEX_POSTS_QUERY,
     GET_MENTOR_POSTS_QUERY,
@@ -34,20 +35,10 @@ const RecommendPostSchema = z.object({
     underOdds: z.number(),
     mentorId: z.number(),
     mentorName: z.string(),
-    predictedPlay: z.union([
-        z.literal('NONE'),
-        z.literal('WIN'),
-        z.literal('LOSE'),
-        z.literal('DRAW')
-    ]),
+    predictedPlay: PredictedPlaySchema,
     analysisTitle: z.string(),
     price: z.number(),
-    predictionResult: z.union([
-        z.literal('WIN'),
-        z.literal('LOSE'),
-        z.literal('DRAW'),
-        z.literal('NONE')
-    ]),
+    predictionResult: PredictionResultSchema,
     matchTime: z.number(),
     createdBy: z.number(),
     createdAt: z.number(),
@@ -309,22 +300,11 @@ const GetPostDetailSchema = z.object({
     mentorImage: z.string(),
     mentorLevel: z.number(),
     playType: z.union([z.literal('HOMEAWAY'), z.literal('OVERUNDER')]),
-    predictedPlay: z.union([
-        z.literal('HOME'),
-        z.literal('AWAY'),
-        z.literal('OVER'),
-        z.literal('UNDER'),
-        z.literal('LOCK')
-    ]),
+    predictedPlay: PredictedPlaySchema,
     analysisTitle: z.string(),
     analysisContent: z.string(),
     price: z.number(),
-    predictionResult: z.union([
-        z.literal('WIN'),
-        z.literal('LOSE'),
-        z.literal('DRAW'),
-        z.literal('NONE')
-    ]),
+    predictionResult: PredictionResultSchema,
     matchTime: z.number(),
     createdAt: z.number(),
     fansNumber: z.number(),
