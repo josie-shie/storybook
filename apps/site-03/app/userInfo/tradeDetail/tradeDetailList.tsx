@@ -10,7 +10,7 @@ function TradeDetailList() {
         <>
             {tradeDetailList.length > 0 ? (
                 tradeDetailList.map(item =>
-                    item.type === 'recharge' ? (
+                    item.tradeType === 'recharge' ? (
                         <RechargeItem data={item.data as RechargeData} key={item.id} />
                     ) : (
                         <Payment data={item.data as PaymentData} key={item.id} />
