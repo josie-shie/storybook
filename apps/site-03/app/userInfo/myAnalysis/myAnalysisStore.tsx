@@ -1,34 +1,20 @@
 import { initStore } from 'lib';
 import type { StoreWithSelectors } from 'lib';
-
-interface Article {
-    id: number;
-    name: string;
-    unlock: boolean;
-    unlockNumber: number;
-    hotStreak: number;
-    ranking: number;
-    title: string;
-    cupName: string;
-    cupTime: string;
-    homeTeam: string;
-    awayTeam: string;
-    postTime: string;
-}
+import type { GetUnlockedPostResponse } from 'data-center';
 
 interface InitState {
-    articleList: Article[];
+    articleList: GetUnlockedPostResponse;
 }
 
 interface ArticleState extends InitState {
-    setArticleList?: (articleList: Article[]) => void;
+    setArticleList: (articleList: GetUnlockedPostResponse) => void;
 }
 
 let useArticleStore: StoreWithSelectors<ArticleState>;
 
 const initialState = (set: (data: Partial<ArticleState>) => void) => ({
     articleList: [],
-    setArticleList: (articleList: Article[]) => {
+    setArticleList: (articleList: GetUnlockedPostResponse) => {
         set({ articleList });
     }
 });

@@ -14,8 +14,8 @@ import {
     UPDATE_MEMBER_INFO_MUTATION,
     GET_INVITATION_CODE_QUERY,
     GET_SUBSCRIPTION_QUERY,
-    SUBSCRIBE_PLAN_MUTATION,
-    GET_UNLOCKED_MUTATION
+    GET_UNLOCKED_QUERY,
+    SUBSCRIBE_PLAN_MUTATION
 } from './graphqlQueries';
 
 const RegisterResultSchema = z.object({
@@ -591,9 +591,9 @@ const GetUnlockedPostSchema = z.object({
     homeTeamName: z.string(),
     awayTeamId: z.number(),
     awayTeamName: z.string(),
-    matchTime: z.string(),
-    createdAt: z.string(),
-    predictStat: z.string(),
+    matchTime: z.number(),
+    createdAt: z.number(),
+    predictStat: z.number(),
     memberTags: z.array(MemberTagsSchema)
 });
 
@@ -623,7 +623,7 @@ export const getUnlockedPost = async ({
         const { data }: { data: GetUnlockedPostResult } = await fetcher(
             {
                 data: {
-                    query: GET_UNLOCKED_MUTATION,
+                    query: GET_UNLOCKED_QUERY,
                     variables: {
                         input: {
                             memberId

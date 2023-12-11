@@ -1,101 +1,61 @@
 'use client';
 import { useRouter } from 'next/navigation';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
+import { getUnlockedPost } from 'data-center';
 import backLeftArrowImg from '../img/backLeftArrow.png';
-import { creatArticleStore } from './components/articleItem/articleStore';
 import ArticleItem from './components/articleItem/articleItem';
 import style from './myAnalysis.module.scss';
+import { useArticleStore } from './myAnalysisStore';
+import { useUserStore } from '@/app/userStore';
+import NoData from '@/components/baseNoData/noData';
+import Loading from '@/components/loading/loading';
 
 function MyAnalysis() {
     const router = useRouter();
-    creatArticleStore({
-        articleList: [
-            {
-                id: 116,
-                name: '老萧聊球',
-                unlock: true,
-                unlockNumber: 5,
-                hotStreak: 9,
-                ranking: 10,
-                title: '【11连胜】格鲁吉亚vs西班牙，来看我的精心推荐吧',
-                cupName: '欧锦U20A',
-                cupTime: '09-05 16:45',
-                homeTeam: '德国U20A',
-                awayTeam: '斯洛文尼亚U20',
-                postTime: '17:45'
-            },
-            {
-                id: 563,
-                name: '老梁聊球',
-                unlock: true,
-                unlockNumber: 5,
-                hotStreak: 2,
-                ranking: 10,
-                title: '【7连胜】格鲁吉亚vs西班牙，来看我的精心推荐吧',
-                cupName: '欧锦U20A',
-                cupTime: '09-05 16:45',
-                homeTeam: '德国U20A',
-                awayTeam: '斯洛文尼亚U20',
-                postTime: '17:45'
-            },
-            {
-                id: 564,
-                name: '老梁聊球',
-                unlock: true,
-                unlockNumber: 5,
-                hotStreak: 2,
-                ranking: 10,
-                title: '【7连胜】格鲁吉亚vs西班牙，来看我的精心推荐吧',
-                cupName: '欧锦U20A',
-                cupTime: '09-05 16:45',
-                homeTeam: '德国U20A',
-                awayTeam: '斯洛文尼亚U20',
-                postTime: '17:45'
-            },
-            {
-                id: 565,
-                name: '老梁聊球',
-                unlock: true,
-                unlockNumber: 5,
-                hotStreak: 2,
-                ranking: 10,
-                title: '【7连胜】格鲁吉亚vs西班牙，来看我的精心推荐吧',
-                cupName: '欧锦U20A',
-                cupTime: '09-05 16:45',
-                homeTeam: '德国U20A',
-                awayTeam: '斯洛文尼亚U20',
-                postTime: '17:45'
-            },
-            {
-                id: 566,
-                name: '老梁聊球',
-                unlock: true,
-                unlockNumber: 5,
-                hotStreak: 2,
-                ranking: 10,
-                title: '【7连胜】格鲁吉亚vs西班牙，来看我的精心推荐吧',
-                cupName: '欧锦U20A',
-                cupTime: '09-05 16:45',
-                homeTeam: '德国U20A',
-                awayTeam: '斯洛文尼亚U20',
-                postTime: '17:45'
-            },
-            {
-                id: 567,
-                name: '老梁聊球',
-                unlock: true,
-                unlockNumber: 5,
-                hotStreak: 2,
-                ranking: 10,
-                title: '【7连胜】格鲁吉亚vs西班牙，来看我的精心推荐吧',
-                cupName: '欧锦U20A',
-                cupTime: '09-05 16:45',
-                homeTeam: '德国U20A',
-                awayTeam: '斯洛文尼亚U20',
-                postTime: '17:45'
+    const [isLoading, setIsLoading] = useState(true);
+    const userInfo = useUserStore.use.userInfo();
+    const articleList = useArticleStore.use.articleList();
+    const setArticleList = useArticleStore.use.setArticleList();
+
+    useEffect(() => {
+        const getUnlockedPostList = async () => {
+            setIsLoading(true);
+            const res = await getUnlockedPost({ memberId: userInfo.uid });
+            if (res.success) {
+                setArticleList(res.data);
             }
-        ]
-    });
+            setIsLoading(false);
+        };
+
+        if (userInfo.uid) {
+            void getUnlockedPostList();
+        }
+    }, [userInfo]);
+
+    const renderContent = () => {
+        if (isLoading) {
+            return (
+                <div className={style.main}>
+                    <Loading />
+                </div>
+            );
+        }
+
+        if (articleList.length > 0) {
+            <div className={style.main}>
+                {articleList.map(item => (
+                    <ArticleItem item={item} key={item.postId} />
+                ))}
+            </div>;
+        }
+
+        return (
+            <div className={style.main}>
+                <NoData />
+            </div>
+        );
+    };
 
     return (
         <>
@@ -115,10 +75,7 @@ function MyAnalysis() {
                     </div>
                 </div>
             </div>
-
-            <div className={style.main}>
-                <ArticleItem />
-            </div>
+            {renderContent()}
         </>
     );
 }

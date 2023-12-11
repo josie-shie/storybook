@@ -77,14 +77,29 @@ function MasterItem({ uid, item, onFollowToggle }: FocusProps) {
                 <div className={style.about}>
                     <div className={style.top}>
                         <span>{item.username}</span>
-                        {item.tags.winHistoryMaxWinStreak > 0 && (
+                        {item.tags.winHistoryMaxWinStreak > 3 && (
                             <Tag
                                 icon={<IconFlame size={10} />}
-                                text={`${item.tags.winHistoryMaxWinStreak}連紅`}
+                                text={`${item.tags.winHistoryMaxWinStreak}连红`}
                             />
                         )}
-                        {item.tags.monthRanking > 10 && (
-                            <Tag background="#4489FF" text={`月榜 ${item.tags.monthRanking}`} />
+                        {item.tags.weekHistoryMaxWinStreak > 3 && (
+                            <Tag
+                                background={item.tags.colorCode}
+                                text={`周榜 ${item.tags.weekHistoryMaxWinStreak}`}
+                            />
+                        )}
+                        {item.tags.monthHistoryMaxWinStreak > 3 && (
+                            <Tag
+                                background={item.tags.colorCode}
+                                text={`月榜 ${item.tags.monthHistoryMaxWinStreak}`}
+                            />
+                        )}
+                        {item.tags.quarterHistoryMaxWinStreak > 3 && (
+                            <Tag
+                                background={item.tags.colorCode}
+                                text={`季榜 ${item.tags.quarterHistoryMaxWinStreak}`}
+                            />
                         )}
                     </div>
                     <div className={style.bot}>

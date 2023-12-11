@@ -90,17 +90,8 @@ export const GET_SUBSCRIPTION_QUERY = `
     }
 `;
 
-export const SUBSCRIBE_PLAN_MUTATION = `
-    mutation subscribePlan($input: SubscribePlanInput!) {
-        subscribePlan(input: $input) {
-            planStartAt
-            planEndAt
-        }
-    }
-`;
-
-export const GET_UNLOCKED_MUTATION = `
-    mutation getUnlockedPost($input: SubscribePlanInput!) {
+export const GET_UNLOCKED_QUERY = `
+    query getUnlockedPost($input: GetUnlockedPostInput!) {
         getUnlockedPost(input: $input) {
             list {
                 postId
@@ -126,6 +117,15 @@ export const GET_UNLOCKED_MUTATION = `
                     ranking
                 }  
             }
+        }
+    }
+`;
+
+export const SUBSCRIBE_PLAN_MUTATION = `
+    mutation subscribePlan($input: SubscribePlanInput!) {
+        subscribePlan(input: $input) {
+            planStartAt
+            planEndAt
         }
     }
 `;
