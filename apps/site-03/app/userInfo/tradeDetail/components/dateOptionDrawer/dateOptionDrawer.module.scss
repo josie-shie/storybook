@@ -1,5 +1,5 @@
 .dateRangeDrawer {
-    height: 30vh;
+    height: 40vh;
     padding: 0 16px 32px;
 
     .title {
@@ -19,6 +19,11 @@
         .filterButton {
             border: 1px solid #4489ff;
             border-radius: 8px;
+        }
+
+        .active {
+            background: #4489ff;
+            color: white;
         }
     }
 }
