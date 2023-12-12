@@ -147,21 +147,9 @@ export const GET_MEMBER_INDIVIDUAL_GUESS_QUERY = `
 export const GET_MEMBER_INDIVIDUAL_GUESS_MATCHES_QUERY = `
     query getMemberIndividualGuessMatches($input: GetMemberIndividualGuessMatchesInput!){
         getMemberIndividualGuessMatches(input: $input) {
-            all {
-                guessType
-                guessMatchList
-                pagination
-            }
-            handicap {
-                guessType
-                guessMatchList
-                pagination
-            }
-            overUnder {
-                guessType
-                guessMatchList
-                pagination
-            }
+            guessType
+            guessMatchList
+            pagination
         }
     }
 `;
