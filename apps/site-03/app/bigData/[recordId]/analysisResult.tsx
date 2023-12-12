@@ -5,35 +5,26 @@ import type { ReactNode } from 'react';
 import { timestampToString } from 'lib';
 import style from './dashboard.module.scss';
 import Handicap from './(dashboard)/handicap/handicap';
-import { createAnalysisResultStore } from './analysisResultStore';
+import { createAnalysisResultStore, useAnalyticsResultStore } from './analysisResultStore';
 import type { AnalysisResult, BigDataRecordListResponse } from './analysisResultStore';
 import { creatMatchFilterStore } from './matchFilterStore';
+import ContestDrawerList from './components/contestDrawerList/contestDrawerList';
 import HeaderTitleFilter from '@/components/header/headerTitleFilter';
 
-function AnalysisResult({
+function ResultContent({
     children,
-    analysisData,
-    recordList
+    recordData
 }: {
     children: ReactNode;
-    analysisData: AnalysisResult;
-    recordList: BigDataRecordListResponse[];
+    recordData: BigDataRecordListResponse | undefined;
 }) {
     const route = usePathname().split('/');
     const router = useRouter();
     const params = useParams();
-    const recordId = params.recordId;
-    const recordData = recordList.find(item => item.recordId.toString() === recordId);
-
-    createAnalysisResultStore({
-        analysisResultData: analysisData,
-        recordList,
-        recordData: recordData || ({} as BigDataRecordListResponse)
-    });
-    creatMatchFilterStore({
-        contestList: [],
-        contestInfo: {}
-    });
+    const showContestDrawer = useAnalyticsResultStore.use.showContestDrawer();
+    const setShowContestDrawer = useAnalyticsResultStore.use.setShowContestDrawer();
+    const selectedResult = useAnalyticsResultStore.use.selectedResult();
+    const contestList = useAnalyticsResultStore.use.contestList();
 
     const tabStyle = {
         gap: 4,
@@ -133,8 +124,45 @@ function AnalysisResult({
                     })}
                 </Tabs>
             </div>
+            <ContestDrawerList
+                isOpen={showContestDrawer}
+                matchList={contestList}
+                onClose={() => {
+                    setShowContestDrawer(false);
+                }}
+                onOpen={() => {
+                    setShowContestDrawer(true);
+                }}
+                selectedResult={selectedResult}
+            />
         </>
     );
+}
+
+function AnalysisResult({
+    children,
+    analysisData,
+    recordList
+}: {
+    children: ReactNode;
+    analysisData: AnalysisResult;
+    recordList: BigDataRecordListResponse[];
+}) {
+    const params = useParams();
+    const recordId = params.recordId;
+    const recordData = recordList.find(item => item.recordId.toString() === recordId);
+
+    createAnalysisResultStore({
+        analysisResultData: analysisData,
+        recordList,
+        recordData: recordData || ({} as BigDataRecordListResponse)
+    });
+    creatMatchFilterStore({
+        contestList: [],
+        contestInfo: {}
+    });
+
+    return <ResultContent recordData={recordData}>{children}</ResultContent>;
 }
 
 export default AnalysisResult;

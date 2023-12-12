@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import type { Match } from '../../analysisResultStore';
-import MatchFilterDrawer from '../../components/matchFilterDrawer/matchFilterDrawer';
+import MatchFilterDrawer from '../matchFilterDrawer/matchFilterDrawer';
 import { useMatchFilterStore } from '../../matchFilterStore';
 import style from './contestDrawerList.module.scss';
 import iconFilter from './img/filterIcon.png';

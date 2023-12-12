@@ -2,6 +2,7 @@ import 'dayjs/locale/zh-cn';
 import { initStore, timestampToString } from 'lib';
 import type { StoreWithSelectors } from 'lib';
 import { getISOWeek, parseISO } from 'date-fns';
+import type { GetAiAnalysisContestListResponse } from 'data-center';
 
 export interface Match {
     startTime: number;
@@ -164,6 +165,12 @@ interface InitState {
 }
 
 interface AnalysisResultState extends InitState {
+    showContestDrawer: boolean;
+    setShowContestDrawer: (showContestDrawer: boolean) => void;
+    contestList: GetAiAnalysisContestListResponse;
+    setContestList: (contestList: GetAiAnalysisContestListResponse) => void;
+    selectedResult: { type: string; odds: string };
+    setSelectedResult: (selectedResult: { type: string; odds: string }) => void;
     handicapEchart: HandicapEchartType;
     setAnalysisResultData: (analysisResultData: AnalysisResult) => void;
     setRecordData: (recordData: BigDataRecordListResponse) => void;
@@ -195,12 +202,12 @@ const initialState = (
             };
         });
     },
-    matchList: [],
-    setMatchList: (matchList: Match[]) => {
+    contestList: [],
+    setContestList: (contestList: GetAiAnalysisContestListResponse) => {
         set(state => {
             return {
                 ...state,
-                matchList
+                contestList
             };
         });
     },
@@ -492,6 +499,24 @@ const initialState = (
             return {
                 ...state,
                 analysisResultData
+            };
+        });
+    },
+    showContestDrawer: false,
+    setShowContestDrawer: (showContestDrawer: boolean) => {
+        set(state => {
+            return {
+                ...state,
+                showContestDrawer
+            };
+        });
+    },
+    selectedResult: { type: '', odds: '' },
+    setSelectedResult: (selectedResult: { type: string; odds: string }) => {
+        set(state => {
+            return {
+                ...state,
+                selectedResult
             };
         });
     }
