@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { timestampToString, timestampToMonthDay } from 'lib';
+import Link from 'next/link';
 import style from './recommendationList.module.scss';
 import Star from './img/star.png';
 import { useArticleStore } from './articleStore';
@@ -16,11 +17,16 @@ function RecommendationItem() {
         };
         return list[type];
     };
+
     return (
         <>
             {recommendationList.map(item => {
                 return (
-                    <section className={style.item} key={item.id}>
+                    <Link
+                        className={style.item}
+                        href={`/recommend/predict/${item.id}`}
+                        key={item.id}
+                    >
                         <div className={style.left}>
                             <div className={style.time}>
                                 发表于今天 {timestampToMonthDay(item.createdAt)}
@@ -60,7 +66,7 @@ function RecommendationItem() {
                                 <div className={style.unlockMember}>已解鎖</div>
                             )}
                         </div>
-                    </section>
+                    </Link>
                 );
             })}
         </>

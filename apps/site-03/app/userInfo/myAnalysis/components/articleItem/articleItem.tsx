@@ -1,20 +1,53 @@
 'use client';
-// import { IconFlame } from '@tabler/icons-react';
+import { IconFlame } from '@tabler/icons-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback } from 'react';
 import { timestampToString } from 'lib';
 import Image from 'next/image';
 import style from './articleItem.module.scss';
-// import Tag from '@/components/tag/tag';
 import Win from './img/win.png';
 import Lose from './img/lose.png';
 import Draw from './img/draw.png';
+import Tag from '@/components/tag/tag';
 import Avatar from '@/components/avatar/avatar';
 
-interface MemberTags {
-    memberId: number;
-    type: number;
-    ranking: number;
+interface Tags {
+    id: number;
+    tagName: string;
+    note: string;
+    colorCode: string;
+    weekHitRecentTen: number;
+    weekMaxAccurateStreak: number;
+    weekHitMatches: number;
+    weekTotalMatches: number;
+    weekHitRate: number;
+    weekHitRateDisplay: string;
+    weekRanking: number;
+    weekHistoryMaxWinStreak: number;
+    monthHitRecentTen: number;
+    monthMaxAccurateStreak: number;
+    monthHitMatches: number;
+    monthTotalMatches: number;
+    monthHitRate: number;
+    monthHitRateDisplay: string;
+    monthRanking: number;
+    monthHistoryMaxWinStreak: number;
+    quarterHitRecentTen: number;
+    quarterMaxAccurateStreak: number;
+    quarterHitMatches: number;
+    quarterTotalMatches: number;
+    quarterHitRate: number;
+    quarterHitRateDisplay: string;
+    quarterRanking: number;
+    quarterHistoryMaxWinStreak: number;
+    winHitRecentTen: number;
+    winMaxAccurateStreak: number;
+    winHitMatches: number;
+    winTotalMatches: number;
+    winHitRate: number;
+    winHitRateDisplay: string;
+    winRanking: number;
+    winHistoryMaxWinStreak: number;
 }
 
 interface GetUnlockPostProps {
@@ -36,7 +69,7 @@ interface GetUnlockPostProps {
         matchTime: number;
         createdAt: number;
         predictStat: number;
-        memberTags: MemberTags[];
+        memberTags: Tags;
     };
 }
 
@@ -82,30 +115,30 @@ function ArticleItem({ item }: GetUnlockPostProps) {
                 <div className={style.userInfo}>
                     <div className={style.userName}>{item.mentorName}</div>
                     {/* 等後端補上參數後使用不然會報錯 */}
-                    {/* {item.tags.winHistoryMaxWinStreak > 3 && (
-                            <Tag
-                                icon={<IconFlame size={10} />}
-                                text={`${item.tags.winHistoryMaxWinStreak}连红`}
-                            />
-                        )}
-                        {item.tags.weekHistoryMaxWinStreak > 3 && (
-                            <Tag
-                                background={item.tags.colorCode}
-                                text={`周榜 ${item.tags.weekHistoryMaxWinStreak}`}
-                            />
-                        )}
-                        {item.tags.monthHistoryMaxWinStreak > 3 && (
-                            <Tag
-                                background={item.tags.colorCode}
-                                text={`月榜 ${item.tags.monthHistoryMaxWinStreak}`}
-                            />
-                        )}
-                        {item.tags.quarterHistoryMaxWinStreak > 3 && (
-                            <Tag
-                                background={item.tags.colorCode}
-                                text={`季榜 ${item.tags.quarterHistoryMaxWinStreak}`}
-                            />
-                        )} */}
+                    {item.memberTags.winHistoryMaxWinStreak > 3 && (
+                        <Tag
+                            icon={<IconFlame size={10} />}
+                            text={`${item.memberTags.winHistoryMaxWinStreak}连红`}
+                        />
+                    )}
+                    {item.memberTags.weekHistoryMaxWinStreak > 3 && (
+                        <Tag
+                            background={item.memberTags.colorCode}
+                            text={`周榜 ${item.memberTags.weekHistoryMaxWinStreak}`}
+                        />
+                    )}
+                    {item.memberTags.monthHistoryMaxWinStreak > 3 && (
+                        <Tag
+                            background={item.memberTags.colorCode}
+                            text={`月榜 ${item.memberTags.monthHistoryMaxWinStreak}`}
+                        />
+                    )}
+                    {item.memberTags.quarterHistoryMaxWinStreak > 3 && (
+                        <Tag
+                            background={item.memberTags.colorCode}
+                            text={`季榜 ${item.memberTags.quarterHistoryMaxWinStreak}`}
+                        />
+                    )}
                 </div>
                 <div className={style.unlockStatus}>
                     <span className={style.unlocked}>已解鎖</span>

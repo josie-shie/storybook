@@ -11,3 +11,4 @@ export * from './src/account';
 export * from './src/guess';
 export * from './src/aiAnalysis';
 export * from './src/recommend';
+export type { Tag, TagSchema } from './src/commonType';
