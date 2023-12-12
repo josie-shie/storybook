@@ -6,18 +6,20 @@ export type TradeTypeOption = 'all' | 'deposit' | 'inCome' | 'expend';
 export interface RechargeData {
     currency: string;
     exchangeRate: number;
-    time: number;
-    tradeNumber: string;
-    result: number;
-    status: 'inProgress' | 'fail' | 'completed';
-    overage: number;
+    changeTypeDisplayName: string;
+    createdAt: number;
+    rechargeId: string;
+    amountOfChange: number;
+    rechargeStatus: 'padding' | 'fail' | 'succes';
+    balanceAfter: number;
 }
 
 export interface PaymentData {
     type: number;
-    time: number;
-    result: number;
-    overage: number;
+    changeTypeDisplayName: string;
+    createdAt: number;
+    amountOfChange: number;
+    balanceAfter: number;
 }
 
 interface OptionType {
@@ -27,7 +29,7 @@ interface OptionType {
 
 export interface TradeDetailItem {
     id: number;
-    tradeType: Omit<TradeTypeOption, 'all'>;
+    changeTypeCategory: Omit<TradeTypeOption, 'all'>;
     data: RechargeData | PaymentData;
 }
 

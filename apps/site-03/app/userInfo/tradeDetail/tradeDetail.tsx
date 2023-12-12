@@ -57,28 +57,30 @@ function TradeDetail() {
         return [
             {
                 id: 111,
-                tradeType: type,
+                changeTypeCategory: type,
                 data: {
+                    changeTypeDisplayName: '充值-男模會館大禮包',
                     currency: 'USDT',
                     exchangeRate: 2345,
-                    time: end,
-                    tradeNumber: '2SFJIJLEPQHV666',
-                    result: 1000,
-                    status: 'completed',
-                    overage: 2200
+                    createdAt: start,
+                    rechargeId: '2SFJIJLEPQHV666',
+                    amountOfChange: 1000,
+                    rechargeStatus: 'succes',
+                    balanceAfter: 2200
                 }
             },
             {
                 id: 222,
-                tradeType: type,
+                changeTypeCategory: type,
                 data: {
+                    changeTypeDisplayName: '充值-包月訂閱',
                     currency: 'USDT',
                     exchangeRate: 2345,
-                    time: start,
-                    tradeNumber: '7SFJIJLEPQHV666',
-                    result: 1000,
-                    status: 'completed',
-                    overage: 2200
+                    createdAt: end,
+                    rechargeId: '7SFJIJLEPQHV666',
+                    amountOfChange: 1000,
+                    rechargeStatus: 'padding',
+                    balanceAfter: 2200
                 }
             }
         ];

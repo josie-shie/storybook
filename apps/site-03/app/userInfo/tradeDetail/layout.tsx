@@ -7,81 +7,88 @@ function TardeLayout({ children }: { children: ReactNode }) {
         tradeDetailList: [
             {
                 id: 111,
-                tradeType: 'deposit',
+                changeTypeCategory: 'recharge',
                 data: {
+                    changeTypeDisplayName: '充值-男模會館大禮包',
                     currency: 'USDT',
                     exchangeRate: 2345,
-                    time: 444444444,
-                    tradeNumber: '2SFJIJLEPQHV666',
-                    result: 1000,
-                    status: 'completed',
-                    overage: 2200
+                    createdAt: 12345678,
+                    rechargeId: '2SFJIJLEPQHV666',
+                    amountOfChange: 1000,
+                    rechargeStatus: 'succes',
+                    balanceAfter: 2200
                 }
             },
             {
                 id: 222,
-                tradeType: 'inCome',
+                changeTypeCategory: 'recharge',
                 data: {
+                    changeTypeDisplayName: '充值-包月訂閱',
                     currency: 'USDT',
                     exchangeRate: 2345,
-                    time: 444444444,
-                    tradeNumber: '7SFJIJLEPQHV666',
-                    result: 1000,
-                    status: 'inProgress',
-                    overage: 2200
+                    createdAt: 12345678,
+                    rechargeId: '7SFJIJLEPQHV666',
+                    amountOfChange: 1000,
+                    rechargeStatus: 'padding',
+                    balanceAfter: 2200
                 }
             },
             {
                 id: 333,
-                tradeType: 'expend',
+                changeTypeCategory: 'recharge',
                 data: {
+                    changeTypeDisplayName: '充值-男模會館大禮包',
                     currency: 'USDT',
                     exchangeRate: 2345,
-                    time: 444444444,
-                    tradeNumber: '0SFJIJLEPQHV666',
-                    result: 1000,
-                    status: 'fail',
-                    overage: 2200
+                    createdAt: 12345678,
+                    rechargeId: '0SFJIJLEPQHV666',
+                    amountOfChange: 1000,
+                    rechargeStatus: 'fail',
+                    balanceAfter: 2200
                 }
             },
             {
                 id: 444,
-                tradeType: 'deposit',
+                changeTypeCategory: 'payment',
                 data: {
+                    changeTypeDisplayName: '支付-包月女郎',
                     type: 1,
-                    time: 444444444,
-                    result: -200,
-                    overage: 800
+                    createdAt: 12345678,
+                    amountOfChange: -200,
+                    balanceAfter: 800
                 }
             },
             {
                 id: 555,
-                tradeType: 'inCome',
+                changeTypeCategory: 'payment',
                 data: {
+                    changeTypeDisplayName: '支付-解锁高手分布',
                     type: 2,
-                    time: 444444444,
-                    result: -200,
-                    overage: 800
+                    createdAt: 12345678,
+                    amountOfChange: -200,
+                    balanceAfter: 800
                 }
             },
             {
                 id: 666,
-                tradeType: 'expend',
+                changeTypeCategory: 'income',
                 data: {
+                    changeTypeDisplayName: '獎勵-你是貓奴好棒',
                     type: 3,
-                    time: 444444444,
-                    result: 200,
-                    overage: 800
+                    createdAt: 12345678,
+                    amountOfChange: 200,
+                    balanceAfter: 800
                 }
             },
             {
                 id: 777,
-                tradeType: 'income',
+                changeTypeCategory: 'income',
                 data: {
+                    changeTypeDisplayName: '獎勵-手鏟貓砂好棒',
                     type: 4,
-                    time: 444444444,
-                    result: 100,
-                    overage: 800
+                    createdAt: 12345678,
+                    amountOfChange: 100,
+                    balanceAfter: 800
                 }
             }
         ]
