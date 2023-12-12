@@ -122,11 +122,43 @@ export const GET_UNLOCKED_QUERY = `
                 awayTeamName
                 matchTime
                 createdAt
-                predictStat
                 memberTags {
-                    memberId
-                    type
-                    ranking
+                    id
+                    tagName
+                    note
+                    colorCode
+                    weekHitRecentTen
+                    weekMaxAccurateStreak
+                    weekHitMatches
+                    weekTotalMatches
+                    weekHitRate
+                    weekHitRateDisplay
+                    weekRanking
+                    weekHistoryMaxWinStreak
+                    monthHitRecentTen
+                    monthMaxAccurateStreak
+                    monthHitMatches
+                    monthTotalMatches
+                    monthHitRate
+                    monthHitRateDisplay
+                    monthRanking
+                    monthHistoryMaxWinStreak
+                    quarterHitRecentTen
+                    quarterMaxAccurateStreak
+                    quarterHitMatches
+                    quarterTotalMatches
+                    quarterHitRate
+                    quarterHitRateDisplay
+                    quarterRanking
+                    quarterHistoryMaxWinStreak
+                    winHitRecentTen
+                    winMaxAccurateStreak
+                    winHitMatches
+                    winTotalMatches
+                    winHitRate
+                    winHitRateDisplay
+                    winRanking
+                    winHistoryMaxWinStreak
                 }  
             }
         }
