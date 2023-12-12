@@ -529,42 +529,52 @@ export interface GetProGuessRequest {
     memberId: number;
 }
 
+const HighlightsSchema = z.object({
+    id: z.number(),
+    type: z.union([z.literal(0), z.literal(1), z.literal(2), z.literal(3)]),
+    //戰績標籤類別 0:週 1:月 2:季 3:連紅
+    value: z.number()
+});
+
 const ProGuessSchema = z.object({
     guessId: z.number(),
     memberId: z.number(),
     memberName: z.string(),
-    memberRankType: z.union([
-        z.literal('WINNINGSTREAK'),
-        z.literal('QUARTERLY'),
-        z.literal('MONTHLY'),
-        z.literal('WEEKLY')
-    ]),
-    memberRanking: z.number(),
-    records: z.union([z.literal('WIN'), z.literal('LOSE'), z.literal('DRAW'), z.literal('NONE')]),
+    avatarPath: z.number(),
+    highlights: z.array(HighlightsSchema),
+    records: z.array(PredictionResultSchema),
     predictedType: z.union([z.literal('HANDICAP'), z.literal('OVERUNDER')]),
     predictedPlay: PredictedPlaySchema,
     predictionResult: PredictionResultSchema
 });
 
 const GetProGuessResultSchema = z.object({
-    getProGuess: z.array(ProGuessSchema)
+    getProGuess: z.object({
+        proGuess: z.array(ProGuessSchema),
+        unlockPrice: z.number(),
+        freeUnlockChance: z.number()
+    })
 });
 
 type GetProGuessResult = z.infer<typeof GetProGuessResultSchema>;
 
 export type ProGuess = z.infer<typeof ProGuessSchema>;
-export type ProGuessResponse = ProGuess[];
+export interface GetProGuessResponse {
+    proGuess: ProGuess[];
+    unlockPrice: number;
+    freeUnlockChance: number;
+}
 
 /**
  * 取得高手方案
  * - params {@link GetProGuessRequest}
- * - returns {@link ProGuessResponse}
+ * - returns {@link GetProGuessResponse}
  * - {@link ProGuess}
  */
 export const getProGuess = async ({
     matchId,
     memberId
-}: GetProGuessRequest): Promise<ReturnData<ProGuessResponse>> => {
+}: GetProGuessRequest): Promise<ReturnData<GetProGuessResponse>> => {
     try {
         const { data }: { data: GetProGuessResult } = await fetcher(
             {
