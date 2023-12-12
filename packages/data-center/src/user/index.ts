@@ -15,8 +15,8 @@ import {
     UPDATE_MEMBER_INFO_MUTATION,
     GET_INVITATION_CODE_QUERY,
     GET_SUBSCRIPTION_QUERY,
+    GET_UNLOCKED_QUERY,
     SUBSCRIBE_PLAN_MUTATION,
-    GET_UNLOCKED_MUTATION,
     GET_INVITATION_ACTIVITY_REWARD_INFO_QUERY
 } from './graphqlQueries';
 
@@ -474,7 +474,7 @@ const ServicePlanSchema = z.object({
 export type ServicePlan = z.infer<typeof ServicePlanSchema>;
 
 const GetSubscriptionPlanSchema = z.object({
-    id: z.number(),
+    id: z.string(),
     name: z.string(),
     times: z.number(),
     cost: z.number(),
@@ -520,7 +520,7 @@ export const getSubscriptionPlanList = async (): Promise<
 
 export interface SubscribePlanRequest {
     memberId: number;
-    planId: number;
+    planId: string;
 }
 
 const SubscribePlanSchema = z.object({
@@ -593,9 +593,9 @@ const GetUnlockedPostSchema = z.object({
     homeTeamName: z.string(),
     awayTeamId: z.number(),
     awayTeamName: z.string(),
-    matchTime: z.string(),
-    createdAt: z.string(),
-    predictStat: z.string(),
+    matchTime: z.number(),
+    createdAt: z.number(),
+    predictStat: z.number(),
     memberTags: TagSchema
 });
 
@@ -625,7 +625,7 @@ export const getUnlockedPost = async ({
         const { data }: { data: GetUnlockedPostResult } = await fetcher(
             {
                 data: {
-                    query: GET_UNLOCKED_MUTATION,
+                    query: GET_UNLOCKED_QUERY,
                     variables: {
                         input: {
                             memberId

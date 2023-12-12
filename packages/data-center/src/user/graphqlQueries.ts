@@ -81,26 +81,29 @@ export const GET_SUBSCRIPTION_QUERY = `
               name
               times
               cost
-              masterDistribution
-              masterPlan
-              expertAnalysis
-              gamePathAnalysis
+              masterDistribution {
+                planType 
+                times
+              }
+              masterPlan {
+                planType
+                times
+              }
+              expertAnalysis {
+                planType
+                times
+              }
+              gamePathAnalysis {
+                planType
+                times
+              }
             }
         }
     }
 `;
 
-export const SUBSCRIBE_PLAN_MUTATION = `
-    mutation subscribePlan($input: SubscribePlanInput!) {
-        subscribePlan(input: $input) {
-            planStartAt
-            planEndAt
-        }
-    }
-`;
-
-export const GET_UNLOCKED_MUTATION = `
-    mutation getUnlockedPost($input: SubscribePlanInput!) {
+export const GET_UNLOCKED_QUERY = `
+    query getUnlockedPost($input: GetUnlockedPostInput!) {
         getUnlockedPost(input: $input) {
             list {
                 postId
@@ -119,13 +122,54 @@ export const GET_UNLOCKED_MUTATION = `
                 awayTeamName
                 matchTime
                 createdAt
-                predictStat
                 memberTags {
-                    memberId
-                    type
-                    ranking
+                    id
+                    tagName
+                    note
+                    colorCode
+                    weekHitRecentTen
+                    weekMaxAccurateStreak
+                    weekHitMatches
+                    weekTotalMatches
+                    weekHitRate
+                    weekHitRateDisplay
+                    weekRanking
+                    weekHistoryMaxWinStreak
+                    monthHitRecentTen
+                    monthMaxAccurateStreak
+                    monthHitMatches
+                    monthTotalMatches
+                    monthHitRate
+                    monthHitRateDisplay
+                    monthRanking
+                    monthHistoryMaxWinStreak
+                    quarterHitRecentTen
+                    quarterMaxAccurateStreak
+                    quarterHitMatches
+                    quarterTotalMatches
+                    quarterHitRate
+                    quarterHitRateDisplay
+                    quarterRanking
+                    quarterHistoryMaxWinStreak
+                    winHitRecentTen
+                    winMaxAccurateStreak
+                    winHitMatches
+                    winTotalMatches
+                    winHitRate
+                    winHitRateDisplay
+                    winRanking
+                    winHistoryMaxWinStreak
                 }  
             }
+        }
+    }
+`;
+
+export const SUBSCRIBE_PLAN_MUTATION = `
+    mutation subscribePlan($input: SubscribePlanInput!) {
+        subscribePlan(input: $input) {
+            planStartAt
+            planEndAt
         }
     }
 `;
