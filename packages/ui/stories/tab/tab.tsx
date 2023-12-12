@@ -357,7 +357,13 @@ function Tabs({
                         ) {
                             const tab = childrenArray[tabIndex] as React.ReactElement<{
                                 to?: string;
+                                value?: string;
                             }>;
+
+                            if (tab.props.value && onTabChange) {
+                                onTabChange(tab.props.value);
+                            }
+
                             if (tab.props.to) {
                                 const currentSearchParams = new URLSearchParams(
                                     window.location.search

@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { getAiAnalysisReport, getBigDataRecordList } from 'data-center';
-import BigData from './bigData';
+import AnalysisResult from './analysisResult';
 
 async function DetailLayout({
     children,
@@ -17,9 +17,9 @@ async function DetailLayout({
     }
 
     return (
-        <BigData analysisData={analysisData.data} recordList={recordList.data}>
+        <AnalysisResult analysisData={analysisData.data} recordList={recordList.data}>
             {children}
-        </BigData>
+        </AnalysisResult>
     );
 }
 

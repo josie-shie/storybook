@@ -5,18 +5,25 @@ import AnimationData from './animationData';
 import style from './layout.module.scss';
 import { creatDiscSelectStore } from './discSelectStore';
 import { creatMatchFilterStore } from './matchFilterStore';
+import { creatHandicapAnalysisStore } from './handicapAnalysisFormStore';
+import { creatHintsFormStore } from './hintsFormStore';
 import Footer from '@/components/footer/footer';
 import Header from '@/components/header/headerLogo';
 import Loading from '@/components/loading/loading';
 
 function Analysis({ children }: { children: ReactNode }) {
     creatDiscSelectStore({
-        handicapTips: [],
-        recordList: []
+        openNoramlDialog: false
     });
     creatMatchFilterStore({
         contestList: [],
         contestInfo: {}
+    });
+    creatHandicapAnalysisStore({
+        recordList: []
+    });
+    creatHintsFormStore({
+        handicapTips: []
     });
 
     const tabStyle = {

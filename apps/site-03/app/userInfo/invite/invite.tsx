@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { getInvitationCode } from 'data-center';
+import { getInvitationCode, getInvitationActivityRewardInfo } from 'data-center';
 import FullBg from '../img/fullbg.png';
 import backLeftArrowImg from '../img/backLeftArrow.png';
 import Friend from '../img/friend.png';
@@ -19,19 +19,28 @@ function Invite() {
     const totalCoins = useInviteStore.use.totalCoins();
     const inviteCode = useInviteStore.use.inviteCode();
     const setInviteCode = useInviteStore.use.setInviteCode();
+    const setInvitedCount = useInviteStore.use.setInvitedCount();
+    const setTotalCoins = useInviteStore.use.setTotalCoins();
 
     useEffect(() => {
         const getInviteCode = async () => {
             const res = await getInvitationCode();
-            if (!res.success) {
-                console.error(res.error);
-                return;
+            if (res.success) {
+                setInviteCode(res.data.invitation_code);
             }
-            setInviteCode(res.data.invitation_code);
+        };
+
+        const getRewardInfo = async () => {
+            const res = await getInvitationActivityRewardInfo();
+            if (res.success) {
+                setInvitedCount(res.data.inviterCount);
+                setTotalCoins(res.data.inviterReward);
+            }
         };
 
         void getInviteCode();
-    }, [setInviteCode]);
+        void getRewardInfo();
+    }, []);
 
     const coypLink = async (textToCopy: string) => {
         try {
@@ -52,7 +61,7 @@ function Invite() {
                                 alt=""
                                 height={24}
                                 onClick={() => {
-                                    router.back();
+                                    router.push('/userInfo');
                                 }}
                                 src={backLeftArrowImg}
                                 width={24}

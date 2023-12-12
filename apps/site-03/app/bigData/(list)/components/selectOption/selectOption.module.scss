@@ -1,0 +1,39 @@
+.selectOption {
+    width: 100%;
+
+    .title {
+        display: block;
+        font-size: 16px;
+        font-weight: 600;
+        color: #222;
+        margin-bottom: 8px;
+    }
+
+    .select {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        padding: 12px;
+        background: transparent;
+        border: 1px solid #d9d9d9;
+        border-radius: 8px;
+        font-size: 14px;
+        gap: 6px;
+
+        .selectTitle {
+            color: #757575;
+            margin-right: 10px;
+            font-weight: 400;
+            white-space: nowrap;
+        }
+
+        :global(.ui-select) {
+            flex: 1;
+            height: 28px;
+            font-weight: 400;
+            color: #757575;
+            background: #f3f3f3;
+            border-radius: 8px;
+        }
+    }
+}

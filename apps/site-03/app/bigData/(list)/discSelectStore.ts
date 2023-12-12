@@ -1,43 +1,12 @@
-import type { BigDataHintListResponse } from 'data-center';
 import { initStore } from 'lib';
 import type { StoreWithSelectors } from 'lib';
 
-interface Option {
-    label: string;
-    value: string;
-}
-
-interface Record {
-    recordId: number;
-    recordTime: number;
-    handicap: string;
-    odds: string;
-    overUnder: string;
-    startDate: number;
-    endDate: number;
-    state: number;
-}
-
 interface InitState {
-    handicapTips: BigDataHintListResponse;
-    recordList: Record[];
+    openNoramlDialog: boolean;
 }
 
 interface DiscSelectState extends InitState {
-    setHandicapTips: (handicapTips: BigDataHintListResponse) => void;
-    teamList: Option[];
-    handicapNumberList: Option[];
-    overUnderNumberList: Option[];
-    dateList: Option[];
-    playList: Option[];
-    hintsSelected: string;
-    setHintsSelected: (hintsSelected: string) => void;
-    timeAscending: boolean;
-    setTimeAscending: (timeAscending: boolean) => void;
-    handicapAscending: boolean;
-    setHandicapAscending: (handicapAscending: boolean) => void;
-    setRecordList: (recordList: Record[]) => void;
-    updateRecord: (recordId: number) => void;
+    setOpenNormalDialog: (openNoramlDialog: boolean) => void;
 }
 
 let useDiscSelectStore: StoreWithSelectors<DiscSelectState>;
@@ -45,190 +14,12 @@ let useDiscSelectStore: StoreWithSelectors<DiscSelectState>;
 const initialState = (
     set: (updater: (state: DiscSelectState) => Partial<DiscSelectState>) => void
 ) => ({
-    handicapTips: [],
-    setHandicapTips: (handicapTips: BigDataHintListResponse) => {
+    openNoramlDialog: false,
+    setOpenNormalDialog: (openNoramlDialog: boolean) => {
         set(state => {
-            return { ...state, handicapTips };
+            return { ...state, openNoramlDialog };
         });
-    },
-    hintsSelected: '',
-    setHintsSelected: (hintsSelected: string) => {
-        set(state => {
-            return { ...state, hintsSelected };
-        });
-    },
-    timeAscending: false,
-    setTimeAscending: (timeAscending: boolean) => {
-        set(state => {
-            return { ...state, timeAscending };
-        });
-    },
-    handicapAscending: false,
-    setHandicapAscending: (handicapAscending: boolean) => {
-        set(state => {
-            return { ...state, handicapAscending };
-        });
-    },
-    recordList: [],
-    setRecordList: (recordList: Record[]) => {
-        set(state => {
-            return { ...state, recordList };
-        });
-    },
-    updateRecord: (recordId: number) => {
-        set(prevState => {
-            const updatedRecordList = prevState.recordList.map(record => {
-                if (record.recordId === recordId) {
-                    return { ...record, state: 1 };
-                }
-                return record;
-            });
-
-            return { ...prevState, recordList: updatedRecordList };
-        });
-    },
-    teamList: [
-        {
-            label: '主',
-            value: 'home'
-        },
-        {
-            label: '客',
-            value: 'away'
-        },
-        {
-            label: '全部',
-            value: ''
-        }
-    ],
-    handicapNumberList: [
-        {
-            label: '0',
-            value: '0'
-        },
-        {
-            label: '0/0.5',
-            value: '0.25'
-        },
-        {
-            label: '0.5',
-            value: '0.5'
-        },
-        {
-            label: '0.5/1',
-            value: '0.75'
-        },
-        {
-            label: '1',
-            value: '1'
-        },
-        {
-            label: '1/1.5',
-            value: '1.25'
-        },
-        {
-            label: '1.5',
-            value: '1.5'
-        },
-        {
-            label: '1.5/2',
-            value: '1.75'
-        },
-        {
-            label: '2',
-            value: '2'
-        },
-        {
-            label: '2/2.5',
-            value: '2.25'
-        },
-        {
-            label: '2.5',
-            value: '2.5'
-        },
-        {
-            label: '2.5+',
-            value: '2.5+'
-        }
-    ],
-    overUnderNumberList: [
-        {
-            label: '2',
-            value: '2'
-        },
-        {
-            label: '2/2.5',
-            value: '2.25'
-        },
-        {
-            label: '2.5',
-            value: '2.5'
-        },
-        {
-            label: '2.5/3',
-            value: '2.75'
-        },
-        {
-            label: '3',
-            value: '3'
-        },
-        {
-            label: '3/3.5',
-            value: '3.25'
-        },
-        {
-            label: '3.5',
-            value: '3.5'
-        },
-        {
-            label: '3.5/4',
-            value: '3.75'
-        },
-        {
-            label: '4',
-            value: '4'
-        },
-        {
-            label: '4+',
-            value: '4+'
-        }
-    ],
-    dateList: [
-        {
-            label: '最近一週',
-            value: 'week'
-        },
-        {
-            label: '最近一月',
-            value: 'month'
-        },
-        {
-            label: '最近一季',
-            value: 'season'
-        },
-        {
-            label: '選擇時間區間',
-            value: 'setRange'
-        }
-    ],
-    playList: [
-        {
-            label: '全場大小球',
-            value: 'OVERUNDER'
-        },
-        {
-            label: '半場大小球',
-            value: 'OVERUNDERHALF'
-        },
-        {
-            label: '全場讓球',
-            value: 'HANDICAP'
-        },
-        {
-            label: '半場讓球',
-            value: 'HANDICAPHALF'
-        }
-    ]
+    }
 });
 
 const creatDiscSelectStore = (init: InitState) =>
