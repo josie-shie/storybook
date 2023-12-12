@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import { useRouter } from 'next/navigation';
 import VsBox from './vsBox';
 import MasterPlan from './masterPlan';
-import { creatGuessDetailStore } from './guessDetailStore';
+import { createGuessDetailStore } from './guessDetailStore';
 import Header from '@/components/header/headerTitleBack';
 import Footer from '@/components/footer/footer';
 
@@ -26,17 +26,17 @@ function GuessDetail({ backHistory }: { backHistory: boolean }) {
         }
     };
 
-    creatGuessDetailStore({
+    createGuessDetailStore({
         guessesLeft: 6,
         unlockTrend: false,
         detail: {
             leagueName: '歐錦U20A',
-            dateTime: '7-14 02:00',
+            dateTime: 1678880400,
             homeTeamLogo: '',
             homeTeamName: '泰国国立法政大学',
             awayTeamLogo: '',
             awayTeamName: '北曼谷學院',
-            participants: 1876,
+            participants: 200,
             guessHomeAway: 'none',
             guessBigSmall: 'none',
             home: 721,
@@ -45,11 +45,12 @@ function GuessDetail({ backHistory }: { backHistory: boolean }) {
             small: 355
         },
         highWinRateTrend: {
-            unlockPrice: 50,
-            trendHome: 176,
-            trendAway: 324,
-            trendBig: 262,
-            trendSmall: 185
+            home: 50,
+            away: 50,
+            over: 50,
+            under: 50,
+            enoughProData: false,
+            memberPermission: false
         },
         masterPlanList: [
             {
