@@ -2,17 +2,15 @@
 import { Tabs, Tab } from 'ui';
 import { useParams, usePathname, useRouter } from 'next/navigation';
 import type { ReactNode } from 'react';
-import { useState } from 'react';
 import { timestampToString } from 'lib';
 import style from './dashboard.module.scss';
 import Handicap from './(dashboard)/handicap/handicap';
 import { createAnalysisResultStore } from './analysisResultStore';
 import type { AnalysisResult, BigDataRecordListResponse } from './analysisResultStore';
 import { creatMatchFilterStore } from './matchFilterStore';
-import Filter from './components/filter/filter';
 import HeaderTitleFilter from '@/components/header/headerTitleFilter';
 
-function BigData({
+function AnalysisResult({
     children,
     analysisData,
     recordList
@@ -24,7 +22,6 @@ function BigData({
     const route = usePathname().split('/');
     const router = useRouter();
     const params = useParams();
-    const [showFilter, setShowFilter] = useState(false);
     const recordId = params.recordId;
     const recordData = recordList.find(item => item.recordId.toString() === recordId);
 
@@ -135,18 +132,9 @@ function BigData({
                         );
                     })}
                 </Tabs>
-                <Filter
-                    isOpen={showFilter}
-                    onClose={() => {
-                        setShowFilter(false);
-                    }}
-                    onOpen={() => {
-                        setShowFilter(true);
-                    }}
-                />
             </div>
         </>
     );
 }
 
-export default BigData;
+export default AnalysisResult;

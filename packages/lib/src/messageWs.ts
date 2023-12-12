@@ -31,6 +31,7 @@ export interface MessageResponse {
     correlationId?: string;
     roomId?: string;
     message?: MessageItem;
+    messageId?: string;
     list?: MessageItem[];
     page?: number;
     receiver?: User;

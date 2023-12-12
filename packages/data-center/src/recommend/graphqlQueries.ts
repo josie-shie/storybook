@@ -217,7 +217,7 @@ export const GET_POST_DETAIL_QUERY = `
 
 export const GET_MENTOR_LIST_QUERY = `
     query getMentorList($input: PostDetailInput!) {
-        getMentorList(input: { memberId: 1 }) {
+        getMentorList(input: $input) {
             list {
                 memberId
                 username
