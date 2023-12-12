@@ -1,6 +1,6 @@
 'use client';
 import Image from 'next/image';
-import PredictList from './predictList';
+import ArticleList from './articleList';
 import Banner from './img/banner.png';
 import Filter from './img/filter.png';
 import style from './page.module.scss';
@@ -14,7 +14,7 @@ function Page() {
                 <Image alt="" src={Filter} />
             </div>
             <div className="recommendPredict">
-                <PredictList />
+                <ArticleList />
             </div>
         </>
     );

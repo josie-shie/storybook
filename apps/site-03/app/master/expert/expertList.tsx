@@ -4,13 +4,13 @@ import { useState } from 'react';
 import { IconFlame } from '@tabler/icons-react';
 import { motion } from 'framer-motion';
 import WeekButton from '../components/weekButton/weekButton';
-import { useMasterStore, creatMasterStore } from './masterListStore';
-import style from './masterList.module.scss';
+import { useMasterStore, creatMasterStore } from './expertListStore';
+import style from './expertList.module.scss';
 import Avatar from '@/components/avatar/avatar';
 import Tag from '@/components/tag/tag';
 
-function MasterItem() {
-    const masterItem = useMasterStore.use.masterItem();
+function ExpertItem() {
+    const masterItem = useMasterStore.use.expertItem();
 
     return (
         <>
@@ -77,7 +77,7 @@ function MasterList() {
     };
 
     creatMasterStore({
-        masterItem: [
+        expertItem: [
             {
                 id: 12,
                 avatar: '',
@@ -105,7 +105,7 @@ function MasterList() {
     return (
         <div className={style.master}>
             <WeekButton isActive={isActive} updateActive={updateActive} />
-            <MasterItem />
+            <ExpertItem />
         </div>
     );
 }
