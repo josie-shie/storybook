@@ -38,12 +38,10 @@ function AnalyzeColumn({ homeType, awayType }: AnalyzeProps) {
                     <span className={style.away}>{rightValue}</span>
                 </div>
                 <ProgressBar
-                    background="#c3c3c3"
+                    background="#DCE9FF"
                     fill="#276ce1"
-                    gapSize="large"
                     height={10}
                     radius
-                    skewGap
                     value={leftPercent}
                 />
             </div>

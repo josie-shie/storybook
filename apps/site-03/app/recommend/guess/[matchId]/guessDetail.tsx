@@ -31,7 +31,7 @@ function GuessDetail({ backHistory }: { backHistory: boolean }) {
         unlockTrend: false,
         detail: {
             leagueName: '歐錦U20A',
-            dateTime: '7-14 02:00',
+            dateTime: 1678880400,
             homeTeamLogo: '',
             homeTeamName: '泰国国立法政大学',
             awayTeamLogo: '',

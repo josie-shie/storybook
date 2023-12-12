@@ -7,6 +7,7 @@ import AnalyzeColumn from './analyze';
 import Title from './img/title.png';
 import style from './masterPlan.module.scss';
 import { useGuessDetailStore } from './guessDetailStore';
+import starIcon from './img/star.png';
 import { useUserStore } from '@/app/userStore';
 import PaidDialog from '@/components/paidDialog/paidDialog';
 
@@ -85,7 +86,8 @@ function MasterPlan() {
                                 }}
                                 type="button"
                             >
-                                10 金币解锁本场
+                                <Image alt="" className={style.coin} src={starIcon} width={16} /> 10
+                                金币解锁本场
                             </button>
                             {/* 訂閱方案流程待改 */}
                             <button
@@ -94,7 +96,8 @@ function MasterPlan() {
                                 }}
                                 type="button"
                             >
-                                200 金币包月无限看
+                                <Image alt="" className={style.coin} src={starIcon} width={16} />{' '}
+                                365天VIP无限看专案
                             </button>
                         </div>
                     )}

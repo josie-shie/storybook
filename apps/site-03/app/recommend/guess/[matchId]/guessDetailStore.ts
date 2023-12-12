@@ -5,7 +5,7 @@ import type { GetProDistribResponse } from 'data-center';
 // 競猜詳情 上半部預測
 export interface DetailType {
     leagueName: string; // 賽事名稱
-    dateTime: string; // 日期時間
+    dateTime: number; // 日期時間
     homeTeamLogo: string;
     homeTeamName: string;
     awayTeamLogo: string;

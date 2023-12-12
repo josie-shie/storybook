@@ -27,6 +27,7 @@
         }
 
         .analyze {
+            min-height: 106px;
             display: flex;
             flex-direction: column;
             margin-top: 19px;
@@ -51,6 +52,11 @@
                     border: 1px solid #4489ff;
                     border-radius: 20px;
                     background: transparent;
+
+                    .coin {
+                        display: inline-block;
+                        vertical-align: middle;
+                    }
                 }
             }
         }
