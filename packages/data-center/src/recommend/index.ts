@@ -328,6 +328,7 @@ export const getPostDetail = async ({
 
 export interface GetMentorListRequest {
     memberId: number;
+    filter: 'weekly' | 'monthly' | 'quarterly' | 'winStreak';
 }
 
 const GetMentorSchema = z.object({
@@ -359,7 +360,8 @@ type GetMentorResult = z.infer<typeof GetMentorResultSchema>;
  * - {@link GetMailMemberResponse}
  */
 export const getMentorList = async ({
-    memberId
+    memberId,
+    filter
 }: GetMentorListRequest): Promise<ReturnData<GetMentorListResponse>> => {
     try {
         const { data }: { data: GetMentorResult } = await fetcher(
@@ -367,7 +369,8 @@ export const getMentorList = async ({
                 data: {
                     query: GET_MENTOR_LIST_QUERY,
                     variables: {
-                        memberId
+                        memberId,
+                        filter
                     }
                 }
             },
