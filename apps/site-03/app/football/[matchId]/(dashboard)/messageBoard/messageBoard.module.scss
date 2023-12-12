@@ -40,14 +40,7 @@
             padding: 16px;
             background-color: #fff;
             box-shadow: 0 -1px 0 0 #d9d9d9;
-        }
-
-        .bfEmoticonBox {
-            height: 200px;
-            border: 1px #ccc solid;
-            justify-content: space-between;
-            overflow: auto;
-            box-shadow: 0 -1px 0 0 #d9d9d9;
+            column-gap: 0;
         }
 
         .bfInput {

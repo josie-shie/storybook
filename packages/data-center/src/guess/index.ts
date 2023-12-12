@@ -2,6 +2,8 @@ import { fetcher } from 'lib';
 import { z } from 'zod';
 import { handleApiError } from '../common';
 import type { ReturnData } from '../common';
+import { PredictedPlaySchema, PredictionResultSchema } from '../commonType';
+import type { PredictedPlay } from '../commonType';
 import {
     GET_TODAY_GUESS_MATCHES_QUERY,
     GET_GUESS_RANK_QUERY,
@@ -99,27 +101,27 @@ interface GetGuessRankRequest {
     // 排行榜類型 0:週，1:月，2:季，3:連紅
 }
 
-const GetGuessRankSchema = z.object({
-    matchId: z.number(),
-    leagueId: z.number(),
-    leagueName: z.string(),
-    homeId: z.number(),
-    homeName: z.string(),
-    awayId: z.number(),
-    awayName: z.string(),
-    matchTime: z.number(),
-    homeScore: z.number(),
-    awayScore: z.number(),
-    handicap: z.number(),
-    handicapHomeOdds: z.number(),
-    handicapAwayOdds: z.number(),
-    overUnder: z.number(),
-    overUnderOverOdds: z.number(),
-    overUnderUnderOdds: z.number(),
-    totalNum: z.number(),
-    guessed: z.boolean(),
-    state: z.number()
-});
+// const GetGuessRankSchema = z.object({
+//     matchId: z.number(),
+//     leagueId: z.number(),
+//     leagueName: z.string(),
+//     homeId: z.number(),
+//     homeName: z.string(),
+//     awayId: z.number(),
+//     awayName: z.string(),
+//     matchTime: z.number(),
+//     homeScore: z.number(),
+//     awayScore: z.number(),
+//     handicap: z.number(),
+//     handicapHomeOdds: z.number(),
+//     handicapAwayOdds: z.number(),
+//     overUnder: z.number(),
+//     overUnderOverOdds: z.number(),
+//     overUnderUnderOdds: z.number(),
+//     totalNum: z.number(),
+//     guessed: z.boolean(),
+//     state: z.number()
+// });
 
 const GuessRankSchema = z.object({
     memberId: z.number(),
@@ -195,7 +197,7 @@ export const getGuessRank = async ({
             { cache: 'no-store' }
         );
 
-        GetGuessRankSchema.parse(data);
+        GetGuessRankResultSchema.parse(data);
 
         return {
             success: true,
@@ -432,6 +434,8 @@ export interface GetMemberIndividualGuessMatchesRequest {
     memberId: number;
     currentPage: number;
     pageSize: number;
+    guessType: 0 | 1 | 2;
+    // 競猜玩法 ( 0: 全部, 1: 讓球, 2: 大小球 )
 }
 
 const MemberIndividualGuessMatchSchema = z.object({
@@ -444,14 +448,8 @@ const MemberIndividualGuessMatchSchema = z.object({
     awayTeamName: z.string(),
     handicapOdds: z.number(),
     overUnderOdds: z.number(),
-    predictedPlay: z.union([
-        z.literal('HOME'),
-        z.literal('AWAY'),
-        z.literal('OVER'),
-        z.literal('UNDER'),
-        z.literal('LOCK')
-    ]),
-    predictionResult: z.string(),
+    predictedPlay: PredictedPlaySchema,
+    predictionResult: PredictionResultSchema,
     isPaidToRead: z.boolean()
 });
 
@@ -464,17 +462,11 @@ const PaginationSchema = z.object({
 
 export type Pagination = z.infer<typeof PaginationSchema>;
 
-const MemberIndividualGuessMatchListSchema = z.object({
+const GetMemberIndividualGuessMatchesSchema = z.object({
     guessType: z.union([z.literal(0), z.literal(1), z.literal(2)]),
     // 競猜玩法 ( 0: 全部, 1: 讓球, 2: 大小球 )
     guessMatchList: z.array(MemberIndividualGuessMatchSchema),
     pagination: PaginationSchema
-});
-
-const GetMemberIndividualGuessMatchesSchema = z.object({
-    all: MemberIndividualGuessMatchListSchema,
-    handicap: MemberIndividualGuessMatchListSchema,
-    overUnder: MemberIndividualGuessMatchListSchema
 });
 
 const GetMemberIndividualGuessMatchesResultSchema = z.object({
@@ -498,7 +490,8 @@ export type GetMemberIndividualGuessMatchesResponse = z.infer<
 export const getMemberIndividualGuessMatches = async ({
     memberId,
     currentPage,
-    pageSize
+    pageSize,
+    guessType
 }: GetMemberIndividualGuessMatchesRequest): Promise<
     ReturnData<GetMemberIndividualGuessMatchesResponse>
 > => {
@@ -511,7 +504,8 @@ export const getMemberIndividualGuessMatches = async ({
                         input: {
                             memberId,
                             currentPage,
-                            pageSize
+                            pageSize,
+                            guessType
                         }
                     }
                 }
@@ -548,19 +542,8 @@ const ProGuessSchema = z.object({
     memberRanking: z.number(),
     records: z.union([z.literal('WIN'), z.literal('LOSE'), z.literal('DRAW'), z.literal('NONE')]),
     predictedType: z.union([z.literal('HANDICAP'), z.literal('OVERUNDER')]),
-    predictedPlay: z.union([
-        z.literal('HOME'),
-        z.literal('AWAY'),
-        z.literal('OVER'),
-        z.literal('UNDER'),
-        z.literal('LOCK')
-    ]),
-    predictionResult: z.union([
-        z.literal('WIN'),
-        z.literal('LOSE'),
-        z.literal('DRAW'),
-        z.literal('NONE')
-    ])
+    predictedPlay: PredictedPlaySchema,
+    predictionResult: PredictionResultSchema
 });
 
 const GetProGuessResultSchema = z.object({
@@ -665,7 +648,7 @@ export const getProDistrib = async ({
 
 export interface AddGuessRequest {
     matchId: number;
-    predictedPlay: 'HOME' | 'AWAY' | 'OVER' | 'UNDER' | 'LOCK';
+    predictedPlay: PredictedPlay;
 }
 
 /**

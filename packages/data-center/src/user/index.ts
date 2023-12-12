@@ -3,6 +3,7 @@ import Cookies from 'js-cookie';
 import { z } from 'zod';
 import { handleApiError } from '../common';
 import type { ReturnData } from '../common';
+import { PredictionResultSchema, TagSchema } from '../commonType';
 import {
     REGISTER_MUTATION,
     SEND_VERIFICATION_CODE_MUTATION,
@@ -14,8 +15,9 @@ import {
     UPDATE_MEMBER_INFO_MUTATION,
     GET_INVITATION_CODE_QUERY,
     GET_SUBSCRIPTION_QUERY,
+    GET_UNLOCKED_QUERY,
     SUBSCRIBE_PLAN_MUTATION,
-    GET_UNLOCKED_MUTATION
+    GET_INVITATION_ACTIVITY_REWARD_INFO_QUERY
 } from './graphqlQueries';
 
 const RegisterResultSchema = z.object({
@@ -472,7 +474,7 @@ const ServicePlanSchema = z.object({
 export type ServicePlan = z.infer<typeof ServicePlanSchema>;
 
 const GetSubscriptionPlanSchema = z.object({
-    id: z.number(),
+    id: z.string(),
     name: z.string(),
     times: z.number(),
     cost: z.number(),
@@ -518,7 +520,7 @@ export const getSubscriptionPlanList = async (): Promise<
 
 export interface SubscribePlanRequest {
     memberId: number;
-    planId: number;
+    planId: string;
 }
 
 const SubscribePlanSchema = z.object({
@@ -580,7 +582,7 @@ const GetUnlockedPostSchema = z.object({
     postId: z.number(),
     analysisTitle: z.string(),
     analysisContent: z.string(),
-    predictionResult: z.string(),
+    predictionResult: PredictionResultSchema,
     mentorId: z.number(),
     mentorName: z.string(),
     avatarPath: z.string(),
@@ -591,10 +593,10 @@ const GetUnlockedPostSchema = z.object({
     homeTeamName: z.string(),
     awayTeamId: z.number(),
     awayTeamName: z.string(),
-    matchTime: z.string(),
-    createdAt: z.string(),
-    predictStat: z.string(),
-    memberTags: z.array(MemberTagsSchema)
+    matchTime: z.number(),
+    createdAt: z.number(),
+    predictStat: z.number(),
+    memberTags: TagSchema
 });
 
 export type MemberTag = z.infer<typeof MemberTagsSchema>;
@@ -623,7 +625,7 @@ export const getUnlockedPost = async ({
         const { data }: { data: GetUnlockedPostResult } = await fetcher(
             {
                 data: {
-                    query: GET_UNLOCKED_MUTATION,
+                    query: GET_UNLOCKED_QUERY,
                     variables: {
                         input: {
                             memberId
@@ -637,6 +639,48 @@ export const getUnlockedPost = async ({
         GetUnlockedPostResultSchema.parse(data);
 
         return { success: true, data: data.getUnlockedPost.list };
+    } catch (error) {
+        return handleApiError(error);
+    }
+};
+
+const GetInvitationActivityRewardInfoSchema = z.object({
+    inviterCount: z.number(),
+    inviterReward: z.number()
+});
+
+const GetInvitationActivityRewardInfoResultSchema = z.object({
+    getInvitationActivityRewardInfo: GetInvitationActivityRewardInfoSchema
+});
+
+type GetInvitationActivityRewardInfoResult = z.infer<
+    typeof GetInvitationActivityRewardInfoResultSchema
+>;
+
+export type GetInvitationActivityRewardInfoResponse = z.infer<
+    typeof GetInvitationActivityRewardInfoSchema
+>;
+
+/**
+ * 取得邀請獎勵
+ * - returns {@link GetInvitationActivityRewardInfoResponse}
+ */
+export const getInvitationActivityRewardInfo = async (): Promise<
+    ReturnData<GetInvitationActivityRewardInfoResponse>
+> => {
+    try {
+        const { data }: { data: GetInvitationActivityRewardInfoResult } = await fetcher(
+            {
+                data: {
+                    query: GET_INVITATION_ACTIVITY_REWARD_INFO_QUERY
+                }
+            },
+            { cache: 'no-store' }
+        );
+
+        GetInvitationActivityRewardInfoResultSchema.parse(data);
+
+        return { success: true, data: data.getInvitationActivityRewardInfo };
     } catch (error) {
         return handleApiError(error);
     }

@@ -1,32 +1,20 @@
 import { initStore } from 'lib';
 import type { StoreWithSelectors } from 'lib';
-// import type { GetFollowersResponse } from 'data-center';
-
-interface FocusMember {
-    memberId: number;
-    username: string;
-    avatarPath: string;
-    profile: string;
-    fans: number;
-    unlocked: number;
-    hotStreak: number;
-    ranking: number;
-    followed: boolean;
-}
+import type { GetFollowersResponse } from 'data-center';
 
 interface InitState {
-    focusMemberItem: FocusMember[];
+    focusMemberItem: GetFollowersResponse;
 }
 
 interface FocusMemberState extends InitState {
-    setFocusMemberItem: (focusMemberItem: FocusMember[]) => void;
+    setFocusMemberItem: (focusMemberItem: GetFollowersResponse) => void;
 }
 
 let useFocusMemberStore: StoreWithSelectors<FocusMemberState>;
 
 const initialState = (set: (data: Partial<FocusMemberState>) => void) => ({
     focusMemberItem: [],
-    setFocusMemberItem: (focusMemberItem: FocusMember[]) => {
+    setFocusMemberItem: (focusMemberItem: GetFollowersResponse) => {
         set({ focusMemberItem });
     }
 });

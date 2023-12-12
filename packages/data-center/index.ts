@@ -10,3 +10,5 @@ export * from './src/homeInformation';
 export * from './src/account';
 export * from './src/guess';
 export * from './src/aiAnalysis';
+export * from './src/recommend';
+export type * from './src/commonType';

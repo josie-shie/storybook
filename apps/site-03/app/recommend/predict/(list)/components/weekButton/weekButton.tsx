@@ -1,27 +1,29 @@
 'use client';
 
-import { useState } from 'react';
 import style from './weekButton.module.scss';
 
-function WeekButton() {
-    const [isActive, setIsActive] = useState('rank');
+interface WeekButtonProps {
+    isActive: number[];
+    updateActive: (val: number) => void;
+}
 
+function WeekButton({ isActive = [], updateActive }: WeekButtonProps) {
     const weekList = [
         {
             label: '连红',
-            value: 'rank'
+            value: 3
         },
         {
             label: '季榜',
-            value: 'season'
+            value: 0
         },
         {
             label: '月榜',
-            value: 'month'
+            value: 1
         },
         {
             label: '周榜',
-            value: 'week'
+            value: 2
         }
     ];
 
@@ -30,10 +32,10 @@ function WeekButton() {
             {weekList.map(item => {
                 return (
                     <div
-                        className={`${isActive === item.value ? style.active : ''}`}
+                        className={`${isActive.includes(item.value) ? style.active : ''}`}
                         key={item.value}
                         onClick={() => {
-                            setIsActive(item.value);
+                            updateActive(item.value);
                         }}
                     >
                         {item.label}

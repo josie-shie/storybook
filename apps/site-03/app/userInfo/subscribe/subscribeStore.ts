@@ -1,5 +1,6 @@
 import { initStore } from 'lib';
 import type { StoreWithSelectors } from 'lib';
+import type { GetSubscriptionPlanListResponse } from 'data-center';
 
 interface SubscribePlan {
     planId: number;
@@ -11,6 +12,7 @@ interface SubscribePlan {
 }
 
 interface InitState {
+    yearPlanList: GetSubscriptionPlanListResponse;
     planList: SubscribePlan[];
 }
 
@@ -26,6 +28,7 @@ interface SubscribeState extends InitState {
     setPlanList: (planList: SubscribePlan[]) => void;
     setMasterPlan: (masterPlan: number) => void;
     setUnlockArticle: (unlockArticle: number) => void;
+    setYearPlanList: (yearPlanList: GetSubscriptionPlanListResponse) => void;
 }
 
 let useSubscribeStore: StoreWithSelectors<SubscribeState>;
@@ -37,6 +40,7 @@ const initialState = (set: (data: Partial<SubscribeState>) => void) => ({
     planList: [],
     masterPlan: 2,
     unlockArticle: 1,
+    yearPlanList: [],
     setPlanId: (planId: number) => {
         set({ planId });
     },
@@ -54,6 +58,9 @@ const initialState = (set: (data: Partial<SubscribeState>) => void) => ({
     },
     setUnlockArticle: (unlockArticle: number) => {
         set({ unlockArticle });
+    },
+    setYearPlanList: (yearPlanList: GetSubscriptionPlanListResponse) => {
+        set({ yearPlanList });
     }
 });
 
