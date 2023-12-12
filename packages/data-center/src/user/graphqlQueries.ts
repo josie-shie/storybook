@@ -129,3 +129,12 @@ export const GET_UNLOCKED_MUTATION = `
         }
     }
 `;
+
+export const GET_INVITATION_ACTIVITY_REWARD_INFO_QUERY = `
+    query getInvitationActivityRewardInfo {
+        getInvitationActivityRewardInfo {
+            inviterCount
+            inviterReward
+        }
+    }
+`;
