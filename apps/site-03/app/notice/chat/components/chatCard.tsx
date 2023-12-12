@@ -39,7 +39,7 @@ function ChatCard({ chatData }: { chatData: MessageRoomType }) {
                 onChange={handleChange}
             />
             <div className={style.card}>
-                <Badge color="error" invisible={false} variant="dot">
+                <Badge color="error" invisible={chatData.messageIsRead} variant="dot">
                     <Avatar
                         borderColor="#FFFFFF"
                         size={40}
