@@ -161,27 +161,21 @@ function VsBox() {
     const setGuessesLeft = useGuessDetailStore.use.setGuessesLeft();
 
     const covertGuessStatus = (isHandicap: boolean, status: 'selected' | 'unselected' | '') => {
-        if (isHandicap) {
-            switch (status) {
-                case 'selected':
-                    return 'home';
-                case 'unselected':
-                    return 'away';
-                case '':
-                default:
-                    return 'none';
-            }
-        } else {
-            switch (status) {
-                case 'selected':
-                    return 'over';
-                case 'unselected':
-                    return 'under';
-                case '':
-                default:
-                    return 'none';
-            }
-        }
+        const statusMapping = {
+            selected: isHandicap ? 'home' : 'over',
+            unselected: isHandicap ? 'away' : 'under',
+            '': 'none'
+        };
+        return statusMapping[status] || 'none';
+    };
+    const timestampToDateString = timestamp => {
+        const date = new Date(timestamp * 1000); // 将时间戳转换为毫秒
+        const month = String(date.getMonth() + 1).padStart(2, '0'); // 获取月份并补零
+        const day = String(date.getDate()).padStart(2, '0'); // 获取日期并补零
+        const hours = String(date.getHours()).padStart(2, '0'); // 获取小时并补零
+        const minutes = String(date.getMinutes()).padStart(2, '0'); // 获取分钟并补零
+
+        return `${month}-${day} ${hours}:${minutes}`;
     };
 
     useEffect(() => {
@@ -196,7 +190,7 @@ function VsBox() {
                 const guessData = guessProportion.data;
                 setDetailInfo({
                     leagueName: baseData.leagueChsShort,
-                    dateTime: `${baseData.matchTime}`,
+                    dateTime: baseData.matchTime,
                     homeTeamLogo: baseData.homeLogo,
                     homeTeamName: baseData.homeChs,
                     awayTeamLogo: baseData.awayLogo,
@@ -224,7 +218,7 @@ function VsBox() {
     return (
         <div className={style.vsBox}>
             <div className={style.title}>
-                {detailInfo.leagueName} {detailInfo.dateTime}
+                {detailInfo.leagueName} {timestampToDateString(detailInfo.dateTime)}
             </div>
             <div className={style.clubInfo}>
                 <div className={style.team}>
