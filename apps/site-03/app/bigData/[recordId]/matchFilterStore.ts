@@ -85,7 +85,7 @@ const initFilter = (contestInfo: ContestInfoType) => {
 };
 
 const initialState = (set: (updater: (state: ContestList) => Partial<ContestList>) => void) => ({
-    contestList: [2504100],
+    contestList: [],
     contestInfo: {},
     filterOriginalInfo: {
         league: {},

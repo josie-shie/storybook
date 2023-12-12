@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { getBigDataRecordList } from 'data-center';
 import { mqttService } from 'lib';
 import SearchRecord from '../searchRecord/searchRecord';
-import { useDiscSelectStore } from '../../discSelectStore';
+import { useHandicapAnalysisFormStore } from '../../handicapAnalysisFormStore';
 import style from './recordFilter.module.scss';
 import BottomDrawer from '@/components/drawer/bottomDrawer';
 import { useNotificationStore } from '@/app/notificationStore';
@@ -27,9 +27,9 @@ function RecordFilter({
     onOpen: () => void;
     onClose: () => void;
 }) {
-    const setRecordList = useDiscSelectStore.use.setRecordList();
-    const recordList = useDiscSelectStore.use.recordList();
-    const updateRecord = useDiscSelectStore.use.updateRecord();
+    const setRecordList = useHandicapAnalysisFormStore.use.setRecordList();
+    const recordList = useHandicapAnalysisFormStore.use.recordList();
+    const updateRecord = useHandicapAnalysisFormStore.use.updateRecord();
     const setIsNotificationVisible = useNotificationStore.use.setIsVisible();
     const userInfo = useUserStore.use.userInfo();
 
