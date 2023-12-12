@@ -1,9 +1,9 @@
-.masterList {
-    margin-top: -14px;
-    padding: 24px 12px 45px;
-    width: 100%;
-    border-radius: 16px 16px 0 0;
-    overflow: auto;
+.button {
+    padding-left: 12px;
+}
+
+.article {
+    padding: 12px;
     background: #fff;
 
     .articleItem {
@@ -57,12 +57,14 @@
         font-size: 14px;
         font-weight: 600;
         padding: 6px 0;
+        color: #4a4a4a;
     }
 
     .game {
         padding: 10px;
-        border: 1px solid #dadada;
         border-radius: 8px;
+        background-color: #f3f3f3;
+        position: relative;
 
         .detail {
             font-size: 12px;
@@ -73,6 +75,12 @@
             .time {
                 color: #9b9b9b;
             }
+        }
+
+        img {
+            position: absolute;
+            right: 8px;
+            bottom: 13px;
         }
 
         .combination {

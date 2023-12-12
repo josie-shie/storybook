@@ -14,19 +14,19 @@ interface Master {
 }
 
 interface InitState {
-    masterItem: Master[];
+    expertItem: Master[];
 }
 
 interface MasterState extends InitState {
-    setMasterList?: (masterItem: Master[]) => void;
+    setExpertItem?: (masterItem: Master[]) => void;
 }
 
 let useMasterStore: StoreWithSelectors<MasterState>;
 
 const initialState = (set: (data: Partial<MasterState>) => void) => ({
-    masterItem: [],
-    setMasterList: (masterItem: Master[]) => {
-        set({ masterItem });
+    expertItem: [],
+    setExpertItem: (expertItem: Master[]) => {
+        set({ expertItem });
     }
 });
 
