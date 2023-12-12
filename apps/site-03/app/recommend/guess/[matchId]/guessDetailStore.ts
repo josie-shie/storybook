@@ -1,5 +1,6 @@
 import { initStore } from 'lib';
 import type { StoreWithSelectors } from 'lib';
+import type { GetProDistribResponse } from 'data-center';
 
 // 競猜詳情 上半部預測
 export interface DetailType {
@@ -16,15 +17,6 @@ export interface DetailType {
     away: number; // 猜 客隊 人數
     big: number; // 猜 大 人數
     small: number; // 猜 小 人數
-}
-
-// 高勝率玩家風向
-interface HighWinRateTrend {
-    unlockPrice: number; // 解鎖價格
-    trendHome: number; // 猜 主隊 人數
-    trendAway: number; // 猜 客隊 人數
-    trendBig: number; // 猜 大 人數
-    trendSmall: number; // 猜 小 人數
 }
 
 // 高手方案
@@ -48,7 +40,7 @@ interface InitState {
     guessesLeft: number; // 競猜剩餘次數
     unlockTrend: boolean; // 解鎖高勝率玩家風向
     detail: DetailType;
-    highWinRateTrend: HighWinRateTrend;
+    highWinRateTrend: GetProDistribResponse;
     masterPlanList: MasterPlan[];
 }
 
@@ -57,6 +49,7 @@ interface GuessDetailState extends InitState {
     setGuessesLeft: (leftNumber: number) => void;
     setUnlockTrend: (isUnlocked: boolean) => void;
     setMasterPlanList: (masterPlanList: MasterPlan[]) => void;
+    setHighWinRateTrend: (highWinRateTrend: GetProDistribResponse) => void;
 }
 
 let useGuessDetailStore: StoreWithSelectors<GuessDetailState>;
@@ -65,8 +58,11 @@ const initialState = (set: (data: Partial<GuessDetailState>) => void) => ({
     guessesLeft: 0,
     unlockTrend: false,
     detail: {} as DetailType,
-    highWinRateTrend: {} as HighWinRateTrend,
+    highWinRateTrend: {} as GetProDistribResponse,
     masterPlanList: [],
+    setHighWinRateTrend: (highWinRateTrend: GetProDistribResponse) => {
+        set({ highWinRateTrend });
+    },
     setDetail: (detail: DetailType) => {
         set({ detail });
     },
@@ -81,7 +77,7 @@ const initialState = (set: (data: Partial<GuessDetailState>) => void) => ({
     }
 });
 
-const creatGuessDetailStore = (init: InitState) =>
+const createGuessDetailStore = (init: InitState) =>
     (useGuessDetailStore = initStore<GuessDetailState>(initialState, init));
 
-export { creatGuessDetailStore, useGuessDetailStore };
+export { createGuessDetailStore, useGuessDetailStore };

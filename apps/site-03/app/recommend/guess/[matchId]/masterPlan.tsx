@@ -18,7 +18,6 @@ function MasterPlan() {
 
     const userBalance = useUserStore.use.userInfo().balance;
     const isTrendUnlocked = useGuessDetailStore.use.unlockTrend();
-    const trend = useGuessDetailStore.use.highWinRateTrend();
     const masterPlanList = useGuessDetailStore.use.masterPlanList();
 
     const setUnlockTrend = useGuessDetailStore.use.setUnlockTrend();
@@ -82,11 +81,11 @@ function MasterPlan() {
                         <div className={style.mask}>
                             <button
                                 onClick={() => {
-                                    handleGlobalClickOpen(trend.unlockPrice, 'single');
+                                    handleGlobalClickOpen(10, 'single');
                                 }}
                                 type="button"
                             >
-                                {trend.unlockPrice} 金币解锁本场
+                                10 金币解锁本场
                             </button>
                             {/* 訂閱方案流程待改 */}
                             <button

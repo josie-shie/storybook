@@ -17,12 +17,12 @@ function AnalyzeColumn({ homeType, awayType }: AnalyzeProps) {
         const percentage = Math.round((a / (a + b)) * 100);
         return percentage;
     };
-    const leftValue = homeType === '主' ? highWinRateTrend.trendHome : highWinRateTrend.trendBig;
-    const rightValue = homeType === '主' ? highWinRateTrend.trendAway : highWinRateTrend.trendSmall;
+    const leftValue = homeType === '主' ? highWinRateTrend.home : highWinRateTrend.over;
+    const rightValue = homeType === '主' ? highWinRateTrend.away : highWinRateTrend.under;
     const leftPercent =
         homeType === '主'
-            ? calculatePercentage(highWinRateTrend.trendHome, highWinRateTrend.trendAway)
-            : calculatePercentage(highWinRateTrend.trendBig, highWinRateTrend.trendSmall);
+            ? calculatePercentage(highWinRateTrend.home, highWinRateTrend.away)
+            : calculatePercentage(highWinRateTrend.over, highWinRateTrend.under);
     const rightPercent = 100 - leftPercent;
 
     return (
