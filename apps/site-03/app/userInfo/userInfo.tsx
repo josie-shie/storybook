@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ButtonBase } from '@mui/material';
 import Image from 'next/image';
+import Cookies from 'js-cookie';
 import { useAuthStore } from '../(auth)/authStore';
 import { useUserStore } from '../userStore';
 import userInfoBg from './img/userInfoBg.png';
@@ -17,6 +18,7 @@ import MyGame from './img/myGame.png';
 import MyAnalyze from './img/myAnalyze.png';
 import style from './userInfo.module.scss';
 import defaultAvatar from './img/avatar.png';
+import { useNotificationStore } from '@/app/notificationStore';
 import Tag from '@/components/tag/tag';
 import Header from '@/components/header/headerTitleNoBg';
 import Footer from '@/components/footer/footer';
@@ -27,10 +29,23 @@ function UserInfo() {
     const setUserInfo = useUserStore.use.setUserInfo();
     const openChangePasswordDrawer = useAuthStore.use.setIsDrawerOpen();
     const setAuthQuery = useUserStore.use.setAuthQuery();
+    const setIsLogin = useUserStore.use.setIsLogin();
+    const setIsVisible = useNotificationStore.use.setIsVisible();
 
     const headerProps = {
         title: '我的'
     };
+
+    useEffect(() => {
+        const getUserInfo = async () => {
+            const res = await getMemberInfo();
+            if (res.success) {
+                setUserInfo(res.data);
+            }
+        };
+
+        void getUserInfo();
+    }, []);
 
     const editAccount = () => {
         router.push('/userInfo/account');
@@ -44,16 +59,14 @@ function UserInfo() {
         router.push('/userInfo/subscribe');
     };
 
-    const getUserInfo = async () => {
-        const res = await getMemberInfo();
-        if (res.success) {
-            setUserInfo(res.data);
-        }
+    const logout = () => {
+        Cookies.remove('access');
+        setIsVisible('登出成功', 'success');
+        setIsLogin(false);
+        setTimeout(() => {
+            router.push('/?auth=login');
+        }, 500);
     };
-
-    useEffect(() => {
-        void getUserInfo();
-    }, []);
 
     return (
         <div className={style.wrapper} style={{ backgroundImage: `url(${userInfoBg.src})` }}>
@@ -206,6 +219,10 @@ function UserInfo() {
                             </li>
                         </ul>
                     </div>
+                </div>
+
+                <div className={style.logout} onClick={logout}>
+                    登出帐号
                 </div>
             </div>
             <Footer />
