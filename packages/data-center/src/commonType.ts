@@ -14,7 +14,9 @@ export const PredictedPlaySchema = z.union([
     z.literal('AWAY'),
     z.literal('OVER'),
     z.literal('UNDER'),
-    z.literal('LOCK')
+    z.literal('LOCK'),
+    z.literal('HANDICAP'),
+    z.literal('OVERUNDER')
 ]);
 
 export type PredictedPlay = z.infer<typeof PredictedPlaySchema>;

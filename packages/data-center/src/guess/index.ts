@@ -601,7 +601,8 @@ const GetProDistribSchema = z.object({
     over: z.number(),
     under: z.number(),
     enoughProData: z.boolean(),
-    memberPermission: z.boolean()
+    memberPermission: z.boolean(),
+    unlockPrice: z.number()
 });
 
 export type GetProDistribResponse = z.infer<typeof GetProDistribSchema>;

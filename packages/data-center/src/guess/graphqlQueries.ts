@@ -181,6 +181,7 @@ export const GET_RRO_DISTRIB_QUERY = `
             under
             enoughProData
             memberPermission
+            unlockPrice
         }
     }
 `;
