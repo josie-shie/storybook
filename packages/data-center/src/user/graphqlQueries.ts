@@ -138,3 +138,30 @@ export const GET_INVITATION_ACTIVITY_REWARD_INFO_QUERY = `
         }
     }
 `;
+
+export const GET_MEMBER_GUESS_VIEWING_RECORDS_QUERY = `
+    query getMemberGuessViewingRecords($input: GetMemberGuessViewingRecordsInput!){
+        getMemberGuessViewingRecords(input: $input) {
+            memberGuessViewingRecordList {
+                recordMemberId
+                memberName
+                avatarPath
+                matchId
+                matchTime
+                leagueId
+                leagueName
+                homeTeamName
+                awayTeamName
+                handicapOdds
+                overUnderOdds
+                predictedPlay
+                predictionResult
+                viewingTime
+            }
+            pagination {
+                pageCount
+                totalCount
+            }
+        }
+    }
+`;
