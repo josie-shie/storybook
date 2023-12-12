@@ -434,6 +434,8 @@ export interface GetMemberIndividualGuessMatchesRequest {
     memberId: number;
     currentPage: number;
     pageSize: number;
+    guessType: 0 | 1 | 2;
+    // 競猜玩法 ( 0: 全部, 1: 讓球, 2: 大小球 )
 }
 
 const MemberIndividualGuessMatchSchema = z.object({
@@ -460,17 +462,11 @@ const PaginationSchema = z.object({
 
 export type Pagination = z.infer<typeof PaginationSchema>;
 
-const MemberIndividualGuessMatchListSchema = z.object({
+const GetMemberIndividualGuessMatchesSchema = z.object({
     guessType: z.union([z.literal(0), z.literal(1), z.literal(2)]),
     // 競猜玩法 ( 0: 全部, 1: 讓球, 2: 大小球 )
     guessMatchList: z.array(MemberIndividualGuessMatchSchema),
     pagination: PaginationSchema
-});
-
-const GetMemberIndividualGuessMatchesSchema = z.object({
-    all: MemberIndividualGuessMatchListSchema,
-    handicap: MemberIndividualGuessMatchListSchema,
-    overUnder: MemberIndividualGuessMatchListSchema
 });
 
 const GetMemberIndividualGuessMatchesResultSchema = z.object({
@@ -494,7 +490,8 @@ export type GetMemberIndividualGuessMatchesResponse = z.infer<
 export const getMemberIndividualGuessMatches = async ({
     memberId,
     currentPage,
-    pageSize
+    pageSize,
+    guessType
 }: GetMemberIndividualGuessMatchesRequest): Promise<
     ReturnData<GetMemberIndividualGuessMatchesResponse>
 > => {
@@ -507,7 +504,8 @@ export const getMemberIndividualGuessMatches = async ({
                         input: {
                             memberId,
                             currentPage,
-                            pageSize
+                            pageSize,
+                            guessType
                         }
                     }
                 }

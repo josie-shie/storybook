@@ -328,6 +328,7 @@ export const getPostDetail = async ({
 
 export interface GetMentorListRequest {
     memberId: number;
+    filter: 'weekly' | 'monthly' | 'quarterly' | 'winStreak';
 }
 
 const GetMentorSchema = z.object({
@@ -359,7 +360,8 @@ type GetMentorResult = z.infer<typeof GetMentorResultSchema>;
  * - {@link GetMailMemberResponse}
  */
 export const getMentorList = async ({
-    memberId
+    memberId,
+    filter
 }: GetMentorListRequest): Promise<ReturnData<GetMentorListResponse>> => {
     try {
         const { data }: { data: GetMentorResult } = await fetcher(
@@ -367,7 +369,8 @@ export const getMentorList = async ({
                 data: {
                     query: GET_MENTOR_LIST_QUERY,
                     variables: {
-                        memberId
+                        memberId,
+                        filter
                     }
                 }
             },
@@ -396,9 +399,9 @@ export interface GetPostListRequest {
         | 'monthly'
         | 'quarterly'
         | 'winStreak';
-    filterId: 'leagueId' | 'matchId' | 'mentorId';
-    currentPage: number;
-    pageSize: number;
+    filterId?: number[];
+    currentPage?: number;
+    pageSize?: number;
 }
 
 const GetPostListSchema = z.object({
@@ -421,26 +424,16 @@ export type GetPostListResponse = z.infer<typeof GetPostListSchema>;
  * - returns - {@link GetPostListResponse}
  * - {@link RecommendPost}
  */
-export const getPostList = async ({
-    memberId,
-    postFilter,
-    filterId,
-    currentPage,
-    pageSize
-}: GetPostListRequest): Promise<ReturnData<GetPostListResponse>> => {
+export const getPostList = async (
+    input: GetPostListRequest
+): Promise<ReturnData<GetPostListResponse>> => {
     try {
         const { data }: { data: GetPostListResult } = await fetcher(
             {
                 data: {
                     query: GET_POST_LIST_QUERY,
                     variables: {
-                        input: {
-                            memberId,
-                            postFilter,
-                            filterId,
-                            currentPage,
-                            pageSize
-                        }
+                        input
                     }
                 }
             },
