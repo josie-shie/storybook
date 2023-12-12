@@ -58,6 +58,16 @@ function ChatInfo() {
     useEffect(() => {
         const handleMessage = (res: MessageResponse) => {
             if (res.action === 'get_message' && res.list) {
+                const lastMessage = res.list.slice(-1)[0];
+
+                if (lastMessage.status === 'sent') {
+                    void messageService.send({
+                        action: 'read_msg',
+                        roomId: selectedChatData.roomId,
+                        correlationId: `c${getRandomInt(1, 10000)}`,
+                        messageId: lastMessage.messageId
+                    });
+                }
                 setMessageList(res.list);
             }
             if (
