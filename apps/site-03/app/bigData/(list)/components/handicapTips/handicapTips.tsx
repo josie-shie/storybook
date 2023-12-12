@@ -3,10 +3,10 @@ import { motion } from 'framer-motion';
 import { timestampToString } from 'lib';
 import Link from 'next/link';
 import type { BigDataHint } from 'data-center';
+import { useHintsFormStore } from '../../hintsFormStore';
 import style from './handicapTips.module.scss';
 import iconHot from './img/hot.png';
 import teamLogo from './img/homeTeam.png';
-import { useDiscSelectStore } from '@/app/bigData/(list)/discSelectStore';
 import Tag from '@/components/tag/tag';
 
 interface PropsType {
@@ -21,7 +21,7 @@ const commentColorMap = { 赢: '#ED3A45', 输: '#8D8D8D', 大: '#222222', 小: '
 const textMap = { 赢: '紅', 输: '输', 大: '大', 小: '小' };
 
 function HandicapTips({ tipsData, hintsSelected }: PropsType) {
-    const playList = useDiscSelectStore.use.playList();
+    const playList = useHintsFormStore.use.playList();
     const playWay = playList.find(item => item.value === hintsSelected);
 
     const tagLabel = textMap[tipsData.longOddsType as OddsType];
@@ -56,7 +56,7 @@ function HandicapTips({ tipsData, hintsSelected }: PropsType) {
                     連{tipsData.longOddsType}
                     {tipsData.longOddsTimes}場
                 </div>
-                <Link href={`football/${tipsData.matchId}`}>
+                <Link href={`football/${tipsData.matchId}/analyze`}>
                     <motion.button className={style.button} type="button" whileTap={{ scale: 0.9 }}>
                         詳情
                     </motion.button>
