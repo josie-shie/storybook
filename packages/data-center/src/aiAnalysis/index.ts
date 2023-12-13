@@ -1,42 +1,41 @@
 import { z } from 'zod';
-// import { fetcher } from 'lib';
+import { fetcher } from 'lib';
 import { handleApiError } from '../common';
 import type { ReturnData } from '../common';
-// import {
-//     GET_ODDS_HINT_LIST_QUERY,
-//     GET_AI_ANALYSIS_REPORT_QUERY,
-//     GET_AI_ANALYSIS_CONTEST_LIST_QUERY,
-//     GET_BIG_DATA_RECORD_LIST_QUERY
-// } from './graphqlQueries';
 import {
-    OddsHintList,
-    BigDataRecordList,
-    AiAnalysisReport,
-    AiAnalysisContestList
-} from './fakeData';
+    GET_ODDS_HINT_LIST_QUERY,
+    GET_FOOTBALL_STATS_RECORD_QUERY
+    // GET_AI_ANALYSIS_REPORT_QUERY,
+    // GET_AI_ANALYSIS_CONTEST_LIST_QUERY,
+} from './graphqlQueries';
+import { AiAnalysisReport, AiAnalysisContestList } from './fakeData';
 
-const BigDataRecordSchema = z.object({
-    recordId: z.number(),
-    recordTime: z.number(),
-    handicap: z.union([z.literal('home'), z.literal('away')]),
-    odds: z.string(),
-    overUnder: z.string(),
-    startDate: z.number(),
-    endDate: z.number(),
-    state: z.union([z.literal(0), z.literal(1)])
-    // 分析狀態： 0: 分析中 1：分析完成
+export interface GetFootballStatsRecordRequest {
+    memberId: number;
+}
+
+const GetFootballStatsRecordSchema = z.object({
+    memberId: z.number(),
+    ticketId: z.string(),
+    handicapSide: z.string(),
+    handicapValues: z.string(),
+    overUnderValues: z.string(),
+    startTime: z.number(),
+    endTime: z.number(),
+    analyTime: z.number(),
+    isCompleted: z.boolean()
 });
 
-const BigDataRecordListResultSchema = z.object({
-    getBigDataRecordList: z.object({
-        list: z.array(BigDataRecordSchema)
+const GetFootballStatsRecordResultSchema = z.object({
+    getFootballStatsRecord: z.object({
+        list: z.array(GetFootballStatsRecordSchema)
     })
 });
-// eslint-disable-next-line -- TODO: fetch api
-type BigDataRecordListResult = z.infer<typeof BigDataRecordListResultSchema>;
 
-export type BigDataRecord = z.infer<typeof BigDataRecordSchema>;
-export type BigDataRecordListResponse = BigDataRecord[];
+type GetFootballStatsRecordResult = z.infer<typeof GetFootballStatsRecordResultSchema>;
+
+export type GetFootballStatsRecord = z.infer<typeof GetFootballStatsRecordSchema>;
+export type GetFootballStatsRecordResponse = GetFootballStatsRecord[];
 
 const OddsHintSchema = z.object({
     startTime: z.number(),
@@ -200,27 +199,33 @@ export interface GetAiAnalysisContestListRequest {
 
 /**
  * 分析紀錄列表API
- * - returns : {@link BigDataRecordListResponse}
- * - {@link BigDataRecord}
+ * - params : {@link GetFootballStatsRecordRequest}
+ * - returns : {@link GetFootballStatsRecordResponse}
+ * - {@link GetFootballStatsRecord}
  */
-// eslint-disable-next-line -- TODO: fetch api
-export const getBigDataRecordList = async (): Promise<ReturnData<BigDataRecordListResponse>> => {
+export const getFootballStatsRecord = async ({
+    memberId
+}: GetFootballStatsRecordRequest): Promise<ReturnData<GetFootballStatsRecordResponse>> => {
     try {
-        // const { data }: { data: BigDataRecordListResult } = await fetcher(
-        //     {
-        //         data: {
-        //             query: GET_BIG_DATA_RECORD_LIST_QUERY
-        //         }
-        //     },
-        //     { cache: 'no-store' }
-        // );
+        const { data }: { data: GetFootballStatsRecordResult } = await fetcher(
+            {
+                data: {
+                    query: GET_FOOTBALL_STATS_RECORD_QUERY,
+                    variables: {
+                        input: {
+                            memberId
+                        }
+                    }
+                }
+            },
+            { cache: 'no-store' }
+        );
 
-        // BigDataRecordListResultSchema.parse(data);
+        GetFootballStatsRecordResultSchema.parse(data);
 
         return {
             success: true,
-            // data: data.getBigDataRecordList.list
-            data: BigDataRecordList
+            data: data.getFootballStatsRecord.list
         };
     } catch (error) {
         return handleApiError(error);
@@ -234,30 +239,28 @@ export const getBigDataRecordList = async (): Promise<ReturnData<BigDataRecordLi
  * - {@link BigDataHint}
  */
 export const getBigdataHint = async ({
-    // eslint-disable-next-line -- TODO: fetch api
-    type // eslint-disable-next-line -- TODO: fetch api
+    type
 }: OddsHintRequest): Promise<ReturnData<BigDataHintListResponse>> => {
     try {
-        // const { data }: { data: BigDataHintListResult } = await fetcher(
-        //     {
-        //         data: {
-        //             query: GET_ODDS_HINT_LIST_QUERY,
-        //             variables: {
-        //                 input: {
-        //                     type
-        //                 }
-        //             }
-        //         }
-        //     },
-        //     { cache: 'no-store' }
-        // );
+        const { data }: { data: BigDataHintListResult } = await fetcher(
+            {
+                data: {
+                    query: GET_ODDS_HINT_LIST_QUERY,
+                    variables: {
+                        input: {
+                            type
+                        }
+                    }
+                }
+            },
+            { cache: 'no-store' }
+        );
 
-        // BigDataHintListResultSchema.parse(data);
+        BigDataHintListResultSchema.parse(data);
 
         return {
             success: true,
-            data: OddsHintList
-            // data: data.getBigdataHint.list
+            data: data.getBigdataHint.list
         };
     } catch (error) {
         return handleApiError(error);

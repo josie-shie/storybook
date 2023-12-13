@@ -8,6 +8,7 @@ interface OptionType {
 }
 
 interface SectionSelectProps {
+    hideTitle?: boolean;
     title: string;
     selectTitle: string;
     options: OptionType[];
@@ -20,6 +21,7 @@ interface SectionSelectProps {
 }
 
 function SelectOption({
+    hideTitle = false,
     title,
     selectTitle,
     options,
@@ -33,7 +35,7 @@ function SelectOption({
         <section className={style.selectOption}>
             <p className={style.title}>{title}</p>
             <div className={style.select}>
-                <div className={style.selectTitle}>{selectTitle}</div>
+                {hideTitle ? null : <div className={style.selectTitle}>{selectTitle}</div>}
                 <GameFilter
                     onChange={setSelected}
                     options={options}

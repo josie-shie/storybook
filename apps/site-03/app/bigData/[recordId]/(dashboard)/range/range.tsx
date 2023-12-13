@@ -1,9 +1,7 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { getAiAnalysisContestList } from 'data-center';
 import GoalRangeChart from '../../components/goalRangeChart/goalRangeChart';
-import ContestDrawerList from '../components/contestDrawerList';
-import type { Match } from '../../analysisResultStore';
 import { useAnalyticsResultStore } from '../../analysisResultStore';
 import { useMatchFilterStore } from '../../matchFilterStore';
 import style from './range.module.scss';
@@ -36,9 +34,9 @@ function Range() {
     const setContestInfo = useMatchFilterStore.use.setContestInfo();
     const contestInfo = useMatchFilterStore.use.contestInfo();
     const setFilterInit = useMatchFilterStore.use.setFilterInit();
-    const [showList, setShowList] = useState(false);
-    const [matchList, setMatchList] = useState<Match[]>([]);
-    const [selectedResult, setSelectedResult] = useState({ type: '', odds: '' });
+    const setShowContestDrawer = useAnalyticsResultStore.use.setShowContestDrawer();
+    const setSelectedResult = useAnalyticsResultStore.use.setSelectedResult();
+    const setMatchList = useAnalyticsResultStore.use.setContestList();
     const setIsNotificationVisible = useNotificationStore.use.setIsVisible();
     const analysisRecord = useAnalyticsResultStore.use.analysisResultData();
     const headers = [
@@ -85,7 +83,7 @@ function Range() {
         setContestInfo({
             contestList: res.data
         });
-        setShowList(true);
+        setShowContestDrawer(true);
     };
 
     const openMatchListDrawer = (matchIdsList: number[], selectedType: string) => {
@@ -127,17 +125,6 @@ function Range() {
                     />
                 ))}
             </div>
-            <ContestDrawerList
-                isOpen={showList}
-                matchList={matchList}
-                onClose={() => {
-                    setShowList(false);
-                }}
-                onOpen={() => {
-                    setShowList(true);
-                }}
-                selectedResult={selectedResult}
-            />
         </>
     );
 }

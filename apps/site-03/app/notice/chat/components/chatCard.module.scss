@@ -28,11 +28,12 @@
     }
 
     :global .MuiBadge-badge {
+        top: 6px;
+        right: 6px;
         width: 10px;
         height: 10px;
         background-color: #ed3a45;
         border-radius: 50%;
-        transform: initial;
     }
 
     .topBar {

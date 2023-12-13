@@ -1,9 +1,7 @@
 'use client';
-import { useEffect, useState } from 'react';
-import type { GetAiAnalysisContestListResponse } from 'data-center';
+import { useEffect } from 'react';
 import { getAiAnalysisContestList } from 'data-center';
 import FifteenMinutesChart from '../../components/fifteenMinutesChart/fifteenMinutesChart';
-import ContestDrawerList from '../components/contestDrawerList';
 import { useAnalyticsResultStore } from '../../analysisResultStore';
 import { useMatchFilterStore } from '../../matchFilterStore';
 import style from './minutes.module.scss';
@@ -59,11 +57,11 @@ function Minutes() {
     const setContestInfo = useMatchFilterStore.use.setContestInfo();
     const contestInfo = useMatchFilterStore.use.contestInfo();
     const setFilterInit = useMatchFilterStore.use.setFilterInit();
-    const [showList, setShowList] = useState(false);
     const analysisRecord = useAnalyticsResultStore.use.analysisResultData();
-    const [matchList, setMatchList] = useState<GetAiAnalysisContestListResponse>([]);
-    const [selectedResult, setSelectedResult] = useState({ type: '', odds: '' });
     const setIsNotificationVisible = useNotificationStore.use.setIsVisible();
+    const setShowContestDrawer = useAnalyticsResultStore.use.setShowContestDrawer();
+    const setSelectedResult = useAnalyticsResultStore.use.setSelectedResult();
+    const setMatchList = useAnalyticsResultStore.use.setContestList();
 
     const fetchMatchList = async (matchIdList: number[]) => {
         const res = await getAiAnalysisContestList({ matchIds: matchIdList });
@@ -82,7 +80,7 @@ function Minutes() {
         setContestInfo({
             contestList: res.data
         });
-        setShowList(true);
+        setShowContestDrawer(true);
     };
 
     const openMatchListDrawer = (matchIdsList: number[], selectedType: string, odds: string) => {
@@ -118,18 +116,6 @@ function Minutes() {
                     />
                 ))}
             </div>
-
-            <ContestDrawerList
-                isOpen={showList}
-                matchList={matchList}
-                onClose={() => {
-                    setShowList(false);
-                }}
-                onOpen={() => {
-                    setShowList(true);
-                }}
-                selectedResult={selectedResult}
-            />
         </>
     );
 }

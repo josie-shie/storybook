@@ -1,9 +1,7 @@
 'use client';
-import { useEffect, useState } from 'react';
-import type { GetAiAnalysisContestListResponse } from 'data-center';
+import { useEffect } from 'react';
 import { getAiAnalysisContestList } from 'data-center';
 import { useAnalyticsResultStore } from '../../analysisResultStore';
-import ContestDrawerList from '../components/contestDrawerList';
 import { useMatchFilterStore } from '../../matchFilterStore';
 import style from './bodan.module.scss';
 import { useNotificationStore } from '@/app/notificationStore';
@@ -15,9 +13,10 @@ function Bodan() {
     const setFilterInit = useMatchFilterStore.use.setFilterInit();
     const analysisRecord = useAnalyticsResultStore.use.analysisResultData();
     const setIsNotificationVisible = useNotificationStore.use.setIsVisible();
-    const [showList, setShowList] = useState(false);
-    const [matchList, setMatchList] = useState<GetAiAnalysisContestListResponse>([]);
-    const [selectedResult, setSelectedResult] = useState({ type: '', odds: '' });
+
+    const setShowContestDrawer = useAnalyticsResultStore.use.setShowContestDrawer();
+    const setSelectedResult = useAnalyticsResultStore.use.setSelectedResult();
+    const setMatchList = useAnalyticsResultStore.use.setContestList();
 
     const scores = [
         { score: '1-0', value: analysisRecord.exactGoal.goalRange1To0 },
@@ -69,7 +68,7 @@ function Bodan() {
         setContestInfo({
             contestList: res.data
         });
-        setShowList(true);
+        setShowContestDrawer(true);
     };
 
     const openMatchListDrawer = (matchIdsList: number[], selectedType: string) => {
@@ -85,36 +84,23 @@ function Bodan() {
     }, [contestInfo, setFilterInit]);
 
     return (
-        <>
-            <div className={style.bodan}>
-                {scores.map((item, index) => (
-                    <div className={style.cell} key={`score_${index.toString()}`}>
-                        <span className={`${style.score} ${!item.score ? style.nulls : ''}`}>
-                            {item.score}
-                        </span>
-                        <span
-                            className={`${style.value} ${!item.value.length ? style.nulls : ''}`}
-                            onClick={() => {
-                                openMatchListDrawer(item.value, item.score);
-                            }}
-                        >
-                            <span>{item.score ? item.value.length : ''}</span>
-                        </span>
-                    </div>
-                ))}
-            </div>
-            <ContestDrawerList
-                isOpen={showList}
-                matchList={matchList}
-                onClose={() => {
-                    setShowList(false);
-                }}
-                onOpen={() => {
-                    setShowList(true);
-                }}
-                selectedResult={selectedResult}
-            />
-        </>
+        <div className={style.bodan}>
+            {scores.map((item, index) => (
+                <div className={style.cell} key={`score_${index.toString()}`}>
+                    <span className={`${style.score} ${!item.score ? style.nulls : ''}`}>
+                        {item.score}
+                    </span>
+                    <span
+                        className={`${style.value} ${!item.value.length ? style.nulls : ''}`}
+                        onClick={() => {
+                            openMatchListDrawer(item.value, item.score);
+                        }}
+                    >
+                        <span>{item.score ? item.value.length : ''}</span>
+                    </span>
+                </div>
+            ))}
+        </div>
     );
 }
 
