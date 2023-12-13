@@ -57,10 +57,12 @@ function Footer({
         setActivedItem(value);
     };
 
-    const gettIcon = (menu: Menu) => {
+    const getIcon = (menu: Menu) => {
         if (!menu.icon) return;
 
-        const isActive = activedItem === menu.value || menu.includedRouters.includes(activedItem);
+        const isActive =
+            activedItem === menu.value ||
+            menu.includedRouters.some(str => activedItem.includes(str));
 
         if (menu.activedIcon && isActive) {
             return menu.activedIcon;
@@ -102,14 +104,16 @@ function Footer({
                                             style={{ backgroundColor: bgColor }}
                                         >
                                             {menu.icon ? (
-                                                <div className={style.icon}>{gettIcon(menu)}</div>
+                                                <div className={style.icon}>{getIcon(menu)}</div>
                                             ) : null}
                                             <div
                                                 className={style.textLabel}
                                                 style={{
                                                     color:
                                                         activedItem === menu.value ||
-                                                        menu.includedRouters.includes(activedItem)
+                                                        menu.includedRouters.some(str =>
+                                                            activedItem.includes(str)
+                                                        )
                                                             ? activeColor
                                                             : defaultColor
                                                 }}

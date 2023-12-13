@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { useState } from 'react';
 import HandicapTips from '../handicapTips/handicapTips';
-import { useDiscSelectStore } from '../../discSelectStore';
+import { useHintsFormStore } from '../../hintsFormStore';
 import MatchFilterDrawer from '../matchFilterDrawer/matchFilterDrawer';
 import { useMatchFilterStore } from '../../matchFilterStore';
 import style from './handicapDrawer.module.scss';
@@ -20,15 +20,15 @@ function RecordFilter({
     onClose: () => void;
     hintsSelected: string;
 }) {
-    const handicapTips = useDiscSelectStore.use.handicapTips();
+    const handicapTips = useHintsFormStore.use.handicapTips();
     const contestInfo = useMatchFilterStore.use.contestInfo();
     const contestList = useMatchFilterStore.use.contestList();
     const filterList = useMatchFilterStore.use.filterList();
-    const setHandicapTips = useDiscSelectStore.use.setHandicapTips();
-    const timeAscending = useDiscSelectStore.use.timeAscending();
-    const setTimeAscending = useDiscSelectStore.use.setTimeAscending();
-    const handicapAscending = useDiscSelectStore.use.handicapAscending();
-    const setHandicapAscending = useDiscSelectStore.use.setHandicapAscending();
+    const setHandicapTips = useHintsFormStore.use.setHandicapTips();
+    const timeAscending = useHintsFormStore.use.timeAscending();
+    const setTimeAscending = useHintsFormStore.use.setTimeAscending();
+    const handicapAscending = useHintsFormStore.use.handicapAscending();
+    const setHandicapAscending = useHintsFormStore.use.setHandicapAscending();
     const [isFilterOpen, setIsFilterOpen] = useState(false);
 
     const changeTimeSorting = () => {

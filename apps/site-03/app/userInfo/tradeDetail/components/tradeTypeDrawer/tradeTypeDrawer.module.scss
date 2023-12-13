@@ -1,0 +1,29 @@
+.dateRangeDrawer {
+    height: 30vh;
+    padding: 0 16px 32px;
+
+    .title {
+        text-align: start;
+        margin-top: 8px;
+        color: black;
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+    .buttomBlock {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin-top: 8px;
+
+        .filterButton {
+            border: 1px solid #4489ff;
+            border-radius: 8px;
+        }
+
+        .active {
+            background: #4489ff;
+            color: white;
+        }
+    }
+}

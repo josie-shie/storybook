@@ -3,24 +3,15 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { getFollowers, updateFollow, unFollow } from 'data-center';
+import type { GetFollowersResponse } from 'data-center';
 import backLeftArrowImg from '../img/backLeftArrow.png';
 import { useFansMemberStore } from './myFansStore';
 import MasterItem from './components/masterItem/masterItem';
 import style from './myFans.module.scss';
 import { useNotificationStore } from '@/app/notificationStore';
 import { useUserStore } from '@/app/userStore';
-
-interface FansData {
-    memberId: number;
-    username: string;
-    avatarPath: string;
-    profile: string;
-    fans: number;
-    unlocked: number;
-    hotStreak: number;
-    ranking: number;
-    followed: boolean;
-}
+import NoData from '@/components/baseNoData/noData';
+import Loading from '@/components/loading/loading';
 
 function MyFocus() {
     const router = useRouter();
@@ -29,24 +20,27 @@ function MyFocus() {
     const userInfo = useUserStore.use.userInfo();
     const fansMemberItem = useFansMemberStore.use.fansMemberItem();
     const setFansMemberItem = useFansMemberStore.use.setFansMemberItem();
-    const [filteredMasterItems, setFilteredMasterItems] = useState<FansData[]>(fansMemberItem);
+    const [filteredMasterItems, setFilteredMasterItems] =
+        useState<GetFollowersResponse>(fansMemberItem);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         setFilteredMasterItems(fansMemberItem);
     }, [fansMemberItem]);
 
-    // 我的關注列表先接上，但還缺三個欄位，暫時先不使用
     useEffect(() => {
         const getFollowersList = async () => {
-            const res = await getFollowers({ memberId: userInfo.uid, isFans: false });
-            if (!res.success) {
-                console.error(res.error);
+            setIsLoading(true);
+            const res = await getFollowers({ memberId: userInfo.uid, isFans: true });
+            if (res.success) {
+                setFansMemberItem(res.data);
             }
-            // console.log(res.data);
-            // setFocusMemberItem(res.data);
+            setIsLoading(false);
         };
 
-        void getFollowersList();
+        if (userInfo.uid) {
+            void getFollowersList();
+        }
     }, [userInfo]);
 
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -66,21 +60,44 @@ function MyFocus() {
         setFilteredMasterItems(filteredItems);
     };
 
-    const toggleFollow = async (uid: number, memberId: number, followed: boolean) => {
-        const apiFunction = followed ? updateFollow : unFollow;
-        const action = followed ? '关注成功' : '取消关注';
+    const toggleFollow = async (uid: number, memberId: number, isFollowed: boolean) => {
+        const apiFunction = isFollowed ? updateFollow : unFollow;
+        const action = isFollowed ? '关注成功' : '取消关注';
         const errorMessage = '发生错误';
 
         const res = await apiFunction({ followerId: uid, followedId: memberId });
         if (res.success) {
             setIsVisible(action, 'success');
             const updatedItems = fansMemberItem.map(item =>
-                item.memberId === memberId ? { ...item, followed: !item.followed } : item
+                item.memberId === memberId ? { ...item, isFollowed: !item.isFollowed } : item
             );
             setFansMemberItem(updatedItems);
         } else {
             setIsVisible(errorMessage, 'error');
         }
+    };
+
+    const renderContent = () => {
+        if (isLoading) {
+            return <Loading />;
+        }
+
+        if (filteredMasterItems.length > 0) {
+            return (
+                <div className={style.filteredMasterItems}>
+                    {filteredMasterItems.map(item => (
+                        <MasterItem
+                            item={item}
+                            key={item.memberId}
+                            onFollowToggle={toggleFollow}
+                            uid={userInfo.uid}
+                        />
+                    ))}
+                </div>
+            );
+        }
+
+        return <NoData />;
     };
 
     return (
@@ -115,14 +132,7 @@ function MyFocus() {
                         搜索
                     </button>
                 </div>
-                {filteredMasterItems.map(item => (
-                    <MasterItem
-                        item={item}
-                        key={item.memberId}
-                        onFollowToggle={toggleFollow}
-                        uid={userInfo.uid}
-                    />
-                ))}
+                {renderContent()}
             </div>
         </>
     );

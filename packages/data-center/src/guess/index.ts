@@ -2,6 +2,8 @@ import { fetcher } from 'lib';
 import { z } from 'zod';
 import { handleApiError } from '../common';
 import type { ReturnData } from '../common';
+import { PredictedPlaySchema, PredictionResultSchema } from '../commonType';
+import type { PredictedPlay } from '../commonType';
 import {
     GET_TODAY_GUESS_MATCHES_QUERY,
     GET_GUESS_RANK_QUERY,
@@ -290,11 +292,31 @@ const MemberIndividualGuessRecordSchema = z.object({
     overUnderLose: z.number()
 });
 
-export type MemberIndividualGuessRecord = z.infer<typeof MemberIndividualGuessRecordSchema>;
+export interface MemberIndividualGuessRecord {
+    rank: number;
+    summary: {
+        play: number;
+        win: number;
+        draw: number;
+        lose: number;
+    };
+    handicap: {
+        play: number;
+        win: number;
+        draw: number;
+        lose: number;
+    };
+    size: {
+        play: number;
+        win: number;
+        draw: number;
+        lose: number;
+    };
+}
 export interface GetMemberIndividualGuessResponse {
-    weekRecord: MemberIndividualGuessRecord;
-    monthRecord: MemberIndividualGuessRecord;
-    quarterRecord: MemberIndividualGuessRecord;
+    byWeek: MemberIndividualGuessRecord;
+    byMonth: MemberIndividualGuessRecord;
+    byQuarter: MemberIndividualGuessRecord;
 }
 
 const GetMemberIndividualGuessResultSchema = z.object({
@@ -332,10 +354,76 @@ export const getMemberIndividualGuess = async ({
         );
 
         GetMemberIndividualGuessResultSchema.parse(data);
+        const { weekRecord, monthRecord, quarterRecord } = data.getMemberIndividualGuess;
 
+        const formattedData = {
+            byWeek: {
+                rank: weekRecord.rank,
+                summary: {
+                    play: weekRecord.totalPlay,
+                    win: weekRecord.totalPlayWin,
+                    draw: weekRecord.totalPlayDraw,
+                    lose: weekRecord.totalPlayLose
+                },
+                handicap: {
+                    play: weekRecord.handicapPlay,
+                    win: weekRecord.handicapWin,
+                    draw: weekRecord.handicapDraw,
+                    lose: weekRecord.handicapDraw
+                },
+                size: {
+                    play: weekRecord.overUnderPlay,
+                    win: weekRecord.overUnderWin,
+                    draw: weekRecord.handicapDraw,
+                    lose: weekRecord.handicapLose
+                }
+            },
+            byMonth: {
+                rank: monthRecord.rank,
+                summary: {
+                    play: monthRecord.totalPlay,
+                    win: monthRecord.totalPlayWin,
+                    draw: monthRecord.totalPlayDraw,
+                    lose: monthRecord.totalPlayLose
+                },
+                handicap: {
+                    play: monthRecord.handicapPlay,
+                    win: monthRecord.handicapWin,
+                    draw: monthRecord.handicapDraw,
+                    lose: monthRecord.handicapDraw
+                },
+                size: {
+                    play: monthRecord.overUnderPlay,
+                    win: monthRecord.overUnderWin,
+                    draw: monthRecord.handicapDraw,
+                    lose: monthRecord.handicapLose
+                }
+            },
+            byQuarter: {
+                rank: quarterRecord.rank,
+                summary: {
+                    play: quarterRecord.totalPlay,
+                    win: quarterRecord.totalPlayWin,
+                    draw: quarterRecord.totalPlayDraw,
+                    lose: quarterRecord.totalPlayLose
+                },
+                handicap: {
+                    play: quarterRecord.handicapPlay,
+                    win: quarterRecord.handicapWin,
+                    draw: quarterRecord.handicapDraw,
+                    lose: quarterRecord.handicapDraw
+                },
+                size: {
+                    play: quarterRecord.overUnderPlay,
+                    win: quarterRecord.overUnderWin,
+                    draw: quarterRecord.handicapDraw,
+                    lose: quarterRecord.handicapLose
+                }
+            }
+        };
         return {
             success: true,
-            data: data.getMemberIndividualGuess
+            data: formattedData
         };
     } catch (error) {
         return handleApiError(error);
@@ -346,6 +434,8 @@ export interface GetMemberIndividualGuessMatchesRequest {
     memberId: number;
     currentPage: number;
     pageSize: number;
+    guessType: 0 | 1 | 2;
+    // 競猜玩法 ( 0: 全部, 1: 讓球, 2: 大小球 )
 }
 
 const MemberIndividualGuessMatchSchema = z.object({
@@ -358,14 +448,8 @@ const MemberIndividualGuessMatchSchema = z.object({
     awayTeamName: z.string(),
     handicapOdds: z.number(),
     overUnderOdds: z.number(),
-    predictedPlay: z.union([
-        z.literal('HOME'),
-        z.literal('AWAY'),
-        z.literal('OVER'),
-        z.literal('UNDER'),
-        z.literal('LOCK')
-    ]),
-    predictionResult: z.string(),
+    predictedPlay: PredictedPlaySchema,
+    predictionResult: PredictionResultSchema,
     isPaidToRead: z.boolean()
 });
 
@@ -378,17 +462,11 @@ const PaginationSchema = z.object({
 
 export type Pagination = z.infer<typeof PaginationSchema>;
 
-const MemberIndividualGuessMatchListSchema = z.object({
+const GetMemberIndividualGuessMatchesSchema = z.object({
     guessType: z.union([z.literal(0), z.literal(1), z.literal(2)]),
     // 競猜玩法 ( 0: 全部, 1: 讓球, 2: 大小球 )
     guessMatchList: z.array(MemberIndividualGuessMatchSchema),
     pagination: PaginationSchema
-});
-
-const GetMemberIndividualGuessMatchesSchema = z.object({
-    all: MemberIndividualGuessMatchListSchema,
-    handicap: MemberIndividualGuessMatchListSchema,
-    overUnder: MemberIndividualGuessMatchListSchema
 });
 
 const GetMemberIndividualGuessMatchesResultSchema = z.object({
@@ -412,7 +490,8 @@ export type GetMemberIndividualGuessMatchesResponse = z.infer<
 export const getMemberIndividualGuessMatches = async ({
     memberId,
     currentPage,
-    pageSize
+    pageSize,
+    guessType
 }: GetMemberIndividualGuessMatchesRequest): Promise<
     ReturnData<GetMemberIndividualGuessMatchesResponse>
 > => {
@@ -425,7 +504,8 @@ export const getMemberIndividualGuessMatches = async ({
                         input: {
                             memberId,
                             currentPage,
-                            pageSize
+                            pageSize,
+                            guessType
                         }
                     }
                 }
@@ -449,53 +529,52 @@ export interface GetProGuessRequest {
     memberId: number;
 }
 
+const HighlightsSchema = z.object({
+    id: z.number(),
+    type: z.union([z.literal(0), z.literal(1), z.literal(2), z.literal(3)]),
+    //戰績標籤類別 0:週 1:月 2:季 3:連紅
+    value: z.number()
+});
+
 const ProGuessSchema = z.object({
     guessId: z.number(),
     memberId: z.number(),
     memberName: z.string(),
-    memberRankType: z.union([
-        z.literal('WINNINGSTREAK'),
-        z.literal('QUARTERLY'),
-        z.literal('MONTHLY'),
-        z.literal('WEEKLY')
-    ]),
-    memberRanking: z.number(),
-    records: z.union([z.literal('WIN'), z.literal('LOSE'), z.literal('DRAW'), z.literal('NONE')]),
+    avatarPath: z.number(),
+    highlights: z.array(HighlightsSchema),
+    records: z.array(PredictionResultSchema),
     predictedType: z.union([z.literal('HANDICAP'), z.literal('OVERUNDER')]),
-    predictedPlay: z.union([
-        z.literal('HOME'),
-        z.literal('AWAY'),
-        z.literal('OVER'),
-        z.literal('UNDER'),
-        z.literal('LOCK')
-    ]),
-    predictionResult: z.union([
-        z.literal('WIN'),
-        z.literal('LOSE'),
-        z.literal('DRAW'),
-        z.literal('NONE')
-    ])
+    predictedPlay: PredictedPlaySchema,
+    predictionResult: PredictionResultSchema
 });
 
 const GetProGuessResultSchema = z.object({
-    getProGuess: z.array(ProGuessSchema)
+    getProGuess: z.object({
+        proGuess: z.array(ProGuessSchema),
+        unlockPrice: z.number(),
+        freeUnlockChance: z.number()
+    })
 });
 
 type GetProGuessResult = z.infer<typeof GetProGuessResultSchema>;
 
 export type ProGuess = z.infer<typeof ProGuessSchema>;
-export type ProGuessResponse = ProGuess[];
+export interface GetProGuessResponse {
+    proGuess: ProGuess[];
+    unlockPrice: number;
+    freeUnlockChance: number;
+}
 
 /**
  * 取得高手方案
  * - params {@link GetProGuessRequest}
- * - returns {@link ProGuessResponse}
+ * - returns {@link GetProGuessResponse}
  * - {@link ProGuess}
  */
 export const getProGuess = async ({
     matchId,
     memberId
-}: GetProGuessRequest): Promise<ReturnData<ProGuessResponse>> => {
+}: GetProGuessRequest): Promise<ReturnData<GetProGuessResponse>> => {
     try {
         const { data }: { data: GetProGuessResult } = await fetcher(
             {
@@ -532,7 +611,8 @@ const GetProDistribSchema = z.object({
     over: z.number(),
     under: z.number(),
     enoughProData: z.boolean(),
-    memberPermission: z.boolean()
+    memberPermission: z.boolean(),
+    unlockPrice: z.number()
 });
 
 export type GetProDistribResponse = z.infer<typeof GetProDistribSchema>;
@@ -545,6 +625,8 @@ type GetProDistribResult = z.infer<typeof GetProDistribResultSchema>;
 
 /**
  * 取得高手分佈
+ * - params {@link GetProDistribRequest}
+ * - returns {@link GetProDistribResponse}
  */
 export const getProDistrib = async ({
     matchId,
@@ -577,7 +659,7 @@ export const getProDistrib = async ({
 
 export interface AddGuessRequest {
     matchId: number;
-    predictedPlay: 'HOME' | 'AWAY' | 'OVER' | 'UNDER' | 'LOCK';
+    predictedPlay: PredictedPlay;
 }
 
 /**

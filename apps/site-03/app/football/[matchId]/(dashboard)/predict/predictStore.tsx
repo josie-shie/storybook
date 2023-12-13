@@ -1,9 +1,9 @@
 import { initStore } from 'lib';
 import type { StoreWithSelectors } from 'lib';
-import type { GetMatchPostsResponse } from 'data-center';
+import type { GetPredictionMatchPostsResponse } from 'data-center';
 
 interface InitState {
-    predictList: GetMatchPostsResponse;
+    predictList: GetPredictionMatchPostsResponse;
 }
 
 interface PredictState extends InitState {
@@ -15,7 +15,7 @@ let usePredictStore: StoreWithSelectors<PredictState>;
 const initialState = (set: (data: Partial<PredictState>) => void) => ({
     predictList: [],
     loading: false,
-    setPredictList: (predictList: GetMatchPostsResponse) => {
+    setPredictList: (predictList: GetPredictionMatchPostsResponse) => {
         set({ predictList });
     }
 });

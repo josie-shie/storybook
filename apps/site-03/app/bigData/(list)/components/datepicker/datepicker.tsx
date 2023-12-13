@@ -48,9 +48,9 @@ function Datepicker({
 
     return (
         <>
-            <Box className={style.baseDatePicker}>
+            <Box className={`baseDatePicker ${style.baseDatePicker}`}>
                 <IconButton>
-                    <Image alt="" height={24} src={DateIcon} width={24} />
+                    <Image alt="" height={20} src={DateIcon} width={20} />
                 </IconButton>
             </Box>
             <Modal className={style.datePickerModal} onClose={closeModal} open={openModal}>

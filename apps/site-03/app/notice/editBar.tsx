@@ -1,8 +1,11 @@
 'use client';
 
+import { useEffect } from 'react';
 import Button from '@mui/material/Button';
 import { deleteMailMember } from 'data-center';
 import { usePathname } from 'next/navigation';
+import type { MessageResponse } from 'lib';
+import { messageService, getMessageResponse, cancelMessage } from 'lib';
 import style from './editBar.module.scss';
 import { useNoticeStore } from './noticeStore';
 import { useNotificationStore } from '@/app/notificationStore';
@@ -15,6 +18,8 @@ function EditBar() {
     const selected = useNoticeStore.use.selected();
     const setSelected = useNoticeStore.use.setSelected();
     const setIsVisible = useNotificationStore.use.setIsVisible();
+    const chatList = useNoticeStore.use.chatList();
+    const setChatList = useNoticeStore.use.setChatList();
 
     const route = usePathname().split('/');
     const pathName = route[route.length - 1];
@@ -32,11 +37,30 @@ function EditBar() {
                 setMailList(newList);
             }
         } else {
-            const params = { chatRoomId: Array.from(selected) };
-            // eslint-disable-next-line no-console -- room id
-            console.log(params);
+            void messageService.send({
+                action: 'delete_private_room',
+                roomIds: Array.from(selected) as string[]
+            });
         }
     };
+
+    useEffect(() => {
+        const handleRes = (res: MessageResponse) => {
+            if (res.action === 'delete_private_room') {
+                if (res.status === 'success') {
+                    setEditStatus(false);
+                    const params = chatList.filter(chat => !selected.has(chat.roomId));
+                    setChatList(params);
+                }
+            }
+        };
+
+        getMessageResponse(handleRes);
+
+        return () => {
+            cancelMessage(handleRes);
+        };
+    }, [chatList, selected, setChatList, setEditStatus]);
 
     return (
         <div className={`${style.editBar} ${editStatus && style.isEdit}`}>

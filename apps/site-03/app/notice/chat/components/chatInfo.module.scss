@@ -75,6 +75,7 @@
             padding: 16px;
             background-color: #fff;
             box-shadow: 0 -1px 0 0 #d9d9d9;
+            column-gap: 0;
         }
 
         .bfEmoticonBox {
@@ -104,9 +105,8 @@
         }
 
         .bfSmileBtn {
-            color: #4a4a4a;
             margin-left: 10px;
-            margin-right: 0;
+            color: #4a4a4a;
             order: 2;
 
             :global(.bfSmile) {

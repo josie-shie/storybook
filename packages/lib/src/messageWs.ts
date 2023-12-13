@@ -30,7 +30,9 @@ export interface MessageResponse {
     token?: string;
     correlationId?: string;
     roomId?: string;
+    roomIds?: string[];
     message?: MessageItem;
+    messageId?: string;
     list?: MessageItem[];
     page?: number;
     receiver?: User;
@@ -42,6 +44,8 @@ export interface MessageRoomType {
     roomId: string;
     receiver: { uid: string };
     lastMessages: { content: string }[];
+    lastReadId: string;
+    messageIsRead: boolean;
     date: string;
     user: User;
 }

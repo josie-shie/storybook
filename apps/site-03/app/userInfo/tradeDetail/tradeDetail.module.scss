@@ -11,7 +11,22 @@
     display: flex;
     gap: 8px;
 
-    :global(.ui-select) {
-        background: #fff;
+    .filterButton {
+        min-width: 112px;
+        height: 28px;
+        padding: 4px 8px;
+        font-size: 14px;
+        color: #4489ff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #4489ff;
+        border-radius: 8px;
+        gap: 4px;
+
+        img {
+            width: 16px;
+            height: 16px;
+        }
     }
 }

@@ -147,21 +147,9 @@ export const GET_MEMBER_INDIVIDUAL_GUESS_QUERY = `
 export const GET_MEMBER_INDIVIDUAL_GUESS_MATCHES_QUERY = `
     query getMemberIndividualGuessMatches($input: GetMemberIndividualGuessMatchesInput!){
         getMemberIndividualGuessMatches(input: $input) {
-            all {
-                guessType
-                guessMatchList
-                pagination
-            }
-            handicap {
-                guessType
-                guessMatchList
-                pagination
-            }
-            overUnder {
-                guessType
-                guessMatchList
-                pagination
-            }
+            guessType
+            guessMatchList
+            pagination
         }
     }
 `;
@@ -170,16 +158,22 @@ export const GET_RRO_GUESS_QUERY = `
     query getProGuess($matchId: Int, $memberId: Int){
         getProGuess(matchId: $matchId, memberId: $memberId) {
             proGuess {
-            guessId
-            memberId
-            memberName
-            memberRankType
-            memberRanking
-            records
-            predictedType
-            predictedPlay
-            predictionResult
-            }
+                guessId
+                memberId
+                memberName
+                avatarPath
+                highlights {
+                  id
+                  type
+                  value
+                } 
+                records
+                predictedType
+                predictedPlay
+                predictionResult
+              }
+            unlockPrice
+            freeUnlockChance
         }
     }
 `;
@@ -193,6 +187,7 @@ export const GET_RRO_DISTRIB_QUERY = `
             under
             enoughProData
             memberPermission
+            unlockPrice
         }
     }
 `;
