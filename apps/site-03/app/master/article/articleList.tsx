@@ -1,16 +1,18 @@
 'use client';
 import Image from 'next/image';
+import { useState } from 'react';
 import { IconFlame } from '@tabler/icons-react';
 import { useRouter } from 'next/navigation';
 import { timestampToMonthDay, timestampToString } from 'lib';
-import { creatArticleStore, useArticleStore } from '../articleStore';
+import WeekButton from '../components/weekButton/weekButton';
+import { creatArticleStore, useArticleStore } from './articleStore';
 import style from './article.module.scss';
 import Win from './img/win.png';
 import Avatar from '@/components/avatar/avatar';
 import Tag from '@/components/tag/tag';
 import UnlockButton from '@/components/unlockButton/unlockButton';
 
-function ArticleItem() {
+function PredictItem() {
     const router = useRouter();
     const articleList = useArticleStore.use.articleList();
 
@@ -81,7 +83,18 @@ function ArticleItem() {
     );
 }
 
-function Article() {
+function PredictList() {
+    const [isActive, setIsActive] = useState<number[]>([]);
+
+    const updateActive = (value: number) => {
+        setIsActive(current => {
+            const isExist = current.includes(value);
+            if (isExist) {
+                return current.filter(item => item !== value);
+            }
+            return [...current, value];
+        });
+    };
     creatArticleStore({
         articleList: [
             {
@@ -133,10 +146,15 @@ function Article() {
     });
 
     return (
-        <div className={style.article}>
-            <ArticleItem />
-        </div>
+        <>
+            <div className={style.button}>
+                <WeekButton isActive={isActive} updateActive={updateActive} />
+            </div>
+            <div className={style.article}>
+                <PredictItem />
+            </div>
+        </>
     );
 }
 
-export default Article;
+export default PredictList;

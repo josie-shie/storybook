@@ -54,30 +54,6 @@
             font-size: 12px;
             font-weight: 400;
             text-align: center;
-
-            // &::before {
-            //     content: '';
-            //     position: absolute;
-            //     top: 50%;
-            //     left: -36%;
-            //     transform: translateY(-50%);
-            //     display: block;
-            //     width: 33%;
-            //     height: 1px;
-            //     background: rgba(255 255 255 / 60%);
-            // }
-
-            // &::after {
-            //     content: '';
-            //     position: absolute;
-            //     top: 50%;
-            //     right: -36%;
-            //     transform: translateY(-50%);
-            //     display: block;
-            //     width: 33%;
-            //     height: 1px;
-            //     background: rgba(255 255 255 / 60%);
-            // }
         }
     }
 
@@ -151,7 +127,7 @@
 
                 .noSelect {
                     background: #fff3;
-                    border-color: #fff3;
+                    border-color: transparent;
                 }
 
                 .progress {

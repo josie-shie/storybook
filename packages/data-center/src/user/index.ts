@@ -3,7 +3,7 @@ import Cookies from 'js-cookie';
 import { z } from 'zod';
 import { handleApiError } from '../common';
 import type { ReturnData } from '../common';
-import { PredictionResultSchema, TagSchema } from '../commonType';
+import { PredictionResultSchema, TagSchema, PredictedPlaySchema } from '../commonType';
 import {
     REGISTER_MUTATION,
     SEND_VERIFICATION_CODE_MUTATION,
@@ -17,7 +17,8 @@ import {
     GET_SUBSCRIPTION_QUERY,
     GET_UNLOCKED_QUERY,
     SUBSCRIBE_PLAN_MUTATION,
-    GET_INVITATION_ACTIVITY_REWARD_INFO_QUERY
+    GET_INVITATION_ACTIVITY_REWARD_INFO_QUERY,
+    GET_MEMBER_GUESS_VIEWING_RECORDS_QUERY
 } from './graphqlQueries';
 
 const RegisterResultSchema = z.object({
@@ -681,6 +682,84 @@ export const getInvitationActivityRewardInfo = async (): Promise<
         GetInvitationActivityRewardInfoResultSchema.parse(data);
 
         return { success: true, data: data.getInvitationActivityRewardInfo };
+    } catch (error) {
+        return handleApiError(error);
+    }
+};
+
+export interface GetMemberGuessViewingRecordsRequest {
+    currentPage: number;
+    pageSize: number;
+}
+
+const MemberGuessViewingRecordSchema = z.object({
+    recordMemberId: z.number(),
+    memberName: z.string(),
+    avatarPath: z.string(),
+    matchId: z.number(),
+    matchTime: z.number(),
+    leagueId: z.number(),
+    leagueName: z.string(),
+    homeTeamName: z.string(),
+    awayTeamName: z.string(),
+    handicapOdds: z.number(),
+    overUnderOdds: z.number(),
+    predictedPlay: PredictedPlaySchema,
+    predictionResult: PredictionResultSchema,
+    viewingTime: z.number()
+});
+
+export type MemberGuessViewingRecord = z.infer<typeof MemberGuessViewingRecordSchema>;
+
+const GetMemberGuessViewingRecordsResponseSchema = z.object({
+    memberGuessViewingRecordList: z.array(MemberGuessViewingRecordSchema),
+    pagination: z.object({
+        pageCount: z.number(),
+        totalCount: z.number()
+    })
+});
+
+export type GetMemberGuessViewingRecordsResponse = z.infer<
+    typeof GetMemberGuessViewingRecordsResponseSchema
+>;
+
+const GetMemberGuessViewingRecordsResultSchema = z.object({
+    getMemberGuessViewingRecords: GetMemberGuessViewingRecordsResponseSchema
+});
+
+type GetMemberGuessViewingRecordsResult = z.infer<typeof GetMemberGuessViewingRecordsResultSchema>;
+
+/**
+ * 我的競猜 - 查看記錄
+ * - params {@link GetMemberGuessViewingRecordsRequest}
+ * - returns {@link GetMemberGuessViewingRecordsResponse}
+ * - {@link MemberGuessViewingRecord}
+ */
+export const getMemberGuessViewingRecords = async ({
+    currentPage,
+    pageSize
+}: GetMemberGuessViewingRecordsRequest): Promise<
+    ReturnData<GetMemberGuessViewingRecordsResponse>
+> => {
+    try {
+        const { data }: { data: GetMemberGuessViewingRecordsResult } = await fetcher(
+            {
+                data: {
+                    query: GET_MEMBER_GUESS_VIEWING_RECORDS_QUERY,
+                    variables: {
+                        input: {
+                            currentPage,
+                            pageSize
+                        }
+                    }
+                }
+            },
+            { cache: 'no-store' }
+        );
+
+        GetMemberGuessViewingRecordsResultSchema.parse(data);
+
+        return { success: true, data: data.getMemberGuessViewingRecords };
     } catch (error) {
         return handleApiError(error);
     }

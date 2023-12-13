@@ -6,6 +6,7 @@ message User {
   string uid = 1;
   string name = 2;
   string avatar = 3;
+  string type = 4; // 會員類型 GENERAL:一般會員, MENTOR:導師, INTERNAL:內部人員
 }
 
 message LastMessage {
@@ -16,10 +17,13 @@ message LastMessage {
 
 message Room {
   string roomId = 1;
+  // TODO: 拿掉 repeated
   repeated Message lastMessages = 2;
   string date = 3;
   User user = 4;
   int32 onlineUserCount = 5; // 在線人數
+  bool messageIsRead = 6; // 訊息是否已讀
+  string lastReadId = 7; // 最後已讀訊息 Id
 }
 
 message Message {
@@ -34,18 +38,33 @@ message Message {
 
 message PotentialMember { User user = 1; }
 
+message OnlineUserUpdate {
+  string roomId = 1;          // 房間ID
+  int32 totalOnlineUsers = 2; // 房間總在線人數
+  int32 potentialMembers = 3; // 潛在客戶數量
+  int32 regularMembers = 4;   // 一般客戶數量
+  int32 mentorMembers = 5;    // 帶單導師數量
+}
+
+message BroadcastMessage {
+  string uid = 1;
+  string broadcast_id = 2;
+  string content = 3;
+}
+
 message MessageRequest {
   string token = 1; // Add token here
   string action = 2;
   string roomId = 3;
   string correlationId = 4;
-  User receiver = 5;   // only for join_room action
-  string content = 6;  // only for send_message action
-  string images = 7;   // only for send_message action
-  string emoticon = 8; // only for send_message action
-  bytes file = 9;      // only for upload_picture action
-  string messageId = 10;     // only for get_message action
-  string type = 11;    // 1.get_room_list群私聊(group|private)
+  User receiver = 5;     // only for join_room action
+  string content = 6;    // only for send_message action
+  string images = 7;     // only for send_message action
+  string emoticon = 8;   // only for send_message action
+  bytes file = 9;        // only for upload_picture action
+  string messageId = 10; // only for get_message action
+  string type = 11;      // 1.get_room_list群私聊(group|private)
+  repeated string roomIds = 12; // for delete_private_room
 }
 
 message MessageResponse {
@@ -53,10 +72,12 @@ message MessageResponse {
   string status = 2;
   string correlationId = 3;
   string roomId = 4;
-  repeated Room rooms = 5;   // only for get_room_list action
-  repeated Message list = 6; // only for get_message action
-  Message message = 7;       // only for new_message action
-  string url = 8;            // only for upload_picture action
-  int32 page = 9;            // only for get_message action
-  PotentialMember potentialMember = 10; // only for potential member
+  repeated Room rooms = 5;                // only for get_room_list action
+  repeated Message list = 6;              // only for get_message action
+  Message message = 7;                    // only for new_message action
+  string url = 8;                         // only for upload_picture action
+  int32 page = 9;                         // only for get_message action
+  PotentialMember potentialMember = 10;   // only for potential member
+  OnlineUserUpdate onlineUpdate = 11;     // for online user update notification
+  BroadcastMessage broadcastMessage = 12; // only for send_broadcast action
 }

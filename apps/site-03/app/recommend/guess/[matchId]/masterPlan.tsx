@@ -7,6 +7,7 @@ import AnalyzeColumn from './analyze';
 import Title from './img/title.png';
 import style from './masterPlan.module.scss';
 import { useGuessDetailStore } from './guessDetailStore';
+import starIcon from './img/star.png';
 import { useUserStore } from '@/app/userStore';
 import PaidDialog from '@/components/paidDialog/paidDialog';
 
@@ -18,7 +19,6 @@ function MasterPlan() {
 
     const userBalance = useUserStore.use.userInfo().balance;
     const isTrendUnlocked = useGuessDetailStore.use.unlockTrend();
-    const trend = useGuessDetailStore.use.highWinRateTrend();
     const masterPlanList = useGuessDetailStore.use.masterPlanList();
 
     const setUnlockTrend = useGuessDetailStore.use.setUnlockTrend();
@@ -82,11 +82,12 @@ function MasterPlan() {
                         <div className={style.mask}>
                             <button
                                 onClick={() => {
-                                    handleGlobalClickOpen(trend.unlockPrice, 'single');
+                                    handleGlobalClickOpen(10, 'single');
                                 }}
                                 type="button"
                             >
-                                {trend.unlockPrice} 金币解锁本场
+                                <Image alt="" className={style.coin} src={starIcon} width={16} /> 10
+                                金币解锁本场
                             </button>
                             {/* 訂閱方案流程待改 */}
                             <button
@@ -95,7 +96,8 @@ function MasterPlan() {
                                 }}
                                 type="button"
                             >
-                                200 金币包月无限看
+                                <Image alt="" className={style.coin} src={starIcon} width={16} />{' '}
+                                365天VIP无限看专案
                             </button>
                         </div>
                     )}
@@ -116,46 +118,6 @@ function MasterPlan() {
                             plan={el}
                         />
                     ))}
-                    {/* <GameCard
-                        globalUnlock={isUnlocked}
-                        league="欧锦U20A vs 斯洛文尼亚U20"
-                        localIsUnlocked={unlockedGames.has('1')}
-                        name="老梁聊球"
-                        onOpenPaidDialog={() => {
-                            handleLocalClickOpen('1', 100, 200, 'single');
-                        }}
-                        text="9连红"
-                    />
-                    <GameCard
-                        globalUnlock={isUnlocked}
-                        league="欧锦U20A vs 斯洛文尼亚U20"
-                        localIsUnlocked={unlockedGames.has('2')}
-                        name="老梁聊球"
-                        onOpenPaidDialog={() => {
-                            handleLocalClickOpen('2', 100, 200, 'single');
-                        }}
-                        text="月榜10"
-                    />
-                    <GameCard
-                        globalUnlock={isUnlocked}
-                        league="欧锦U20A vs 斯洛文尼亚U20"
-                        localIsUnlocked={unlockedGames.has('3')}
-                        name="老梁聊球"
-                        onOpenPaidDialog={() => {
-                            handleLocalClickOpen('3', 100, 200, 'single');
-                        }}
-                        text="月榜10"
-                    />
-                    <GameCard
-                        globalUnlock={isUnlocked}
-                        league="欧锦U20A vs 斯洛文尼亚U20"
-                        localIsUnlocked={unlockedGames.has('4')}
-                        name="老梁聊球"
-                        onOpenPaidDialog={() => {
-                            handleLocalClickOpen('4', 100, 200, 'single');
-                        }}
-                        text="月榜10"
-                    /> */}
                 </div>
             </div>
             <PaidDialog

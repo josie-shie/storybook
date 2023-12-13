@@ -1,4 +1,18 @@
-export const GET_BIG_DATA_RECORD_LIST_QUERY = ``;
+export const GET_FOOTBALL_STATS_RECORD_QUERY = `
+    query getFootballStatsRecord($input:FootballStatsRecordInput!){
+        getFootballStatsRecord(input: $input) {
+            memberId
+            ticketId
+            handicapSide
+            handicapValues
+            overUnderValues
+            startTime
+            endTime
+            analyTime
+            isCompleted
+        }
+    }
+`;
 
 export const GET_ODDS_HINT_LIST_QUERY = `
     query getBigdataHint($input: HintInput!) {
