@@ -74,6 +74,7 @@
 
             .time {
                 color: #9b9b9b;
+                padding-left: 4px;
             }
         }
 
@@ -87,6 +88,20 @@
             font-size: 14px;
             font-weight: 600;
             color: #757575;
+        }
+
+        .teamName {
+            display: flex;
+
+            .play {
+                padding: 0 4px;
+                color: #4489ff;
+                font-size: 11px;
+                font-weight: 500;
+                border: 1px solid #4489ff;
+                border-radius: 4px;
+                margin-right: 4px;
+            }
         }
     }
 
