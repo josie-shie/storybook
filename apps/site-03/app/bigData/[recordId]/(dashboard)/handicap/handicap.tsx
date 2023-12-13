@@ -128,10 +128,12 @@ function Handicap() {
                     </div>
                 </div>
                 <div className={style.eChat}>
-                    <p className={style.dateRange}>
-                        {timestampToString(recordData.startTime, 'YYYY-MM-DD')} ~{' '}
-                        {timestampToString(recordData.endTime, 'YYYY-MM-DD')}
-                    </p>
+                    {recordData ? (
+                        <p className={style.dateRange}>
+                            {timestampToString(recordData.startTime, 'YYYY-MM-DD')} ~{' '}
+                            {timestampToString(recordData.endTime, 'YYYY-MM-DD')}
+                        </p>
+                    ) : null}
 
                     <ul>
                         {Object.keys(
