@@ -1,4 +1,3 @@
-'use client';
 import Image from 'next/image';
 import ArticleList from './articleList';
 import Banner from './img/banner.png';
