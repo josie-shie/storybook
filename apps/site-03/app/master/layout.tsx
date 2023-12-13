@@ -1,27 +1,32 @@
 'use client';
 
 import type { ReactNode } from 'react';
+import { useParams } from 'next/navigation';
 import style from './layout.module.scss';
 import { Tabs } from '@/components/tabs/tabs';
 import Header from '@/components/header/headerLogo';
 import Footer from '@/components/footer/footer';
 
 function MasterLayout({ children }: { children: ReactNode }) {
+    const params = useParams();
     return (
-        <>
-            <Header />
+        <div className={style.articleLayout}>
+            {params.articleId ? null : <Header />}
             <div className={style.predict}>
-                <div className={style.childrenTab}>
-                    <Tabs
-                        labels={['专家预测文章', '专家列表']}
-                        paths={['/master/predict', '/master/masterList']}
-                        styling="button"
-                    />
-                </div>
+                {params.articleId ? null : (
+                    <div className={style.childrenTab}>
+                        <Tabs
+                            labels={['专家预测文章', '专家列表']}
+                            paths={['/master/article', '/master/expert']}
+                            styling="button"
+                        />
+                    </div>
+                )}
+
                 {children}
             </div>
             <Footer />
-        </>
+        </div>
     );
 }
 
