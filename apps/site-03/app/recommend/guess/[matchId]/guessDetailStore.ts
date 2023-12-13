@@ -1,6 +1,6 @@
 import { initStore } from 'lib';
 import type { StoreWithSelectors } from 'lib';
-import type { GetProDistribResponse } from 'data-center';
+import type { GetProDistribResponse, ProGuess } from 'data-center';
 
 // 競猜詳情 上半部預測
 export interface DetailType {
@@ -20,35 +20,35 @@ export interface DetailType {
 }
 
 // 高手方案
-interface MasterPlan {
-    id: number; // 方案id
-    avatar: string; // 頭像
-    name: string; // 暱稱
-    hotStreak: number; // 連紅次數
-    ranking: number; // 月榜排名
-    homeTeam: string; // 主隊名
-    awayTeam: string; // 客隊名
-    unlock: boolean; // 是否已解鎖
-    unlockPrice: number; // 解鎖價格
-    history: ('win' | 'lose' | 'draw')[]; // 歷史戰績
-    guess: 'home' | 'away' | 'big' | 'small'; // 競猜方向
-    result?: 'win' | 'lose' | 'draw'; // 競猜結果
-    guessValue: number; // 讓分
-}
+// interface MasterPlan {
+//     id: number; // 方案id
+//     avatar: string; // 頭像
+//     name: string; // 暱稱
+//     hotStreak: number; // 連紅次數
+//     ranking: number; // 月榜排名
+//     homeTeam: string; // 主隊名
+//     awayTeam: string; // 客隊名
+//     unlock: boolean; // 是否已解鎖
+//     unlockPrice: number; // 解鎖價格
+//     history: ('win' | 'lose' | 'draw')[]; // 歷史戰績
+//     guess: 'home' | 'away' | 'big' | 'small'; // 競猜方向
+//     result?: 'win' | 'lose' | 'draw'; // 競猜結果
+//     guessValue: number; // 讓分
+// }
 
 interface InitState {
     guessesLeft: number; // 競猜剩餘次數
-    unlockTrend: boolean; // 解鎖高勝率玩家風向
     detail: DetailType;
     highWinRateTrend: GetProDistribResponse;
-    masterPlanList: MasterPlan[];
+    masterPlanPrice: number;
+    masterPlanList: ProGuess[];
 }
 
 interface GuessDetailState extends InitState {
     setDetail: (detail: DetailType) => void;
     setGuessesLeft: (leftNumber: number) => void;
-    setUnlockTrend: (isUnlocked: boolean) => void;
-    setMasterPlanList: (masterPlanList: MasterPlan[]) => void;
+    setMasterPlanPrice: (price: number) => void;
+    setMasterPlanList: (masterPlanList: ProGuess[]) => void;
     setHighWinRateTrend: (highWinRateTrend: GetProDistribResponse) => void;
 }
 
@@ -56,9 +56,9 @@ let useGuessDetailStore: StoreWithSelectors<GuessDetailState>;
 
 const initialState = (set: (data: Partial<GuessDetailState>) => void) => ({
     guessesLeft: 0,
-    unlockTrend: false,
     detail: {} as DetailType,
     highWinRateTrend: {} as GetProDistribResponse,
+    masterPlanPrice: 0,
     masterPlanList: [],
     setHighWinRateTrend: (highWinRateTrend: GetProDistribResponse) => {
         set({ highWinRateTrend });
@@ -69,10 +69,10 @@ const initialState = (set: (data: Partial<GuessDetailState>) => void) => ({
     setGuessesLeft: (leftNumber: number) => {
         set({ guessesLeft: leftNumber });
     },
-    setUnlockTrend: (isUnlocked: boolean) => {
-        set({ unlockTrend: isUnlocked });
+    setMasterPlanPrice: (price: number) => {
+        set({ masterPlanPrice: price });
     },
-    setMasterPlanList: (masterPlanList: MasterPlan[]) => {
+    setMasterPlanList: (masterPlanList: ProGuess[]) => {
         set({ masterPlanList });
     }
 });

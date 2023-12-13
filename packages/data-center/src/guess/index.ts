@@ -540,7 +540,7 @@ const ProGuessSchema = z.object({
     guessId: z.number(),
     memberId: z.number(),
     memberName: z.string(),
-    avatarPath: z.number(),
+    avatarPath: z.string(),
     highlights: z.array(HighlightsSchema),
     records: z.array(PredictionResultSchema),
     predictedType: z.union([z.literal('HANDICAP'), z.literal('OVERUNDER')]),

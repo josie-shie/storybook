@@ -1,6 +1,8 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
+import { getProDistrib, getProGuess } from 'data-center';
+import { useParams } from 'next/navigation';
 import Rule from './components/rule/rule';
 import GameCard from './gameCard';
 import AnalyzeColumn from './analyze';
@@ -12,19 +14,21 @@ import { useUserStore } from '@/app/userStore';
 import PaidDialog from '@/components/paidDialog/paidDialog';
 
 function MasterPlan() {
+    const matchId = useParams().matchId;
     const [selectedGameId, setSelectedGameId] = useState<number | null>(null);
     const [openPaid, setOpenPaid] = useState(false);
     const [amount, setAmount] = useState(0);
     const [plan, setPlan] = useState(false);
 
     const userBalance = useUserStore.use.userInfo().balance;
-    const isTrendUnlocked = useGuessDetailStore.use.unlockTrend();
+    const highWinRateTrend = useGuessDetailStore.use.highWinRateTrend();
     const masterPlanList = useGuessDetailStore.use.masterPlanList();
 
-    const setUnlockTrend = useGuessDetailStore.use.setUnlockTrend();
+    const setHighWinRateTrend = useGuessDetailStore.use.setHighWinRateTrend();
+    const setMasterPlanPrice = useGuessDetailStore.use.setMasterPlanPrice();
     const setMasterPlanList = useGuessDetailStore.use.setMasterPlanList();
 
-    const handleGlobalClickOpen = (newAmount: number, getPlan: string) => {
+    const handleUnlockTrendDialogOpen = (newAmount: number, getPlan: string) => {
         if (getPlan === 'single') {
             setPlan(true);
         } else if (getPlan === 'monthly') {
@@ -51,16 +55,38 @@ function MasterPlan() {
 
     const handleConfirm = () => {
         if (typeof selectedGameId === 'number') {
-            const newMasterPlan = [...masterPlanList];
-            const index = newMasterPlan.findIndex(item => item.id === selectedGameId);
-            newMasterPlan[index].unlock = true;
-            setMasterPlanList(newMasterPlan);
             setSelectedGameId(null);
-        } else {
-            setUnlockTrend(true);
         }
         setOpenPaid(false);
     };
+
+    useEffect(() => {
+        async function fetchProDistrib() {
+            const proDistribution = await getProDistrib({ matchId: Number(matchId), memberId: 16 });
+            if (proDistribution.success) {
+                const data = proDistribution.data;
+                setHighWinRateTrend({
+                    home: data.home,
+                    away: data.away,
+                    over: data.over,
+                    under: data.under,
+                    enoughProData: data.enoughProData, // 高手預測人數是否形成趨勢
+                    memberPermission: data.memberPermission, // 是否已解鎖高手風向
+                    unlockPrice: data.unlockPrice
+                });
+            }
+        }
+        async function fetchProGuess() {
+            const proGuess = await getProGuess({ matchId: Number(matchId), memberId: 16 });
+            if (proGuess.success) {
+                const data = proGuess.data;
+                setMasterPlanList(data.proGuess);
+                setMasterPlanPrice(data.unlockPrice);
+            }
+        }
+        void fetchProDistrib();
+        void fetchProGuess();
+    }, [matchId]);
 
     return (
         <div className={style.masterPlan}>
@@ -73,7 +99,7 @@ function MasterPlan() {
                     <Rule />
                 </div>
                 <div className={style.analyze}>
-                    {isTrendUnlocked ? (
+                    {highWinRateTrend.memberPermission ? (
                         <>
                             <AnalyzeColumn awayType="客" homeType="主" />
                             <AnalyzeColumn awayType="小" homeType="大" />
@@ -82,17 +108,17 @@ function MasterPlan() {
                         <div className={style.mask}>
                             <button
                                 onClick={() => {
-                                    handleGlobalClickOpen(10, 'single');
+                                    handleUnlockTrendDialogOpen(10, 'single');
                                 }}
                                 type="button"
                             >
-                                <Image alt="" className={style.coin} src={starIcon} width={16} /> 10
-                                金币解锁本场
+                                <Image alt="" className={style.coin} src={starIcon} width={16} />{' '}
+                                {highWinRateTrend.unlockPrice} 金币解锁本场
                             </button>
                             {/* 訂閱方案流程待改 */}
                             <button
                                 onClick={() => {
-                                    handleGlobalClickOpen(200, 'monthly');
+                                    handleUnlockTrendDialogOpen(200, 'monthly');
                                 }}
                                 type="button"
                             >
@@ -113,7 +139,7 @@ function MasterPlan() {
                         <GameCard
                             key={idx}
                             onOpenPaidDialog={() => {
-                                handleLocalClickOpen(el.id, el.unlockPrice, 'single');
+                                handleLocalClickOpen(el.guessId, 20, 'single');
                             }}
                             plan={el}
                         />

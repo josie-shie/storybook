@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import type { ProGuess } from 'data-center';
 import Fire from './img/fire.png';
 import Win from './img/win.png';
 import Lose from './img/lose.png';
@@ -8,85 +9,83 @@ import BigWin from './img/bigWin.png';
 import BigLose from './img/bigLose.png';
 import BigGone from './img/bigGone.png';
 import style from './gameCard.module.scss';
+import { useGuessDetailStore } from './guessDetailStore';
 import Avatar from '@/components/avatar/avatar';
 import Tag from '@/components/tag/tag';
 
-interface MasterPlan {
-    id: number; // 方案id
-    avatar: string; // 頭像
-    name: string; // 暱稱
-    hotStreak: number; // 連紅次數
-    ranking: number; // 月榜排名
-    homeTeam: string; // 主隊名
-    awayTeam: string; // 客隊名
-    unlock: boolean; // 是否已解鎖
-    unlockPrice: number; // 解鎖價格
-    history: ('win' | 'lose' | 'draw')[]; // 歷史戰績
-    guess: 'home' | 'away' | 'big' | 'small'; // 競猜方向
-    result?: 'win' | 'lose' | 'draw'; // 競猜結果
-    guessValue: number; // 讓分
+interface TagProps {
+    type: 0 | 1 | 2 | 3;
+    value: number;
+}
+
+function HighlightTag({ type, value }: TagProps) {
+    //戰績標籤類別 0:週 1:月 2:季 3:連紅
+    const periodMap = {
+        0: '週',
+        1: '月',
+        2: '季'
+    };
+    if (type === 3)
+        return <Tag icon={<Image alt="" src={Fire} width={8} />} text={`${value}连红`} />;
+    return <Tag background="#4489ff" text={`${periodMap[type]}榜${value}`} />;
 }
 
 interface GameCardProps {
-    plan: MasterPlan;
+    plan: ProGuess;
     onOpenPaidDialog: () => void;
 }
 
 function GameCard({ plan, onOpenPaidDialog }: GameCardProps) {
+    const unlockPrice = useGuessDetailStore.use.masterPlanPrice();
+
     const iconMap = {
-        win: <Image alt="winIcon" src={Win} width={18} />,
-        lose: <Image alt="loseIcon" src={Lose} width={18} />,
-        draw: <Image alt="goneIcon" src={Gone} width={18} />
+        WIN: <Image alt="winIcon" src={Win} width={18} />,
+        LOSE: <Image alt="loseIcon" src={Lose} width={18} />,
+        DRAW: <Image alt="goneIcon" src={Gone} width={18} />
     };
     const resultIconMap = {
-        win: <Image alt="" height={36} src={BigWin} width={36} />,
-        lose: <Image alt="" height={36} src={BigLose} width={36} />,
-        draw: <Image alt="" height={36} src={BigGone} width={36} />
+        WIN: <Image alt="" height={36} src={BigWin} width={36} />,
+        LOSE: <Image alt="" height={36} src={BigLose} width={36} />,
+        DRAW: <Image alt="" height={36} src={BigGone} width={36} />
     };
-    const guessWayMap = { home: '主', away: '客', big: '大', small: '小' };
-    const showHotStreak = plan.hotStreak > 4; // 邏輯待確認
-    const showRanking = plan.ranking < 50; // 邏輯待確認
+    const guessWayMap = { HOME: '主', AWAY: '客', OVER: '大', UNDER: '小' };
 
     return (
         <div className={style.gameCard}>
             <div className={style.detail}>
                 <Avatar />
                 <div className={style.details}>
-                    <span>{plan.name}</span>
-                    {showHotStreak ? (
-                        <Tag
-                            icon={<Image alt="" src={Fire} width={8} />}
-                            text={`${plan.hotStreak}连红`}
-                        />
-                    ) : null}
-                    {showRanking ? <Tag background="#4489ff" text={`月榜${plan.ranking}`} /> : null}
-                    <div className={style.league}>
-                        {plan.homeTeam} vs {plan.awayTeam}
-                    </div>
+                    <span>{plan.memberName}</span>
+                    {plan.highlights.map(el => (
+                        <HighlightTag key={el.id} type={el.type} value={el.value} />
+                    ))}
+                    <div className={style.league}>主隊名 vs 客隊名</div>
                     <ul className={style.ballList}>
-                        {plan.history.map((result, idx) => (
+                        {plan.records.map((result, idx) => (
                             <li key={idx}>{iconMap[result]}</li>
                         ))}
                     </ul>
                 </div>
             </div>
             <div className={style.paid}>
-                {plan.unlock ? (
-                    <div className={style.hit}>
-                        {plan.result ? resultIconMap[plan.result] : null}
-                        <div className={style.play}>一球/球半</div>
-                        <div className={style.paidContent}>
-                            <div className={style.play}>{guessWayMap[plan.guess]}</div>
-                        </div>
-                    </div>
-                ) : (
+                {plan.predictedPlay === 'LOCK' ? (
                     <>
                         <div className={style.noPaid} onClick={onOpenPaidDialog}>
                             <Image alt="star" className={style.image} src={Star} width={14} />
-                            <span className={style.text}>{plan.unlockPrice}元</span>
+                            <span className={style.text}>{unlockPrice}元</span>
                         </div>
                         <div className={style.play}>一球/球半</div>
                     </>
+                ) : (
+                    <div className={style.hit}>
+                        {plan.predictionResult !== 'NONE'
+                            ? resultIconMap[plan.predictionResult]
+                            : null}
+                        <div className={style.play}>一球/球半</div>
+                        <div className={style.paidContent}>
+                            <div className={style.play}>{guessWayMap[plan.predictedPlay]}</div>
+                        </div>
+                    </div>
                 )}
             </div>
         </div>
