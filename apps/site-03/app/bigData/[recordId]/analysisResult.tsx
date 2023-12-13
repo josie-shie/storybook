@@ -88,35 +88,38 @@ function ResultContent({ children }: { children: ReactNode }) {
     return (
         <>
             <HeaderTitleFilter backHandler={backHandler} title="分析结果" />
-            {recordData ? (
-                <div className={style.bigDataGame}>
-                    <div className={style.column}>
-                        <div className={style.row}>
-                            <span className={style.title}>全場讓球</span>
-                            <span className={style.name}>
-                                讓方/{handicapTeam[recordData.handicapSide] || '全部'}
-                                、盤口/
-                                {recordData.handicapValues || '不挑選'}
-                            </span>
-                        </div>
-                        <div className={style.row}>
-                            <span className={style.title}>全場大小</span>
-                            <span className={style.name}>
-                                {recordData.overUnderValues || '不挑選'}
-                            </span>
-                        </div>
+            <div className={style.bigDataGame}>
+                <div className={style.column}>
+                    <div className={style.row}>
+                        <span className={style.title}>全場讓球</span>
+                        <span className={style.name}>
+                            讓方/{(recordData && handicapTeam[recordData.handicapSide]) || '全部'}
+                            、盤口/
+                            {recordData?.handicapValues || '不挑選'}
+                        </span>
                     </div>
-                    <div className={style.column}>
-                        <div className={style.row}>
-                            <span className={style.title}>時間區間</span>
-                            <span className={style.date}>
-                                {timestampToString(recordData.startTime, 'YYYY-MM-DD')} ~{' '}
-                                {timestampToString(recordData.endTime, 'YYYY-MM-DD')}
-                            </span>
-                        </div>
+                    <div className={style.row}>
+                        <span className={style.title}>全場大小</span>
+                        <span className={style.name}>
+                            {recordData?.overUnderValues || '不挑選'}
+                        </span>
                     </div>
                 </div>
-            ) : null}
+                <div className={style.column}>
+                    <div className={style.row}>
+                        <span className={style.title}>時間區間</span>
+                        <span className={style.date}>
+                            {recordData
+                                ? timestampToString(recordData.startTime, 'YYYY-MM-DD')
+                                : null}{' '}
+                            ~{' '}
+                            {recordData
+                                ? timestampToString(recordData.endTime, 'YYYY-MM-DD')
+                                : null}
+                        </span>
+                    </div>
+                </div>
+            </div>
             <div className={style.dashboard}>
                 <Tabs
                     buttonRadius={tabStyle.buttonRadius}
