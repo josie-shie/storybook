@@ -9,6 +9,7 @@ import RecordFilter from './components/recordFilter/recordFilter';
 import starIcon from './img/star.png';
 import Datepicker from './components/datepicker/datepicker';
 import { useHandicapAnalysisFormStore } from './handicapAnalysisFormStore';
+import searchIcon from './img/search.png';
 import { useUserStore } from '@/app/userStore';
 
 function TimeRange({ timeRange }: { timeRange: string }) {
@@ -168,6 +169,8 @@ function HandicapAnalysisForm() {
         const params = {
             mission: 'create',
             memberId: userInfo.uid,
+            message: '',
+            ticketId: '',
             handicapSide: teamSelected,
             handicapValues: teamHandicapOdds,
             overUnderValues: handicapOddsSelected,
@@ -188,6 +191,7 @@ function HandicapAnalysisForm() {
                     setShowRecord(true);
                 }}
             >
+                <Image alt="" height={20} src={searchIcon.src} width={20} />
                 分析纪录
             </div>
             <HandicapSelect teamHandicapOdds={teamHandicapOdds} teamSelected={teamSelected} />

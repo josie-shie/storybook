@@ -9,6 +9,7 @@ import { useMatchFilterStore } from '../../matchFilterStore';
 import style from './contestDrawerList.module.scss';
 import iconFilter from './img/filterIcon.png';
 import BottomDrawer from '@/components/drawer/bottomDrawer';
+import NoData from '@/components/baseNoData/noData';
 
 function ContestDrawerList({
     isOpen,
@@ -89,36 +90,46 @@ function ContestDrawerList({
                     </div>
 
                     <div className={style.cardList}>
-                        {displayList.map(match => (
-                            <Link
-                                className={style.contesntList}
-                                href={`/football/${match.matchId}/analyze`}
-                                key={match.matchId}
-                            >
-                                <div className={style.title}>
-                                    <span className={style.sport}>{match.leagueChsShort}</span>
-                                    <span className={style.time}>
-                                        {timestampToString(match.startTime, 'YYYY-MM-DD HH:mm')}
-                                    </span>
-                                </div>
-                                <div className={style.game}>
-                                    <div className={`${style.team} ${style.home}`}>
-                                        <div className={style.name}>{match.homeChs}</div>
+                        {displayList.length ? (
+                            displayList.map(match => (
+                                <Link
+                                    href={`/football/${match.matchId}/analyze`}
+                                    key={match.matchId}
+                                >
+                                    <div className={style.contesntList}>
+                                        <div className={style.title}>
+                                            <span className={style.sport}>
+                                                {match.leagueChsShort}
+                                            </span>
+                                            <span className={style.time}>
+                                                {timestampToString(
+                                                    match.startTime,
+                                                    'YYYY-MM-DD HH:mm'
+                                                )}
+                                            </span>
+                                        </div>
+                                        <div className={style.game}>
+                                            <div className={`${style.team} ${style.home}`}>
+                                                <div className={style.name}>{match.homeChs}</div>
+                                            </div>
+                                            <div className={style.contest}>
+                                                <span className={`${style.status} ${style.ing}`}>
+                                                    {match.homeScore}-{match.awayScore}
+                                                </span>
+                                                <span className={style.number}>
+                                                    ({match.homeHalfScore}-{match.awayHalfScore})
+                                                </span>
+                                            </div>
+                                            <div className={`${style.team} ${style.away}`}>
+                                                <div className={style.name}>{match.awayChs}</div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div className={style.contest}>
-                                        <span className={`${style.status} ${style.ing}`}>
-                                            {match.homeScore}-{match.awayScore}
-                                        </span>
-                                        <span className={style.number}>
-                                            ({match.homeHalfScore}-{match.awayHalfScore})
-                                        </span>
-                                    </div>
-                                    <div className={`${style.team} ${style.away}`}>
-                                        <div className={style.name}>{match.awayChs}</div>
-                                    </div>
-                                </div>
-                            </Link>
-                        ))}
+                                </Link>
+                            ))
+                        ) : (
+                            <NoData />
+                        )}
                     </div>
                 </div>
             </BottomDrawer>
