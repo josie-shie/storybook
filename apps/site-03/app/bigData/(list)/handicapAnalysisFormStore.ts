@@ -7,14 +7,15 @@ interface Option {
 }
 
 interface Record {
-    recordId: number;
-    recordTime: number;
-    handicap: string;
-    odds: string;
-    overUnder: string;
-    startDate: number;
-    endDate: number;
-    state: number;
+    memberId: number;
+    ticketId: string;
+    handicapSide: string;
+    handicapValues: string;
+    overUnderValues: string;
+    startTime: number;
+    endTime: number;
+    analyTime: number;
+    isCompleted: boolean;
 }
 
 interface InitState {
@@ -23,7 +24,7 @@ interface InitState {
 
 interface HandicapAnalysisFormState extends InitState {
     setRecordList: (recordList: Record[]) => void;
-    updateRecord: (recordId: number) => void;
+    updateRecord: (recordId: string) => void;
     showRecord: boolean;
     setShowRecord: (showRecord: boolean) => void;
     openDatePicker: boolean;
@@ -113,10 +114,10 @@ const initialState = (
             return { ...state, recordList };
         });
     },
-    updateRecord: (recordId: number) => {
+    updateRecord: (recordId: string) => {
         set(prevState => {
             const updatedRecordList = prevState.recordList.map(record => {
-                if (record.recordId === recordId) {
+                if (record.ticketId === recordId) {
                     return { ...record, state: 1 };
                 }
                 return record;

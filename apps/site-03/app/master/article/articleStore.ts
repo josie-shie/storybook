@@ -1,37 +1,21 @@
 import { initStore } from 'lib';
 import type { StoreWithSelectors } from 'lib';
-import type { GuessType } from '@/types/predict';
-
-interface Article {
-    id: number;
-    mentorName: string;
-    isLock: boolean;
-    unlockNumber: number;
-    hotStreak: number;
-    ranking: number;
-    analysisTitle: string;
-    leagueName: string;
-    matchTime: number;
-    awayTeamName: string;
-    homeTeamName: string;
-    createdAt: number;
-    predictionResult: GuessType;
-}
+import { type RecommendPost } from 'data-center';
 
 interface InitState {
-    articleList: Article[];
+    articleList: RecommendPost[];
 }
 
 interface ArticleState extends InitState {
-    setArticleList?: (articleList: Article[]) => void;
+    setArticleList: ({ articleList }: { articleList: RecommendPost[] }) => void;
 }
 
 let useArticleStore: StoreWithSelectors<ArticleState>;
 
-const initialState = (set: (data: Partial<ArticleState>) => void) => ({
+const initialState = (set: (updater: (state: ArticleState) => Partial<ArticleState>) => void) => ({
     articleList: [],
-    setArticleList: (articleList: Article[]) => {
-        set({ articleList });
+    setArticleList: ({ articleList }: { articleList: RecommendPost[] }) => {
+        set(() => ({ articleList }));
     }
 });
 

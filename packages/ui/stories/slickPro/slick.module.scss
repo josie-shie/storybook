@@ -1,0 +1,107 @@
+.tabsContainer {
+    margin: 0 12px;
+    padding: 12px 0;
+    position: relative;
+    box-sizing: border-box;
+
+    .slick {
+        transition: transform 0.3s ease;
+        position: absolute;
+        z-index: -1;
+    }
+
+    .tabs {
+        display: flex;
+        justify-content: space-around;
+        border-radius: 30px;
+        line-height: 32px;
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+    li {
+        width: 100%;
+    }
+
+    .tabButton {
+        position: relative;
+        text-align: center;
+        width: 100%;
+        height: 28px;
+        padding: 0;
+        display: block;
+        line-height: 28px;
+        border-radius: 30px;
+        font-weight: 500;
+        outline: none;
+        box-shadow: none;
+        border: none;
+        background: none;
+        color: #4489ff;
+    }
+
+    .selected {
+        transition: color 0.3s;
+        color: #fff;
+    }
+}
+
+.button {
+    .slick {
+        background-color: #4489ff;
+        height: 28px;
+        border-radius: 30px;
+        display: none;
+    }
+
+    .tabButton {
+        &::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            box-sizing: border-box;
+            width: 100%;
+            height: 100%;
+            transform: translate(-50%, -50%) scaleX(0.32);
+            transition-duration: 0.2s;
+            transition-property: all;
+            transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
+            background: #4489ff;
+            opacity: 0;
+            z-index: -1;
+            border-radius: 30px;
+        }
+    }
+
+    .selected {
+        position: relative;
+        color: #fff;
+        z-index: 1;
+
+        &::before {
+            transform: translate(-50%, -50%) scaleX(1);
+            opacity: 1;
+        }
+    }
+}
+
+.underline {
+    border-bottom: 1px #9b9b9b solid;
+
+    .slick {
+        background-color: #4489ff;
+        height: 3px;
+        border-radius: 10px;
+        bottom: -2px;
+        z-index: 1;
+    }
+
+    .tabButton {
+        color: #9b9b9b;
+    }
+
+    .selected {
+        color: #4489ff;
+    }
+}

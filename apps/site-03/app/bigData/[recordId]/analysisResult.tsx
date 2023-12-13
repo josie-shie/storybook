@@ -1,39 +1,46 @@
 'use client';
 import { Tabs, Tab } from 'ui';
 import { useParams, usePathname, useRouter } from 'next/navigation';
-import type { ReactNode } from 'react';
+import { useEffect, type ReactNode } from 'react';
 import { timestampToString } from 'lib';
+import { getFootballStatsRecord } from 'data-center';
+import type { GetAiAnalysisReportResponse, GetFootballStatsRecord } from 'data-center';
 import style from './dashboard.module.scss';
 import Handicap from './(dashboard)/handicap/handicap';
-import { createAnalysisResultStore } from './analysisResultStore';
-import type { AnalysisResult, BigDataRecordListResponse } from './analysisResultStore';
+import { createAnalysisResultStore, useAnalyticsResultStore } from './analysisResultStore';
 import { creatMatchFilterStore } from './matchFilterStore';
+import ContestDrawerList from './components/contestDrawerList/contestDrawerList';
 import HeaderTitleFilter from '@/components/header/headerTitleFilter';
+import { useUserStore } from '@/app/userStore';
+import { useNotificationStore } from '@/app/notificationStore';
 
-function AnalysisResult({
-    children,
-    analysisData,
-    recordList
-}: {
-    children: ReactNode;
-    analysisData: AnalysisResult;
-    recordList: BigDataRecordListResponse[];
-}) {
+function ResultContent({ children }: { children: ReactNode }) {
     const route = usePathname().split('/');
     const router = useRouter();
     const params = useParams();
-    const recordId = params.recordId;
-    const recordData = recordList.find(item => item.recordId.toString() === recordId);
+    const showContestDrawer = useAnalyticsResultStore.use.showContestDrawer();
+    const setShowContestDrawer = useAnalyticsResultStore.use.setShowContestDrawer();
+    const selectedResult = useAnalyticsResultStore.use.selectedResult();
+    const contestList = useAnalyticsResultStore.use.contestList();
+    const userInfo = useUserStore.use.userInfo();
+    const setIsNotificationVisible = useNotificationStore.use.setIsVisible();
+    const setRecordData = useAnalyticsResultStore.use.setRecordData();
+    const recordData = useAnalyticsResultStore.use.recordData();
 
-    createAnalysisResultStore({
-        analysisResultData: analysisData,
-        recordList,
-        recordData: recordData || ({} as BigDataRecordListResponse)
-    });
-    creatMatchFilterStore({
-        contestList: [],
-        contestInfo: {}
-    });
+    const getRecordData = async () => {
+        const recordList = await getFootballStatsRecord({ memberId: userInfo.uid });
+
+        if (!recordList.success) {
+            const errorMessage = recordList.error ? recordList.error : '取得资料失败，请稍后再试';
+            setIsNotificationVisible(errorMessage, 'error');
+            return;
+        }
+
+        const record = recordList.data.find(item => item.ticketId.toString() === params.recordId);
+        if (record) {
+            setRecordData(record);
+        }
+    };
 
     const tabStyle = {
         gap: 4,
@@ -74,6 +81,10 @@ function AnalysisResult({
         router.push('/bigData?status=analysis');
     };
 
+    useEffect(() => {
+        void getRecordData();
+    }, []);
+
     return (
         <>
             <HeaderTitleFilter backHandler={backHandler} title="分析结果" />
@@ -82,14 +93,16 @@ function AnalysisResult({
                     <div className={style.row}>
                         <span className={style.title}>全場讓球</span>
                         <span className={style.name}>
-                            讓方/{(recordData && handicapTeam[recordData.handicap]) || '全部'}
+                            讓方/{(recordData && handicapTeam[recordData.handicapSide]) || '全部'}
                             、盤口/
-                            {recordData?.odds || '不挑選'}
+                            {recordData?.handicapValues || '不挑選'}
                         </span>
                     </div>
                     <div className={style.row}>
                         <span className={style.title}>全場大小</span>
-                        <span className={style.name}>{recordData?.overUnder || '不挑選'}</span>
+                        <span className={style.name}>
+                            {recordData?.overUnderValues || '不挑選'}
+                        </span>
                     </div>
                 </div>
                 <div className={style.column}>
@@ -97,10 +110,12 @@ function AnalysisResult({
                         <span className={style.title}>時間區間</span>
                         <span className={style.date}>
                             {recordData
-                                ? timestampToString(recordData.startDate, 'YYYY-MM-DD')
-                                : ''}{' '}
+                                ? timestampToString(recordData.startTime, 'YYYY-MM-DD')
+                                : null}{' '}
                             ~{' '}
-                            {recordData ? timestampToString(recordData.endDate, 'YYYY-MM-DD') : ''}
+                            {recordData
+                                ? timestampToString(recordData.endTime, 'YYYY-MM-DD')
+                                : null}
                         </span>
                     </div>
                 </div>
@@ -133,8 +148,38 @@ function AnalysisResult({
                     })}
                 </Tabs>
             </div>
+            <ContestDrawerList
+                isOpen={showContestDrawer}
+                matchList={contestList}
+                onClose={() => {
+                    setShowContestDrawer(false);
+                }}
+                onOpen={() => {
+                    setShowContestDrawer(true);
+                }}
+                selectedResult={selectedResult}
+            />
         </>
     );
+}
+
+function AnalysisResult({
+    children,
+    analysisData
+}: {
+    children: ReactNode;
+    analysisData: GetAiAnalysisReportResponse;
+}) {
+    createAnalysisResultStore({
+        analysisResultData: analysisData,
+        recordData: {} as GetFootballStatsRecord
+    });
+    creatMatchFilterStore({
+        contestList: [],
+        contestInfo: {}
+    });
+
+    return <ResultContent>{children}</ResultContent>;
 }
 
 export default AnalysisResult;

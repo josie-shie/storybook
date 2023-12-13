@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, type ReactNode } from 'react';
+import { useEffect } from 'react';
 import Image from 'next/image';
 import Cookies from 'js-cookie';
 import { getMemberInfo } from 'data-center';
@@ -19,6 +19,7 @@ function AuthDrawer() {
     const authQuery = useUserStore.use.authQuery();
     const isDrawerOpen = useAuthStore.use.isDrawerOpen();
     const setIsDrawerOpen = useAuthStore.use.setIsDrawerOpen();
+    const setAuthQuery = useUserStore.use.setAuthQuery();
     const removeAuthQuery = useAuthStore.use.removeAuthQuery();
     const removeInvitCode = useAuthStore.use.removeInvitCode();
     const setUserInfo = useUserStore.use.setUserInfo();
@@ -27,30 +28,36 @@ function AuthDrawer() {
     const isCookieExist = Cookies.get('access');
     const setNotificationVisible = useNotificationStore.use.setIsVisible();
     const setUserInfoIsLoading = useUserStore.use.setUserInfoIsLoading();
+    const authContent = useAuthStore.use.authContent();
+    const setAuthContent = useAuthStore.use.setAuthContent();
+    const title = useAuthStore.use.title();
+    const setTitle = useAuthStore.use.setTitle();
 
-    let content: ReactNode;
-    let title: ReactNode;
-    if (authQuery === 'register') {
-        content = <Register />;
-        title = <p>注册</p>;
-    } else if (authQuery === 'login') {
-        content = <Login />;
-        title = (
-            <p className={style.futureTitle}>
-                <span className={style.future}>未来</span>体育
-            </p>
-        );
-    } else if (authQuery === 'forgetPassword') {
-        content = <ForgetPassword />;
-        title = <p>忘记密码</p>;
-    } else if (authQuery === 'changePassword') {
-        content = <ChangePassword />;
-        title = <p>修改密码</p>;
-    } else {
-        content = null;
-    }
+    const resetAuthContent = () => {
+        if (authQuery === 'register') {
+            setAuthContent(<Register />);
+            setTitle(<p>注册</p>);
+        } else if (authQuery === 'login') {
+            setAuthContent(<Login />);
+            setTitle(
+                <p className={style.futureTitle}>
+                    <span className={style.future}>未来</span>体育
+                </p>
+            );
+        } else if (authQuery === 'forgetPassword') {
+            setAuthContent(<ForgetPassword />);
+            setTitle(<p>忘记密码</p>);
+        } else if (authQuery === 'changePassword') {
+            setAuthContent(<ChangePassword />);
+            setTitle(<p>修改密码</p>);
+        } else {
+            setAuthContent(null);
+            setTitle(null);
+        }
+    };
 
     const closeDrawer = () => {
+        setAuthQuery('');
         setIsDrawerOpen(false);
         removeAuthQuery();
         removeInvitCode();
@@ -71,7 +78,7 @@ function AuthDrawer() {
                 setNotificationVisible('登陆已过期，请重新登陆', 'error');
             }
             // 沒有登陸過但是有帶auth query
-        } else if (content) {
+        } else if (authContent) {
             setIsDrawerOpen(true);
         }
     };
@@ -82,11 +89,12 @@ function AuthDrawer() {
             return;
         }
 
-        if (content) {
-            setIsDrawerOpen(true);
-        }
         setUserInfoIsLoading(false);
     }, []);
+
+    useEffect(() => {
+        resetAuthContent();
+    }, [isDrawerOpen]);
 
     return (
         <BottomDrawer
@@ -117,7 +125,7 @@ function AuthDrawer() {
                         src={closeIcon.src}
                         width={16}
                     />
-                    {content}
+                    {authContent}
                 </div>
             </div>
         </BottomDrawer>
