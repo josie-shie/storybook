@@ -662,16 +662,29 @@ export interface AddGuessRequest {
     predictedPlay: PredictedPlay;
 }
 
+export interface AddGuessResponse {
+    remainingGuessTimes: number;
+}
+
+const AddGuessResultSchema = z.object({
+    addGuess: z.object({
+        remainingGuessTimes: z.number()
+    })
+});
+
+type AddGuessResult = z.infer<typeof AddGuessResultSchema>;
+
 /**
  * 新增競猜資料
  * - params {@link AddGuessRequest}
+ * - returns {@link AddGuessResponse}
  */
 export const addGuess = async ({
     matchId,
     predictedPlay
-}: AddGuessRequest): Promise<ReturnData<null>> => {
+}: AddGuessRequest): Promise<ReturnData<AddGuessResponse>> => {
     try {
-        const res: { data: null } = await fetcher(
+        const { data }: { data: AddGuessResult } = await fetcher(
             {
                 data: {
                     query: ADD_GUESS_MUTATION,
@@ -686,7 +699,7 @@ export const addGuess = async ({
             { cache: 'no-store' }
         );
 
-        return { success: true, data: res.data };
+        return { success: true, data: data.addGuess };
     } catch (error) {
         return handleApiError(error);
     }
@@ -696,14 +709,31 @@ export interface PayForProDistribRequest {
     matchId: number;
 }
 
+const PayForProDistribSchema = z.object({
+    currentBalance: z.number(),
+    home: z.number(),
+    away: z.number(),
+    over: z.number(),
+    under: z.number()
+});
+
+const PayForProDistribResultSchema = z.object({
+    payForProDistrib: PayForProDistribSchema
+});
+
+type PayForProDistribResult = z.infer<typeof PayForProDistribResultSchema>;
+type PayForProDistribResponse = z.infer<typeof PayForProDistribSchema>;
+
 /**
  * 高手分佈付費
+ * - params : {@link PayForProDistribRequest}
+ * - returns : {@link PayForProDistribResponse}
  */
 export const payForProDistrib = async ({
     matchId
-}: PayForProDistribRequest): Promise<ReturnData<null>> => {
+}: PayForProDistribRequest): Promise<ReturnData<PayForProDistribResponse>> => {
     try {
-        const res: { data: null } = await fetcher(
+        const { data }: { data: PayForProDistribResult } = await fetcher(
             {
                 data: {
                     query: PAY_FOR_PRO_DISTRIB_MUTATION,
@@ -713,7 +743,7 @@ export const payForProDistrib = async ({
             { cache: 'no-store' }
         );
 
-        return { success: true, data: res.data };
+        return { success: true, data: data.payForProDistrib };
     } catch (error) {
         return handleApiError(error);
     }
