@@ -10,6 +10,7 @@ import { useInviteStore } from './inviteStore';
 import CustomModal from './components/customModal/customModal';
 import style from './invite.module.scss';
 import { useUserStore } from '@/app/userStore';
+import { useNotificationStore } from '@/app/notificationStore';
 
 function Invite() {
     const router = useRouter();
@@ -21,6 +22,7 @@ function Invite() {
     const setInviteCode = useInviteStore.use.setInviteCode();
     const setInvitedCount = useInviteStore.use.setInvitedCount();
     const setTotalCoins = useInviteStore.use.setTotalCoins();
+    const setIsVisible = useNotificationStore.use.setIsVisible();
 
     useEffect(() => {
         const getInviteCode = async () => {
@@ -35,6 +37,8 @@ function Invite() {
             if (res.success) {
                 setInvitedCount(res.data.inviterCount);
                 setTotalCoins(res.data.inviterReward);
+            } else {
+                setIsVisible(res.error, 'error');
             }
         };
 
