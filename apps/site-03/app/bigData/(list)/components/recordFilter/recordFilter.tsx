@@ -49,7 +49,7 @@ function RecordFilter({
             if (message.memberId === userInfo.uid && message.mission === 'done') {
                 const record = recordList.find(item => item.ticketId === message.ticketId);
                 if (record) {
-                    updateRecord(record.ticketId.toString());
+                    updateRecord(record.ticketId);
                 }
             }
         };
@@ -65,7 +65,7 @@ function RecordFilter({
                         return (
                             <SearchRecord
                                 index={recordList.length - idx}
-                                key={record.ticketId}
+                                key={record.ticketId + idx.toString()}
                                 recordData={record}
                             />
                         );
