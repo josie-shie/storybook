@@ -224,12 +224,8 @@ function Subscribe() {
                                 <div className={style.descript}>充值金币可以购买以下内容</div>
                                 <ul className={style.list}>
                                     <li> - 所有赛事高手分配免费解锁</li>
+                                    <li>- 每日可免费查看{isVip ? '无限' : masterPlan}则高手方案</li>
                                     <li>
-                                        {' '}
-                                        - 每日可免费查看{isVip ? '无限' : masterPlan}则高手方案
-                                    </li>
-                                    <li>
-                                        {' '}
                                         - 每日可免费解锁{isVip ? '无限' : unlockArticle}
                                         篇专家预测文章
                                     </li>
