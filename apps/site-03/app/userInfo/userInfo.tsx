@@ -102,7 +102,7 @@ function UserInfo() {
                                         <Tag background="#fff" color="#4489ff" text="月榜 10" />
                                     </div>
                                 </div>
-                                <div className={style.middle}>132****789</div>
+                                <div className={style.middle}>{userInfo.mobileNumber}</div>
                                 <div className={style.bottom}>
                                     <span>粉丝: 34713</span>
                                     <span>点赞: 2355</span>
