@@ -14,22 +14,26 @@ import {
 
 export interface AnalysisRequest {
     mission: string;
-    uid: number;
-    handicap_side: string;
-    handicap_values: string;
-    overUnder_values: string;
+    memberId: number;
+    handicapSide: string;
+    handicapValues: string;
+    overUnderValues: string;
     startTime: number;
     endTime: number;
+    message: string;
+    ticketId: string;
 }
 
 export interface AnalysisResponse {
     mission: string;
     memberId: number;
-    ticket_id: number;
-    handicap_side: string;
-    handicap_values: string;
-    overUnder_values: string;
-    time_ranges: string;
+    ticketId: string;
+    message: string;
+    handicapSide: string;
+    handicapValues: string;
+    overUnderValues: string;
+    startTime: number;
+    endTime: number;
 }
 
 interface OriginalContestInfo {
@@ -705,6 +709,7 @@ export const mqttService = {
         if (!init) {
             const res = await toProtoAnalysis(data);
             const bufferData = Buffer.from(res);
+
             client.publish('analytical/analysis', bufferData, { qos: 2 }, error => {
                 if (error) {
                     console.error(error);

@@ -1,16 +1,18 @@
 import Link from 'next/link';
 import { timestampToString } from 'lib';
+import { motion } from 'framer-motion';
 import style from './searchRecord.module.scss';
 
 interface Record {
-    recordId: number;
-    recordTime: number;
-    handicap: string;
-    odds: string;
-    overUnder: string;
-    startDate: number;
-    endDate: number;
-    state: number;
+    memberId: number;
+    ticketId: string;
+    handicapSide: string;
+    handicapValues: string;
+    overUnderValues: string;
+    startTime: number;
+    endTime: number;
+    analyTime: number;
+    isCompleted: boolean;
 }
 
 interface PropsType {
@@ -28,33 +30,35 @@ function SearchRecord({ index, recordData }: PropsType) {
             <div className={style.title}>
                 <div className={style.record}>查詢紀錄{index}</div>
                 <div className={style.time}>
-                    {timestampToString(recordData.recordTime, 'YYYY-MM-DD HH:mm')}
+                    {timestampToString(recordData.analyTime, 'YYYY-MM-DD HH:mm')}
                 </div>
             </div>
             <div className={style.detail}>
                 <div className={style.content}>
                     <div className={style.item}>
                         全場讓球 讓方
-                        <span>{handicapTeam[recordData.handicap] || '全部'}</span>
-                        、盤口<span>{recordData.odds}</span>
+                        <span>{handicapTeam[recordData.handicapSide] || '全部'}</span>
+                        、盤口<span>{recordData.handicapValues}</span>
                     </div>
                     <div className={style.item}>
-                        全場大小 盤口<span>{recordData.overUnder || '不挑選'}</span>
+                        全場大小 盤口<span>{recordData.overUnderValues || '不挑選'}</span>
                     </div>
                     <div className={style.item}>
-                        時間區間 {timestampToString(recordData.startDate, 'YYYY-MM-DD')} ~{' '}
-                        {timestampToString(recordData.endDate, 'YYYY-MM-DD')}
+                        時間區間 {timestampToString(recordData.startTime, 'YYYY-MM-DD')} ~{' '}
+                        {timestampToString(recordData.endTime, 'YYYY-MM-DD')}
                     </div>
                 </div>
                 <div className={style.buttonContainer}>
-                    {recordData.state ? (
-                        <Link
+                    {recordData.isCompleted ? (
+                        <motion.button
                             className={style.button}
-                            href={`/bigData/${recordData.recordId}/handicap`}
                             type="button"
+                            whileTap={{ scale: 0.9 }}
                         >
-                            查看分析
-                        </Link>
+                            <Link href={`/bigData/${recordData.ticketId}/handicap`} type="button">
+                                查看分析
+                            </Link>
+                        </motion.button>
                     ) : (
                         <button className={style.loadingButton} type="button">
                             運算中...

@@ -3,9 +3,7 @@ import { Switch } from 'ui/stories/switch/switch';
 import { useEffect, useState } from 'react';
 import { timestampToString } from 'lib';
 import dayjs from 'dayjs';
-import type { GetAiAnalysisContestListResponse } from 'data-center';
 import { getAiAnalysisContestList } from 'data-center';
-import ContestDrawerList from '../components/contestDrawerList';
 import type { Statistics } from '../../analysisResultStore';
 import { useAnalyticsResultStore } from '../../analysisResultStore';
 import { useMatchFilterStore } from '../../matchFilterStore';
@@ -48,15 +46,15 @@ function Handicap() {
     const [handicapRadio, setHandicapRadio] = useState<'half' | 'full'>('full');
     const [currentSwitch, setCurrentSwitch] = useState<TimeValue>('day');
     const [playTypeSwitch, setPlayTypeSwitch] = useState<PlayTypeValue>('handicap');
-    const [showList, setShowList] = useState(false);
     const analysisRecord = useAnalyticsResultStore.use.analysisResultData();
     const handicapEchart = useAnalyticsResultStore.use.handicapEchart();
     const analysisData = useAnalyticsResultStore.use.analysisResultData();
     const setHandicapEchart = useAnalyticsResultStore.use.setHandicapEchart();
-    const [matchList, setMatchList] = useState<GetAiAnalysisContestListResponse>([]);
-    const [selectedResult, setSelectedResult] = useState({ type: '', odds: '' });
     const setIsNotificationVisible = useNotificationStore.use.setIsVisible();
     const recordData = useAnalyticsResultStore.use.recordData();
+    const setShowContestDrawer = useAnalyticsResultStore.use.setShowContestDrawer();
+    const setSelectedResult = useAnalyticsResultStore.use.setSelectedResult();
+    const setMatchList = useAnalyticsResultStore.use.setContestList();
 
     useEffect(() => {
         setHandicapEchart(analysisData);
@@ -88,7 +86,7 @@ function Handicap() {
         setContestInfo({
             contestList: res.data
         });
-        setShowList(true);
+        setShowContestDrawer(true);
     };
 
     const openMatchListDrawer = (matchIdsList: number[], selectedType: string, odds: string) => {
@@ -131,8 +129,8 @@ function Handicap() {
                 </div>
                 <div className={style.eChat}>
                     <p className={style.dateRange}>
-                        {timestampToString(recordData.startDate, 'YYYY-MM-DD')} ~{' '}
-                        {timestampToString(recordData.endDate, 'YYYY-MM-DD')}
+                        {timestampToString(recordData.startTime, 'YYYY-MM-DD')} ~{' '}
+                        {timestampToString(recordData.endTime, 'YYYY-MM-DD')}
                     </p>
 
                     <ul>
@@ -323,17 +321,6 @@ function Handicap() {
                     selectedType="全場獨贏"
                 />
             </div>
-            <ContestDrawerList
-                isOpen={showList}
-                matchList={matchList}
-                onClose={() => {
-                    setShowList(false);
-                }}
-                onOpen={() => {
-                    setShowList(true);
-                }}
-                selectedResult={selectedResult}
-            />
         </>
     );
 }

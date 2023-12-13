@@ -8,6 +8,7 @@ import style from './handicapDrawer.module.scss';
 import iconSort from './img/sort.png';
 import iconFilter from './img/filterIcon.png';
 import BottomDrawer from '@/components/drawer/bottomDrawer';
+import NoData from '@/components/baseNoData/noData';
 
 function RecordFilter({
     isOpen,
@@ -95,18 +96,27 @@ function RecordFilter({
                                 <Image alt="" className={style.image} src={iconSort} />
                             </div>
                         </div>
-                        <div className={style.filter} onClick={openFilter}>
+                        <button
+                            className={style.filter}
+                            disabled={!displayList.length}
+                            onClick={openFilter}
+                            type="button"
+                        >
                             筛选
                             <Image alt="" className={style.image} src={iconFilter} />
-                        </div>
+                        </button>
                     </div>
-                    {displayList.map(ele => (
-                        <HandicapTips
-                            hintsSelected={hintsSelected}
-                            key={ele.matchId}
-                            tipsData={ele}
-                        />
-                    ))}
+                    {displayList.length ? (
+                        displayList.map(ele => (
+                            <HandicapTips
+                                hintsSelected={hintsSelected}
+                                key={ele.matchId}
+                                tipsData={ele}
+                            />
+                        ))
+                    ) : (
+                        <NoData />
+                    )}
                 </div>
             </BottomDrawer>
             <MatchFilterDrawer isOpen={isFilterOpen} onClose={closeFilter} onOpen={openFilter} />

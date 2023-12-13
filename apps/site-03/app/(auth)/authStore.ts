@@ -1,11 +1,16 @@
 import { initStore } from 'lib';
 import type { StoreWithSelectors } from 'lib';
+import type { ReactNode } from 'react';
 
 interface InitState {
     loading: boolean;
 }
 
 interface AuthState extends InitState {
+    authContent: ReactNode | null;
+    setAuthContent: (authContent: ReactNode | null) => void;
+    title: ReactNode | null;
+    setTitle: (authContent: ReactNode | null) => void;
     isDrawerOpen: boolean;
     setIsDrawerOpen: (isOpen: boolean) => void;
     removeAuthQuery: () => void;
@@ -38,6 +43,24 @@ let useAuthStore: StoreWithSelectors<AuthState>;
 
 const initialState = (set: (updater: (state: AuthState) => Partial<AuthState>) => void) => ({
     loading: false,
+    authContent: null,
+    setAuthContent: (authContent: ReactNode | null) => {
+        set(state => {
+            return {
+                ...state,
+                authContent
+            };
+        });
+    },
+    title: null,
+    setTitle: (title: ReactNode | null) => {
+        set(state => {
+            return {
+                ...state,
+                title
+            };
+        });
+    },
     isDrawerOpen: false,
     setIsDrawerOpen: (isDrawerOpen: boolean) => {
         set(state => {
