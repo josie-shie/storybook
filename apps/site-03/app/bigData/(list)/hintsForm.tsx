@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import Image from 'next/image';
-import type { OddsHintRequest } from 'data-center';
+import type { OddsHintsType } from 'data-center';
 import { getBigdataHint } from 'data-center';
 import { motion } from 'framer-motion';
 import style from './disSelect.module.scss';
@@ -51,7 +51,7 @@ function HandicapAnalysisForm() {
 
         setHintsError('');
 
-        const res = await getBigdataHint(hintsSelected as unknown as OddsHintRequest);
+        const res = await getBigdataHint({ type: hintsSelected as OddsHintsType });
 
         if (!res.success) {
             const errorMessage = res.error ? res.error : '取得盘路提示资料失败，请稍后再试';
