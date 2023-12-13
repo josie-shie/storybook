@@ -1,71 +1,93 @@
 'use client';
 import { IconFlame } from '@tabler/icons-react';
+import { unFollow, updateFollow } from 'data-center';
+import { type GetPostDetailResponse } from 'data-center';
+import type { Dispatch, SetStateAction } from 'react';
+import { useUserStore } from '../../../userStore';
 import style from './info.module.scss';
-import { useArticleStore } from './articleStore';
 import Avatar from '@/components/avatar/avatar';
 import Tag from '@/components/tag/tag';
 
-function Info() {
-    const master = useArticleStore.use.articleDetail();
+interface InfoProps {
+    article: GetPostDetailResponse;
+    setArticle: Dispatch<SetStateAction<GetPostDetailResponse>>;
+}
 
-    const onIsFocused = () => {
-        // 取消關注/新增關注
+function Info({ article, setArticle }: InfoProps) {
+    const userInfo = useUserStore.use.userInfo();
+
+    const onIsFocused = async (id: number, follow: boolean) => {
+        try {
+            const res = follow
+                ? await unFollow({ followerId: userInfo.uid, followedId: id })
+                : await updateFollow({ followerId: userInfo.uid, followedId: id });
+            if (!res.success) {
+                return new Error();
+            }
+
+            setArticle(prevData => ({
+                ...prevData,
+                followed: !prevData.followed
+            }));
+        } catch (error) {
+            return new Error();
+        }
     };
 
     return (
         <section className={style.info}>
             <div className={style.detail}>
-                <Avatar borderColor="#fff" size={54} src={master.mentorImage} />
+                <Avatar borderColor="#fff" size={54} src={article.mentorImage} />
                 <div className={style.content}>
                     <div className={style.top}>
-                        <span className={style.name}>{master.mentorName}</span>
+                        <span className={style.name}>{article.mentorName}</span>
                     </div>
                     <div>
-                        {master.tag.winMaxAccurateStreak > 0 && (
+                        {article.tag.winMaxAccurateStreak > 0 && (
                             <Tag
                                 icon={<IconFlame size={10} />}
-                                text={`${master.tag.winMaxAccurateStreak} 連紅`}
+                                text={`${article.tag.winMaxAccurateStreak} 連紅`}
                             />
                         )}
 
-                        {master.tag.quarterRanking > 0 && (
+                        {article.tag.quarterRanking > 0 && (
                             <Tag
                                 background="#fff"
                                 color="#4489ff"
-                                text={`季榜 ${master.tag.quarterRanking}`}
+                                text={`季榜 ${article.tag.quarterRanking}`}
                             />
                         )}
-                        {master.tag.monthRanking > 0 && (
+                        {article.tag.monthRanking > 0 && (
                             <Tag
                                 background="#fff"
                                 color="#4489ff"
-                                text={`月榜 ${master.tag.monthRanking}`}
+                                text={`月榜 ${article.tag.monthRanking}`}
                             />
                         )}
-                        {master.tag.weekRanking > 0 && (
+                        {article.tag.weekRanking > 0 && (
                             <Tag
                                 background="#fff"
                                 color="#4489ff"
-                                text={`周榜 ${master.tag.weekRanking}`}
+                                text={`周榜 ${article.tag.weekRanking}`}
                             />
                         )}
                     </div>
                     <div className={style.bottom}>
-                        {master.fansNumber > 0 && <span>粉絲: {master.fansNumber} </span>}
-                        {master.unlockNumber > 0 && <span>解鎖: {master.unlockNumber} </span>}
-                        {master.tag.quarterHitRate > 0 && (
-                            <span>近一季猜球胜率: {master.tag.quarterHitRate}%</span>
+                        {article.fansNumber > 0 && <span>粉絲: {article.fansNumber} </span>}
+                        {article.unlockNumber > 0 && <span>解鎖: {article.unlockNumber} </span>}
+                        {article.tag.quarterHitRate > 0 && (
+                            <span>近一季猜球胜率: {article.tag.quarterHitRate}%</span>
                         )}
                     </div>
                 </div>
             </div>
             <div
-                className={master.followed ? style.focused : style.focus}
+                className={article.followed ? style.focused : style.focus}
                 onClick={() => {
-                    onIsFocused;
+                    void onIsFocused(article.mentorId, article.followed);
                 }}
             >
-                {master.followed ? '已关注' : '关注'}
+                {article.followed ? '已关注' : '关注'}
             </div>
         </section>
     );
