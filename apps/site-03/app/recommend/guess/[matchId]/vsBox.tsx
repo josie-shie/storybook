@@ -58,6 +58,7 @@ function BettingColumn({ play, detail, homeType, awayType }: BettingProps) {
                 matchId: Number(matchId),
                 predictedPlay: betting.toUpperCase() as 'HOME' | 'AWAY'
             });
+            // set res 回傳剩餘競猜次數
             setGuessDetail({ ...newDetail });
             setGuessesLeft(guessesLeft - 1);
         } else {
@@ -67,6 +68,7 @@ function BettingColumn({ play, detail, homeType, awayType }: BettingProps) {
                 matchId: Number(matchId),
                 predictedPlay: betting.toUpperCase() as 'OVER' | 'UNDER'
             });
+            // set res 回傳剩餘競猜次數
             setGuessDetail({ ...newDetail });
             setGuessesLeft(guessesLeft - 1);
         }

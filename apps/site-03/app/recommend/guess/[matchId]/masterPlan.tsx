@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { getProDistrib, getProGuess } from 'data-center';
+import { getProDistrib, getProGuess, payForProDistrib, payForProGuess } from 'data-center';
 import { useParams } from 'next/navigation';
 import Rule from './components/rule/rule';
 import GameCard from './gameCard';
@@ -53,9 +53,14 @@ function MasterPlan() {
         setOpenPaid(false);
     };
 
-    const handleConfirm = () => {
+    const handleConfirm = async () => {
         if (typeof selectedGameId === 'number') {
             setSelectedGameId(null);
+            await payForProGuess({ guessId: selectedGameId });
+            // response 處理 (方案)
+        } else {
+            await payForProDistrib({ matchId: Number(matchId) });
+            // response 處理 (高手分佈)
         }
         setOpenPaid(false);
     };
@@ -65,15 +70,7 @@ function MasterPlan() {
             const proDistribution = await getProDistrib({ matchId: Number(matchId), memberId: 16 });
             if (proDistribution.success) {
                 const data = proDistribution.data;
-                setHighWinRateTrend({
-                    home: data.home,
-                    away: data.away,
-                    over: data.over,
-                    under: data.under,
-                    enoughProData: data.enoughProData, // 高手預測人數是否形成趨勢
-                    memberPermission: data.memberPermission, // 是否已解鎖高手風向
-                    unlockPrice: data.unlockPrice
-                });
+                setHighWinRateTrend(data);
             }
         }
         async function fetchProGuess() {
