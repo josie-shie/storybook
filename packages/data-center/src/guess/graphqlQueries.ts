@@ -194,13 +194,21 @@ export const GET_RRO_DISTRIB_QUERY = `
 
 export const ADD_GUESS_MUTATION = `
     mutation addGuess($input: AddGuessInput) {
-        addGuess(input: $input)
+        addGuess(input: $input) {
+            remainingGuessTimes
+        }
     }
 `;
 
 export const PAY_FOR_PRO_DISTRIB_MUTATION = `
     mutation payForProDistrib($matchId: Int!) {
-        payForProDistrib(matchId: $matchId)
+        payForProDistrib(matchId: $matchId) {
+            currentBalance
+            home
+            away
+            over
+            under
+          }
     }
 `;
 
