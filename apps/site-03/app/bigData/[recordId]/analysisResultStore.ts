@@ -2,121 +2,11 @@ import 'dayjs/locale/zh-cn';
 import { initStore, timestampToString } from 'lib';
 import type { StoreWithSelectors } from 'lib';
 import { getISOWeek, parseISO } from 'date-fns';
-import type { GetAiAnalysisContestListResponse } from 'data-center';
-
-export interface Match {
-    startTime: number;
-    matchId: number;
-    countryCn: string;
-    leagueId: number;
-    leagueChsShort: string;
-    homeChs: string;
-    awayChs: string;
-    homeScore: number;
-    awayScore: number;
-    homeHalfScore: number;
-    awayHalfScore: number;
-    isFamous: boolean; // 是否熱門賽事
-    leagueLevel: number;
-}
-
-export interface AnalysisResult {
-    // 全場讓球
-    fullHandicapUpper: number[]; // full的讓球的“上”的所有的賽事matchId
-    fullHandicapLower: number[]; // full的讓球的“下”的所有的賽事matchId
-    fullHandicapDraw: number[]; // full的讓球的“走”的所有的賽事matchId
-    fullHandicapUpperDaily: number[]; // 新增
-    fullHandicapLowerDaily: number[]; // 新增
-    fullHandicapDrawDaily: number[]; // 新增
-    // 半場讓球
-    halfHandicapUpper: number[]; // 新增
-    halfHandicapLower: number[]; // 新增
-    halfHandicapDraw: number[]; // 新增
-    halfHandicapUpperDaily: number[]; // half的讓球的“上”的所有的賽事日期
-    halfHandicapLowerDaily: number[]; // half的讓球的“下”的所有的賽事日期
-    halfHandicapDrawDaily: number[]; // half的讓球的“走”的所有的賽事日期
-    // 全場大小
-    fullOverUnderUpper: number[]; // full的讓球的“上”的所有的賽事matchId
-    fullOverUnderLower: number[]; // full的讓球的“下”的所有的賽事matchId
-    fullOverUnderDraw: number[]; // full的讓球的“走”的所有的賽事matchId
-    fullOverUnderUpperDaily: number[]; // 新增
-    fullOverUnderLowerDaily: number[]; // 新增
-    fullOverUnderDrawDaily: number[]; // 新增
-    // 半場大小
-    halfOverUnderUpper: number[]; // 新增
-    halfOverUnderLower: number[]; // 新增
-    halfOverUnderDraw: number[]; // 新增
-    halfOverUnderUpperDaily: number[]; // half的讓球的“上”的所有的賽事日期
-    halfOverUnderLowerDaily: number[]; // half的讓球的“下”的所有的賽事日期
-    halfOverUnderDrawDaily: number[]; // half的讓球的“走”的所有的賽事日期
-    // 全場獨贏
-    fullMoneyLineUpper: number[]; // full的獨贏的“上”的所有的賽事matchId
-    fullMoneyLineLower: number[]; // full的獨贏的“下”的所有的賽事matchId
-    fullMoneyLineDraw: number[]; // full的獨贏的“走”的所有的賽事matchId
-    fullMoneyLineUpperDaily: number[]; // 新增
-    fullMoneyLineLowerDaily: number[]; // 新增
-    fullMoneyLineDrawDaily: number[]; // 新增
-    // 半場獨贏
-    halfMoneyLineUpper: number[]; // 新增
-    halfMoneyLineLower: number[]; // 新增
-    halfMoneyLineDraw: number[]; // 新增
-    halfMoneyLineUpperDaily: number[]; // half的獨贏的“上”的所有的賽事日期
-    halfMoneyLineLowerDaily: number[]; // half的獨贏的“下”的所有的賽事日期
-    halfMoneyLineDrawDaily: number[]; // half的獨贏的“走”的所有的賽事日期
-    // 固定是6個object,代表6個時間區間
-    minutesGoal: {
-        goalUpper: number[]; // 該時間段的所有“大”的賽事matchId
-        goalLower: number[]; // 該時間段的所有“小”的賽事matchId
-    }[];
-    // 固定4個
-    goalRange: {
-        goalRange0To1: number[]; // 該分數區間的賽事matchId
-        goalRange2To3: number[]; // 該分數區間的賽事matchId
-        goalRange4To6: number[]; // 該分數區間的賽事matchId
-        goalRange7Upper: number[]; // 該分數區間的賽事matchId
-    };
-    // 固定26個
-    exactGoal: {
-        goalRange1To0: number[]; // 該分數區間的賽事matchId
-        goalRange0To1: number[]; // 該分數區間的賽事matchId
-        goalRange0To0: number[]; // 該分數區間的賽事matchId
-        goalRange2To0: number[]; // 該分數區間的賽事matchId
-        goalRange0To2: number[]; // 該分數區間的賽事matchId
-        goalRange1To1: number[]; // 該分數區間的賽事matchId
-        goalRange2To1: number[]; // 該分數區間的賽事matchId
-        goalRange1To2: number[]; // 該分數區間的賽事matchId
-        goalRange2To2: number[]; // 該分數區間的賽事matchId
-        goalRange3To0: number[]; // 該分數區間的賽事matchId
-        goalRange0To3: number[]; // 該分數區間的賽事matchId
-        goalRange3To3: number[]; // 該分數區間的賽事matchId
-        goalRange3To1: number[]; // 該分數區間的賽事matchId
-        goalRange1To3: number[]; // 該分數區間的賽事matchId
-        goalRange4To4: number[]; // 該分數區間的賽事matchId
-        goalRange3To2: number[]; // 該分數區間的賽事matchId
-        goalRange2To3: number[]; // 該分數區間的賽事matchId
-        goalRange4To0: number[]; // 該分數區間的賽事matchId
-        goalRange0To4: number[]; // 該分數區間的賽事matchId
-        goalRange4To1: number[]; // 該分數區間的賽事matchId
-        goalRange1To4: number[]; // 該分數區間的賽事matchId
-        goalRange4To2: number[]; // 該分數區間的賽事matchId
-        goalRange2To4: number[]; // 該分數區間的賽事matchId
-        goalRange4To3: number[]; // 該分數區間的賽事matchId
-        goalRange3To4: number[]; // 該分數區間的賽事matchId
-        others: number[]; // 該分數區間的賽事matchId
-    };
-}
-
-export interface BigDataRecordListResponse {
-    memberId: number;
-    ticketId: string;
-    handicapSide: string;
-    handicapValues: string;
-    overUnderValues: string;
-    startTime: number;
-    endTime: number;
-    analyTime: number;
-    isCompleted: boolean;
-}
+import type {
+    GetAiAnalysisContestListResponse,
+    GetFootballStatsRecord,
+    GetAiAnalysisReportResponse
+} from 'data-center';
 
 export interface Statistics {
     upper: number;
@@ -160,9 +50,8 @@ function groupSameWeek(dayListData: Record<string, Statistics>) {
 }
 
 interface InitState {
-    analysisResultData: AnalysisResult;
-    recordList: BigDataRecordListResponse[];
-    recordData: BigDataRecordListResponse;
+    analysisResultData: GetAiAnalysisReportResponse;
+    recordData: GetFootballStatsRecord | undefined;
 }
 
 interface AnalysisResultState extends InitState {
@@ -173,10 +62,9 @@ interface AnalysisResultState extends InitState {
     selectedResult: { type: string; odds: string };
     setSelectedResult: (selectedResult: { type: string; odds: string }) => void;
     handicapEchart: HandicapEchartType;
-    setAnalysisResultData: (analysisResultData: AnalysisResult) => void;
-    setRecordData: (recordData: BigDataRecordListResponse) => void;
-    setRecordList: (recordList: BigDataRecordListResponse[]) => void;
-    setHandicapEchart: (analysisResultData: AnalysisResult) => void;
+    setAnalysisResultData: (analysisResultData: GetAiAnalysisReportResponse) => void;
+    setRecordData: (recordData: GetFootballStatsRecord | undefined) => void;
+    setHandicapEchart: (analysisResultData: GetAiAnalysisReportResponse) => void;
 }
 
 let useAnalyticsResultStore: StoreWithSelectors<AnalysisResultState>;
@@ -184,22 +72,13 @@ let useAnalyticsResultStore: StoreWithSelectors<AnalysisResultState>;
 const initialState = (
     set: (updater: (state: AnalysisResultState) => Partial<AnalysisResultState>) => void
 ) => ({
-    analysisResultData: {} as AnalysisResult,
-    recordList: [],
-    recordData: {} as BigDataRecordListResponse,
-    setRecordData: (recordData: BigDataRecordListResponse) => {
+    analysisResultData: {} as GetAiAnalysisReportResponse,
+    recordData: {} as GetFootballStatsRecord,
+    setRecordData: (recordData: GetFootballStatsRecord | undefined) => {
         set(state => {
             return {
                 ...state,
                 recordData
-            };
-        });
-    },
-    setRecordList: (recordList: BigDataRecordListResponse[]) => {
-        set(state => {
-            return {
-                ...state,
-                recordList
             };
         });
     },
@@ -238,7 +117,7 @@ const initialState = (
             }
         }
     },
-    setHandicapEchart: (analysisResultData: AnalysisResult) => {
+    setHandicapEchart: (analysisResultData: GetAiAnalysisReportResponse) => {
         set(state => {
             const fullHanicapUpperDates = analysisResultData.fullHandicapUpperDaily.map(timestamp =>
                 timestampToString(timestamp, 'YYYY-MM-DD')
@@ -495,7 +374,7 @@ const initialState = (
             };
         });
     },
-    setAnalysisResultData: (analysisResultData: AnalysisResult) => {
+    setAnalysisResultData: (analysisResultData: GetAiAnalysisReportResponse) => {
         set(state => {
             return {
                 ...state,
