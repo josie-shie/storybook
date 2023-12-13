@@ -16,7 +16,7 @@ export interface GetFootballStatsRecordRequest {
 
 const GetFootballStatsRecordSchema = z.object({
     memberId: z.number(),
-    ticketId: z.number(),
+    ticketId: z.string(),
     handicapSide: z.string(),
     handicapValues: z.string(),
     overUnderValues: z.string(),

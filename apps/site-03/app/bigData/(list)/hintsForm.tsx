@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import Image from 'next/image';
 import type { OddsHintRequest } from 'data-center';
 import { getBigdataHint } from 'data-center';
+import { motion } from 'framer-motion';
 import style from './disSelect.module.scss';
 import SelectOption from './components/selectOption/selectOption';
 import { useHintsFormStore } from './hintsFormStore';
@@ -16,6 +17,7 @@ function HintsSelect({ hintsSelected }: { hintsSelected: string }) {
 
     return (
         <SelectOption
+            hideTitle
             options={playList}
             placeholder="选择全场大小球"
             selectTitle=""
@@ -78,10 +80,15 @@ function HandicapAnalysisForm() {
                 数据中心将会汇整出符合您条件设定，在时间区间内开出相同盘口的赛事
             </div>
             <div className={style.error}>{hintsError}</div>
-            <button className={style.search} onClick={openHintsDrawer} type="button">
+            <motion.button
+                className={style.search}
+                onClick={openHintsDrawer}
+                type="button"
+                whileTap={{ scale: 0.9 }}
+            >
                 <Image alt="" height={14} src={starIcon.src} width={14} />
                 获得盘路提示
-            </button>
+            </motion.button>
             <HandicapDrawer
                 hintsSelected={hintsSelected}
                 isOpen={showHintsDrawer}

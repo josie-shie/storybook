@@ -50,7 +50,8 @@ function GuessDetail({ backHistory }: { backHistory: boolean }) {
             over: 50,
             under: 50,
             enoughProData: false,
-            memberPermission: false
+            memberPermission: false,
+            unlockPrice: 1
         },
         masterPlanList: [
             {

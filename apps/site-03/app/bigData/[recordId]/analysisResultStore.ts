@@ -107,14 +107,15 @@ export interface AnalysisResult {
 }
 
 export interface BigDataRecordListResponse {
-    recordId: number;
-    recordTime: number;
-    handicap: string;
-    odds: string;
-    overUnder: string;
-    startDate: number;
-    endDate: number;
-    state: number;
+    memberId: number;
+    ticketId: string;
+    handicapSide: string;
+    handicapValues: string;
+    overUnderValues: string;
+    startTime: number;
+    endTime: number;
+    analyTime: number;
+    isCompleted: boolean;
 }
 
 export interface Statistics {

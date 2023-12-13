@@ -20,16 +20,20 @@ export interface AnalysisRequest {
     overUnderValues: string;
     startTime: number;
     endTime: number;
+    message: string;
+    ticketId: string;
 }
 
 export interface AnalysisResponse {
     mission: string;
     memberId: number;
-    ticket_id: number;
-    handicap_side: string;
-    handicap_values: string;
-    overUnder_values: string;
-    time_ranges: string;
+    ticketId: string;
+    message: string;
+    handicapSide: string;
+    handicapValues: string;
+    overUnderValues: string;
+    startTime: number;
+    endTime: number;
 }
 
 interface OriginalContestInfo {
