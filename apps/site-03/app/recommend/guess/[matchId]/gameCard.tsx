@@ -36,6 +36,7 @@ interface GameCardProps {
 }
 
 function GameCard({ plan, onOpenPaidDialog }: GameCardProps) {
+    const detail = useGuessDetailStore.use.detail();
     const unlockPrice = useGuessDetailStore.use.masterPlanPrice();
 
     const iconMap = {
@@ -59,7 +60,9 @@ function GameCard({ plan, onOpenPaidDialog }: GameCardProps) {
                     {plan.highlights.map(el => (
                         <HighlightTag key={el.id} type={el.type} value={el.value} />
                     ))}
-                    <div className={style.league}>主隊名 vs 客隊名</div>
+                    <div className={style.league}>
+                        {detail.homeTeamName} vs {detail.awayTeamName}
+                    </div>
                     <ul className={style.ballList}>
                         {plan.records.map((result, idx) => (
                             <li key={idx}>{iconMap[result]}</li>

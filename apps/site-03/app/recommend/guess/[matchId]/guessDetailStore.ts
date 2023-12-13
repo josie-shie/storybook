@@ -19,23 +19,6 @@ export interface DetailType {
     small: number; // 猜 小 人數
 }
 
-// 高手方案
-// interface MasterPlan {
-//     id: number; // 方案id
-//     avatar: string; // 頭像
-//     name: string; // 暱稱
-//     hotStreak: number; // 連紅次數
-//     ranking: number; // 月榜排名
-//     homeTeam: string; // 主隊名
-//     awayTeam: string; // 客隊名
-//     unlock: boolean; // 是否已解鎖
-//     unlockPrice: number; // 解鎖價格
-//     history: ('win' | 'lose' | 'draw')[]; // 歷史戰績
-//     guess: 'home' | 'away' | 'big' | 'small'; // 競猜方向
-//     result?: 'win' | 'lose' | 'draw'; // 競猜結果
-//     guessValue: number; // 讓分
-// }
-
 interface InitState {
     guessesLeft: number; // 競猜剩餘次數
     detail: DetailType;
