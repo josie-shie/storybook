@@ -36,6 +36,10 @@ function UserInfo() {
         title: '我的'
     };
 
+    const back = () => {
+        router.push('/');
+    };
+
     useEffect(() => {
         const getUserInfo = async () => {
             const res = await getMemberInfo();
@@ -70,7 +74,7 @@ function UserInfo() {
 
     return (
         <div className={style.wrapper} style={{ backgroundImage: `url(${userInfoBg.src})` }}>
-            <Header title={headerProps.title} />
+            <Header back={back} title={headerProps.title} />
             <div className={style.userInfo}>
                 <div className={style.container}>
                     <div
