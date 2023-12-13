@@ -158,16 +158,22 @@ export const GET_RRO_GUESS_QUERY = `
     query getProGuess($matchId: Int, $memberId: Int){
         getProGuess(matchId: $matchId, memberId: $memberId) {
             proGuess {
-            guessId
-            memberId
-            memberName
-            memberRankType
-            memberRanking
-            records
-            predictedType
-            predictedPlay
-            predictionResult
-            }
+                guessId
+                memberId
+                memberName
+                avatarPath
+                highlights {
+                  id
+                  type
+                  value
+                } 
+                records
+                predictedType
+                predictedPlay
+                predictionResult
+              }
+            unlockPrice
+            freeUnlockChance
         }
     }
 `;
@@ -181,6 +187,7 @@ export const GET_RRO_DISTRIB_QUERY = `
             under
             enoughProData
             memberPermission
+            unlockPrice
         }
     }
 `;

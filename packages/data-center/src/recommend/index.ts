@@ -55,7 +55,7 @@ const RecommendPostSchema = z.object({
     countryId: z.number(),
     countryName: z.string(),
     analysisContent: z.string(),
-    unlockCounts: z.string(),
+    unlockCounts: z.number(),
     articleCount: z.number(),
     isUnlocked: z.boolean(),
     tag: TagSchema
