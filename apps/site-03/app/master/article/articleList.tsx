@@ -14,6 +14,7 @@ import Win from './img/win.png';
 import Avatar from '@/components/avatar/avatar';
 import Tag from '@/components/tag/tag';
 import UnlockButton from '@/components/unlockButton/unlockButton';
+import { useUserStore } from '@/app/userStore';
 
 function ArticleItem() {
     const router = useRouter();
@@ -109,6 +110,7 @@ function ArticleList() {
     const [isActive, setIsActive] = useState<PostFilter[]>([]);
 
     const setArticleList = useArticleStore.use.setArticleList();
+    const userInfo = useUserStore.use.userInfo();
 
     const updateActive = (value: PostFilter) => {
         setIsActive(current => {
@@ -123,9 +125,10 @@ function ArticleList() {
     const fetchData = async () => {
         try {
             const res = await getPostList({
-                memberId: 1, // TODO: 先寫死 useUserStore.use.userInfo()
+                memberId: userInfo.uid,
                 filterId: [],
-                postFilter: isActive.length === 0 ? ['all'] : isActive
+                postFilter: isActive.length === 0 ? ['all'] : isActive,
+                currentPage: 6
             });
 
             if (!res.success) {
@@ -139,7 +142,7 @@ function ArticleList() {
 
     useEffect(() => {
         void fetchData();
-    }, [isActive]);
+    }, [isActive, userInfo.uid]);
 
     return (
         <>

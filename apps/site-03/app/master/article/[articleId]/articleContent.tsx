@@ -97,7 +97,8 @@ function ArticleContent({ params, article }: ArticleContentProps) {
             const res = await getPostList({
                 memberId: userInfo.uid,
                 filterId: [article.mentorId],
-                postFilter: ['mentor']
+                postFilter: ['mentor'],
+                pageSize: 20
             });
 
             if (!res.success) {
@@ -126,21 +127,29 @@ function ArticleContent({ params, article }: ArticleContentProps) {
                     </div>
                     <div className={style.clubInfo}>
                         <div className={style.team}>
-                            <Image alt="" height={48} src={article.homeTeam.logo} width={48} />
+                            <Image
+                                alt=""
+                                height={48}
+                                src={article.homeTeam.logo === '0' ? '' : article.homeTeam.logo}
+                                width={48}
+                            />
                             <div className={style.name}>{article.homeTeam.name}</div>
                         </div>
                         <div className={style.fight}>VS</div>
                         <div className={style.team}>
-                            <Image alt="" height={48} src={article.awayTeam.logo} width={48} />
+                            <Image
+                                alt=""
+                                height={48}
+                                src={article.awayTeam.logo === '0' ? '' : article.awayTeam.logo}
+                                width={48}
+                            />
                             <div className={style.name}>{article.awayTeam.name}</div>
                         </div>
                     </div>
 
                     {article.predictedPlay === 'LOCK' && (
                         <div className={style.paidButton}>
-                            <div className={style.content}>
-                                {/* {article.shortAnalysisContent} */}
-                            </div>
+                            <div className={style.content}>{article.shortAnalysisContent}</div>
                             <div className={style.buttonArea}>
                                 <div className={style.backDrop} />
                                 <div className={style.text}>
