@@ -67,93 +67,79 @@ const BigDataHintListResultSchema = z.object({
 export type BigDataHintListResult = z.infer<typeof BigDataHintListResultSchema>;
 export type BigDataHintListResponse = BigDataHint[];
 
-const minutesGoalSchema = z.object({
-    goalUpper: z.array(z.number()),
-    goalLower: z.array(z.number())
+const DailyMatchSchema = z.object({
+    date: z.string(),
+    matches: z.number()
 });
 
-const goalRangeSchema = z.object({
-    goalRange0To1: z.array(z.number()),
-    goalRange2To3: z.array(z.number()),
-    goalRange4To6: z.array(z.number()),
-    goalRange7Upper: z.array(z.number())
+const CorrectScoreSchema = z.object({
+    score: z.string(),
+    matches: z.array(z.number())
 });
 
-const exactGoalSchema = z.object({
-    goalRange0To1: z.array(z.number()),
-    goalRange1To0: z.array(z.number()),
-    goalRange0To0: z.array(z.number()),
-    goalRange2To0: z.array(z.number()),
-    goalRange0To2: z.array(z.number()),
-    goalRange1To1: z.array(z.number()),
-    goalRange2To1: z.array(z.number()),
-    goalRange1To2: z.array(z.number()),
-    goalRange2To2: z.array(z.number()),
-    goalRange3To0: z.array(z.number()),
-    goalRange0To3: z.array(z.number()),
-    goalRange3To3: z.array(z.number()),
-    goalRange3To1: z.array(z.number()),
-    goalRange1To3: z.array(z.number()),
-    goalRange4To4: z.array(z.number()),
-    goalRange3To2: z.array(z.number()),
-    goalRange2To3: z.array(z.number()),
-    goalRange4To0: z.array(z.number()),
-    goalRange0To4: z.array(z.number()),
-    goalRange4To1: z.array(z.number()),
-    goalRange1To4: z.array(z.number()),
-    goalRange4To2: z.array(z.number()),
-    goalRange2To4: z.array(z.number()),
-    goalRange4To3: z.array(z.number()),
-    goalRange3To4: z.array(z.number()),
-    others: z.array(z.number())
+const GoalsIn15MinsSchema = z.object({
+    goalsOver: z.array(z.number()),
+    goalsUnder: z.array(z.number())
 });
 
 const GetAiAnalysisReportSchema = z.object({
+    memberId: z.number(),
+    ticketId: z.string(),
+    handicapSide: z.string(),
+    handicapValues: z.string(),
+    overUnderValues: z.string(),
+    startTime: z.number(),
+    endTime: z.number(),
     // 全場讓球
     fullHandicapUpper: z.array(z.number()),
     fullHandicapLower: z.array(z.number()),
     fullHandicapDraw: z.array(z.number()),
-    fullHandicapUpperDaily: z.array(z.number()),
-    fullHandicapLowerDaily: z.array(z.number()),
-    fullHandicapDrawDaily: z.array(z.number()),
+    fullHandicapUpperDaily: z.array(DailyMatchSchema),
+    fullHandicapLowerDaily: z.array(DailyMatchSchema),
+    fullHandicapDrawDaily: z.array(DailyMatchSchema),
     // 半場讓球
     halfHandicapUpper: z.array(z.number()),
     halfHandicapLower: z.array(z.number()),
     halfHandicapDraw: z.array(z.number()),
-    halfHandicapUpperDaily: z.array(z.number()),
-    halfHandicapLowerDaily: z.array(z.number()),
-    halfHandicapDrawDaily: z.array(z.number()),
+    halfHandicapUpperDaily: z.array(DailyMatchSchema),
+    halfHandicapLowerDaily: z.array(DailyMatchSchema),
+    halfHandicapDrawDaily: z.array(DailyMatchSchema),
     // 全場大小
-    fullOverUnderUpper: z.array(z.number()),
-    fullOverUnderLower: z.array(z.number()),
+    fullOverUnderOver: z.array(z.number()),
+    fullOverUnderUnder: z.array(z.number()),
     fullOverUnderDraw: z.array(z.number()),
-    fullOverUnderUpperDaily: z.array(z.number()),
-    fullOverUnderLowerDaily: z.array(z.number()),
-    fullOverUnderDrawDaily: z.array(z.number()),
+    fullOverUnderOverDaily: z.array(DailyMatchSchema),
+    fullOverUnderUnderDaily: z.array(DailyMatchSchema),
+    fullOverUnderDrawDaily: z.array(DailyMatchSchema),
     // 半場大小
-    halfOverUnderUpper: z.array(z.number()),
-    halfOverUnderLower: z.array(z.number()),
+    halfOverUnderOver: z.array(z.number()),
+    halfOverUnderUnder: z.array(z.number()),
     halfOverUnderDraw: z.array(z.number()),
-    halfOverUnderUpperDaily: z.array(z.number()),
-    halfOverUnderLowerDaily: z.array(z.number()),
-    halfOverUnderDrawDaily: z.array(z.number()),
+    halfOverUnderOverDaily: z.array(DailyMatchSchema),
+    halfOverUnderUnderDaily: z.array(DailyMatchSchema),
+    halfOverUnderDrawDaily: z.array(DailyMatchSchema),
     // 全場獨贏
-    fullMoneyLineUpper: z.array(z.number()),
-    fullMoneyLineLower: z.array(z.number()),
-    fullMoneyLineDraw: z.array(z.number()),
-    fullMoneyLineUpperDaily: z.array(z.number()),
-    fullMoneyLineLowerDaily: z.array(z.number()),
-    fullMoneyLineDrawDaily: z.array(z.number()),
+    fullTimeHomeWin: z.array(z.number()),
+    fullTimeDraw: z.array(z.number()),
+    fullTimeAwayWin: z.array(z.number()),
+    fullTimeHomeWinDaily: z.array(DailyMatchSchema),
+    fullTimeDrawDaily: z.array(DailyMatchSchema),
+    fullTimeAwayWinDaily: z.array(DailyMatchSchema),
     // 半場獨贏
-    halfMoneyLineUpper: z.array(z.number()),
-    halfMoneyLineLower: z.array(z.number()),
-    halfMoneyLineDraw: z.array(z.number()),
-    halfMoneyLineUpperDaily: z.array(z.number()),
-    halfMoneyLineLowerDaily: z.array(z.number()),
-    halfMoneyLineDrawDaily: z.array(z.number()),
-    minutesGoal: z.array(minutesGoalSchema),
-    goalRange: goalRangeSchema,
-    exactGoal: exactGoalSchema
+    halfTimeHomeWin: z.array(z.number()),
+    halfTimeDraw: z.array(z.number()),
+    halfTimeAwayWin: z.array(z.number()),
+    halfTimeHomeWinDaily: z.array(DailyMatchSchema),
+    halfTimeDrawDaily: z.array(DailyMatchSchema),
+    halfTimeAwayWinDaily: z.array(DailyMatchSchema),
+
+    goalsIn15Mins: z.array(GoalsIn15MinsSchema),
+    correctScores: z.array(CorrectScoreSchema),
+    goalsInterval0To1: z.array(z.number()),
+    goalsInterval2To3: z.array(z.number()),
+    goalsInterval4To6: z.array(z.number()),
+    goalsInterval7Plus: z.array(z.number()),
+    analyTime: z.number()
 });
 
 const GetAiAnalysisReportResultSchema = z.object({
