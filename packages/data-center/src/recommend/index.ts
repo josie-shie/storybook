@@ -6,7 +6,6 @@ import { PredictionResultSchema, PredictedPlaySchema, TagSchema } from '../commo
 import {
     GET_INDEX_POSTS_QUERY,
     GET_MENTOR_POSTS_QUERY,
-    // GET_MATCH_POST_QUERY,
     GET_POST_DETAIL_QUERY,
     GET_MENTOR_LIST_QUERY,
     GET_POST_LIST_QUERY
@@ -83,18 +82,16 @@ export interface GetIndexPostsResponse {
  * - returns : {@link GetIndexPostsResponse}
  * - {@link GetIndexPostsResponse} {@link RecommendPost}
  */
-export const getIndexPosts = async ({
-    currentPage,
-    pageSize
-}: GetIndexPostsRequest): Promise<ReturnData<GetIndexPostsResponse>> => {
+export const getIndexPosts = async (
+    input: GetIndexPostsRequest
+): Promise<ReturnData<GetIndexPostsResponse>> => {
     try {
         const { data }: { data: GetIndexPostsResult } = await fetcher(
             {
                 data: {
                     query: GET_INDEX_POSTS_QUERY,
                     variables: {
-                        current_page: currentPage,
-                        page_size: pageSize
+                        input
                     }
                 }
             },
@@ -330,7 +327,7 @@ export type MentorFilter = 'weekly' | 'monthly' | 'quarterly' | 'winStreak';
 
 export interface GetMentorListRequest {
     memberId: number;
-    filter: MentorFilter[];
+    filter?: MentorFilter[];
 }
 
 const GetMentorSchema = z.object({
@@ -361,19 +358,15 @@ type GetMentorResult = z.infer<typeof GetMentorResultSchema>;
  * - returns : {@link GetMailMemberListResponse}
  * - {@link GetMailMemberResponse}
  */
-export const getMentorList = async ({
-    memberId,
-    filter
-}: GetMentorListRequest): Promise<ReturnData<GetMentorListResponse>> => {
+export const getMentorList = async (
+    input: GetMentorListRequest
+): Promise<ReturnData<GetMentorListResponse>> => {
     try {
         const { data }: { data: GetMentorResult } = await fetcher(
             {
                 data: {
                     query: GET_MENTOR_LIST_QUERY,
-                    variables: {
-                        memberId,
-                        filter
-                    }
+                    variables: input
                 }
             },
             { cache: 'no-store' }
