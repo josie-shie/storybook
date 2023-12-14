@@ -390,17 +390,19 @@ export const getMentorList = async ({
     }
 };
 
+export type PostFilter =
+    | 'league'
+    | 'match'
+    | 'mentor'
+    | 'all'
+    | 'weekly'
+    | 'monthly'
+    | 'quarterly'
+    | 'winStreak';
+
 export interface GetPostListRequest {
     memberId: number;
-    postFilter:
-        | 'league'
-        | 'match'
-        | 'mentor'
-        | 'all'
-        | 'weekly'
-        | 'monthly'
-        | 'quarterly'
-        | 'winStreak';
+    postFilter: PostFilter[];
     filterId?: number[];
     currentPage?: number;
     pageSize?: number;

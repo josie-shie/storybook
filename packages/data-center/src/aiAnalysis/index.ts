@@ -171,9 +171,7 @@ const GetAiAnalysisContestSchema = z.object({
 export type GetAiAnalysisContest = z.infer<typeof GetAiAnalysisContestSchema>;
 export type GetAiAnalysisContestListResponse = GetAiAnalysisContest[];
 const GetAiAnalysisContestListResultSchema = z.object({
-    getAiAnalysisContestList: z.object({
-        list: z.array(GetAiAnalysisContestSchema)
-    })
+    getAiAnalysisContestList: z.array(GetAiAnalysisContestSchema)
 });
 // eslint-disable-next-line -- TODO: fetch api
 type GetAiAnalysisContestListResult = z.infer<typeof GetAiAnalysisContestListResultSchema>;
