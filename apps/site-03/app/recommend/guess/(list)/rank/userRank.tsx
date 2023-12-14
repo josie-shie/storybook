@@ -53,7 +53,13 @@ function UserRank() {
             </div>
             <div className={style.container}>
                 <div className={style.avatarContainer}>
-                    <Avatar src={memberInfo.memberAvatar} />
+                    <Avatar
+                        src={
+                            memberInfo.memberAvatar && memberInfo.memberAvatar !== '0'
+                                ? memberInfo.memberAvatar
+                                : ''
+                        }
+                    />
                 </div>
                 <div className={style.content}>
                     <div className={style.name}>{memberInfo.memberName}</div>
