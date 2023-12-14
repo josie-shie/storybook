@@ -1,19 +1,33 @@
 'use client';
+
 import Image from 'next/image';
 import { timestampToMonthDay, timestampToString, convertHandicap } from 'lib';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import RecommendationList from './recommendationList';
+import { type GetPostDetailResponse } from 'data-center';
 import Star from './img/star.png';
 import Push from './img/push.png';
 import Win from './img/win.png';
 import Lose from './img/lose.png';
 import Draw from './img/draw.png';
 import style from './articleContent.module.scss';
-import { useArticleStore } from './articleStore';
+import RecommendationList from './recommendationList';
 import { useUserStore } from '@/app/userStore';
 import NormalDialog from '@/components/normalDialog/normalDialog';
-import type { GuessType } from '@/types/predict';
+import type { GuessType, HandicapType } from '@/types/predict';
+
+interface RecommendationItem {
+    id: number;
+    createdAt: number; //發表時間
+    leagueName: string; //聯賽名稱
+    matchTime: number; //比賽時間
+    homeTeamName: string; //主隊名稱
+    awayTeamName: string; //客隊名稱
+    price: number; //解鎖費用
+    predictPlayType: HandicapType; //玩法
+    unlockNumber: number; //已解鎖人數,
+    isLock: boolean; //是否解鎖
+}
 
 function Content() {
     const userInfo = useUserStore.use.userInfo();
@@ -36,14 +50,16 @@ function Content() {
     );
 }
 
-function ArticleContent({ params }: { params: { articleId: string } }) {
+interface ArticleContentProps {
+    article: GetPostDetailResponse;
+    params: { articleId: string };
+}
+function ArticleContent({ params, article }: ArticleContentProps) {
     const [openPaid, setOpenPaid] = useState(false);
     const [openDialog, setOpenDialog] = useState(false);
+    const [recommendationList, setRecommendationList] = useState<RecommendationItem[]>([]);
 
     const router = useRouter();
-
-    const article = useArticleStore.use.articleDetail();
-    const recommendationList = useArticleStore.use.recommendationList();
 
     const unlockArticle = () => {
         setOpenPaid(true);
@@ -85,6 +101,47 @@ function ArticleContent({ params }: { params: { articleId: string } }) {
         setOpenDialog(false);
         router.push('/userInfo/subscribe');
     };
+
+    useEffect(() => {
+        setRecommendationList([
+            {
+                id: 1,
+                createdAt: 1701679456,
+                leagueName: '欧锦U20A',
+                matchTime: 1701679456,
+                homeTeamName: '德國U20A',
+                awayTeamName: '斯洛文尼亚U20',
+                price: 20,
+                predictPlayType: 'overUnder',
+                unlockNumber: 8,
+                isLock: true
+            },
+            {
+                id: 2,
+                createdAt: 1701679456,
+                leagueName: '欧锦U20A',
+                matchTime: 1701679456,
+                homeTeamName: '德國U20A',
+                awayTeamName: '斯洛文尼亚U20',
+                price: 20,
+                predictPlayType: 'overUnder',
+                unlockNumber: 8,
+                isLock: true
+            },
+            {
+                id: 3,
+                createdAt: 1701679456,
+                leagueName: '欧锦U20A',
+                matchTime: 1701679456,
+                homeTeamName: '德國U20A',
+                awayTeamName: '斯洛文尼亚U20',
+                price: 20,
+                predictPlayType: 'handicap',
+                unlockNumber: 8,
+                isLock: false
+            }
+        ]);
+    }, []);
 
     return (
         <div className={style.articleContent}>
@@ -223,7 +280,7 @@ function ArticleContent({ params }: { params: { articleId: string } }) {
 
             <div className={style.otherList}>
                 <div className={style.title}>Ta还推荐了... ({recommendationList.length})</div>
-                <RecommendationList />
+                <RecommendationList recommendationList={recommendationList} />
             </div>
             <NormalDialog
                 cancelText="取消"

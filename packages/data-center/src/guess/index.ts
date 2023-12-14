@@ -101,28 +101,6 @@ interface GetGuessRankRequest {
     // 排行榜類型 0:週，1:月，2:季，3:連紅
 }
 
-// const GetGuessRankSchema = z.object({
-//     matchId: z.number(),
-//     leagueId: z.number(),
-//     leagueName: z.string(),
-//     homeId: z.number(),
-//     homeName: z.string(),
-//     awayId: z.number(),
-//     awayName: z.string(),
-//     matchTime: z.number(),
-//     homeScore: z.number(),
-//     awayScore: z.number(),
-//     handicap: z.number(),
-//     handicapHomeOdds: z.number(),
-//     handicapAwayOdds: z.number(),
-//     overUnder: z.number(),
-//     overUnderOverOdds: z.number(),
-//     overUnderUnderOdds: z.number(),
-//     totalNum: z.number(),
-//     guessed: z.boolean(),
-//     state: z.number()
-// });
-
 const GuessRankSchema = z.object({
     memberId: z.number(),
     memberName: z.string(),
@@ -540,7 +518,7 @@ const ProGuessSchema = z.object({
     guessId: z.number(),
     memberId: z.number(),
     memberName: z.string(),
-    avatarPath: z.number(),
+    avatarPath: z.string(),
     highlights: z.array(HighlightsSchema),
     records: z.array(PredictionResultSchema),
     predictedType: z.union([z.literal('HANDICAP'), z.literal('OVERUNDER')]),
@@ -549,11 +527,13 @@ const ProGuessSchema = z.object({
 });
 
 const GetProGuessResultSchema = z.object({
-    getProGuess: z.object({
-        proGuess: z.array(ProGuessSchema),
-        unlockPrice: z.number(),
-        freeUnlockChance: z.number()
-    })
+    getProGuess: z
+        .object({
+            proGuess: z.array(ProGuessSchema),
+            unlockPrice: z.number(),
+            freeUnlockChance: z.number()
+        })
+        .nullable()
 });
 
 type GetProGuessResult = z.infer<typeof GetProGuessResultSchema>;
@@ -590,6 +570,10 @@ export const getProGuess = async ({
         );
 
         GetProGuessResultSchema.parse(data);
+
+        if (!data.getProGuess) {
+            throw new Error('No master plan');
+        }
 
         return {
             success: true,
