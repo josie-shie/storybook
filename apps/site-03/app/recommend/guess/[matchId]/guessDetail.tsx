@@ -28,7 +28,7 @@ function GuessDetail({ backHistory }: { backHistory: boolean }) {
 
     createGuessDetailStore({
         guessesLeft: 6,
-        unlockTrend: false,
+        masterPlanPrice: 20,
         detail: {
             leagueName: '歐錦U20A',
             dateTime: 1678880400,
@@ -49,55 +49,60 @@ function GuessDetail({ backHistory }: { backHistory: boolean }) {
             away: 50,
             over: 50,
             under: 50,
-            enoughProData: false,
+            enoughProData: true,
             memberPermission: false,
             unlockPrice: 1
         },
         masterPlanList: [
             {
-                id: 7,
-                avatar: '',
-                name: '羅曼琉球',
-                hotStreak: 9,
-                ranking: 345,
-                homeTeam: '欧锦U20A',
-                awayTeam: '斯洛文尼亚U20',
-                unlock: false,
-                unlockPrice: 40,
-                history: ['win', 'lose', 'draw', 'win', 'lose', 'draw', 'win', 'lose', 'draw'],
-                guess: 'home',
-                result: 'win',
-                guessValue: 0.5
+                guessId: 7,
+                memberId: 22,
+                avatarPath: '',
+                memberName: '羅曼琉球',
+                highlights: [
+                    {
+                        id: 1,
+                        type: 2,
+                        value: 10
+                    },
+                    {
+                        id: 3,
+                        type: 3,
+                        value: 6
+                    }
+                ],
+                records: ['DRAW', 'LOSE', 'WIN', 'WIN', 'WIN', 'DRAW', 'DRAW', 'LOSE', 'WIN'],
+                predictedType: 'HANDICAP',
+                predictedPlay: 'HOME',
+                predictionResult: 'DRAW'
             },
             {
-                id: 10,
-                avatar: '',
-                name: '小羅聊球',
-                hotStreak: 7,
-                ranking: 345,
-                homeTeam: '欧锦U20A',
-                awayTeam: '斯洛文尼亚U20',
-                unlock: false,
-                unlockPrice: 20,
-                history: ['draw', 'draw', 'draw', 'win', 'lose', 'win', 'lose', 'lose', 'win'],
-                guess: 'home',
-                result: 'win',
-                guessValue: 0.5
+                guessId: 8,
+                memberId: 33,
+                avatarPath: '',
+                memberName: '老羅聊球',
+                highlights: [
+                    {
+                        id: 4,
+                        type: 2,
+                        value: 10
+                    }
+                ],
+                records: ['WIN', 'WIN', 'LOSE', 'DRAW', 'DRAW', 'LOSE', 'WIN', 'DRAW', 'WIN'],
+                predictedType: 'HANDICAP',
+                predictedPlay: 'LOCK',
+                predictionResult: 'WIN'
             },
             {
-                id: 11,
-                avatar: '',
-                name: '老崔聊包',
-                hotStreak: 2,
-                ranking: 15,
-                homeTeam: '欧锦U20A',
-                awayTeam: '斯洛文尼亚U20',
-                unlock: false,
-                unlockPrice: 20,
-                history: ['lose', 'win', 'win', 'win', 'draw', 'win', 'lose', 'win', 'win'],
-                guess: 'small',
-                result: 'draw',
-                guessValue: 0.5
+                guessId: 9,
+                memberId: 44,
+                avatarPath: '',
+                memberName: '老崔包子',
+                highlights: [],
+                records: ['WIN', 'LOSE', 'WIN', 'LOSE', 'DRAW', 'DRAW', 'WIN', 'LOSE', 'WIN'],
+                predictedType: 'HANDICAP',
+                predictedPlay: 'LOCK',
+                predictionResult: 'NONE'
             }
         ]
     });
