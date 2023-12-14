@@ -17,11 +17,7 @@ function RecommendationItem({ recommendationList }: { recommendationList: Recomm
         <>
             {recommendationList.map(item => {
                 return (
-                    <Link
-                        className={style.item}
-                        href={`/recommend/predict/${item.id}`}
-                        key={item.id}
-                    >
+                    <Link className={style.item} href={`/master/article/${item.id}`} key={item.id}>
                         <div className={style.left}>
                             <div className={style.time}>
                                 发表于今天 {timestampToMonthDay(item.createdAt)}
