@@ -5,7 +5,7 @@ import { timestampToMonthDay, timestampToString, convertHandicap } from 'lib';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { type GetPostDetailResponse, type RecommendPost } from 'data-center';
-import { getPostList } from 'data-center';
+import { getPostList, payForPost } from 'data-center';
 import Star from './img/star.png';
 import Push from './img/push.png';
 import Win from './img/win.png';
@@ -17,7 +17,7 @@ import { useUserStore } from '@/app/userStore';
 import NormalDialog from '@/components/normalDialog/normalDialog';
 import type { GuessType } from '@/types/predict';
 
-function Content() {
+function Content({ article }: { article: GetPostDetailResponse }) {
     const userInfo = useUserStore.use.userInfo();
     return (
         <>
@@ -26,7 +26,7 @@ function Content() {
                     <span className={style.text}>支付</span>
                     <span className={style.number}>
                         <Image alt="" className={style.image} src={Star} width={14} />
-                        {10}
+                        {article.price}
                     </span>
                 </div>
                 <span className={style.text}>开通年卡订阅</span>
@@ -55,17 +55,24 @@ function ArticleContent({ params, article }: ArticleContentProps) {
         setOpenPaid(true);
     };
 
-    const onSubmit = () => {
-        try {
-            // eslint-disable-next-line -- TODO: 取得預測文章Id,解鎖預測文章
-            console.log(params.articleId);
-            // await unLockArticle(params.articleId);
-        } catch (error) {
+    const onSubmit = async () => {
+        if (userInfo.balance < article.price) {
+            setOpenPaid(false);
             setOpenDialog(true);
-            // eslint-disable-next-line -- console error
-            console.log(error);
+            return;
         }
-        setOpenPaid(false);
+        try {
+            const res = await payForPost({ postId: Number(params.articleId) });
+
+            if (!res.success) {
+                return new Error();
+            }
+            void fetchData();
+        } catch (error) {
+            return new Error();
+        } finally {
+            setOpenPaid(false);
+        }
     };
 
     const filterImage = (value: GuessType): string => {
@@ -264,7 +271,7 @@ function ArticleContent({ params, article }: ArticleContentProps) {
             <NormalDialog
                 cancelText="取消"
                 confirmText="確認支付"
-                content={<Content />}
+                content={<Content article={article} />}
                 onClose={() => {
                     setOpenPaid(false);
                 }}
