@@ -27,9 +27,7 @@ const GetFootballStatsRecordSchema = z.object({
 });
 
 const GetFootballStatsRecordResultSchema = z.object({
-    getFootballStatsRecord: z.object({
-        list: z.array(GetFootballStatsRecordSchema)
-    })
+    getFootballStatsRecord: z.array(GetFootballStatsRecordSchema)
 });
 
 type GetFootballStatsRecordResult = z.infer<typeof GetFootballStatsRecordResultSchema>;
@@ -54,8 +52,9 @@ const OddsHintSchema = z.object({
     leagueLevel: z.number()
 });
 
+export type OddsHintsType = 'HANDICAP' | 'OVERUNDER' | 'HANDICAPHALF' | 'OVERUNDERHALF';
 export interface OddsHintRequest {
-    type: 'HANDICAP' | 'OVERUNDER' | 'HANDICAPHALF' | 'OVERUNDERHALF';
+    type: OddsHintsType;
 }
 export type BigDataHint = z.infer<typeof OddsHintSchema>;
 
@@ -225,7 +224,7 @@ export const getFootballStatsRecord = async ({
 
         return {
             success: true,
-            data: data.getFootballStatsRecord.list
+            data: data.getFootballStatsRecord
         };
     } catch (error) {
         return handleApiError(error);
