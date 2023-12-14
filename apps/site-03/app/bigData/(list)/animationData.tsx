@@ -1,5 +1,6 @@
 'use client';
 import Image from 'next/image';
+import Link from 'next/link';
 import banner from './img/banner.png';
 import dataText from './img/dataText.png';
 import blueText from './img/blueText.png';
@@ -12,9 +13,15 @@ import animateLine6 from './img/animateLine6.png';
 import animateLine7 from './img/animateLine7.png';
 import animateLine8 from './img/animateLine8.png';
 import animateLine9 from './img/animateLine9.png';
+import enoughTitle from './img/enoughTitle.png';
+import enoughText from './img/enoughText.png';
+import vipTip from './img/vipTip.png';
 import style from './animationData.module.scss';
+import { useAnimationDataStore } from './animationDataStore';
 
 function AnimationData() {
+    const analysisTimes = useAnimationDataStore.use.analysisTimes();
+
     const animateLines = [
         animateLine1,
         animateLine2,
@@ -31,15 +38,38 @@ function AnimationData() {
         <div className={style.animationData}>
             <div className={style.banner}>
                 <Image alt="banner" src={banner} />
-                <div className={style.animate}>
-                    <div className={`${style.top} ${style.animated} ${style.fadeInLeft}`}>
-                        <Image alt="data" src={dataText} />
-                    </div>
+                {analysisTimes ? (
+                    <div className={style.animate}>
+                        <div className={`${style.top} ${style.animated} ${style.fadeInLeft}`}>
+                            <Image alt="data" src={dataText} />
+                        </div>
 
-                    <div className={`${style.bottom} ${style.animated} ${style.fadeInRight}`}>
-                        <Image alt="data" src={blueText} />
+                        <div className={`${style.bottom} ${style.animated} ${style.fadeInRight}`}>
+                            <Image alt="data" src={blueText} />
+                        </div>
                     </div>
-                </div>
+                ) : (
+                    <div className={style.enough}>
+                        <div className={style.column}>
+                            <span className={style.time}>今日可用次数已用完</span>
+                            <Image alt="title" height={36} src={enoughTitle} width={146} />
+                            <Image alt="title" height={34} src={enoughText} width={258} />
+                            <Link className={style.goVip} href="">
+                                <Image
+                                    alt="title"
+                                    className={style.tip}
+                                    height={14}
+                                    src={vipTip}
+                                    width={40}
+                                />
+                                升级VIP 无限使用
+                            </Link>
+                            <Link className={style.goSingle} href="">
+                                單次分析 80$
+                            </Link>
+                        </div>
+                    </div>
+                )}
 
                 <div className={`${style.animateLine} ${style.scaleUp}`}>
                     {animateLines.map((src, index) => (

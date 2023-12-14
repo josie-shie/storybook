@@ -24,3 +24,19 @@
         }
     }
 }
+
+.bg {
+    position: relative;
+    z-index: 100;
+    width: 100%;
+    height: 100%;
+    margin-top: -70px;
+    padding: 0 24px 24px;
+    background: linear-gradient(to right, #2d5fb3 0%, #3a82fa 100%);
+
+    img {
+        width: 100%;
+        max-width: 100%;
+        height: 100%;
+    }
+}

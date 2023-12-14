@@ -33,21 +33,95 @@
         width: 100%;
         overflow: hidden;
 
-        img {
+        > img {
             position: relative;
+            top: 15px;
             width: 100%;
             max-width: 100%;
             height: 100%;
         }
 
+        .enough {
+            position: absolute;
+            top: 24px;
+            left: 0;
+            right: 0;
+            margin: auto;
+            padding: 0 12px;
+            width: 100%;
+            z-index: 1000;
+
+            .column {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 12px;
+                padding: 30px 0 24px;
+
+                img {
+                    max-width: 100%;
+                    height: 100%;
+                }
+
+                .goVip {
+                    position: relative;
+                    width: 216px;
+                    height: 36px;
+                    line-height: 36px;
+                    text-align: center;
+                    border-radius: 20px;
+                    border: 1px solid #4489ff;
+                    background: #fff;
+                    color: #4489ff;
+                    font-size: 14px;
+
+                    .tip {
+                        position: absolute;
+                        top: -7px;
+                        right: 8px;
+                        width: 40px;
+                        height: 14px;
+                    }
+                }
+
+                .goSingle {
+                    position: relative;
+                    width: 216px;
+                    height: 36px;
+                    line-height: 36px;
+                    text-align: center;
+                    border-radius: 20px;
+                    border: 1px solid #d9d9d9;
+                    background: rgba(255 255 255 / 30%);
+                    color: #fff;
+                    font-size: 14px;
+                }
+            }
+
+            .time {
+                position: absolute;
+                top: 0;
+                right: 12px;
+                font-size: 12px;
+                color: #9fc2ff;
+            }
+        }
+
         .animate {
             position: absolute;
-            top: 102px;
+            top: 117px;
             left: 0;
             right: 0;
             margin: auto;
             width: 50%;
             max-width: 185px;
+
+            img {
+                position: relative;
+                width: 100%;
+                max-width: 100%;
+                height: 100%;
+            }
 
             .top {
                 width: 133px;
@@ -62,7 +136,7 @@
 
         .animateLine {
             position: absolute;
-            top: 0;
+            top: 15px;
             width: 100%;
 
             img {
