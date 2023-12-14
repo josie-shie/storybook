@@ -326,9 +326,11 @@ export const getPostDetail = async ({
     }
 };
 
+export type MentorFilter = 'weekly' | 'monthly' | 'quarterly' | 'winStreak';
+
 export interface GetMentorListRequest {
     memberId: number;
-    filter: 'weekly' | 'monthly' | 'quarterly' | 'winStreak';
+    filter: MentorFilter[];
 }
 
 const GetMentorSchema = z.object({
@@ -339,7 +341,7 @@ const GetMentorSchema = z.object({
     fans: z.number(),
     unlocked: z.number(),
     isFollowed: z.boolean(),
-    tag: TagSchema
+    tags: TagSchema
 });
 
 export type GetMentor = z.infer<typeof GetMentorSchema>;
