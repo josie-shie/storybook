@@ -20,11 +20,14 @@ function ExpertItem({ mentorList }: { mentorList: GetMentorListResponse }) {
                     <div className={style.masterItem} key={item.username}>
                         <div className={style.info}>
                             <div className={style.avatarContainer}>
-                                <Avatar borderColor="#4489FF" size={46} />
+                                <Avatar
+                                    borderColor="#4489FF"
+                                    src={item.avatarPath === '0' ? '' : item.avatarPath}
+                                />
                             </div>
                             <div className={style.about}>
-                                <div className={style.top}>
-                                    <span>{item.username}</span>
+                                <span>{item.username}</span>
+                                <div>
                                     {item.tags.weekMaxAccurateStreak > 0 && (
                                         <Tag
                                             icon={<IconFlame size={10} />}
@@ -147,7 +150,9 @@ function MasterList() {
     return (
         <div className={style.master}>
             <WeekButton isActive={isActive} updateActive={updateActive} />
-            <ExpertItem mentorList={mentorList} />
+            <div className={style.expertLayout}>
+                <ExpertItem mentorList={mentorList} />
+            </div>
         </div>
     );
 }

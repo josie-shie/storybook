@@ -1,8 +1,8 @@
 .articleContent {
-    height: calc(100vh - 194px);
     margin-top: -30px;
     border-radius: 16px 16px 0 0;
     overflow: auto;
+    height: 100vh;
     background: #f8f8f8;
 
     .container {
@@ -251,8 +251,6 @@
         margin-top: 8px;
         background: #fff;
         padding: 16px 12px;
-        overflow-y: auto;
-        height: calc(100vh - 587px);
 
         .title {
             color: #222;
