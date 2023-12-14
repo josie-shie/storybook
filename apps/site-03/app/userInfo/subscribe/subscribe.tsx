@@ -21,7 +21,7 @@ import { useSubscribeStore } from './subscribeStore';
 import { useUserStore } from '@/app/userStore';
 import { useNotificationStore } from '@/app/notificationStore';
 
-function Subscribe() {
+function Subscribe({ backHistory }: { backHistory: boolean }) {
     const router = useRouter();
     const switchRef = useRef<HTMLDivElement | null>(null);
     const [intro, setIntro] = useState(false);
@@ -54,6 +54,14 @@ function Subscribe() {
 
         void getYearSubscribe();
     }, [setYearPlanList]);
+
+    const back = () => {
+        if (backHistory) {
+            router.back();
+        } else {
+            router.push('/userInfo');
+        }
+    };
 
     const handlePlanClick = (id: number, plan: number, unlock: number) => {
         setPlanId(id);
@@ -117,9 +125,7 @@ function Subscribe() {
                             <Image
                                 alt=""
                                 height={24}
-                                onClick={() => {
-                                    router.push('/userInfo');
-                                }}
+                                onClick={back}
                                 src={backLeftArrowImg}
                                 width={24}
                             />
