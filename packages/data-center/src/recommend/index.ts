@@ -366,7 +366,9 @@ export const getMentorList = async (
             {
                 data: {
                     query: GET_MENTOR_LIST_QUERY,
-                    variables: input
+                    variables: {
+                        input
+                    }
                 }
             },
             { cache: 'no-store' }
