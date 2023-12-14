@@ -6,6 +6,7 @@ import { IconFlame } from '@tabler/icons-react';
 import { useRouter } from 'next/navigation';
 import { timestampToMonthDay, timestampToString } from 'lib';
 import { getPostList } from 'data-center';
+import { type PostFilter } from 'data-center';
 import WeekButton from '../components/weekButton/weekButton';
 import { useArticleStore } from './articleStore';
 import style from './articleList.module.scss';
@@ -105,11 +106,11 @@ function ArticleItem() {
 }
 
 function ArticleList() {
-    const [isActive, setIsActive] = useState<number[]>([]);
+    const [isActive, setIsActive] = useState<PostFilter[]>([]);
 
     const setArticleList = useArticleStore.use.setArticleList();
 
-    const updateActive = (value: number) => {
+    const updateActive = (value: PostFilter) => {
         setIsActive(current => {
             const isExist = current.includes(value);
             if (isExist) {
@@ -122,8 +123,9 @@ function ArticleList() {
     const fetchData = async () => {
         try {
             const res = await getPostList({
-                memberId: 250,
-                postFilter: 'all'
+                memberId: 1, // TODO: 先寫死 useUserStore.use.userInfo()
+                filterId: [],
+                postFilter: isActive.length === 0 ? ['all'] : isActive
             });
 
             if (!res.success) {
@@ -137,7 +139,7 @@ function ArticleList() {
 
     useEffect(() => {
         void fetchData();
-    }, []);
+    }, [isActive]);
 
     return (
         <>

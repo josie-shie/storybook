@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { IconFlame } from '@tabler/icons-react';
 import { motion } from 'framer-motion';
+import { type PostFilter } from 'data-center';
 import WeekButton from '../components/weekButton/weekButton';
 import { useMasterStore, creatMasterStore } from './expertListStore';
 import style from './expertList.module.scss';
@@ -64,9 +65,9 @@ function ExpertItem() {
 }
 
 function MasterList() {
-    const [isActive, setIsActive] = useState<number[]>([]);
+    const [isActive, setIsActive] = useState<PostFilter[]>([]);
 
-    const updateActive = (value: number) => {
+    const updateActive = (value: PostFilter) => {
         setIsActive(current => {
             const isExist = current.includes(value);
             if (isExist) {
