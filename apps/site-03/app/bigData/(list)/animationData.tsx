@@ -1,4 +1,5 @@
 'use client';
+import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import banner from './img/banner.png';
@@ -17,10 +18,34 @@ import enoughTitle from './img/enoughTitle.png';
 import enoughText from './img/enoughText.png';
 import vipTip from './img/vipTip.png';
 import style from './animationData.module.scss';
-import { useAnimationDataStore } from './animationDataStore';
+import { useUserStore } from '@/app/userStore';
+import PaidDialog from '@/components/paidDialog/paidDialog';
 
-function AnimationData() {
-    const analysisTimes = useAnimationDataStore.use.analysisTimes();
+interface TestProps {
+    analysisTime: boolean;
+    onUpdateAnalysis: (newTestValue: boolean) => void;
+}
+
+function AnimationData({ analysisTime, onUpdateAnalysis }: TestProps) {
+    const userBalance = useUserStore.use.userInfo().balance;
+    const [openPaid, setOpenPaid] = useState(false);
+    const [plan, setPlan] = useState(false);
+
+    const handleLocalClickOpen = (getPlan: string) => {
+        if (getPlan === 'single') {
+            setPlan(true);
+        }
+        setOpenPaid(true);
+    };
+
+    const handleClickClose = () => {
+        setOpenPaid(false);
+    };
+
+    const handleConfirm = () => {
+        onUpdateAnalysis(true);
+        setOpenPaid(false);
+    };
 
     const animateLines = [
         animateLine1,
@@ -38,7 +63,7 @@ function AnimationData() {
         <div className={style.animationData}>
             <div className={style.banner}>
                 <Image alt="banner" src={banner} />
-                {analysisTimes ? (
+                {analysisTime ? (
                     <div className={style.animate}>
                         <div className={`${style.top} ${style.animated} ${style.fadeInLeft}`}>
                             <Image alt="data" src={dataText} />
@@ -54,7 +79,7 @@ function AnimationData() {
                             <span className={style.time}>今日可用次数已用完</span>
                             <Image alt="title" height={36} src={enoughTitle} width={146} />
                             <Image alt="title" height={34} src={enoughText} width={258} />
-                            <Link className={style.goVip} href="">
+                            <Link className={style.goVip} href="/userInfo/subscribe">
                                 <Image
                                     alt="title"
                                     className={style.tip}
@@ -64,7 +89,13 @@ function AnimationData() {
                                 />
                                 升级VIP 无限使用
                             </Link>
-                            <Link className={style.goSingle} href="">
+                            <Link
+                                className={style.goSingle}
+                                href=""
+                                onClick={() => {
+                                    handleLocalClickOpen('single');
+                                }}
+                            >
                                 單次分析 80$
                             </Link>
                         </div>
@@ -77,6 +108,15 @@ function AnimationData() {
                     ))}
                 </div>
             </div>
+            <PaidDialog
+                amount={80}
+                balance={userBalance}
+                onClose={handleClickClose}
+                onConfirm={handleConfirm}
+                openPaid={openPaid}
+                plan={plan}
+                value="进行单次分析？"
+            />
         </div>
     );
 }

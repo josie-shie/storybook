@@ -1,5 +1,6 @@
 'use client';
 import { Suspense, type ReactNode } from 'react';
+import { useState } from 'react';
 import { Tab, Tabs } from 'ui';
 import Image from 'next/image';
 import AnimationData from './animationData';
@@ -9,12 +10,15 @@ import { creatDiscSelectStore } from './discSelectStore';
 import { creatMatchFilterStore } from './matchFilterStore';
 import { creatHandicapAnalysisStore } from './handicapAnalysisFormStore';
 import { creatHintsFormStore } from './hintsFormStore';
-import { creatAnimationDataStore, useAnimationDataStore } from './animationDataStore';
+import searchWhite from './img/searchWhite.png';
+import RecordFilter from './components/recordFilter/recordFilter';
 import Footer from '@/components/footer/footer';
 import Header from '@/components/header/headerLogo';
 import Loading from '@/components/loading/loading';
 
 function AnalysisLayout({ children }: { children: ReactNode }) {
+    const [analysisTime, setAnalysisTime] = useState(true);
+    const [showRecord, setShowRecord] = useState(false);
     creatDiscSelectStore({
         openNoramlDialog: false
     });
@@ -27,10 +31,6 @@ function AnalysisLayout({ children }: { children: ReactNode }) {
     });
     creatHintsFormStore({
         handicapTips: []
-    });
-
-    creatAnimationDataStore({
-        analysisTimes: true
     });
 
     const tabStyle = {
@@ -49,13 +49,15 @@ function AnalysisLayout({ children }: { children: ReactNode }) {
         }
     ];
 
-    const analysisTimes = useAnimationDataStore.use.analysisTimes();
+    const handleAnalysisTimes = (newTestValue: boolean) => {
+        setAnalysisTime(newTestValue);
+    };
 
     return (
         <>
             <Header />
-            <AnimationData />
-            {analysisTimes ? (
+            <AnimationData analysisTime={analysisTime} onUpdateAnalysis={handleAnalysisTimes} />
+            {analysisTime ? (
                 <div className={style.main}>
                     <Tabs
                         buttonRadius={tabStyle.buttonRadius}
@@ -75,10 +77,28 @@ function AnalysisLayout({ children }: { children: ReactNode }) {
                 </div>
             ) : (
                 <div className={style.bg}>
+                    <div
+                        className={style.record}
+                        onClick={() => {
+                            setShowRecord(true);
+                        }}
+                    >
+                        <Image alt="" height={20} src={searchWhite.src} width={20} />
+                        分析纪录
+                    </div>
                     <Image alt="content" src={content} />
                 </div>
             )}
             <Footer />
+            <RecordFilter
+                isOpen={showRecord}
+                onClose={() => {
+                    setShowRecord(false);
+                }}
+                onOpen={() => {
+                    setShowRecord(true);
+                }}
+            />
         </>
     );
 }
