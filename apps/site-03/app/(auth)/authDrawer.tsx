@@ -94,7 +94,7 @@ function AuthDrawer() {
 
     useEffect(() => {
         resetAuthContent();
-    }, [isDrawerOpen]);
+    }, [isDrawerOpen, authQuery]);
 
     return (
         <BottomDrawer
