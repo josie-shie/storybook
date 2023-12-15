@@ -119,7 +119,7 @@ function ArticleContent({ params, article }: ArticleContentProps) {
 
     useEffect(() => {
         void fetchData();
-    }, []);
+    }, [userInfo.uid]);
 
     return (
         <div className={style.articleContent}>
