@@ -271,6 +271,7 @@ const GetPostDetailSchema = z.object({
     predictedPlay: PredictedPlaySchema,
     analysisTitle: z.string(),
     analysisContent: z.string(),
+    shortAnalysisContent: z.string(),
     price: z.number(),
     predictionResult: PredictionResultSchema,
     matchTime: z.number(),
@@ -438,8 +439,7 @@ export const getPostList = async (
             },
             { cache: 'no-store' }
         );
-
-        GetPostListResultSchema.parse(data);
+        // GetPostListResultSchema.parse(data);
 
         return {
             success: true,

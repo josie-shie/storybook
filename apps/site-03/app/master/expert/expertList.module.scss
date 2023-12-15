@@ -2,6 +2,11 @@
     padding: 0 12px 10px;
     background: #fff;
 
+    .expertLayout {
+        height: calc(100vh - 212px);
+        overflow-y: auto;
+    }
+
     .masterItem {
         border-bottom: 1px solid #f3f3f3;
         margin-bottom: 16px;
@@ -9,6 +14,11 @@
 
     .info {
         display: flex;
+
+        img {
+            height: 40px;
+            width: 40px;
+        }
     }
 
     .avatarContainer {

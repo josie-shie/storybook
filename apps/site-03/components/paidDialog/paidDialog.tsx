@@ -12,6 +12,7 @@ interface PaidDialogProps {
     amount?: number;
     balance?: number;
     openPaid?: boolean;
+    value?: string;
     onClose?: () => void;
     onConfirm?: () => void;
 }
@@ -30,6 +31,7 @@ function PaidDialog({
     amount,
     balance,
     openPaid = false,
+    value,
     onClose,
     onConfirm
 }: PaidDialogProps) {
@@ -69,7 +71,7 @@ function PaidDialog({
                                     {amount}
                                 </span>
                             </div>
-                            <span className={style.text}>進行查看？</span>
+                            <span className={style.text}>{value ? value : '进行查看？'}</span>
                         </div>
                         <div className={style.balance}>我的餘額: {balance}金幣</div>
                     </>

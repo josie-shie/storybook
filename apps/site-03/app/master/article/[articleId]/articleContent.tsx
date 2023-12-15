@@ -4,7 +4,8 @@ import Image from 'next/image';
 import { timestampToMonthDay, timestampToString, convertHandicap } from 'lib';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { type GetPostDetailResponse } from 'data-center';
+import { type GetPostDetailResponse, type RecommendPost } from 'data-center';
+import { getPostList, payForPost } from 'data-center';
 import Star from './img/star.png';
 import Push from './img/push.png';
 import Win from './img/win.png';
@@ -14,22 +15,9 @@ import style from './articleContent.module.scss';
 import RecommendationList from './recommendationList';
 import { useUserStore } from '@/app/userStore';
 import NormalDialog from '@/components/normalDialog/normalDialog';
-import type { GuessType, HandicapType } from '@/types/predict';
+import type { GuessType } from '@/types/predict';
 
-interface RecommendationItem {
-    id: number;
-    createdAt: number; //發表時間
-    leagueName: string; //聯賽名稱
-    matchTime: number; //比賽時間
-    homeTeamName: string; //主隊名稱
-    awayTeamName: string; //客隊名稱
-    price: number; //解鎖費用
-    predictPlayType: HandicapType; //玩法
-    unlockNumber: number; //已解鎖人數,
-    isLock: boolean; //是否解鎖
-}
-
-function Content() {
+function Content({ article }: { article: GetPostDetailResponse }) {
     const userInfo = useUserStore.use.userInfo();
     return (
         <>
@@ -38,7 +26,7 @@ function Content() {
                     <span className={style.text}>支付</span>
                     <span className={style.number}>
                         <Image alt="" className={style.image} src={Star} width={14} />
-                        {10}
+                        {article.price}
                     </span>
                 </div>
                 <span className={style.text}>开通年卡订阅</span>
@@ -57,25 +45,34 @@ interface ArticleContentProps {
 function ArticleContent({ params, article }: ArticleContentProps) {
     const [openPaid, setOpenPaid] = useState(false);
     const [openDialog, setOpenDialog] = useState(false);
-    const [recommendationList, setRecommendationList] = useState<RecommendationItem[]>([]);
+    const [recommendationList, setRecommendationList] = useState<RecommendPost[]>([]);
 
     const router = useRouter();
+
+    const userInfo = useUserStore.use.userInfo();
 
     const unlockArticle = () => {
         setOpenPaid(true);
     };
 
-    const onSubmit = () => {
-        try {
-            // eslint-disable-next-line -- TODO: 取得預測文章Id,解鎖預測文章
-            console.log(params.articleId);
-            // await unLockArticle(params.articleId);
-        } catch (error) {
+    const onSubmit = async () => {
+        if (userInfo.balance < article.price) {
+            setOpenPaid(false);
             setOpenDialog(true);
-            // eslint-disable-next-line -- console error
-            console.log(error);
+            return;
         }
-        setOpenPaid(false);
+        try {
+            const res = await payForPost({ postId: Number(params.articleId) });
+
+            if (!res.success) {
+                return new Error();
+            }
+            void fetchData();
+        } catch (error) {
+            return new Error();
+        } finally {
+            setOpenPaid(false);
+        }
     };
 
     const filterImage = (value: GuessType): string => {
@@ -102,46 +99,27 @@ function ArticleContent({ params, article }: ArticleContentProps) {
         router.push('/userInfo/subscribe');
     };
 
-    useEffect(() => {
-        setRecommendationList([
-            {
-                id: 1,
-                createdAt: 1701679456,
-                leagueName: '欧锦U20A',
-                matchTime: 1701679456,
-                homeTeamName: '德國U20A',
-                awayTeamName: '斯洛文尼亚U20',
-                price: 20,
-                predictPlayType: 'overUnder',
-                unlockNumber: 8,
-                isLock: true
-            },
-            {
-                id: 2,
-                createdAt: 1701679456,
-                leagueName: '欧锦U20A',
-                matchTime: 1701679456,
-                homeTeamName: '德國U20A',
-                awayTeamName: '斯洛文尼亚U20',
-                price: 20,
-                predictPlayType: 'overUnder',
-                unlockNumber: 8,
-                isLock: true
-            },
-            {
-                id: 3,
-                createdAt: 1701679456,
-                leagueName: '欧锦U20A',
-                matchTime: 1701679456,
-                homeTeamName: '德國U20A',
-                awayTeamName: '斯洛文尼亚U20',
-                price: 20,
-                predictPlayType: 'handicap',
-                unlockNumber: 8,
-                isLock: false
+    const fetchData = async () => {
+        try {
+            const res = await getPostList({
+                memberId: userInfo.uid,
+                filterId: [article.mentorId],
+                postFilter: ['mentor'],
+                pageSize: 20
+            });
+
+            if (!res.success) {
+                return new Error();
             }
-        ]);
-    }, []);
+            setRecommendationList(res.data.posts);
+        } catch (error) {
+            return new Error();
+        }
+    };
+
+    useEffect(() => {
+        void fetchData();
+    }, [userInfo.uid]);
 
     return (
         <div className={style.articleContent}>
@@ -156,21 +134,29 @@ function ArticleContent({ params, article }: ArticleContentProps) {
                     </div>
                     <div className={style.clubInfo}>
                         <div className={style.team}>
-                            <Image alt="" height={48} src={article.homeTeam.logo} width={48} />
+                            <Image
+                                alt=""
+                                height={48}
+                                src={article.homeTeam.logo === '0' ? '' : article.homeTeam.logo}
+                                width={48}
+                            />
                             <div className={style.name}>{article.homeTeam.name}</div>
                         </div>
                         <div className={style.fight}>VS</div>
                         <div className={style.team}>
-                            <Image alt="" height={48} src={article.awayTeam.logo} width={48} />
+                            <Image
+                                alt=""
+                                height={48}
+                                src={article.awayTeam.logo === '0' ? '' : article.awayTeam.logo}
+                                width={48}
+                            />
                             <div className={style.name}>{article.awayTeam.name}</div>
                         </div>
                     </div>
 
                     {article.predictedPlay === 'LOCK' && (
                         <div className={style.paidButton}>
-                            <div className={style.content}>
-                                {/* {article.shortAnalysisContent} */}
-                            </div>
+                            <div className={style.content}>{article.shortAnalysisContent}</div>
                             <div className={style.buttonArea}>
                                 <div className={style.backDrop} />
                                 <div className={style.text}>
@@ -285,7 +271,7 @@ function ArticleContent({ params, article }: ArticleContentProps) {
             <NormalDialog
                 cancelText="取消"
                 confirmText="確認支付"
-                content={<Content />}
+                content={<Content article={article} />}
                 onClose={() => {
                     setOpenPaid(false);
                 }}

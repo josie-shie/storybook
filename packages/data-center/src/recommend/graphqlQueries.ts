@@ -166,6 +166,7 @@ export const GET_POST_DETAIL_QUERY = `
             predictedPlay
             analysisTitle
             analysisContent
+            shortAnalysisContent
             price
             predictionResult
             matchTime
@@ -270,7 +271,7 @@ export const GET_MENTOR_LIST_QUERY = `
 `;
 
 export const GET_POST_LIST_QUERY = `
-    query getPostList($input: MentorInput){
+    query getPostList($input: PostListInput!){
         getPostList(input: $input) {
             posts {
                 id

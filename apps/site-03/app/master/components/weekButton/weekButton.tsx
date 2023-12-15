@@ -1,29 +1,30 @@
 'use client';
 
+import { type PostFilter } from 'data-center';
 import style from './weekButton.module.scss';
 
 interface WeekButtonProps {
-    isActive: number[];
-    updateActive: (val: number) => void;
+    isActive: string[];
+    updateActive: (val: string) => void;
 }
 
 function WeekButton({ isActive = [], updateActive }: WeekButtonProps) {
     const weekList = [
         {
             label: '连红',
-            value: 3
+            value: 'winStreak' as PostFilter
         },
         {
             label: '季榜',
-            value: 0
+            value: 'quarterly' as PostFilter
         },
         {
             label: '月榜',
-            value: 1
+            value: 'monthly' as PostFilter
         },
         {
             label: '周榜',
-            value: 2
+            value: 'weekly' as PostFilter
         }
     ];
 
