@@ -6,18 +6,26 @@ import { IconFlame } from '@tabler/icons-react';
 import { useRouter } from 'next/navigation';
 import { timestampToMonthDay, timestampToString } from 'lib';
 import { getPostList } from 'data-center';
+import { type PostFilter, type RecommendPost } from 'data-center';
+import { InfiniteScroll } from 'ui';
+import CircularProgress from '@mui/material/CircularProgress';
 import WeekButton from '../components/weekButton/weekButton';
-import { useArticleStore } from './articleStore';
 import style from './articleList.module.scss';
 import Win from './img/win.png';
 import Avatar from '@/components/avatar/avatar';
 import Tag from '@/components/tag/tag';
 import UnlockButton from '@/components/unlockButton/unlockButton';
+import { useUserStore } from '@/app/userStore';
 
-function ArticleItem() {
+interface ArticleItemProps {
+    loadMoreList: () => void;
+    articleList: RecommendPost[];
+    currentPage: number;
+    totalPage: number;
+}
+
+function ArticleItem({ loadMoreList, articleList, currentPage, totalPage }: ArticleItemProps) {
     const router = useRouter();
-
-    const articleList = useArticleStore.use.articleList();
 
     const goInfo = () => {
         router.push('/recommend/predict/masterAvatar?status=analysis');
@@ -35,10 +43,10 @@ function ArticleItem() {
                             <div className={style.userInfo}>
                                 <div className={style.userName}>{item.mentorName}</div>
                                 <div className={style.tagsContainer}>
-                                    {item.tag.winHistoryMaxWinStreak > 0 && (
+                                    {item.tag.winMaxAccurateStreak > 0 && (
                                         <Tag
                                             icon={<IconFlame size={10} />}
-                                            text={`${item.tag.winHistoryMaxWinStreak}連紅`}
+                                            text={`${item.tag.winMaxAccurateStreak}連紅`}
                                         />
                                     )}
                                     {item.tag.quarterRanking > 0 && (
@@ -100,16 +108,26 @@ function ArticleItem() {
                     </div>
                 );
             })}
+            {totalPage <= currentPage && (
+                <InfiniteScroll onVisible={loadMoreList}>
+                    <div className={style.loadMore}>
+                        <CircularProgress size={24} />
+                    </div>
+                </InfiniteScroll>
+            )}
         </>
     );
 }
 
 function ArticleList() {
-    const [isActive, setIsActive] = useState<number[]>([]);
+    const [isActive, setIsActive] = useState<PostFilter[]>([]);
+    const [currentPage, setCurrentPage] = useState(0);
+    const [totalPage, setTotalPage] = useState(1);
+    const [articleList, setArticleList] = useState<RecommendPost[]>([]);
 
-    const setArticleList = useArticleStore.use.setArticleList();
+    const userInfo = useUserStore.use.userInfo();
 
-    const updateActive = (value: number) => {
+    const updateActive = (value: PostFilter) => {
         setIsActive(current => {
             const isExist = current.includes(value);
             if (isExist) {
@@ -122,22 +140,34 @@ function ArticleList() {
     const fetchData = async () => {
         try {
             const res = await getPostList({
-                memberId: 250,
-                postFilter: 'all'
+                memberId: userInfo.uid,
+                filterId: [],
+                postFilter: isActive.length === 0 ? ['all'] : isActive,
+                currentPage: 9,
+                pageSize: 30
             });
 
             if (!res.success) {
                 return new Error();
             }
-            setArticleList({ articleList: res.data.posts });
+            // setArticleList(res.data.posts);
+            setArticleList(prevData => [...prevData, ...res.data.posts]);
+            setTotalPage(res.data.totalPage);
         } catch (error) {
             return new Error();
         }
     };
 
+    const loadMoreList = () => {
+        if (currentPage <= totalPage) {
+            setCurrentPage(prevPage => prevPage + 1);
+            void fetchData();
+        }
+    };
+
     useEffect(() => {
         void fetchData();
-    }, []);
+    }, [isActive, userInfo.uid]);
 
     return (
         <>
@@ -145,7 +175,12 @@ function ArticleList() {
                 <WeekButton isActive={isActive} updateActive={updateActive} />
             </div>
             <div className={style.article}>
-                <ArticleItem />
+                <ArticleItem
+                    articleList={articleList}
+                    currentPage={currentPage}
+                    loadMoreList={loadMoreList}
+                    totalPage={totalPage}
+                />
             </div>
         </>
     );

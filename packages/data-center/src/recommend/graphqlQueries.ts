@@ -166,6 +166,7 @@ export const GET_POST_DETAIL_QUERY = `
             predictedPlay
             analysisTitle
             analysisContent
+            shortAnalysisContent
             price
             predictionResult
             matchTime
