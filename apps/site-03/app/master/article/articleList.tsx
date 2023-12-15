@@ -167,7 +167,9 @@ function ArticleList() {
     };
 
     useEffect(() => {
-        void fetchData();
+        if (userInfo.uid) {
+            void fetchData();
+        }
     }, [userInfo.uid, currentPage]);
 
     return (
