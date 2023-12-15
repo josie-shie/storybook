@@ -1,18 +1,43 @@
 'use client';
 
+import type { Dispatch, SetStateAction } from 'react';
 import { useEffect, useState } from 'react';
 import { IconFlame } from '@tabler/icons-react';
 import { motion } from 'framer-motion';
 import { type MentorFilter, type GetMentorListResponse } from 'data-center';
-import { getMentorList } from 'data-center';
+import { getMentorList, unFollow, updateFollow } from 'data-center';
 import WeekButton from '../components/weekButton/weekButton';
 import { useUserStore } from '../../userStore';
-import { creatMasterStore } from './expertListStore';
 import style from './expertList.module.scss';
 import Avatar from '@/components/avatar/avatar';
 import Tag from '@/components/tag/tag';
 
-function ExpertItem({ mentorList }: { mentorList: GetMentorListResponse }) {
+interface ExpertItemProps {
+    mentorList: GetMentorListResponse;
+    setMentorList: Dispatch<SetStateAction<GetMentorListResponse>>;
+}
+
+function ExpertItem({ mentorList, setMentorList }: ExpertItemProps) {
+    const userInfo = useUserStore.use.userInfo();
+
+    const onSubscript = async (isFollow: boolean, id: number) => {
+        try {
+            const res = isFollow
+                ? await unFollow({ followerId: userInfo.uid, followedId: id })
+                : await updateFollow({ followerId: userInfo.uid, followedId: id });
+            if (!res.success) {
+                return new Error();
+            }
+
+            setMentorList(prevData =>
+                prevData.map(item =>
+                    item.memberId === id ? { ...item, isFollowed: !item.isFollowed } : item
+                )
+            );
+        } catch (error) {
+            return new Error();
+        }
+    };
     return (
         <>
             {mentorList.map(item => {
@@ -61,6 +86,9 @@ function ExpertItem({ mentorList }: { mentorList: GetMentorListResponse }) {
                             {item.isFollowed ? (
                                 <motion.button
                                     className={style.followedButton}
+                                    onClick={() => {
+                                        void onSubscript(true, item.memberId);
+                                    }}
                                     type="button"
                                     whileTap={{ scale: 0.9 }}
                                 >
@@ -69,6 +97,9 @@ function ExpertItem({ mentorList }: { mentorList: GetMentorListResponse }) {
                             ) : (
                                 <motion.button
                                     className={style.followButton}
+                                    onClick={() => {
+                                        void onSubscript(false, item.memberId);
+                                    }}
                                     type="button"
                                     whileTap={{ scale: 0.9 }}
                                 >
@@ -121,37 +152,11 @@ function MasterList() {
         void fetchData();
     }, [isActive, useInfo.uid]);
 
-    creatMasterStore({
-        expertItem: [
-            {
-                id: 12,
-                avatar: '',
-                name: '老梁聊球',
-                hotStreak: 2,
-                ranking: 10,
-                followed: false,
-                unlockNumber: 1800,
-                fansNumber: 34516,
-                description: '资深足彩分析师，15年足彩经验，对各个赛事都有涉足。长期关注！'
-            },
-            {
-                id: 17,
-                avatar: '',
-                name: '柯侯配',
-                hotStreak: 6,
-                ranking: 7,
-                followed: true,
-                unlockNumber: 2200,
-                fansNumber: 54321,
-                description: '资深足彩分析师，15年足彩经验，对各个赛事都有涉足。长期关注！'
-            }
-        ]
-    });
     return (
         <div className={style.master}>
             <WeekButton isActive={isActive} updateActive={updateActive} />
             <div className={style.expertLayout}>
-                <ExpertItem mentorList={mentorList} />
+                <ExpertItem mentorList={mentorList} setMentorList={setMentorList} />
             </div>
         </div>
     );

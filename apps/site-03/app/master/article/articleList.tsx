@@ -108,7 +108,7 @@ function ArticleItem({ loadMoreList, articleList, currentPage, totalPage }: Arti
                     </div>
                 );
             })}
-            {totalPage <= currentPage && (
+            {currentPage <= totalPage && (
                 <InfiniteScroll onVisible={loadMoreList}>
                     <div className={style.loadMore}>
                         <CircularProgress size={24} />
@@ -135,6 +135,9 @@ function ArticleList() {
             }
             return [...current, value];
         });
+        setArticleList([]);
+        setCurrentPage(0);
+        void fetchData();
     };
 
     const fetchData = async () => {
@@ -143,14 +146,13 @@ function ArticleList() {
                 memberId: userInfo.uid,
                 filterId: [],
                 postFilter: isActive.length === 0 ? ['all'] : isActive,
-                currentPage: 9,
+                currentPage: 1,
                 pageSize: 30
             });
 
             if (!res.success) {
                 return new Error();
             }
-            // setArticleList(res.data.posts);
             setArticleList(prevData => [...prevData, ...res.data.posts]);
             setTotalPage(res.data.totalPage);
         } catch (error) {
@@ -159,7 +161,7 @@ function ArticleList() {
     };
 
     const loadMoreList = () => {
-        if (currentPage <= totalPage) {
+        if (currentPage < articleList.length / 30 && currentPage <= totalPage) {
             setCurrentPage(prevPage => prevPage + 1);
             void fetchData();
         }
@@ -167,7 +169,7 @@ function ArticleList() {
 
     useEffect(() => {
         void fetchData();
-    }, [isActive, userInfo.uid]);
+    }, [userInfo.uid]);
 
     return (
         <>
