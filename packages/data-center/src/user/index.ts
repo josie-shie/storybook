@@ -113,22 +113,21 @@ const MemberInfoSchema = z.object({
     qqNumber: z.string(),
     avatarPath: z.string(),
     balance: z.number(),
-    createdAt: z.number()
+    createdAt: z.number(),
+    email: z.string(),
+    description: z.string(),
+    fans: z.number(),
+    unlocked: z.number(),
+    tags: TagSchema
 });
 
 export type MemberInfoResponse = z.infer<typeof MemberInfoSchema>;
-
-const UpdateMemberInfoResponseSchema = z.object({
-    updateMemberInfo: MemberInfoSchema
-});
 
 const GetMemberInfoResponseSchema = z.object({
     getMemberInfo: MemberInfoSchema
 });
 
-type UpdateMemberInfoResult = z.infer<typeof UpdateMemberInfoResponseSchema>;
 type GetMemberInfoResult = z.infer<typeof GetMemberInfoResponseSchema>;
-export type UpdateMemberInfoResponse = z.infer<typeof MemberInfoSchema>;
 export type GetMemberInfoResponse = z.infer<typeof MemberInfoSchema>;
 
 export interface UpdateMemberInfoRequest {
@@ -136,6 +135,8 @@ export interface UpdateMemberInfoRequest {
     wechat: string;
     qqNumber: string;
     avatarPath: string;
+    email: string;
+    description: string;
 }
 
 /**
@@ -408,28 +409,20 @@ export const updatePassword = async ({
  * - params : {@link UpdateMemberInfoRequest}
  * - returns : {@link MemberInfoResponse}
  */
-export const updateMemberInfo = async ({
-    avatarPath,
-    birthday,
-    wechat,
-    qqNumber
-}: UpdateMemberInfoRequest): Promise<ReturnData<MemberInfoResponse>> => {
+export const updateMemberInfo = async (
+    input: UpdateMemberInfoRequest
+): Promise<ReturnData<null>> => {
     try {
-        const { data }: { data: UpdateMemberInfoResult } = await fetcher({
+        const res: { data: null } = await fetcher({
             data: {
                 query: UPDATE_MEMBER_INFO_MUTATION,
                 variables: {
-                    input: {
-                        avatar_path: avatarPath,
-                        birthday,
-                        wechat,
-                        qq_number: qqNumber
-                    }
+                    input
                 }
             }
         });
-        UpdateMemberInfoResponseSchema.parse(data);
-        return { success: true, data: data.updateMemberInfo };
+
+        return { success: true, data: res.data };
     } catch (error) {
         return handleApiError(error);
     }
