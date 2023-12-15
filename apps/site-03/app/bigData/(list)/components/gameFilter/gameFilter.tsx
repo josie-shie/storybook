@@ -9,6 +9,7 @@ interface OptionType {
 }
 
 interface PropsType {
+    preValueText?: string;
     value: OptionType['value'] | null;
     options: OptionType[];
     title?: string;
@@ -21,6 +22,7 @@ interface PropsType {
 }
 
 function GameFilter({
+    preValueText,
     value: initialValue,
     options,
     title,
@@ -59,7 +61,9 @@ function GameFilter({
                     }}
                     type="button"
                 >
-                    {selectedValue !== null && currentOption ? currentOption.label : placeholder}
+                    {selectedValue !== null && currentOption
+                        ? `${preValueText || ''} ${currentOption.label}`
+                        : placeholder}
                 </button>
                 <span className={style.datepicker}>{children}</span>
             </div>
