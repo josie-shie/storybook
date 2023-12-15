@@ -62,7 +62,7 @@ export const GET_FOOTBALL_STATS_MATCHES_QUERY = `
 
 export const GET_FOOTBALL_STATS_RESULT_QUERY = `
     query getFootballStatsResult($input: FootballStatsResultInput!) {
-        getFootballStatsResult(input: ($input) {
+        getFootballStatsResult(input: $input) {
             memberId
             ticketId
             handicapSide
