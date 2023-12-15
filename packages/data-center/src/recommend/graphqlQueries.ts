@@ -216,7 +216,7 @@ export const GET_POST_DETAIL_QUERY = `
 `;
 
 export const GET_MENTOR_LIST_QUERY = `
-    query getMentorList($input: PostDetailInput!) {
+    query getMentorList($input: MentorInput) {
         getMentorList(input: $input) {
             list {
                 memberId
@@ -270,7 +270,7 @@ export const GET_MENTOR_LIST_QUERY = `
 `;
 
 export const GET_POST_LIST_QUERY = `
-    query getPostList($input: PostListInput!){
+    query getPostList($input: MentorInput){
         getPostList(input: $input) {
             posts {
                 id

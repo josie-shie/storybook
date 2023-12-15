@@ -50,7 +50,6 @@ function BettingColumn({ play, detail, homeType, awayType }: BettingProps) {
         setOpenGuessDialog(false);
     };
     const handleConfirmGuess = async () => {
-        //  API addGuess
         setOpenGuessDialog(false);
         if (homeType === '主') {
             const betting = direction === 'left' ? 'home' : 'away';
@@ -59,6 +58,7 @@ function BettingColumn({ play, detail, homeType, awayType }: BettingProps) {
                 matchId: Number(matchId),
                 predictedPlay: betting.toUpperCase() as 'HOME' | 'AWAY'
             });
+            // set res 回傳剩餘競猜次數
             setGuessDetail({ ...newDetail });
             setGuessesLeft(guessesLeft - 1);
         } else {
@@ -68,6 +68,7 @@ function BettingColumn({ play, detail, homeType, awayType }: BettingProps) {
                 matchId: Number(matchId),
                 predictedPlay: betting.toUpperCase() as 'OVER' | 'UNDER'
             });
+            // set res 回傳剩餘競猜次數
             setGuessDetail({ ...newDetail });
             setGuessesLeft(guessesLeft - 1);
         }
@@ -168,12 +169,12 @@ function VsBox() {
         };
         return statusMapping[status] || 'none';
     };
-    const timestampToDateString = timestamp => {
-        const date = new Date(timestamp * 1000); // 将时间戳转换为毫秒
-        const month = String(date.getMonth() + 1).padStart(2, '0'); // 获取月份并补零
-        const day = String(date.getDate()).padStart(2, '0'); // 获取日期并补零
-        const hours = String(date.getHours()).padStart(2, '0'); // 获取小时并补零
-        const minutes = String(date.getMinutes()).padStart(2, '0'); // 获取分钟并补零
+    const timestampToDateString = (timestamp: number) => {
+        const date = new Date(timestamp * 1000);
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
 
         return `${month}-${day} ${hours}:${minutes}`;
     };

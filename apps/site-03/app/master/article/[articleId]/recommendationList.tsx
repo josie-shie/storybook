@@ -5,11 +5,22 @@ import { timestampToString, timestampToMonthDay } from 'lib';
 import Link from 'next/link';
 import style from './recommendationList.module.scss';
 import Star from './img/star.png';
-import { useArticleStore } from './articleStore';
 import type { HandicapType } from '@/types/predict';
 
-function RecommendationItem() {
-    const recommendationList = useArticleStore.use.recommendationList();
+interface RecommendationItem {
+    id: number;
+    createdAt: number; //發表時間
+    leagueName: string; //聯賽名稱
+    matchTime: number; //比賽時間
+    homeTeamName: string; //主隊名稱
+    awayTeamName: string; //客隊名稱
+    price: number; //解鎖費用
+    predictPlayType: HandicapType; //玩法
+    unlockNumber: number; //已解鎖人數,
+    isLock: boolean; //是否解鎖
+}
+
+function RecommendationItem({ recommendationList }: { recommendationList: RecommendationItem[] }) {
     const formatHandicapName = (type: HandicapType): string => {
         const list = {
             overUnder: '大小',
