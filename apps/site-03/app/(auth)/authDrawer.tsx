@@ -23,6 +23,7 @@ function AuthDrawer() {
     const removeAuthQuery = useAuthStore.use.removeAuthQuery();
     const removeInvitCode = useAuthStore.use.removeInvitCode();
     const setUserInfo = useUserStore.use.setUserInfo();
+    const setTags = useUserStore.use.setTags();
     const setIsLogin = useUserStore.use.setIsLogin();
     const setToken = useUserStore.use.setToken();
     const isCookieExist = Cookies.get('access');
@@ -70,6 +71,7 @@ function AuthDrawer() {
         if (isCookieExist) {
             if (res.success) {
                 setUserInfo(res.data);
+                setTags(res.data.tags);
                 setIsLogin(true);
                 setToken(isCookieExist);
                 removeAuthQuery();
