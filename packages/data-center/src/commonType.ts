@@ -60,4 +60,4 @@ export const TagSchema = z.object({
     winHistoryMaxWinStreak: z.number()
 });
 
-export type Tag = z.infer<typeof TagSchema>;
+export type TagType = z.infer<typeof TagSchema>;
