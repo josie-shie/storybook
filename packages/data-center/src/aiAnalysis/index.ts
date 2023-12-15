@@ -152,7 +152,7 @@ export type GetFootballStatsReportResponse = z.infer<typeof GetFootballStatsRepo
 
 export interface GetFootballStatsReportRequest {
     memberId: number;
-    ticketId: number;
+    ticketId: string;
 }
 
 const GetFootballStatsMatchSchema = z.object({

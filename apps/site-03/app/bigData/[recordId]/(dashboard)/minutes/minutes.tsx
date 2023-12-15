@@ -109,15 +109,16 @@ function Minutes() {
                 </div>
             </div>
             <div className={style.contaniner}>
-                {headers.map((time, index) => (
-                    <TimeRangeTable
-                        key={time}
-                        label={time}
-                        lower={analysisRecord.goalsIn15Mins[index].goalsUnder}
-                        openMatchListDrawer={openMatchListDrawer}
-                        upper={analysisRecord.goalsIn15Mins[index].goalsOver}
-                    />
-                ))}
+                {analysisRecord.hasOwnProperty.call(analysisRecord.goalsIn15Mins) &&
+                    analysisRecord.goalsIn15Mins.map((item, index) => (
+                        <TimeRangeTable
+                            key={headers[index]}
+                            label={headers[index]}
+                            lower={item.goalsUnder}
+                            openMatchListDrawer={openMatchListDrawer}
+                            upper={item.goalsOver}
+                        />
+                    ))}
             </div>
         </>
     );
