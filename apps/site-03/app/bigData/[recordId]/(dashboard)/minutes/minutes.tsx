@@ -99,7 +99,10 @@ function Minutes() {
     return (
         <>
             <div className={style.minutes}>
-                <FifteenMinutesChart headers={headers} minsGoalList={analysisRecord.minutesGoal} />
+                <FifteenMinutesChart
+                    headers={headers}
+                    minsGoalList={analysisRecord.goalsIn15Mins}
+                />
                 <div className={style.dot}>
                     <span className={style.big}>大</span>
                     <span className={style.small}>小</span>
@@ -110,9 +113,9 @@ function Minutes() {
                     <TimeRangeTable
                         key={time}
                         label={time}
-                        lower={analysisRecord.minutesGoal[index].goalLower}
+                        lower={analysisRecord.goalsIn15Mins[index].goalsUnder}
                         openMatchListDrawer={openMatchListDrawer}
-                        upper={analysisRecord.minutesGoal[index].goalUpper}
+                        upper={analysisRecord.goalsIn15Mins[index].goalsOver}
                     />
                 ))}
             </div>

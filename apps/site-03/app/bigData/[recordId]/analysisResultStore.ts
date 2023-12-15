@@ -1,11 +1,11 @@
 import 'dayjs/locale/zh-cn';
-import { initStore, timestampToString } from 'lib';
+import { initStore } from 'lib';
 import type { StoreWithSelectors } from 'lib';
 import { getISOWeek, parseISO } from 'date-fns';
 import type {
     GetAiAnalysisContestListResponse,
-    GetFootballStatsRecord,
-    GetAiAnalysisReportResponse
+    GetAiAnalysisReportResponse,
+    DailyMatchType
 } from 'data-center';
 
 export interface Statistics {
@@ -51,7 +51,6 @@ function groupSameWeek(dayListData: Record<string, Statistics>) {
 
 interface InitState {
     analysisResultData: GetAiAnalysisReportResponse;
-    recordData: GetFootballStatsRecord | undefined;
 }
 
 interface AnalysisResultState extends InitState {
@@ -63,7 +62,6 @@ interface AnalysisResultState extends InitState {
     setSelectedResult: (selectedResult: { type: string; odds: string }) => void;
     handicapEchart: HandicapEchartType;
     setAnalysisResultData: (analysisResultData: GetAiAnalysisReportResponse) => void;
-    setRecordData: (recordData: GetFootballStatsRecord | undefined) => void;
     setHandicapEchart: (analysisResultData: GetAiAnalysisReportResponse) => void;
 }
 
@@ -73,15 +71,6 @@ const initialState = (
     set: (updater: (state: AnalysisResultState) => Partial<AnalysisResultState>) => void
 ) => ({
     analysisResultData: {} as GetAiAnalysisReportResponse,
-    recordData: {} as GetFootballStatsRecord,
-    setRecordData: (recordData: GetFootballStatsRecord | undefined) => {
-        set(state => {
-            return {
-                ...state,
-                recordData
-            };
-        });
-    },
     contestList: [],
     setContestList: (contestList: GetAiAnalysisContestListResponse) => {
         set(state => {
@@ -119,63 +108,6 @@ const initialState = (
     },
     setHandicapEchart: (analysisResultData: GetAiAnalysisReportResponse) => {
         set(state => {
-            const fullHanicapUpperDates = analysisResultData.fullHandicapUpperDaily.map(timestamp =>
-                timestampToString(timestamp, 'YYYY-MM-DD')
-            );
-            const fullHanicapLowerDates = analysisResultData.fullHandicapLowerDaily.map(timestamp =>
-                timestampToString(timestamp, 'YYYY-MM-DD')
-            );
-            const fullHanicapDrawDates = analysisResultData.fullHandicapDrawDaily.map(timestamp =>
-                timestampToString(timestamp, 'YYYY-MM-DD')
-            );
-            const halfHanicapUpperDates = analysisResultData.halfHandicapUpperDaily.map(timestamp =>
-                timestampToString(timestamp, 'YYYY-MM-DD')
-            );
-            const halfHanicapLowerDates = analysisResultData.halfHandicapLowerDaily.map(timestamp =>
-                timestampToString(timestamp, 'YYYY-MM-DD')
-            );
-            const halfHanicapDrawDates = analysisResultData.halfHandicapDrawDaily.map(timestamp =>
-                timestampToString(timestamp, 'YYYY-MM-DD')
-            );
-
-            const fullOverUnderUpperDates = analysisResultData.fullOverUnderUpperDaily.map(
-                timestamp => timestampToString(timestamp, 'YYYY-MM-DD')
-            );
-            const fullOverUnderLowerDates = analysisResultData.fullOverUnderLowerDaily.map(
-                timestamp => timestampToString(timestamp, 'YYYY-MM-DD')
-            );
-            const fullOverUnderDrawDates = analysisResultData.fullOverUnderDrawDaily.map(
-                timestamp => timestampToString(timestamp, 'YYYY-MM-DD')
-            );
-            const halfOverUnderUpperDates = analysisResultData.halfOverUnderUpperDaily.map(
-                timestamp => timestampToString(timestamp, 'YYYY-MM-DD')
-            );
-            const halfOverUnderLowerDates = analysisResultData.halfOverUnderLowerDaily.map(
-                timestamp => timestampToString(timestamp, 'YYYY-MM-DD')
-            );
-            const halfOverUnderDrawDates = analysisResultData.halfOverUnderDrawDaily.map(
-                timestamp => timestampToString(timestamp, 'YYYY-MM-DD')
-            );
-
-            const fullMoneyLineUpperDates = analysisResultData.fullMoneyLineUpperDaily.map(
-                timestamp => timestampToString(timestamp, 'YYYY-MM-DD')
-            );
-            const fullMoneyLineLowerDates = analysisResultData.fullMoneyLineLowerDaily.map(
-                timestamp => timestampToString(timestamp, 'YYYY-MM-DD')
-            );
-            const fullMoneyLineDrawDates = analysisResultData.fullMoneyLineDrawDaily.map(
-                timestamp => timestampToString(timestamp, 'YYYY-MM-DD')
-            );
-            const halfMoneyLineUpperDates = analysisResultData.halfMoneyLineUpperDaily.map(
-                timestamp => timestampToString(timestamp, 'YYYY-MM-DD')
-            );
-            const halfMoneyLineLowerDates = analysisResultData.halfMoneyLineLowerDaily.map(
-                timestamp => timestampToString(timestamp, 'YYYY-MM-DD')
-            );
-            const halfMoneyLineDrawDates = analysisResultData.halfMoneyLineDrawDaily.map(
-                timestamp => timestampToString(timestamp, 'YYYY-MM-DD')
-            );
-
             const fullDayHandicap = {} as Record<string, Statistics>;
             const fullDayOverUnder = {} as Record<string, Statistics>;
             const fullDayMoneyLine = {} as Record<string, Statistics>;
@@ -183,161 +115,161 @@ const initialState = (
             const halfDayOverUnder = {} as Record<string, Statistics>;
             const halfDayMoneyLine = {} as Record<string, Statistics>;
 
-            fullHanicapUpperDates.forEach((item: string) => {
+            analysisResultData.fullHandicapUpperDaily.forEach((item: DailyMatchType) => {
                 if (Object.prototype.hasOwnProperty.call(fullDayHandicap, item)) {
-                    fullDayHandicap[item].upper += 1;
+                    fullDayHandicap[item.date].upper = item.matches;
                 } else {
-                    fullDayHandicap[item] = { upper: 1, lower: 0, draw: 0 };
+                    fullDayHandicap[item.date] = { upper: item.matches, lower: 0, draw: 0 };
                 }
             });
 
-            fullHanicapLowerDates.forEach((item: string) => {
+            analysisResultData.fullHandicapLowerDaily.forEach((item: DailyMatchType) => {
                 if (Object.prototype.hasOwnProperty.call(fullDayHandicap, item)) {
-                    fullDayHandicap[item].lower += 1;
+                    fullDayHandicap[item.date].lower = item.matches;
                 } else {
-                    fullDayHandicap[item] = { upper: 0, lower: 1, draw: 0 };
+                    fullDayHandicap[item.date] = { upper: 0, lower: item.matches, draw: 0 };
                 }
             });
 
-            fullHanicapDrawDates.forEach((item: string) => {
+            analysisResultData.fullHandicapDrawDaily.forEach((item: DailyMatchType) => {
                 if (Object.prototype.hasOwnProperty.call(fullDayHandicap, item)) {
-                    fullDayHandicap[item].draw += 1;
+                    fullDayHandicap[item.date].draw = item.matches;
                 } else {
-                    fullDayHandicap[item] = { upper: 0, lower: 0, draw: 1 };
+                    fullDayHandicap[item.date] = { upper: 0, lower: 0, draw: item.matches };
                 }
             });
 
-            halfHanicapUpperDates.forEach((item: string) => {
+            analysisResultData.halfHandicapUpperDaily.forEach((item: DailyMatchType) => {
                 if (Object.prototype.hasOwnProperty.call(halfDayHandicap, item)) {
-                    halfDayHandicap[item].upper += 1;
+                    halfDayHandicap[item.date].upper = item.matches;
                 } else {
-                    halfDayHandicap[item] = { upper: 1, lower: 0, draw: 0 };
+                    halfDayHandicap[item.date] = { upper: item.matches, lower: 0, draw: 0 };
                 }
             });
 
             // 处理 Half Handicap Lower
-            halfHanicapLowerDates.forEach((item: string) => {
+            analysisResultData.halfHandicapLowerDaily.forEach((item: DailyMatchType) => {
                 if (Object.prototype.hasOwnProperty.call(halfDayHandicap, item)) {
-                    halfDayHandicap[item].lower += 1;
+                    halfDayHandicap[item.date].lower = item.matches;
                 } else {
-                    halfDayHandicap[item] = { upper: 0, lower: 1, draw: 0 };
+                    halfDayHandicap[item.date] = { upper: 0, lower: item.matches, draw: 0 };
                 }
             });
 
             // 处理 Half Handicap Draw
-            halfHanicapDrawDates.forEach((item: string) => {
+            analysisResultData.halfHandicapDrawDaily.forEach((item: DailyMatchType) => {
                 if (Object.prototype.hasOwnProperty.call(halfDayHandicap, item)) {
-                    halfDayHandicap[item].draw += 1;
+                    halfDayHandicap[item.date].draw = item.matches;
                 } else {
-                    halfDayHandicap[item] = { upper: 0, lower: 0, draw: 1 };
+                    halfDayHandicap[item.date] = { upper: 0, lower: 0, draw: item.matches };
                 }
             });
 
             // 遍历并更新 fullOverUnderUpperDates
-            fullOverUnderUpperDates.forEach((item: string) => {
+            analysisResultData.fullOverUnderOverDaily.forEach((item: DailyMatchType) => {
                 if (Object.prototype.hasOwnProperty.call(fullDayOverUnder, item)) {
-                    fullDayOverUnder[item].upper += 1;
+                    fullDayOverUnder[item.date].upper = item.matches;
                 } else {
-                    fullDayOverUnder[item] = { upper: 1, lower: 0, draw: 0 };
+                    fullDayOverUnder[item.date] = { upper: item.matches, lower: 0, draw: 0 };
                 }
             });
 
             // 遍历并更新 fullOverUnderLowerDates
-            fullOverUnderLowerDates.forEach((item: string) => {
+            analysisResultData.fullOverUnderUnderDaily.forEach((item: DailyMatchType) => {
                 if (Object.prototype.hasOwnProperty.call(fullDayOverUnder, item)) {
-                    fullDayOverUnder[item].lower += 1;
+                    fullDayOverUnder[item.date].lower = item.matches;
                 } else {
-                    fullDayOverUnder[item] = { upper: 0, lower: 1, draw: 0 };
+                    fullDayOverUnder[item.date] = { upper: 0, lower: item.matches, draw: 0 };
                 }
             });
 
             // 遍历并更新 fullOverUnderDrawDates
-            fullOverUnderDrawDates.forEach((item: string) => {
+            analysisResultData.fullOverUnderDrawDaily.forEach((item: DailyMatchType) => {
                 if (Object.prototype.hasOwnProperty.call(fullDayOverUnder, item)) {
-                    fullDayOverUnder[item].draw += 1;
+                    fullDayOverUnder[item.date].draw = item.matches;
                 } else {
-                    fullDayOverUnder[item] = { upper: 0, lower: 0, draw: 1 };
+                    fullDayOverUnder[item.date] = { upper: 0, lower: 0, draw: item.matches };
                 }
             });
 
             // 处理 Half OverUnder Upper
-            halfOverUnderUpperDates.forEach((item: string) => {
+            analysisResultData.halfOverUnderOverDaily.forEach((item: DailyMatchType) => {
                 if (Object.prototype.hasOwnProperty.call(halfDayOverUnder, item)) {
-                    halfDayOverUnder[item].upper += 1;
+                    halfDayOverUnder[item.date].upper = item.matches;
                 } else {
-                    halfDayOverUnder[item] = { upper: 1, lower: 0, draw: 0 };
+                    halfDayOverUnder[item.date] = { upper: item.matches, lower: 0, draw: 0 };
                 }
             });
 
             // 处理 Half OverUnder Lower
-            halfOverUnderLowerDates.forEach((item: string) => {
+            analysisResultData.halfOverUnderUnderDaily.forEach((item: DailyMatchType) => {
                 if (Object.prototype.hasOwnProperty.call(halfDayOverUnder, item)) {
-                    halfDayOverUnder[item].lower += 1;
+                    halfDayOverUnder[item.date].lower = item.matches;
                 } else {
-                    halfDayOverUnder[item] = { upper: 0, lower: 1, draw: 0 };
+                    halfDayOverUnder[item.date] = { upper: 0, lower: item.matches, draw: 0 };
                 }
             });
 
             // 处理 Half OverUnder Draw
-            halfOverUnderDrawDates.forEach((item: string) => {
+            analysisResultData.halfOverUnderDrawDaily.forEach((item: DailyMatchType) => {
                 if (Object.prototype.hasOwnProperty.call(halfDayOverUnder, item)) {
-                    halfDayOverUnder[item].draw += 1;
+                    halfDayOverUnder[item.date].draw = item.matches;
                 } else {
-                    halfDayOverUnder[item] = { upper: 0, lower: 0, draw: 1 };
+                    halfDayOverUnder[item.date] = { upper: 0, lower: 0, draw: item.matches };
                 }
             });
 
             // 处理 Full MoneyLine Upper
-            fullMoneyLineUpperDates.forEach((item: string) => {
+            analysisResultData.fullTimeHomeWinDaily.forEach((item: DailyMatchType) => {
                 if (Object.prototype.hasOwnProperty.call(fullDayMoneyLine, item)) {
-                    fullDayMoneyLine[item].upper += 1;
+                    fullDayMoneyLine[item.date].upper = item.matches;
                 } else {
-                    fullDayMoneyLine[item] = { upper: 1, lower: 0, draw: 0 };
+                    fullDayMoneyLine[item.date] = { upper: item.matches, lower: 0, draw: 0 };
                 }
             });
 
             // 处理 Full MoneyLine Lower
-            fullMoneyLineLowerDates.forEach((item: string) => {
+            analysisResultData.fullTimeAwayWinDaily.forEach((item: DailyMatchType) => {
                 if (Object.prototype.hasOwnProperty.call(fullDayMoneyLine, item)) {
-                    fullDayMoneyLine[item].lower += 1;
+                    fullDayMoneyLine[item.date].lower = item.matches;
                 } else {
-                    fullDayMoneyLine[item] = { upper: 0, lower: 1, draw: 0 };
+                    fullDayMoneyLine[item.date] = { upper: 0, lower: item.matches, draw: 0 };
                 }
             });
 
             // 处理 Full MoneyLine Draw
-            fullMoneyLineDrawDates.forEach((item: string) => {
+            analysisResultData.fullTimeDrawDaily.forEach((item: DailyMatchType) => {
                 if (Object.prototype.hasOwnProperty.call(fullDayMoneyLine, item)) {
-                    fullDayMoneyLine[item].draw += 1;
+                    fullDayMoneyLine[item.date].draw = item.matches;
                 } else {
-                    fullDayMoneyLine[item] = { upper: 0, lower: 0, draw: 1 };
+                    fullDayMoneyLine[item.date] = { upper: 0, lower: 0, draw: item.matches };
                 }
             });
 
             // 处理 Half MoneyLine Upper
-            halfMoneyLineUpperDates.forEach((item: string) => {
+            analysisResultData.halfTimeHomeWinDaily.forEach((item: DailyMatchType) => {
                 if (Object.prototype.hasOwnProperty.call(halfDayMoneyLine, item)) {
-                    halfDayMoneyLine[item].upper += 1;
+                    halfDayMoneyLine[item.date].upper = item.matches;
                 } else {
-                    halfDayMoneyLine[item] = { upper: 1, lower: 0, draw: 0 };
+                    halfDayMoneyLine[item.date] = { upper: item.matches, lower: 0, draw: 0 };
                 }
             });
 
             // 处理 Half MoneyLine Lower
-            halfMoneyLineLowerDates.forEach((item: string) => {
+            analysisResultData.halfTimeAwayWinDaily.forEach((item: DailyMatchType) => {
                 if (Object.prototype.hasOwnProperty.call(halfDayMoneyLine, item)) {
-                    halfDayMoneyLine[item].lower += 1;
+                    halfDayMoneyLine[item.date].lower = item.matches;
                 } else {
-                    halfDayMoneyLine[item] = { upper: 0, lower: 1, draw: 0 };
+                    halfDayMoneyLine[item.date] = { upper: 0, lower: item.matches, draw: 0 };
                 }
             });
 
             // 处理 Half MoneyLine Draw
-            halfMoneyLineDrawDates.forEach((item: string) => {
+            analysisResultData.halfTimeDrawDaily.forEach((item: DailyMatchType) => {
                 if (Object.prototype.hasOwnProperty.call(halfDayMoneyLine, item)) {
-                    halfDayMoneyLine[item].draw += 1;
+                    halfDayMoneyLine[item.date].draw = item.matches;
                 } else {
-                    halfDayMoneyLine[item] = { upper: 0, lower: 0, draw: 1 };
+                    halfDayMoneyLine[item.date] = { upper: 0, lower: 0, draw: item.matches };
                 }
             });
 

@@ -71,6 +71,9 @@ const DailyMatchSchema = z.object({
     matches: z.number()
 });
 
+export type DailyMatch = z.infer<typeof DailyMatchSchema>;
+export type DailyMatchType = DailyMatch;
+
 const CorrectScoreSchema = z.object({
     score: z.string(),
     matches: z.array(z.number())
