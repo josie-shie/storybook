@@ -143,7 +143,7 @@ function ArticleList() {
     const fetchData = async () => {
         try {
             const res = await getPostList({
-                memberId: userInfo.uid,
+                memberId: userInfo.uid ? userInfo.uid : 1,
                 filterId: [],
                 postFilter: isActive.length === 0 ? ['all'] : isActive,
                 currentPage,

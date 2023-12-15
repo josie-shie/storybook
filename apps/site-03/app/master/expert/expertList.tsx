@@ -119,7 +119,7 @@ function MasterList() {
     const [isActive, setIsActive] = useState<MentorFilter[]>([]);
     const [mentorList, setMentorList] = useState<GetMentorListResponse>([]);
 
-    const useInfo = useUserStore.use.userInfo();
+    const userInfo = useUserStore.use.userInfo();
 
     const updateActive = (value: MentorFilter) => {
         setIsActive(current => {
@@ -129,12 +129,13 @@ function MasterList() {
             }
             return [...current, value];
         });
+        void fetchData();
     };
 
     const fetchData = async () => {
         try {
             const res = await getMentorList({
-                memberId: useInfo.uid,
+                memberId: userInfo.uid ? userInfo.uid : 1,
                 filter: isActive.length > 0 ? isActive : undefined
             });
 
@@ -150,7 +151,7 @@ function MasterList() {
 
     useEffect(() => {
         void fetchData();
-    }, [isActive, useInfo.uid]);
+    }, [userInfo.uid]);
 
     return (
         <div className={style.master}>
