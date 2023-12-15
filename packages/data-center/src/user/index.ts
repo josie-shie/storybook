@@ -18,7 +18,8 @@ import {
     GET_UNLOCKED_QUERY,
     SUBSCRIBE_PLAN_MUTATION,
     GET_INVITATION_ACTIVITY_REWARD_INFO_QUERY,
-    GET_MEMBER_GUESS_VIEWING_RECORDS_QUERY
+    GET_MEMBER_GUESS_VIEWING_RECORDS_QUERY,
+    GET_MEMBER_SUBSCRIPTION_STATUS_QUERY
 } from './graphqlQueries';
 
 const RegisterResultSchema = z.object({
@@ -760,6 +761,53 @@ export const getMemberGuessViewingRecords = async ({
         GetMemberGuessViewingRecordsResultSchema.parse(data);
 
         return { success: true, data: data.getMemberGuessViewingRecords };
+    } catch (error) {
+        return handleApiError(error);
+    }
+};
+
+export interface GetMemberSubscriptionStatusRequest {
+    memberId: number;
+}
+
+const GetMemberSubscriptionStatusSchema = z.object({
+    planId: z.number(),
+    planName: z.string(),
+    planStartAt: z.number(),
+    planEndAt: z.number()
+});
+
+const GetMemberSubscriptionStatusResultSchema = z.object({
+    getMemberSubscriptionStatus: GetMemberSubscriptionStatusSchema
+});
+
+type GetMemberSubscriptionStatusResult = z.infer<typeof GetMemberSubscriptionStatusResultSchema>;
+export type GetMemberSubscriptionStatusResponse = z.infer<typeof GetMemberSubscriptionStatusSchema>;
+
+/**
+ * 取得會員訂閱狀態
+ * - params {@link GetMemberSubscriptionStatusRequest}
+ * - returns {@link GetMemberSubscriptionStatusResponse}
+ */
+export const getMemberSubscriptionStatus = async (
+    input: GetMemberSubscriptionStatusRequest
+): Promise<ReturnData<GetMemberSubscriptionStatusResponse>> => {
+    try {
+        const { data }: { data: GetMemberSubscriptionStatusResult } = await fetcher(
+            {
+                data: {
+                    query: GET_MEMBER_SUBSCRIPTION_STATUS_QUERY,
+                    variables: {
+                        input
+                    }
+                }
+            },
+            { cache: 'no-store' }
+        );
+
+        GetMemberSubscriptionStatusResultSchema.parse(data);
+
+        return { success: true, data: data.getMemberSubscriptionStatus };
     } catch (error) {
         return handleApiError(error);
     }
