@@ -4,11 +4,10 @@ import { handleApiError } from '../common';
 import type { ReturnData } from '../common';
 import {
     GET_ODDS_HINT_LIST_QUERY,
-    GET_FOOTBALL_STATS_RECORD_QUERY
-    // GET_AI_ANALYSIS_REPORT_QUERY,
-    // GET_AI_ANALYSIS_CONTEST_LIST_QUERY,
+    GET_FOOTBALL_STATS_RECORD_QUERY,
+    GET_FOOTBALL_STATS_RESULT_QUERY,
+    GET_FOOTBALL_STATS_MATCHES_QUERY
 } from './graphqlQueries';
-import { AiAnalysisReport, AiAnalysisContestList } from './fakeData';
 
 export interface GetFootballStatsRecordRequest {
     memberId: number;
@@ -71,6 +70,9 @@ const DailyMatchSchema = z.object({
     matches: z.number()
 });
 
+export type DailyMatch = z.infer<typeof DailyMatchSchema>;
+export type DailyMatchType = DailyMatch;
+
 const CorrectScoreSchema = z.object({
     score: z.string(),
     matches: z.array(z.number())
@@ -81,7 +83,10 @@ const GoalsIn15MinsSchema = z.object({
     goalsUnder: z.array(z.number())
 });
 
-const GetAiAnalysisReportSchema = z.object({
+export type GoalsIn15Mins = z.infer<typeof GoalsIn15MinsSchema>;
+export type GoalsIn15MinsType = GoalsIn15Mins;
+
+const GetFootballStatsReportSchema = z.object({
     memberId: z.number(),
     ticketId: z.string(),
     handicapSide: z.string(),
@@ -141,18 +146,19 @@ const GetAiAnalysisReportSchema = z.object({
     analyTime: z.number()
 });
 
-const GetAiAnalysisReportResultSchema = z.object({
-    getAiAnalysisReport: GetAiAnalysisReportSchema
+const GetFootballStatsReportResultSchema = z.object({
+    getFootballStatsResult: GetFootballStatsReportSchema
 });
-// eslint-disable-next-line -- TODO: fetch api
-type GetAiAnalysisReportResult = z.infer<typeof GetAiAnalysisReportResultSchema>;
-export type GetAiAnalysisReportResponse = z.infer<typeof GetAiAnalysisReportSchema>;
 
-export interface GetAiAnalysisReportRequest {
-    recordId: number;
+type GetFootballStatsReportResult = z.infer<typeof GetFootballStatsReportResultSchema>;
+export type GetFootballStatsReportResponse = z.infer<typeof GetFootballStatsReportSchema>;
+
+export interface GetFootballStatsReportRequest {
+    memberId: number;
+    ticketId: string;
 }
 
-const GetAiAnalysisContestSchema = z.object({
+const GetFootballStatsMatchSchema = z.object({
     startTime: z.number(),
     matchId: z.number(),
     countryCn: z.string(),
@@ -168,15 +174,17 @@ const GetAiAnalysisContestSchema = z.object({
     leagueLevel: z.number()
 });
 
-export type GetAiAnalysisContest = z.infer<typeof GetAiAnalysisContestSchema>;
-export type GetAiAnalysisContestListResponse = GetAiAnalysisContest[];
-const GetAiAnalysisContestListResultSchema = z.object({
-    getAiAnalysisContestList: z.array(GetAiAnalysisContestSchema)
+export type GetFootballStatsMatch = z.infer<typeof GetFootballStatsMatchSchema>;
+export type GetFootballStatsMatchesResponse = GetFootballStatsMatch[];
+const GetFootballStatsMatchesResultSchema = z.object({
+    getFootballStatsMatches: z.object({
+        matches: z.array(GetFootballStatsMatchSchema)
+    })
 });
-// eslint-disable-next-line -- TODO: fetch api
-type GetAiAnalysisContestListResult = z.infer<typeof GetAiAnalysisContestListResultSchema>;
 
-export interface GetAiAnalysisContestListRequest {
+type GetFootballStatsMatchesResult = z.infer<typeof GetFootballStatsMatchesResultSchema>;
+
+export interface GetFootballStatsMatchesRequest {
     matchIds: number[];
 }
 
@@ -252,34 +260,30 @@ export const getBigdataHint = async ({
 
 /**
  * 取得分析結果
- * - params : {@link GetAiAnalysisReportRequest}
- * - returns : {@link GetAiAnalysisReportResponse}
+ * - params : {@link GetFootballStatsReportRequest}
+ * - returns : {@link GetFootballStatsReportResponse}
  */
-export const getAiAnalysisReport = async ({
-    // eslint-disable-next-line -- TODO: fetch api
-    recordId // eslint-disable-next-line -- TODO: fetch api
-}: GetAiAnalysisReportRequest): Promise<ReturnData<GetAiAnalysisReportResponse>> => {
+export const getFootballStatsResult = async (
+    input: GetFootballStatsReportRequest
+): Promise<ReturnData<GetFootballStatsReportResponse>> => {
     try {
-        // const { data }: { data: GetAiAnalysisReportResult } = await fetcher(
-        //     {
-        //         data: {
-        //             query: GET_AI_ANALYSIS_REPORT_QUERY,
-        //             variables: {
-        //                 input: {
-        //                     recordId
-        //                 }
-        //             }
-        //         }
-        //     },
-        //     { cache: 'no-store' }
-        // );
+        const { data }: { data: GetFootballStatsReportResult } = await fetcher(
+            {
+                data: {
+                    query: GET_FOOTBALL_STATS_RESULT_QUERY,
+                    variables: {
+                        input
+                    }
+                }
+            },
+            { cache: 'no-store' }
+        );
 
-        // GetAiAnalysisReportSchema.parse(data);
+        GetFootballStatsReportResultSchema.parse(data);
 
         return {
             success: true,
-            data: AiAnalysisReport
-            // data: data.getAiAnalysisReport
+            data: data.getFootballStatsResult
         };
     } catch (error) {
         return handleApiError(error);
@@ -288,35 +292,31 @@ export const getAiAnalysisReport = async ({
 
 /**
  * 取得分析賽事列表
- * - params : {@link GetAiAnalysisContestListRequest}
- * - returns : {@link GetAiAnalysisContestListResponse}
- * - {@link GetAiAnalysisContest}
+ * - params : {@link GetFootballStatsMatchesRequest}
+ * - returns : {@link GetFootballStatsMatchesResponse}
+ * - {@link GetFootballStatsMatch}
  */
-export const getAiAnalysisContestList = async ({
-    // eslint-disable-next-line -- TODO: fetch api
-    matchIds // eslint-disable-next-line -- TODO: fetch api
-}: GetAiAnalysisContestListRequest): Promise<ReturnData<GetAiAnalysisContestListResponse>> => {
+export const getFootballStatsMatches = async (
+    input: GetFootballStatsMatchesRequest
+): Promise<ReturnData<GetFootballStatsMatchesResponse>> => {
     try {
-        // const { data }: { data: GetAiAnalysisContestListResult } = await fetcher(
-        //     {
-        //         data: {
-        //             query: GET_AI_ANALYSIS_CONTEST_LIST_QUERY,
-        //             variables: {
-        //                 input: {
-        //                     matchIds
-        //                 }
-        //             }
-        //         }
-        //     },
-        //     { cache: 'no-store' }
-        // );
+        const { data }: { data: GetFootballStatsMatchesResult } = await fetcher(
+            {
+                data: {
+                    query: GET_FOOTBALL_STATS_MATCHES_QUERY,
+                    variables: {
+                        input
+                    }
+                }
+            },
+            { cache: 'no-store' }
+        );
 
-        // GetAiAnalysisContestListResultSchema.parse(data);
+        GetFootballStatsMatchesResultSchema.parse(data);
 
         return {
             success: true,
-            data: AiAnalysisContestList
-            // data: data.getAiAnalysisContestList.list
+            data: data.getFootballStatsMatches.matches
         };
     } catch (error) {
         return handleApiError(error);

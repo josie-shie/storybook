@@ -1,6 +1,7 @@
 'use client';
-import { useEffect } from 'react';
-import { getAiAnalysisContestList } from 'data-center';
+import { useEffect, useState } from 'react';
+import type { GoalsIn15MinsType } from 'data-center';
+import { getFootballStatsMatches } from 'data-center';
 import FifteenMinutesChart from '../../components/fifteenMinutesChart/fifteenMinutesChart';
 import { useAnalyticsResultStore } from '../../analysisResultStore';
 import { useMatchFilterStore } from '../../matchFilterStore';
@@ -62,9 +63,10 @@ function Minutes() {
     const setShowContestDrawer = useAnalyticsResultStore.use.setShowContestDrawer();
     const setSelectedResult = useAnalyticsResultStore.use.setSelectedResult();
     const setMatchList = useAnalyticsResultStore.use.setContestList();
+    const [list, setList] = useState<GoalsIn15MinsType[]>([]);
 
     const fetchMatchList = async (matchIdList: number[]) => {
-        const res = await getAiAnalysisContestList({ matchIds: matchIdList });
+        const res = await getFootballStatsMatches({ matchIds: matchIdList });
 
         if (!res.success) {
             const errorMessage = res.error ? res.error : '取得资料失败，请稍后再试';
@@ -96,23 +98,30 @@ function Minutes() {
         setFilterInit();
     }, [contestInfo, setFilterInit]);
 
+    useEffect(() => {
+        setList(analysisRecord.goalsIn15Mins);
+    }, [analysisRecord.goalsIn15Mins]);
+
     return (
         <>
             <div className={style.minutes}>
-                <FifteenMinutesChart headers={headers} minsGoalList={analysisRecord.minutesGoal} />
+                <FifteenMinutesChart
+                    headers={headers}
+                    minsGoalList={analysisRecord.goalsIn15Mins}
+                />
                 <div className={style.dot}>
                     <span className={style.big}>大</span>
                     <span className={style.small}>小</span>
                 </div>
             </div>
             <div className={style.contaniner}>
-                {headers.map((time, index) => (
+                {list.map((item, index) => (
                     <TimeRangeTable
-                        key={time}
-                        label={time}
-                        lower={analysisRecord.minutesGoal[index].goalLower}
+                        key={headers[index]}
+                        label={headers[index]}
+                        lower={item.goalsUnder}
                         openMatchListDrawer={openMatchListDrawer}
-                        upper={analysisRecord.minutesGoal[index].goalUpper}
+                        upper={item.goalsOver}
                     />
                 ))}
             </div>

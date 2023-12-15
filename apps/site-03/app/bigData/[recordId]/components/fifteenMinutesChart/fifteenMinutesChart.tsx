@@ -2,8 +2,8 @@ import ReactEcharts from 'echarts-for-react';
 import style from './fifteenMinutesChart.module.scss';
 
 interface GoalType {
-    goalUpper: number[];
-    goalLower: number[];
+    goalsOver: number[];
+    goalsUnder: number[];
 }
 
 const chartPosition = [
@@ -26,13 +26,13 @@ const titlePosition = [
 
 function FifteenMinutesChart({
     headers,
-    minsGoalList
+    minsGoalList = []
 }: {
     headers: string[];
     minsGoalList: GoalType[];
 }) {
-    const upperList = minsGoalList.map(item => item.goalUpper.length);
-    const lowerList = minsGoalList.map(item => item.goalLower.length);
+    const upperList = minsGoalList.map(item => item.goalsOver.length);
+    const lowerList = minsGoalList.map(item => item.goalsUnder.length);
     const seriesList = headers.map((header, index) => ({
         type: 'pie',
         radius: '30%',

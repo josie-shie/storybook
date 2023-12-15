@@ -104,6 +104,7 @@ function HandicapSelect({
                     }}
                     options={teamList}
                     placeholder="选择主队"
+                    preValueText="选择"
                     showCloseButton={false}
                     showDragBar
                     title="选择让方"
@@ -115,6 +116,7 @@ function HandicapSelect({
                     }}
                     options={handicapNumberList}
                     placeholder="选择让球"
+                    preValueText="让球数"
                     showCloseButton={false}
                     showDragBar
                     title="选择让方"

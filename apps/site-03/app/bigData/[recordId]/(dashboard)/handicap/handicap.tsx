@@ -3,7 +3,7 @@ import { Switch } from 'ui/stories/switch/switch';
 import { useEffect, useState } from 'react';
 import { timestampToString } from 'lib';
 import dayjs from 'dayjs';
-import { getAiAnalysisContestList } from 'data-center';
+import { getFootballStatsMatches } from 'data-center';
 import type { Statistics } from '../../analysisResultStore';
 import { useAnalyticsResultStore } from '../../analysisResultStore';
 import { useMatchFilterStore } from '../../matchFilterStore';
@@ -49,16 +49,10 @@ function Handicap() {
     const analysisRecord = useAnalyticsResultStore.use.analysisResultData();
     const handicapEchart = useAnalyticsResultStore.use.handicapEchart();
     const analysisData = useAnalyticsResultStore.use.analysisResultData();
-    const setHandicapEchart = useAnalyticsResultStore.use.setHandicapEchart();
     const setIsNotificationVisible = useNotificationStore.use.setIsVisible();
-    const recordData = useAnalyticsResultStore.use.recordData();
     const setShowContestDrawer = useAnalyticsResultStore.use.setShowContestDrawer();
     const setSelectedResult = useAnalyticsResultStore.use.setSelectedResult();
     const setMatchList = useAnalyticsResultStore.use.setContestList();
-
-    useEffect(() => {
-        setHandicapEchart(analysisData);
-    }, [analysisData, setHandicapEchart]);
 
     const calculateHeight = (data: Record<string, Statistics>, date: string) => {
         const total = data[date].upper + data[date].draw + data[date].lower;
@@ -70,7 +64,7 @@ function Handicap() {
     };
 
     const fetchMatchList = async (matchIdList: number[]) => {
-        const res = await getAiAnalysisContestList({ matchIds: matchIdList });
+        const res = await getFootballStatsMatches({ matchIds: matchIdList });
 
         if (!res.success) {
             const errorMessage = res.error ? res.error : '取得资料失败，请稍后再试';
@@ -128,12 +122,10 @@ function Handicap() {
                     </div>
                 </div>
                 <div className={style.eChat}>
-                    {recordData ? (
-                        <p className={style.dateRange}>
-                            {timestampToString(recordData.startTime, 'YYYY-MM-DD')} ~{' '}
-                            {timestampToString(recordData.endTime, 'YYYY-MM-DD')}
-                        </p>
-                    ) : null}
+                    <p className={style.dateRange}>
+                        {timestampToString(analysisData.startTime, 'YYYY-MM-DD')} ~{' '}
+                        {timestampToString(analysisData.endTime, 'YYYY-MM-DD')}
+                    </p>
 
                     <ul>
                         {Object.keys(
@@ -216,13 +208,13 @@ function Handicap() {
                     selectedType="半場讓球"
                 />
                 <TableCell
-                    cellValue={analysisRecord.halfOverUnderUpper}
+                    cellValue={analysisRecord.halfOverUnderOver}
                     label="上"
                     openMatchListDrawer={openMatchListDrawer}
                     selectedType="半場大小"
                 />{' '}
                 <TableCell
-                    cellValue={analysisRecord.halfMoneyLineUpper}
+                    cellValue={analysisRecord.halfTimeHomeWin}
                     label="上"
                     openMatchListDrawer={openMatchListDrawer}
                     selectedType="半場獨贏"
@@ -234,13 +226,13 @@ function Handicap() {
                     selectedType="半場讓球"
                 />
                 <TableCell
-                    cellValue={analysisRecord.halfOverUnderLower}
+                    cellValue={analysisRecord.halfOverUnderUnder}
                     label="下"
                     openMatchListDrawer={openMatchListDrawer}
                     selectedType="半場大小"
                 />
                 <TableCell
-                    cellValue={analysisRecord.halfMoneyLineLower}
+                    cellValue={analysisRecord.halfTimeAwayWin}
                     label="下"
                     openMatchListDrawer={openMatchListDrawer}
                     selectedType="半場獨贏"
@@ -258,7 +250,7 @@ function Handicap() {
                     selectedType="半場大小"
                 />
                 <TableCell
-                    cellValue={analysisRecord.halfMoneyLineDraw}
+                    cellValue={analysisRecord.halfTimeDraw}
                     label="走"
                     openMatchListDrawer={openMatchListDrawer}
                     selectedType="半場獨贏"
@@ -275,13 +267,13 @@ function Handicap() {
                     selectedType="全場讓球"
                 />
                 <TableCell
-                    cellValue={analysisRecord.fullOverUnderUpper}
+                    cellValue={analysisRecord.fullOverUnderOver}
                     label="上"
                     openMatchListDrawer={openMatchListDrawer}
                     selectedType="全場大小"
                 />
                 <TableCell
-                    cellValue={analysisRecord.fullMoneyLineUpper}
+                    cellValue={analysisRecord.fullTimeHomeWin}
                     label="上"
                     openMatchListDrawer={openMatchListDrawer}
                     selectedType="全場獨贏"
@@ -293,13 +285,13 @@ function Handicap() {
                     selectedType="全場讓球"
                 />
                 <TableCell
-                    cellValue={analysisRecord.fullOverUnderLower}
+                    cellValue={analysisRecord.fullOverUnderUnder}
                     label="下"
                     openMatchListDrawer={openMatchListDrawer}
                     selectedType="全場大小"
                 />
                 <TableCell
-                    cellValue={analysisRecord.fullMoneyLineLower}
+                    cellValue={analysisRecord.fullTimeAwayWin}
                     label="下"
                     openMatchListDrawer={openMatchListDrawer}
                     selectedType="全場獨贏"
@@ -317,7 +309,7 @@ function Handicap() {
                     selectedType="全場大小"
                 />
                 <TableCell
-                    cellValue={analysisRecord.fullMoneyLineDraw}
+                    cellValue={analysisRecord.fullTimeDraw}
                     label="走"
                     openMatchListDrawer={openMatchListDrawer}
                     selectedType="全場獨贏"

@@ -1,21 +1,20 @@
+'use client';
 import type { ReactNode } from 'react';
-import { getAiAnalysisReport } from 'data-center';
+import type { GetFootballStatsReportResponse } from 'data-center';
 import AnalysisResult from './analysisResult';
+import { createAnalysisResultStore } from './analysisResultStore';
+import { creatMatchFilterStore } from './matchFilterStore';
 
-async function DetailLayout({
-    children,
-    params
-}: {
-    children: ReactNode;
-    params: { recordId: number };
-}) {
-    const analysisData = await getAiAnalysisReport({ recordId: Number(params.recordId) });
+function DetailLayout({ children }: { children: ReactNode }) {
+    createAnalysisResultStore({
+        analysisResultData: {} as GetFootballStatsReportResponse
+    });
+    creatMatchFilterStore({
+        contestList: [],
+        contestInfo: {}
+    });
 
-    if (!analysisData.success) {
-        return <div />;
-    }
-
-    return <AnalysisResult analysisData={analysisData.data}>{children}</AnalysisResult>;
+    return <AnalysisResult>{children}</AnalysisResult>;
 }
 
 export default DetailLayout;

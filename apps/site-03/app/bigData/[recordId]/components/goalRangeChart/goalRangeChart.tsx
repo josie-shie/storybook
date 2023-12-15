@@ -8,7 +8,7 @@ interface ChartType {
     color: string;
 }
 
-function GoalRangeChart({ chartList }: { chartList: ChartType[] }) {
+function GoalRangeChart({ chartList = [] }: { chartList: ChartType[] }) {
     const seriesList = chartList.map(item => ({
         value: item.value.length,
         name: item.label,

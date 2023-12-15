@@ -1,18 +1,16 @@
 'use client';
 import { Tabs, Tab } from 'ui';
 import { useParams, usePathname, useRouter } from 'next/navigation';
-import { useEffect, type ReactNode } from 'react';
+import { type ReactNode, Suspense, useEffect } from 'react';
 import { timestampToString } from 'lib';
-import { getFootballStatsRecord } from 'data-center';
-import type { GetAiAnalysisReportResponse, GetFootballStatsRecord } from 'data-center';
+import { getFootballStatsResult } from 'data-center';
 import style from './dashboard.module.scss';
 import Handicap from './(dashboard)/handicap/handicap';
-import { createAnalysisResultStore, useAnalyticsResultStore } from './analysisResultStore';
-import { creatMatchFilterStore } from './matchFilterStore';
+import { useAnalyticsResultStore } from './analysisResultStore';
 import ContestDrawerList from './components/contestDrawerList/contestDrawerList';
 import HeaderTitleFilter from '@/components/header/headerTitleFilter';
-import { useUserStore } from '@/app/userStore';
-import { useNotificationStore } from '@/app/notificationStore';
+
+type HandicapSideType = 'home' | 'away';
 
 function ResultContent({ children }: { children: ReactNode }) {
     const route = usePathname().split('/');
@@ -22,25 +20,7 @@ function ResultContent({ children }: { children: ReactNode }) {
     const setShowContestDrawer = useAnalyticsResultStore.use.setShowContestDrawer();
     const selectedResult = useAnalyticsResultStore.use.selectedResult();
     const contestList = useAnalyticsResultStore.use.contestList();
-    const userInfo = useUserStore.use.userInfo();
-    const setIsNotificationVisible = useNotificationStore.use.setIsVisible();
-    const setRecordData = useAnalyticsResultStore.use.setRecordData();
-    const recordData = useAnalyticsResultStore.use.recordData();
-
-    const getRecordData = async () => {
-        const recordList = await getFootballStatsRecord({ memberId: userInfo.uid });
-
-        if (!recordList.success) {
-            const errorMessage = recordList.error ? recordList.error : '取得资料失败，请稍后再试';
-            setIsNotificationVisible(errorMessage, 'error');
-            return;
-        }
-
-        const record = recordList.data.find(item => item.ticketId.toString() === params.recordId);
-        if (record) {
-            setRecordData(record);
-        }
-    };
+    const analysisData = useAnalyticsResultStore.use.analysisResultData();
 
     const tabStyle = {
         gap: 4,
@@ -81,10 +61,6 @@ function ResultContent({ children }: { children: ReactNode }) {
         router.push('/bigData?status=analysis');
     };
 
-    useEffect(() => {
-        void getRecordData();
-    }, []);
-
     return (
         <>
             <HeaderTitleFilter backHandler={backHandler} title="分析结果" />
@@ -93,15 +69,18 @@ function ResultContent({ children }: { children: ReactNode }) {
                     <div className={style.row}>
                         <span className={style.title}>全場讓球</span>
                         <span className={style.name}>
-                            讓方/{(recordData && handicapTeam[recordData.handicapSide]) || '全部'}
+                            讓方/
+                            {handicapTeam[analysisData.handicapSide as HandicapSideType] || '全部'}
                             、盤口/
-                            {recordData?.handicapValues || '不挑選'}
+                            {analysisData.handicapValues ||
+                                analysisData.handicapValues === '0' ||
+                                '不挑選'}
                         </span>
                     </div>
                     <div className={style.row}>
                         <span className={style.title}>全場大小</span>
                         <span className={style.name}>
-                            {recordData?.overUnderValues || '不挑選'}
+                            {analysisData.overUnderValues || '不挑選'}
                         </span>
                     </div>
                 </div>
@@ -109,13 +88,8 @@ function ResultContent({ children }: { children: ReactNode }) {
                     <div className={style.row}>
                         <span className={style.title}>時間區間</span>
                         <span className={style.date}>
-                            {recordData
-                                ? timestampToString(recordData.startTime, 'YYYY-MM-DD')
-                                : null}{' '}
-                            ~{' '}
-                            {recordData
-                                ? timestampToString(recordData.endTime, 'YYYY-MM-DD')
-                                : null}
+                            {timestampToString(analysisData.startTime, 'YYYY-MM-DD')} ~{' '}
+                            {timestampToString(analysisData.endTime, 'YYYY-MM-DD')}
                         </span>
                     </div>
                 </div>
@@ -139,10 +113,12 @@ function ResultContent({ children }: { children: ReactNode }) {
                     {tabList.map(item => {
                         return (
                             <Tab key={item.label} label={item.label} to={item.to}>
-                                {item.params === route[route.length - 1] ? children : ''}
+                                <Suspense fallback={<div>Loading</div>}>
+                                    {item.params === route[route.length - 1] ? children : ''}
 
-                                {route[route.length - 1] === params.recordId.toString() &&
-                                    item.params === 'handicap' && <Handicap />}
+                                    {route[route.length - 1] === params.recordId.toString() &&
+                                        item.params === 'handicap' && <Handicap />}
+                                </Suspense>
                             </Tab>
                         );
                     })}
@@ -163,21 +139,28 @@ function ResultContent({ children }: { children: ReactNode }) {
     );
 }
 
-function AnalysisResult({
-    children,
-    analysisData
-}: {
-    children: ReactNode;
-    analysisData: GetAiAnalysisReportResponse;
-}) {
-    createAnalysisResultStore({
-        analysisResultData: analysisData,
-        recordData: {} as GetFootballStatsRecord
-    });
-    creatMatchFilterStore({
-        contestList: [],
-        contestInfo: {}
-    });
+function AnalysisResult({ children }: { children: ReactNode }) {
+    const params = useParams();
+    const setAnalysisResultData = useAnalyticsResultStore.use.setAnalysisResultData();
+    const setHandicapEchart = useAnalyticsResultStore.use.setHandicapEchart();
+
+    const fetchData = async () => {
+        const res = await getFootballStatsResult({
+            ticketId: params.recordId.toString(),
+            memberId: 243
+        });
+
+        if (!res.success) {
+            return <div />;
+        }
+
+        setAnalysisResultData(res.data);
+        setHandicapEchart(res.data);
+    };
+
+    useEffect(() => {
+        void fetchData();
+    }, []);
 
     return <ResultContent>{children}</ResultContent>;
 }
