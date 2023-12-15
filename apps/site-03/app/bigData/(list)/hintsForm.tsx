@@ -9,7 +9,7 @@ import { useHintsFormStore } from './hintsFormStore';
 import starIcon from './img/star.png';
 import HandicapDrawer from './components/handicapDrawer/handicapDrawer';
 import { useMatchFilterStore } from './matchFilterStore';
-import { useNotificationStore } from '@/app/notificationStore';
+import { useDiscSelectStore } from './discSelectStore';
 
 function HintsSelect({ hintsSelected }: { hintsSelected: string }) {
     const playList = useHintsFormStore.use.playList();
@@ -41,7 +41,8 @@ function HandicapAnalysisForm() {
     const setContestList = useMatchFilterStore.use.setContestList();
     const setContestInfo = useMatchFilterStore.use.setContestInfo();
     const setFilterInit = useMatchFilterStore.use.setFilterInit();
-    const setIsNotificationVisible = useNotificationStore.use.setIsVisible();
+    const setDialogContentType = useDiscSelectStore.use.setDialogContentType();
+    const setOpenNormalDialog = useDiscSelectStore.use.setOpenNormalDialog();
 
     const openHintsDrawer = async () => {
         if (!hintsSelected) {
@@ -54,8 +55,14 @@ function HandicapAnalysisForm() {
         const res = await getBigdataHint({ type: hintsSelected as OddsHintsType });
 
         if (!res.success) {
-            const errorMessage = res.error ? res.error : '取得盘路提示资料失败，请稍后再试';
-            setIsNotificationVisible(errorMessage, 'error');
+            setDialogContentType('system');
+            setOpenNormalDialog(true);
+            return;
+        }
+
+        if (!res.data.length) {
+            setDialogContentType('empty');
+            setOpenNormalDialog(true);
             return;
         }
 

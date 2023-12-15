@@ -13,7 +13,9 @@ import Loading from '@/components/loading/loading';
 
 function AnalysisLayout({ children }: { children: ReactNode }) {
     creatDiscSelectStore({
-        openNoramlDialog: false
+        openNoramlDialog: false,
+        dialogContentType: '',
+        dialogContent: null
     });
     creatMatchFilterStore({
         contestList: [],

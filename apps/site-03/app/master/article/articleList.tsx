@@ -123,7 +123,7 @@ function ArticleList() {
         try {
             const res = await getPostList({
                 memberId: 250,
-                postFilter: 'all'
+                postFilter: ['all']
             });
 
             if (!res.success) {

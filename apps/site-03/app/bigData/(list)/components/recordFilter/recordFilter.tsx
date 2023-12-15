@@ -4,6 +4,7 @@ import { mqttService } from 'lib';
 import type { AnalysisResponse } from 'lib';
 import SearchRecord from '../searchRecord/searchRecord';
 import { useHandicapAnalysisFormStore } from '../../handicapAnalysisFormStore';
+import { useDiscSelectStore } from '../../discSelectStore';
 import style from './recordFilter.module.scss';
 import BottomDrawer from '@/components/drawer/bottomDrawer';
 import { useNotificationStore } from '@/app/notificationStore';
@@ -24,6 +25,8 @@ function RecordFilter({
     const updateRecord = useHandicapAnalysisFormStore.use.updateRecord();
     const setIsNotificationVisible = useNotificationStore.use.setIsVisible();
     const userInfo = useUserStore.use.userInfo();
+    const setDialogContentType = useDiscSelectStore.use.setDialogContentType();
+    const setOpenNormalDialog = useDiscSelectStore.use.setOpenNormalDialog();
 
     const fetchRecordList = async () => {
         const res = await getFootballStatsRecord({ memberId: userInfo.uid });
@@ -54,7 +57,8 @@ function RecordFilter({
                     updateRecord(record.ticketId);
                 }
             } else if (message.mission === 'error') {
-                setIsNotificationVisible(message.message || '取得资料失败，请稍后再试', 'error');
+                setDialogContentType('system');
+                setOpenNormalDialog(true);
             }
         };
 
