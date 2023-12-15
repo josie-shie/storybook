@@ -121,7 +121,7 @@ function ArticleItem({ loadMoreList, articleList, currentPage, totalPage }: Arti
 
 function ArticleList() {
     const [isActive, setIsActive] = useState<PostFilter[]>([]);
-    const [currentPage, setCurrentPage] = useState(0);
+    const [currentPage, setCurrentPage] = useState(1);
     const [totalPage, setTotalPage] = useState(1);
     const [articleList, setArticleList] = useState<RecommendPost[]>([]);
 
@@ -136,7 +136,7 @@ function ArticleList() {
             return [...current, value];
         });
         setArticleList([]);
-        setCurrentPage(0);
+        setCurrentPage(1);
         void fetchData();
     };
 
@@ -146,7 +146,7 @@ function ArticleList() {
                 memberId: userInfo.uid,
                 filterId: [],
                 postFilter: isActive.length === 0 ? ['all'] : isActive,
-                currentPage: 1,
+                currentPage,
                 pageSize: 30
             });
 
@@ -161,15 +161,14 @@ function ArticleList() {
     };
 
     const loadMoreList = () => {
-        if (currentPage < articleList.length / 30 && currentPage <= totalPage) {
-            setCurrentPage(prevPage => prevPage + 1);
-            void fetchData();
+        if (currentPage <= Math.round(articleList.length / 30) && currentPage <= totalPage) {
+            setCurrentPage(prevData => prevData + 1);
         }
     };
 
     useEffect(() => {
         void fetchData();
-    }, [userInfo.uid]);
+    }, [userInfo.uid, currentPage]);
 
     return (
         <>
