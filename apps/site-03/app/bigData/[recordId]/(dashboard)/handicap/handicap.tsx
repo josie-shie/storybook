@@ -3,7 +3,7 @@ import { Switch } from 'ui/stories/switch/switch';
 import { useEffect, useState } from 'react';
 import { timestampToString } from 'lib';
 import dayjs from 'dayjs';
-import { getAiAnalysisContestList } from 'data-center';
+import { getFootballStatsMatches } from 'data-center';
 import type { Statistics } from '../../analysisResultStore';
 import { useAnalyticsResultStore } from '../../analysisResultStore';
 import { useMatchFilterStore } from '../../matchFilterStore';
@@ -69,7 +69,7 @@ function Handicap() {
     };
 
     const fetchMatchList = async (matchIdList: number[]) => {
-        const res = await getAiAnalysisContestList({ matchIds: matchIdList });
+        const res = await getFootballStatsMatches({ matchIds: matchIdList });
 
         if (!res.success) {
             const errorMessage = res.error ? res.error : '取得资料失败，请稍后再试';

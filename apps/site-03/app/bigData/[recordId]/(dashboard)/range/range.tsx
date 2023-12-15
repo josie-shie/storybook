@@ -1,6 +1,6 @@
 'use client';
 import { useEffect } from 'react';
-import { getAiAnalysisContestList } from 'data-center';
+import { getFootballStatsMatches } from 'data-center';
 import GoalRangeChart from '../../components/goalRangeChart/goalRangeChart';
 import { useAnalyticsResultStore } from '../../analysisResultStore';
 import { useMatchFilterStore } from '../../matchFilterStore';
@@ -67,7 +67,7 @@ function Range() {
     ];
 
     const fetchMatchList = async (matchIdList: number[]) => {
-        const res = await getAiAnalysisContestList({ matchIds: matchIdList });
+        const res = await getFootballStatsMatches({ matchIds: matchIdList });
 
         if (!res.success) {
             const errorMessage = res.error ? res.error : '取得资料失败，请稍后再试';

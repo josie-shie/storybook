@@ -3,7 +3,7 @@ import { Tabs, Tab } from 'ui';
 import { useParams, usePathname, useRouter } from 'next/navigation';
 import { type ReactNode, Suspense } from 'react';
 import { timestampToString } from 'lib';
-import type { GetAiAnalysisReportResponse } from 'data-center';
+import type { GetFootballStatsReportResponse } from 'data-center';
 import style from './dashboard.module.scss';
 import Handicap from './(dashboard)/handicap/handicap';
 import { createAnalysisResultStore, useAnalyticsResultStore } from './analysisResultStore';
@@ -145,7 +145,7 @@ function AnalysisResult({
     analysisData
 }: {
     children: ReactNode;
-    analysisData: GetAiAnalysisReportResponse;
+    analysisData: GetFootballStatsReportResponse;
 }) {
     createAnalysisResultStore({
         analysisResultData: analysisData

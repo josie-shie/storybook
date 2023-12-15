@@ -3,8 +3,8 @@ import { initStore } from 'lib';
 import type { StoreWithSelectors } from 'lib';
 import { getISOWeek, parseISO } from 'date-fns';
 import type {
-    GetAiAnalysisContestListResponse,
-    GetAiAnalysisReportResponse,
+    GetFootballStatsMatchesResponse,
+    GetFootballStatsReportResponse,
     DailyMatchType
 } from 'data-center';
 
@@ -50,19 +50,19 @@ function groupSameWeek(dayListData: Record<string, Statistics>) {
 }
 
 interface InitState {
-    analysisResultData: GetAiAnalysisReportResponse;
+    analysisResultData: GetFootballStatsReportResponse;
 }
 
 interface AnalysisResultState extends InitState {
     showContestDrawer: boolean;
     setShowContestDrawer: (showContestDrawer: boolean) => void;
-    contestList: GetAiAnalysisContestListResponse;
-    setContestList: (contestList: GetAiAnalysisContestListResponse) => void;
+    contestList: GetFootballStatsMatchesResponse;
+    setContestList: (contestList: GetFootballStatsMatchesResponse) => void;
     selectedResult: { type: string; odds: string };
     setSelectedResult: (selectedResult: { type: string; odds: string }) => void;
     handicapEchart: HandicapEchartType;
-    setAnalysisResultData: (analysisResultData: GetAiAnalysisReportResponse) => void;
-    setHandicapEchart: (analysisResultData: GetAiAnalysisReportResponse) => void;
+    setAnalysisResultData: (analysisResultData: GetFootballStatsReportResponse) => void;
+    setHandicapEchart: (analysisResultData: GetFootballStatsReportResponse) => void;
 }
 
 let useAnalyticsResultStore: StoreWithSelectors<AnalysisResultState>;
@@ -70,9 +70,9 @@ let useAnalyticsResultStore: StoreWithSelectors<AnalysisResultState>;
 const initialState = (
     set: (updater: (state: AnalysisResultState) => Partial<AnalysisResultState>) => void
 ) => ({
-    analysisResultData: {} as GetAiAnalysisReportResponse,
+    analysisResultData: {} as GetFootballStatsReportResponse,
     contestList: [],
-    setContestList: (contestList: GetAiAnalysisContestListResponse) => {
+    setContestList: (contestList: GetFootballStatsMatchesResponse) => {
         set(state => {
             return {
                 ...state,
@@ -106,7 +106,7 @@ const initialState = (
             }
         }
     },
-    setHandicapEchart: (analysisResultData: GetAiAnalysisReportResponse) => {
+    setHandicapEchart: (analysisResultData: GetFootballStatsReportResponse) => {
         set(state => {
             const fullDayHandicap = {} as Record<string, Statistics>;
             const fullDayOverUnder = {} as Record<string, Statistics>;
@@ -306,7 +306,7 @@ const initialState = (
             };
         });
     },
-    setAnalysisResultData: (analysisResultData: GetAiAnalysisReportResponse) => {
+    setAnalysisResultData: (analysisResultData: GetFootballStatsReportResponse) => {
         set(state => {
             return {
                 ...state,

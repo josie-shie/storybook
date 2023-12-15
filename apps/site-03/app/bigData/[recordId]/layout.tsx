@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { getAiAnalysisReport } from 'data-center';
+import { getFootballStatsResult } from 'data-center';
 import AnalysisResult from './analysisResult';
 
 async function DetailLayout({
@@ -9,7 +9,11 @@ async function DetailLayout({
     children: ReactNode;
     params: { recordId: number };
 }) {
-    const analysisData = await getAiAnalysisReport({ recordId: Number(params.recordId) });
+    const analysisData = await getFootballStatsResult({
+        ticketId: Number(params.recordId),
+        // TODO: get memberId
+        memberId: 123
+    });
 
     if (!analysisData.success) {
         return <div />;

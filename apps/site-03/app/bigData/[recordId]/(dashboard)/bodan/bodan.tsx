@@ -1,6 +1,6 @@
 'use client';
 import { useEffect } from 'react';
-import { getAiAnalysisContestList } from 'data-center';
+import { getFootballStatsMatches } from 'data-center';
 import { useAnalyticsResultStore } from '../../analysisResultStore';
 import { useMatchFilterStore } from '../../matchFilterStore';
 import style from './bodan.module.scss';
@@ -55,7 +55,7 @@ function Bodan() {
     ];
 
     const fetchMatchList = async (matchIdList: number[]) => {
-        const res = await getAiAnalysisContestList({ matchIds: matchIdList });
+        const res = await getFootballStatsMatches({ matchIds: matchIdList });
 
         if (!res.success) {
             const errorMessage = res.error ? res.error : '取得资料失败，请稍后再试';

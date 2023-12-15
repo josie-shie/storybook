@@ -3,7 +3,7 @@ import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import type { GetAiAnalysisContest } from 'data-center';
+import type { GetFootballStatsMatch } from 'data-center';
 import MatchFilterDrawer from '../matchFilterDrawer/matchFilterDrawer';
 import { useMatchFilterStore } from '../../matchFilterStore';
 import style from './contestDrawerList.module.scss';
@@ -21,7 +21,7 @@ function ContestDrawerList({
     isOpen: boolean;
     onOpen: () => void;
     onClose: () => void;
-    matchList: GetAiAnalysisContest[];
+    matchList: GetFootballStatsMatch[];
     selectedResult: { type: string; odds: string };
 }) {
     const pathname = usePathname();
