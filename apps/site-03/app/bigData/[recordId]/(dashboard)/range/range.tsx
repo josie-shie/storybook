@@ -1,11 +1,18 @@
 'use client';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { getFootballStatsMatches } from 'data-center';
 import GoalRangeChart from '../../components/goalRangeChart/goalRangeChart';
 import { useAnalyticsResultStore } from '../../analysisResultStore';
 import { useMatchFilterStore } from '../../matchFilterStore';
 import style from './range.module.scss';
 import { useNotificationStore } from '@/app/notificationStore';
+
+interface HeaderType {
+    class: string;
+    label: string;
+    value: number[];
+    color: string;
+}
 
 function TableCell({
     cellValue,
@@ -39,32 +46,7 @@ function Range() {
     const setMatchList = useAnalyticsResultStore.use.setContestList();
     const setIsNotificationVisible = useNotificationStore.use.setIsVisible();
     const analysisRecord = useAnalyticsResultStore.use.analysisResultData();
-    const headers = [
-        {
-            class: style.first,
-            label: '0-1',
-            value: analysisRecord.goalsInterval0To1,
-            color: '#6357F0'
-        },
-        {
-            class: style.second,
-            label: '2-3',
-            value: analysisRecord.goalsInterval2To3,
-            color: '#33AD1F'
-        },
-        {
-            class: style.three,
-            label: '4-6',
-            value: analysisRecord.goalsInterval4To6,
-            color: '#4489FF'
-        },
-        {
-            class: style.four,
-            label: '7以上',
-            value: analysisRecord.goalsInterval7Plus,
-            color: '#FBB03B'
-        }
-    ];
+    const [headers, setHeader] = useState<HeaderType[]>([]);
 
     const fetchMatchList = async (matchIdList: number[]) => {
         const res = await getFootballStatsMatches({ matchIds: matchIdList });
@@ -97,6 +79,35 @@ function Range() {
     useEffect(() => {
         setFilterInit();
     }, [contestInfo, setFilterInit]);
+
+    useEffect(() => {
+        setHeader([
+            {
+                class: style.first,
+                label: '0-1',
+                value: analysisRecord.goalsInterval0To1,
+                color: '#6357F0'
+            },
+            {
+                class: style.second,
+                label: '2-3',
+                value: analysisRecord.goalsInterval2To3,
+                color: '#33AD1F'
+            },
+            {
+                class: style.three,
+                label: '4-6',
+                value: analysisRecord.goalsInterval4To6,
+                color: '#4489FF'
+            },
+            {
+                class: style.four,
+                label: '7以上',
+                value: analysisRecord.goalsInterval7Plus,
+                color: '#FBB03B'
+            }
+        ]);
+    }, [analysisRecord]);
 
     return (
         <>

@@ -26,7 +26,7 @@ const titlePosition = [
 
 function FifteenMinutesChart({
     headers,
-    minsGoalList
+    minsGoalList = []
 }: {
     headers: string[];
     minsGoalList: GoalType[];

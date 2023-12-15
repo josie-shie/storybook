@@ -83,6 +83,9 @@ const GoalsIn15MinsSchema = z.object({
     goalsUnder: z.array(z.number())
 });
 
+export type GoalsIn15Mins = z.infer<typeof GoalsIn15MinsSchema>;
+export type GoalsIn15MinsType = GoalsIn15Mins;
+
 const GetFootballStatsReportSchema = z.object({
     memberId: z.number(),
     ticketId: z.string(),
@@ -174,7 +177,9 @@ const GetFootballStatsMatchSchema = z.object({
 export type GetFootballStatsMatch = z.infer<typeof GetFootballStatsMatchSchema>;
 export type GetFootballStatsMatchesResponse = GetFootballStatsMatch[];
 const GetFootballStatsMatchesResultSchema = z.object({
-    getFootballStatsMatches: z.array(GetFootballStatsMatchSchema)
+    getFootballStatsMatches: z.object({
+        matches: z.array(GetFootballStatsMatchSchema)
+    })
 });
 
 type GetFootballStatsMatchesResult = z.infer<typeof GetFootballStatsMatchesResultSchema>;
@@ -311,7 +316,7 @@ export const getFootballStatsMatches = async (
 
         return {
             success: true,
-            data: data.getFootballStatsMatches
+            data: data.getFootballStatsMatches.matches
         };
     } catch (error) {
         return handleApiError(error);

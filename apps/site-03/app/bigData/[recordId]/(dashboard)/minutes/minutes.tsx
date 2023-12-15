@@ -1,5 +1,6 @@
 'use client';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import type { GoalsIn15MinsType } from 'data-center';
 import { getFootballStatsMatches } from 'data-center';
 import FifteenMinutesChart from '../../components/fifteenMinutesChart/fifteenMinutesChart';
 import { useAnalyticsResultStore } from '../../analysisResultStore';
@@ -62,6 +63,7 @@ function Minutes() {
     const setShowContestDrawer = useAnalyticsResultStore.use.setShowContestDrawer();
     const setSelectedResult = useAnalyticsResultStore.use.setSelectedResult();
     const setMatchList = useAnalyticsResultStore.use.setContestList();
+    const [list, setList] = useState<GoalsIn15MinsType[]>([]);
 
     const fetchMatchList = async (matchIdList: number[]) => {
         const res = await getFootballStatsMatches({ matchIds: matchIdList });
@@ -96,6 +98,10 @@ function Minutes() {
         setFilterInit();
     }, [contestInfo, setFilterInit]);
 
+    useEffect(() => {
+        setList(analysisRecord.goalsIn15Mins);
+    }, [analysisRecord.goalsIn15Mins]);
+
     return (
         <>
             <div className={style.minutes}>
@@ -109,16 +115,15 @@ function Minutes() {
                 </div>
             </div>
             <div className={style.contaniner}>
-                {analysisRecord.hasOwnProperty.call(analysisRecord.goalsIn15Mins) &&
-                    analysisRecord.goalsIn15Mins.map((item, index) => (
-                        <TimeRangeTable
-                            key={headers[index]}
-                            label={headers[index]}
-                            lower={item.goalsUnder}
-                            openMatchListDrawer={openMatchListDrawer}
-                            upper={item.goalsOver}
-                        />
-                    ))}
+                {list.map((item, index) => (
+                    <TimeRangeTable
+                        key={headers[index]}
+                        label={headers[index]}
+                        lower={item.goalsUnder}
+                        openMatchListDrawer={openMatchListDrawer}
+                        upper={item.goalsOver}
+                    />
+                ))}
             </div>
         </>
     );

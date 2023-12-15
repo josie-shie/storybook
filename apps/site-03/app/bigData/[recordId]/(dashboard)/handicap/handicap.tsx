@@ -49,15 +49,10 @@ function Handicap() {
     const analysisRecord = useAnalyticsResultStore.use.analysisResultData();
     const handicapEchart = useAnalyticsResultStore.use.handicapEchart();
     const analysisData = useAnalyticsResultStore.use.analysisResultData();
-    const setHandicapEchart = useAnalyticsResultStore.use.setHandicapEchart();
     const setIsNotificationVisible = useNotificationStore.use.setIsVisible();
     const setShowContestDrawer = useAnalyticsResultStore.use.setShowContestDrawer();
     const setSelectedResult = useAnalyticsResultStore.use.setSelectedResult();
     const setMatchList = useAnalyticsResultStore.use.setContestList();
-
-    useEffect(() => {
-        setHandicapEchart(analysisData);
-    }, [analysisData, setHandicapEchart]);
 
     const calculateHeight = (data: Record<string, Statistics>, date: string) => {
         const total = data[date].upper + data[date].draw + data[date].lower;

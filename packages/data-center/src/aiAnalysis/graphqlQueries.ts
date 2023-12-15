@@ -39,12 +39,12 @@ export const GET_ODDS_HINT_LIST_QUERY = `
 `;
 
 export const GET_FOOTBALL_STATS_MATCHES_QUERY = `
-    query getFootballStatsMatches($input: FootballStatsMatchInput){
+    query getFootballStatsMatches($input: FootballStatsMatchInput!){
         getFootballStatsMatches(input: $input) {
             matches {
                 matchId
                 leagueId
-                leagueChs
+                leagueChsShort: leagueChs
                 countryCn
                 startTime
                 homeChs

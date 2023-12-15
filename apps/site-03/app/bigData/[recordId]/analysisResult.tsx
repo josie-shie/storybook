@@ -9,7 +9,6 @@ import Handicap from './(dashboard)/handicap/handicap';
 import { useAnalyticsResultStore } from './analysisResultStore';
 import ContestDrawerList from './components/contestDrawerList/contestDrawerList';
 import HeaderTitleFilter from '@/components/header/headerTitleFilter';
-import { useUserStore } from '@/app/userStore';
 
 type HandicapSideType = 'home' | 'away';
 
@@ -144,12 +143,11 @@ function AnalysisResult({ children }: { children: ReactNode }) {
     const params = useParams();
     const setAnalysisResultData = useAnalyticsResultStore.use.setAnalysisResultData();
     const setHandicapEchart = useAnalyticsResultStore.use.setHandicapEchart();
-    const userInfo = useUserStore.use.userInfo();
 
     const fetchData = async () => {
         const res = await getFootballStatsResult({
             ticketId: params.recordId.toString(),
-            memberId: userInfo.uid
+            memberId: 243
         });
 
         if (!res.success) {
