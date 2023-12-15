@@ -2,6 +2,7 @@
     background-color: #fff;
     overflow: auto;
     height: calc(100vh - 152px);
+    touch-action: pan-y;
 }
 
 .line {
@@ -45,5 +46,6 @@
 }
 
 .dateHolder {
-    height: 64px;
+    height: 48px;
+    margin-bottom: 8px;
 }

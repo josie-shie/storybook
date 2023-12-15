@@ -1,34 +1,26 @@
-import { useRouter, useSearchParams, usePathname } from 'next/navigation';
-import { useCallback } from 'react';
+import { useState } from 'react';
 import Image from 'next/image';
 import FilterIcon from '../img/filter.png';
 import style from './filterButton.module.scss';
+import Filter from './filter';
 
 function FilterButton() {
-    const searchParams = useSearchParams();
-    const pathname = usePathname();
-    const router = useRouter();
-
-    const createQueryString = useCallback(
-        (name: string, value: string) => {
-            const params = new URLSearchParams(searchParams);
-            params.set(name, value);
-
-            return params.toString();
-        },
-        [searchParams]
-    );
+    const [isOpen, setIsOpen] = useState(false);
+    const onClose = () => {
+        setIsOpen(false);
+    };
+    const onOpen = () => {
+        setIsOpen(true);
+    };
 
     return (
-        <div
-            className={style.filter}
-            onClick={() => {
-                router.push(`${pathname}?${createQueryString('filter', 'open')}`);
-            }}
-        >
-            赛事筛选
-            <Image alt="filter" className={style.mr} sizes="32" src={FilterIcon} />
-        </div>
+        <>
+            <div className={style.filter} onClick={onOpen}>
+                赛事筛选
+                <Image alt="filter" className={style.mr} sizes="32" src={FilterIcon} />
+            </div>
+            <Filter isOpen={isOpen} onClose={onClose} onOpen={onOpen} />
+        </>
     );
 }
 

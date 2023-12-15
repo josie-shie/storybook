@@ -3,39 +3,38 @@ import { getContestList, type GetContestListResponse } from 'data-center';
 import { useEffect, useState } from 'react';
 import { InfiniteScroll } from 'ui';
 import CircularProgress from '@mui/material/CircularProgress';
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import { useContestInfoStore } from '@/app/contestInfoStore';
 import GameCard from './components/gameCard';
 import style from './football.module.scss';
 import { creatContestListStore, useContestListStore } from './contestListStore';
-import Filter from './components/filter';
 import BaseDatePicker from './components/baseDatePicker/baseDatePicker';
 import SettingIcon from './img/setting.png';
 import Setting from './components/setting';
 import FilterButton from './components/filterButton';
 
+type Status = 'all' | 'progress' | 'schedule' | 'result';
+
 function Banner() {
     return <div className={style.banner} />;
 }
 
-function DatePicker() {
+function DatePicker({ status }: { status: Status }) {
     const [isMounted, setIsMounted] = useState(false);
-    const searchParams = useSearchParams();
-    const status = searchParams.get('status');
-    const router = useRouter();
-    const resultsDate = searchParams.get('resultsDate') || Date.now();
-    const scheduleDate = searchParams.get('scheduleDate') || Date.now();
+
+    const [resultsDate, setResultsDate] = useState(Date.now());
+    const [scheduleDate, setScheduleDate] = useState(Date.now());
 
     const handleDate = (date: Date) => {
         const dateFormat = date.getTime();
 
         if (status === 'result') {
-            router.push(`?status=${status}&resultsDate=${dateFormat}`);
+            setResultsDate(dateFormat);
             return;
         }
         if (status === 'schedule') {
-            router.push(`?status=${status}&scheduleDate=${dateFormat}`);
+            setScheduleDate(dateFormat);
         }
     };
 
@@ -71,7 +70,13 @@ function DatePicker() {
     );
 }
 
-function ContestList({ switchSetting }: { switchSetting: () => void }) {
+function ContestList({
+    switchSetting,
+    status = 'all'
+}: {
+    switchSetting: () => void;
+    status: Status;
+}) {
     const [rows, setRows] = useState({ full: 20, notYet: 0, finish: 0 });
     const contestList = useContestListStore.use.contestList();
     const contestInfo = useContestListStore.use.contestInfo();
@@ -82,7 +87,6 @@ function ContestList({ switchSetting }: { switchSetting: () => void }) {
     const setFilterInit = useContestListStore.use.setFilterInit();
 
     const searchParams = useSearchParams();
-    const status = searchParams.get('status') || 'all';
     const resultsDate = searchParams.get('resultsDate');
     const scheduleDate = searchParams.get('scheduleDate');
     const [isMounted, setIsMounted] = useState(false);
@@ -218,7 +222,13 @@ function ContestList({ switchSetting }: { switchSetting: () => void }) {
     );
 }
 
-function Football({ todayContest }: { todayContest: GetContestListResponse }) {
+function Football({
+    todayContest,
+    status
+}: {
+    todayContest: GetContestListResponse;
+    status: Status;
+}) {
     creatContestListStore(todayContest);
     const [showSetting, setShowSetting] = useState(false);
 
@@ -229,10 +239,9 @@ function Football({ todayContest }: { todayContest: GetContestListResponse }) {
     return (
         <>
             <div className={style.football}>
-                <DatePicker />
-                <ContestList switchSetting={switchSetting} />
+                <DatePicker status={status} />
+                <ContestList status={status} switchSetting={switchSetting} />
             </div>
-            <Filter />
             <Setting
                 isOpen={showSetting}
                 onClose={() => {
