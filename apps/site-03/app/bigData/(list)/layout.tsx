@@ -20,7 +20,9 @@ function AnalysisLayout({ children }: { children: ReactNode }) {
     const [analysisTime, setAnalysisTime] = useState(true);
     const [showRecord, setShowRecord] = useState(false);
     creatDiscSelectStore({
-        openNoramlDialog: false
+        openNoramlDialog: false,
+        dialogContentType: '',
+        dialogContent: null
     });
     creatMatchFilterStore({
         contestList: [],

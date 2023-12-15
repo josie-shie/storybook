@@ -1,37 +1,101 @@
 'use client';
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
+import Image from 'next/image';
+import { useEffect } from 'react';
 import style from './disSelect.module.scss';
 import HandicapAnalysisForm from './handicapAnalysisForm';
 import HintsForm from './hintsForm';
 import { useDiscSelectStore } from './discSelectStore';
-import NormalDialog from '@/components/normalDialog/normalDialog';
+import systemErrorImage from './img/systemError.png';
+import EmptyDataImage from './img/emptyData.png';
+import ErrorDialog from './components/dialog/dialog';
+
+function EmptyResponseError() {
+    const setOpenNormalDialog = useDiscSelectStore.use.setOpenNormalDialog();
+
+    return (
+        <>
+            <div className={style.errorMessage}>
+                <Image alt="" height={100} src={EmptyDataImage.src} width={100} />
+                <p>此條件查无资料！请重新修改搜寻条件</p>
+            </div>
+            <div className={style.footer}>
+                <div
+                    className={style.confirm}
+                    onClick={() => {
+                        setOpenNormalDialog(false);
+                    }}
+                >
+                    重新查询
+                </div>
+            </div>
+        </>
+    );
+}
+
+function SystemError() {
+    const setOpenNormalDialog = useDiscSelectStore.use.setOpenNormalDialog();
+
+    return (
+        <>
+            <div className={style.errorMessage}>
+                <Image alt="" height={100} src={systemErrorImage.src} width={100} />
+                <p>哎呀，系统暂时出错！ 请稍候重试</p>
+            </div>
+            <div className={style.footer}>
+                <div
+                    className={style.close}
+                    onClick={() => {
+                        setOpenNormalDialog(false);
+                    }}
+                >
+                    返回
+                </div>
+                <div
+                    className={style.confirm}
+                    onClick={() => {
+                        setOpenNormalDialog(false);
+                    }}
+                >
+                    回報錯誤
+                </div>
+            </div>
+        </>
+    );
+}
 
 function DiscSelect() {
-    const router = useRouter();
     const searchParams = useSearchParams();
     const search = searchParams.get('status');
     const openNoramlDialog = useDiscSelectStore.use.openNoramlDialog();
     const setOpenNormalDialog = useDiscSelectStore.use.setOpenNormalDialog();
+    const dialogErrorType = useDiscSelectStore.use.dialogContentType();
+    const dialogContent = useDiscSelectStore.use.dialogContent();
+    const setDialogContent = useDiscSelectStore.use.setDialogContent();
+
+    useEffect(() => {
+        switch (dialogErrorType) {
+            case 'system':
+                setDialogContent(<SystemError />);
+                break;
+            case 'empty':
+                setDialogContent(<EmptyResponseError />);
+                break;
+            default:
+                setDialogContent(null);
+                break;
+        }
+    }, [dialogErrorType, setDialogContent]);
 
     return (
         <>
             <div className={style.discSelect}>
                 {search === 'analysis' ? <HandicapAnalysisForm /> : <HintsForm />}
             </div>
-            <NormalDialog
-                cancelText="取消"
-                confirmText="马上升级"
-                content={
-                    <div className={style.dialogContent}>
-                        <p className={style.text}>今日可用次数已用完，</p>
-                        <p className={style.text}>升级为VIP会员即可无限次使用！</p>
-                    </div>
-                }
+            <ErrorDialog
+                content={<div className={style.dialogContent}>{dialogContent}</div>}
                 onClose={() => {
                     setOpenNormalDialog(false);
-                }}
-                onConfirm={() => {
-                    router.push('/userInfo/subscribe');
                 }}
                 openDialog={openNoramlDialog}
             />

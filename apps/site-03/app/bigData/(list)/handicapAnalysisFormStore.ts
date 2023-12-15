@@ -90,13 +90,13 @@ const initialState = (
             return { ...state, endDate };
         });
     },
-    teamSelected: '',
+    teamSelected: 'home',
     setTeamSelected: (teamSelected: string) => {
         set(state => {
             return { ...state, teamSelected };
         });
     },
-    teamHandicapOdds: '',
+    teamHandicapOdds: '1',
     setTeamHandicapOdds: (teamHandicapOdds: string) => {
         set(state => {
             return { ...state, teamHandicapOdds };
