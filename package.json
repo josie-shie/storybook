@@ -17,7 +17,7 @@
     },
     "lint-staged": {
         "*.{css,scss,ts,tsx,module.css,module.scss}": "prettier --check --ignore-unknown",
-        "*.{ts,tsx}": "bash -c \"turbo lint\""
+        "*.{ts,tsx}": "eslint --fix"
     },
     "devDependencies": {
         "@commitlint/cli": "^17.7.2",
