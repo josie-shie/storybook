@@ -12,6 +12,7 @@ import Image from 'next/image';
 import style from './datepicker.module.scss';
 import 'react-datepicker/dist/react-datepicker.css';
 import DateIcon from './img/date.png';
+import { useNotificationStore } from '@/app/notificationStore';
 
 registerLocale('zh-CN', zhCN);
 
@@ -29,6 +30,7 @@ function Datepicker({
 
     const maxDate = dayjs().subtract(1, 'day').toDate();
     const minDate = dayjs().subtract(91, 'day').toDate();
+    const setNotificationVisible = useNotificationStore.use.setIsVisible();
 
     const closeModal = () => {
         setOpenModal(false);
@@ -38,6 +40,13 @@ function Datepicker({
 
     const handleConfirmDate = () => {
         if (startDate && endDate) {
+            const daysDiff = dayjs(endDate).diff(dayjs(startDate), 'day');
+
+            if (daysDiff < 7) {
+                setNotificationVisible('选择的日期区间必须至少为7天', 'error');
+                return;
+            }
+
             updateQueryDate(
                 Math.floor(startDate.getTime() / 1000),
                 Math.floor(endDate.getTime() / 1000)
@@ -49,7 +58,11 @@ function Datepicker({
     return (
         <>
             <Box className={`baseDatePicker ${style.baseDatePicker}`}>
-                <IconButton>
+                <IconButton
+                    onClick={() => {
+                        setOpenModal(true);
+                    }}
+                >
                     <Image alt="" height={20} src={DateIcon} width={20} />
                 </IconButton>
             </Box>
