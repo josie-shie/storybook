@@ -7,12 +7,13 @@ import { unFollow, updateFollow, getFollowers, type GetFollowersResponse } from 
 import style from './masterItem.module.scss';
 import Avatar from '@/components/avatar/avatar';
 import Tag from '@/components/tag/tag';
-import { useUserStore } from '@/app/userStore';
+import { useRouter } from 'next/navigation';
+import { Router } from '@mui/icons-material';
 
-function MasterItem() {
+function MasterItem({ params }: { params: { masterId } }) {
     const [masterItem, setMasterItem] = useState<GetFollowersResponse>([]);
 
-    const userInfo = useUserStore.use.userInfo();
+    const router = useRouter();
 
     const fetchData = async () => {
         try {
@@ -31,8 +32,8 @@ function MasterItem() {
     const onIsFocused = async (id: number, follow: boolean) => {
         try {
             const res = follow
-                ? await unFollow({ followerId: userInfo.uid || 1, followedId: id })
-                : await updateFollow({ followerId: userInfo.uid || 1, followedId: id });
+                ? await unFollow({ followerId: params.masterId || 1, followedId: id })
+                : await updateFollow({ followerId: params.masterId || 1, followedId: id });
             if (!res.success) {
                 return new Error();
             }
@@ -47,6 +48,10 @@ function MasterItem() {
         }
     };
 
+    const goMasterPredict = (id: number) => {
+        router.push(`/master/masterAvatar/${id}?status=analysis`);
+    };
+
     useEffect(() => {
         void fetchData();
     }, []);
@@ -57,7 +62,10 @@ function MasterItem() {
                 return (
                     <div className={style.masterItem} key={item.memberId}>
                         <div className={style.info}>
-                            <div className={style.avatarContainer}>
+                            <div
+                                className={style.avatarContainer}
+                                onClick={() => goMasterPredict(item.memberId)}
+                            >
                                 <Avatar
                                     borderColor="#4489FF"
                                     size={46}

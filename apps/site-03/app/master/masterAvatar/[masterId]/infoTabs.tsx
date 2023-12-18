@@ -9,7 +9,7 @@ import MasterItem from './components/masterItem/masterItem';
 import BettingPlan from './components/bettingPlan/bettingPlan';
 import style from './infoTabs.module.scss';
 
-function InfoTabs() {
+function InfoTabs({ params }: { params: { masterId: string } }) {
     const searchParams = useSearchParams();
     const status = searchParams.get('status');
     const [dateActiveTab, setDateActiveTab] = useState('日榜');
@@ -280,7 +280,7 @@ function InfoTabs() {
             )}
             {status === 'focus' && (
                 <div className={style.tabContest}>
-                    <MasterItem />
+                    <MasterItem params={params} />
                 </div>
             )}
         </div>
