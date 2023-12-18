@@ -2,14 +2,14 @@ import Image from 'next/image';
 import { timestampToString, timestampToMonthDay } from 'lib';
 import UnlockButton from '@/components/unlockButton/unlockButton';
 import type { PredictArticleType } from '@/types/predict';
-import { useArticleStore } from '../../articleStore';
+import { useMasterAvatarStore } from '../../masterAvatarStore';
 import style from './analysisItem.module.scss';
 import IconWin from './img/win.png';
 import IconDraw from './img/draw.png';
 import IconLose from './img/lose.png';
 
 function AnalysisItem() {
-    const predictArticleList = useArticleStore.use.predictArticleList();
+    const predictArticleList = useMasterAvatarStore.use.predictArticleList();
 
     const filterImage = (value: PredictArticleType): string => {
         const result = {

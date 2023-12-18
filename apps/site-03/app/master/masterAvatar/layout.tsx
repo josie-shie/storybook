@@ -21,17 +21,17 @@ function MasterAvatarLayout({ children }: { children: ReactNode }) {
     const tabList = [
         {
             label: `预测文章(${199})`,
-            to: '/master/article/masterAvatar?status=analysis',
+            to: '/master/masterAvatar?status=analysis',
             status: 'analysis'
         },
         {
             label: '猜球',
-            to: '/master/article/masterAvatar?status=guess',
+            to: '/master/masterAvatar?status=guess',
             status: 'guess'
         },
         {
             label: '关注',
-            to: '/master/article/masterAvatar?status=focus',
+            to: '/master/masterAvatar?status=focus',
             status: 'focus'
         }
     ];

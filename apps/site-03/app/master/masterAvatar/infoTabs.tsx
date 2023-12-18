@@ -3,10 +3,10 @@ import { useState } from 'react';
 import { ProgressBar } from 'ui';
 import { useSearchParams } from 'next/navigation';
 import ReactEcharts from 'echarts-for-react';
-import { creatArticleStore } from '../articleStore';
-import AnalysisItem from '../components/analysisItem/analysisItem';
-import MasterItem from '../components/masterItem/masterItem';
-import BettingPlan from '../components/bettingPlan/bettingPlan';
+import { creatMasterAvatarStore } from './masterAvatarStore';
+import AnalysisItem from './components/analysisItem/analysisItem';
+import MasterItem from './components/masterItem/masterItem';
+import BettingPlan from './components/bettingPlan/bettingPlan';
 import style from './infoTabs.module.scss';
 
 function InfoTabs() {
@@ -15,9 +15,7 @@ function InfoTabs() {
     const [dateActiveTab, setDateActiveTab] = useState('日榜');
     const [planActiveTab, setPlanActiveTab] = useState('全部');
 
-    creatArticleStore({
-        articleList: [],
-        masterItem: [],
+    creatMasterAvatarStore({
         predictArticleList: [
             {
                 id: 0,
