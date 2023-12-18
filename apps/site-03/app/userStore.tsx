@@ -1,12 +1,12 @@
 import { initStore } from 'lib';
 import type { StoreWithSelectors } from 'lib';
-import type { GetMemberInfoResponse, Tag } from 'data-center';
+import type { GetMemberInfoResponse, TagType } from 'data-center';
 
 interface InitState {
     authQuery: string;
     inviteCode: string;
     userInfo: GetMemberInfoResponse;
-    tags: Tag;
+    tags: TagType;
 }
 
 interface UserState extends InitState {
@@ -18,7 +18,7 @@ interface UserState extends InitState {
     setToken: (token: string) => void;
     setAuthQuery: (authQuery: string) => void;
     setUserInfo: (userInfo: GetMemberInfoResponse) => void;
-    setTags: (tags: Tag) => void;
+    setTags: (tags: TagType) => void;
 }
 
 let isInit = true;
@@ -26,7 +26,7 @@ let useUserStore: StoreWithSelectors<UserState>;
 
 const initialState = (set: (updater: (state: UserState) => Partial<UserState>) => void) => ({
     userInfo: {} as GetMemberInfoResponse,
-    tags: {} as Tag,
+    tags: {} as TagType,
     userInfoIsLoading: true,
     isLogin: false,
     token: '',
@@ -47,7 +47,7 @@ const initialState = (set: (updater: (state: UserState) => Partial<UserState>) =
             };
         });
     },
-    setTags: (tags: Tag) => {
+    setTags: (tags: TagType) => {
         set(state => {
             return {
                 ...state,
