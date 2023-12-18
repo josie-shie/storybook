@@ -3,7 +3,14 @@ import Cookies from 'js-cookie';
 import { z } from 'zod';
 import { handleApiError } from '../common';
 import type { ReturnData } from '../common';
-import { PredictionResultSchema, TagSchema, PredictedPlaySchema } from '../commonType';
+import type { ChangeTypeCategory } from '../commonType';
+import {
+    PredictionResultSchema,
+    TagSchema,
+    PredictedPlaySchema,
+    ChangeTypeCategorySchema,
+    RechargeStatusSchema
+} from '../commonType';
 import {
     REGISTER_MUTATION,
     SEND_VERIFICATION_CODE_MUTATION,
@@ -19,7 +26,9 @@ import {
     SUBSCRIBE_PLAN_MUTATION,
     GET_INVITATION_ACTIVITY_REWARD_INFO_QUERY,
     GET_MEMBER_GUESS_VIEWING_RECORDS_QUERY,
-    GET_MEMBER_SUBSCRIPTION_STATUS_QUERY
+    GET_MEMBER_SUBSCRIPTION_STATUS_QUERY,
+    GET_RECHARGE_OPTION_LIST_QUERY,
+    GET_MEMBER_TRANSACTION_LIST_QUERY
 } from './graphqlQueries';
 
 const RegisterResultSchema = z.object({
@@ -801,6 +810,136 @@ export const getMemberSubscriptionStatus = async (
         GetMemberSubscriptionStatusResultSchema.parse(data);
 
         return { success: true, data: data.getMemberSubscriptionStatus };
+    } catch (error) {
+        return handleApiError(error);
+    }
+};
+
+export interface GetMemberTransactionListRequest {
+    startTime: number;
+    endTime: number;
+    changeTypeCategory: ChangeTypeCategory;
+    currencyPage: number;
+    prepage: number;
+}
+const GetMemberTransactionDataSchema = z.object({
+    balanceLogId: z.number(),
+    changeTypeDisplayName: z.string(),
+    changeTypeCategory: ChangeTypeCategorySchema,
+    changeTypeCategoryDisplayName: z.string(),
+    rechargeStatus: RechargeStatusSchema.optional(),
+    rechargeId: z.number().optional(),
+    currencyCode: z.string().optional(),
+    exchangeRate: z.number().optional(),
+    amountOfChange: z.number(),
+    balanceAfter: z.number(),
+    createdAt: z.number()
+});
+
+export type GetMemberTransactionData = z.infer<typeof GetMemberTransactionDataSchema>;
+
+const GetMemberTransactionSchema = z.object({
+    balanceId: z.number(),
+    changeTypeCategory: ChangeTypeCategorySchema,
+    data: GetMemberTransactionDataSchema
+});
+
+export type GetMemberTransaction = z.infer<typeof GetMemberTransactionSchema>;
+
+const GetMemberTransactionListSchema = z.object({
+    list: z.array(GetMemberTransactionSchema),
+    totalCount: z.number(),
+    totalPages: z.number()
+});
+
+export type GetMemberTransactionListResponse = z.infer<typeof GetMemberTransactionListSchema>;
+
+const GetMemberTransactionResultSchema = z.object({
+    getMemberTransactionList: GetMemberTransactionListSchema
+});
+
+type GetMemberTransactionResult = z.infer<typeof GetMemberTransactionResultSchema>;
+
+/**
+ * 交易明細 | 取得會員交易明細列表
+ * - params {@link GetMemberTransactionListRequest}
+ * - returns {@link GetMemberTransactionListResponse}
+ * - {@link GetMemberTransaction} {@link ChangeTypeCategory} {@link RechargeStatus} {@link GetMemberTransactionData}
+ */
+export const getMemberTransactionList = async (
+    input: GetMemberTransactionListRequest
+): Promise<ReturnData<GetMemberTransactionListResponse>> => {
+    try {
+        const { data }: { data: GetMemberTransactionResult } = await fetcher(
+            {
+                data: {
+                    query: GET_MEMBER_TRANSACTION_LIST_QUERY,
+                    variables: {
+                        input
+                    }
+                }
+            },
+            { cache: 'no-store' }
+        );
+
+        GetMemberTransactionResultSchema.parse(data);
+
+        return {
+            success: true,
+            data: data.getMemberTransactionList
+        };
+    } catch (error) {
+        return handleApiError(error);
+    }
+};
+
+export interface GetRechargeOptionListRequest {
+    currencyCode: string;
+}
+
+const GetRechargeOptionSchema = z.object({
+    id: z.number(),
+    titleDesc: z.string(),
+    rechargeAmount: z.number(),
+    paymentAmount: z.number()
+});
+
+export type GetRechargeOption = z.infer<typeof GetRechargeOptionSchema>;
+
+const GetRechargeOptionListResultSchema = z.object({
+    getRechargeOptionList: z.object({
+        list: z.array(GetRechargeOptionSchema)
+    })
+});
+
+type GetRechargeOptionListResult = z.infer<typeof GetRechargeOptionListResultSchema>;
+
+/**
+ * 取得充值推薦禮包
+ * - params {@link GetRechargeOptionListRequest}
+ * - returns {@link getRechargeOptionListResponse}
+ * - {@link GetRechargeOption}
+ */
+export const getRechargeOptionList = async ({ currencyCode }: GetRechargeOptionListRequest) => {
+    try {
+        const { data }: { data: GetRechargeOptionListResult } = await fetcher(
+            {
+                data: {
+                    query: GET_RECHARGE_OPTION_LIST_QUERY,
+                    variables: {
+                        currencyCode
+                    }
+                }
+            },
+            { cache: 'no-store' }
+        );
+
+        GetRechargeOptionListResultSchema.parse(data);
+
+        return {
+            success: true,
+            data: data.getRechargeOptionList
+        };
     } catch (error) {
         return handleApiError(error);
     }
