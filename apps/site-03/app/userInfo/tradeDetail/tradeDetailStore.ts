@@ -8,7 +8,7 @@ export interface RechargeData {
     changeTypeDisplayName: string;
     changeTypeCategory: string;
     changeTypeCategoryDisplayName: string;
-    rechargeStatus: 'padding' | 'fail' | 'succes';
+    rechargeStatus: 'pedding' | 'fail' | 'succes';
     rechargeId: string;
     currencyCode: string;
     exchangeRate: number;

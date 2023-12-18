@@ -10,13 +10,13 @@ interface PropsType {
 }
 
 const statusStyleMap = {
-    padding: style.padding,
+    pedding: style.pedding,
     succes: style.succes,
     fail: style.fail
 };
 
 const statusTextMap = {
-    padding: '處理中',
+    pedding: '處理中',
     succes: '已完成',
     fail: '交易失敗'
 };
@@ -35,7 +35,7 @@ function RechargeItem({ data }: PropsType) {
                 <div className={style.title}>{data.changeTypeDisplayName}</div>
                 {data.rechargeStatus !== 'fail' && (
                     <div className={style.content}>
-                        {data.currency}:平台幣 = 1:{data.exchangeRate}
+                        {data.currencyCode}:平台幣 = 1:{data.exchangeRate}
                     </div>
                 )}
                 <div className={style.content}>{data.createdAt}</div>
