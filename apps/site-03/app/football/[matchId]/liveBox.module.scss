@@ -5,14 +5,15 @@
     background-position: center;
     background-size: cover;
     color: #fff;
-    aspect-ratio: 300 / 150;
+    aspect-ratio: 390 / 234;
 }
 
 .scoreboard {
-    height: calc(100% - 26px);
+    position: relative;
+    height: calc(100% - 60px);
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     font-weight: 500;
 
@@ -138,7 +139,7 @@
             color: #fff;
             position: absolute;
             top: 10px;
-            left: -96%;
+            left: -16vw;
             transform: translateY(-50%);
             text-align: center;
             font-size: 46px;
@@ -150,7 +151,7 @@
             color: #fff;
             position: absolute;
             top: 10px;
-            right: -96%;
+            right: -16vw;
             transform: translateY(-50%);
             text-align: center;
             font-size: 46px;
@@ -163,19 +164,21 @@
     }
 
     .liveBtn {
+        position: absolute;
+        bottom: 14px;
         height: 24px;
         display: flex;
         align-items: center;
         background-color: #0008;
-        padding: 0 10px;
+        padding: 0 8px;
         color: white;
         font-size: 12px;
         font-weight: 400;
         border-radius: 20px;
-        margin-bottom: 12px;
+        min-width: 60px;
 
         .icon {
-            margin-right: 6px;
+            margin-right: 2px;
         }
     }
 }
