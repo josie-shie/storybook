@@ -197,22 +197,24 @@ function Handicap() {
                                 );
                             })}
                     </ul>
-                    <Switch
-                        onChange={(value: PlayTypeValue) => {
-                            setPlayTypeSwitch(value);
-                        }}
-                        options={[
-                            { label: '让球', value: 'handicap' },
-                            { label: '大小', value: 'overUnder' },
-                            { label: '独赢', value: 'moneyLine' }
-                        ]}
-                        value={playTypeSwitch}
-                    />
-                </div>
-                <div className={style.dot}>
-                    <span className={style.top}>上盤</span>
-                    <span className={style.middle}>走盤</span>
-                    <span className={style.bottom}>下盤</span>
+                    <div className={style.eChartBottom}>
+                        <Switch
+                            onChange={(value: PlayTypeValue) => {
+                                setPlayTypeSwitch(value);
+                            }}
+                            options={[
+                                { label: '让球', value: 'handicap' },
+                                { label: '大小', value: 'overUnder' },
+                                { label: '独赢', value: 'moneyLine' }
+                            ]}
+                            value={playTypeSwitch}
+                        />
+                        <div className={style.dot}>
+                            <span className={style.top}>上盤</span>
+                            <span className={style.middle}>走盤</span>
+                            <span className={style.bottom}>下盤</span>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div className={style.tableContainer}>
