@@ -1,10 +1,10 @@
 import Image from 'next/image';
+import Avatar from '@/components/avatar/avatar';
 import { useMasterRankStore } from '../../masterRank/masterRankStore';
 import style from './hotStreakListItem.module.scss';
 import Streak from './img/streak.png';
 import Crown from './img/crown.png';
 import Rank from './img/rank.png';
-import Avatar from '@/components/avatar/avatar';
 
 function HotStreakListItem() {
     const masterRankList = useMasterRankStore.use.masterRankList();

@@ -1,5 +1,4 @@
 import dayjs from 'dayjs';
-import style from './record.module.scss';
 import Select from '@/app/football/[matchId]/(dashboard)/components/select/select';
 import type {
     BattleRecord,
@@ -8,6 +7,7 @@ import type {
     OddsDetailResultProps,
     FilterProps
 } from '@/types/analyze';
+import style from './record.module.scss';
 
 const contestTimeList = [
     { label: '全场', value: 'full' },

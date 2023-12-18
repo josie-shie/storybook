@@ -6,9 +6,9 @@ import { deleteMailMember } from 'data-center';
 import { usePathname } from 'next/navigation';
 import type { MessageResponse } from 'lib';
 import { messageService, getMessageResponse, cancelMessage } from 'lib';
+import { useNotificationStore } from '@/app/notificationStore';
 import style from './editBar.module.scss';
 import { useNoticeStore } from './noticeStore';
-import { useNotificationStore } from '@/app/notificationStore';
 
 function EditBar() {
     const mailList = useNoticeStore.use.mailList();

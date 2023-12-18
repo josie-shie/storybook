@@ -2,9 +2,9 @@
 import { Tab, Tabs } from 'ui';
 import { usePathname } from 'next/navigation';
 import { Suspense, type ReactNode } from 'react';
+import Loading from '@/components/loading/loading';
 import style from './contestDetail.module.scss';
 import MessageBoard from './(dashboard)/messageBoard/messageBoard';
-import Loading from '@/components/loading/loading';
 
 function TabBar({ children, matchId }: { children: ReactNode; matchId: number }) {
     const tabStyle = {

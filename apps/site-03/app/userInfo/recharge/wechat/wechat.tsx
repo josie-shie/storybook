@@ -2,10 +2,10 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import Header from '@/components/header/headerTitleDetail';
 import WechatIcon from '../img/wechat.png';
 import Pay from './pay/pay';
 import style from './wechat.module.scss';
-import Header from '@/components/header/headerTitleDetail';
 
 function Wechat() {
     const router = useRouter();

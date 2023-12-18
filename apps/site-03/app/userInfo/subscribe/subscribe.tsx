@@ -4,6 +4,8 @@ import { useRef, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Dialog, DialogTitle } from '@mui/material';
 import { getSubscriptionPlanList, subscribePlan } from 'data-center';
+import { useUserStore } from '@/app/userStore';
+import { useNotificationStore } from '@/app/notificationStore';
 import backLeftArrowImg from '../img/backLeftArrow.png';
 import style from './subscribe.module.scss';
 import background from './img/bg.png';
@@ -18,8 +20,6 @@ import checkbox from './img/checkbox.png';
 import checkedbox from './img/checkedbox.png';
 import VipIcon from './img/vipIcon.png';
 import { useSubscribeStore } from './subscribeStore';
-import { useUserStore } from '@/app/userStore';
-import { useNotificationStore } from '@/app/notificationStore';
 
 function Subscribe({ backHistory }: { backHistory: boolean }) {
     const router = useRouter();

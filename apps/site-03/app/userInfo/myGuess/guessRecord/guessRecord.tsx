@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
-import RecordCard from '../components/recordCard/recordCard';
-import { useMyGuessStore, type RecordItem } from '../myGuessStore';
-import style from './guessRecord.module.scss';
 import NoData from '@/components/baseNoData/noData';
 import BottomDrawer from '@/components/drawer/bottomDrawer';
 import Loading from '@/components/loading/loading';
+import RecordCard from '../components/recordCard/recordCard';
+import { useMyGuessStore, type RecordItem } from '../myGuessStore';
+import style from './guessRecord.module.scss';
 
 function RecordContent() {
     const guessRecordList = useMyGuessStore.use.myGuess().guessRecordList;

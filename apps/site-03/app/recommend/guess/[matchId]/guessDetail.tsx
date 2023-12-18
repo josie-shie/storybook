@@ -1,11 +1,11 @@
 'use client';
 import type { Metadata } from 'next';
 import { useRouter } from 'next/navigation';
+import Header from '@/components/header/headerTitleBack';
+import Footer from '@/components/footer/footer';
 import VsBox from './vsBox';
 import MasterPlan from './masterPlan';
 import { createGuessDetailStore } from './guessDetailStore';
-import Header from '@/components/header/headerTitleBack';
-import Footer from '@/components/footer/footer';
 
 export const metadata: Metadata = {
     title: '推薦詳情'

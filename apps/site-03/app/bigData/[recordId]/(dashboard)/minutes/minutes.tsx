@@ -2,11 +2,11 @@
 import { useEffect, useState } from 'react';
 import type { GoalsIn15MinsType } from 'data-center';
 import { getFootballStatsMatches } from 'data-center';
+import { useNotificationStore } from '@/app/notificationStore';
 import FifteenMinutesChart from '../../components/fifteenMinutesChart/fifteenMinutesChart';
 import { useAnalyticsResultStore } from '../../analysisResultStore';
 import { useMatchFilterStore } from '../../matchFilterStore';
 import style from './minutes.module.scss';
-import { useNotificationStore } from '@/app/notificationStore';
 
 function TimeRangeTable({
     label,

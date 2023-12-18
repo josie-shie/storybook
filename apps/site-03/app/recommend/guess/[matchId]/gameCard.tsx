@@ -1,5 +1,7 @@
 import Image from 'next/image';
 import type { ProGuess } from 'data-center';
+import Avatar from '@/components/avatar/avatar';
+import Tag from '@/components/tag/tag';
 import Fire from './img/fire.png';
 import Win from './img/win.png';
 import Lose from './img/lose.png';
@@ -10,8 +12,6 @@ import BigLose from './img/bigLose.png';
 import BigGone from './img/bigGone.png';
 import style from './gameCard.module.scss';
 import { useGuessDetailStore } from './guessDetailStore';
-import Avatar from '@/components/avatar/avatar';
-import Tag from '@/components/tag/tag';
 
 interface TagProps {
     type: 0 | 1 | 2 | 3;

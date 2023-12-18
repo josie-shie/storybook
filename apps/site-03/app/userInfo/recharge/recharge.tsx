@@ -2,11 +2,11 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import Header from '@/components/header/headerTitleDetail';
 import style from './recharge.module.scss';
 import Usdt from './img/usdt.png';
 import Wechat from './img/wechat.png';
 import Alipay from './img/alipay.png';
-import Header from '@/components/header/headerTitleDetail';
 
 function Recharge() {
     const router = useRouter();

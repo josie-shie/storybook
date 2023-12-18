@@ -1,8 +1,5 @@
 import { useEffect } from 'react';
 import type { FormatRecordDataResponse } from 'data-center';
-import style from './record.module.scss';
-import SelectList from './selectList';
-import TableDetail from './tableDetail';
 import type {
     HandicapType,
     WinLoseResultProps,
@@ -14,6 +11,9 @@ import type {
     BattleRecord,
     OddsDetailResultProps
 } from '@/types/analyze';
+import style from './record.module.scss';
+import SelectList from './selectList';
+import TableDetail from './tableDetail';
 
 function formatFloatingPoint(target: number, num: number) {
     return Math.floor(target * Math.pow(10, num)) / Math.pow(10, num);

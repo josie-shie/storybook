@@ -3,9 +3,9 @@ import { type ReactNode } from 'react';
 import { Slick } from 'ui';
 import { useSearchParams, useParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import style from './layout.module.scss';
 import Header from '@/components/header/headerLogo';
 import Footer from '@/components/footer/footer';
+import style from './layout.module.scss';
 
 function InterceptingDetail({ modal }: { modal: ReactNode }) {
     const params = useParams();

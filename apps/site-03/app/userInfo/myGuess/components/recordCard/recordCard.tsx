@@ -1,5 +1,7 @@
 'use client';
 import Image from 'next/image';
+import Avatar from '@/components/avatar/avatar';
+import Tag from '@/components/tag/tag';
 import { type RecordItem } from '../../myGuessStore';
 import Win from '../img/win.png';
 import BigWin from '../img/bigWin.png';
@@ -9,8 +11,6 @@ import BigGone from '../img/bigGone.png';
 import Gone from '../img/gone.png';
 import Fire from '../img/fire.png';
 import style from './recordCard.module.scss';
-import Avatar from '@/components/avatar/avatar';
-import Tag from '@/components/tag/tag';
 
 function RecordCard({ recordItem }: { recordItem: RecordItem }) {
     const iconMap = {

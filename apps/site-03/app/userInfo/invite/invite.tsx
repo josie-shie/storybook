@@ -3,14 +3,14 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { getInvitationCode, getInvitationActivityRewardInfo } from 'data-center';
+import { useUserStore } from '@/app/userStore';
+import { useNotificationStore } from '@/app/notificationStore';
 import FullBg from '../img/fullbg.png';
 import backLeftArrowImg from '../img/backLeftArrow.png';
 import Friend from '../img/friend.png';
 import { useInviteStore } from './inviteStore';
 import CustomModal from './components/customModal/customModal';
 import style from './invite.module.scss';
-import { useUserStore } from '@/app/userStore';
-import { useNotificationStore } from '@/app/notificationStore';
 
 function Invite() {
     const router = useRouter();

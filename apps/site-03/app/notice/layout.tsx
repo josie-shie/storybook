@@ -3,11 +3,11 @@
 import { type ReactNode } from 'react';
 import { Tab, Tabs } from 'ui';
 import { usePathname } from 'next/navigation';
+import Footer from '@/components/footer/footer';
 import Header from './header';
 import style from './layout.module.scss';
 import { createNoticeStore } from './noticeStore';
 import EditBar from './editBar';
-import Footer from '@/components/footer/footer';
 
 function NoticeLayout({ children }: { children: ReactNode }) {
     createNoticeStore({

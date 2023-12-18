@@ -1,11 +1,11 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { getFootballStatsMatches } from 'data-center';
+import { useNotificationStore } from '@/app/notificationStore';
 import GoalRangeChart from '../../components/goalRangeChart/goalRangeChart';
 import { useAnalyticsResultStore } from '../../analysisResultStore';
 import { useMatchFilterStore } from '../../matchFilterStore';
 import style from './range.module.scss';
-import { useNotificationStore } from '@/app/notificationStore';
 
 interface HeaderType {
     class: string;

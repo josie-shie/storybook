@@ -5,8 +5,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, FormControl } from '@mui/material';
 import type { LoginRequest } from 'data-center';
 import { sendVerificationCode, login } from 'data-center';
-import { useAuthStore } from '../authStore';
-import style from './login.module.scss';
 import {
     VertifyCodeByImage,
     Aggrement,
@@ -17,6 +15,8 @@ import {
 } from '@/app/(auth)/components/authComponent/authComponent';
 import { useNotificationStore } from '@/app/notificationStore';
 import { useUserStore } from '@/app/userStore';
+import { useAuthStore } from '../authStore';
+import style from './login.module.scss';
 
 const schema = yup.object().shape({
     mobileNumber: yup

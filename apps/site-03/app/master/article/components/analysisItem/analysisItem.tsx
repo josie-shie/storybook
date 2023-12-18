@@ -1,12 +1,12 @@
 import Image from 'next/image';
 import { timestampToString, timestampToMonthDay } from 'lib';
+import UnlockButton from '@/components/unlockButton/unlockButton';
+import type { PredictArticleType } from '@/types/predict';
 import { useArticleStore } from '../../articleStore';
 import style from './analysisItem.module.scss';
 import IconWin from './img/win.png';
 import IconDraw from './img/draw.png';
 import IconLose from './img/lose.png';
-import UnlockButton from '@/components/unlockButton/unlockButton';
-import type { PredictArticleType } from '@/types/predict';
 
 function AnalysisItem() {
     const predictArticleList = useArticleStore.use.predictArticleList();

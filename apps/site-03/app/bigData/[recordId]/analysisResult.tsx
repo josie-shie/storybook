@@ -4,11 +4,11 @@ import { useParams, usePathname, useRouter } from 'next/navigation';
 import { type ReactNode, Suspense, useEffect } from 'react';
 import { timestampToString } from 'lib';
 import { getFootballStatsResult } from 'data-center';
+import HeaderTitleFilter from '@/components/header/headerTitleFilter';
 import style from './dashboard.module.scss';
 import Handicap from './(dashboard)/handicap/handicap';
 import { useAnalyticsResultStore } from './analysisResultStore';
 import ContestDrawerList from './components/contestDrawerList/contestDrawerList';
-import HeaderTitleFilter from '@/components/header/headerTitleFilter';
 
 type HandicapSideType = 'home' | 'away';
 

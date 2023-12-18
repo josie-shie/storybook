@@ -4,14 +4,14 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { getFollowers, updateFollow, unFollow } from 'data-center';
 import type { GetFollowersResponse } from 'data-center';
-import backLeftArrowImg from '../img/backLeftArrow.png';
-import { useFansMemberStore } from './myFansStore';
-import MasterItem from './components/masterItem/masterItem';
-import style from './myFans.module.scss';
 import { useNotificationStore } from '@/app/notificationStore';
 import { useUserStore } from '@/app/userStore';
 import NoData from '@/components/baseNoData/noData';
 import Loading from '@/components/loading/loading';
+import backLeftArrowImg from '../img/backLeftArrow.png';
+import { useFansMemberStore } from './myFansStore';
+import MasterItem from './components/masterItem/masterItem';
+import style from './myFans.module.scss';
 
 function MyFocus() {
     const router = useRouter();

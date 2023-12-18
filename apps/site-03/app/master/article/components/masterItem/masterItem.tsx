@@ -1,10 +1,10 @@
 'use client';
 import { IconFlame } from '@tabler/icons-react';
 import { motion } from 'framer-motion';
-import { useArticleStore } from '../../articleStore';
-import style from './masterItem.module.scss';
 import Avatar from '@/components/avatar/avatar';
 import Tag from '@/components/tag/tag';
+import { useArticleStore } from '../../articleStore';
+import style from './masterItem.module.scss';
 
 function MasterItem() {
     const masterItem = useArticleStore.use.masterItem();

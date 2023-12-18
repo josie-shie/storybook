@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import Image from 'next/image';
 import dayjs from 'dayjs';
 import { mqttService } from 'lib';
+import { useUserStore } from '@/app/userStore';
 import style from './disSelect.module.scss';
 import { GameFilter } from './components/gameFilter/gameFilter';
 import SelectOption from './components/selectOption/selectOption';
@@ -10,7 +11,6 @@ import starIcon from './img/star.png';
 import Datepicker from './components/datepicker/datepicker';
 import { useHandicapAnalysisFormStore } from './handicapAnalysisFormStore';
 import searchIcon from './img/search.png';
-import { useUserStore } from '@/app/userStore';
 
 function TimeRange({ timeRange }: { timeRange: string }) {
     const openDatePicker = useHandicapAnalysisFormStore.use.openDatePicker();

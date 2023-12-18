@@ -6,6 +6,9 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { type GetPostDetailResponse, type RecommendPost } from 'data-center';
 import { getPostList, payForPost } from 'data-center';
+import { useUserStore } from '@/app/userStore';
+import NormalDialog from '@/components/normalDialog/normalDialog';
+import type { GuessType } from '@/types/predict';
 import Star from './img/star.png';
 import Push from './img/push.png';
 import Win from './img/win.png';
@@ -13,9 +16,6 @@ import Lose from './img/lose.png';
 import Draw from './img/draw.png';
 import style from './articleContent.module.scss';
 import RecommendationList from './recommendationList';
-import { useUserStore } from '@/app/userStore';
-import NormalDialog from '@/components/normalDialog/normalDialog';
-import type { GuessType } from '@/types/predict';
 
 function Content({ article }: { article: GetPostDetailResponse }) {
     const userInfo = useUserStore.use.userInfo();

@@ -1,8 +1,8 @@
 import Image from 'next/image';
+import UnlockButton from '@/components/unlockButton/unlockButton';
 import iconWin from './img/win.png';
 import iconDefeat from './img/defeat.png';
 import style from './bettingPlan.module.scss';
-import UnlockButton from '@/components/unlockButton/unlockButton';
 
 interface PropsType {
     result?: 'win' | 'defeat';

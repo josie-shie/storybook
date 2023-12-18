@@ -3,9 +3,9 @@
 import type { ReactNode } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Tab, Tabs } from 'ui';
+import Header from '@/components/header/headerTitle';
 import style from './layout.module.scss';
 import Info from './info';
-import Header from '@/components/header/headerTitle';
 
 function MasterAvatarLayout({ children }: { children: ReactNode }) {
     const searchParams = useSearchParams();

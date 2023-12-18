@@ -6,6 +6,7 @@ import type { GetSingleMatchResponse } from 'data-center';
 import { GameStatus } from 'ui';
 import md5 from 'crypto-js/md5';
 import { useEffect, useState } from 'react';
+import { useContestInfoStore } from '@/app/contestInfoStore';
 import TeamLogo from './components/teamLogo';
 import Header from './header';
 import style from './liveBox.module.scss';
@@ -13,7 +14,6 @@ import VideoIcon from './img/video.png';
 import bgImage from './img/bg.jpg';
 import { createContestDetailStore, useContestDetailStore } from './contestDetailStore';
 import BackIcon from './img/back.png';
-import { useContestInfoStore } from '@/app/contestInfoStore';
 
 const statusStyleMap = {
     '0': 'notYet',

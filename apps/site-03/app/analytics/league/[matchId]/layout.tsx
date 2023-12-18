@@ -2,12 +2,12 @@
 import { useState, type ReactNode, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import { useRouter, useParams } from 'next/navigation';
+import { Tabs } from '@/components/tabs/tabs';
 import headBg from './img/detailbg.png';
 import backLeftArrowImg from './img/backLeftArrow.png';
 import teamLogo from './img/teamLogo.png';
 import down from './img/down.png';
 import style from './layout.module.scss';
-import { Tabs } from '@/components/tabs/tabs';
 
 interface DropdownOption {
     label: string;

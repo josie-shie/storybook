@@ -4,6 +4,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { FormControl } from '@mui/material';
 import type { ForgetPasswordRequest } from 'data-center';
 import { forgetPasswordReset, sendVerificationCode } from 'data-center';
+import { useNotificationStore } from '@/app/notificationStore';
 import {
     CountryCodeInput,
     PasswordInput,
@@ -13,7 +14,6 @@ import {
 } from '../components/authComponent/authComponent';
 import { useAuthStore } from '../authStore';
 import style from './forgetPassword.module.scss';
-import { useNotificationStore } from '@/app/notificationStore';
 
 const schema = yup.object().shape({
     countryCode: yup.string().required(),
