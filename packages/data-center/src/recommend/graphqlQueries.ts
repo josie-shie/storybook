@@ -358,3 +358,55 @@ export const GET_POST_LIST_QUERY = `
         }
     }
 `;
+
+export const GET_MEMBER_PROFILE_WITH_MEMBER_ID_QUERY = `
+    query getMemberProfileWithMemberId($input: GetMemberProfileWithMemberIdInput!){
+        getMemberProfileWithMemberId(input: $input) {
+            memberId
+            username
+            avatarPath
+            profile
+            fansCount
+            unlockedCount
+            isFollowed
+            highlights {
+                id
+                tagName
+                note
+                colorCode
+                weekHitRecentTen
+                weekMaxAccurateStreak
+                weekHitMatches
+                weekTotalMatches
+                weekHitRate
+                weekHitRateDisplay
+                weekRanking
+                weekHistoryMaxWinStreak
+                monthHitRecentTen
+                monthMaxAccurateStreak
+                monthHitMatches
+                monthTotalMatches
+                monthHitRate
+                monthHitRateDisplay
+                monthRanking
+                monthHistoryMaxWinStreak
+                quarterHitRecentTen
+                quarterMaxAccurateStreak
+                quarterHitMatches
+                quarterTotalMatches
+                quarterHitRate
+                quarterHitRateDisplay
+                quarterRanking
+                quarterHistoryMaxWinStreak
+                winHitRecentTen
+                winMaxAccurateStreak
+                winHitMatches
+                winTotalMatches
+                winHitRate
+                winHitRateDisplay
+                winRanking
+                winHistoryMaxWinStreak
+            }
+        }
+    }
+`;

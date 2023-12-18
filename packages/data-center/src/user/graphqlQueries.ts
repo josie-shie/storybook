@@ -251,3 +251,14 @@ export const GET_MEMBER_GUESS_VIEWING_RECORDS_QUERY = `
         }
     }
 `;
+
+export const GET_MEMBER_SUBSCRIPTION_STATUS_QUERY = `
+    query getMemberSubscriptionStatus($input: GetMemberSubscriptionStatusInput!){
+        getMemberSubscriptionStatus(input: $input) {
+            planId
+            planName
+            planStartAt
+            planEndAt
+        }
+    }
+`;

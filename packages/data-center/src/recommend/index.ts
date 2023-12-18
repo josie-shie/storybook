@@ -8,7 +8,8 @@ import {
     GET_MENTOR_POSTS_QUERY,
     GET_POST_DETAIL_QUERY,
     GET_MENTOR_LIST_QUERY,
-    GET_POST_LIST_QUERY
+    GET_POST_LIST_QUERY,
+    GET_MEMBER_PROFILE_WITH_MEMBER_ID_QUERY
 } from './graphqlQueries';
 
 export interface GetIndexPostsRequest {
@@ -444,6 +445,65 @@ export const getPostList = async (
         return {
             success: true,
             data: data.getPostList
+        };
+    } catch (error) {
+        return handleApiError(error);
+    }
+};
+
+export interface GetMemberProfileWithMemberIdRequest {
+    memberId: number;
+}
+
+const GetMemberProfileWithMemberIdSchema = z.object({
+    memberId: z.number(),
+    username: z.string(),
+    avatarPath: z.string(),
+    profile: z.string(),
+    fansCount: z.number(),
+    unlockedCount: z.number(),
+    isFollowed: z.boolean(),
+    highlights: TagSchema
+});
+
+const GetMemberProfileWithMemberIdResultSchema = z.object({
+    getMemberProfileWithMemberId: GetMemberProfileWithMemberIdSchema
+});
+
+export type GetMemberProfileWithMemberIdResult = z.infer<
+    typeof GetMemberProfileWithMemberIdResultSchema
+>;
+
+export type GetMemberProfileWithMemberIdResponse = z.infer<
+    typeof GetMemberProfileWithMemberIdSchema
+>;
+
+/**
+ * 推薦 - 競猜 | 取得會員個人競猜戰績頁面的簡介（不限是否為高手）
+ * - params : {@link GetMemberProfileWithMemberIdRequest}
+ * - returns : {@link GetMemberProfileWithMemberIdResponse}
+ * - {@link TagType}
+ */
+export const getMemberProfileWithMemberId = async (
+    input: GetMemberProfileWithMemberIdRequest
+): Promise<ReturnData<GetMemberProfileWithMemberIdResponse>> => {
+    try {
+        const { data }: { data: GetMemberProfileWithMemberIdResult } = await fetcher(
+            {
+                data: {
+                    query: GET_MEMBER_PROFILE_WITH_MEMBER_ID_QUERY,
+                    variables: {
+                        input
+                    }
+                }
+            },
+            { cache: 'no-store' }
+        );
+        GetMemberProfileWithMemberIdResultSchema.parse(data);
+
+        return {
+            success: true,
+            data: data.getMemberProfileWithMemberId
         };
     } catch (error) {
         return handleApiError(error);
