@@ -3,7 +3,12 @@ import { ProgressBar } from 'ui';
 import { useEffect, useState } from 'react';
 import ReactEcharts from 'echarts-for-react';
 import { getMemberIndividualGuess } from 'data-center';
-import { useMyGuessStore, type RecentPerformance, type Performance } from './myGuessStore';
+import {
+    useMyGuessStore,
+    type RecentPerformance,
+    type Performance,
+    type PerformanceDetail
+} from './myGuessStore';
 import style from './myGuess.module.scss';
 import Loading from '@/components/loading/loading';
 import { useUserStore } from '@/app/userStore';
@@ -16,7 +21,7 @@ const dateActiveMap = {
 
 type FocusDetailType = 'summary' | 'handicap' | 'size';
 
-function ReactEchartsConponent({
+function ReactEchartsComponent({
     myGuessData,
     dateActiveTab,
     focusDetail
@@ -38,7 +43,7 @@ function ReactEchartsConponent({
             textAlign: 'center',
             textVerticalAlign: 'middle',
             textStyle: {
-                fontSize: 12, // 調整字體大小
+                fontSize: 12, // 调整字体大小
                 fontWeight: 'bold',
                 lineHeight: 20,
                 rich: {
@@ -93,14 +98,41 @@ function ReactEchartsConponent({
     return <ReactEcharts option={chartOption} style={{ width: 120, height: 120 }} />;
 }
 
-function RecentPerformenceContent({ dateActiveTab }: { dateActiveTab: string }) {
-    const [focusDetail, setFocusDetail] = useState<FocusDetailType>('summary');
-
+function PerformenceBar({ guessDetail }: { guessDetail: PerformanceDetail }) {
     const formatRate = (lose: number, win: number) => {
         if (lose === 0 && win === 0) return 0;
         const winRate = (win / (lose + win)) * 100;
         return Number.isInteger(winRate) ? winRate : winRate.toFixed(1);
     };
+    return (
+        <>
+            <div className={style.top}>
+                <div className={style.total}>共{guessDetail.play}场</div>
+                <div className={style.percentage}>
+                    <div className={style.win}>胜 {guessDetail.win}</div>
+                    <div className={style.walk}>走 {guessDetail.draw}</div>
+                    <div className={style.defeat}>负 {guessDetail.lose}</div>
+                </div>
+            </div>
+            <div className={style.bot}>
+                <div className={style.winRate}>
+                    胜率
+                    {formatRate(guessDetail.lose, guessDetail.win)}%
+                </div>
+                <ProgressBar
+                    background="#8D8D8D"
+                    gapSize="small"
+                    height={4}
+                    radius
+                    value={guessDetail.win}
+                />
+            </div>
+        </>
+    );
+}
+
+function RecentPerformenceContent({ dateActiveTab }: { dateActiveTab: string }) {
+    const [focusDetail, setFocusDetail] = useState<FocusDetailType>('summary');
 
     const handleChangeFocusDetail = (value: FocusDetailType) => {
         setFocusDetail(value);
@@ -110,7 +142,7 @@ function RecentPerformenceContent({ dateActiveTab }: { dateActiveTab: string }) 
         useMyGuessStore.use.myGuess().recentPerformance[dateActiveTab as keyof RecentPerformance];
     return (
         <>
-            <ReactEchartsConponent
+            <ReactEchartsComponent
                 dateActiveTab={dateActiveTab}
                 focusDetail={focusDetail}
                 myGuessData={myGuessData}
@@ -124,27 +156,7 @@ function RecentPerformenceContent({ dateActiveTab }: { dateActiveTab: string }) 
                         handleChangeFocusDetail('summary');
                     }}
                 >
-                    <div className={style.top}>
-                        <div className={style.total}>共{myGuessData.summary.play}场</div>
-                        <div className={style.percentage}>
-                            <div className={style.win}>胜 {myGuessData.summary.win}</div>
-                            <div className={style.walk}>走 {myGuessData.summary.draw}</div>
-                            <div className={style.defeat}>負 {myGuessData.summary.lose}</div>
-                        </div>
-                    </div>
-                    <div className={style.bot}>
-                        <div className={style.winRate}>
-                            勝率
-                            {formatRate(myGuessData.summary.lose, myGuessData.summary.win)}%
-                        </div>
-                        <ProgressBar
-                            background="#8D8D8D"
-                            gapSize="small"
-                            height={4}
-                            radius
-                            value={myGuessData.summary.win}
-                        />
-                    </div>
+                    <PerformenceBar guessDetail={myGuessData.summary} />
                 </div>
                 <div
                     className={`${style.detailBlock} ${
@@ -154,27 +166,7 @@ function RecentPerformenceContent({ dateActiveTab }: { dateActiveTab: string }) 
                         handleChangeFocusDetail('size');
                     }}
                 >
-                    <div className={style.top}>
-                        <div className={style.total}>讓球{myGuessData.handicap.play}场</div>
-                        <div className={style.percentage}>
-                            <div className={style.win}>胜 {myGuessData.handicap.win}</div>
-                            <div className={style.walk}>走 {myGuessData.handicap.draw}</div>
-                            <div className={style.defeat}>負 {myGuessData.handicap.lose}</div>
-                        </div>
-                    </div>
-                    <div className={style.bot}>
-                        <div className={style.winRate}>
-                            勝率
-                            {formatRate(myGuessData.handicap.lose, myGuessData.handicap.win)}%
-                        </div>
-                        <ProgressBar
-                            background="#8D8D8D"
-                            gapSize="small"
-                            height={4}
-                            radius
-                            value={myGuessData.handicap.win}
-                        />
-                    </div>
+                    <PerformenceBar guessDetail={myGuessData.handicap} />
                 </div>
                 <div
                     className={`${style.detailBlock} ${
@@ -184,27 +176,7 @@ function RecentPerformenceContent({ dateActiveTab }: { dateActiveTab: string }) 
                         handleChangeFocusDetail('handicap');
                     }}
                 >
-                    <div className={style.top}>
-                        <div className={style.total}>大小{myGuessData.size.play}场</div>
-                        <div className={style.percentage}>
-                            <div className={style.win}>胜 {myGuessData.size.win}</div>
-                            <div className={style.walk}>走 {myGuessData.size.lose}</div>
-                            <div className={style.defeat}>負 {myGuessData.size.lose}</div>
-                        </div>
-                    </div>
-                    <div className={style.bot}>
-                        <div className={style.winRate}>
-                            勝率
-                            {formatRate(myGuessData.size.lose, myGuessData.size.win)}%
-                        </div>
-                        <ProgressBar
-                            background="#8D8D8D"
-                            gapSize="small"
-                            height={4}
-                            radius
-                            value={myGuessData.size.win}
-                        />
-                    </div>
+                    <PerformenceBar guessDetail={myGuessData.size} />
                 </div>
             </div>
         </>
