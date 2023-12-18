@@ -42,20 +42,16 @@ function RecordCard({ recordItem }: { recordItem: RecordItem }) {
 
     const tagListFormat = (tageData: TagType) => {
         const displayData = {
-            weekRanking: { rate: tageData.weekRanking, display: '週榜' },
-            monthRanking: { rate: tageData.monthRanking, display: '月榜' },
-            quarterRanking: { rate: tageData.quarterRanking, display: '季榜' }
+            weekRanking: { rate: tageData.weekRanking, display: `週榜 ${tageData.weekRanking}` },
+            monthRanking: { rate: tageData.monthRanking, display: `月榜 ${tageData.monthRanking}` },
+            quarterRanking: {
+                rate: tageData.quarterRanking,
+                display: `季榜 ${tageData.quarterRanking}`
+            }
         };
         return Object.entries(displayData).map(([key, value]) => {
             if (value.rate > 0) {
-                return (
-                    <Tag
-                        background="#fff"
-                        color="#4489ff"
-                        key={key}
-                        text={value.display + value.rate}
-                    />
-                );
+                return <Tag background="#fff" color="#4489ff" key={key} text={value.display} />;
             }
             return null;
         });
