@@ -55,5 +55,13 @@ module.exports = {
         'jsx-a11y/click-events-have-key-events': 'off',
         '@typescript-eslint/no-misused-promises': 'off',
         '@next/next/no-html-link-for-pages': 'off'
-    }
+    },
+    overrides: [
+        {
+            files: ['next-env.d.ts'],
+            rules: {
+                'unicorn/filename-case': 'off'
+            }
+        }
+    ]
 };
