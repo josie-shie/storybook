@@ -6,11 +6,12 @@ import { IconFlame } from '@tabler/icons-react';
 import { motion } from 'framer-motion';
 import { type MentorFilter, type GetMentorListResponse } from 'data-center';
 import { getMentorList, unFollow, updateFollow } from 'data-center';
+import { useRouter } from 'next/navigation';
+import Tag from '@/components/tag/tag';
+import Avatar from '@/components/avatar/avatar';
 import WeekButton from '../components/weekButton/weekButton';
 import { useUserStore } from '../../userStore';
 import style from './expertList.module.scss';
-import Tag from '@/components/tag/tag';
-import Avatar from '@/components/avatar/avatar';
 
 interface ExpertItemProps {
     mentorList: GetMentorListResponse;
@@ -19,6 +20,8 @@ interface ExpertItemProps {
 
 function ExpertItem({ mentorList, setMentorList }: ExpertItemProps) {
     const userInfo = useUserStore.use.userInfo();
+
+    const router = useRouter();
 
     const onFocused = async (isFollow: boolean, id: number) => {
         try {
@@ -38,13 +41,22 @@ function ExpertItem({ mentorList, setMentorList }: ExpertItemProps) {
             return new Error();
         }
     };
+
+    const goMasterPredict = (id: number) => {
+        router.push(`/master/masterAvatar/${id}?status=analysis`);
+    };
     return (
         <>
             {mentorList.map(item => {
                 return (
                     <div className={style.masterItem} key={item.username}>
                         <div className={style.info}>
-                            <div className={style.avatarContainer}>
+                            <div
+                                className={style.avatarContainer}
+                                onClick={() => {
+                                    goMasterPredict(item.memberId);
+                                }}
+                            >
                                 <Avatar
                                     borderColor="#4489FF"
                                     src={item.avatarPath === '0' ? '' : item.avatarPath}

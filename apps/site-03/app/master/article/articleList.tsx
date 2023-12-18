@@ -28,8 +28,8 @@ interface ArticleItemProps {
 function ArticleItem({ loadMoreList, articleList, currentPage, totalPage }: ArticleItemProps) {
     const router = useRouter();
 
-    const goInfo = () => {
-        router.push('/master/article/masterAvatar?status=analysis');
+    const goMasterPredict = (id: number) => {
+        router.push(`/master/masterAvatar/${id}?status=analysis`);
     };
 
     return (
@@ -38,7 +38,10 @@ function ArticleItem({ loadMoreList, articleList, currentPage, totalPage }: Arti
                 return (
                     <div className={style.articleItem} key={item.id}>
                         <div className={style.user}>
-                            <div className={style.avatarContainer} onClick={goInfo}>
+                            <div
+                                className={style.avatarContainer}
+                                onClick={() => goMasterPredict(item.id)}
+                            >
                                 <Avatar borderColor="#4489FF" src={item.avatarPath} />
                             </div>
                             <div className={style.userInfo}>
