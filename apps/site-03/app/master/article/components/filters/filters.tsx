@@ -3,10 +3,10 @@
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import { useCallback, useEffect, useState, useRef } from 'react';
 import { Tab, Tabs } from 'ui';
-import { motion } from 'framer-motion';
-import BottomDrawer from '@/components/drawer/bottomDrawer';
-import { useArticleStore } from '../../articleStore';
+// import { motion } from 'framer-motion';
 import style from './filters.module.scss';
+import BottomDrawer from '@/components/drawer/bottomDrawer';
+// import { useArticleStore } from '../../articleStore';
 
 // function FilterSection({ group, onClose }: { group: 'league' | 'country'; onClose: () => void }) {
 // const articleList = useArticleStore.use.articleList();

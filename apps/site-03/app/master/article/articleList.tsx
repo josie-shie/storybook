@@ -40,7 +40,9 @@ function ArticleItem({ loadMoreList, articleList, currentPage, totalPage }: Arti
                         <div className={style.user}>
                             <div
                                 className={style.avatarContainer}
-                                onClick={() => goMasterPredict(item.id)}
+                                onClick={() => {
+                                    goMasterPredict(item.mentorId);
+                                }}
                             >
                                 <Avatar borderColor="#4489FF" src={item.avatarPath} />
                             </div>

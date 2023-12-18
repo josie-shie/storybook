@@ -1,15 +1,15 @@
 import Image from 'next/image';
 import { timestampToString, timestampToMonthDay } from 'lib';
-import UnlockButton from '@/components/unlockButton/unlockButton';
-import type { PredictArticleType } from '@/types/predict';
+import { useEffect } from 'react';
+import { getPostList } from 'data-center';
+import { useRouter } from 'next/navigation';
 import { useMasterAvatarStore } from '../../masterAvatarStore';
 import style from './analysisItem.module.scss';
 import IconWin from './img/win.png';
 import IconDraw from './img/draw.png';
 import IconLose from './img/lose.png';
-import { useEffect } from 'react';
-import { getPostList } from 'data-center';
-import { useRouter } from 'next/navigation';
+import type { PredictArticleType } from '@/types/predict';
+import UnlockButton from '@/components/unlockButton/unlockButton';
 
 function AnalysisItem({ params }: { params: { masterId: string } }) {
     const predictArticleList = useMasterAvatarStore.use.predictArticleList();
@@ -27,6 +27,10 @@ function AnalysisItem({ params }: { params: { masterId: string } }) {
     };
 
     const formatHandicapName = {
+        HOME: '大小',
+        AWAY: '大小',
+        OVER: '让分',
+        UNDER: '大小',
         HANDICAP: '大小',
         OVERUNDER: '让分'
     };
@@ -62,10 +66,7 @@ function AnalysisItem({ params }: { params: { masterId: string } }) {
                 return (
                     <div className={style.analysisItem} key={item.id}>
                         <div className={style.top}>
-                            <div className={style.title}>
-                                <span className={style.decorate} />
-                                {item.analysisTitle}
-                            </div>
+                            <div className={style.title}>{item.analysisTitle}</div>
                             <div className={style.unlockStatus}>
                                 {item.isUnlocked ? (
                                     <span className={style.unlocked}>已解鎖</span>
@@ -74,7 +75,12 @@ function AnalysisItem({ params }: { params: { masterId: string } }) {
                                 )}
                             </div>
                         </div>
-                        <div className={style.mid} onClick={() => goArticleDetail(item.id)}>
+                        <div
+                            className={style.mid}
+                            onClick={() => {
+                                goArticleDetail(item.id);
+                            }}
+                        >
                             <div className={style.combination}>
                                 <div className={style.detail}>
                                     {item.leagueName}

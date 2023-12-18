@@ -4,11 +4,10 @@ import { useEffect, useState } from 'react';
 import { IconFlame } from '@tabler/icons-react';
 import { motion } from 'framer-motion';
 import { unFollow, updateFollow, getFollowers, type GetFollowersResponse } from 'data-center';
+import { useRouter } from 'next/navigation';
 import style from './masterItem.module.scss';
 import Avatar from '@/components/avatar/avatar';
 import Tag from '@/components/tag/tag';
-import { useRouter } from 'next/navigation';
-import { Router } from '@mui/icons-material';
 
 function MasterItem({ params }: { params: { masterId } }) {
     const [masterItem, setMasterItem] = useState<GetFollowersResponse>([]);
@@ -32,8 +31,8 @@ function MasterItem({ params }: { params: { masterId } }) {
     const onIsFocused = async (id: number, follow: boolean) => {
         try {
             const res = follow
-                ? await unFollow({ followerId: params.masterId || 1, followedId: id })
-                : await updateFollow({ followerId: params.masterId || 1, followedId: id });
+                ? await unFollow({ followerId: Number(params.masterId) || 1, followedId: id })
+                : await updateFollow({ followerId: Number(params.masterId) || 1, followedId: id });
             if (!res.success) {
                 return new Error();
             }
@@ -64,7 +63,9 @@ function MasterItem({ params }: { params: { masterId } }) {
                         <div className={style.info}>
                             <div
                                 className={style.avatarContainer}
-                                onClick={() => goMasterPredict(item.memberId)}
+                                onClick={() => {
+                                    goMasterPredict(item.memberId);
+                                }}
                             >
                                 <Avatar
                                     borderColor="#4489FF"
