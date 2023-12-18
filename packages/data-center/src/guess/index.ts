@@ -681,6 +681,8 @@ export const addGuess = async ({
             { cache: 'no-store' }
         );
 
+        AddGuessResultSchema.parse(data);
+
         return { success: true, data: data.addGuess };
     } catch (error) {
         return handleApiError(error);
