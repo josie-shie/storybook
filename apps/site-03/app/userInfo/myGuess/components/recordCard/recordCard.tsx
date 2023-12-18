@@ -3,7 +3,6 @@ import Image from 'next/image';
 import type { TagType } from 'data-center';
 import { convertHandicap } from 'lib';
 import Avatar from '@mui/material/Avatar';
-import Tag from '@/components/tag/tag';
 import { type RecordItem } from '../../myGuessStore';
 import Win from '../img/win.png';
 import BigWin from '../img/bigWin.png';
@@ -13,6 +12,7 @@ import BigGone from '../img/bigGone.png';
 import Gone from '../img/gone.png';
 import Fire from '../img/fire.png';
 import style from './recordCard.module.scss';
+import Tag from '@/components/tag/tag';
 
 function RecordCard({ recordItem }: { recordItem: RecordItem }) {
     const iconMap = {
@@ -80,9 +80,11 @@ function RecordCard({ recordItem }: { recordItem: RecordItem }) {
                         {recordItem.homeTeamName} VS {recordItem.awayTeamName}
                     </div>
                     <ul className={style.ballList}>
-                        {recordItem.latestPredictionResult.map((result, index) => (
-                            <li key={`${result + index}`}>{iconMap[result]}</li>
-                        ))}
+                        {recordItem.latestPredictionResult.predictionResults.map(
+                            (result, index) => (
+                                <li key={`${result + index}`}>{iconMap[result]}</li>
+                            )
+                        )}
                     </ul>
                 </div>
             </div>

@@ -38,7 +38,7 @@ export interface RecordItem {
     memberName: string;
     homeTeamName: string;
     awayTeamName: string;
-    latestPredictionResult: PredictionResultType[];
+    latestPredictionResult: { predictionResults: PredictionResultType[] };
     predictedPlay: PredictedPlayType;
     predictionResult: PredictionResultType;
     matchId: number;
