@@ -96,7 +96,7 @@ const initialState = (
             return { ...state, teamSelected };
         });
     },
-    teamHandicapOdds: '1',
+    teamHandicapOdds: '0.5',
     setTeamHandicapOdds: (teamHandicapOdds: string) => {
         set(state => {
             return { ...state, teamHandicapOdds };

@@ -52,6 +52,8 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            gap: 12px;
+            overflow-y: scroll;
 
             li {
                 display: flex;
@@ -98,8 +100,9 @@
 
                 .text {
                     color: #8d8d8d;
-                    font-size: 12px;
+                    font-size: 11px;
                     font-weight: 400;
+                    white-space: nowrap;
                 }
 
                 @for $i from 1 through 9 {
