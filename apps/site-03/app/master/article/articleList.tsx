@@ -29,7 +29,7 @@ function ArticleItem({ loadMoreList, articleList, currentPage, totalPage }: Arti
     const router = useRouter();
 
     const goInfo = () => {
-        router.push('/recommend/predict/masterAvatar?status=analysis');
+        router.push('/master/article/masterAvatar?status=analysis');
     };
 
     return (
