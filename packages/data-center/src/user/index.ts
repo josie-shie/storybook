@@ -702,7 +702,7 @@ const MemberGuessViewingRecordSchema = z.object({
     predictionResult: PredictionResultSchema,
     viewingTime: z.number(),
     highlights: TagSchema,
-    latestPredictionResult: z.array(PredictionResultSchema)
+    latestPredictionResult: z.object({ predictionResults: z.array(PredictionResultSchema) })
 });
 
 export type MemberGuessViewingRecord = z.infer<typeof MemberGuessViewingRecordSchema>;
