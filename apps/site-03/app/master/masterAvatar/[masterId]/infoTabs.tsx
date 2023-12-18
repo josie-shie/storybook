@@ -16,56 +16,7 @@ function InfoTabs({ params }: { params: { masterId: string } }) {
     const [planActiveTab, setPlanActiveTab] = useState('全部');
 
     creatMasterAvatarStore({
-        predictArticleList: [
-            {
-                id: 0,
-                analysisTitle: '【11连胜】格鲁吉亚vs西班牙，来看我的精心推荐吧',
-                leagueName: '欧锦U20A',
-                isUnlocked: true,
-                predictedPlay: 'HANDICAP',
-                predictionResult: 'WIN',
-                matchTime: 1702605325,
-                createdAt: 1700725556,
-                homeTeamName: '新泻天鹅女足',
-                awayTeamName: '仙台维加泰女足'
-            },
-            {
-                id: 1,
-                analysisTitle: '【11连胜】格鲁吉亚vs西班牙，来看我的精心推荐吧',
-                leagueName: '欧锦U20A',
-                isUnlocked: false,
-                predictedPlay: 'HANDICAP',
-                predictionResult: 'NONE',
-                matchTime: 1702605325,
-                createdAt: 1700725556,
-                homeTeamName: '新泻天鹅女足',
-                awayTeamName: '仙台维加泰女足'
-            },
-            {
-                id: 2,
-                analysisTitle: '【11连胜】格鲁吉亚vs西班牙，来看我的精心推荐吧',
-                leagueName: '欧锦U20A',
-                isUnlocked: true,
-                predictedPlay: 'OVERUNDER',
-                predictionResult: 'LOSE',
-                matchTime: 1702605325,
-                createdAt: 1700725556,
-                homeTeamName: '新泻天鹅女足',
-                awayTeamName: '仙台维加泰女足'
-            },
-            {
-                id: 3,
-                analysisTitle: '【11连胜】格鲁吉亚vs西班牙，来看我的精心推荐吧',
-                leagueName: '欧锦U20A',
-                isUnlocked: true,
-                predictedPlay: 'OVERUNDER',
-                predictionResult: 'LOSE',
-                matchTime: 1702605325,
-                createdAt: 1700725556,
-                homeTeamName: '新泻天鹅女足',
-                awayTeamName: '仙台维加泰女足'
-            }
-        ]
+        predictArticleList: []
     });
 
     const chartOption = {
@@ -145,7 +96,7 @@ function InfoTabs({ params }: { params: { masterId: string } }) {
         <div className={style.infoTabs}>
             {status === 'analysis' && (
                 <div className={style.tabContest}>
-                    <AnalysisItem />
+                    <AnalysisItem params={params} />
                 </div>
             )}
 

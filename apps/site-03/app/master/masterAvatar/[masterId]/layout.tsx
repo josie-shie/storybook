@@ -16,6 +16,7 @@ function MasterAvatarLayout({
 }) {
     const searchParams = useSearchParams();
     const status = searchParams.get('status');
+
     const headerProps = {
         title: '专家预测'
     };
@@ -26,7 +27,7 @@ function MasterAvatarLayout({
     };
     const tabList = [
         {
-            label: `预测文章(${199})`,
+            label: `预测文章(${100})`,
             to: `/master/masterAvatar/${params.masterId}?status=analysis`,
             status: 'analysis'
         },
@@ -45,7 +46,7 @@ function MasterAvatarLayout({
     return (
         <>
             <Header title={headerProps.title} />
-            <Info />
+            <Info params={params} />
             <div className={style.masterAvatar}>
                 <Tabs
                     buttonRadius={tabStyle.buttonRadius}

@@ -7,9 +7,15 @@ import style from './analysisItem.module.scss';
 import IconWin from './img/win.png';
 import IconDraw from './img/draw.png';
 import IconLose from './img/lose.png';
+import { useEffect } from 'react';
+import { getPostList } from 'data-center';
+import { useRouter } from 'next/navigation';
 
-function AnalysisItem() {
+function AnalysisItem({ params }: { params: { masterId: string } }) {
     const predictArticleList = useMasterAvatarStore.use.predictArticleList();
+    const setPredictArticleList = useMasterAvatarStore.use.setPredictArticleList();
+
+    const router = useRouter();
 
     const filterImage = (value: PredictArticleType): string => {
         const result = {
@@ -19,6 +25,36 @@ function AnalysisItem() {
         };
         return result[value];
     };
+
+    const formatHandicapName = {
+        HANDICAP: '大小',
+        OVERUNDER: '让分'
+    };
+
+    const fetchData = async () => {
+        try {
+            const res = await getPostList({
+                memberId: Number(params.masterId),
+                postFilter: ['all']
+            });
+
+            if (!res.success) {
+                return new Error();
+            }
+
+            setPredictArticleList({ predictArticleList: res.data.posts });
+        } catch (error) {
+            return new Error();
+        }
+    };
+
+    const goArticleDetail = (id: number) => {
+        router.push(`/master/article/${id}`);
+    };
+
+    useEffect(() => {
+        void fetchData();
+    }, []);
 
     return (
         <>
@@ -38,7 +74,7 @@ function AnalysisItem() {
                                 )}
                             </div>
                         </div>
-                        <div className={style.mid}>
+                        <div className={style.mid} onClick={() => goArticleDetail(item.id)}>
                             <div className={style.combination}>
                                 <div className={style.detail}>
                                     {item.leagueName}
@@ -47,7 +83,9 @@ function AnalysisItem() {
                                     </span>
                                 </div>
                                 <div className={style.team}>
-                                    <span className={style.tag}>{item.predictedPlay}</span>
+                                    <span className={style.tag}>
+                                        {formatHandicapName[item.predictedPlay]}
+                                    </span>
                                     {item.homeTeamName} vs {item.awayTeamName}
                                 </div>
                                 {item.predictionResult === 'NONE' ? null : (

@@ -1,29 +1,17 @@
 import { initStore } from 'lib';
 import type { StoreWithSelectors } from 'lib';
 import type { HandicapType, GuessType } from '@/types/predict';
-
-interface PredictArticle {
-    id: number;
-    analysisTitle: string;
-    leagueName: string;
-    isUnlocked: boolean;
-    predictedPlay: HandicapType;
-    predictionResult: GuessType;
-    matchTime: number;
-    createdAt: number;
-    homeTeamName: string;
-    awayTeamName: string;
-}
+import { type RecommendPost } from 'data-center';
 
 interface InitState {
-    predictArticleList: PredictArticle[];
+    predictArticleList: RecommendPost[];
 }
 
 interface MasterAvatarState extends InitState {
     setPredictArticleList: ({
         predictArticleList
     }: {
-        predictArticleList: PredictArticle[];
+        predictArticleList: RecommendPost[];
     }) => void;
 }
 
@@ -33,7 +21,7 @@ const initialState = (
     set: (updater: (state: MasterAvatarState) => Partial<MasterAvatarState>) => void
 ) => ({
     predictArticleList: [],
-    setPredictArticleList: ({ predictArticleList }: { predictArticleList: PredictArticle[] }) => {
+    setPredictArticleList: ({ predictArticleList }: { predictArticleList: RecommendPost[] }) => {
         set(() => ({ predictArticleList }));
     }
 });
