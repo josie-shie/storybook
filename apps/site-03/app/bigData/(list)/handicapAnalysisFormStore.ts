@@ -1,5 +1,6 @@
 import { initStore } from 'lib';
 import type { StoreWithSelectors } from 'lib';
+import type { ReactNode } from 'react';
 
 interface Option {
     label: string;
@@ -23,6 +24,12 @@ interface InitState {
 }
 
 interface HandicapAnalysisFormState extends InitState {
+    dialogContentType: string;
+    dialogContent: ReactNode;
+    openNoramlDialog: boolean;
+    setDialogContentType: (dialogContentType: string) => void;
+    setOpenNormalDialog: (openNoramlDialog: boolean) => void;
+    setDialogContent: (dialogContent: ReactNode) => void;
     setRecordList: (recordList: Record[]) => void;
     updateRecord: (recordId: string) => void;
     showRecord: boolean;
@@ -124,6 +131,24 @@ const initialState = (
             });
 
             return { ...prevState, recordList: updatedRecordList };
+        });
+    },
+    dialogContentType: 'payment',
+    openNoramlDialog: false,
+    dialogContent: null,
+    setOpenNormalDialog: (openNoramlDialog: boolean) => {
+        set(state => {
+            return { ...state, openNoramlDialog };
+        });
+    },
+    setDialogContentType: (dialogContentType: string) => {
+        set(state => {
+            return { ...state, dialogContentType };
+        });
+    },
+    setDialogContent: (dialogContent: ReactNode) => {
+        set(state => {
+            return { ...state, dialogContent };
         });
     },
     teamList: [

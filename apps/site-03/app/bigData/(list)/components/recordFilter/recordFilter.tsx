@@ -49,6 +49,8 @@ function RecordFilter({
     // 監聽MQTT是否推送已經有處理完成的分析結果
     useEffect(() => {
         const syncAnalysisStore = (message: Partial<AnalysisResponse>) => {
+            // eslint-disable-next-line no-console -- MQTT response
+            console.dir(message);
             if (message.memberId !== userInfo.uid) return;
 
             if (message.mission === 'done') {
@@ -57,7 +59,24 @@ function RecordFilter({
                     updateRecord(record.ticketId);
                 }
             } else if (message.mission === 'error') {
-                setDialogContentType('system');
+                let dialogType = 'system';
+                switch (message.message) {
+                    case '0':
+                        dialogType = 'system'; // 系統錯誤
+                        break;
+                    case '1':
+                        dialogType = 'parameter'; // 參數錯誤
+                        break;
+                    case '2':
+                        dialogType = 'empty'; //沒有資料
+                        break;
+                    case '3':
+                        dialogType = 'balance'; // 餘額不足
+                        break;
+                    default:
+                        break;
+                }
+                setDialogContentType(dialogType);
                 setOpenNormalDialog(true);
             }
         };

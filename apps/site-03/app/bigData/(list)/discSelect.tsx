@@ -1,7 +1,8 @@
 'use client';
 import { useSearchParams } from 'next/navigation';
 import Image from 'next/image';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import style from './disSelect.module.scss';
 import HandicapAnalysisForm from './handicapAnalysisForm';
 import HintsForm from './hintsForm';
@@ -10,12 +11,38 @@ import systemErrorImage from './img/systemError.png';
 import EmptyDataImage from './img/emptyData.png';
 import ErrorDialog from './components/dialog/dialog';
 
+function InsufficientBalance() {
+    const setOpenNormalDialog = useDiscSelectStore.use.setOpenNormalDialog();
+
+    return (
+        <>
+            <div className={style.dialogMessage}>
+                <p>余额不足，请充值</p>
+            </div>
+            <div className={style.footer}>
+                <div
+                    className={style.close}
+                    onClick={() => {
+                        setOpenNormalDialog(false);
+                    }}
+                >
+                    取消
+                </div>
+
+                <div className={style.confirm}>
+                    <Link href="/userInfo/subscribe">去充值</Link>
+                </div>
+            </div>
+        </>
+    );
+}
+
 function EmptyResponseError() {
     const setOpenNormalDialog = useDiscSelectStore.use.setOpenNormalDialog();
 
     return (
         <>
-            <div className={style.errorMessage}>
+            <div className={style.dialogMessage}>
                 <Image alt="" height={100} src={EmptyDataImage.src} width={100} />
                 <p>此條件查无资料！请重新修改搜寻条件</p>
             </div>
@@ -34,13 +61,26 @@ function EmptyResponseError() {
 }
 
 function SystemError() {
+    const [message, setMessage] = useState('');
     const setOpenNormalDialog = useDiscSelectStore.use.setOpenNormalDialog();
+    const dialogErrorType = useDiscSelectStore.use.dialogContentType();
+
+    useEffect(() => {
+        switch (dialogErrorType) {
+            case 'system':
+                setMessage('哎呀，系统暂时出错！ 请稍候重试');
+                break;
+            case 'parameter':
+                setMessage('参数错误，请重新选择');
+                break;
+        }
+    }, [dialogErrorType]);
 
     return (
         <>
-            <div className={style.errorMessage}>
+            <div className={style.dialogMessage}>
                 <Image alt="" height={100} src={systemErrorImage.src} width={100} />
-                <p>哎呀，系统暂时出错！ 请稍候重试</p>
+                <p>{message}</p>
             </div>
             <div className={style.footer}>
                 <div
@@ -76,10 +116,14 @@ function DiscSelect() {
     useEffect(() => {
         switch (dialogErrorType) {
             case 'system':
+            case 'parameter':
                 setDialogContent(<SystemError />);
                 break;
             case 'empty':
                 setDialogContent(<EmptyResponseError />);
+                break;
+            case 'balance':
+                setDialogContent(<InsufficientBalance />);
                 break;
             default:
                 setDialogContent(null);

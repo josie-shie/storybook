@@ -4,10 +4,10 @@ option go_package = "../data_center";
 
 
 message MqttMessage {
-  string mission = 1;             // 任務
-  uint64 memberId = 2;                 // 用户ID
+  string mission = 1;            // 任務
+  uint64 memberId = 2;           // 用户ID
   string ticketId = 3;           // tickey ID
-  string message = 4;
+  string message = 4;            // 錯誤種類：0. 系統錯誤 1. 參數錯誤 2. 查無資料錯誤 3. 餘額不足
   string handicapSide = 5;       // 让球方
   string handicapValues = 6;     // 让球数
   string overUnderValues = 7;    // 大小球
