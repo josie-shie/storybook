@@ -78,14 +78,15 @@ function Account() {
         if (userInfo.avatarPath && userInfo.avatarPath !== '0') {
             setImgSrc(userInfo.avatarPath);
         }
+
         setFormState({
             nickName: userInfo.username || '',
             birthday: userInfo.birthday || 0,
             phoneNumber: userInfo.mobileNumber || '',
             wechat: userInfo.wechat || '',
             qq: userInfo.qqNumber || '',
-            email: '',
-            intro: ''
+            email: userInfo.email || '',
+            description: userInfo.description || ''
         });
 
         const newSubmittedState = {
@@ -94,8 +95,8 @@ function Account() {
             phoneNumber: Boolean(userInfo.mobileNumber),
             wechat: Boolean(userInfo.wechat),
             qq: Boolean(userInfo.qqNumber),
-            email: Boolean(''),
-            intro: Boolean('')
+            email: Boolean(userInfo.email),
+            description: Boolean(userInfo.description)
         };
         setSubmittedState(newSubmittedState);
     }, [userInfo, setFormState, setImgSrc, setSubmittedState]);
@@ -158,7 +159,7 @@ function Account() {
             wechat: formState.wechat !== '',
             qq: formState.qq !== '',
             email: formState.email !== '',
-            intro: formState.intro !== ''
+            description: formState.description !== ''
         };
         setSubmittedState(newSubmittedState);
 
@@ -168,9 +169,9 @@ function Account() {
             avatarPath: imgUpload || userInfo.avatarPath,
             birthday: userInfo.birthday || dateValue.getTime() / 1000,
             wechat: formState.wechat,
-            qqNumber: formState.qq
-            // email: formState.email, // 需補上
-            // intro: formState.intro // 需補上
+            qqNumber: formState.qq,
+            email: formState.email,
+            description: formState.description
         };
 
         const res = await updateMemberInfo(obj);
@@ -187,9 +188,10 @@ function Account() {
     const editIntro = () => {
         const newSubmittedState = {
             ...submittedState,
-            intro: false
+            description: false
         };
         setSubmittedState(newSubmittedState);
+        setIsSubmitted(false);
     };
 
     return (
@@ -235,7 +237,7 @@ function Account() {
                         value={formState.birthday}
                     />
                     <FormField
-                        label="电话号码："
+                        label="手机号："
                         name="phoneNumber"
                         onChange={handleInputChange}
                         placeholder="新增"
@@ -253,15 +255,6 @@ function Account() {
                         value={formState.wechat}
                     />
                     <FormField
-                        label="邮箱："
-                        name="email"
-                        onChange={handleInputChange}
-                        placeholder="新增"
-                        submitted={submittedState.email}
-                        type="email"
-                        value={formState.email}
-                    />
-                    <FormField
                         label="QQ号："
                         name="qq"
                         onChange={handleInputChange}
@@ -270,8 +263,17 @@ function Account() {
                         type="text"
                         value={formState.qq}
                     />
+                    <FormField
+                        label="邮箱："
+                        name="email"
+                        onChange={handleInputChange}
+                        placeholder="新增"
+                        submitted={submittedState.email}
+                        type="email"
+                        value={formState.email}
+                    />
 
-                    {submittedState.intro ? (
+                    {submittedState.description ? (
                         <div className={style.item}>
                             <span className={style.title}>
                                 <span className={style.text}>简介：</span>
@@ -285,17 +287,17 @@ function Account() {
                                     编辑
                                 </button>
                             </span>
-                            <span className={style.content}>{formState.intro}</span>
+                            <span className={style.content}>{formState.description}</span>
                         </div>
                     ) : (
                         <div className={style.item}>
-                            <label htmlFor="intro">简介：</label>
+                            <label htmlFor="description">简介：</label>
                             <textarea
-                                id="intro"
-                                name="intro"
+                                id="description"
+                                name="description"
                                 onChange={handleTextareaChange}
                                 placeholder="介绍一下自己吧"
-                                value={formState.intro}
+                                value={formState.description}
                             />
                         </div>
                     )}

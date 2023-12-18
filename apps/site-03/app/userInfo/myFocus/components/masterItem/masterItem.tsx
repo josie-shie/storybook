@@ -85,19 +85,22 @@ function MasterItem({ uid, item, onFollowToggle }: FocusProps) {
                         )}
                         {item.tags.weekHistoryMaxWinStreak > 3 && (
                             <Tag
-                                background={item.tags.colorCode}
+                                background="#4489FF"
+                                color="#fff"
                                 text={`周榜 ${item.tags.weekHistoryMaxWinStreak}`}
                             />
                         )}
                         {item.tags.monthHistoryMaxWinStreak > 3 && (
                             <Tag
-                                background={item.tags.colorCode}
+                                background="#4489FF"
+                                color="#fff"
                                 text={`月榜 ${item.tags.monthHistoryMaxWinStreak}`}
                             />
                         )}
                         {item.tags.quarterHistoryMaxWinStreak > 3 && (
                             <Tag
-                                background={item.tags.colorCode}
+                                background="#4489FF"
+                                color="#fff"
                                 text={`季榜 ${item.tags.quarterHistoryMaxWinStreak}`}
                             />
                         )}

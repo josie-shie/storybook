@@ -123,19 +123,22 @@ function ArticleItem({ item }: GetUnlockPostProps) {
                     )}
                     {item.memberTags.weekHistoryMaxWinStreak > 3 && (
                         <Tag
-                            background={item.memberTags.colorCode}
+                            background="#4489FF"
+                            color="#fff"
                             text={`周榜 ${item.memberTags.weekHistoryMaxWinStreak}`}
                         />
                     )}
                     {item.memberTags.monthHistoryMaxWinStreak > 3 && (
                         <Tag
-                            background={item.memberTags.colorCode}
+                            background="#4489FF"
+                            color="#fff"
                             text={`月榜 ${item.memberTags.monthHistoryMaxWinStreak}`}
                         />
                     )}
                     {item.memberTags.quarterHistoryMaxWinStreak > 3 && (
                         <Tag
-                            background={item.memberTags.colorCode}
+                            background="#4489FF"
+                            color="#fff"
                             text={`季榜 ${item.memberTags.quarterHistoryMaxWinStreak}`}
                         />
                     )}
