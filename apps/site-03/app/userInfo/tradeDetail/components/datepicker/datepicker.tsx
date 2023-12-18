@@ -4,20 +4,18 @@ import dayjs from 'dayjs';
 import DatePicker, { registerLocale } from 'react-datepicker';
 import zhCN from 'date-fns/locale/zh-CN';
 import 'dayjs/locale/zh-cn';
-import IconButton from '@mui/material/IconButton';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
-import Image from 'next/image';
 import style from './datepicker.module.scss';
 import 'react-datepicker/dist/react-datepicker.css';
-import DateIcon from './img/date.png';
 
 registerLocale('zh-CN', zhCN);
 
 function Datepicker({
     openModal,
     setOpenModal,
+    setIsDateRangeOpen,
     setEnd,
     setStart
 }: {
@@ -25,6 +23,7 @@ function Datepicker({
     setOpenModal: (openModal: boolean) => void;
     setEnd: (date: number) => void;
     setStart: (date: number) => void;
+    setIsDateRangeOpen: (isOpen: boolean) => void;
 }) {
     const [startDate, setStartDate] = useState<Date | null>(new Date());
     const [endDate, setEndDate] = useState<Date | null>(new Date());
@@ -44,62 +43,56 @@ function Datepicker({
             setStart(startDate.getTime());
         }
         setOpenModal(false);
+        setIsDateRangeOpen(false);
     };
 
     return (
-        <>
-            <Box className={`baseDatePicker ${style.baseDatePicker}`}>
-                <IconButton>
-                    <Image alt="" height={20} src={DateIcon} width={20} />
-                </IconButton>
-            </Box>
-            <Modal className={style.datePickerModal} onClose={closeModal} open={openModal}>
-                <Box
-                    sx={{
-                        position: 'absolute',
-                        top: '50%',
-                        left: '50%',
-                        transform: 'translate(-50%, -50%)',
-                        bgcolor: 'background.paper',
-                        boxShadow: 24,
-                        borderRadius: '16px',
-                        p: '16px 0'
+        <Modal className={style.datePickerModal} onClose={closeModal} open={openModal}>
+            <Box
+                sx={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    bgcolor: 'background.paper',
+                    boxShadow: 24,
+                    borderRadius: '16px',
+                    p: '16px 0'
+                }}
+            >
+                <DatePicker
+                    endDate={endDate}
+                    inline
+                    locale="zh-CN"
+                    maxDate={maxDate}
+                    minDate={minDate}
+                    onChange={dates => {
+                        const [start, end] = dates;
+                        setStartDate(start);
+                        setEndDate(end);
                     }}
-                >
-                    <DatePicker
-                        endDate={endDate}
-                        inline
-                        locale="zh-CN"
-                        maxDate={maxDate}
-                        minDate={minDate}
-                        onChange={dates => {
-                            const [start, end] = dates;
-                            setStartDate(start);
-                            setEndDate(end);
-                        }}
-                        selected={startDate}
-                        selectsRange
-                        selectsStart
-                        startDate={startDate}
-                    />
-                    <div className={style.modalButtons}>
-                        <Button
-                            className={`${style.modalButton} ${style.cancelButton}`}
-                            onClick={closeModal}
-                            variant="outlined"
-                        >
-                            取消
-                        </Button>
-                        <Button
-                            className={`${style.modalButton} ${style.confirmButton}`}
-                            onClick={handleConfirmDate}
-                        >
-                            确定
-                        </Button>
-                    </div>
-                </Box>
-            </Modal>
-        </>
+                    selected={startDate}
+                    selectsRange
+                    selectsStart
+                    startDate={startDate}
+                />
+                <div className={style.modalButtons}>
+                    <Button
+                        className={`${style.modalButton} ${style.cancelButton}`}
+                        onClick={closeModal}
+                        variant="outlined"
+                    >
+                        取消
+                    </Button>
+                    <Button
+                        className={`${style.modalButton} ${style.confirmButton}`}
+                        onClick={handleConfirmDate}
+                    >
+                        确定
+                    </Button>
+                </div>
+            </Box>
+        </Modal>
     );
 }
 

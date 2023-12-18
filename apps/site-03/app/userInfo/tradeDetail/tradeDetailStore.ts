@@ -1,25 +1,30 @@
 import { initStore } from 'lib';
 import type { StoreWithSelectors } from 'lib';
 
-export type DateOption = 'all' | 'today' | 'week' | 'month' | 'threeMonths';
-export type TradeTypeOption = 'all' | 'deposit' | 'inCome' | 'expend';
+export type DateOption = 'ALL' | 'TOADY' | 'WEEK' | 'MONTH' | 'THREEWEEKS' | 'RANGE';
+export type TradeTypeOption = 'ALL' | 'RECHARGE' | 'INCOME' | 'PAY';
 export interface RechargeData {
-    currency: string;
-    exchangeRate: number;
+    balanceLogId: number;
     changeTypeDisplayName: string;
-    createdAt: number;
-    rechargeId: string;
-    amountOfChange: number;
+    changeTypeCategory: string;
+    changeTypeCategoryDisplayName: string;
     rechargeStatus: 'padding' | 'fail' | 'succes';
+    rechargeId: string;
+    currencyCode: string;
+    exchangeRate: number;
+    amountOfChange: number;
     balanceAfter: number;
+    createdAt: number;
 }
 
 export interface PaymentData {
-    type: number;
+    balanceLogId: number;
     changeTypeDisplayName: string;
-    createdAt: number;
+    changeTypeCategory: string;
+    changeTypeCategoryDisplayName: string;
     amountOfChange: number;
     balanceAfter: number;
+    createdAt: number;
 }
 
 interface OptionType {
@@ -27,18 +32,27 @@ interface OptionType {
     value: string;
 }
 
-export interface TradeDetailItem {
-    id: number;
-    changeTypeCategory: Omit<TradeTypeOption, 'all'>;
+interface TradeDetailItem {
+    balanceId: number;
+    changeTypeCategory: Omit<TradeTypeOption, 'ALL'>;
     data: RechargeData | PaymentData;
+}
+interface Pagination {
+    pageCount: number;
+    totalCount: number;
+}
+
+export interface TradeDetailInterface {
+    pagination: Pagination;
+    detailList: TradeDetailItem[];
 }
 
 interface InitState {
-    tradeDetailList: TradeDetailItem[];
+    tradeDetailList: TradeDetailInterface;
 }
 
 interface TradeDetailState extends InitState {
-    setTradeDetailList: (tradeDetailList: TradeDetailItem[]) => void;
+    setTradeDetailList: (tradeDetailList: TradeDetailInterface) => void;
     dateOption: OptionType[];
     tradeOption: OptionType[];
 }
@@ -46,7 +60,13 @@ interface TradeDetailState extends InitState {
 const initialState = (
     set: (updater: (state: TradeDetailState) => Partial<TradeDetailState>) => void
 ) => ({
-    tradeDetailList: [],
+    tradeDetailList: {
+        detailList: [],
+        pagination: {
+            pageCount: 0,
+            totalCount: 0
+        }
+    },
     dateOption: [
         {
             label: '全部時間',
@@ -87,7 +107,7 @@ const initialState = (
             value: 'expend'
         }
     ],
-    setTradeDetailList: (tradeDetailList: TradeDetailItem[]) => {
+    setTradeDetailList: (tradeDetailList: TradeDetailInterface) => {
         set(state => {
             return {
                 ...state,
@@ -99,7 +119,8 @@ const initialState = (
 
 let useTardeDetailStore: StoreWithSelectors<TradeDetailState>;
 
-const creatTardeDetailStore = (init: InitState) =>
-    (useTardeDetailStore = initStore<TradeDetailState>(initialState, init));
+const creatTardeDetailStore = () => {
+    useTardeDetailStore = initStore<TradeDetailState>(initialState);
+};
 
 export { creatTardeDetailStore, useTardeDetailStore };
