@@ -243,7 +243,9 @@ export const GET_MEMBER_GUESS_VIEWING_RECORDS_QUERY = `
                 predictedPlay
                 predictionResult
                 viewingTime
-                latestPredictionResult
+                latestPredictionResult {
+                    predictionResults
+                }
                 highlights {
                     id
                     tagName

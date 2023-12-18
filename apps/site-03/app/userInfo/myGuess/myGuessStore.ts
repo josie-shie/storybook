@@ -2,7 +2,7 @@ import { initStore } from 'lib';
 import type { StoreWithSelectors } from 'lib';
 import type { TagType } from 'data-center';
 
-interface PerformanceDetail {
+export interface PerformanceDetail {
     play: number;
     win: number;
     draw: number;
