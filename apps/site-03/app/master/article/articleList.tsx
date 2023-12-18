@@ -12,6 +12,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import WeekButton from '../components/weekButton/weekButton';
 import style from './articleList.module.scss';
 import Win from './img/win.png';
+import { useArticleStore } from './articleStore';
 import Avatar from '@/components/avatar/avatar';
 import Tag from '@/components/tag/tag';
 import UnlockButton from '@/components/unlockButton/unlockButton';
@@ -28,7 +29,7 @@ function ArticleItem({ loadMoreList, articleList, currentPage, totalPage }: Arti
     const router = useRouter();
 
     const goInfo = () => {
-        router.push('/recommend/predict/masterAvatar?status=analysis');
+        router.push('/master/article/masterAvatar?status=analysis');
     };
 
     return (
@@ -108,7 +109,7 @@ function ArticleItem({ loadMoreList, articleList, currentPage, totalPage }: Arti
                     </div>
                 );
             })}
-            {currentPage <= totalPage && (
+            {currentPage < totalPage && (
                 <InfiniteScroll onVisible={loadMoreList}>
                     <div className={style.loadMore}>
                         <CircularProgress size={24} />
@@ -123,7 +124,9 @@ function ArticleList() {
     const [isActive, setIsActive] = useState<PostFilter[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPage, setTotalPage] = useState(1);
-    const [articleList, setArticleList] = useState<RecommendPost[]>([]);
+
+    const setArticleList = useArticleStore.use.setArticleList();
+    const articleList = useArticleStore.use.articleList();
 
     const userInfo = useUserStore.use.userInfo();
 
@@ -135,7 +138,7 @@ function ArticleList() {
             }
             return [...current, value];
         });
-        setArticleList([]);
+        setArticleList({ articleList: [] });
         setCurrentPage(1);
         void fetchData();
     };
@@ -153,7 +156,9 @@ function ArticleList() {
             if (!res.success) {
                 return new Error();
             }
-            setArticleList(prevData => [...prevData, ...res.data.posts]);
+
+            const updatedArticleList = [...articleList, ...res.data.posts];
+            setArticleList({ articleList: updatedArticleList });
             setTotalPage(res.data.totalPage);
         } catch (error) {
             return new Error();
@@ -161,7 +166,7 @@ function ArticleList() {
     };
 
     const loadMoreList = () => {
-        if (currentPage <= Math.round(articleList.length / 30) && currentPage <= totalPage) {
+        if (currentPage <= Math.round(articleList.length / 30) && currentPage < totalPage) {
             setCurrentPage(prevData => prevData + 1);
         }
     };
