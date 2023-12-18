@@ -1,42 +1,108 @@
 'use client';
+
+import { useEffect, useState } from 'react';
 import { IconFlame } from '@tabler/icons-react';
 import { motion } from 'framer-motion';
+import { unFollow, updateFollow, getFollowers, type GetFollowersResponse } from 'data-center';
+import style from './masterItem.module.scss';
 import Avatar from '@/components/avatar/avatar';
 import Tag from '@/components/tag/tag';
-import { useArticleStore } from '../../articleStore';
-import style from './masterItem.module.scss';
+import { useUserStore } from '@/app/userStore';
 
 function MasterItem() {
-    const masterItem = useArticleStore.use.masterItem();
+    const [masterItem, setMasterItem] = useState<GetFollowersResponse>([]);
+
+    const userInfo = useUserStore.use.userInfo();
+
+    const fetchData = async () => {
+        try {
+            const res = await getFollowers({ memberId: 1, isFans: false });
+
+            if (!res.success) {
+                return new Error();
+            }
+
+            setMasterItem(res.data);
+        } catch (error) {
+            return new Error();
+        }
+    };
+
+    const onIsFocused = async (id: number, follow: boolean) => {
+        try {
+            const res = follow
+                ? await unFollow({ followerId: userInfo.uid || 1, followedId: id })
+                : await updateFollow({ followerId: userInfo.uid || 1, followedId: id });
+            if (!res.success) {
+                return new Error();
+            }
+
+            setMasterItem(prevData =>
+                prevData.map(item =>
+                    item.memberId === id ? { ...item, isFollowed: !item.isFollowed } : item
+                )
+            );
+        } catch (error) {
+            return new Error();
+        }
+    };
+
+    useEffect(() => {
+        void fetchData();
+    }, []);
 
     return (
         <>
             {masterItem.map(item => {
                 return (
-                    <div className={style.masterItem} key={item.id}>
+                    <div className={style.masterItem} key={item.memberId}>
                         <div className={style.info}>
                             <div className={style.avatarContainer}>
-                                <Avatar borderColor="#4489FF" size={46} />
+                                <Avatar
+                                    borderColor="#4489FF"
+                                    size={46}
+                                    src={item.avatarPath === '0' ? '' : item.avatarPath}
+                                />
                             </div>
                             <div className={style.about}>
+                                <span>{item.username}</span>
                                 <div className={style.top}>
-                                    <span>{item.name}</span>
-                                    {item.hotStreak > 2 && (
+                                    {item.tags.winMaxAccurateStreak > 0 && (
                                         <Tag
                                             icon={<IconFlame size={10} />}
-                                            text={`${item.hotStreak}連紅`}
+                                            text={`${item.tags.winMaxAccurateStreak} 連紅`}
                                         />
                                     )}
-                                    <Tag background="#4489FF" text={`月榜 ${item.ranking}`} />
+                                    {item.tags.weekRanking > 0 && (
+                                        <Tag
+                                            background="#4489FF"
+                                            text={`周榜 ${item.tags.weekRanking}`}
+                                        />
+                                    )}
+                                    {item.tags.monthRanking > 0 && (
+                                        <Tag
+                                            background="#4489FF"
+                                            text={`月榜 ${item.tags.monthRanking}`}
+                                        />
+                                    )}
+                                    {item.tags.quarterRanking > 0 && (
+                                        <Tag
+                                            background="#4489FF"
+                                            text={`季榜 ${item.tags.quarterRanking}`}
+                                        />
+                                    )}
                                 </div>
                                 <div className={style.bot}>
-                                    <span>粉丝: {item.fansNumber}</span>
-                                    <span>解锁: {item.unlockNumber}</span>
+                                    <span>粉丝: {item.fans}</span>
+                                    <span>解锁: {item.unlocked}</span>
                                 </div>
                             </div>
-                            {item.followed ? (
+                            {item.isFollowed ? (
                                 <motion.button
                                     className={style.followedButton}
+                                    onClick={() => {
+                                        void onIsFocused(item.memberId, true);
+                                    }}
                                     type="button"
                                     whileTap={{ scale: 0.9 }}
                                 >
@@ -45,6 +111,9 @@ function MasterItem() {
                             ) : (
                                 <motion.button
                                     className={style.followButton}
+                                    onClick={() => {
+                                        void onIsFocused(item.memberId, false);
+                                    }}
                                     type="button"
                                     whileTap={{ scale: 0.9 }}
                                 >
@@ -52,7 +121,7 @@ function MasterItem() {
                                 </motion.button>
                             )}
                         </div>
-                        <div className={style.description}>{item.description}</div>
+                        <div className={style.description}>{item.profile}</div>
                     </div>
                 );
             })}

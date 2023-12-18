@@ -20,7 +20,7 @@ interface ExpertItemProps {
 function ExpertItem({ mentorList, setMentorList }: ExpertItemProps) {
     const userInfo = useUserStore.use.userInfo();
 
-    const onSubscript = async (isFollow: boolean, id: number) => {
+    const onFocused = async (isFollow: boolean, id: number) => {
         try {
             const res = isFollow
                 ? await unFollow({ followerId: userInfo.uid, followedId: id })
@@ -87,7 +87,7 @@ function ExpertItem({ mentorList, setMentorList }: ExpertItemProps) {
                                 <motion.button
                                     className={style.followedButton}
                                     onClick={() => {
-                                        void onSubscript(true, item.memberId);
+                                        void onFocused(true, item.memberId);
                                     }}
                                     type="button"
                                     whileTap={{ scale: 0.9 }}
@@ -98,7 +98,7 @@ function ExpertItem({ mentorList, setMentorList }: ExpertItemProps) {
                                 <motion.button
                                     className={style.followButton}
                                     onClick={() => {
-                                        void onSubscript(false, item.memberId);
+                                        void onFocused(false, item.memberId);
                                     }}
                                     type="button"
                                     whileTap={{ scale: 0.9 }}
