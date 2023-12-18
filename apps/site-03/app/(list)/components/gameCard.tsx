@@ -4,13 +4,13 @@ import { parseMatchInfo } from 'lib';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
+import { useFormattedTime } from '@/hooks/useFormattedTime';
+import { useContestInfoStore } from '@/app/contestInfoStore';
 import { useContestListStore } from '../contestListStore';
 import style from './gameCard.module.scss';
 import { CompareOdds } from './compareOdds';
 import Soccer from './img/soccer.png';
 import Video from './img/video.jpg';
-import { useFormattedTime } from '@/hooks/useFormattedTime';
-import { useContestInfoStore } from '@/app/contestInfoStore';
 
 function ExtraInfo({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId: number }) {
     const globalStore = useContestInfoStore.use.contestInfo();

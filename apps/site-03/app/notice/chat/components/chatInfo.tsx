@@ -7,14 +7,14 @@ import { messageService, getMessageResponse, cancelMessage, getRandomInt } from 
 import type { MessageResponse, Message, MessageItem } from 'lib';
 import MessageRoom from '@bf/message-board';
 import '@bf/message-board/style.css';
+import { useLockBodyScroll } from '@/hooks/lockScroll';
+import { useMessageStore } from '@/app/messageStore';
+import { useUserStore } from '@/app/userStore';
 import { useNoticeStore } from '../../noticeStore';
 import backLeftArrowImg from '../../img/backLeftArrow.png';
 import SentIcon from '../img/sent.png';
 import SmileIcon from '../img/smile.png';
 import style from './chatInfo.module.scss';
-import { useLockBodyScroll } from '@/hooks/lockScroll';
-import { useMessageStore } from '@/app/messageStore';
-import { useUserStore } from '@/app/userStore';
 
 function Header({ userName }: { userName: string }) {
     const resetSelectedChatData = useNoticeStore.use.resetSelectedChatData();

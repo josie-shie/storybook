@@ -4,12 +4,12 @@ import { Tab, Tabs } from 'ui';
 import type { RequestPlayType } from 'data-center';
 import { getOddsRunning } from 'data-center';
 import { useEffect } from 'react';
-import leftBlackIcon from '../../img/left_black.png';
-import style from './oddsDetailDrawer.module.scss';
-import OddLiveTable from './oddLiveTable';
 import { useSituationStore } from '@/app/football/[matchId]/situationStore';
 import { useContestDetailStore } from '@/app/football/[matchId]/contestDetailStore';
 import { useContestInfoStore } from '@/app/contestInfoStore';
+import leftBlackIcon from '../../img/left_black.png';
+import style from './oddsDetailDrawer.module.scss';
+import OddLiveTable from './oddLiveTable';
 
 function ScroeBar() {
     const matchDetail = useContestDetailStore.use.matchDetail();

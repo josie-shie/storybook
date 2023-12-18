@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { useUserStore } from '@/app/userStore';
 import Switch from './components/switch/switch';
 import dotBackground from './img/dotBackground.png';
 import style from './header.module.scss';
@@ -6,7 +7,6 @@ import logoIconImg from './img/logoIcon.png';
 import Profile from './components/profile/profile';
 import Notice from './components/notice/notice';
 import Logo from './img/logo.png';
-import { useUserStore } from '@/app/userStore';
 
 interface HeaderProps {
     tabList: string[];

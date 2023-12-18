@@ -2,9 +2,9 @@
 import { motion } from 'framer-motion';
 import { Tab, Tabs } from 'ui';
 import { useEffect, useRef, useState } from 'react';
+import BottomDrawer from '@/components/drawer/bottomDrawer';
 import { useMatchFilterStore } from '../../matchFilterStore';
 import style from './matchFilterDrawer.module.scss';
-import BottomDrawer from '@/components/drawer/bottomDrawer';
 
 interface PropsType {
     group: 'league' | 'country';

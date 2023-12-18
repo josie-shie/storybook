@@ -5,6 +5,7 @@ import { InfiniteScroll } from 'ui';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Image from 'next/image';
+import { useContestInfoStore } from '@/app/contestInfoStore';
 import GameCard from './components/gameCard';
 import style from './football.module.scss';
 import { creatContestListStore, useContestListStore } from './contestListStore';
@@ -13,7 +14,6 @@ import BaseDatePicker from './components/baseDatePicker/baseDatePicker';
 import SettingIcon from './img/setting.png';
 import Setting from './components/setting';
 import FilterButton from './components/filterButton';
-import { useContestInfoStore } from '@/app/contestInfoStore';
 
 function Banner() {
     return <div className={style.banner} />;

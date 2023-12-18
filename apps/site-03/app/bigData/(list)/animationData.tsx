@@ -2,6 +2,8 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useUserStore } from '@/app/userStore';
+import PaidDialog from '@/components/paidDialog/paidDialog';
 import banner from './img/banner.png';
 import dataText from './img/dataText.png';
 import blueText from './img/blueText.png';
@@ -18,8 +20,6 @@ import enoughTitle from './img/enoughTitle.png';
 import enoughText from './img/enoughText.png';
 import vipTip from './img/vipTip.png';
 import style from './animationData.module.scss';
-import { useUserStore } from '@/app/userStore';
-import PaidDialog from '@/components/paidDialog/paidDialog';
 
 interface TestProps {
     analysisTime: boolean;

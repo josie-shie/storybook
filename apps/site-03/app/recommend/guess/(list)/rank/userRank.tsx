@@ -1,13 +1,13 @@
 'use client';
 import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
+import Avatar from '@/components/avatar/avatar';
 import Soccer from '../components/period/img/soccerWhite.png';
 import weekBackground from '../img/weekBg.png';
 import monthBackground from '../img/monthBg.png';
 import seasonBackground from '../img/seasonBg.png';
 import style from './userRank.module.scss';
 import { useRankStore } from './rankStore';
-import Avatar from '@/components/avatar/avatar';
 
 interface PeriodBackgroundMap {
     week: string;

@@ -4,6 +4,7 @@ import type {
     GetLeaguePointsRankResponse,
     GetBeforeGameIndexResponse
 } from 'data-center';
+import PageEndText from '@/components/pageEndText/pageEndText';
 import { createAnalyzeStore } from '../../analyzeStore';
 import BeforeGameTable from './beforeGameTable';
 import LeagueRankTables from './leagueRankTables';
@@ -14,7 +15,6 @@ import { createHomeRecordStore } from './homeAwayRecordTable/homeRecordStore';
 import { createAwayRecordStore } from './homeAwayRecordTable/awayRecordStore';
 import BattleRecordTable from './battleRecordTable/battleRecordTable';
 import HomeAwayRecord from './homeAwayRecordTable/homeAwayRecordTable';
-import PageEndText from '@/components/pageEndText/pageEndText';
 
 interface PropsType {
     analysisData: GetAnalysisOthersResponse;

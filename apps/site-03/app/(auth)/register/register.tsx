@@ -5,8 +5,6 @@ import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import type { RegisterRequest } from 'data-center';
 import { sendVerificationCode, register } from 'data-center';
-import { useAuthStore } from '../authStore';
-import style from './register.module.scss';
 import {
     NicknameInput,
     PhoneNumberInput,
@@ -18,6 +16,8 @@ import {
 } from '@/app/(auth)/components/authComponent/authComponent';
 import { useUserStore } from '@/app/userStore';
 import { useNotificationStore } from '@/app/notificationStore';
+import { useAuthStore } from '../authStore';
+import style from './register.module.scss';
 
 const schema = yup.object().shape({
     mobileNumber: yup.string().required(),

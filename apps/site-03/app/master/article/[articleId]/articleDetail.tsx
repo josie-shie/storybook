@@ -4,10 +4,10 @@ import type { Metadata } from 'next';
 import { useEffect, useState } from 'react';
 import { getPostDetail } from 'data-center';
 import { type GetPostDetailResponse } from 'data-center';
-import Info from './info';
-import ArticleContent from './articleContent';
 import Header from '@/components/header/headerTitle';
 import type { GuessTeam, GuessType, PredictTypeWithLock } from '@/types/predict';
+import Info from './info';
+import ArticleContent from './articleContent';
 
 export const metadata: Metadata = {
     title: '专家预测'

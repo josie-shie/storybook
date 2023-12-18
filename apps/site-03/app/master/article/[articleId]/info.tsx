@@ -3,10 +3,10 @@ import { IconFlame } from '@tabler/icons-react';
 import { unFollow, updateFollow } from 'data-center';
 import { type GetPostDetailResponse } from 'data-center';
 import type { Dispatch, SetStateAction } from 'react';
-import { useUserStore } from '../../../userStore';
-import style from './info.module.scss';
 import Avatar from '@/components/avatar/avatar';
 import Tag from '@/components/tag/tag';
+import { useUserStore } from '../../../userStore';
+import style from './info.module.scss';
 
 interface InfoProps {
     article: GetPostDetailResponse;

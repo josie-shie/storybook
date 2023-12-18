@@ -3,11 +3,11 @@ import { motion } from 'framer-motion';
 import { timestampToString } from 'lib';
 import Link from 'next/link';
 import type { BigDataHint } from 'data-center';
+import Tag from '@/components/tag/tag';
 import { useHintsFormStore } from '../../hintsFormStore';
 import style from './handicapTips.module.scss';
 import iconHot from './img/hot.png';
 import teamLogo from './img/homeTeam.png';
-import Tag from '@/components/tag/tag';
 
 interface PropsType {
     tipsData: BigDataHint;

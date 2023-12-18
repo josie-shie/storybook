@@ -2,13 +2,13 @@ import { useState } from 'react';
 import Image from 'next/image';
 import type { GetSingleMatchResponse, TotalGoalsInfo } from 'data-center';
 import { convertHandicap, truncateFloatingPoint } from 'lib';
-import { useSituationStore } from '../../situationStore';
-import style from './situation.module.scss';
-import rightBlack from './img/right_black.png';
 import { CompareOdds } from '@/app/(list)/components/compareOdds';
 import TextRadio from '@/components/textSwitch/textSwitch';
 import ButtonSwitch from '@/components/textSwitch/buttonSwitch';
 import { useContestDetailStore } from '@/app/football/[matchId]/contestDetailStore';
+import { useSituationStore } from '../../situationStore';
+import rightBlack from './img/right_black.png';
+import style from './situation.module.scss';
 
 const switchOptins = [
     { label: 'CROW*', value: 3 },

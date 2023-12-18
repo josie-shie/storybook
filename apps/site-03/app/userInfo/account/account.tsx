@@ -6,12 +6,12 @@ import Image from 'next/image';
 import type { UpdateMemberInfoRequest } from 'data-center';
 import { timestampToString, uploadImage } from 'lib';
 import { updateMemberInfo } from 'data-center';
+import Header from '@/components/header/headerTitleDetail';
+import { useNotificationStore } from '@/app/notificationStore';
 import { useUserStore } from '../../userStore';
 import style from './account.module.scss';
 import Avatar from './img/avatar.png';
 import { useAccountStore } from './accountStore';
-import Header from '@/components/header/headerTitleDetail';
-import { useNotificationStore } from '@/app/notificationStore';
 
 interface UploadResponse {
     filePath: string;

@@ -1,9 +1,9 @@
 'use client';
 import { useState } from 'react';
 import { IconFlame } from '@tabler/icons-react';
-import style from './info.module.scss';
 import Avatar from '@/components/avatar/avatar';
 import Tag from '@/components/tag/tag';
+import style from './info.module.scss';
 
 function Info() {
     const [isFocused, setIsFocused] = useState(false);

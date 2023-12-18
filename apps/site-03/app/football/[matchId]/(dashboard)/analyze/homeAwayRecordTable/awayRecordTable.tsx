@@ -1,6 +1,6 @@
+import { useAnalyzeStore } from '@/app/football/[matchId]/analyzeStore';
 import RecordTable from '../components/recordTable/recordTable';
 import { useAwayRecordStore } from './awayRecordStore';
-import { useAnalyzeStore } from '@/app/football/[matchId]/analyzeStore';
 
 function AwayRecordTable() {
     const teamInfo = useAnalyzeStore.use.teamInfo();

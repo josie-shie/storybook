@@ -1,3 +1,7 @@
 module.exports = {
-  extends: ["custom/next"],
+    extends: ['custom/next'],
+    parser: '@typescript-eslint/parser',
+    parserOptions: {
+        project: true
+    }
 };

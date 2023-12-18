@@ -6,11 +6,11 @@ import { IconFlame } from '@tabler/icons-react';
 import { motion } from 'framer-motion';
 import { type MentorFilter, type GetMentorListResponse } from 'data-center';
 import { getMentorList, unFollow, updateFollow } from 'data-center';
+import Avatar from '@/components/avatar/avatar';
+import Tag from '@/components/tag/tag';
 import WeekButton from '../components/weekButton/weekButton';
 import { useUserStore } from '../../userStore';
 import style from './expertList.module.scss';
-import Avatar from '@/components/avatar/avatar';
-import Tag from '@/components/tag/tag';
 
 interface ExpertItemProps {
     mentorList: GetMentorListResponse;

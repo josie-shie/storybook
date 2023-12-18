@@ -1,6 +1,6 @@
 import type { GetLiveText } from 'data-center';
-import style from './textBroadcast.module.scss';
 import NoData from '@/components/baseNoData/noData';
+import style from './textBroadcast.module.scss';
 
 function TextBroadcast({ broadcastList }: { broadcastList: GetLiveText[] }) {
     return (

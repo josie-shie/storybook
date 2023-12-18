@@ -1,12 +1,12 @@
 import Image from 'next/image';
 import { GameStatus } from 'ui';
+import { useContestInfoStore } from '@/app/contestInfoStore';
+import { useFormattedTime } from '@/hooks/useFormattedTime';
 import style from './header.module.scss';
 import BackIcon from './img/back.png';
 import ShareIcon from './img/share.png';
 import { useContestDetailStore } from './contestDetailStore';
 import TeamLogo from './components/teamLogo';
-import { useContestInfoStore } from '@/app/contestInfoStore';
-import { useFormattedTime } from '@/hooks/useFormattedTime';
 
 const statusStyleMap = {
     '0': 'notYet',

@@ -1,5 +1,5 @@
-import style from './layout.module.scss';
 import Loading from '@/components/loading/loading';
+import style from './layout.module.scss';
 
 function LoadingProcess() {
     return (

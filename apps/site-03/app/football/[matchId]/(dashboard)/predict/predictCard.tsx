@@ -1,10 +1,10 @@
 import Image from 'next/image';
 import type { GetPredictionMatchPost } from 'data-center';
+import Avatar from '@/components/avatar/avatar';
+import Tag from '@/components/tag/tag';
 import style from './predict.module.scss';
 import hotIcon from './img/hot.png';
 import coinIcon from './img/coin.png';
-import Avatar from '@/components/avatar/avatar';
-import Tag from '@/components/tag/tag';
 
 function PredictCard({ predictInfo }: { predictInfo: GetPredictionMatchPost }) {
     return (

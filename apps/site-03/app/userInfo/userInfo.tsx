@@ -7,6 +7,10 @@ import { useRouter } from 'next/navigation';
 import { ButtonBase } from '@mui/material';
 import Image from 'next/image';
 import Cookies from 'js-cookie';
+import { useNotificationStore } from '@/app/notificationStore';
+import Tag from '@/components/tag/tag';
+import Header from '@/components/header/headerTitleNoBg';
+import Footer from '@/components/footer/footer';
 import { useAuthStore } from '../(auth)/authStore';
 import { useUserStore } from '../userStore';
 import userInfoBg from './img/userInfoBg.png';
@@ -18,10 +22,6 @@ import MyGame from './img/myGame.png';
 import MyAnalyze from './img/myAnalyze.png';
 import style from './userInfo.module.scss';
 import defaultAvatar from './img/avatar.png';
-import { useNotificationStore } from '@/app/notificationStore';
-import Tag from '@/components/tag/tag';
-import Header from '@/components/header/headerTitleNoBg';
-import Footer from '@/components/footer/footer';
 
 function UserInfo() {
     const router = useRouter();

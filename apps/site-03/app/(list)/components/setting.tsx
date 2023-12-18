@@ -3,9 +3,9 @@ import Switch from '@mui/material/Switch';
 import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import { soundList, soundMap, soundSource, soundDefault } from 'lib';
+import BottomDrawer from '@/components/drawer/bottomDrawer';
 import style from './setting.module.scss';
 import RightIcon from './img/right.png';
-import BottomDrawer from '@/components/drawer/bottomDrawer';
 
 function SoundSelector({
     isOpen,

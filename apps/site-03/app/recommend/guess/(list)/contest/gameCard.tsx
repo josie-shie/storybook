@@ -1,12 +1,12 @@
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { convertHandicap } from 'lib';
+import { useContestInfoStore } from '@/app/contestInfoStore';
+import { useFormattedTime } from '@/hooks/useFormattedTime';
 import MasterIcon from '../img/master.png';
 import { CompareOdds } from './compareOdds';
 import { useGuessContestListStore } from './contestStore';
 import style from './gameCard.module.scss';
-import { useContestInfoStore } from '@/app/contestInfoStore';
-import { useFormattedTime } from '@/hooks/useFormattedTime';
 
 function GameCard({ matchId }: { matchId: number }) {
     const router = useRouter();

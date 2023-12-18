@@ -7,6 +7,7 @@
         "build": "next build",
         "start": "next start",
         "lint": "next lint && pnpm typecheck",
+        "lint:fix": "eslint . --fix",
         "typecheck": "tsc --noEmit",
         "lint:style": "stylelint app/**/*.{module.css,css,scss,module.scss}"
     },

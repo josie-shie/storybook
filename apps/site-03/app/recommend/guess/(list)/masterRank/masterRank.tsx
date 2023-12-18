@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { useEffect } from 'react';
 import { getGuessRank } from 'data-center';
+import Avatar from '@/components/avatar/avatar';
 import HotStreakListItem from '../components/hotStreak/hotStreakListItem';
 import UserSwitch from '../components/userSwitch/userSwitch';
 import Rule from '../components/rule/rule';
@@ -10,7 +11,6 @@ import masterRankBackground from '../img/masterRankBg.png';
 import Streak from '../components/hotStreak/img/whiteStreak.png';
 import { creatMasterRankStore, useMasterRankStore } from './masterRankStore';
 import style from './masterRank.module.scss';
-import Avatar from '@/components/avatar/avatar';
 
 function UserMasterRank() {
     const memberInfo = useMasterRankStore.use.member();

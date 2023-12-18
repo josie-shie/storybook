@@ -6,10 +6,10 @@ import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import Badge from '@mui/material/Badge';
 import type { MessageRoomType } from 'lib';
 import { timestampToString } from 'lib';
-import AvatarIcon from '../img/mentorIcon.jpg';
-import style from './chatCard.module.scss';
 import { useNoticeStore } from '@/app/notice/noticeStore';
 import Avatar from '@/components/avatar/avatar';
+import AvatarIcon from '../img/mentorIcon.jpg';
+import style from './chatCard.module.scss';
 
 function ChatCard({ chatData }: { chatData: MessageRoomType }) {
     const editStatus = useNoticeStore.use.editStatus();

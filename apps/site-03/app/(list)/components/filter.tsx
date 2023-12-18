@@ -3,9 +3,9 @@ import { motion } from 'framer-motion';
 import { Tab, Tabs } from 'ui';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import BottomDrawer from '@/components/drawer/bottomDrawer';
 import { useContestListStore } from '../contestListStore';
 import style from './filter.module.scss';
-import BottomDrawer from '@/components/drawer/bottomDrawer';
 
 function FilterSection({ group, onClose }: { group: 'league' | 'country'; onClose: () => void }) {
     const filterInfo = useContestListStore.use.filterInfo();

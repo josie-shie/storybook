@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import Header from '@/components/header/headerTitleDetail';
 import style from './tradeDetail.module.scss';
 import FilterIcon from './img/filterIcon.png';
 import TradeDetailList from './tradeDetailList';
@@ -14,7 +15,6 @@ import {
     type TradeTypeOption,
     type TradeDetailItem
 } from './tradeDetailStore';
-import Header from '@/components/header/headerTitleDetail';
 
 function TradeDetail() {
     const DateMap = {

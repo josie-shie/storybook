@@ -4,12 +4,12 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback } from 'react';
 import { timestampToString } from 'lib';
 import Image from 'next/image';
+import Tag from '@/components/tag/tag';
+import Avatar from '@/components/avatar/avatar';
 import style from './articleItem.module.scss';
 import Win from './img/win.png';
 import Lose from './img/lose.png';
 import Draw from './img/draw.png';
-import Tag from '@/components/tag/tag';
-import Avatar from '@/components/avatar/avatar';
 
 interface Tags {
     id: number;

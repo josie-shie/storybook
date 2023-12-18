@@ -1,7 +1,7 @@
+import NoData from '@/components/baseNoData/noData';
 import PredictCard from './predictCard';
 import { usePredictStore } from './predictStore';
 import style from './predict.module.scss';
-import NoData from '@/components/baseNoData/noData';
 
 function PredictList() {
     const predictList = usePredictStore.use.predictList();

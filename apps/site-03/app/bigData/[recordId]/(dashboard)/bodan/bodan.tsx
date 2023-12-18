@@ -1,10 +1,10 @@
 'use client';
 import { useEffect } from 'react';
 import { getFootballStatsMatches } from 'data-center';
+import { useNotificationStore } from '@/app/notificationStore';
 import { useAnalyticsResultStore } from '../../analysisResultStore';
 import { useMatchFilterStore } from '../../matchFilterStore';
 import style from './bodan.module.scss';
-import { useNotificationStore } from '@/app/notificationStore';
 
 type ScoreMapping = Partial<Record<string, number[]>>;
 

@@ -3,6 +3,9 @@ import { Suspense, type ReactNode } from 'react';
 import { useState } from 'react';
 import { Tab, Tabs } from 'ui';
 import Image from 'next/image';
+import Footer from '@/components/footer/footer';
+import Header from '@/components/header/headerLogo';
+import Loading from '@/components/loading/loading';
 import AnimationData from './animationData';
 import content from './img/content.png';
 import style from './layout.module.scss';
@@ -12,9 +15,6 @@ import { creatHandicapAnalysisStore } from './handicapAnalysisFormStore';
 import { creatHintsFormStore } from './hintsFormStore';
 import searchWhite from './img/searchWhite.png';
 import RecordFilter from './components/recordFilter/recordFilter';
-import Footer from '@/components/footer/footer';
-import Header from '@/components/header/headerLogo';
-import Loading from '@/components/loading/loading';
 
 function AnalysisLayout({ children }: { children: ReactNode }) {
     const [analysisTime, setAnalysisTime] = useState(true);

@@ -2,10 +2,10 @@
 
 import type { ReactNode } from 'react';
 import { useParams, usePathname } from 'next/navigation';
-import style from './layout.module.scss';
 import { Tabs } from '@/components/tabs/tabs';
 import Header from '@/components/header/headerLogo';
 import Footer from '@/components/footer/footer';
+import style from './layout.module.scss';
 
 function MasterLayout({ children }: { children: ReactNode }) {
     const params = useParams();

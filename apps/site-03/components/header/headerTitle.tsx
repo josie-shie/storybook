@@ -1,11 +1,11 @@
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import { useUserStore } from '@/app/userStore';
 import pureBackground from './img/pureBackground.png';
 import style from './header.module.scss';
 import backLeftArrowImg from './img/backLeftArrow.png';
 import Profile from './components/profile/profile';
 import Notice from './components/notice/notice';
-import { useUserStore } from '@/app/userStore';
 
 interface HeaderProps {
     title: string;
