@@ -117,7 +117,7 @@ const initialState = (set: (updater: (state: MyGuessState) => Partial<MyGuessSta
             }
         },
         myPlans: {
-            guessType: 0,
+            guessType: 0 as GuessType,
             guessMatchList: [],
             pagination: {
                 pageCount: 0,
@@ -152,11 +152,12 @@ const initialState = (set: (updater: (state: MyGuessState) => Partial<MyGuessSta
     }
 });
 
-const creatMyGuessStoreStore = (init: InitState) =>
-    (useMyGuessStore = initStore<MyGuessState>(set => {
-        return {
-            ...initialState(set),
-            ...init
-        };
-    }));
-export { creatMyGuessStoreStore, useMyGuessStore };
+let isInit = true;
+const creatMyGuessStore = () => {
+    if (isInit) {
+        useMyGuessStore = initStore<MyGuessState>(initialState);
+        isInit = false;
+    }
+};
+
+export { creatMyGuessStore, useMyGuessStore };
