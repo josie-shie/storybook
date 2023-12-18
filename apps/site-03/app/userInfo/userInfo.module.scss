@@ -118,6 +118,13 @@
                     color: #fff;
                     font-size: 14px;
 
+                    .status {
+                        display: flex;
+                        align-items: center;
+                        gap: 6px;
+                        color: #fff;
+                    }
+
                     span {
                         color: rgba(255 255 255 / 70%);
                         margin-left: 8px;

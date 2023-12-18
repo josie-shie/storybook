@@ -2,18 +2,18 @@
 import { useEffect } from 'react';
 import Image from 'next/image';
 import Cookies from 'js-cookie';
-import { getMemberInfo } from 'data-center';
-import Register from '@/app/(auth)/register/register';
-import Login from '@/app/(auth)/login/login';
-import { useUserStore } from '@/app/userStore';
-import ForgetPassword from '@/app/(auth)/forgetPassword/forgetPassword';
-import ChangePassword from '@/app/(auth)/changePassword/changePassword';
-import BottomDrawer from '@/components/drawer/bottomDrawer';
+import { getMemberInfo, getMemberSubscriptionStatus } from 'data-center';
 import { useNotificationStore } from '../notificationStore';
 import headerBg from './components/authComponent/img/headerBg.jpeg';
 import closeIcon from './components/authComponent/img/closeIcon.png';
 import style from './authDrawer.module.scss';
 import { useAuthStore } from './authStore';
+import Register from '@/app/(auth)/register/register';
+import Login from '@/app/(auth)/login/login';
+import { useUserStore } from '@/app/userStore';
+import ForgetPassword from '@/app/(auth)/forgetPassword/forgetPassword';
+import BottomDrawer from '@/components/drawer/bottomDrawer';
+import ChangePassword from '@/app/(auth)/changePassword/changePassword';
 
 function AuthDrawer() {
     const authQuery = useUserStore.use.authQuery();
@@ -24,6 +24,7 @@ function AuthDrawer() {
     const removeInvitCode = useAuthStore.use.removeInvitCode();
     const setUserInfo = useUserStore.use.setUserInfo();
     const setTags = useUserStore.use.setTags();
+    const setMemberSubscribeStatus = useUserStore.use.setMemberSubscribeStatus();
     const setIsLogin = useUserStore.use.setIsLogin();
     const setToken = useUserStore.use.setToken();
     const isCookieExist = Cookies.get('access');
@@ -76,6 +77,12 @@ function AuthDrawer() {
                 setToken(isCookieExist);
                 removeAuthQuery();
                 removeInvitCode();
+                const subscriptionRespons = await getMemberSubscriptionStatus({
+                    memberId: res.data.uid
+                });
+                if (subscriptionRespons.success) {
+                    setMemberSubscribeStatus(subscriptionRespons.data);
+                }
             } else {
                 setNotificationVisible('登陆已过期，请重新登陆', 'error');
             }
