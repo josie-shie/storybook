@@ -342,7 +342,7 @@ export const GET_MEMBER_TRANSACTION_LIST_QUERY = `
 `;
 
 export const GET_RECHARGE_OPTION_LIST_QUERY = `
-    query getRechargeOptionList($currencyCode: String!){
+    query getRechargeOptionList($currencyCode: String! ){
         getRechargeOptionList(currencyCode: $currencyCode) {
             list {
                 id

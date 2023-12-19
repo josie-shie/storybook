@@ -1,6 +1,6 @@
 import { initStore } from 'lib';
 import type { StoreWithSelectors } from 'lib';
-import type { GetSingleMatchResponse } from 'data-center';
+import type { GetSingleMatchResponse, GetGuessProportionResponse } from 'data-center';
 
 interface InitState {
     matchDetail: GetSingleMatchResponse;
@@ -9,6 +9,8 @@ interface InitState {
 interface ContestDetail extends InitState {
     layoutDisplayed: boolean;
     companyNameMap: Record<number, string>;
+    guessProportion: GetGuessProportionResponse;
+    setGuessProportion: (guessProportion: GetGuessProportionResponse) => void;
     setMatchDetailData: ({ matchDetail }: { matchDetail: GetSingleMatchResponse }) => void;
     setCoveredType: (layoutDisplayed: boolean) => void;
 }
@@ -17,6 +19,25 @@ let useContestDetailStore: StoreWithSelectors<ContestDetail>;
 
 const initialState = (set: (data: Partial<ContestDetail>) => void): ContestDetail => ({
     matchDetail: {} as GetSingleMatchResponse,
+    guessProportion: {
+        home: {
+            peopleNum: 0,
+            itemType: ''
+        },
+        away: {
+            peopleNum: 0,
+            itemType: ''
+        },
+        over: {
+            peopleNum: 0,
+            itemType: ''
+        },
+        under: {
+            peopleNum: 0,
+            itemType: ''
+        },
+        remainingGuessTimes: 0
+    },
     layoutDisplayed: true,
     companyNameMap: {
         1: '澳*',
@@ -37,6 +58,9 @@ const initialState = (set: (data: Partial<ContestDetail>) => void): ContestDetai
         47: '平*',
         48: '香港马*',
         49: 'Bwi*'
+    },
+    setGuessProportion: (guessProportion: GetGuessProportionResponse) => {
+        set({ guessProportion });
     },
     setMatchDetailData: ({ matchDetail }: { matchDetail: GetSingleMatchResponse }) => {
         set({ matchDetail });

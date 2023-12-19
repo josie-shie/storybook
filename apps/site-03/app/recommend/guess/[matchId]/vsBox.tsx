@@ -19,17 +19,19 @@ interface BettingProps {
     awayType: string;
 }
 
+const calculatePercentage = (a: number, b: number) => {
+    if (b === 0) {
+        return 0;
+    }
+    const percentage = Math.round((a / (a + b)) * 100);
+    return percentage;
+};
+
 function BettingColumn({ play, detail, homeType, awayType }: BettingProps) {
     const matchId = useParams().matchId;
     const [openGuessDialog, setOpenGuessDialog] = useState(false);
     const [direction, setDirection] = useState('left');
-    const calculatePercentage = (a: number, b: number) => {
-        if (b === 0) {
-            return 0;
-        }
-        const percentage = Math.round((a / (a + b)) * 100);
-        return percentage;
-    };
+
     const leftPercent =
         homeType === '主'
             ? calculatePercentage(detail.home, detail.away)
