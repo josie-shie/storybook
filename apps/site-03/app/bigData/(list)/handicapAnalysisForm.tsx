@@ -14,6 +14,7 @@ import Datepicker from './components/datepicker/datepicker';
 import { useHandicapAnalysisFormStore } from './handicapAnalysisFormStore';
 import searchIcon from './img/search.png';
 import Dialog from './components/dialog/dialog';
+import { useDiscSelectStore } from './discSelectStore';
 
 function PaymentAlert({
     getTrendAnalysis
@@ -198,10 +199,18 @@ function HandicapAnalysisForm() {
     const userInfo = useUserStore.use.userInfo();
     const startDate = useHandicapAnalysisFormStore.use.startDate();
     const endDate = useHandicapAnalysisFormStore.use.endDate();
+    const setDialogContentType = useDiscSelectStore.use.setDialogContentType();
+    const setOpenNormalDialog = useDiscSelectStore.use.setOpenNormalDialog();
 
     const getTrendAnalysis = async (currentStartDate: number, currentEndDate: number) => {
         if (!currentStartDate || !currentEndDate) {
             setAnalysisError('请选择时间区间');
+            return;
+        }
+
+        if (userInfo.balance < 80) {
+            setDialogContentType('balance');
+            setOpenNormalDialog(true);
             return;
         }
 
