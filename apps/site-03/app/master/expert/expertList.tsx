@@ -66,10 +66,10 @@ function ExpertItem({ mentorList, setMentorList }: ExpertItemProps) {
                             <div className={style.about}>
                                 <span>{item.username}</span>
                                 <div>
-                                    {item.tags.weekMaxAccurateStreak > 0 && (
+                                    {item.tags.winMaxAccurateStreak > 0 && (
                                         <Tag
                                             icon={<Image alt="fire" src={Fire} />}
-                                            text={`${item.tags.winMaxAccurateStreak}連紅`}
+                                            text={`${item.tags.winMaxAccurateStreak} 連紅`}
                                         />
                                     )}
                                     {item.tags.quarterRanking > 0 && (

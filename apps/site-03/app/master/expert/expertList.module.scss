@@ -14,15 +14,15 @@
 
     .info {
         display: flex;
+    }
+
+    .avatarContainer {
+        padding-right: 10px;
 
         img {
             height: 40px;
             width: 40px;
         }
-    }
-
-    .avatarContainer {
-        padding-right: 10px;
     }
 
     .about {
