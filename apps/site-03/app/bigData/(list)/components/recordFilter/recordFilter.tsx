@@ -53,10 +53,11 @@ function RecordFilter({
             console.dir(message);
             if (message.memberId !== userInfo.uid) return;
 
+            const currentRecord = recordList.find(item => item.ticketId === message.ticketId);
+
             if (message.mission === 'done') {
-                const record = recordList.find(item => item.ticketId === message.ticketId);
-                if (record) {
-                    updateRecord(record.ticketId);
+                if (currentRecord) {
+                    updateRecord(currentRecord.ticketId, message.mission);
                 }
             } else if (message.mission === 'error') {
                 let dialogType = 'system';
