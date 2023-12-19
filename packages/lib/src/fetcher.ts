@@ -9,12 +9,14 @@ interface Fetcher<TData> {
 }
 
 const handleUnauthorized = () => {
-    setTimeout(() => {
-        Cookies.remove('access');
-        if (!window.location.search.includes('auth=login')) {
-            window.location.href = '?auth=login';
-        }
-    }, 1000);
+    if (typeof window !== 'undefined') {
+        setTimeout(() => {
+            Cookies.remove('access');
+            if (!window.location.search.includes('auth=login')) {
+                window.location.href = '?auth=login';
+            }
+        }, 1000);
+    }
 };
 
 const apiPath: string | undefined = process.env.NEXT_PUBLIC_API_PATH;

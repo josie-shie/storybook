@@ -3,138 +3,20 @@ import { useState } from 'react';
 import { ProgressBar } from 'ui';
 import { useSearchParams } from 'next/navigation';
 import ReactEcharts from 'echarts-for-react';
-import { creatArticleStore } from '../articleStore';
-import AnalysisItem from '../components/analysisItem/analysisItem';
-import MasterItem from '../components/masterItem/masterItem';
-import BettingPlan from '../components/bettingPlan/bettingPlan';
+import { creatMasterAvatarStore } from './masterAvatarStore';
+import AnalysisItem from './components/analysisItem/analysisItem';
+import MasterItem from './components/masterItem/masterItem';
+import BettingPlan from './components/bettingPlan/bettingPlan';
 import style from './infoTabs.module.scss';
 
-function InfoTabs() {
+function InfoTabs({ params }: { params: { masterId: string } }) {
     const searchParams = useSearchParams();
     const status = searchParams.get('status');
     const [dateActiveTab, setDateActiveTab] = useState('日榜');
     const [planActiveTab, setPlanActiveTab] = useState('全部');
 
-    creatArticleStore({
-        articleList: [],
-        masterItem: [
-            {
-                id: 12,
-                avatar: '',
-                name: '老梁聊球',
-                hotStreak: 2,
-                ranking: 10,
-                followed: false,
-                unlockNumber: 1800,
-                fansNumber: 34516,
-                description: '资深足彩分析师，15年足彩经验，对各个赛事都有涉足。长期关注！'
-            },
-            {
-                id: 17,
-                avatar: '',
-                name: '柯侯配',
-                hotStreak: 6,
-                ranking: 7,
-                followed: true,
-                unlockNumber: 2200,
-                fansNumber: 54321,
-                description: '资深足彩分析师，15年足彩经验，对各个赛事都有涉足。长期关注！'
-            },
-            {
-                id: 18,
-                avatar: '',
-                name: '柯侯配',
-                hotStreak: 6,
-                ranking: 7,
-                followed: true,
-                unlockNumber: 2200,
-                fansNumber: 54321,
-                description: '资深足彩分析师，15年足彩经验，对各个赛事都有涉足。长期关注！'
-            },
-            {
-                id: 19,
-                avatar: '',
-                name: '柯侯配',
-                hotStreak: 6,
-                ranking: 7,
-                followed: true,
-                unlockNumber: 2200,
-                fansNumber: 54321,
-                description: '资深足彩分析师，15年足彩经验，对各个赛事都有涉足。长期关注！'
-            },
-            {
-                id: 20,
-                avatar: '',
-                name: '柯侯配',
-                hotStreak: 6,
-                ranking: 7,
-                followed: true,
-                unlockNumber: 2200,
-                fansNumber: 54321,
-                description: '资深足彩分析师，15年足彩经验，对各个赛事都有涉足。长期关注！'
-            },
-            {
-                id: 21,
-                avatar: '',
-                name: '柯侯配',
-                hotStreak: 6,
-                ranking: 7,
-                followed: true,
-                unlockNumber: 2200,
-                fansNumber: 54321,
-                description: '资深足彩分析师，15年足彩经验，对各个赛事都有涉足。长期关注！'
-            }
-        ],
-        predictArticleList: [
-            {
-                id: 0,
-                analysisTitle: '【11连胜】格鲁吉亚vs西班牙，来看我的精心推荐吧',
-                leagueName: '欧锦U20A',
-                isUnlocked: true,
-                predictedPlay: 'HANDICAP',
-                predictionResult: 'WIN',
-                matchTime: 1702605325,
-                createdAt: 1700725556,
-                homeTeamName: '新泻天鹅女足',
-                awayTeamName: '仙台维加泰女足'
-            },
-            {
-                id: 1,
-                analysisTitle: '【11连胜】格鲁吉亚vs西班牙，来看我的精心推荐吧',
-                leagueName: '欧锦U20A',
-                isUnlocked: false,
-                predictedPlay: 'HANDICAP',
-                predictionResult: 'NONE',
-                matchTime: 1702605325,
-                createdAt: 1700725556,
-                homeTeamName: '新泻天鹅女足',
-                awayTeamName: '仙台维加泰女足'
-            },
-            {
-                id: 2,
-                analysisTitle: '【11连胜】格鲁吉亚vs西班牙，来看我的精心推荐吧',
-                leagueName: '欧锦U20A',
-                isUnlocked: true,
-                predictedPlay: 'OVERUNDER',
-                predictionResult: 'LOSE',
-                matchTime: 1702605325,
-                createdAt: 1700725556,
-                homeTeamName: '新泻天鹅女足',
-                awayTeamName: '仙台维加泰女足'
-            },
-            {
-                id: 3,
-                analysisTitle: '【11连胜】格鲁吉亚vs西班牙，来看我的精心推荐吧',
-                leagueName: '欧锦U20A',
-                isUnlocked: true,
-                predictedPlay: 'OVERUNDER',
-                predictionResult: 'LOSE',
-                matchTime: 1702605325,
-                createdAt: 1700725556,
-                homeTeamName: '新泻天鹅女足',
-                awayTeamName: '仙台维加泰女足'
-            }
-        ]
+    creatMasterAvatarStore({
+        predictArticleList: []
     });
 
     const chartOption = {
@@ -214,7 +96,7 @@ function InfoTabs() {
         <div className={style.infoTabs}>
             {status === 'analysis' && (
                 <div className={style.tabContest}>
-                    <AnalysisItem />
+                    <AnalysisItem params={params} />
                 </div>
             )}
 
@@ -349,7 +231,7 @@ function InfoTabs() {
             )}
             {status === 'focus' && (
                 <div className={style.tabContest}>
-                    <MasterItem />
+                    <MasterItem params={params} />
                 </div>
             )}
         </div>

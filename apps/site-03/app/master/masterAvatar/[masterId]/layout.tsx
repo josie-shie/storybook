@@ -7,9 +7,16 @@ import Header from '@/components/header/headerTitle';
 import style from './layout.module.scss';
 import Info from './info';
 
-function MasterAvatarLayout({ children }: { children: ReactNode }) {
+function MasterAvatarLayout({
+    children,
+    params
+}: {
+    children: ReactNode;
+    params: { masterId: string };
+}) {
     const searchParams = useSearchParams();
     const status = searchParams.get('status');
+
     const headerProps = {
         title: '专家预测'
     };
@@ -20,18 +27,18 @@ function MasterAvatarLayout({ children }: { children: ReactNode }) {
     };
     const tabList = [
         {
-            label: `预测文章(${199})`,
-            to: '/master/article/masterAvatar?status=analysis',
+            label: `预测文章(${100})`,
+            to: `/master/masterAvatar/${params.masterId}?status=analysis`,
             status: 'analysis'
         },
         {
             label: '猜球',
-            to: '/master/article/masterAvatar?status=guess',
+            to: `/master/masterAvatar/${params.masterId}?status=guess`,
             status: 'guess'
         },
         {
             label: '关注',
-            to: '/master/article/masterAvatar?status=focus',
+            to: `/master/masterAvatar/${params.masterId}?status=focus`,
             status: 'focus'
         }
     ];
@@ -39,7 +46,7 @@ function MasterAvatarLayout({ children }: { children: ReactNode }) {
     return (
         <>
             <Header title={headerProps.title} />
-            <Info />
+            <Info params={params} />
             <div className={style.masterAvatar}>
                 <Tabs
                     buttonRadius={tabStyle.buttonRadius}

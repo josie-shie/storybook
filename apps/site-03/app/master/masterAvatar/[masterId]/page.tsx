@@ -5,8 +5,8 @@ export const metadata: Metadata = {
     title: '专家预测'
 };
 
-function Page() {
-    return <MasterAvatar />;
+function Page({ params }: { params: { masterId: string } }) {
+    return <MasterAvatar params={params} />;
 }
 
 export default Page;

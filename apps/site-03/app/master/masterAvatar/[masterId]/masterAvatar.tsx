@@ -6,10 +6,10 @@ export const metadata: Metadata = {
     title: '专家预测'
 };
 
-function MasterAvatar() {
+function MasterAvatar({ params }: { params: { masterId: string } }) {
     return (
         <div className="masterAvatar">
-            <InfoTabs />
+            <InfoTabs params={params} />
         </div>
     );
 }

@@ -2,20 +2,22 @@ import '@/styles/reset.scss';
 import '@/styles/globals.scss';
 import type { ReactNode } from 'react';
 import type { Metadata } from 'next';
-import AuthDrawer from '@/app/(auth)/authDrawer';
-import Notification from '@/app/notification';
+import { cookies } from 'next/headers';
+import { getMemberInfo, type GetMemberInfoResponse } from 'data-center';
 import GlobalStore from './globalStore';
 import MqttService from './mqttService';
 import WebsocketService from './websocketService';
 import GoalAlert from './goalAlert';
 import ContestStoreHandler from './contestStoreHandler';
+import Notification from '@/app/notification';
+import Auth from '@/app/(auth)/auth';
 
 export const metadata: Metadata = {
     title: 'Sport',
     description: 'The best sport site'
 };
 
-function RootLayout({ children }: { children: ReactNode }) {
+async function RootLayout({ children }: { children: ReactNode }) {
     function printMemoryUsage() {
         const memoryUsage = process.memoryUsage();
         // eslint-disable-next-line -- check memory
@@ -23,7 +25,20 @@ function RootLayout({ children }: { children: ReactNode }) {
             heapUsed: `${(memoryUsage.heapUsed / 1024 / 1024).toFixed(2)} MB`
         });
     }
+
     printMemoryUsage();
+
+    const isCookieExist = cookies().get('access')?.value;
+    let userInfo: GetMemberInfoResponse | null = null;
+    if (isCookieExist) {
+        try {
+            const res = await getMemberInfo(isCookieExist);
+            if (res.success) userInfo = res.data;
+        } catch (e) {
+            // eslint-disable-next-line -- Error Log
+            console.log('user info error:', e);
+        }
+    }
 
     return (
         <html lang="cn">
@@ -33,7 +48,7 @@ function RootLayout({ children }: { children: ReactNode }) {
                         <WebsocketService>
                             <ContestStoreHandler />
                             <GoalAlert />
-                            <AuthDrawer />
+                            <Auth userInfo={userInfo} />
                             <Notification />
                             <main>{children}</main>
                         </WebsocketService>

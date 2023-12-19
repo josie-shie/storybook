@@ -9,7 +9,6 @@
 
     .detail {
         display: flex;
-        align-items: center;
         justify-content: center;
         gap: 10px;
 
@@ -18,16 +17,16 @@
             flex-direction: column;
             gap: 4px;
 
+            .name {
+                color: #fff;
+                font-size: 14px;
+                font-weight: 500;
+                margin-right: 2px;
+            }
+
             .top {
                 display: flex;
                 gap: 4px;
-
-                .name {
-                    color: #fff;
-                    font-size: 14px;
-                    font-weight: 500;
-                    margin-right: 2px;
-                }
             }
 
             .bottom {

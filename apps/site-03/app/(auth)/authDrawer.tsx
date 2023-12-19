@@ -1,19 +1,18 @@
 'use client';
 import { useEffect } from 'react';
 import Image from 'next/image';
+import { getMemberSubscriptionStatus } from 'data-center';
 import Cookies from 'js-cookie';
-import { getMemberInfo, getMemberSubscriptionStatus } from 'data-center';
 import Register from '@/app/(auth)/register/register';
 import Login from '@/app/(auth)/login/login';
 import { useUserStore } from '@/app/userStore';
 import ForgetPassword from '@/app/(auth)/forgetPassword/forgetPassword';
 import BottomDrawer from '@/components/drawer/bottomDrawer';
 import ChangePassword from '@/app/(auth)/changePassword/changePassword';
-import { useNotificationStore } from '../notificationStore';
-import { useAuthStore } from './authStore';
-import style from './authDrawer.module.scss';
-import closeIcon from './components/authComponent/img/closeIcon.png';
 import headerBg from './components/authComponent/img/headerBg.jpeg';
+import closeIcon from './components/authComponent/img/closeIcon.png';
+import style from './authDrawer.module.scss';
+import { useAuthStore } from './authStore';
 
 function AuthDrawer() {
     const authQuery = useUserStore.use.authQuery();
@@ -22,14 +21,7 @@ function AuthDrawer() {
     const setAuthQuery = useUserStore.use.setAuthQuery();
     const removeAuthQuery = useAuthStore.use.removeAuthQuery();
     const removeInvitCode = useAuthStore.use.removeInvitCode();
-    const setUserInfo = useUserStore.use.setUserInfo();
-    const setTags = useUserStore.use.setTags();
-    const setMemberSubscribeStatus = useUserStore.use.setMemberSubscribeStatus();
-    const setIsLogin = useUserStore.use.setIsLogin();
-    const setToken = useUserStore.use.setToken();
-    const isCookieExist = Cookies.get('access');
-    const setNotificationVisible = useNotificationStore.use.setIsVisible();
-    const setUserInfoIsLoading = useUserStore.use.setUserInfoIsLoading();
+
     const authContent = useAuthStore.use.authContent();
     const setAuthContent = useAuthStore.use.setAuthContent();
     const title = useAuthStore.use.title();
@@ -64,42 +56,22 @@ function AuthDrawer() {
         removeAuthQuery();
         removeInvitCode();
     };
+    const setMemberSubscribeStatus = useUserStore.use.setMemberSubscribeStatus();
+    const userId = useUserStore.use.userInfo();
 
-    const getUserInfo = async () => {
-        const res = await getMemberInfo();
-
-        // 曾經登陸過
-        if (isCookieExist) {
-            if (res.success) {
-                setUserInfo(res.data);
-                setTags(res.data.tags);
-                setIsLogin(true);
-                setToken(isCookieExist);
-                removeAuthQuery();
-                removeInvitCode();
-                const subscriptionRespons = await getMemberSubscriptionStatus({
-                    memberId: res.data.uid
-                });
-                if (subscriptionRespons.success) {
-                    setMemberSubscribeStatus(subscriptionRespons.data);
-                }
-            } else {
-                setNotificationVisible('登陆已过期，请重新登陆', 'error');
-            }
-            // 沒有登陸過但是有帶auth query
-        } else if (authContent) {
-            setIsDrawerOpen(true);
-        }
-    };
-
+    const isToken = Cookies.get('access');
     useEffect(() => {
-        if (isCookieExist) {
-            void getUserInfo();
-            return;
-        }
-
-        setUserInfoIsLoading(false);
-    }, []);
+        const fetchSubscription = async () => {
+            const subscriptionRespons = await getMemberSubscriptionStatus({
+                memberId: userId.uid
+            });
+            if (subscriptionRespons.success) {
+                setMemberSubscribeStatus(subscriptionRespons.data);
+            }
+        };
+        if (isToken) void fetchSubscription();
+        if (authContent) setIsDrawerOpen(true);
+    });
 
     useEffect(() => {
         resetAuthContent();

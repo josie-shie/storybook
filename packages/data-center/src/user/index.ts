@@ -338,12 +338,17 @@ export const login = async ({
  * 獲取會員資料
  * - returns : {@link GetMemberInfoResponse}
  */
-export const getMemberInfo = async (): Promise<ReturnData<GetMemberInfoResponse>> => {
+export const getMemberInfo = async (token?: string): Promise<ReturnData<GetMemberInfoResponse>> => {
     try {
         const { data }: { data: GetMemberInfoResult } = await fetcher({
             data: {
                 query: GET_MEMBER_INFO_QUERY
-            }
+            },
+            headers: token
+                ? {
+                      Authorization: token
+                  }
+                : {}
         });
         GetMemberInfoResponseSchema.parse(data);
 

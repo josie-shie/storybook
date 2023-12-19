@@ -7,16 +7,16 @@ import type {
 } from 'data-center';
 
 interface InitState {
-    authQuery: string;
-    inviteCode: string;
+    token: string;
     userInfo: GetMemberInfoResponse;
     tags: TagType;
     memberSubscribeStatus: GetMemberSubscriptionStatusResponse;
+    isLogin: boolean;
 }
 
 interface UserState extends InitState {
-    token: string;
-    isLogin: boolean;
+    authQuery: string;
+    inviteCode: string;
     userInfoIsLoading: boolean;
     setIsLogin: (isLogin: boolean) => void;
     setUserInfoIsLoading: (userInfoIsLoading: boolean) => void;
@@ -34,7 +34,7 @@ const initialState = (set: (updater: (state: UserState) => Partial<UserState>) =
     userInfo: {} as GetMemberInfoResponse,
     tags: {} as TagType,
     memberSubscribeStatus: {} as GetMemberSubscriptionStatusResponse,
-    userInfoIsLoading: true,
+    userInfoIsLoading: false,
     isLogin: false,
     token: '',
     setIsLogin: (isLogin: boolean) => {
