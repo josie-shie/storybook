@@ -9,14 +9,14 @@ import { getPostList } from 'data-center';
 import { type PostFilter, type RecommendPost } from 'data-center';
 import { InfiniteScroll } from 'ui';
 import CircularProgress from '@mui/material/CircularProgress';
-import Avatar from '@/components/avatar/avatar';
-import Tag from '@/components/tag/tag';
-import UnlockButton from '@/components/unlockButton/unlockButton';
-import { useUserStore } from '@/app/userStore';
 import WeekButton from '../components/weekButton/weekButton';
 import style from './articleList.module.scss';
 import Win from './img/win.png';
 import { useArticleStore } from './articleStore';
+import Avatar from '@/components/avatar/avatar';
+import Tag from '@/components/tag/tag';
+import UnlockButton from '@/components/unlockButton/unlockButton';
+import { useUserStore } from '@/app/userStore';
 
 interface ArticleItemProps {
     loadMoreList: () => void;
@@ -50,10 +50,10 @@ function ArticleItem({ loadMoreList, articleList, currentPage, totalPage }: Arti
                                             text={`${item.tag.winMaxAccurateStreak}連紅`}
                                         />
                                     )}
-                                    {item.tag.quarterRanking > 0 && (
+                                    {item.tag.weekRanking > 0 && (
                                         <Tag
                                             background="#4489FF"
-                                            text={`季榜 ${item.tag.quarterRanking}`}
+                                            text={`周榜 ${item.tag.weekRanking}`}
                                         />
                                     )}
                                     {item.tag.monthRanking > 0 && (
@@ -62,10 +62,10 @@ function ArticleItem({ loadMoreList, articleList, currentPage, totalPage }: Arti
                                             text={`月榜 ${item.tag.monthRanking}`}
                                         />
                                     )}
-                                    {item.tag.weekRanking > 0 && (
+                                    {item.tag.quarterRanking > 0 && (
                                         <Tag
                                             background="#4489FF"
-                                            text={`周榜 ${item.tag.weekRanking}`}
+                                            text={`季榜 ${item.tag.quarterRanking}`}
                                         />
                                     )}
                                 </div>
@@ -138,9 +138,9 @@ function ArticleList() {
             }
             return [...current, value];
         });
+
         setArticleList({ articleList: [] });
         setCurrentPage(1);
-        void fetchData();
     };
 
     const fetchData = async () => {
@@ -156,7 +156,6 @@ function ArticleList() {
             if (!res.success) {
                 return new Error();
             }
-
             const updatedArticleList = [...articleList, ...res.data.posts];
             setArticleList({ articleList: updatedArticleList });
             setTotalPage(res.data.totalPage);
@@ -173,7 +172,7 @@ function ArticleList() {
 
     useEffect(() => {
         void fetchData();
-    }, [userInfo.uid, currentPage]);
+    }, [userInfo.uid, currentPage, isActive]);
 
     return (
         <>

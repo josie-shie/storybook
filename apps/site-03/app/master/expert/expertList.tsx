@@ -6,11 +6,11 @@ import { IconFlame } from '@tabler/icons-react';
 import { motion } from 'framer-motion';
 import { type MentorFilter, type GetMentorListResponse } from 'data-center';
 import { getMentorList, unFollow, updateFollow } from 'data-center';
-import Avatar from '@/components/avatar/avatar';
-import Tag from '@/components/tag/tag';
 import WeekButton from '../components/weekButton/weekButton';
 import { useUserStore } from '../../userStore';
 import style from './expertList.module.scss';
+import Tag from '@/components/tag/tag';
+import Avatar from '@/components/avatar/avatar';
 
 interface ExpertItemProps {
     mentorList: GetMentorListResponse;
@@ -129,7 +129,6 @@ function MasterList() {
             }
             return [...current, value];
         });
-        void fetchData();
     };
 
     const fetchData = async () => {
@@ -151,7 +150,7 @@ function MasterList() {
 
     useEffect(() => {
         void fetchData();
-    }, [userInfo.uid]);
+    }, [userInfo.uid, isActive]);
 
     return (
         <div className={style.master}>
