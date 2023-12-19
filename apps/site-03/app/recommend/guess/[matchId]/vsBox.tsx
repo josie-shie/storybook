@@ -11,6 +11,8 @@ import style from './vsBox.module.scss';
 import selectDecoration from './img/select.png';
 import GuessDialog from './components/guessDialog/guessDialog';
 import type { DetailType } from './guessDetailStore';
+import { useAuthStore } from '@/app/(auth)/authStore';
+import { useUserStore } from '@/app/userStore';
 
 interface BettingProps {
     play: string;
@@ -40,17 +42,27 @@ function BettingColumn({ play, detail, homeType, awayType }: BettingProps) {
     const guessStatus = homeType === '主' ? detail.guessHomeAway : detail.guessBigSmall;
     const guessTeam = direction === 'left' ? detail.homeTeamName : detail.awayTeamName;
 
+    const isLogin = useUserStore.use.isLogin();
     const guessesLeft = useGuessDetailStore.use.guessesLeft();
     const setGuessDetail = useGuessDetailStore.use.setDetail();
     const setGuessesLeft = useGuessDetailStore.use.setGuessesLeft();
+    const setIsDrawerOpen = useAuthStore.use.setIsDrawerOpen();
+    const setAuthQuery = useUserStore.use.setAuthQuery();
 
     const handleGuess = (guessDirection: 'left' | 'right') => {
+        if (!isLogin) {
+            setAuthQuery('login');
+            setIsDrawerOpen(true);
+            return;
+        }
         setOpenGuessDialog(true);
         setDirection(guessDirection);
     };
+
     const handleClickClose = () => {
         setOpenGuessDialog(false);
     };
+
     const handleConfirmGuess = async () => {
         setOpenGuessDialog(false);
         if (homeType === '主') {
@@ -159,6 +171,7 @@ function BettingColumn({ play, detail, homeType, awayType }: BettingProps) {
 
 function VsBox() {
     const matchId = useParams().matchId;
+    const userInfo = useUserStore.use.userInfo();
     const detailInfo = useGuessDetailStore.use.detail();
     const setDetailInfo = useGuessDetailStore.use.setDetail();
     const setGuessesLeft = useGuessDetailStore.use.setGuessesLeft();
@@ -186,7 +199,7 @@ function VsBox() {
             const matchDetail = await getMatchDetail(Number(matchId));
             const guessProportion = await getGuessProportion({
                 matchId: Number(matchId),
-                memberId: 16 // TODO: memberId 從 useInfo Store
+                memberId: userInfo.uid
             });
             if (matchDetail.success && guessProportion.success) {
                 const baseData = matchDetail.data;
@@ -212,11 +225,11 @@ function VsBox() {
                     big: guessData.over.peopleNum,
                     small: guessData.under.peopleNum
                 });
-                setGuessesLeft(guessData.remainingGuessTimes);
+                setGuessesLeft(guessData.remainingGuessTimes); // 搬到 userStore
             }
         }
         void fetchMatchDetail();
-    }, [matchId]);
+    }, [matchId, userInfo.uid]);
 
     return (
         <div className={style.vsBox}>
