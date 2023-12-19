@@ -1,18 +1,36 @@
 import Image from 'next/image';
-import type { GetPredictionMatchPost } from 'data-center';
-import Avatar from '@/components/avatar/avatar';
+import type { RecommendPost } from 'data-center';
+import { handleMatchDateTime } from 'lib';
+import { useRouter } from 'next/navigation';
 import Tag from '@/components/tag/tag';
+import Avatar from '@/components/avatar/avatar';
 import style from './predict.module.scss';
 import hotIcon from './img/hot.png';
 import coinIcon from './img/coin.png';
 
-function PredictCard({ predictInfo }: { predictInfo: GetPredictionMatchPost }) {
+function PredictCard({ predictInfo }: { predictInfo: RecommendPost }) {
+    const router = useRouter();
+    const dateFormat = () => {
+        const dataTime = handleMatchDateTime(predictInfo.createdAt);
+        if (!dataTime) return null;
+
+        if (dataTime.length > 5) {
+            return ` ${dataTime}`;
+        }
+        return `今天 ${dataTime}`;
+    };
+
     return (
-        <div className={style.predictCard}>
+        <div
+            className={style.predictCard}
+            onClick={() => {
+                router.push(`/master/article/${predictInfo.id}`);
+            }}
+        >
             <div className={style.mentor}>
                 <div className={style.mentorInfo}>
                     <Avatar borderColor="#4489ff" size={40} src={predictInfo.avatarPath} />
-                    <div className={style.title}>
+                    <div className={style.avatarBar}>
                         <h3 className={style.mentorName}>{predictInfo.mentorName}</h3>
                         <div className={style.tag}>
                             <Tag
@@ -28,13 +46,13 @@ function PredictCard({ predictInfo }: { predictInfo: GetPredictionMatchPost }) {
                         <span className={style.icon}>
                             <Image alt="" height={14} src={coinIcon} width={14} />
                         </span>
-                        <span>{predictInfo.price}元</span>
+                        <span className={style.price}>{predictInfo.price}</span>
                     </div>
-                    <p className={style.unlockTotal}>已有10人解锁</p>
+                    <p className={style.unlockTotal}>已有{predictInfo.unlockCounts}人解锁</p>
                 </div>
             </div>
             <h3 className={style.title}>{predictInfo.analysisTitle}</h3>
-            <div className={style.publishTime}>发表于今天 {predictInfo.createdAt}</div>
+            <div className={style.publishTime}>发表于{dateFormat()}</div>
         </div>
     );
 }

@@ -7,37 +7,42 @@
     .mentor {
         display: flex;
         justify-content: space-between;
-        padding-bottom: 2px;
+        margin-bottom: 8px;
 
         .mentorInfo {
             display: flex;
             gap: 10px;
 
-            .title {
+            .avatarBar {
                 display: flex;
                 flex-direction: column;
 
                 .mentorName {
+                    max-width: 227px;
+                    height: 30px;
+                    line-height: 30px;
                     color: #222;
                     font-size: 14px;
                     font-weight: 500;
-                    max-width: 227px;
                     overflow: hidden;
                     white-space: nowrap;
                     text-overflow: ellipsis;
-                    height: 30px;
-                    display: flex;
-                    align-items: center;
                 }
 
                 .tag {
                     display: flex;
-                    color: #fff;
-                    font-size: 11px;
-                    transform: scale(0.9167);
-                    margin-left: -5px;
-                    font-weight: 500;
                     gap: 4px;
+
+                    :global .baseTag {
+                        margin-right: 0;
+
+                        span {
+                            color: #fff;
+                            font-size: 11px;
+                            font-weight: 500;
+                            transform: scale(0.9167);
+                        }
+                    }
                 }
             }
         }
@@ -58,7 +63,7 @@
                 gap: 4px;
                 align-items: center;
 
-                span {
+                .price {
                     display: flex;
                     width: 100%;
                     color: #4489ff;
@@ -81,7 +86,8 @@
         color: #4a4a4a;
         font-size: 14px;
         font-weight: 600;
-        padding-bottom: 12px;
+        margin-bottom: 12px;
+        line-height: normal;
     }
 
     .publishTime {
@@ -90,7 +96,7 @@
         font-weight: 400;
         transform: scale(0.9167);
         margin-left: -16px;
-        padding-bottom: 8px;
+        padding-bottom: 12px;
     }
 }
 
@@ -99,5 +105,14 @@
     flex-direction: column;
     gap: 12px;
     overflow-y: auto;
-    height: calc(100vh - 320px);
+}
+
+.isLast {
+    width: 100%;
+    height: 24px;
+    line-height: 24px;
+    color: #8d8d8d;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 400;
 }

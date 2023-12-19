@@ -1,14 +1,16 @@
 'use client';
 
-import type { GetPredictionMatchPostsResponse } from 'data-center';
+import type { GetPostListResponse } from 'data-center';
 import PredictList from './predictList';
 import { creatPredictStore } from './predictStore';
 
-function Predict({ predictData }: { predictData: GetPredictionMatchPostsResponse }) {
+function Predict({ predictData, matchId }: { predictData: GetPostListResponse; matchId: number }) {
     creatPredictStore({
-        predictList: predictData
+        predictList: predictData.posts,
+        totalPage: predictData.totalPage,
+        totalArticle: predictData.totalArticle
     });
-    return <PredictList />;
+    return <PredictList matchId={matchId} />;
 }
 
 export default Predict;
