@@ -30,3 +30,14 @@
         }
     }
 }
+
+.listEnd {
+    display: flex;
+    justify-content: center;
+
+    p {
+        color: rgb(169 170 171);
+        font-size: 12px;
+        margin-bottom: 8px;
+    }
+}

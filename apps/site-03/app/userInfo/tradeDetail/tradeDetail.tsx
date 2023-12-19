@@ -1,34 +1,31 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { getMemberTransactionList } from 'data-center';
 import Image from 'next/image';
+import dayjs from 'dayjs';
 import { useRouter } from 'next/navigation';
 import Header from '@/components/header/headerTitleDetail';
+import Loading from '@/components/loading/loading';
 import style from './tradeDetail.module.scss';
 import FilterIcon from './img/filterIcon.png';
 import TradeDetailList from './tradeDetailList';
 import DateRangeDrawer from './components/dateOptionDrawer/dateOptionDrawer';
 import TradeTypeDrawer from './components/tradeTypeDrawer/tradeTypeDrawer';
-// import { useUserStore } from '@/app/userStore';
-import {
-    useTardeDetailStore,
-    type DateOption,
-    type TradeTypeOption,
-    type TradeDetailItem
-} from './tradeDetailStore';
+import { useTardeDetailStore, type DateOption, type TradeTypeOption } from './tradeDetailStore';
 
 function TradeDetail() {
     const DateMap = {
-        all: '全部时间',
-        today: '今日',
-        week: '最近一週',
-        month: '最近一个月',
-        threeMonths: '最近三个月'
+        ALL: '全部时间',
+        TODAY: '今日',
+        WEEK: '最近一週',
+        MONTH: '最近一个月',
+        THREEWEEKS: '最近三个月'
     };
     const TypeMap = {
-        all: '全部分类',
-        deposit: '充值',
-        inCome: '收入',
-        expend: '支付'
+        ALL: '全部分类',
+        RECHARGE: '充值',
+        INCOME: '收入',
+        PAY: '支付'
     };
 
     const router = useRouter();
@@ -36,60 +33,48 @@ function TradeDetail() {
         router.push('/userInfo');
     };
     const setTradeDetailList = useTardeDetailStore.use.setTradeDetailList();
-    // const memberId = useUserStore.use.userInfo().uid;
+    const [isLoading, setIsLoading] = useState(false);
     const [isDateRangeOpen, setIsDateRangeOpen] = useState(false);
     const [isTradeTypeOpen, setIsTradeTypeOpen] = useState(false);
-    const [activeDate, setActiveDate] = useState<DateOption>('all');
-    const [tradeType, setTradeType] = useState<TradeTypeOption>('all');
-    const [startDate, setStartDate] = useState<number>();
-    const [endDate, setEndDate] = useState<number>();
+    const [activeDate, setActiveDate] = useState<DateOption>('ALL');
+    const [tradeType, setTradeType] = useState<TradeTypeOption>('ALL');
+    const [start, setStart] = useState<number | undefined>();
+    const [end, setEnd] = useState<number | undefined>();
 
     const openOption = (value: 'dateRange' | 'tradeType') => {
         value === 'dateRange' ? setIsDateRangeOpen(true) : setIsTradeTypeOpen(true);
     };
 
-    const fetchData = (
-        start: number | undefined,
-        end: number | undefined,
-        type: TradeTypeOption
-    ) => {
-        // await fetchData({ memberId, startDate: start, endDate: end });
-        return [
-            {
-                id: 111,
-                changeTypeCategory: type,
-                data: {
-                    changeTypeDisplayName: '充值-男模會館大禮包',
-                    currency: 'USDT',
-                    exchangeRate: 2345,
-                    createdAt: start,
-                    rechargeId: '2SFJIJLEPQHV666',
-                    amountOfChange: 1000,
-                    rechargeStatus: 'succes',
-                    balanceAfter: 2200
-                }
-            },
-            {
-                id: 222,
-                changeTypeCategory: type,
-                data: {
-                    changeTypeDisplayName: '充值-包月訂閱',
-                    currency: 'USDT',
-                    exchangeRate: 2345,
-                    createdAt: end,
-                    rechargeId: '7SFJIJLEPQHV666',
-                    amountOfChange: 1000,
-                    rechargeStatus: 'padding',
-                    balanceAfter: 2200
-                }
-            }
-        ];
+    const dateDisplay = (startDate: number | undefined, endDate: number | undefined) => {
+        const startDisplay = dayjs(startDate).format('YYYY/MM/DD');
+        const endDisplay = dayjs(endDate).format('YYYY/MM/DD');
+        return end ? `${startDisplay} - ${endDisplay}` : startDisplay;
     };
 
-    const handleChangeOption = ({ start = startDate, end = endDate, type = tradeType } = {}) => {
-        const newData = fetchData(start, end, type);
-        setTradeDetailList(newData as TradeDetailItem[]);
-    };
+    useEffect(() => {
+        const initFetch = async () => {
+            setIsLoading(true);
+            const data = await getMemberTransactionList({
+                // TODO 等後端改 選全部 時間要帶0
+                startTime: 1,
+                endTime: 1702813684,
+                changeTypeCategory: 'ALL',
+                currencyPage: 1,
+                prepage: 20
+            });
+            if (data.success) {
+                setTradeDetailList({
+                    detailList: data.data.list,
+                    pagination: {
+                        pageCount: data.data.totalPages,
+                        totalCount: data.data.totalCount
+                    }
+                });
+            }
+            setIsLoading(false);
+        };
+        void initFetch();
+    }, [setTradeDetailList]);
 
     return (
         <>
@@ -103,7 +88,9 @@ function TradeDetail() {
                             openOption('dateRange');
                         }}
                     >
-                        <span>{DateMap[activeDate]}</span>
+                        <span>
+                            {activeDate === 'RANGE' ? dateDisplay(start, end) : DateMap[activeDate]}
+                        </span>
                         <Image alt="filterIcon" src={FilterIcon} />
                     </div>
                     <div
@@ -116,21 +103,28 @@ function TradeDetail() {
                         <Image alt="filterIcon" src={FilterIcon} />
                     </div>
                 </div>
-                <TradeDetailList />
+                {isLoading ? (
+                    <div className={style.loaderBox}>
+                        <Loading />
+                    </div>
+                ) : (
+                    <TradeDetailList end={end} start={start} tradeType={tradeType} />
+                )}
                 <DateRangeDrawer
                     activeDate={activeDate}
-                    handleChangeOption={handleChangeOption}
                     isDateRangeOpen={isDateRangeOpen}
                     setActiveDate={setActiveDate}
-                    setEndDate={setEndDate}
+                    setEndDate={setEnd}
                     setIsDateRangeOpen={setIsDateRangeOpen}
-                    setStartDate={setStartDate}
+                    setStartDate={setStart}
+                    tradeType={tradeType}
                 />
                 <TradeTypeDrawer
-                    handleChangeOption={handleChangeOption}
+                    end={end}
                     isTradeTypeOpen={isTradeTypeOpen}
                     setIsTradeTypeOpen={setIsTradeTypeOpen}
                     setTradeType={setTradeType}
+                    start={start}
                     tradeType={tradeType}
                 />
             </div>
