@@ -77,7 +77,9 @@ function Info({ article, setArticle }: InfoProps) {
                         {article.fansNumber > 0 && <span>粉絲: {article.fansNumber} </span>}
                         {article.unlockNumber > 0 && <span>解鎖: {article.unlockNumber} </span>}
                         {article.tag.quarterHitRate > 0 && (
-                            <span>近一季猜球胜率: {article.tag.quarterHitRate}%</span>
+                            <span>
+                                近一季猜球胜率: {Math.round(article.tag.quarterHitRate * 100)}%
+                            </span>
                         )}
                     </div>
                 </div>

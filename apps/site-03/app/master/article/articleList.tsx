@@ -16,6 +16,7 @@ import Fire from '@/app/img/fire.png';
 import WeekButton from '../components/weekButton/weekButton';
 import style from './articleList.module.scss';
 import Win from './img/win.png';
+import DRAW from './img/draw.png';
 import { useArticleStore } from './articleStore';
 
 interface ArticleItemProps {
@@ -105,6 +106,9 @@ function ArticleItem({ loadMoreList, articleList, currentPage, totalPage }: Arti
                                 </div>
                                 {item.predictionResult === 'WIN' && (
                                     <Image alt="" height={36} src={Win} width={36} />
+                                )}
+                                {item.predictionResult === 'DRAW' && (
+                                    <Image alt="" height={36} src={DRAW} width={36} />
                                 )}
                             </div>
                         </Link>
