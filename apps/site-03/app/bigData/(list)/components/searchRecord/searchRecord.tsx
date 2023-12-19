@@ -55,7 +55,10 @@ function SearchRecord({ index, recordData }: PropsType) {
                             type="button"
                             whileTap={{ scale: 0.9 }}
                         >
-                            <Link href={`/bigData/${recordData.ticketId}/handicap`} type="button">
+                            <Link
+                                href={`/bigData/${recordData.ticketId}?type=handicap`}
+                                type="button"
+                            >
                                 查看分析
                             </Link>
                         </motion.button>

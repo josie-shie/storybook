@@ -1,21 +1,25 @@
 'use client';
 import { Tabs, Tab } from 'ui';
-import { useParams, usePathname, useRouter } from 'next/navigation';
-import { type ReactNode, Suspense, useEffect } from 'react';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useEffect, useMemo, useState } from 'react';
 import { timestampToString } from 'lib';
-import { getFootballStatsResult } from 'data-center';
 import HeaderTitleFilter from '@/components/header/headerTitleFilter';
 import style from './dashboard.module.scss';
 import Handicap from './(dashboard)/handicap/handicap';
 import { useAnalyticsResultStore } from './analysisResultStore';
 import ContestDrawerList from './components/contestDrawerList/contestDrawerList';
+import Minutes from './(dashboard)/minutes/minutes';
+import Bodan from './(dashboard)/bodan/bodan';
+import Range from './(dashboard)/range/range';
 
 type HandicapSideType = 'home' | 'away';
 
-function ResultContent({ children }: { children: ReactNode }) {
-    const route = usePathname().split('/');
+function ResultContent() {
     const router = useRouter();
-    const params = useParams();
+    const pathname = usePathname();
+    const searchParams = useSearchParams();
+    const pageType = searchParams.get('type');
+    const [defaultPageIndex, setDefaultPageIndex] = useState(0);
     const showContestDrawer = useAnalyticsResultStore.use.showContestDrawer();
     const setShowContestDrawer = useAnalyticsResultStore.use.setShowContestDrawer();
     const selectedResult = useAnalyticsResultStore.use.selectedResult();
@@ -29,28 +33,31 @@ function ResultContent({ children }: { children: ReactNode }) {
         buttonRadius: 30
     };
 
-    const tabList = [
-        {
-            label: '讓球大小',
-            to: `/bigData/${params.recordId as string}/handicap`,
-            params: 'handicap'
-        },
-        {
-            label: '15分鐘進球',
-            to: `/bigData/${params.recordId as string}/minutes`,
-            params: 'minutes'
-        },
-        {
-            label: '進球數區間',
-            to: `/bigData/${params.recordId as string}/range`,
-            params: 'range'
-        },
-        {
-            label: '全場波膽',
-            to: `/bigData/${params.recordId as string}/bodan`,
-            params: 'bodan'
-        }
-    ];
+    const tabList = useMemo(
+        () => [
+            {
+                label: '让球大小',
+                content: <Handicap />,
+                params: 'handicap'
+            },
+            {
+                label: '15分钟进球',
+                content: <Minutes />,
+                params: 'minutes'
+            },
+            {
+                label: '进球数区间',
+                content: <Range />,
+                params: 'range'
+            },
+            {
+                label: '全场波胆',
+                content: <Bodan />,
+                params: 'bodan'
+            }
+        ],
+        []
+    );
 
     const handicapTeam = {
         home: '主',
@@ -60,6 +67,15 @@ function ResultContent({ children }: { children: ReactNode }) {
     const backHandler = () => {
         router.push('/bigData?status=analysis');
     };
+
+    useEffect(() => {
+        if (pageType) {
+            const index = tabList.findIndex(item => item.params === pageType);
+            setDefaultPageIndex(index || 0);
+        } else {
+            router.push(`${pathname}?type=handicap`);
+        }
+    }, [pageType, pathname, router, tabList]);
 
     return (
         <>
@@ -97,13 +113,7 @@ function ResultContent({ children }: { children: ReactNode }) {
             <div className={style.dashboard}>
                 <Tabs
                     buttonRadius={tabStyle.buttonRadius}
-                    defaultValue={
-                        route[route.length - 1] === params.recordId.toString() ? 0 : undefined
-                    }
-                    fullBlock={
-                        route[route.length - 1] === params.recordId.toString() ||
-                        route[route.length - 1] === 'handicap'
-                    }
+                    defaultValue={defaultPageIndex}
                     gap={tabStyle.gap}
                     position="flexStart"
                     scrolling={tabStyle.scrolling}
@@ -112,13 +122,8 @@ function ResultContent({ children }: { children: ReactNode }) {
                 >
                     {tabList.map(item => {
                         return (
-                            <Tab key={item.label} label={item.label} to={item.to}>
-                                <Suspense fallback={<div>Loading</div>}>
-                                    {item.params === route[route.length - 1] ? children : ''}
-
-                                    {route[route.length - 1] === params.recordId.toString() &&
-                                        item.params === 'handicap' && <Handicap />}
-                                </Suspense>
+                            <Tab key={item.params} label={item.label}>
+                                {item.content}
                             </Tab>
                         );
                     })}
@@ -139,30 +144,15 @@ function ResultContent({ children }: { children: ReactNode }) {
     );
 }
 
-function AnalysisResult({ children }: { children: ReactNode }) {
-    const params = useParams();
-    const setAnalysisResultData = useAnalyticsResultStore.use.setAnalysisResultData();
+function AnalysisResult() {
+    const analysisResultData = useAnalyticsResultStore.use.analysisResultData();
     const setHandicapEchart = useAnalyticsResultStore.use.setHandicapEchart();
 
-    const fetchData = async () => {
-        const res = await getFootballStatsResult({
-            ticketId: params.recordId.toString(),
-            memberId: 243
-        });
-
-        if (!res.success) {
-            return <div />;
-        }
-
-        setAnalysisResultData(res.data);
-        setHandicapEchart(res.data);
-    };
-
     useEffect(() => {
-        void fetchData();
-    }, []);
+        setHandicapEchart(analysisResultData);
+    }, [analysisResultData, setHandicapEchart]);
 
-    return <ResultContent>{children}</ResultContent>;
+    return <ResultContent />;
 }
 
 export default AnalysisResult;
