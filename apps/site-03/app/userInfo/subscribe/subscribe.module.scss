@@ -16,9 +16,14 @@
     margin-bottom: 24px;
 
     .title {
-        width: 100%;
-        height: 100%;
-        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        margin-bottom: 16px;
+        color: #fff;
+        font-size: 16px;
+        opacity: 0.7;
     }
 
     .vip {
@@ -62,15 +67,20 @@
     min-height: 504px;
 
     .layout {
-        padding: 12px 8px;
+        padding: 12px 8px 0;
         border-radius: 8px;
         background: linear-gradient(100deg, #1a3d7b 0%, #2d4e8c 91.02%);
-    }
 
-    .title {
-        width: 100%;
-        height: 100%;
-        margin-bottom: 12px;
+        .title {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 12px;
+            color: #fff;
+            font-size: 16px;
+            opacity: 0.7;
+        }
     }
 }
 
@@ -86,8 +96,13 @@
         padding: 30px 0;
 
         .title {
-            width: 100%;
-            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            color: #fff;
+            font-size: 16px;
+            opacity: 0.7;
         }
 
         .text {
@@ -114,7 +129,7 @@
     justify-content: space-between;
 
     .wrapper {
-        padding: 10px 0;
+        padding: 12px 0;
 
         .plan {
             position: relative;
@@ -123,7 +138,7 @@
             width: 82px;
             background: transparent;
             color: #d9d9d9;
-            padding: 20px 0 8px 0;
+            padding-top: 24px;
             border: 1px solid #ffffff4d;
             border-radius: 8px;
             transition: 0.3s;
@@ -157,19 +172,16 @@
 
                 .light {
                     font-size: 12px;
+                    font-weight: 400;
                     padding: 0;
+                    margin-left: 2px;
                 }
 
                 > span {
                     font-size: 16px;
                     display: inline-block;
+                    margin-right: 2px;
                 }
-            }
-
-            .coin {
-                display: flex;
-                justify-content: center;
-                align-items: center;
             }
 
             .selectedFlag {
@@ -177,11 +189,11 @@
                 align-items: center;
                 justify-content: center;
                 gap: 4px;
-                margin: 6px auto;
+                margin: 12px auto;
                 width: 58px;
                 font-size: 12px;
-                color: #d9d9d9;
-                border: 1px solid #d9d9d9;
+                color: rgba(255, 255, 255, 0.3);
+                border: 1px solid rgba(255, 255, 255, 0.3);
                 border-radius: 50px;
                 background: transparent;
                 transition: all 0.3s ease;
@@ -205,7 +217,7 @@
 .rights {
     font-size: 14px;
     color: #fff;
-    padding: 12px 10px 24px;
+    padding: 0 10px 24px;
     border-radius: 8px;
     background: linear-gradient(100deg, #1a3d7b 0%, #2d4e8c 91.02%);
 
@@ -214,7 +226,8 @@
         font-weight: 300;
         text-align: center;
         color: #bfbfbf;
-        padding-bottom: 8px;
+        padding: 4px 0;
+        margin-bottom: 8px;
     }
 
     .list {
@@ -245,10 +258,11 @@
     gap: 8px;
     color: #fff;
     padding: 6px;
-    margin: 24px 0;
+    margin: 30px 0;
 
     .protocol {
         color: #ffeaa7;
+        margin-left: 4px;
     }
 }
 

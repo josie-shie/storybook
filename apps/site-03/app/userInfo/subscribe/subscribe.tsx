@@ -10,13 +10,11 @@ import { useNotificationStore } from '@/app/notificationStore';
 import backLeftArrowImg from '../img/backLeftArrow.png';
 import style from './subscribe.module.scss';
 import background from './img/bg.png';
-import Title from './img/title.png';
-import PayTitle from './img/payTitle.png';
-import SubTitle from './img/subTitle.png';
+import lineLeft from './img/lineLeft.png';
+import lineRight from './img/lineRight.png';
 import Vip from './img/vip.png';
 import Arrow from './img/arrow.png';
 import ActiveArrow from './img/activeArrow.png';
-import starIcon from './img/starIcon.png';
 import checkbox from './img/checkbox.png';
 import checkedbox from './img/checkedbox.png';
 import VipIcon from './img/vipIcon.png';
@@ -148,7 +146,11 @@ function Subscribe({ backHistory }: { backHistory: boolean }) {
                     </div>
                 </div>
                 <div className={style.vipBlock}>
-                    <Image alt="" className={style.title} src={Title} />
+                    <div className={style.title}>
+                        <Image alt="" height={4} src={lineLeft} width={28} />
+                        高级会员方案
+                        <Image alt="" height={4} src={lineRight} width={28} />
+                    </div>
                     <Image alt="" className={style.vip} src={Vip} />
                     {memberSubscribeStatus.planId !== 1 && (
                         <div className={style.block}>
@@ -175,7 +177,11 @@ function Subscribe({ backHistory }: { backHistory: boolean }) {
                     <div className={style.layout}>
                         {memberSubscribeStatus.planId !== 1 ? (
                             <>
-                                <Image alt="" className={style.title} src={PayTitle} />
+                                <div className={style.title}>
+                                    <Image alt="" height={4} src={lineLeft} width={28} />
+                                    充值方案
+                                    <Image alt="" height={4} src={lineRight} width={28} />
+                                </div>
                                 <div className={style.planContainer} ref={switchRef}>
                                     {planList.map(plan => (
                                         <div className={`${style.wrapper}`} key={plan.id}>
@@ -191,21 +197,12 @@ function Subscribe({ backHistory }: { backHistory: boolean }) {
                                                     {plan.titleDesc}
                                                 </div>
                                                 <div className={style.text}>
-                                                    {planId === plan.id && (
-                                                        <Image
-                                                            alt=""
-                                                            className={style.icon}
-                                                            height={16}
-                                                            src={starIcon}
-                                                            width={16}
-                                                        />
-                                                    )}
                                                     <span className={style.bold}>
                                                         {plan.rechargeAmount}
                                                     </span>
                                                     <span className={style.light}>平台币</span>
                                                 </div>
-                                                <div className={`${style.text} ${style.coin}`}>
+                                                <div className={style.text}>
                                                     <span>{plan.paymentAmount}</span> 元
                                                 </div>
                                                 <button
@@ -242,7 +239,11 @@ function Subscribe({ backHistory }: { backHistory: boolean }) {
                             </>
                         ) : (
                             <div className={style.block}>
-                                <Image alt="" className={style.title} src={SubTitle} />
+                                <div className={style.title}>
+                                    <Image alt="" height={4} src={lineLeft} width={28} />
+                                    您的订阅状态
+                                    <Image alt="" height={4} src={lineRight} width={28} />
+                                </div>
                                 <span className={style.text}>
                                     <Image alt="" height={14} src={VipIcon} width={18} />
                                     无限畅享 VIP （年卡365天）

@@ -76,9 +76,9 @@ function UserInfo() {
         router.push('/userInfo/account');
     };
 
-    // const goRecharge = () => {
-    //     router.push('/userInfo/recharge');
-    // };
+    const goRecharge = () => {
+        router.push('/userInfo/recharge');
+    };
 
     const goSubscribe = () => {
         router.push('/userInfo/subscribe');
@@ -245,14 +245,14 @@ function UserInfo() {
                                         />
                                     )}
                                 </span>
-                                {/* <span
+                                <span
                                     className={style.button}
                                     onClick={() => {
                                         goRecharge();
                                     }}
                                 >
                                     充值
-                                </span> */}
+                                </span>
                             </div>
                             <div className={`${style.item} ${style.second}`}>
                                 <span className={style.text}>
