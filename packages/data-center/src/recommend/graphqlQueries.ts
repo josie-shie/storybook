@@ -410,3 +410,18 @@ export const GET_MEMBER_PROFILE_WITH_MEMBER_ID_QUERY = `
         }
     }
 `;
+
+export const GET_LEAGUE_OF_POST_LIST_QUERY = `
+    query getLeagueOfPostList {
+        getLeagueOfPostList {
+            country {
+                countryId
+                countryName
+            }
+            leagues {
+                leagueId
+                leagueName
+            }
+        }
+    }
+`;
