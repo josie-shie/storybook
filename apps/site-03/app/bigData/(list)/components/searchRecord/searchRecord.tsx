@@ -36,12 +36,12 @@ function SearchRecord({ index, recordData }: PropsType) {
             <div className={style.detail}>
                 <div className={style.content}>
                     <div className={style.item}>
-                        全場讓球 讓方
+                        全场让分 让方
                         <span>{handicapTeam[recordData.handicapSide] || '全部'}</span>
-                        、盤口<span>{recordData.handicapValues}</span>
+                        、盘口<span>{recordData.handicapValues}</span>
                     </div>
                     <div className={style.item}>
-                        全場大小 盤口<span>{recordData.overUnderValues || '不挑選'}</span>
+                        全场大小 盘口<span>{recordData.overUnderValues || '不挑選'}</span>
                     </div>
                     <div className={style.item}>
                         時間區間 {timestampToString(recordData.startTime, 'YYYY-MM-DD')} ~{' '}

@@ -36,7 +36,7 @@ function ResultContent() {
     const tabList = useMemo(
         () => [
             {
-                label: '让球大小',
+                label: '让分大小',
                 content: <Handicap />,
                 params: 'handicap'
             },
@@ -83,18 +83,18 @@ function ResultContent() {
             <div className={style.bigDataGame}>
                 <div className={style.column}>
                     <div className={style.row}>
-                        <span className={style.title}>全場讓球</span>
+                        <span className={style.title}>全场让分</span>
                         <span className={style.name}>
-                            讓方/
+                            让方/
                             {handicapTeam[analysisData.handicapSide as HandicapSideType] || '全部'}
-                            、盤口/
+                            、盘口/
                             {analysisData.handicapValues ||
                                 analysisData.handicapValues === '0' ||
                                 '不挑選'}
                         </span>
                     </div>
                     <div className={style.row}>
-                        <span className={style.title}>全場大小</span>
+                        <span className={style.title}>全场大小</span>
                         <span className={style.name}>
                             {analysisData.overUnderValues || '不挑選'}
                         </span>

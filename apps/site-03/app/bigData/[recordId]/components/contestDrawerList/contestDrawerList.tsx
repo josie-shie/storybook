@@ -27,7 +27,7 @@ function ContestDrawerList({
     const pathname = usePathname();
     const currentPath = pathname.split('/').pop();
     const pathMatch = {
-        handicap: '让球大小',
+        handicap: '让分大小',
         minutes: '15分钟进球',
         range: '进球数区间',
         bodan: '波胆'
