@@ -82,6 +82,7 @@ export const GET_GUESS_PROPORTION_QUERY = `
               peopleNum
               itemType
             }
+            guessNum
             remainingGuessTimes
         }
     }

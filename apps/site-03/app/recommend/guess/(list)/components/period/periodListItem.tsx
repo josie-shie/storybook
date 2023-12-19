@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Avatar from '@/components/avatar/avatar';
+import BaseNoData from '@/components/baseNoData/noData';
 import { useRankStore } from '../../rank/rankStore';
 import style from './periodListItem.module.scss';
 import Soccer from './img/soccer.png';
@@ -14,6 +15,7 @@ function PeriodListItem() {
         return ranking > 0 && ranking < 6 ? style[`ranking${ranking}`] : '';
     };
 
+    if (rankList.length === 0) return <BaseNoData />;
     return (
         <>
             {rankList.map(item => {

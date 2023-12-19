@@ -209,7 +209,7 @@ function VsBox() {
                     homeTeamName: baseData.homeChs,
                     awayTeamLogo: baseData.awayLogo,
                     awayTeamName: baseData.awayChs,
-                    participants: 1276, // 參與競猜人數(getGuessProportion API 欄位待新增)
+                    participants: guessData.guessNum,
                     guessHomeAway: covertGuessStatus(true, guessData.home.itemType) as
                         | 'home'
                         | 'away'

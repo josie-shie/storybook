@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { useEffect } from 'react';
 import { getGuessRank } from 'data-center';
 import Avatar from '@/components/avatar/avatar';
+import { useUserStore } from '@/app/userStore';
 import HotStreakListItem from '../components/hotStreak/hotStreakListItem';
 import UserSwitch from '../components/userSwitch/userSwitch';
 import Rule from '../components/rule/rule';
@@ -70,6 +71,7 @@ function UserMasterRank() {
 }
 
 function RankList() {
+    const isLogin = useUserStore.use.isLogin();
     creatMasterRankStore({
         member: {
             memberId: 0,
@@ -102,7 +104,7 @@ function RankList() {
                     <Rule />
                 </div>
             </div>
-            <UserMasterRank />
+            {isLogin ? <UserMasterRank /> : null}
             <HotStreakListItem />
         </div>
     );

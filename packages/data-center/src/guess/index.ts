@@ -201,6 +201,7 @@ const GetGuessProportionSchema = z.object({
     away: GuessItemSchema,
     over: GuessItemSchema,
     under: GuessItemSchema,
+    guessNum: z.number(),
     remainingGuessTimes: z.number()
 });
 
