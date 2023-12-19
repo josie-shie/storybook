@@ -14,25 +14,13 @@ import TradeTypeDrawer from './components/tradeTypeDrawer/tradeTypeDrawer';
 import { useTardeDetailStore, type DateOption, type TradeTypeOption } from './tradeDetailStore';
 
 function TradeDetail() {
-    const DateMap = {
-        ALL: '全部时间',
-        TODAY: '今日',
-        WEEK: '最近一週',
-        MONTH: '最近一个月',
-        THREEWEEKS: '最近三个月'
-    };
-    const TypeMap = {
-        ALL: '全部分类',
-        RECHARGE: '充值',
-        INCOME: '收入',
-        PAY: '支付'
-    };
-
     const router = useRouter();
     const back = () => {
         router.push('/userInfo');
     };
     const setTradeDetailList = useTardeDetailStore.use.setTradeDetailList();
+    const dateOption = useTardeDetailStore.use.dateOption();
+    const tradeOption = useTardeDetailStore.use.tradeOption();
     const [isLoading, setIsLoading] = useState(false);
     const [isDateRangeOpen, setIsDateRangeOpen] = useState(false);
     const [isTradeTypeOpen, setIsTradeTypeOpen] = useState(false);
@@ -89,7 +77,9 @@ function TradeDetail() {
                         }}
                     >
                         <span>
-                            {activeDate === 'RANGE' ? dateDisplay(start, end) : DateMap[activeDate]}
+                            {activeDate === 'RANGE'
+                                ? dateDisplay(start, end)
+                                : dateOption.find(option => option.value === activeDate)?.label}
                         </span>
                         <Image alt="filterIcon" src={FilterIcon} />
                     </div>
@@ -99,7 +89,7 @@ function TradeDetail() {
                             openOption('tradeType');
                         }}
                     >
-                        <span>{TypeMap[tradeType]}</span>
+                        <span>{tradeOption.find(option => option.value === tradeType)?.label}</span>
                         <Image alt="filterIcon" src={FilterIcon} />
                     </div>
                 </div>

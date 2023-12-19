@@ -1,7 +1,7 @@
 import { initStore } from 'lib';
 import type { StoreWithSelectors } from 'lib';
 
-export type DateOption = 'ALL' | 'TODAY' | 'WEEK' | 'MONTH' | 'THREEWEEKS' | 'RANGE';
+export type DateOption = 'ALL' | 'WEEK' | 'TWOWEEKS' | 'MONTH' | 'RANGE';
 export type TradeTypeOption = 'ALL' | 'RECHARGE' | 'INCOME' | 'PAY';
 export interface RechargeData {
     balanceLogId: number;
@@ -73,20 +73,16 @@ const initialState = (
             value: 'ALL'
         },
         {
-            label: '今日',
-            value: 'TODAY'
-        },
-        {
-            label: '最近一週',
+            label: '一週',
             value: 'WEEK'
         },
         {
-            label: '最近一个月',
-            value: 'MONTH'
+            label: '兩週',
+            value: 'TWOWEEKS'
         },
         {
-            label: '最近三个月',
-            value: 'THREEWEEKS'
+            label: '一个月',
+            value: 'MONTH'
         }
     ],
     tradeOption: [

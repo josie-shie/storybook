@@ -36,14 +36,12 @@ function DateRangeOption({
         switch (type) {
             case 'ALL':
                 return [0, 0];
-            case 'TODAY':
-                return [dayjs().subtract(1, 'week').toDate().getTime(), today];
             case 'WEEK':
                 return [dayjs().subtract(1, 'week').toDate().getTime(), today];
+            case 'TWOWEEKS':
+                return [dayjs().subtract(2, 'week').toDate().getTime(), today];
             case 'MONTH':
                 return [dayjs().subtract(1, 'month').toDate().getTime(), today];
-            case 'THREEWEEKS':
-                return [dayjs().subtract(3, 'month').toDate().getTime(), today];
             default:
                 return [];
         }
