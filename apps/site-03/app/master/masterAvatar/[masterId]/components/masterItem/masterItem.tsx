@@ -1,38 +1,43 @@
 'use client';
 
-import type { Dispatch, SetStateAction } from 'react';
 import { useEffect, useState } from 'react';
 import { IconFlame } from '@tabler/icons-react';
 import { motion } from 'framer-motion';
-import { type MentorFilter, type GetMentorListResponse } from 'data-center';
-import { getMentorList, unFollow, updateFollow } from 'data-center';
+import { unFollow, updateFollow, getFollowers, type GetFollowersResponse } from 'data-center';
 import { useRouter } from 'next/navigation';
-import Tag from '@/components/tag/tag';
+import style from './masterItem.module.scss';
 import Avatar from '@/components/avatar/avatar';
-import WeekButton from '../components/weekButton/weekButton';
-import { useUserStore } from '../../userStore';
-import style from './expertList.module.scss';
+import Tag from '@/components/tag/tag';
 
-interface ExpertItemProps {
-    mentorList: GetMentorListResponse;
-    setMentorList: Dispatch<SetStateAction<GetMentorListResponse>>;
-}
-
-function ExpertItem({ mentorList, setMentorList }: ExpertItemProps) {
-    const userInfo = useUserStore.use.userInfo();
+function MasterItem({ params }: { params: { masterId } }) {
+    const [masterItem, setMasterItem] = useState<GetFollowersResponse>([]);
 
     const router = useRouter();
 
-    const onFocused = async (isFollow: boolean, id: number) => {
+    const fetchData = async () => {
         try {
-            const res = isFollow
-                ? await unFollow({ followerId: userInfo.uid, followedId: id })
-                : await updateFollow({ followerId: userInfo.uid, followedId: id });
+            const res = await getFollowers({ memberId: 1, isFans: false });
+
             if (!res.success) {
                 return new Error();
             }
 
-            setMentorList(prevData =>
+            setMasterItem(res.data);
+        } catch (error) {
+            return new Error();
+        }
+    };
+
+    const onIsFocused = async (id: number, follow: boolean) => {
+        try {
+            const res = follow
+                ? await unFollow({ followerId: Number(params.masterId) || 1, followedId: id })
+                : await updateFollow({ followerId: Number(params.masterId) || 1, followedId: id });
+            if (!res.success) {
+                return new Error();
+            }
+
+            setMasterItem(prevData =>
                 prevData.map(item =>
                     item.memberId === id ? { ...item, isFollowed: !item.isFollowed } : item
                 )
@@ -45,11 +50,16 @@ function ExpertItem({ mentorList, setMentorList }: ExpertItemProps) {
     const goMasterPredict = (id: number) => {
         router.push(`/master/masterAvatar/${id}?status=analysis`);
     };
+
+    useEffect(() => {
+        void fetchData();
+    }, []);
+
     return (
         <>
-            {mentorList.map(item => {
+            {masterItem.map(item => {
                 return (
-                    <div className={style.masterItem} key={item.username}>
+                    <div className={style.masterItem} key={item.memberId}>
                         <div className={style.info}>
                             <div
                                 className={style.avatarContainer}
@@ -59,22 +69,23 @@ function ExpertItem({ mentorList, setMentorList }: ExpertItemProps) {
                             >
                                 <Avatar
                                     borderColor="#4489FF"
+                                    size={46}
                                     src={item.avatarPath === '0' ? '' : item.avatarPath}
                                 />
                             </div>
                             <div className={style.about}>
                                 <span>{item.username}</span>
-                                <div>
-                                    {item.tags.weekMaxAccurateStreak > 0 && (
+                                <div className={style.top}>
+                                    {item.tags.winMaxAccurateStreak > 0 && (
                                         <Tag
                                             icon={<IconFlame size={10} />}
-                                            text={`${item.tags.winMaxAccurateStreak}連紅`}
+                                            text={`${item.tags.winMaxAccurateStreak} 連紅`}
                                         />
                                     )}
-                                    {item.tags.quarterRanking > 0 && (
+                                    {item.tags.weekRanking > 0 && (
                                         <Tag
                                             background="#4489FF"
-                                            text={`季榜 ${item.tags.monthRanking}`}
+                                            text={`周榜 ${item.tags.weekRanking}`}
                                         />
                                     )}
                                     {item.tags.monthRanking > 0 && (
@@ -83,10 +94,10 @@ function ExpertItem({ mentorList, setMentorList }: ExpertItemProps) {
                                             text={`月榜 ${item.tags.monthRanking}`}
                                         />
                                     )}
-                                    {item.tags.weekRanking > 0 && (
+                                    {item.tags.quarterRanking > 0 && (
                                         <Tag
                                             background="#4489FF"
-                                            text={`周榜 ${item.tags.weekRanking}`}
+                                            text={`季榜 ${item.tags.quarterRanking}`}
                                         />
                                     )}
                                 </div>
@@ -99,7 +110,7 @@ function ExpertItem({ mentorList, setMentorList }: ExpertItemProps) {
                                 <motion.button
                                     className={style.followedButton}
                                     onClick={() => {
-                                        void onFocused(true, item.memberId);
+                                        void onIsFocused(item.memberId, true);
                                     }}
                                     type="button"
                                     whileTap={{ scale: 0.9 }}
@@ -110,7 +121,7 @@ function ExpertItem({ mentorList, setMentorList }: ExpertItemProps) {
                                 <motion.button
                                     className={style.followButton}
                                     onClick={() => {
-                                        void onFocused(false, item.memberId);
+                                        void onIsFocused(item.memberId, false);
                                     }}
                                     type="button"
                                     whileTap={{ scale: 0.9 }}
@@ -127,51 +138,4 @@ function ExpertItem({ mentorList, setMentorList }: ExpertItemProps) {
     );
 }
 
-function MasterList() {
-    const [isActive, setIsActive] = useState<MentorFilter[]>([]);
-    const [mentorList, setMentorList] = useState<GetMentorListResponse>([]);
-
-    const userInfo = useUserStore.use.userInfo();
-
-    const updateActive = (value: MentorFilter) => {
-        setIsActive(current => {
-            const isExist = current.includes(value);
-            if (isExist) {
-                return current.filter(item => item !== value);
-            }
-            return [...current, value];
-        });
-    };
-
-    const fetchData = async () => {
-        try {
-            const res = await getMentorList({
-                memberId: userInfo.uid ? userInfo.uid : 1,
-                filter: isActive.length > 0 ? isActive : undefined
-            });
-
-            if (!res.success) {
-                return new Error();
-            }
-
-            setMentorList(res.data);
-        } catch (error) {
-            return new Error();
-        }
-    };
-
-    useEffect(() => {
-        void fetchData();
-    }, [userInfo.uid, isActive]);
-
-    return (
-        <div className={style.master}>
-            <WeekButton isActive={isActive} updateActive={updateActive} />
-            <div className={style.expertLayout}>
-                <ExpertItem mentorList={mentorList} setMentorList={setMentorList} />
-            </div>
-        </div>
-    );
-}
-
-export default MasterList;
+export default MasterItem;

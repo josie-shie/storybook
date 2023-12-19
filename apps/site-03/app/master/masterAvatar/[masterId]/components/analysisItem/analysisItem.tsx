@@ -1,15 +1,21 @@
 import Image from 'next/image';
 import { timestampToString, timestampToMonthDay } from 'lib';
-import UnlockButton from '@/components/unlockButton/unlockButton';
-import type { PredictArticleType } from '@/types/predict';
-import { useArticleStore } from '../../articleStore';
+import { useEffect } from 'react';
+import { getPostList } from 'data-center';
+import { useRouter } from 'next/navigation';
+import { useMasterAvatarStore } from '../../masterAvatarStore';
 import style from './analysisItem.module.scss';
 import IconWin from './img/win.png';
 import IconDraw from './img/draw.png';
 import IconLose from './img/lose.png';
+import type { PredictArticleType } from '@/types/predict';
+import UnlockButton from '@/components/unlockButton/unlockButton';
 
-function AnalysisItem() {
-    const predictArticleList = useArticleStore.use.predictArticleList();
+function AnalysisItem({ params }: { params: { masterId: string } }) {
+    const predictArticleList = useMasterAvatarStore.use.predictArticleList();
+    const setPredictArticleList = useMasterAvatarStore.use.setPredictArticleList();
+
+    const router = useRouter();
 
     const filterImage = (value: PredictArticleType): string => {
         const result = {
@@ -20,16 +26,47 @@ function AnalysisItem() {
         return result[value];
     };
 
+    const formatHandicapName = {
+        HOME: '大小',
+        AWAY: '大小',
+        OVER: '让分',
+        UNDER: '大小',
+        HANDICAP: '大小',
+        OVERUNDER: '让分'
+    };
+
+    const fetchData = async () => {
+        try {
+            const res = await getPostList({
+                memberId: Number(params.masterId),
+                postFilter: ['all']
+            });
+
+            if (!res.success) {
+                return new Error();
+            }
+
+            setPredictArticleList({ predictArticleList: res.data.posts });
+        } catch (error) {
+            return new Error();
+        }
+    };
+
+    const goArticleDetail = (id: number) => {
+        router.push(`/master/article/${id}`);
+    };
+
+    useEffect(() => {
+        void fetchData();
+    }, []);
+
     return (
         <>
             {predictArticleList.map(item => {
                 return (
                     <div className={style.analysisItem} key={item.id}>
                         <div className={style.top}>
-                            <div className={style.title}>
-                                <span className={style.decorate} />
-                                {item.analysisTitle}
-                            </div>
+                            <div className={style.title}>{item.analysisTitle}</div>
                             <div className={style.unlockStatus}>
                                 {item.isUnlocked ? (
                                     <span className={style.unlocked}>已解鎖</span>
@@ -38,7 +75,12 @@ function AnalysisItem() {
                                 )}
                             </div>
                         </div>
-                        <div className={style.mid}>
+                        <div
+                            className={style.mid}
+                            onClick={() => {
+                                goArticleDetail(item.id);
+                            }}
+                        >
                             <div className={style.combination}>
                                 <div className={style.detail}>
                                     {item.leagueName}
@@ -47,7 +89,9 @@ function AnalysisItem() {
                                     </span>
                                 </div>
                                 <div className={style.team}>
-                                    <span className={style.tag}>{item.predictedPlay}</span>
+                                    <span className={style.tag}>
+                                        {formatHandicapName[item.predictedPlay]}
+                                    </span>
                                     {item.homeTeamName} vs {item.awayTeamName}
                                 </div>
                                 {item.predictionResult === 'NONE' ? null : (

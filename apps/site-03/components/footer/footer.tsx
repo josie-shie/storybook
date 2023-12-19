@@ -39,7 +39,7 @@ const CategoryList = [
     {
         label: '专家',
         value: '/master/article',
-        includedRouters: ['/master/article', '/master/expert'],
+        includedRouters: ['/master/article', '/master/expert', '/master/masterAvatar'],
         icon: <Image alt="" className={style.icon} src={recommendIcon} />,
         activedIcon: <Image alt="" className={style.icon} src={activeRecommend} />
     },

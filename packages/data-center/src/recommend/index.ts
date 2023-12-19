@@ -329,6 +329,7 @@ export type MentorFilter = 'weekly' | 'monthly' | 'quarterly' | 'winStreak';
 
 export interface GetMentorListRequest {
     memberId: number;
+    mentorId?: number;
     filter?: MentorFilter[];
 }
 
