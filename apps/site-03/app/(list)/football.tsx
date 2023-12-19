@@ -3,7 +3,6 @@ import { getContestList, type GetContestListResponse } from 'data-center';
 import { useEffect, useState } from 'react';
 import { InfiniteScroll } from 'ui';
 import CircularProgress from '@mui/material/CircularProgress';
-import { useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import { useContestInfoStore } from '@/app/contestInfoStore';
 import GameCard from './components/gameCard';
@@ -20,23 +19,18 @@ function Banner() {
     return <div className={style.banner} />;
 }
 
-function DatePicker({ status }: { status: Status }) {
+function DatePicker({
+    status,
+    scheduleDate,
+    resultsDate,
+    handleDate
+}: {
+    status: Status;
+    scheduleDate: number;
+    resultsDate: number;
+    handleDate: (date: Date) => void;
+}) {
     const [isMounted, setIsMounted] = useState(false);
-
-    const [resultsDate, setResultsDate] = useState(Date.now());
-    const [scheduleDate, setScheduleDate] = useState(Date.now());
-
-    const handleDate = (date: Date) => {
-        const dateFormat = date.getTime();
-
-        if (status === 'result') {
-            setResultsDate(dateFormat);
-            return;
-        }
-        if (status === 'schedule') {
-            setScheduleDate(dateFormat);
-        }
-    };
 
     useEffect(() => {
         setIsMounted(true);
@@ -72,10 +66,18 @@ function DatePicker({ status }: { status: Status }) {
 
 function ContestList({
     switchSetting,
-    status = 'all'
+    status = 'all',
+    scheduleDate,
+    resultsDate,
+    isLoading,
+    closeLoading
 }: {
     switchSetting: () => void;
     status: Status;
+    scheduleDate: number;
+    resultsDate: number;
+    isLoading: boolean;
+    closeLoading: () => void;
 }) {
     const [rows, setRows] = useState({ full: 20, notYet: 0, finish: 0 });
     const contestList = useContestListStore.use.contestList();
@@ -85,34 +87,30 @@ function ContestList({
     const setContestList = useContestListStore.use.setContestList();
     const setContestInfo = useContestListStore.use.setContestInfo();
     const setFilterInit = useContestListStore.use.setFilterInit();
-
-    const searchParams = useSearchParams();
-    const resultsDate = searchParams.get('resultsDate');
-    const scheduleDate = searchParams.get('scheduleDate');
     const [isMounted, setIsMounted] = useState(false);
 
     useEffect(() => {
         setIsMounted(true);
     }, []);
 
-    const fetchContestdata = async (timestamp: number) => {
-        try {
-            const todayContest = await getContestList(timestamp);
-            if (!todayContest.success) {
-                return new Error();
-            }
-
-            setContestList({ contestList: todayContest.data.contestList });
-            setContestInfo({ contestInfo: todayContest.data.contestInfo });
-        } catch (error) {
-            return new Error();
-        }
-    };
-
     useEffect(() => {
         const dateString = scheduleDate || resultsDate || Date.now();
+        const fetchContestdata = async (timestamp: number) => {
+            try {
+                const todayContest = await getContestList(timestamp);
+                if (!todayContest.success) {
+                    return new Error();
+                }
+                setContestList({ contestList: todayContest.data.contestList });
+                setContestInfo({ contestInfo: todayContest.data.contestInfo });
+                closeLoading();
+            } catch (error) {
+                closeLoading();
+                return new Error();
+            }
+        };
         void fetchContestdata(Math.floor(Number(dateString) / 1000));
-    }, [resultsDate, scheduleDate]);
+    }, [resultsDate, scheduleDate, setContestList, setContestInfo]);
 
     const statusTable: Record<string, (state: number) => boolean> = {
         all: state => state >= 1 && state < 5,
@@ -189,35 +187,43 @@ function ContestList({
                 <FilterButton />
                 <Image alt="setting" onClick={switchSetting} sizes="32" src={SettingIcon} />
             </div>
-            <ul>
-                {displayList.map(matchId => {
-                    return <GameCard key={matchId} matchId={matchId} />;
-                })}
-                {status === 'all' && displayNotYetList.length > 0 && (
-                    <li className={style.line}>尚未开赛</li>
-                )}
-                {displayNotYetList.map(matchId => {
-                    return <GameCard key={matchId} matchId={matchId} />;
-                })}
-                {status === 'all' && displayFinishList.length > 0 && (
-                    <li className={style.line}>完赛</li>
-                )}
-                {displayFinishList.map(matchId => {
-                    return <GameCard key={matchId} matchId={matchId} />;
-                })}
-                {status !== 'all' && displayList.length === 0 && (
-                    <li className={style.noneContest}>暂无赛事</li>
-                )}
-            </ul>
-            {((status === 'all' && rows.finish < finishList.length) ||
-                (status !== 'all' && rows.full < currentList.length)) &&
-            isMounted ? (
-                <InfiniteScroll onVisible={loadMoreList}>
-                    <div className={style.loadMore}>
-                        <CircularProgress size={24} />
-                    </div>
-                </InfiniteScroll>
-            ) : null}
+            {isLoading ? (
+                <div className={style.loading}>
+                    {isMounted ? <CircularProgress size={24} /> : null}
+                </div>
+            ) : (
+                <>
+                    <ul>
+                        {displayList.map(matchId => {
+                            return <GameCard key={matchId} matchId={matchId} />;
+                        })}
+                        {status === 'all' && displayNotYetList.length > 0 && (
+                            <li className={style.line}>尚未开赛</li>
+                        )}
+                        {displayNotYetList.map(matchId => {
+                            return <GameCard key={matchId} matchId={matchId} />;
+                        })}
+                        {status === 'all' && displayFinishList.length > 0 && (
+                            <li className={style.line}>完赛</li>
+                        )}
+                        {displayFinishList.map(matchId => {
+                            return <GameCard key={matchId} matchId={matchId} />;
+                        })}
+                        {status !== 'all' && displayList.length === 0 && (
+                            <li className={style.noneContest}>暂无赛事</li>
+                        )}
+                    </ul>
+                    {((status === 'all' && rows.finish < finishList.length) ||
+                        (status !== 'all' && rows.full < currentList.length)) &&
+                    isMounted ? (
+                        <InfiniteScroll onVisible={loadMoreList}>
+                            <div className={style.loadMore}>
+                                <CircularProgress size={24} />
+                            </div>
+                        </InfiniteScroll>
+                    ) : null}
+                </>
+            )}
         </>
     );
 }
@@ -236,11 +242,43 @@ function Football({
         setShowSetting(!showSetting);
     };
 
+    const [resultsDate, setResultsDate] = useState(Date.now());
+    const [scheduleDate, setScheduleDate] = useState(Date.now());
+    const [isLoading, setIsLoading] = useState(false);
+
+    const handleDate = (date: Date) => {
+        const dateFormat = date.getTime();
+
+        if (status === 'result') {
+            setResultsDate(dateFormat);
+            return;
+        }
+        if (status === 'schedule') {
+            setScheduleDate(dateFormat);
+        }
+        setIsLoading(true);
+    };
+    const closeLoading = () => {
+        setIsLoading(false);
+    };
+
     return (
         <>
             <div className={style.football}>
-                <DatePicker status={status} />
-                <ContestList status={status} switchSetting={switchSetting} />
+                <DatePicker
+                    handleDate={handleDate}
+                    resultsDate={resultsDate}
+                    scheduleDate={scheduleDate}
+                    status={status}
+                />
+                <ContestList
+                    closeLoading={closeLoading}
+                    isLoading={isLoading}
+                    resultsDate={resultsDate}
+                    scheduleDate={scheduleDate}
+                    status={status}
+                    switchSetting={switchSetting}
+                />
             </div>
             <Setting
                 isOpen={showSetting}
