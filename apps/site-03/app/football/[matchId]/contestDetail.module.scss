@@ -2,18 +2,6 @@
     width: 100%;
 
     :global .ui-tab {
-        .swiper {
-            height: auto;
-
-            .swiper-wrapper {
-                height: auto !important;
-            }
-        }
-
-        .swiper-slide {
-            min-height: calc(100vh - 320px);
-        }
-
         .ui-tab-header {
             .ui-tabs-header {
                 padding: 8px 12px 0;
@@ -30,17 +18,13 @@
             }
         }
 
-        .ui-tab-container {
-            height: calc(100vh - 320px);
-        }
-
         .ui-tab-header-liner {
             bottom: -1px;
             border-radius: 10px;
         }
 
         .ui-loading {
-            height: calc(100vh - 340px);
+            height: calc(100vh - (100vw * 234 / 390) - 87px);
         }
     }
 }

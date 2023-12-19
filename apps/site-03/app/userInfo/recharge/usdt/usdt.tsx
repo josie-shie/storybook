@@ -2,11 +2,11 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import Header from '@/components/header/headerTitleDetail';
 import UsdtIcon from '../img/usdt.png';
 import { Select } from '../components/select/select';
 import Pay from './pay/pay';
 import style from './usdt.module.scss';
-import Header from '@/components/header/headerTitleDetail';
 
 interface OptionType {
     label: string;

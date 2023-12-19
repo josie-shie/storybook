@@ -18,7 +18,8 @@ import {
     GET_UNLOCKED_QUERY,
     SUBSCRIBE_PLAN_MUTATION,
     GET_INVITATION_ACTIVITY_REWARD_INFO_QUERY,
-    GET_MEMBER_GUESS_VIEWING_RECORDS_QUERY
+    GET_MEMBER_GUESS_VIEWING_RECORDS_QUERY,
+    GET_MEMBER_SUBSCRIPTION_STATUS_QUERY
 } from './graphqlQueries';
 
 const RegisterResultSchema = z.object({
@@ -113,22 +114,21 @@ const MemberInfoSchema = z.object({
     qqNumber: z.string(),
     avatarPath: z.string(),
     balance: z.number(),
-    createdAt: z.number()
+    createdAt: z.number(),
+    email: z.string(),
+    description: z.string(),
+    fans: z.number(),
+    unlocked: z.number(),
+    tags: TagSchema
 });
 
 export type MemberInfoResponse = z.infer<typeof MemberInfoSchema>;
-
-const UpdateMemberInfoResponseSchema = z.object({
-    updateMemberInfo: MemberInfoSchema
-});
 
 const GetMemberInfoResponseSchema = z.object({
     getMemberInfo: MemberInfoSchema
 });
 
-type UpdateMemberInfoResult = z.infer<typeof UpdateMemberInfoResponseSchema>;
 type GetMemberInfoResult = z.infer<typeof GetMemberInfoResponseSchema>;
-export type UpdateMemberInfoResponse = z.infer<typeof MemberInfoSchema>;
 export type GetMemberInfoResponse = z.infer<typeof MemberInfoSchema>;
 
 export interface UpdateMemberInfoRequest {
@@ -136,6 +136,8 @@ export interface UpdateMemberInfoRequest {
     wechat: string;
     qqNumber: string;
     avatarPath: string;
+    email: string;
+    description: string;
 }
 
 /**
@@ -408,28 +410,20 @@ export const updatePassword = async ({
  * - params : {@link UpdateMemberInfoRequest}
  * - returns : {@link MemberInfoResponse}
  */
-export const updateMemberInfo = async ({
-    avatarPath,
-    birthday,
-    wechat,
-    qqNumber
-}: UpdateMemberInfoRequest): Promise<ReturnData<MemberInfoResponse>> => {
+export const updateMemberInfo = async (
+    input: UpdateMemberInfoRequest
+): Promise<ReturnData<null>> => {
     try {
-        const { data }: { data: UpdateMemberInfoResult } = await fetcher({
+        const res: { data: null } = await fetcher({
             data: {
                 query: UPDATE_MEMBER_INFO_MUTATION,
                 variables: {
-                    input: {
-                        avatar_path: avatarPath,
-                        birthday,
-                        wechat,
-                        qq_number: qqNumber
-                    }
+                    input
                 }
             }
         });
-        UpdateMemberInfoResponseSchema.parse(data);
-        return { success: true, data: data.updateMemberInfo };
+
+        return { success: true, data: res.data };
     } catch (error) {
         return handleApiError(error);
     }
@@ -760,6 +754,53 @@ export const getMemberGuessViewingRecords = async ({
         GetMemberGuessViewingRecordsResultSchema.parse(data);
 
         return { success: true, data: data.getMemberGuessViewingRecords };
+    } catch (error) {
+        return handleApiError(error);
+    }
+};
+
+export interface GetMemberSubscriptionStatusRequest {
+    memberId: number;
+}
+
+const GetMemberSubscriptionStatusSchema = z.object({
+    planId: z.number(),
+    planName: z.string(),
+    planStartAt: z.number(),
+    planEndAt: z.number()
+});
+
+const GetMemberSubscriptionStatusResultSchema = z.object({
+    getMemberSubscriptionStatus: GetMemberSubscriptionStatusSchema
+});
+
+type GetMemberSubscriptionStatusResult = z.infer<typeof GetMemberSubscriptionStatusResultSchema>;
+export type GetMemberSubscriptionStatusResponse = z.infer<typeof GetMemberSubscriptionStatusSchema>;
+
+/**
+ * 取得會員訂閱狀態
+ * - params {@link GetMemberSubscriptionStatusRequest}
+ * - returns {@link GetMemberSubscriptionStatusResponse}
+ */
+export const getMemberSubscriptionStatus = async (
+    input: GetMemberSubscriptionStatusRequest
+): Promise<ReturnData<GetMemberSubscriptionStatusResponse>> => {
+    try {
+        const { data }: { data: GetMemberSubscriptionStatusResult } = await fetcher(
+            {
+                data: {
+                    query: GET_MEMBER_SUBSCRIPTION_STATUS_QUERY,
+                    variables: {
+                        input
+                    }
+                }
+            },
+            { cache: 'no-store' }
+        );
+
+        GetMemberSubscriptionStatusResultSchema.parse(data);
+
+        return { success: true, data: data.getMemberSubscriptionStatus };
     } catch (error) {
         return handleApiError(error);
     }

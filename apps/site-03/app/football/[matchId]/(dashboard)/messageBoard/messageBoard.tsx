@@ -8,12 +8,12 @@ import MessageRoom from '@bf/message-board';
 import '@bf/message-board/style.css';
 import type { Message } from '@bf/message-board/types';
 import Skeleton from '@mui/material/Skeleton';
-import style from './messageBoard.module.scss';
-import SentIcon from './img/sent.png';
-import SmileIcon from './img/smile.png';
 import { useMessageStore } from '@/app/messageStore';
 import { useUserStore } from '@/app/userStore';
 import { useAuthStore } from '@/app/(auth)/authStore';
+import style from './messageBoard.module.scss';
+import SentIcon from './img/sent.png';
+import SmileIcon from './img/smile.png';
 
 function MessageBoard({ matchId }: { matchId: number }) {
     const firstTimeRef = useRef(true);

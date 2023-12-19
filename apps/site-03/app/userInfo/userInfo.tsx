@@ -1,7 +1,5 @@
 'use client';
 import { IconFlame } from '@tabler/icons-react';
-import { useEffect } from 'react';
-import { getMemberInfo } from 'data-center';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ButtonBase } from '@mui/material';
@@ -15,18 +13,20 @@ import BuyBag from './img/buyBag.png';
 import MyFocus from './img/myFocus.png';
 import MyFans from './img/myFans.png';
 import MyGame from './img/myGame.png';
+import VipTip from './img/vipTip.png';
 import MyAnalyze from './img/myAnalyze.png';
 import style from './userInfo.module.scss';
 import defaultAvatar from './img/avatar.png';
-import { useNotificationStore } from '@/app/notificationStore';
-import Tag from '@/components/tag/tag';
-import Header from '@/components/header/headerTitleNoBg';
 import Footer from '@/components/footer/footer';
+import Header from '@/components/header/headerTitleNoBg';
+import Tag from '@/components/tag/tag';
+import { useNotificationStore } from '@/app/notificationStore';
 
 function UserInfo() {
     const router = useRouter();
     const userInfo = useUserStore.use.userInfo();
-    const setUserInfo = useUserStore.use.setUserInfo();
+    const tags = useUserStore.use.tags();
+    const memberSubscribeStatus = useUserStore.use.memberSubscribeStatus();
     const openChangePasswordDrawer = useAuthStore.use.setIsDrawerOpen();
     const setAuthQuery = useUserStore.use.setAuthQuery();
     const setIsLogin = useUserStore.use.setIsLogin();
@@ -39,17 +39,6 @@ function UserInfo() {
     const back = () => {
         router.push('/');
     };
-
-    useEffect(() => {
-        const getUserInfo = async () => {
-            const res = await getMemberInfo();
-            if (res.success) {
-                setUserInfo(res.data);
-            }
-        };
-
-        void getUserInfo();
-    }, []);
 
     const editAccount = () => {
         router.push('/userInfo/account');
@@ -78,6 +67,7 @@ function UserInfo() {
             <div className={style.userInfo}>
                 <div className={style.container}>
                     <div
+                        className={style.outer}
                         onClick={() => {
                             editAccount();
                         }}
@@ -98,22 +88,49 @@ function UserInfo() {
                                 <div className={style.top}>
                                     <span className={style.name}>{userInfo.username}</span>
                                     <div className={style.tags}>
-                                        <Tag icon={<IconFlame size={10} />} text="9连红" />
-                                        <Tag background="#fff" color="#4489ff" text="月榜 10" />
+                                        {tags.winHistoryMaxWinStreak >= 3 ? (
+                                            <Tag
+                                                icon={<IconFlame size={10} />}
+                                                text={`${tags.winHistoryMaxWinStreak}连红`}
+                                            />
+                                        ) : null}
+                                        {tags.weekHistoryMaxWinStreak >= 3 ? (
+                                            <Tag
+                                                background="#fff"
+                                                color="#4489ff"
+                                                text={`周榜 ${tags.weekHistoryMaxWinStreak}`}
+                                            />
+                                        ) : null}
+                                        {tags.monthHistoryMaxWinStreak >= 3 ? (
+                                            <Tag
+                                                background="#fff"
+                                                color="#4489ff"
+                                                text={`月榜 ${tags.monthHistoryMaxWinStreak}`}
+                                            />
+                                        ) : null}
+                                        {tags.quarterHistoryMaxWinStreak >= 3 ? (
+                                            <Tag
+                                                background="#fff"
+                                                color="#4489ff"
+                                                text={`季榜 ${tags.quarterHistoryMaxWinStreak}`}
+                                            />
+                                        ) : null}
                                     </div>
                                 </div>
                                 <div className={style.middle}>{userInfo.mobileNumber}</div>
                                 <div className={style.bottom}>
-                                    <span>粉丝: 34713</span>
-                                    <span>点赞: 2355</span>
-                                    <span>猜球胜率: 50%</span>
+                                    {userInfo.fans > 0 && <span>粉丝: {userInfo.fans}</span>}
+                                    {userInfo.unlocked > 0 && (
+                                        <span>解鎖: {userInfo.unlocked}</span>
+                                    )}
+                                    {tags.quarterHitRate > 0 ? (
+                                        <span>猜球胜率: {tags.quarterHitRate}%</span>
+                                    ) : null}
                                 </div>
                             </div>
                         </div>
 
-                        <div className={style.introduction}>
-                            资深足彩分析师，15年足彩经验，对各个赛事都有涉足。长期关注！对各个赛事都有涉足。长期关注！对各个赛事都有涉足。长期关注！
-                        </div>
+                        <div className={style.introduction}>{userInfo.description}</div>
                     </div>
 
                     <div className={style.trade}>
@@ -139,16 +156,35 @@ function UserInfo() {
                             <div className={style.item}>
                                 <span className={style.text}>
                                     <Image alt="" height={16} src={BuyBag} width={16} />
-                                    <span>您的订阅状态：</span>尚未开通
+                                    <span>您的订阅状态：</span>
+                                    <span className={style.status}>
+                                        {memberSubscribeStatus.planName
+                                            ? memberSubscribeStatus.planName
+                                            : '未开通'}
+                                        {memberSubscribeStatus.planId === 1 ? (
+                                            <Image alt="" height={16} src={VipTip} width={40} />
+                                        ) : null}
+                                    </span>
                                 </span>
-                                <span
-                                    className={style.button}
-                                    onClick={() => {
-                                        goSubscribe();
-                                    }}
-                                >
-                                    开通
-                                </span>
+                                {memberSubscribeStatus.planId === 0 ? (
+                                    <span
+                                        className={style.button}
+                                        onClick={() => {
+                                            goSubscribe();
+                                        }}
+                                    >
+                                        开通VIP
+                                    </span>
+                                ) : (
+                                    <span
+                                        className={style.button}
+                                        onClick={() => {
+                                            goSubscribe();
+                                        }}
+                                    >
+                                        續約
+                                    </span>
+                                )}
                             </div>
                         </div>
                     </div>

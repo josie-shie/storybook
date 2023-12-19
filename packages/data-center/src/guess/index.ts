@@ -197,8 +197,6 @@ const GuessItemSchema = z.object({
 });
 
 const GetGuessProportionSchema = z.object({
-    homeLogo: z.string(),
-    awayLogo: z.string(),
     home: GuessItemSchema,
     away: GuessItemSchema,
     over: GuessItemSchema,

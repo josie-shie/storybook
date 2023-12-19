@@ -1,11 +1,17 @@
 import { initStore } from 'lib';
 import type { StoreWithSelectors } from 'lib';
-import type { GetMemberInfoResponse } from 'data-center';
+import type {
+    GetMemberInfoResponse,
+    GetMemberSubscriptionStatusResponse,
+    TagType
+} from 'data-center';
 
 interface InitState {
     authQuery: string;
     inviteCode: string;
     userInfo: GetMemberInfoResponse;
+    tags: TagType;
+    memberSubscribeStatus: GetMemberSubscriptionStatusResponse;
 }
 
 interface UserState extends InitState {
@@ -17,6 +23,8 @@ interface UserState extends InitState {
     setToken: (token: string) => void;
     setAuthQuery: (authQuery: string) => void;
     setUserInfo: (userInfo: GetMemberInfoResponse) => void;
+    setTags: (tags: TagType) => void;
+    setMemberSubscribeStatus: (memberSubscribeStatus: GetMemberSubscriptionStatusResponse) => void;
 }
 
 let isInit = true;
@@ -24,6 +32,8 @@ let useUserStore: StoreWithSelectors<UserState>;
 
 const initialState = (set: (updater: (state: UserState) => Partial<UserState>) => void) => ({
     userInfo: {} as GetMemberInfoResponse,
+    tags: {} as TagType,
+    memberSubscribeStatus: {} as GetMemberSubscriptionStatusResponse,
     userInfoIsLoading: true,
     isLogin: false,
     token: '',
@@ -41,6 +51,22 @@ const initialState = (set: (updater: (state: UserState) => Partial<UserState>) =
                 ...state,
                 userInfo,
                 userInfoIsLoading: false
+            };
+        });
+    },
+    setTags: (tags: TagType) => {
+        set(state => {
+            return {
+                ...state,
+                tags
+            };
+        });
+    },
+    setMemberSubscribeStatus: (memberSubscribeStatus: GetMemberSubscriptionStatusResponse) => {
+        set(state => {
+            return {
+                ...state,
+                memberSubscribeStatus
             };
         });
     },

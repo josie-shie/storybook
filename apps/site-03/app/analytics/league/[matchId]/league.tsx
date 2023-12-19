@@ -1,8 +1,8 @@
 'use client';
 import { useParams } from 'next/navigation';
+import { Tabs } from '@/components/tabs/tabs';
 import { useAnalyticsStore, createAnalyticsStore } from '../../analyticsStore';
 import style from './league.module.scss';
-import { Tabs } from '@/components/tabs/tabs';
 
 function LeagueContent() {
     const params = useParams();

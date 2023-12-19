@@ -2,7 +2,7 @@
     position: relative;
     width: 100%;
     padding-top: 10px;
-    height: calc(100vh - 316px);
+    height: calc(100vh - (100vw * 234 / 390) - 87px);
 
     :global {
         .bfRoomContent {

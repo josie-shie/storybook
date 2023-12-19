@@ -12,7 +12,7 @@ interface FormState {
     wechat: string;
     qq: string;
     email: string;
-    intro: string;
+    description: string;
 }
 
 interface SubmittedState {
@@ -22,7 +22,7 @@ interface SubmittedState {
     wechat: boolean;
     qq: boolean;
     email: boolean;
-    intro: boolean;
+    description: boolean;
 }
 
 interface AccountState extends InitState {
@@ -49,7 +49,7 @@ const initialState = (set: (updater: (state: AccountState) => Partial<AccountSta
         wechat: '',
         qq: '',
         email: '',
-        intro: ''
+        description: ''
     },
     submittedState: {
         nickName: false,
@@ -58,7 +58,7 @@ const initialState = (set: (updater: (state: AccountState) => Partial<AccountSta
         wechat: false,
         qq: false,
         email: false,
-        intro: false
+        description: false
     },
     imgSrc: '',
     imgUpload: '',

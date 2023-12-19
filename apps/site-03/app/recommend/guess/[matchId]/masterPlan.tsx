@@ -3,6 +3,8 @@ import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { getProDistrib, getProGuess, payForProDistrib, payForProGuess } from 'data-center';
 import { useParams } from 'next/navigation';
+import { useUserStore } from '@/app/userStore';
+import PaidDialog from '@/components/paidDialog/paidDialog';
 import Rule from './components/rule/rule';
 import GameCard from './gameCard';
 import AnalyzeColumn from './analyze';
@@ -10,8 +12,6 @@ import Title from './img/title.png';
 import style from './masterPlan.module.scss';
 import { useGuessDetailStore } from './guessDetailStore';
 import starIcon from './img/star.png';
-import { useUserStore } from '@/app/userStore';
-import PaidDialog from '@/components/paidDialog/paidDialog';
 
 function MasterPlan() {
     const matchId = useParams().matchId;

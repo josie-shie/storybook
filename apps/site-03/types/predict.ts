@@ -18,3 +18,5 @@ export type GuessType = 'NONE' | 'WIN' | 'DRAW' | 'LOSE';
 export type GuessTeam = 'HOMEAWAY' | 'OVERUNDER';
 export type PredictTypeWithLock = 'HOME' | 'AWAY' | 'OVER' | 'UNDER' | 'LOCK';
 export type HandicapType = 'HANDICAP' | 'OVERUNDER';
+export type PredictArticleType = 'WIN' | 'DRAW' | 'LOSE';
+export type GuessRecord = 'WIN' | 'LOSE';

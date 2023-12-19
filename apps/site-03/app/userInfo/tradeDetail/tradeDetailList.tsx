@@ -1,8 +1,8 @@
 'use client';
+import NoData from '@/components/baseNoData/noData';
 import RechargeItem from './rechargeItem/rechargeItem';
 import Payment from './payment/payment';
 import { useTardeDetailStore, type RechargeData, type PaymentData } from './tradeDetailStore';
-import NoData from '@/components/baseNoData/noData';
 
 function TradeDetailList() {
     const tradeDetailList = useTardeDetailStore.use.tradeDetailList();

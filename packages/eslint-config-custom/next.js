@@ -23,6 +23,9 @@ module.exports = {
             typescript: {
                 project
             }
+        },
+        react: {
+            version: 'detect'
         }
     },
     ignorePatterns: ['node_modules/', 'dist/'],
@@ -50,11 +53,15 @@ module.exports = {
         'import/no-mutable-exports': 'off',
         'jsx-a11y/no-static-element-interactions': 'off',
         'jsx-a11y/click-events-have-key-events': 'off',
-        '@typescript-eslint/no-misused-promises': 'off'
+        '@typescript-eslint/no-misused-promises': 'off',
+        '@next/next/no-html-link-for-pages': 'off'
     },
-    settings: {
-        react: {
-            version: 'detect'
+    overrides: [
+        {
+            files: ['next-env.d.ts'],
+            rules: {
+                'unicorn/filename-case': 'off'
+            }
         }
-    }
+    ]
 };

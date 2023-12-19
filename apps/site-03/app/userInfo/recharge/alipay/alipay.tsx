@@ -2,10 +2,10 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import Header from '@/components/header/headerTitleDetail';
 import AlipayIcon from '../img/alipay.png';
 import Pay from './pay/pay';
 import style from './alipay.module.scss';
-import Header from '@/components/header/headerTitleDetail';
 
 function Wechat() {
     const router = useRouter();

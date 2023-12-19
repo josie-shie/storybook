@@ -1,9 +1,9 @@
 'use client';
 import { IconFlame } from '@tabler/icons-react';
 import { motion } from 'framer-motion';
-import style from './masterItem.module.scss';
 import Avatar from '@/components/avatar/avatar';
 import Tag from '@/components/tag/tag';
+import style from './masterItem.module.scss';
 
 interface Tags {
     id: number;
@@ -85,19 +85,22 @@ function MasterItem({ uid, item, onFollowToggle }: FansProps) {
                         )}
                         {item.tags.weekHistoryMaxWinStreak > 3 && (
                             <Tag
-                                background={item.tags.colorCode}
+                                background="#4489FF"
+                                color="#fff"
                                 text={`周榜 ${item.tags.weekHistoryMaxWinStreak}`}
                             />
                         )}
                         {item.tags.monthHistoryMaxWinStreak > 3 && (
                             <Tag
-                                background={item.tags.colorCode}
+                                background="#4489FF"
+                                color="#fff"
                                 text={`月榜 ${item.tags.monthHistoryMaxWinStreak}`}
                             />
                         )}
                         {item.tags.quarterHistoryMaxWinStreak > 3 && (
                             <Tag
-                                background={item.tags.colorCode}
+                                background="#4489FF"
+                                color="#fff"
                                 text={`季榜 ${item.tags.quarterHistoryMaxWinStreak}`}
                             />
                         )}

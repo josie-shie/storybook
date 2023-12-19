@@ -4,12 +4,12 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback } from 'react';
 import { timestampToString } from 'lib';
 import Image from 'next/image';
+import Tag from '@/components/tag/tag';
+import Avatar from '@/components/avatar/avatar';
 import style from './articleItem.module.scss';
 import Win from './img/win.png';
 import Lose from './img/lose.png';
 import Draw from './img/draw.png';
-import Tag from '@/components/tag/tag';
-import Avatar from '@/components/avatar/avatar';
 
 interface Tags {
     id: number;
@@ -123,19 +123,22 @@ function ArticleItem({ item }: GetUnlockPostProps) {
                     )}
                     {item.memberTags.weekHistoryMaxWinStreak > 3 && (
                         <Tag
-                            background={item.memberTags.colorCode}
+                            background="#4489FF"
+                            color="#fff"
                             text={`周榜 ${item.memberTags.weekHistoryMaxWinStreak}`}
                         />
                     )}
                     {item.memberTags.monthHistoryMaxWinStreak > 3 && (
                         <Tag
-                            background={item.memberTags.colorCode}
+                            background="#4489FF"
+                            color="#fff"
                             text={`月榜 ${item.memberTags.monthHistoryMaxWinStreak}`}
                         />
                     )}
                     {item.memberTags.quarterHistoryMaxWinStreak > 3 && (
                         <Tag
-                            background={item.memberTags.colorCode}
+                            background="#4489FF"
+                            color="#fff"
                             text={`季榜 ${item.memberTags.quarterHistoryMaxWinStreak}`}
                         />
                     )}

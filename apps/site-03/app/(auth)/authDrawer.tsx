@@ -2,18 +2,18 @@
 import { useEffect } from 'react';
 import Image from 'next/image';
 import Cookies from 'js-cookie';
-import { getMemberInfo } from 'data-center';
+import { getMemberInfo, getMemberSubscriptionStatus } from 'data-center';
+import Register from '@/app/(auth)/register/register';
+import Login from '@/app/(auth)/login/login';
+import { useUserStore } from '@/app/userStore';
+import ForgetPassword from '@/app/(auth)/forgetPassword/forgetPassword';
+import BottomDrawer from '@/components/drawer/bottomDrawer';
+import ChangePassword from '@/app/(auth)/changePassword/changePassword';
 import { useNotificationStore } from '../notificationStore';
 import { useAuthStore } from './authStore';
 import style from './authDrawer.module.scss';
 import closeIcon from './components/authComponent/img/closeIcon.png';
 import headerBg from './components/authComponent/img/headerBg.jpeg';
-import Register from '@/app/(auth)/register/register';
-import Login from '@/app/(auth)/login/login';
-import { useUserStore } from '@/app/userStore';
-import ForgetPassword from '@/app/(auth)/forgetPassword/forgetPassword';
-import ChangePassword from '@/app/(auth)/changePassword/changePassword';
-import BottomDrawer from '@/components/drawer/bottomDrawer';
 
 function AuthDrawer() {
     const authQuery = useUserStore.use.authQuery();
@@ -23,6 +23,8 @@ function AuthDrawer() {
     const removeAuthQuery = useAuthStore.use.removeAuthQuery();
     const removeInvitCode = useAuthStore.use.removeInvitCode();
     const setUserInfo = useUserStore.use.setUserInfo();
+    const setTags = useUserStore.use.setTags();
+    const setMemberSubscribeStatus = useUserStore.use.setMemberSubscribeStatus();
     const setIsLogin = useUserStore.use.setIsLogin();
     const setToken = useUserStore.use.setToken();
     const isCookieExist = Cookies.get('access');
@@ -70,10 +72,17 @@ function AuthDrawer() {
         if (isCookieExist) {
             if (res.success) {
                 setUserInfo(res.data);
+                setTags(res.data.tags);
                 setIsLogin(true);
                 setToken(isCookieExist);
                 removeAuthQuery();
                 removeInvitCode();
+                const subscriptionRespons = await getMemberSubscriptionStatus({
+                    memberId: res.data.uid
+                });
+                if (subscriptionRespons.success) {
+                    setMemberSubscribeStatus(subscriptionRespons.data);
+                }
             } else {
                 setNotificationVisible('登陆已过期，请重新登陆', 'error');
             }

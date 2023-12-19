@@ -3,11 +3,11 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Link as ScrollLink, Element } from 'react-scroll';
 import { Tab, Tabs } from 'ui';
+import HeaderFilter from '@/components/header/headerFilter';
 import style from './analytics.module.scss';
 import searchIcon from './img/search.png';
 import leagueLogo from './img/leagueLogo.png';
 import cupLogo from './img/cupLogo.png';
-import HeaderFilter from '@/components/header/headerFilter';
 
 const hotGames = [
     { logo: null, name: '美联职' },

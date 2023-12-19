@@ -3,6 +3,7 @@ import type { ReactNode } from 'react';
 import { Button, IconButton, Input } from '@mui/material';
 import { CustomSelect } from 'ui';
 import type { FieldError, FieldValues } from 'react-hook-form';
+import BottomDrawer from '@/components/drawer/bottomDrawer';
 import style from './authComponent.module.scss';
 import closeIcon from './img/closeIcon.png';
 import headerBg from './img/headerBg.jpeg';
@@ -12,7 +13,6 @@ import shieldIcon from './img/shieldIcon.png';
 import exclamationIcon from './img/exclamation.png';
 import userIcon from './img/user.png';
 import reloadIcon from './img/reloadIcon.png';
-import BottomDrawer from '@/components/drawer/bottomDrawer';
 
 export function NicknameInput({
     field,

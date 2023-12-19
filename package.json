@@ -8,7 +8,8 @@
         "format": "prettier --write \"**/*.{ts,tsx,md}\"",
         "prepare": "husky install",
         "build:site03": "turbo run build --filter=site-03",
-        "start:site03": "cd apps/site-03 && pnpm start"
+        "start:site03": "cd apps/site-03 && pnpm start",
+        "fix:site03": "cd apps/site-03 && pnpm lint:fix"
     },
     "commitlint": {
         "extends": [
@@ -17,7 +18,7 @@
     },
     "lint-staged": {
         "*.{css,scss,ts,tsx,module.css,module.scss}": "prettier --check --ignore-unknown",
-        "*.{ts,tsx}": "bash -c \"turbo lint\""
+        "*.{ts,tsx}": "eslint --fix"
     },
     "devDependencies": {
         "@commitlint/cli": "^17.7.2",

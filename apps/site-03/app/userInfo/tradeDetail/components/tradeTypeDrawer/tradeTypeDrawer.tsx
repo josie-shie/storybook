@@ -1,8 +1,8 @@
 import { Button } from '@mui/material';
 import type { Dispatch, SetStateAction } from 'react';
+import BottomDrawer from '@/components/drawer/bottomDrawer';
 import { useTardeDetailStore, type TradeTypeOption } from '../../tradeDetailStore';
 import style from './tradeTypeDrawer.module.scss';
-import BottomDrawer from '@/components/drawer/bottomDrawer';
 
 interface TradeTypeProps {
     tradeType: TradeTypeOption;

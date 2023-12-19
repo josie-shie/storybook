@@ -3,6 +3,7 @@ import Image from 'next/image';
 import dayjs from 'dayjs';
 import { mqttService } from 'lib';
 import { useEffect } from 'react';
+import { useUserStore } from '@/app/userStore';
 import style from './disSelect.module.scss';
 import { GameFilter } from './components/gameFilter/gameFilter';
 import SelectOption from './components/selectOption/selectOption';
@@ -12,7 +13,6 @@ import Datepicker from './components/datepicker/datepicker';
 import { useHandicapAnalysisFormStore } from './handicapAnalysisFormStore';
 import searchIcon from './img/search.png';
 import Dialog from './components/dialog/dialog';
-import { useUserStore } from '@/app/userStore';
 
 function PaymentAlert() {
     const setOpenDialog = useHandicapAnalysisFormStore.use.setOpenNormalDialog();

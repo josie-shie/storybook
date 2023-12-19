@@ -18,8 +18,8 @@ import checkbox from './img/checkbox.png';
 import checkedbox from './img/checkedbox.png';
 import VipIcon from './img/vipIcon.png';
 import { useSubscribeStore } from './subscribeStore';
-import { useUserStore } from '@/app/userStore';
 import { useNotificationStore } from '@/app/notificationStore';
+import { useUserStore } from '@/app/userStore';
 
 function Subscribe({ backHistory }: { backHistory: boolean }) {
     const router = useRouter();
@@ -32,14 +32,10 @@ function Subscribe({ backHistory }: { backHistory: boolean }) {
     const planId = useSubscribeStore.use.planId();
     const isVip = useSubscribeStore.use.isVip();
     const isChecked = useSubscribeStore.use.isChecked();
-    const masterPlan = useSubscribeStore.use.masterPlan();
-    const unlockArticle = useSubscribeStore.use.unlockArticle();
     const subscribeStatus = useSubscribeStore.use.subscribeStatus();
     const setPlanId = useSubscribeStore.use.setPlanId();
     const setIsVip = useSubscribeStore.use.setIsVip();
     const setIsChecked = useSubscribeStore.use.setIsChecked();
-    const setMasterPlan = useSubscribeStore.use.setMasterPlan();
-    const setUnlockArticle = useSubscribeStore.use.setUnlockArticle();
     const setYearPlanList = useSubscribeStore.use.setYearPlanList();
     const setIsVisible = useNotificationStore.use.setIsVisible();
     const [indicatorStyle, setIndicatorStyle] = useState({ left: '0', width: '98px' });
@@ -63,11 +59,9 @@ function Subscribe({ backHistory }: { backHistory: boolean }) {
         }
     };
 
-    const handlePlanClick = (id: number, plan: number, unlock: number) => {
+    const handlePlanClick = (id: number) => {
         setPlanId(id);
         setIsVip(false);
-        setMasterPlan(plan);
-        setUnlockArticle(unlock);
     };
 
     const handleVipClick = () => {
@@ -177,11 +171,7 @@ function Subscribe({ backHistory }: { backHistory: boolean }) {
                                                 planId === plan.planId ? style.selectedPlan : ''
                                             }`}
                                             onClick={() => {
-                                                handlePlanClick(
-                                                    plan.planId,
-                                                    plan.freePlan,
-                                                    plan.unlock
-                                                );
+                                                handlePlanClick(plan.planId);
                                             }}
                                         >
                                             <div className={style.discount}>{plan.discount}</div>
@@ -229,13 +219,10 @@ function Subscribe({ backHistory }: { backHistory: boolean }) {
                             >
                                 <div className={style.descript}>充值金币可以购买以下内容</div>
                                 <ul className={style.list}>
-                                    <li> - 所有赛事高手分配免费解锁</li>
-                                    <li>- 每日可免费查看{isVip ? '无限' : masterPlan}则高手方案</li>
-                                    <li>
-                                        - 每日可免费解锁{isVip ? '无限' : unlockArticle}
-                                        篇专家预测文章
-                                    </li>
-                                    <li> - 不限次数使用盘路分析功能</li>
+                                    <li>- 解鎖平台風向20/次</li>
+                                    <li>- 可查看5篇高手方案</li>
+                                    <li>- 可解鎖1篇專家預測文章</li>
+                                    <li>- 可使用一次盤路分析功能</li>
                                 </ul>
                             </div>
                         </>

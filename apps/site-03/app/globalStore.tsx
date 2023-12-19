@@ -1,7 +1,11 @@
 'use client';
 import type { ReactNode } from 'react';
 import { useSearchParams } from 'next/navigation';
-import type { GetMemberInfoResponse } from 'data-center';
+import type {
+    GetMemberInfoResponse,
+    GetMemberSubscriptionStatusResponse,
+    TagType
+} from 'data-center';
 import { creatContestInfoStore } from './contestInfoStore';
 import { createMessageStore } from './messageStore';
 import { creatUserStore } from './userStore';
@@ -18,7 +22,9 @@ function GlobalStore({ children }: { children: ReactNode }) {
     creatUserStore({
         inviteCode: invite ? invite : '',
         authQuery: query ? query : '',
-        userInfo: {} as GetMemberInfoResponse
+        userInfo: {} as GetMemberInfoResponse,
+        tags: {} as TagType,
+        memberSubscribeStatus: {} as GetMemberSubscriptionStatusResponse
     });
     creatNotificationStore({
         message: '',

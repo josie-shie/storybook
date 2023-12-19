@@ -1,5 +1,7 @@
 import Image from 'next/image';
 import { useState } from 'react';
+import BottomDrawer from '@/components/drawer/bottomDrawer';
+import NoData from '@/components/baseNoData/noData';
 import HandicapTips from '../handicapTips/handicapTips';
 import { useHintsFormStore } from '../../hintsFormStore';
 import MatchFilterDrawer from '../matchFilterDrawer/matchFilterDrawer';
@@ -7,8 +9,6 @@ import { useMatchFilterStore } from '../../matchFilterStore';
 import style from './handicapDrawer.module.scss';
 import iconSort from './img/sort.png';
 import iconFilter from './img/filterIcon.png';
-import BottomDrawer from '@/components/drawer/bottomDrawer';
-import NoData from '@/components/baseNoData/noData';
 
 function RecordFilter({
     isOpen,

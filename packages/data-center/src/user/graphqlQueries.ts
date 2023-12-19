@@ -43,6 +43,48 @@ export const GET_MEMBER_INFO_QUERY = `
             avatarPath
             balance
             createdAt
+            email
+            description
+            fans
+            unlocked
+            tags {
+                id
+                tagName
+                note
+                colorCode
+                weekHitRecentTen
+                weekMaxAccurateStreak
+                weekHitMatches
+                weekTotalMatches
+                weekHitRate
+                weekHitRateDisplay
+                weekRanking
+                weekHistoryMaxWinStreak
+                monthHitRecentTen
+                monthMaxAccurateStreak
+                monthHitMatches
+                monthTotalMatches
+                monthHitRate
+                monthHitRateDisplay
+                monthRanking
+                monthHistoryMaxWinStreak
+                quarterHitRecentTen
+                quarterMaxAccurateStreak
+                quarterHitMatches
+                quarterTotalMatches
+                quarterHitRate
+                quarterHitRateDisplay
+                quarterRanking
+                quarterHistoryMaxWinStreak
+                winHitRecentTen
+                winMaxAccurateStreak
+                winHitMatches
+                winTotalMatches
+                winHitRate
+                winHitRateDisplay
+                winRanking
+                winHistoryMaxWinStreak
+            }
         }
     }
 `;
@@ -206,6 +248,17 @@ export const GET_MEMBER_GUESS_VIEWING_RECORDS_QUERY = `
                 pageCount
                 totalCount
             }
+        }
+    }
+`;
+
+export const GET_MEMBER_SUBSCRIPTION_STATUS_QUERY = `
+    query getMemberSubscriptionStatus($input: GetMemberSubscriptionStatusInput!){
+        getMemberSubscriptionStatus(input: $input) {
+            planId
+            planName
+            planStartAt
+            planEndAt
         }
     }
 `;

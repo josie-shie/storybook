@@ -4,6 +4,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { FormControl } from '@mui/material';
 import type { UpdatePasswordRequest } from 'data-center';
 import { sendVerificationCodeInLogged, updatePassword } from 'data-center';
+import { useNotificationStore } from '@/app/notificationStore';
 import {
     PasswordInput,
     SubmitButton,
@@ -11,7 +12,6 @@ import {
 } from '../components/authComponent/authComponent';
 import { useAuthStore } from '../authStore';
 import style from './changePassword.module.scss';
-import { useNotificationStore } from '@/app/notificationStore';
 
 const schema = yup.object().shape({
     verificationCode: yup.string().required(),

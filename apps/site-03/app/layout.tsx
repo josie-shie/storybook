@@ -2,13 +2,13 @@ import '@/styles/reset.scss';
 import '@/styles/globals.scss';
 import type { ReactNode } from 'react';
 import type { Metadata } from 'next';
+import AuthDrawer from '@/app/(auth)/authDrawer';
+import Notification from '@/app/notification';
 import GlobalStore from './globalStore';
 import MqttService from './mqttService';
 import WebsocketService from './websocketService';
 import GoalAlert from './goalAlert';
 import ContestStoreHandler from './contestStoreHandler';
-import AuthDrawer from '@/app/(auth)/authDrawer';
-import Notification from '@/app/notification';
 
 export const metadata: Metadata = {
     title: 'Sport',

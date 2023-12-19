@@ -1,9 +1,9 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import Badge from '@mui/material/Badge';
+import { useUserStore } from '@/app/userStore';
 import NoticeIcon from '../../img/notice.png';
 import style from './notice.module.scss';
-import { useUserStore } from '@/app/userStore';
 
 function Notice() {
     // const userInfo = useUserStore.use.userInfo();

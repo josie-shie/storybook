@@ -1,0 +1,103 @@
+.analysisItem {
+    margin-bottom: 16px;
+}
+
+.top {
+    display: flex;
+
+    .title {
+        font-size: 14px;
+        font-weight: 600;
+        color: #4a4a4a;
+        display: flex;
+        padding-top: 6px;
+        padding-right: 8px;
+
+        .decorate {
+            display: inline-block;
+            width: 4px;
+            height: 16px;
+            background: #4489ff;
+            margin-right: 6px;
+            border-radius: 1px;
+        }
+    }
+
+    .unlockStatus {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+
+        .unlockNumber {
+            font-size: 12px;
+            font-weight: 500;
+            padding-top: 2px;
+            color: #4489ff;
+        }
+
+        .unlocked {
+            font-size: 12px;
+            font-weight: 500;
+            word-break: keep-all;
+            color: #4489ff;
+            padding: 8px;
+        }
+    }
+}
+
+.mid {
+    padding: 8px 0;
+
+    .detail {
+        font-size: 13px;
+        font-weight: 500;
+        color: #276ce1;
+        padding-bottom: 4px;
+
+        .time {
+            color: #9b9b9b;
+            padding-left: 4px;
+        }
+    }
+
+    .combination {
+        font-size: 14px;
+        font-weight: 500;
+        background: #f3f3f3;
+        color: #757575;
+        position: relative;
+        padding: 10px;
+        border-radius: 8px;
+
+        .icon {
+            position: absolute;
+            right: 4px;
+            top: -25px;
+            width: 36px;
+            height: auto;
+            background: #fb897a;
+            border-radius: 50%;
+        }
+
+        .team {
+            display: flex;
+            align-items: center;
+
+            .tag {
+                padding: 2px 6px;
+                color: #4489ff;
+                font-size: 11px;
+                font-weight: 500;
+                border: 1px solid #4489ff;
+                border-radius: 4px;
+                margin-right: 4px;
+            }
+        }
+    }
+}
+
+.postTime {
+    font-size: 12px;
+    color: #979797;
+    padding-bottom: 8px;
+}

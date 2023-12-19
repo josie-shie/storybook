@@ -1,10 +1,10 @@
 'use client';
 import { useState } from 'react';
 import { Tab, Tabs } from 'ui';
+import NoData from '@/components/baseNoData/noData';
 import BettingPlan from './components/bettingPlan/bettingPlan';
 import style from './myGuess.module.scss';
 import { useMyGuessStore, type MyPlans } from './myGuessStore';
-import NoData from '@/components/baseNoData/noData';
 
 const tabList = [
     {

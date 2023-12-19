@@ -20,15 +20,11 @@ interface SubscribeState extends InitState {
     planId: number;
     isVip: boolean;
     isChecked: boolean;
-    masterPlan: number;
-    unlockArticle: number;
     subscribeStatus: boolean;
     setPlanId: (planId: number) => void;
     setIsVip: (isVip: boolean) => void;
     setIsChecked: (isChecked: boolean) => void;
     setPlanList: (planList: SubscribePlan[]) => void;
-    setMasterPlan: (masterPlan: number) => void;
-    setUnlockArticle: (unlockArticle: number) => void;
     setSubscribeStatus: (subscribeStatus: boolean) => void;
     setYearPlanList: (yearPlanList: GetSubscriptionPlanListResponse) => void;
 }
@@ -40,8 +36,6 @@ const initialState = (set: (data: Partial<SubscribeState>) => void) => ({
     isVip: false,
     isChecked: false,
     planList: [],
-    masterPlan: 2,
-    unlockArticle: 1,
     yearPlanList: [],
     subscribeStatus: false,
     setPlanId: (planId: number) => {
@@ -55,12 +49,6 @@ const initialState = (set: (data: Partial<SubscribeState>) => void) => ({
     },
     setPlanList: (planList: SubscribePlan[]) => {
         set({ planList });
-    },
-    setMasterPlan: (masterPlan: number) => {
-        set({ masterPlan });
-    },
-    setUnlockArticle: (unlockArticle: number) => {
-        set({ unlockArticle });
     },
     setSubscribeStatus: (subscribeStatus: boolean) => {
         set({ subscribeStatus });

@@ -3,13 +3,13 @@ import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { getUnlockedPost } from 'data-center';
+import { useUserStore } from '@/app/userStore';
+import NoData from '@/components/baseNoData/noData';
+import Loading from '@/components/loading/loading';
 import backLeftArrowImg from '../img/backLeftArrow.png';
 import ArticleItem from './components/articleItem/articleItem';
 import style from './myAnalysis.module.scss';
 import { useArticleStore } from './myAnalysisStore';
-import { useUserStore } from '@/app/userStore';
-import NoData from '@/components/baseNoData/noData';
-import Loading from '@/components/loading/loading';
 
 function MyAnalysis() {
     const router = useRouter();

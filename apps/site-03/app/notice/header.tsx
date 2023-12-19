@@ -1,9 +1,9 @@
 'use client';
 
 import Button from '@mui/material/Button';
+import HeaderOption from '@/components/header/headerTitleFilter';
 import style from './header.module.scss';
 import { useNoticeStore } from './noticeStore';
-import HeaderOption from '@/components/header/headerTitleFilter';
 
 function HeaderBar() {
     const setEditStatus = useNoticeStore.use.setEditStatus();

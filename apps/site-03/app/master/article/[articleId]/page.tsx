@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
-import ArticleDetail from './articleDetail';
 import Footer from '@/components/footer/footer';
+import ArticleDetail from './articleDetail';
 
 export const metadata: Metadata = {
     title: '专家预测'

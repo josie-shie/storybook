@@ -1,11 +1,11 @@
+import ButtonSwitch from '@/components/textSwitch/buttonSwitch';
+import TextRadio from '@/components/textSwitch/textSwitch';
+import type { ExponentType, TotalGoalsRadioType } from '@/types/exponent';
 import { useExponentStore } from '../../exponentStore';
 import style from './exponent.module.scss';
 import Handicap from './handicap';
 import TotalGoal from './totalGoal';
 import WinLose from './winLose';
-import ButtonSwitch from '@/components/textSwitch/buttonSwitch';
-import TextRadio from '@/components/textSwitch/textSwitch';
-import type { ExponentType, TotalGoalsRadioType } from '@/types/exponent';
 
 function ExponentTable() {
     const totalGoalsRadio = useExponentStore.use.totalGoalsRadio();
