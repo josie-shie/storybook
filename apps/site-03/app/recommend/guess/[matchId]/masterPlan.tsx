@@ -3,6 +3,9 @@ import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { getProDistrib, getProGuess, payForProDistrib, payForProGuess } from 'data-center';
 import { useParams, useRouter } from 'next/navigation';
+import PaidDialog from '@/components/paidDialog/paidDialog';
+import { useUserStore } from '@/app/userStore';
+import BaseNoData from '@/components/baseNoData/noData';
 import Rule from './components/rule/rule';
 import GameCard from './gameCard';
 import AnalyzeColumn from './analyze';
@@ -10,8 +13,6 @@ import Title from './img/title.png';
 import style from './masterPlan.module.scss';
 import { useGuessDetailStore } from './guessDetailStore';
 import starIcon from './img/star.png';
-import PaidDialog from '@/components/paidDialog/paidDialog';
-import { useUserStore } from '@/app/userStore';
 
 function MasterPlan() {
     const matchId = useParams().matchId;
@@ -104,6 +105,8 @@ function MasterPlan() {
                 const data = proGuess.data;
                 setMasterPlanList(data.proGuess);
                 setMasterPlanPrice(data.unlockPrice);
+            } else {
+                setMasterPlanList([]);
             }
         }
         void fetchProDistrib();
@@ -169,15 +172,19 @@ function MasterPlan() {
                     <div className={style.title}>
                         <span>同场高手方案</span>
                     </div>
-                    {masterPlanList.map((el, idx) => (
-                        <GameCard
-                            key={idx}
-                            onOpenPaidDialog={() => {
-                                handleLocalClickOpen(el.guessId, 20, 'single');
-                            }}
-                            plan={el}
-                        />
-                    ))}
+                    {masterPlanList.length === 0 ? (
+                        <BaseNoData />
+                    ) : (
+                        masterPlanList.map((el, idx) => (
+                            <GameCard
+                                key={idx}
+                                onOpenPaidDialog={() => {
+                                    handleLocalClickOpen(el.guessId, 20, 'single');
+                                }}
+                                plan={el}
+                            />
+                        ))
+                    )}
                 </div>
             </div>
             <PaidDialog
