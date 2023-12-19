@@ -61,3 +61,20 @@ export const TagSchema = z.object({
 });
 
 export type TagType = z.infer<typeof TagSchema>;
+
+export const ChangeTypeCategorySchema = z.union([
+    z.literal('ALL'),
+    z.literal('RECHARGE'),
+    z.literal('PAY'),
+    z.literal('INCOME')
+]);
+
+export type ChangeTypeCategory = z.infer<typeof ChangeTypeCategorySchema>;
+
+export const RechargeStatusSchema = z.union([
+    z.literal('SUCCESS'),
+    z.literal('PENDING'),
+    z.literal('FAIL')
+]);
+
+export type RechargeStatus = z.infer<typeof RechargeStatusSchema>;
