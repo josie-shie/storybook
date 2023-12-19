@@ -243,6 +243,47 @@ export const GET_MEMBER_GUESS_VIEWING_RECORDS_QUERY = `
                 predictedPlay
                 predictionResult
                 viewingTime
+                latestPredictionResult {
+                    predictionResults
+                }
+                highlights {
+                    id
+                    tagName
+                    note
+                    colorCode
+                    weekHitRecentTen
+                    weekMaxAccurateStreak
+                    weekHitMatches
+                    weekTotalMatches
+                    weekHitRate
+                    weekHitRateDisplay
+                    weekRanking
+                    weekHistoryMaxWinStreak
+                    monthHitRecentTen
+                    monthMaxAccurateStreak
+                    monthHitMatches
+                    monthTotalMatches
+                    monthHitRate
+                    monthHitRateDisplay
+                    monthRanking
+                    monthHistoryMaxWinStreak
+                    quarterHitRecentTen
+                    quarterMaxAccurateStreak
+                    quarterHitMatches
+                    quarterTotalMatches
+                    quarterHitRate
+                    quarterHitRateDisplay
+                    quarterRanking
+                    quarterHistoryMaxWinStreak
+                    winHitRecentTen
+                    winMaxAccurateStreak
+                    winHitMatches
+                    winTotalMatches
+                    winHitRate
+                    winHitRateDisplay
+                    winRanking
+                    winHistoryMaxWinStreak
+                }
             }
             pagination {
                 pageCount

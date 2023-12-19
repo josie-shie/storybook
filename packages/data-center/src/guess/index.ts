@@ -423,6 +423,8 @@ const MemberIndividualGuessMatchSchema = z.object({
     homeTeamName: z.string(),
     awayTeamName: z.string(),
     handicapOdds: z.number(),
+    playType: z.string(),
+    handicapInChinese: z.string(),
     overUnderOdds: z.number(),
     predictedPlay: PredictedPlaySchema,
     predictionResult: PredictionResultSchema,
@@ -439,7 +441,7 @@ const PaginationSchema = z.object({
 export type Pagination = z.infer<typeof PaginationSchema>;
 
 const GetMemberIndividualGuessMatchesSchema = z.object({
-    guessType: z.union([z.literal(0), z.literal(1), z.literal(2)]),
+    guessType: z.union([z.literal(-1), z.literal(0), z.literal(1), z.literal(2)]),
     // 競猜玩法 ( 0: 全部, 1: 讓球, 2: 大小球 )
     guessMatchList: z.array(MemberIndividualGuessMatchSchema),
     pagination: PaginationSchema

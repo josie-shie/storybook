@@ -8,6 +8,12 @@
     background: #fff;
     border-radius: 16px 16px 0 0;
 
+    .loderBox {
+        height: 30vh;
+        display: flex;
+        justify-content: center;
+    }
+
     .title {
         display: flex;
         align-items: center;
@@ -46,6 +52,12 @@
                 background: #edf3ff;
             }
         }
+
+        .disable {
+            color: #e8e6e6;
+            border: 1px solid #e8e6e6;
+            pointer-events: none;
+        }
     }
 
     .btnTab {
@@ -67,7 +79,7 @@
                         font-weight: 600;
 
                         :global(.ui-tabs-header-label) {
-                            text-wrap: nowrap;
+                            word-break: keep-all;
                         }
 
                         &::before {
@@ -149,6 +161,21 @@
     .focusDetail {
         background: #f3f3f3;
         border: 1px solid #4489ff;
+    }
+
+    .loadMore {
+        text-align: center;
+        padding: 8px 0;
+    }
+
+    .listEnd {
+        text-align: center;
+
+        p {
+            font-size: 14px;
+            color: #343333;
+            padding-top: 16px;
+        }
     }
 }
 

@@ -37,14 +37,11 @@ function BettingPlan({ rowData }: PropsType) {
             <div className={style.top}>
                 {rowData.leagueName}
                 <span className={style.time}>
-                    {' '}
                     | {timestampToString(rowData.matchTime, 'MM-DD HH:mm')}
                 </span>
             </div>
             <div className={style.mid}>
-                <span className={style.plan}>
-                    {rowData.bettingType === 'draw' ? '让球' : '大小'}
-                </span>
+                <span className={style.plan}>{rowData.playType}</span>
                 <div className={style.combination}>
                     {rowData.homeTeamName}
                     vs
@@ -54,7 +51,7 @@ function BettingPlan({ rowData }: PropsType) {
             <div className={style.bot}>
                 <div
                     className={`${style.message} ${
-                        rowData.predictionResult === 'win' && style.red
+                        rowData.predictionResult === 'WIN' && style.red
                     }`}
                 >
                     {messageFormat(rowData.predictedPlay, rowData)}

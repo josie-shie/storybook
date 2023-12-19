@@ -709,7 +709,9 @@ const MemberGuessViewingRecordSchema = z.object({
     overUnderOdds: z.number(),
     predictedPlay: PredictedPlaySchema,
     predictionResult: PredictionResultSchema,
-    viewingTime: z.number()
+    viewingTime: z.number(),
+    highlights: TagSchema,
+    latestPredictionResult: z.object({ predictionResults: z.array(PredictionResultSchema) })
 });
 
 export type MemberGuessViewingRecord = z.infer<typeof MemberGuessViewingRecordSchema>;
