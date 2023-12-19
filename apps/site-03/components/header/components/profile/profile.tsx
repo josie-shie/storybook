@@ -1,14 +1,11 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { formatNumberWithCommas } from 'lib';
 import { useUserStore } from '@/app/userStore';
 import { useAuthStore } from '@/app/(auth)/authStore';
 import profileIcon from '../../img/profileIcon.png';
 import profileVipIcon from '../../img/profileVipIcon.png';
 import style from './profile.module.scss';
-
-function formatNumberWithCommas(total: number): string {
-    return total.toString().replace(/\B(?=(?<temp1>\d{3})+(?!\d))/g, ',');
-}
 
 function Profile() {
     const setAuthQuery = useUserStore.use.setAuthQuery();

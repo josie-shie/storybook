@@ -8,6 +8,7 @@ import { ButtonBase } from '@mui/material';
 import Skeleton from '@mui/material/Skeleton';
 import Image from 'next/image';
 import Cookies from 'js-cookie';
+import { formatNumberWithCommas } from 'lib';
 import { useNotificationStore } from '@/app/notificationStore';
 import Tag from '@/components/tag/tag';
 import Header from '@/components/header/headerTitleNoBg';
@@ -234,7 +235,7 @@ function UserInfo() {
                                     <Image alt="" height={14} src={Star} width={14} />
                                     <span>可用馀额：</span>
                                     {mounted && !userInfoIsLoading ? (
-                                        <>{userInfo.balance}</>
+                                        <>{formatNumberWithCommas(userInfo.balance)}</>
                                     ) : (
                                         <Skeleton
                                             animation="wave"
