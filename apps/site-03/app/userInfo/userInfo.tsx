@@ -1,13 +1,17 @@
 'use client';
 import { IconFlame } from '@tabler/icons-react';
 import Link from 'next/link';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { getMemberInfo, getMemberSubscriptionStatus } from 'data-center';
 import { ButtonBase } from '@mui/material';
 import Skeleton from '@mui/material/Skeleton';
 import Image from 'next/image';
 import Cookies from 'js-cookie';
+import { useNotificationStore } from '@/app/notificationStore';
+import Tag from '@/components/tag/tag';
+import Header from '@/components/header/headerTitleNoBg';
+import Footer from '@/components/footer/footer';
 import { useAuthStore } from '../(auth)/authStore';
 import { useUserStore } from '../userStore';
 import userInfoBg from './img/userInfoBg.png';
@@ -20,10 +24,6 @@ import VipTip from './img/vipTip.png';
 import MyAnalyze from './img/myAnalyze.png';
 import style from './userInfo.module.scss';
 import defaultAvatar from './img/avatar.png';
-import { useNotificationStore } from '@/app/notificationStore';
-import Tag from '@/components/tag/tag';
-import Header from '@/components/header/headerTitleNoBg';
-import Footer from '@/components/footer/footer';
 
 function UserInfo() {
     const router = useRouter();
@@ -37,6 +37,12 @@ function UserInfo() {
     const setAuthQuery = useUserStore.use.setAuthQuery();
     const setIsLogin = useUserStore.use.setIsLogin();
     const setIsVisible = useNotificationStore.use.setIsVisible();
+    const [loading, setLoading] = useState(true);
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
     const headerProps = {
         title: '我的'
@@ -46,21 +52,22 @@ function UserInfo() {
         router.push('/');
     };
 
-    useEffect(() => {
-        const getUserInfo = async () => {
-            const res = await getMemberInfo();
-            if (res.success) {
-                setUserInfo(res.data);
+    const getUserInfo = async () => {
+        const res = await getMemberInfo();
+        if (res.success) {
+            setUserInfo(res.data);
 
-                const subscriptionRespons = await getMemberSubscriptionStatus({
-                    memberId: res.data.uid
-                });
-                if (subscriptionRespons.success) {
-                    setMemberSubscribeStatus(subscriptionRespons.data);
-                }
+            const subscriptionRespons = await getMemberSubscriptionStatus({
+                memberId: res.data.uid
+            });
+            if (subscriptionRespons.success) {
+                setMemberSubscribeStatus(subscriptionRespons.data);
             }
-        };
+            setLoading(false);
+        }
+    };
 
+    useEffect(() => {
         void getUserInfo();
     }, []);
 
@@ -80,9 +87,10 @@ function UserInfo() {
         Cookies.remove('access');
         setIsVisible('登出成功', 'success');
         setIsLogin(false);
+        void getUserInfo();
         setTimeout(() => {
             router.push('/?auth=login');
-        }, 500);
+        }, 1000);
     };
 
     return (
@@ -97,7 +105,7 @@ function UserInfo() {
                         }}
                     >
                         <div className={style.detail}>
-                            {!userInfoIsLoading ? (
+                            {mounted && !userInfoIsLoading ? (
                                 <Image
                                     alt="大头贴"
                                     className={style.avatar}
@@ -119,7 +127,7 @@ function UserInfo() {
                             )}
                             <div className={style.content}>
                                 <div className={style.top}>
-                                    {!userInfoIsLoading ? (
+                                    {mounted && !userInfoIsLoading ? (
                                         <span className={style.name}>{userInfo.username}</span>
                                     ) : (
                                         <Skeleton
@@ -129,7 +137,7 @@ function UserInfo() {
                                             width={74}
                                         />
                                     )}
-                                    {!userInfoIsLoading ? (
+                                    {mounted && !userInfoIsLoading ? (
                                         <div className={style.tags}>
                                             {tags.winHistoryMaxWinStreak >= 3 ? (
                                                 <Tag
@@ -165,30 +173,12 @@ function UserInfo() {
                                                 animation="wave"
                                                 height={20}
                                                 variant="text"
-                                                width={34}
-                                            />
-                                            <Skeleton
-                                                animation="wave"
-                                                height={20}
-                                                variant="text"
-                                                width={34}
-                                            />
-                                            <Skeleton
-                                                animation="wave"
-                                                height={20}
-                                                variant="text"
-                                                width={34}
-                                            />
-                                            <Skeleton
-                                                animation="wave"
-                                                height={20}
-                                                variant="text"
-                                                width={34}
+                                                width={136}
                                             />
                                         </div>
                                     )}
                                 </div>
-                                {!userInfoIsLoading ? (
+                                {mounted && !userInfoIsLoading ? (
                                     <div className={style.middle}>{userInfo.mobileNumber}</div>
                                 ) : (
                                     <Skeleton
@@ -198,7 +188,7 @@ function UserInfo() {
                                         width={74}
                                     />
                                 )}
-                                {!userInfoIsLoading ? (
+                                {mounted && !userInfoIsLoading ? (
                                     <div className={style.bottom}>
                                         {userInfo.fans > 0 && <span>粉丝: {userInfo.fans}</span>}
                                         {userInfo.unlocked > 0 && (
@@ -214,25 +204,13 @@ function UserInfo() {
                                             animation="wave"
                                             height={20}
                                             variant="text"
-                                            width={54}
-                                        />
-                                        <Skeleton
-                                            animation="wave"
-                                            height={20}
-                                            variant="text"
-                                            width={54}
-                                        />
-                                        <Skeleton
-                                            animation="wave"
-                                            height={20}
-                                            variant="text"
-                                            width={54}
+                                            width={162}
                                         />
                                     </div>
                                 )}
                             </div>
                         </div>
-                        {!userInfoIsLoading ? (
+                        {mounted && !userInfoIsLoading ? (
                             <div className={style.introduction}>{userInfo.description}</div>
                         ) : (
                             <div className={style.introduction}>
@@ -255,7 +233,7 @@ function UserInfo() {
                                 <span className={style.text}>
                                     <Image alt="" height={14} src={Star} width={14} />
                                     <span>可用馀额：</span>
-                                    {!userInfoIsLoading ? (
+                                    {mounted && !userInfoIsLoading ? (
                                         <>{userInfo.balance}</>
                                     ) : (
                                         <Skeleton
@@ -280,7 +258,7 @@ function UserInfo() {
                                     <Image alt="" height={16} src={BuyBag} width={16} />
                                     <span>您的订阅状态：</span>
                                     <span className={style.status}>
-                                        {!userInfoIsLoading ? (
+                                        {!loading ? (
                                             <>
                                                 {memberSubscribeStatus.planName
                                                     ? memberSubscribeStatus.planName

@@ -6,6 +6,8 @@ import { Dialog, DialogTitle } from '@mui/material';
 import { getSubscriptionPlanList, subscribePlan, getRechargeOptionList } from 'data-center';
 import { timestampToString } from 'lib';
 import Skeleton from '@mui/material/Skeleton';
+import { useUserStore } from '@/app/userStore';
+import { useNotificationStore } from '@/app/notificationStore';
 import backLeftArrowImg from '../img/backLeftArrow.png';
 import style from './subscribe.module.scss';
 import background from './img/bg.png';
@@ -20,8 +22,6 @@ import checkbox from './img/checkbox.png';
 import checkedbox from './img/checkedbox.png';
 import VipIcon from './img/vipIcon.png';
 import { useSubscribeStore } from './subscribeStore';
-import { useUserStore } from '@/app/userStore';
-import { useNotificationStore } from '@/app/notificationStore';
 
 function Subscribe({ backHistory }: { backHistory: boolean }) {
     const router = useRouter();
@@ -43,6 +43,11 @@ function Subscribe({ backHistory }: { backHistory: boolean }) {
     const setPlanList = useSubscribeStore.use.setPlanList();
     const setIsVisible = useNotificationStore.use.setIsVisible();
     const [indicatorStyle, setIndicatorStyle] = useState({ left: '0', width: '98px' });
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
     useEffect(() => {
         const getYearSubscribe = async () => {
@@ -99,6 +104,13 @@ function Subscribe({ backHistory }: { backHistory: boolean }) {
             } else {
                 setIsVisible('余额不足!', 'error');
             }
+        }
+
+        if (!isVip) {
+            setIsVisible('充值成功!', 'success');
+            setTimeout(() => {
+                router.push('/userInfo');
+            }, 2000);
         }
     };
 
@@ -183,7 +195,7 @@ function Subscribe({ backHistory }: { backHistory: boolean }) {
                         memberSubscribeStatus.planId === 1 ? style.subscribeState : ''
                     }`}
                 >
-                    {!userInfoIsLoading ? (
+                    {mounted && !userInfoIsLoading ? (
                         <>
                             {memberSubscribeStatus.planId !== 1 ? (
                                 <>
