@@ -44,7 +44,7 @@ function RechargeItem({ data }: PropsType) {
             </div>
             <div className={style.right}>
                 <div className={`${style.money} ${data.rechargeStatus === 'FAIL' && style.grey}`}>
-                    RMB {money}
+                    平台币 {money}
                 </div>
                 <div className={style.result}>
                     <div className={`${style.status} ${statusStyle}`}>{statusLabel}</div>
