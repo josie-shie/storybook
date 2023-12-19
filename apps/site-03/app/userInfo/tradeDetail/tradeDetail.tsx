@@ -26,8 +26,8 @@ function TradeDetail() {
     const [isTradeTypeOpen, setIsTradeTypeOpen] = useState(false);
     const [activeDate, setActiveDate] = useState<DateOption>('ALL');
     const [tradeType, setTradeType] = useState<TradeTypeOption>('ALL');
-    const [start, setStart] = useState<number | undefined>();
-    const [end, setEnd] = useState<number | undefined>();
+    const [start, setStart] = useState<number>(0);
+    const [end, setEnd] = useState<number>(0);
 
     const openOption = (value: 'dateRange' | 'tradeType') => {
         value === 'dateRange' ? setIsDateRangeOpen(true) : setIsTradeTypeOpen(true);
@@ -43,9 +43,8 @@ function TradeDetail() {
         const initFetch = async () => {
             setIsLoading(true);
             const data = await getMemberTransactionList({
-                // TODO 等後端改 選全部 時間要帶0
-                startTime: 1,
-                endTime: 1702813684,
+                startTime: 0,
+                endTime: 0,
                 changeTypeCategory: 'ALL',
                 currencyPage: 1,
                 prepage: 20

@@ -14,8 +14,8 @@ import {
 import style from './tradeDetail.module.scss';
 
 interface TradeDetailListProps {
-    end: number | undefined;
-    start: number | undefined;
+    end: number;
+    start: number;
     tradeType: TradeTypeOption;
 }
 
@@ -26,8 +26,8 @@ function TradeDetailList({ end, start, tradeType }: TradeDetailListProps) {
 
     const loadMoreList = async () => {
         const data = await getMemberTransactionList({
-            startTime: start ? start : 0,
-            endTime: end ? end : 0,
+            startTime: start,
+            endTime: end,
             changeTypeCategory: tradeType,
             currencyPage: 1,
             prepage: 20

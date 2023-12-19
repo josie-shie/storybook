@@ -25,8 +25,8 @@ function Datepicker({
     openModal: boolean;
     handleChangDate: (dateRange: number[], type: DateOption) => Promise<void>;
     setOpenModal: (openModal: boolean) => void;
-    setEnd: (date: number | undefined) => void;
-    setStart: (date: number | undefined) => void;
+    setEnd: (date: number) => void;
+    setStart: (date: number) => void;
     setIsDateRangeOpen: (isOpen: boolean) => void;
     setActiveDate: (type: DateOption) => void;
 }) {
@@ -60,8 +60,8 @@ function Datepicker({
         setOpenModal(false);
         setIsDateRangeOpen(false);
         setActiveDate('RANGE');
-        setEnd(endDate ? endDate.getTime() : undefined);
-        setStart(startDate ? startDate.getTime() : undefined);
+        setEnd(endDate ? endDate.getTime() : 0);
+        setStart(startDate ? startDate.getTime() : 0);
     };
 
     return (

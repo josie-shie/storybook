@@ -13,8 +13,8 @@ interface DateRangeProps {
     tradeType: TradeTypeOption;
     isDateRangeOpen: boolean;
     setIsDateRangeOpen: (arg: boolean) => void;
-    setStartDate: Dispatch<SetStateAction<number | undefined>>;
-    setEndDate: Dispatch<SetStateAction<number | undefined>>;
+    setStartDate: Dispatch<SetStateAction<number>>;
+    setEndDate: Dispatch<SetStateAction<number>>;
     setActiveDate: Dispatch<SetStateAction<DateOption>>;
 }
 
