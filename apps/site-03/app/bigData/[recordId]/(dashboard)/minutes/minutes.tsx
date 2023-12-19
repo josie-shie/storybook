@@ -26,19 +26,19 @@ function TimeRangeTable({
             <div className={style.cell}>
                 <span
                     onClick={() => {
-                        openMatchListDrawer(upper, label, '上');
+                        openMatchListDrawer(upper, label, '大');
                     }}
                 >
-                    上 {upper.length}
+                    大 {upper.length}
                 </span>
             </div>
             <div className={`${style.cell} ${style.odd}`}>
                 <span
                     onClick={() => {
-                        openMatchListDrawer(lower, label, '下');
+                        openMatchListDrawer(lower, label, '小');
                     }}
                 >
-                    下 {lower.length}
+                    小 {lower.length}
                 </span>
             </div>
         </div>
