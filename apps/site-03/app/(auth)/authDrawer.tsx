@@ -55,9 +55,11 @@ function AuthDrawer() {
     };
 
     const closeDrawer = () => {
-        setAuthQuery('');
+        if (auth) {
+            setAuthQuery('');
+            router.push(pathname);
+        }
         setIsDrawerOpen(false);
-        router.push(pathname);
         removeInvitCode();
     };
     const setMemberSubscribeStatus = useUserStore.use.setMemberSubscribeStatus();
