@@ -1,7 +1,9 @@
 import Image from 'next/image';
+import dayjs from 'dayjs';
 import { type RechargeData } from '../tradeDetailStore';
 import style from './rechargeItem.module.scss';
 import recharge from './img/recharge.png';
+
 // import payment from './img/payment.png';
 // import income from './img/income.png';
 
@@ -38,7 +40,9 @@ function RechargeItem({ data }: PropsType) {
                         {data.currencyCode}:平台币 = 1:{data.exchangeRate}
                     </div>
                 )}
-                <div className={style.content}>{data.createdAt}</div>
+                <div className={style.content}>
+                    {dayjs(data.createdAt).format('YYYY/MM/DD HH:mm')}
+                </div>
                 <div className={style.content}>交易编号:{data.rechargeId}</div>
             </div>
             <div className={style.right}>

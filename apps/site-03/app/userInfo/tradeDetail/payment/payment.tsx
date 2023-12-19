@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import dayjs from 'dayjs';
 import { type PaymentData } from '../tradeDetailStore';
 import style from './payment.module.scss';
 import incomeIcon from './img/income.png';
@@ -25,7 +26,9 @@ function Payment({ data }: PropsType) {
                 <div className={`${style.title} ${isPayment && style.black}`}>
                     {data.changeTypeDisplayName}
                 </div>
-                <div className={style.content}>{data.createdAt}</div>
+                <div className={style.content}>
+                    {dayjs(data.createdAt).format('YYYY/MM/DD HH:mm')}
+                </div>
             </div>
             <div className={style.right}>
                 <div className={`${style.money} ${isPayment && style.black}`}>RMB {money}</div>
