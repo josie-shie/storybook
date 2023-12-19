@@ -77,11 +77,11 @@ const initialState = (
             value: 'OVERUNDERHALF'
         },
         {
-            label: '全場讓球',
+            label: '全場让分',
             value: 'HANDICAP'
         },
         {
-            label: '半場讓球',
+            label: '半場让分',
             value: 'HANDICAPHALF'
         }
     ]

@@ -31,7 +31,7 @@ function ResultContent({ children }: { children: ReactNode }) {
 
     const tabList = [
         {
-            label: '讓球大小',
+            label: '让分大小',
             to: `/bigData/${params.recordId as string}/handicap`,
             params: 'handicap'
         },

@@ -207,7 +207,7 @@ function Handicap() {
     return (
         <div className={style.handicap}>
             <div className="topBar">
-                <h6 className="title">让球指数</h6>
+                <h6 className="title">让分指数</h6>
 
                 <ButtonSwitch
                     onChange={(switchValue: number) => {

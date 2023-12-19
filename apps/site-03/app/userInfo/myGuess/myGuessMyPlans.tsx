@@ -72,7 +72,7 @@ const tabList = [
         value: '0'
     },
     {
-        label: '让球',
+        label: '让分',
         value: '1'
     },
     {

@@ -53,8 +53,8 @@ function HandicapDrawer() {
     };
 
     const tabList = [
-        { label: '全让球', value: 'HANDICAP' },
-        { label: '半让球', value: 'HANDICAPHALF' },
+        { label: '全让分', value: 'HANDICAP' },
+        { label: '半让分', value: 'HANDICAPHALF' },
         { label: '全总进球', value: 'OVERUNDER' },
         { label: '半总进球', value: 'OVERUNDERHALF' },
         { label: '全胜平负', value: 'EUROPE' },
