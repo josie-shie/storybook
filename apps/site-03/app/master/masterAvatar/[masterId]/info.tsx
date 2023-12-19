@@ -1,12 +1,13 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { IconFlame } from '@tabler/icons-react';
 import { getMentorList, type GetMentor } from 'data-center';
 import { unFollow, updateFollow } from 'data-center';
-import style from './info.module.scss';
+import Image from 'next/image';
 import Avatar from '@/components/avatar/avatar';
 import Tag from '@/components/tag/tag';
 import { useUserStore } from '@/app/userStore';
+import Fire from '@/app/img/fire.png';
+import style from './info.module.scss';
 
 function Info({ params }: { params: { masterId: string } }) {
     const [info, setInfo] = useState({
@@ -107,7 +108,7 @@ function Info({ params }: { params: { masterId: string } }) {
                 <div className={style.content}>
                     <span className={style.name}>{info.username}</span>
                     <div className={style.top}>
-                        <Tag icon={<IconFlame size={10} />} text="9連紅" />
+                        <Tag icon={<Image alt="fire" src={Fire} />} text="連紅" />
                         <Tag background="#fff" color="#4489ff" text="月榜 10" />
                     </div>
                     <div className={style.bottom}>

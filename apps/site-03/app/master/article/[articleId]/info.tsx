@@ -1,10 +1,11 @@
 'use client';
-import { IconFlame } from '@tabler/icons-react';
 import { unFollow, updateFollow } from 'data-center';
 import { type GetPostDetailResponse } from 'data-center';
 import type { Dispatch, SetStateAction } from 'react';
+import Image from 'next/image';
 import Avatar from '@/components/avatar/avatar';
 import Tag from '@/components/tag/tag';
+import Fire from '@/app/img/fire.png';
 import { useUserStore } from '../../../userStore';
 import style from './info.module.scss';
 
@@ -45,7 +46,7 @@ function Info({ article, setArticle }: InfoProps) {
                     <div>
                         {article.tag.winMaxAccurateStreak > 0 && (
                             <Tag
-                                icon={<IconFlame size={10} />}
+                                icon={<Image alt="fire" src={Fire} />}
                                 text={`${article.tag.winMaxAccurateStreak} 連紅`}
                             />
                         )}

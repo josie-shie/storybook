@@ -2,13 +2,14 @@
 
 import type { Dispatch, SetStateAction } from 'react';
 import { useEffect, useState } from 'react';
-import { IconFlame } from '@tabler/icons-react';
 import { motion } from 'framer-motion';
 import { type MentorFilter, type GetMentorListResponse } from 'data-center';
 import { getMentorList, unFollow, updateFollow } from 'data-center';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import Tag from '@/components/tag/tag';
 import Avatar from '@/components/avatar/avatar';
+import Fire from '@/app/img/fire.png';
 import WeekButton from '../components/weekButton/weekButton';
 import { useUserStore } from '../../userStore';
 import style from './expertList.module.scss';
@@ -67,7 +68,7 @@ function ExpertItem({ mentorList, setMentorList }: ExpertItemProps) {
                                 <div>
                                     {item.tags.weekMaxAccurateStreak > 0 && (
                                         <Tag
-                                            icon={<IconFlame size={10} />}
+                                            icon={<Image alt="fire" src={Fire} />}
                                             text={`${item.tags.winMaxAccurateStreak}連紅`}
                                         />
                                     )}
