@@ -1,6 +1,7 @@
 'use client';
 import type { Metadata } from 'next';
 import InfoTabs from './infoTabs';
+import style from './masterAvatar.module.scss';
 
 export const metadata: Metadata = {
     title: '专家预测'
@@ -14,7 +15,7 @@ function MasterAvatar({
     setArticleLength: (val: number) => void;
 }) {
     return (
-        <div className="masterAvatar">
+        <div className={style.masterAvatar}>
             <InfoTabs params={params} setArticleLength={setArticleLength} />
         </div>
     );
