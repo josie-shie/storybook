@@ -9,10 +9,12 @@ import { GameFilter } from './components/gameFilter/gameFilter';
 import SelectOption from './components/selectOption/selectOption';
 import RecordFilter from './components/recordFilter/recordFilter';
 import starIcon from './img/star.png';
+import disabledStarIcon from './img/disabledStar.png';
 import Datepicker from './components/datepicker/datepicker';
 import { useHandicapAnalysisFormStore } from './handicapAnalysisFormStore';
 import searchIcon from './img/search.png';
 import Dialog from './components/dialog/dialog';
+import { useDiscSelectStore } from './discSelectStore';
 
 function PaymentAlert({
     getTrendAnalysis
@@ -197,10 +199,18 @@ function HandicapAnalysisForm() {
     const userInfo = useUserStore.use.userInfo();
     const startDate = useHandicapAnalysisFormStore.use.startDate();
     const endDate = useHandicapAnalysisFormStore.use.endDate();
+    const setDialogContentType = useDiscSelectStore.use.setDialogContentType();
+    const setOpenNormalDialog = useDiscSelectStore.use.setOpenNormalDialog();
 
     const getTrendAnalysis = async (currentStartDate: number, currentEndDate: number) => {
         if (!currentStartDate || !currentEndDate) {
             setAnalysisError('请选择时间区间');
+            return;
+        }
+
+        if (userInfo.balance < 80) {
+            setDialogContentType('balance');
+            setOpenNormalDialog(true);
             return;
         }
 
@@ -258,14 +268,20 @@ function HandicapAnalysisForm() {
             </div>
             <div className={style.error}>{analysisError}</div>
             <motion.button
-                className={style.search}
+                className={`${style.search} ${!startDate || !endDate ? style.disableButton : ''}`}
+                disabled={!startDate || !endDate}
                 onClick={async () => {
                     await submit();
                 }}
                 type="button"
                 whileTap={{ scale: 0.9 }}
             >
-                <Image alt="" height={14} src={starIcon.src} width={14} />
+                <Image
+                    alt=""
+                    height={14}
+                    src={!startDate || !endDate ? disabledStarIcon.src : starIcon.src}
+                    width={14}
+                />
                 获得趋势分析
             </motion.button>
             <RecordFilter

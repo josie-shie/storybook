@@ -49,10 +49,10 @@ function Minutes() {
     const headers = [
         '開場-14:59',
         '15:00-29:59',
-        '30:00-半場',
-        '下半場-59:59',
+        '30:00-半场',
+        '下半场-59:59',
         '60:00-74:59',
-        '75:00-全場'
+        '75:00-全场'
     ];
     const setContestList = useMatchFilterStore.use.setContestList();
     const setContestInfo = useMatchFilterStore.use.setContestInfo();
