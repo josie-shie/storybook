@@ -740,14 +740,30 @@ export interface PayForProGuessRequest {
     guessId: number;
 }
 
+const PayForProGuessSchema = z.object({
+    guessId: z.number(),
+    currentBalance: z.number(),
+    predictedPlay: PredictedPlaySchema
+});
+
+export type PayForProGuessResponse = z.infer<typeof PayForProGuessSchema>;
+
+const PayForProGuessResultSchema = z.object({
+    payForProGuess: PayForProGuessSchema
+});
+
+type PayForProGuessResult = z.infer<typeof PayForProGuessResultSchema>;
+
 /**
  * 高手方案付費
+ * - params {@link PayForProGuessRequest}
+ * - returns {@link PayForProGuessResponse}
  */
 export const payForProGuess = async ({
     guessId
-}: PayForProGuessRequest): Promise<ReturnData<null>> => {
+}: PayForProGuessRequest): Promise<ReturnData<PayForProGuessResponse>> => {
     try {
-        const res: { data: null } = await fetcher(
+        const { data }: { data: PayForProGuessResult } = await fetcher(
             {
                 data: {
                     query: PAY_FOR_PRO_GUESS_MUTATION,
@@ -757,7 +773,7 @@ export const payForProGuess = async ({
             { cache: 'no-store' }
         );
 
-        return { success: true, data: res.data };
+        return { success: true, data: data.payForProGuess };
     } catch (error) {
         return handleApiError(error);
     }

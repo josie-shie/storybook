@@ -230,8 +230,12 @@ export const PAY_FOR_PRO_DISTRIB_MUTATION = `
 `;
 
 export const PAY_FOR_PRO_GUESS_MUTATION = `
-    mutation PayForProGuess($guessId: Int!) {
-        PayForProGuess(guessId: $guessId)
+    mutation payForProGuess($guessId: Int!) {
+        payForProGuess(guessId: $guessId) { 
+            guessId
+            currentBalance
+            predictedPlay
+        }
     }
 `;
 
