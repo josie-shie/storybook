@@ -74,7 +74,26 @@ function SlickNav({
                                 >
                                     {item.label}
                                 </ButtonBase>
-                            ) : null}
+                            ) : (
+                                <button
+                                    className={`ui-slick-button ${style.tabButton} ${
+                                        activeStatus === index ? style.selected : ''
+                                    } ${
+                                        (activeIndex < 0 && index === 0) ||
+                                        (activeIndex >= tabs.length - 1 &&
+                                            index === tabs.length - 1)
+                                            ? style.selected
+                                            : ''
+                                    }`}
+                                    key={item.label}
+                                    onClick={() => {
+                                        swipeTo(index);
+                                    }}
+                                    type="button"
+                                >
+                                    {item.label}
+                                </button>
+                            )}
                         </li>
                     );
                 })}
