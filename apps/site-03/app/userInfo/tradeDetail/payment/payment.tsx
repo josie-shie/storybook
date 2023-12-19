@@ -10,7 +10,7 @@ interface PropsType {
 
 function Payment({ data }: PropsType) {
     const money = data.amountOfChange > 0 ? `+${data.amountOfChange}` : data.amountOfChange;
-    const isPayment = data.type === 1 || data.type === 2;
+    const isPayment = data.changeTypeCategory === 'PAY';
 
     return (
         <div className={style.payment}>

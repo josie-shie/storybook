@@ -1,14 +1,14 @@
 import { initStore } from 'lib';
 import type { StoreWithSelectors } from 'lib';
 
-export type DateOption = 'ALL' | 'TOADY' | 'WEEK' | 'MONTH' | 'THREEWEEKS' | 'RANGE';
+export type DateOption = 'ALL' | 'TODAY' | 'WEEK' | 'MONTH' | 'THREEWEEKS' | 'RANGE';
 export type TradeTypeOption = 'ALL' | 'RECHARGE' | 'INCOME' | 'PAY';
 export interface RechargeData {
     balanceLogId: number;
     changeTypeDisplayName: string;
     changeTypeCategory: string;
     changeTypeCategoryDisplayName: string;
-    rechargeStatus: 'pedding' | 'fail' | 'succes';
+    rechargeStatus: 'PENDING' | 'FAIL' | 'SUCCESS';
     rechargeId: string;
     currencyCode: string;
     exchangeRate: number;
@@ -70,41 +70,41 @@ const initialState = (
     dateOption: [
         {
             label: '全部時間',
-            value: 'all'
+            value: 'ALL'
         },
         {
             label: '今日',
-            value: 'today'
+            value: 'TODAY'
         },
         {
             label: '最近一週',
-            value: 'week'
+            value: 'WEEK'
         },
         {
             label: '最近一个月',
-            value: 'month'
+            value: 'MONTH'
         },
         {
             label: '最近三个月',
-            value: 'threeMonths'
+            value: 'THREEWEEKS'
         }
     ],
     tradeOption: [
         {
             label: '全部分类',
-            value: 'all'
+            value: 'ALL'
         },
         {
             label: '充值',
-            value: 'deposit'
+            value: 'RECHARGE'
         },
         {
             label: '收入',
-            value: 'inCome'
+            value: 'INCOME'
         },
         {
             label: '支付',
-            value: 'expend'
+            value: 'PAY'
         }
     ],
     setTradeDetailList: (tradeDetailList: TradeDetailInterface) => {
