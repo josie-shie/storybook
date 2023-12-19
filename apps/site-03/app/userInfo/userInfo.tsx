@@ -139,31 +139,31 @@ function UserInfo() {
                                     )}
                                     {mounted && !userInfoIsLoading ? (
                                         <div className={style.tags}>
-                                            {tags.winHistoryMaxWinStreak >= 3 ? (
+                                            {tags.winMaxAccurateStreak >= 3 ? (
                                                 <Tag
                                                     icon={<IconFlame size={10} />}
-                                                    text={`${tags.winHistoryMaxWinStreak}连红`}
+                                                    text={`${tags.winMaxAccurateStreak}连红`}
                                                 />
                                             ) : null}
-                                            {tags.weekHistoryMaxWinStreak >= 3 ? (
+                                            {tags.weekRanking >= 3 ? (
                                                 <Tag
                                                     background="#fff"
                                                     color="#4489ff"
-                                                    text={`周榜 ${tags.weekHistoryMaxWinStreak}`}
+                                                    text={`周榜 ${tags.weekRanking}`}
                                                 />
                                             ) : null}
-                                            {tags.monthHistoryMaxWinStreak >= 3 ? (
+                                            {tags.monthRanking >= 3 ? (
                                                 <Tag
                                                     background="#fff"
                                                     color="#4489ff"
-                                                    text={`月榜 ${tags.monthHistoryMaxWinStreak}`}
+                                                    text={`月榜 ${tags.monthRanking}`}
                                                 />
                                             ) : null}
-                                            {tags.quarterHistoryMaxWinStreak >= 3 ? (
+                                            {tags.quarterRanking >= 3 ? (
                                                 <Tag
                                                     background="#fff"
                                                     color="#4489ff"
-                                                    text={`季榜 ${tags.quarterHistoryMaxWinStreak}`}
+                                                    text={`季榜 ${tags.quarterRanking}`}
                                                 />
                                             ) : null}
                                         </div>
