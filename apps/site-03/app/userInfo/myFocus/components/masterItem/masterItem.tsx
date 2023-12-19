@@ -77,31 +77,31 @@ function MasterItem({ uid, item, onFollowToggle }: FocusProps) {
                 <div className={style.about}>
                     <div className={style.top}>
                         <span>{item.username}</span>
-                        {item.tags.winHistoryMaxWinStreak > 3 && (
+                        {item.tags.winMaxAccurateStreak > 3 && (
                             <Tag
                                 icon={<IconFlame size={10} />}
-                                text={`${item.tags.winHistoryMaxWinStreak}连红`}
+                                text={`${item.tags.winMaxAccurateStreak}连红`}
                             />
                         )}
-                        {item.tags.weekHistoryMaxWinStreak > 3 && (
+                        {item.tags.weekRanking > 3 && (
                             <Tag
                                 background="#4489FF"
                                 color="#fff"
-                                text={`周榜 ${item.tags.weekHistoryMaxWinStreak}`}
+                                text={`周榜 ${item.tags.weekRanking}`}
                             />
                         )}
-                        {item.tags.monthHistoryMaxWinStreak > 3 && (
+                        {item.tags.monthRanking > 3 && (
                             <Tag
                                 background="#4489FF"
                                 color="#fff"
-                                text={`月榜 ${item.tags.monthHistoryMaxWinStreak}`}
+                                text={`月榜 ${item.tags.monthRanking}`}
                             />
                         )}
-                        {item.tags.quarterHistoryMaxWinStreak > 3 && (
+                        {item.tags.quarterRanking > 3 && (
                             <Tag
                                 background="#4489FF"
                                 color="#fff"
-                                text={`季榜 ${item.tags.quarterHistoryMaxWinStreak}`}
+                                text={`季榜 ${item.tags.quarterRanking}`}
                             />
                         )}
                     </div>

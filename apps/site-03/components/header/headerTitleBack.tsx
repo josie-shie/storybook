@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { useEffect, useState } from 'react';
 import { useUserStore } from '@/app/userStore';
 import pureBackground from './img/pureBackground.png';
 import style from './header.module.scss';
@@ -13,6 +14,11 @@ interface HeaderProps {
 
 function HeaderTitle({ title, back }: HeaderProps) {
     const userInfoIsLoading = useUserStore.use.userInfoIsLoading();
+    const [mounted, setMounted] = useState(false);
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
     return (
         <div className={style.placeholder}>
             <div className={style.header} style={{ backgroundImage: `url(${pureBackground.src})` }}>
@@ -20,12 +26,12 @@ function HeaderTitle({ title, back }: HeaderProps) {
                     <Image alt="" height={24} onClick={back} src={backLeftArrowImg} width={24} />
                     <div className={style.text}>{title}</div>
                 </div>
-                {!userInfoIsLoading && (
+                {mounted && !userInfoIsLoading ? (
                     <div className={style.userOption}>
                         <Notice />
                         <Profile />
                     </div>
-                )}
+                ) : null}
             </div>
         </div>
     );

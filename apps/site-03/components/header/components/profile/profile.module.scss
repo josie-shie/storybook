@@ -25,6 +25,15 @@
         display: flex;
         align-items: center;
         justify-content: center;
+
+        &.vipTotalNumber {
+            background: linear-gradient(to right, #fffded 0%, #ffe075 100%);
+            border: 2px solid #c0a54d;
+
+            a {
+                color: #6b6040;
+            }
+        }
     }
 
     .loginButton {
