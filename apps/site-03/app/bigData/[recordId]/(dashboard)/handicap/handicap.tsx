@@ -128,73 +128,93 @@ function Handicap() {
                     </p>
 
                     <ul>
-                        {Object.keys(
-                            handicapEchart[handicapRadio][currentSwitch][playTypeSwitch]
-                        ).map((date, index) => {
-                            const currentData =
-                                handicapEchart[handicapRadio][currentSwitch][playTypeSwitch];
-                            const heights = calculateHeight(currentData, date);
+                        {Object.keys(handicapEchart[handicapRadio][currentSwitch][playTypeSwitch])
+                            .sort((a, b) => new Date(a).getTime() - new Date(b).getTime())
+                            .map((date, index) => {
+                                const currentData =
+                                    handicapEchart[handicapRadio][currentSwitch][playTypeSwitch];
+                                const heights = calculateHeight(currentData, date);
 
-                            const total =
-                                currentData[date].draw +
-                                currentData[date].lower +
-                                currentData[date].upper;
+                                const total =
+                                    currentData[date].draw +
+                                    currentData[date].lower +
+                                    currentData[date].upper;
 
-                            return (
-                                <li key={date}>
-                                    <span className={style.bar}>
-                                        <span
-                                            className={style.top}
-                                            style={{ height: `${heights.upperHeight}%` }}
-                                        />
-                                        <span
-                                            className={style.middle}
-                                            style={{ height: `${heights.drawHeight}%` }}
-                                        />
-                                        <span
-                                            className={style.bottom}
-                                            style={{ height: `${heights.lowerHeight}%` }}
-                                        />
-                                    </span>
-                                    <span className={style.text}>
-                                        {currentSwitch === 'week' ? (
-                                            <>
-                                                <span>{`W${
-                                                    Object.keys(
-                                                        handicapEchart[handicapRadio][
-                                                            currentSwitch
-                                                        ][playTypeSwitch]
-                                                    ).length - index
-                                                }`}</span>
-                                                <div>{total}场</div>
-                                            </>
-                                        ) : (
-                                            <>
-                                                <span>{dayjs(date).format('MM-DD')}</span>
-                                                <div>{total}场</div>
-                                            </>
-                                        )}
-                                    </span>
-                                </li>
-                            );
-                        })}
+                                return (
+                                    <li key={date}>
+                                        <span className={style.bar}>
+                                            <span
+                                                className={style.top}
+                                                style={{
+                                                    height: `${heights.upperHeight}%`,
+                                                    borderRadius:
+                                                        heights.drawHeight === 0 &&
+                                                        heights.lowerHeight === 0
+                                                            ? '30px'
+                                                            : ''
+                                                }}
+                                            />
+                                            <span
+                                                className={style.middle}
+                                                style={{
+                                                    height: `${heights.drawHeight}%`,
+                                                    borderBottomLeftRadius:
+                                                        heights.lowerHeight === 0 ? '30px' : '',
+                                                    borderBottomRightRadius:
+                                                        heights.lowerHeight === 0 ? '30px' : '',
+                                                    borderTopLeftRadius:
+                                                        heights.upperHeight === 0 ? '30px' : '',
+                                                    borderTopRightRadius:
+                                                        heights.upperHeight === 0 ? '30px' : ''
+                                                }}
+                                            />
+                                            <span
+                                                className={style.bottom}
+                                                style={{
+                                                    height: `${heights.lowerHeight}%`,
+                                                    borderRadius:
+                                                        heights.drawHeight === 0 &&
+                                                        heights.upperHeight === 0
+                                                            ? '30px'
+                                                            : ''
+                                                }}
+                                            />
+                                        </span>
+                                        <span className={style.text}>
+                                            {currentSwitch === 'week' ? (
+                                                <>
+                                                    <span>{`W${index + 1}`}</span>
+                                                    <div>{total}场</div>
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <span>{dayjs(date).format('MM-DD')}</span>
+                                                    <div>{total}场</div>
+                                                </>
+                                            )}
+                                        </span>
+                                    </li>
+                                );
+                            })}
                     </ul>
-                    <Switch
-                        onChange={(value: PlayTypeValue) => {
-                            setPlayTypeSwitch(value);
-                        }}
-                        options={[
-                            { label: '让球', value: 'handicap' },
-                            { label: '大小', value: 'overUnder' },
-                            { label: '独赢', value: 'moneyLine' }
-                        ]}
-                        value={playTypeSwitch}
-                    />
-                </div>
-                <div className={style.dot}>
-                    <span className={style.top}>上盤</span>
-                    <span className={style.middle}>走盤</span>
-                    <span className={style.bottom}>下盤</span>
+                    <div className={style.eChartBottom}>
+                        <Switch
+                            onChange={(value: PlayTypeValue) => {
+                                setPlayTypeSwitch(value);
+                            }}
+                            options={[
+                                { label: '让球', value: 'handicap' },
+                                { label: '大小', value: 'overUnder' },
+                                { label: '独赢', value: 'moneyLine' }
+                            ]}
+                            value={playTypeSwitch}
+                        />
+                        <div className={style.dot}>
+                            <span className={style.top}>上盤</span>
+                            <span className={style.middle}>走盤</span>
+                            <span className={style.bottom}>下盤</span>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div className={style.tableContainer}>

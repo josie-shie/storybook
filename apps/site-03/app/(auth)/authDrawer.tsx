@@ -3,17 +3,17 @@ import { useEffect } from 'react';
 import Image from 'next/image';
 import Cookies from 'js-cookie';
 import { getMemberInfo, getMemberSubscriptionStatus } from 'data-center';
-import { useNotificationStore } from '../notificationStore';
-import headerBg from './components/authComponent/img/headerBg.jpeg';
-import closeIcon from './components/authComponent/img/closeIcon.png';
-import style from './authDrawer.module.scss';
-import { useAuthStore } from './authStore';
 import Register from '@/app/(auth)/register/register';
 import Login from '@/app/(auth)/login/login';
 import { useUserStore } from '@/app/userStore';
 import ForgetPassword from '@/app/(auth)/forgetPassword/forgetPassword';
 import BottomDrawer from '@/components/drawer/bottomDrawer';
 import ChangePassword from '@/app/(auth)/changePassword/changePassword';
+import { useNotificationStore } from '../notificationStore';
+import { useAuthStore } from './authStore';
+import style from './authDrawer.module.scss';
+import closeIcon from './components/authComponent/img/closeIcon.png';
+import headerBg from './components/authComponent/img/headerBg.jpeg';
 
 function AuthDrawer() {
     const authQuery = useUserStore.use.authQuery();

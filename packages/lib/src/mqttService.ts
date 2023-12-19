@@ -706,6 +706,8 @@ export const mqttService = {
         useAnalysisQueue.push(onMessage);
     },
     publishAnalysis: async (data: AnalysisRequest) => {
+        // eslint-disable-next-line no-console -- MQTT request
+        console.dir(data);
         if (!init) {
             const res = await toProtoAnalysis(data);
             const bufferData = Buffer.from(res);

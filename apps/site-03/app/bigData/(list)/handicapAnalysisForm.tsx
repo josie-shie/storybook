@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import Image from 'next/image';
 import dayjs from 'dayjs';
 import { mqttService } from 'lib';
+import { useEffect } from 'react';
 import { useUserStore } from '@/app/userStore';
 import style from './disSelect.module.scss';
 import { GameFilter } from './components/gameFilter/gameFilter';
@@ -11,6 +12,77 @@ import starIcon from './img/star.png';
 import Datepicker from './components/datepicker/datepicker';
 import { useHandicapAnalysisFormStore } from './handicapAnalysisFormStore';
 import searchIcon from './img/search.png';
+import Dialog from './components/dialog/dialog';
+
+function PaymentAlert() {
+    const setOpenDialog = useHandicapAnalysisFormStore.use.setOpenNormalDialog();
+    const userInfo = useUserStore.use.userInfo();
+    const startDate = useHandicapAnalysisFormStore.use.startDate();
+    const endDate = useHandicapAnalysisFormStore.use.endDate();
+    const setAnalysisError = useHandicapAnalysisFormStore.use.setAnalysisError();
+    const teamSelected = useHandicapAnalysisFormStore.use.teamSelected();
+    const teamHandicapOdds = useHandicapAnalysisFormStore.use.teamHandicapOdds();
+    const handicapOddsSelected = useHandicapAnalysisFormStore.use.handicapOddsSelected();
+    const setShowRecord = useHandicapAnalysisFormStore.use.setShowRecord();
+
+    const comfirm = async () => {
+        setOpenDialog(false);
+        await getTrendAnalysis();
+    };
+
+    const getTrendAnalysis = async () => {
+        if (!startDate || !endDate) {
+            setAnalysisError('请选择时间区间');
+            return;
+        }
+
+        const params = {
+            mission: 'create',
+            memberId: userInfo.uid,
+            message: '',
+            ticketId: '',
+            handicapSide: teamSelected,
+            handicapValues: teamHandicapOdds,
+            overUnderValues: handicapOddsSelected,
+            startTime: startDate,
+            endTime: endDate
+        };
+
+        await mqttService.publishAnalysis(params);
+        setShowRecord(true);
+    };
+
+    return (
+        <>
+            <div className={style.dialogMessage}>
+                <p className={style.message}>
+                    支付
+                    <Image alt="" height={14} src={starIcon.src} width={14} /> 80
+                </p>
+                <p>進行單次分析？</p>
+            </div>
+            <div className={style.detail}>我的余额: {userInfo.balance}金币</div>
+            <div className={style.footer}>
+                <div
+                    className={style.close}
+                    onClick={() => {
+                        setOpenDialog(false);
+                    }}
+                >
+                    返回
+                </div>
+                <div
+                    className={style.confirm}
+                    onClick={() => {
+                        void comfirm();
+                    }}
+                >
+                    确认支付
+                </div>
+            </div>
+        </>
+    );
+}
 
 function TimeRange({ timeRange }: { timeRange: string }) {
     const openDatePicker = useHandicapAnalysisFormStore.use.openDatePicker();
@@ -26,6 +98,7 @@ function TimeRange({ timeRange }: { timeRange: string }) {
         type?: string
     ) => {
         if (type) {
+            setTimeRange(type);
             setStartDate(dayjs().subtract(1, 'day').toDate().getTime());
 
             switch (type) {
@@ -52,7 +125,9 @@ function TimeRange({ timeRange }: { timeRange: string }) {
             placeholder="选择时间"
             selectTitle="区间"
             setOpenDatePicker={setOpenDatePicker}
-            setSelected={setTimeRange}
+            setSelected={val => {
+                updateQueryDate(undefined, undefined, val);
+            }}
             title="时间范围"
             valueSelected={timeRange}
         >
@@ -128,62 +203,29 @@ function HandicapSelect({
 }
 
 function HandicapAnalysisForm() {
-    const userInfo = useUserStore.use.userInfo();
     const showRecord = useHandicapAnalysisFormStore.use.showRecord();
     const setShowRecord = useHandicapAnalysisFormStore.use.setShowRecord();
     const timeRange = useHandicapAnalysisFormStore.use.timeRange();
     const analysisError = useHandicapAnalysisFormStore.use.analysisError();
-    const setAnalysisError = useHandicapAnalysisFormStore.use.setAnalysisError();
-    const startDate = useHandicapAnalysisFormStore.use.startDate();
-    const endDate = useHandicapAnalysisFormStore.use.endDate();
     const teamSelected = useHandicapAnalysisFormStore.use.teamSelected();
     const teamHandicapOdds = useHandicapAnalysisFormStore.use.teamHandicapOdds();
     const handicapOddsSelected = useHandicapAnalysisFormStore.use.handicapOddsSelected();
+    const setOpenDialog = useHandicapAnalysisFormStore.use.setOpenNormalDialog();
+    const dialogErrorType = useHandicapAnalysisFormStore.use.dialogContentType();
+    const dialogContent = useHandicapAnalysisFormStore.use.dialogContent();
+    const setDialogContent = useHandicapAnalysisFormStore.use.setDialogContent();
+    const openDialog = useHandicapAnalysisFormStore.use.openNoramlDialog();
 
-    const getTrendAnalysis = () => {
-        if (!timeRange) {
-            setAnalysisError('请选择时间区间');
-            return;
-        } else if ((!teamSelected || !teamHandicapOdds) && !handicapOddsSelected) {
-            setAnalysisError('让方或盘口需至少选择一种');
-            return;
-        }
-
-        let getStartDate = 0;
-        let getEndDate = 0;
-
-        switch (timeRange) {
-            case 'week':
-                getStartDate = dayjs().subtract(7, 'day').unix();
-                getEndDate = dayjs().subtract(1, 'day').unix();
+    useEffect(() => {
+        switch (dialogErrorType) {
+            case 'payment':
+                setDialogContent(<PaymentAlert />);
                 break;
-            case 'month':
-                getStartDate = dayjs().subtract(30, 'day').unix();
-                getEndDate = dayjs().subtract(1, 'day').unix();
-
-                break;
-            case 'season':
-                getStartDate = dayjs().subtract(120, 'day').unix();
-                getEndDate = dayjs().subtract(1, 'day').unix();
+            default:
+                setDialogContent(null);
                 break;
         }
-
-        const params = {
-            mission: 'create',
-            memberId: userInfo.uid,
-            message: '',
-            ticketId: '',
-            handicapSide: teamSelected,
-            handicapValues: teamHandicapOdds,
-            overUnderValues: handicapOddsSelected,
-            startTime: getStartDate || startDate,
-            endTime: getEndDate || endDate
-        };
-
-        void mqttService.publishAnalysis(params);
-
-        setShowRecord(true);
-    };
+    }, [dialogErrorType, setDialogContent]);
 
     return (
         <>
@@ -206,7 +248,7 @@ function HandicapAnalysisForm() {
             <motion.button
                 className={style.search}
                 onClick={() => {
-                    getTrendAnalysis();
+                    setOpenDialog(true);
                 }}
                 type="button"
                 whileTap={{ scale: 0.9 }}
@@ -222,6 +264,13 @@ function HandicapAnalysisForm() {
                 onOpen={() => {
                     setShowRecord(true);
                 }}
+            />
+            <Dialog
+                content={<div className={style.dialogContent}>{dialogContent}</div>}
+                onClose={() => {
+                    setOpenDialog(false);
+                }}
+                openDialog={openDialog}
             />
         </>
     );
