@@ -1,31 +1,20 @@
 import { initStore } from 'lib';
 import type { StoreWithSelectors } from 'lib';
-import type { GetSubscriptionPlanListResponse } from 'data-center';
-
-interface SubscribePlan {
-    planId: number;
-    period: number;
-    discount: string;
-    price: number;
-    freePlan: number;
-    unlock: number;
-}
+import type { GetSubscriptionPlanListResponse, GetRechargeOption } from 'data-center';
 
 interface InitState {
     yearPlanList: GetSubscriptionPlanListResponse;
-    planList: SubscribePlan[];
+    planList: GetRechargeOption[];
 }
 
 interface SubscribeState extends InitState {
     planId: number;
     isVip: boolean;
     isChecked: boolean;
-    subscribeStatus: boolean;
     setPlanId: (planId: number) => void;
     setIsVip: (isVip: boolean) => void;
     setIsChecked: (isChecked: boolean) => void;
-    setPlanList: (planList: SubscribePlan[]) => void;
-    setSubscribeStatus: (subscribeStatus: boolean) => void;
+    setPlanList: (planList: GetRechargeOption[]) => void;
     setYearPlanList: (yearPlanList: GetSubscriptionPlanListResponse) => void;
 }
 
@@ -37,7 +26,6 @@ const initialState = (set: (data: Partial<SubscribeState>) => void) => ({
     isChecked: false,
     planList: [],
     yearPlanList: [],
-    subscribeStatus: false,
     setPlanId: (planId: number) => {
         set({ planId });
     },
@@ -47,11 +35,8 @@ const initialState = (set: (data: Partial<SubscribeState>) => void) => ({
     setIsChecked: (isChecked: boolean) => {
         set({ isChecked });
     },
-    setPlanList: (planList: SubscribePlan[]) => {
+    setPlanList: (planList: GetRechargeOption[]) => {
         set({ planList });
-    },
-    setSubscribeStatus: (subscribeStatus: boolean) => {
-        set({ subscribeStatus });
     },
     setYearPlanList: (yearPlanList: GetSubscriptionPlanListResponse) => {
         set({ yearPlanList });

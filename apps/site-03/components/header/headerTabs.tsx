@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { useEffect, useState } from 'react';
 import { useUserStore } from '@/app/userStore';
 import Switch from './components/switch/switch';
 import dotBackground from './img/dotBackground.png';
@@ -14,6 +15,10 @@ interface HeaderProps {
 
 function HeaderComponent({ tabList }: HeaderProps) {
     const userInfoIsLoading = useUserStore.use.userInfoIsLoading();
+    const [mounted, setMounted] = useState(false);
+    useEffect(() => {
+        setMounted(true);
+    }, []);
     return (
         <div className={style.placeholder}>
             <div className={style.header} style={{ backgroundImage: `url(${dotBackground.src})` }}>
@@ -24,12 +29,12 @@ function HeaderComponent({ tabList }: HeaderProps) {
                     </div>
                 </div>
                 <Switch sports={tabList} />
-                {!userInfoIsLoading && (
+                {mounted && !userInfoIsLoading ? (
                     <div className={style.userOption}>
                         <Notice />
                         <Profile />
                     </div>
-                )}
+                ) : null}
             </div>
         </div>
     );

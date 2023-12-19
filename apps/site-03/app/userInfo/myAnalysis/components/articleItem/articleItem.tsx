@@ -114,32 +114,31 @@ function ArticleItem({ item }: GetUnlockPostProps) {
                 </div>
                 <div className={style.userInfo}>
                     <div className={style.userName}>{item.mentorName}</div>
-                    {/* 等後端補上參數後使用不然會報錯 */}
-                    {item.memberTags.winHistoryMaxWinStreak > 3 && (
+                    {item.memberTags.winMaxAccurateStreak > 3 && (
                         <Tag
                             icon={<IconFlame size={10} />}
-                            text={`${item.memberTags.winHistoryMaxWinStreak}连红`}
+                            text={`${item.memberTags.winMaxAccurateStreak}连红`}
                         />
                     )}
-                    {item.memberTags.weekHistoryMaxWinStreak > 3 && (
+                    {item.memberTags.weekRanking > 3 && (
                         <Tag
                             background="#4489FF"
                             color="#fff"
-                            text={`周榜 ${item.memberTags.weekHistoryMaxWinStreak}`}
+                            text={`周榜 ${item.memberTags.weekRanking}`}
                         />
                     )}
-                    {item.memberTags.monthHistoryMaxWinStreak > 3 && (
+                    {item.memberTags.monthRanking > 3 && (
                         <Tag
                             background="#4489FF"
                             color="#fff"
-                            text={`月榜 ${item.memberTags.monthHistoryMaxWinStreak}`}
+                            text={`月榜 ${item.memberTags.monthRanking}`}
                         />
                     )}
-                    {item.memberTags.quarterHistoryMaxWinStreak > 3 && (
+                    {item.memberTags.quarterRanking > 3 && (
                         <Tag
                             background="#4489FF"
                             color="#fff"
-                            text={`季榜 ${item.memberTags.quarterHistoryMaxWinStreak}`}
+                            text={`季榜 ${item.memberTags.quarterRanking}`}
                         />
                     )}
                 </div>
