@@ -53,58 +53,7 @@ function GuessDetail({ backHistory }: { backHistory: boolean }) {
             memberPermission: false,
             unlockPrice: 1
         },
-        masterPlanList: [
-            {
-                guessId: 7,
-                memberId: 22,
-                avatarPath: '',
-                memberName: '羅曼琉球',
-                highlights: [
-                    {
-                        id: 1,
-                        type: 2,
-                        value: 10
-                    },
-                    {
-                        id: 3,
-                        type: 3,
-                        value: 6
-                    }
-                ],
-                records: ['DRAW', 'LOSE', 'WIN', 'WIN', 'WIN', 'DRAW', 'DRAW', 'LOSE', 'WIN'],
-                predictedType: 'HANDICAP',
-                predictedPlay: 'HOME',
-                predictionResult: 'DRAW'
-            },
-            {
-                guessId: 8,
-                memberId: 33,
-                avatarPath: '',
-                memberName: '老羅聊球',
-                highlights: [
-                    {
-                        id: 4,
-                        type: 2,
-                        value: 10
-                    }
-                ],
-                records: ['WIN', 'WIN', 'LOSE', 'DRAW', 'DRAW', 'LOSE', 'WIN', 'DRAW', 'WIN'],
-                predictedType: 'HANDICAP',
-                predictedPlay: 'LOCK',
-                predictionResult: 'WIN'
-            },
-            {
-                guessId: 9,
-                memberId: 44,
-                avatarPath: '',
-                memberName: '老崔包子',
-                highlights: [],
-                records: ['WIN', 'LOSE', 'WIN', 'LOSE', 'DRAW', 'DRAW', 'WIN', 'LOSE', 'WIN'],
-                predictedType: 'HANDICAP',
-                predictedPlay: 'LOCK',
-                predictionResult: 'NONE'
-            }
-        ]
+        masterPlanList: []
     });
 
     return (

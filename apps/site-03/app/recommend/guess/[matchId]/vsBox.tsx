@@ -4,15 +4,13 @@ import { ProgressBar } from 'ui/stories/progressBar/progressBar';
 import { useEffect, useState } from 'react';
 import { getMatchDetail, getGuessProportion, addGuess } from 'data-center';
 import { useParams } from 'next/navigation';
-import NorthBangKokClubIcon from './img/northBangkokClubIcon.png';
-import ThaiUniversityClubIcon from './img/thaiUniversityClubIcon.png';
+import { useAuthStore } from '@/app/(auth)/authStore';
+import { useUserStore } from '@/app/userStore';
 import { useGuessDetailStore } from './guessDetailStore';
 import style from './vsBox.module.scss';
 import selectDecoration from './img/select.png';
 import GuessDialog from './components/guessDialog/guessDialog';
 import type { DetailType } from './guessDetailStore';
-import { useAuthStore } from '@/app/(auth)/authStore';
-import { useUserStore } from '@/app/userStore';
 
 interface BettingProps {
     play: string;
@@ -241,7 +239,7 @@ function VsBox() {
                     <Image
                         alt=""
                         height={48}
-                        src={detailInfo.homeTeamLogo || ThaiUniversityClubIcon}
+                        src={detailInfo.homeTeamLogo === '0' ? '' : detailInfo.homeTeamLogo}
                         width={48}
                     />
                     <div className={style.name}>{detailInfo.homeTeamName}</div>
@@ -251,7 +249,7 @@ function VsBox() {
                     <Image
                         alt=""
                         height={48}
-                        src={detailInfo.awayTeamLogo || NorthBangKokClubIcon}
+                        src={detailInfo.awayTeamLogo === '0' ? '' : detailInfo.awayTeamLogo}
                         width={48}
                     />
                     <div className={style.name}>{detailInfo.awayTeamName}</div>
