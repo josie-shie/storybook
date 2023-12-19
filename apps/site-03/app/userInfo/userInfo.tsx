@@ -1,8 +1,11 @@
 'use client';
 import { IconFlame } from '@tabler/icons-react';
 import Link from 'next/link';
+import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { getMemberInfo, getMemberSubscriptionStatus } from 'data-center';
 import { ButtonBase } from '@mui/material';
+import Skeleton from '@mui/material/Skeleton';
 import Image from 'next/image';
 import Cookies from 'js-cookie';
 import { useAuthStore } from '../(auth)/authStore';
@@ -17,17 +20,20 @@ import VipTip from './img/vipTip.png';
 import MyAnalyze from './img/myAnalyze.png';
 import style from './userInfo.module.scss';
 import defaultAvatar from './img/avatar.png';
-import Footer from '@/components/footer/footer';
-import Header from '@/components/header/headerTitleNoBg';
-import Tag from '@/components/tag/tag';
 import { useNotificationStore } from '@/app/notificationStore';
+import Tag from '@/components/tag/tag';
+import Header from '@/components/header/headerTitleNoBg';
+import Footer from '@/components/footer/footer';
 
 function UserInfo() {
     const router = useRouter();
     const userInfo = useUserStore.use.userInfo();
     const tags = useUserStore.use.tags();
     const memberSubscribeStatus = useUserStore.use.memberSubscribeStatus();
+    const userInfoIsLoading = useUserStore.use.userInfoIsLoading();
     const openChangePasswordDrawer = useAuthStore.use.setIsDrawerOpen();
+    const setUserInfo = useUserStore.use.setUserInfo();
+    const setMemberSubscribeStatus = useUserStore.use.setMemberSubscribeStatus();
     const setAuthQuery = useUserStore.use.setAuthQuery();
     const setIsLogin = useUserStore.use.setIsLogin();
     const setIsVisible = useNotificationStore.use.setIsVisible();
@@ -39,6 +45,24 @@ function UserInfo() {
     const back = () => {
         router.push('/');
     };
+
+    useEffect(() => {
+        const getUserInfo = async () => {
+            const res = await getMemberInfo();
+            if (res.success) {
+                setUserInfo(res.data);
+
+                const subscriptionRespons = await getMemberSubscriptionStatus({
+                    memberId: res.data.uid
+                });
+                if (subscriptionRespons.success) {
+                    setMemberSubscribeStatus(subscriptionRespons.data);
+                }
+            }
+        };
+
+        void getUserInfo();
+    }, []);
 
     const editAccount = () => {
         router.push('/userInfo/account');
@@ -73,64 +97,153 @@ function UserInfo() {
                         }}
                     >
                         <div className={style.detail}>
-                            <Image
-                                alt="大头贴"
-                                className={style.avatar}
-                                height={54}
-                                src={
-                                    userInfo.avatarPath && userInfo.avatarPath !== '0'
-                                        ? userInfo.avatarPath
-                                        : defaultAvatar
-                                }
-                                width={54}
-                            />
+                            {!userInfoIsLoading ? (
+                                <Image
+                                    alt="大头贴"
+                                    className={style.avatar}
+                                    height={54}
+                                    src={
+                                        userInfo.avatarPath && userInfo.avatarPath !== '0'
+                                            ? userInfo.avatarPath
+                                            : defaultAvatar
+                                    }
+                                    width={54}
+                                />
+                            ) : (
+                                <Skeleton
+                                    animation="wave"
+                                    height={54}
+                                    variant="circular"
+                                    width={54}
+                                />
+                            )}
                             <div className={style.content}>
                                 <div className={style.top}>
-                                    <span className={style.name}>{userInfo.username}</span>
-                                    <div className={style.tags}>
-                                        {tags.winHistoryMaxWinStreak >= 3 ? (
-                                            <Tag
-                                                icon={<IconFlame size={10} />}
-                                                text={`${tags.winHistoryMaxWinStreak}连红`}
+                                    {!userInfoIsLoading ? (
+                                        <span className={style.name}>{userInfo.username}</span>
+                                    ) : (
+                                        <Skeleton
+                                            animation="wave"
+                                            height={20}
+                                            variant="text"
+                                            width={74}
+                                        />
+                                    )}
+                                    {!userInfoIsLoading ? (
+                                        <div className={style.tags}>
+                                            {tags.winHistoryMaxWinStreak >= 3 ? (
+                                                <Tag
+                                                    icon={<IconFlame size={10} />}
+                                                    text={`${tags.winHistoryMaxWinStreak}连红`}
+                                                />
+                                            ) : null}
+                                            {tags.weekHistoryMaxWinStreak >= 3 ? (
+                                                <Tag
+                                                    background="#fff"
+                                                    color="#4489ff"
+                                                    text={`周榜 ${tags.weekHistoryMaxWinStreak}`}
+                                                />
+                                            ) : null}
+                                            {tags.monthHistoryMaxWinStreak >= 3 ? (
+                                                <Tag
+                                                    background="#fff"
+                                                    color="#4489ff"
+                                                    text={`月榜 ${tags.monthHistoryMaxWinStreak}`}
+                                                />
+                                            ) : null}
+                                            {tags.quarterHistoryMaxWinStreak >= 3 ? (
+                                                <Tag
+                                                    background="#fff"
+                                                    color="#4489ff"
+                                                    text={`季榜 ${tags.quarterHistoryMaxWinStreak}`}
+                                                />
+                                            ) : null}
+                                        </div>
+                                    ) : (
+                                        <div className={style.tags}>
+                                            <Skeleton
+                                                animation="wave"
+                                                height={20}
+                                                variant="text"
+                                                width={34}
                                             />
-                                        ) : null}
-                                        {tags.weekHistoryMaxWinStreak >= 3 ? (
-                                            <Tag
-                                                background="#fff"
-                                                color="#4489ff"
-                                                text={`周榜 ${tags.weekHistoryMaxWinStreak}`}
+                                            <Skeleton
+                                                animation="wave"
+                                                height={20}
+                                                variant="text"
+                                                width={34}
                                             />
-                                        ) : null}
-                                        {tags.monthHistoryMaxWinStreak >= 3 ? (
-                                            <Tag
-                                                background="#fff"
-                                                color="#4489ff"
-                                                text={`月榜 ${tags.monthHistoryMaxWinStreak}`}
+                                            <Skeleton
+                                                animation="wave"
+                                                height={20}
+                                                variant="text"
+                                                width={34}
                                             />
-                                        ) : null}
-                                        {tags.quarterHistoryMaxWinStreak >= 3 ? (
-                                            <Tag
-                                                background="#fff"
-                                                color="#4489ff"
-                                                text={`季榜 ${tags.quarterHistoryMaxWinStreak}`}
+                                            <Skeleton
+                                                animation="wave"
+                                                height={20}
+                                                variant="text"
+                                                width={34}
                                             />
+                                        </div>
+                                    )}
+                                </div>
+                                {!userInfoIsLoading ? (
+                                    <div className={style.middle}>{userInfo.mobileNumber}</div>
+                                ) : (
+                                    <Skeleton
+                                        animation="wave"
+                                        height={20}
+                                        variant="text"
+                                        width={74}
+                                    />
+                                )}
+                                {!userInfoIsLoading ? (
+                                    <div className={style.bottom}>
+                                        {userInfo.fans > 0 && <span>粉丝: {userInfo.fans}</span>}
+                                        {userInfo.unlocked > 0 && (
+                                            <span>解鎖: {userInfo.unlocked}</span>
+                                        )}
+                                        {tags.quarterHitRate > 0 ? (
+                                            <span>猜球胜率: {tags.quarterHitRate}%</span>
                                         ) : null}
                                     </div>
-                                </div>
-                                <div className={style.middle}>{userInfo.mobileNumber}</div>
-                                <div className={style.bottom}>
-                                    {userInfo.fans > 0 && <span>粉丝: {userInfo.fans}</span>}
-                                    {userInfo.unlocked > 0 && (
-                                        <span>解鎖: {userInfo.unlocked}</span>
-                                    )}
-                                    {tags.quarterHitRate > 0 ? (
-                                        <span>猜球胜率: {tags.quarterHitRate}%</span>
-                                    ) : null}
-                                </div>
+                                ) : (
+                                    <div className={style.bottom}>
+                                        <Skeleton
+                                            animation="wave"
+                                            height={20}
+                                            variant="text"
+                                            width={54}
+                                        />
+                                        <Skeleton
+                                            animation="wave"
+                                            height={20}
+                                            variant="text"
+                                            width={54}
+                                        />
+                                        <Skeleton
+                                            animation="wave"
+                                            height={20}
+                                            variant="text"
+                                            width={54}
+                                        />
+                                    </div>
+                                )}
                             </div>
                         </div>
-
-                        <div className={style.introduction}>{userInfo.description}</div>
+                        {!userInfoIsLoading ? (
+                            <div className={style.introduction}>{userInfo.description}</div>
+                        ) : (
+                            <div className={style.introduction}>
+                                <Skeleton
+                                    animation="wave"
+                                    height={54}
+                                    variant="rounded"
+                                    width={366}
+                                />
+                            </div>
+                        )}
                     </div>
 
                     <div className={style.trade}>
@@ -142,7 +255,16 @@ function UserInfo() {
                                 <span className={style.text}>
                                     <Image alt="" height={14} src={Star} width={14} />
                                     <span>可用馀额：</span>
-                                    {userInfo.balance}
+                                    {!userInfoIsLoading ? (
+                                        <>{userInfo.balance}</>
+                                    ) : (
+                                        <Skeleton
+                                            animation="wave"
+                                            height={20}
+                                            variant="text"
+                                            width={42}
+                                        />
+                                    )}
                                 </span>
                                 {/* <span
                                     className={style.button}
@@ -153,20 +275,36 @@ function UserInfo() {
                                     充值
                                 </span> */}
                             </div>
-                            <div className={style.item}>
+                            <div className={`${style.item} ${style.second}`}>
                                 <span className={style.text}>
                                     <Image alt="" height={16} src={BuyBag} width={16} />
                                     <span>您的订阅状态：</span>
                                     <span className={style.status}>
-                                        {memberSubscribeStatus.planName
-                                            ? memberSubscribeStatus.planName
-                                            : '未开通'}
-                                        {memberSubscribeStatus.planId === 1 ? (
-                                            <Image alt="" height={16} src={VipTip} width={40} />
-                                        ) : null}
+                                        {!userInfoIsLoading ? (
+                                            <>
+                                                {memberSubscribeStatus.planName
+                                                    ? memberSubscribeStatus.planName
+                                                    : '未开通'}
+                                                {memberSubscribeStatus.planId === 1 ? (
+                                                    <Image
+                                                        alt=""
+                                                        height={16}
+                                                        src={VipTip}
+                                                        width={40}
+                                                    />
+                                                ) : null}
+                                            </>
+                                        ) : (
+                                            <Skeleton
+                                                animation="wave"
+                                                height={20}
+                                                variant="text"
+                                                width={42}
+                                            />
+                                        )}
                                     </span>
                                 </span>
-                                {memberSubscribeStatus.planId === 0 ? (
+                                {memberSubscribeStatus.planId === 0 && (
                                     <span
                                         className={style.button}
                                         onClick={() => {
@@ -175,7 +313,8 @@ function UserInfo() {
                                     >
                                         开通VIP
                                     </span>
-                                ) : (
+                                )}
+                                {memberSubscribeStatus.planId === 1 && (
                                     <span
                                         className={style.button}
                                         onClick={() => {

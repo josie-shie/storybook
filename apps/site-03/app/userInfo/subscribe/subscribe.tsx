@@ -3,7 +3,9 @@ import Image from 'next/image';
 import { useRef, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Dialog, DialogTitle } from '@mui/material';
-import { getSubscriptionPlanList, subscribePlan } from 'data-center';
+import { getSubscriptionPlanList, subscribePlan, getRechargeOptionList } from 'data-center';
+import { timestampToString } from 'lib';
+import Skeleton from '@mui/material/Skeleton';
 import backLeftArrowImg from '../img/backLeftArrow.png';
 import style from './subscribe.module.scss';
 import background from './img/bg.png';
@@ -18,8 +20,8 @@ import checkbox from './img/checkbox.png';
 import checkedbox from './img/checkedbox.png';
 import VipIcon from './img/vipIcon.png';
 import { useSubscribeStore } from './subscribeStore';
-import { useNotificationStore } from '@/app/notificationStore';
 import { useUserStore } from '@/app/userStore';
+import { useNotificationStore } from '@/app/notificationStore';
 
 function Subscribe({ backHistory }: { backHistory: boolean }) {
     const router = useRouter();
@@ -27,16 +29,18 @@ function Subscribe({ backHistory }: { backHistory: boolean }) {
     const [intro, setIntro] = useState(false);
     const [protocol, setProtocol] = useState(false);
     const userInfo = useUserStore.use.userInfo();
+    const memberSubscribeStatus = useUserStore.use.memberSubscribeStatus();
     const planList = useSubscribeStore.use.planList();
     const yearPlanList = useSubscribeStore.use.yearPlanList();
     const planId = useSubscribeStore.use.planId();
     const isVip = useSubscribeStore.use.isVip();
     const isChecked = useSubscribeStore.use.isChecked();
-    const subscribeStatus = useSubscribeStore.use.subscribeStatus();
+    const userInfoIsLoading = useUserStore.use.userInfoIsLoading();
     const setPlanId = useSubscribeStore.use.setPlanId();
     const setIsVip = useSubscribeStore.use.setIsVip();
     const setIsChecked = useSubscribeStore.use.setIsChecked();
     const setYearPlanList = useSubscribeStore.use.setYearPlanList();
+    const setPlanList = useSubscribeStore.use.setPlanList();
     const setIsVisible = useNotificationStore.use.setIsVisible();
     const [indicatorStyle, setIndicatorStyle] = useState({ left: '0', width: '98px' });
 
@@ -48,8 +52,17 @@ function Subscribe({ backHistory }: { backHistory: boolean }) {
             }
         };
 
+        const getRechargeList = async () => {
+            const res = await getRechargeOptionList({ currencyCode: 'cny' });
+
+            if (res.success) {
+                setPlanList(res.data.list);
+            }
+        };
+
         void getYearSubscribe();
-    }, [setYearPlanList]);
+        void getRechargeList();
+    }, [setYearPlanList, setPlanList]);
 
     const back = () => {
         if (backHistory) {
@@ -70,11 +83,22 @@ function Subscribe({ backHistory }: { backHistory: boolean }) {
     };
 
     const handleSubscribeButtonOnClick = async () => {
-        const res = await subscribePlan({ memberId: userInfo.uid, planId: yearPlanList[0].id });
-        if (res.success) {
-            router.push('https://www.newebpay.com/');
-        } else {
-            setIsVisible('余额不足', 'error');
+        if (isVip || memberSubscribeStatus.planId === 1) {
+            const res = await subscribePlan({ memberId: userInfo.uid, planId: yearPlanList[0].id });
+            if (res.success) {
+                setIsVisible(
+                    `您的年卡訂閱已開通\n生效期間: ${timestampToString(
+                        res.data.planStartAt,
+                        'YYYY-MM-DD'
+                    )}~${timestampToString(res.data.planEndAt, 'YYYY-MM-DD')}`,
+                    'success'
+                );
+                setTimeout(() => {
+                    router.push('/userInfo');
+                }, 2000);
+            } else {
+                setIsVisible('余额不足!', 'error');
+            }
         }
     };
 
@@ -137,7 +161,7 @@ function Subscribe({ backHistory }: { backHistory: boolean }) {
                 <div className={style.vipBlock}>
                     <Image alt="" className={style.title} src={Title} />
                     <Image alt="" className={style.vip} src={Vip} />
-                    {!subscribeStatus && (
+                    {memberSubscribeStatus.planId !== 1 && (
                         <div className={style.block}>
                             <button
                                 className={`${style.button} ${isVip ? style.active : ''}`}
@@ -154,88 +178,114 @@ function Subscribe({ backHistory }: { backHistory: boolean }) {
                         </div>
                     )}
                 </div>
-                <div className={`${style.content} ${subscribeStatus ? style.subscribeState : ''}`}>
-                    {!subscribeStatus ? (
+                <div
+                    className={`${style.content} ${
+                        memberSubscribeStatus.planId === 1 ? style.subscribeState : ''
+                    }`}
+                >
+                    {!userInfoIsLoading ? (
                         <>
-                            <Image alt="" className={style.title} src={PayTitle} />
-                            <div className={style.planContainer} ref={switchRef}>
-                                {planList.map(plan => (
-                                    <div
-                                        className={`${style.wrapper} ${
-                                            planId === plan.planId ? style.active : ''
-                                        }`}
-                                        key={plan.planId}
-                                    >
-                                        <div
-                                            className={`${style.plan} ${
-                                                planId === plan.planId ? style.selectedPlan : ''
-                                            }`}
-                                            onClick={() => {
-                                                handlePlanClick(plan.planId);
-                                            }}
-                                        >
-                                            <div className={style.discount}>{plan.discount}</div>
-                                            <div className={style.text}>
-                                                {planId === plan.planId && (
-                                                    <Image
-                                                        alt=""
-                                                        className={style.icon}
-                                                        height={16}
-                                                        src={starIcon}
-                                                        width={16}
-                                                    />
-                                                )}
-                                                <span className={style.bold}>{plan.period}</span>
-                                                <span className={style.light}>平台币</span>
+                            {memberSubscribeStatus.planId !== 1 ? (
+                                <>
+                                    <Image alt="" className={style.title} src={PayTitle} />
+                                    <div className={style.planContainer} ref={switchRef}>
+                                        {planList.map(plan => (
+                                            <div
+                                                className={`${style.wrapper} ${
+                                                    planId === plan.id ? style.active : ''
+                                                }`}
+                                                key={plan.id}
+                                            >
+                                                <div
+                                                    className={`${style.plan} ${
+                                                        planId === plan.id ? style.selectedPlan : ''
+                                                    }`}
+                                                    onClick={() => {
+                                                        handlePlanClick(plan.id);
+                                                    }}
+                                                >
+                                                    <div className={style.discount}>
+                                                        {plan.titleDesc}
+                                                    </div>
+                                                    <div className={style.text}>
+                                                        {planId === plan.id && (
+                                                            <Image
+                                                                alt=""
+                                                                className={style.icon}
+                                                                height={16}
+                                                                src={starIcon}
+                                                                width={16}
+                                                            />
+                                                        )}
+                                                        <span className={style.bold}>
+                                                            {plan.rechargeAmount}
+                                                        </span>
+                                                        <span className={style.light}>平台币</span>
+                                                    </div>
+                                                    <div className={`${style.text} ${style.coin}`}>
+                                                        <span>{plan.paymentAmount}</span> 元
+                                                    </div>
+                                                    <button
+                                                        className={style.selectedFlag}
+                                                        type="button"
+                                                    >
+                                                        {planId === plan.id && (
+                                                            <Image
+                                                                alt=""
+                                                                height={6}
+                                                                src={Arrow}
+                                                                width={9}
+                                                            />
+                                                        )}
+                                                        <span>选择</span>
+                                                    </button>
+                                                </div>
                                             </div>
-                                            <div className={`${style.text} ${style.coin}`}>
-                                                <span>{plan.price}</span> 元
-                                            </div>
-                                            <button className={style.selectedFlag} type="button">
-                                                {planId === plan.planId && (
-                                                    <Image
-                                                        alt=""
-                                                        height={6}
-                                                        src={Arrow}
-                                                        width={9}
-                                                    />
-                                                )}
-                                                <span>选择</span>
-                                            </button>
-                                        </div>
+                                        ))}
+                                        {!isVip ? (
+                                            <div
+                                                className={`indicator ${style.indicator}`}
+                                                style={indicatorStyle}
+                                            />
+                                        ) : null}
                                     </div>
-                                ))}
-                                {!isVip ? (
                                     <div
-                                        className={`indicator ${style.indicator}`}
-                                        style={indicatorStyle}
-                                    />
-                                ) : null}
-                            </div>
-                            <div
-                                className={`${style.rights} ${
-                                    planId === 1 ? style.firstRaduis : ''
-                                } ${planId === 4 ? style.lastRaduis : ''} `}
-                            >
-                                <div className={style.descript}>充值金币可以购买以下内容</div>
-                                <ul className={style.list}>
-                                    <li>- 解鎖平台風向20/次</li>
-                                    <li>- 可查看5篇高手方案</li>
-                                    <li>- 可解鎖1篇專家預測文章</li>
-                                    <li>- 可使用一次盤路分析功能</li>
-                                </ul>
-                            </div>
+                                        className={`${style.rights} ${
+                                            planId === 1 ? style.firstRaduis : ''
+                                        } ${planId === 4 ? style.lastRaduis : ''} `}
+                                    >
+                                        <div className={style.descript}>
+                                            充值金币可以购买以下内容
+                                        </div>
+                                        <ul className={style.list}>
+                                            <li>- 解鎖平台風向20/次</li>
+                                            <li>- 可查看5篇高手方案</li>
+                                            <li>- 可解鎖1篇專家預測文章</li>
+                                            <li>- 可使用一次盤路分析功能</li>
+                                        </ul>
+                                    </div>
+                                </>
+                            ) : (
+                                <div className={style.block}>
+                                    <Image alt="" className={style.title} src={SubTitle} />
+                                    <span className={style.text}>
+                                        <Image alt="" height={14} src={VipIcon} width={18} />
+                                        无限畅享 VIP （年卡365天）
+                                    </span>
+                                    <span className={style.time}>
+                                        到期日{' '}
+                                        {timestampToString(
+                                            memberSubscribeStatus.planEndAt,
+                                            'YYYY-MM-DD'
+                                        )}
+                                    </span>
+                                </div>
+                            )}
                         </>
                     ) : (
-                        <div className={style.block}>
-                            <Image alt="" className={style.title} src={SubTitle} />
-                            <span className={style.text}>
-                                <Image alt="" height={14} src={VipIcon} width={18} />
-                                无限畅享 VIP （年卡365天）
-                            </span>
-                            <span className={style.time}>到期日 2023-10-19</span>
-                        </div>
+                        <Skeleton animation="wave" height={160} variant="rounded" width={366} />
                     )}
+
                     <div className={style.agreement}>
                         {isChecked ? (
                             <Image
@@ -271,7 +321,7 @@ function Subscribe({ backHistory }: { backHistory: boolean }) {
                         onClick={handleSubscribeButtonOnClick}
                         type="button"
                     >
-                        立即开通
+                        {memberSubscribeStatus.planId === 1 ? '续约' : '立即开通'}
                     </button>
                 </div>
             </div>

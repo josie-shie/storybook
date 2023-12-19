@@ -262,3 +262,53 @@ export const GET_MEMBER_SUBSCRIPTION_STATUS_QUERY = `
         }
     }
 `;
+
+export const GET_MEMBER_TRANSACTION_LIST_QUERY = `
+    query getMemberTransactionList($input: TransactionListInput!){
+        getMemberTransactionList(input: $input){
+            list {
+                balanceId
+                changeTypeCategory
+                data {
+                    ... on RechargeData {
+                        balanceLogId
+                        changeTypeDisplayName
+                        changeTypeCategory 
+                        changeTypeCategoryDisplayName
+                        rechargeStatus
+                        rechargeId
+                        currencyCode
+                        exchangeRate
+                        amountOfChange
+                        balanceAfter
+                        createdAt
+                    }
+                    ... on NormalData {
+                        balanceLogId 
+                        changeTypeDisplayName 
+                        changeTypeCategory
+                        changeTypeCategoryDisplayName
+                        amountOfChange
+                        balanceAfter
+                        createdAt
+                    }
+                }
+            }
+            totalCount
+            totalPages
+        }
+    }
+`;
+
+export const GET_RECHARGE_OPTION_LIST_QUERY = `
+    query getRechargeOptionList($currencyCode: String!){
+        getRechargeOptionList(currencyCode: $currencyCode) {
+            list {
+                id
+                titleDesc
+                rechargeAmount
+                paymentAmount
+            }
+        }
+    }
+`;

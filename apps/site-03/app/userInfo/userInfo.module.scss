@@ -45,6 +45,7 @@
                     display: flex;
                     justify-content: space-between;
                     gap: 4px;
+                    min-height: 20px;
 
                     .name {
                         color: #fff;
@@ -60,6 +61,7 @@
                 }
 
                 .middle {
+                    min-height: 20px;
                     color: #fff;
                     font-size: 14px;
                     font-weight: 500;
@@ -68,6 +70,7 @@
                 .bottom {
                     display: flex;
                     gap: 4px;
+                    min-height: 20px;
 
                     span {
                         color: #fff;
@@ -79,6 +82,7 @@
         }
 
         .introduction {
+            min-height: 54px;
             margin-top: 12px;
             font-size: 14px;
             font-weight: 300;
@@ -123,6 +127,7 @@
                         align-items: center;
                         gap: 6px;
                         color: #fff;
+                        margin-left: 0;
                     }
 
                     span {
@@ -131,7 +136,13 @@
                     }
                 }
 
+                &.second {
+                    min-height: 48px;
+                }
+
                 .button {
+                    min-width: 58px;
+                    text-align: center;
                     color: #fff;
                     font-size: 14px;
                     padding: 4px 12px;
