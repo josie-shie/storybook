@@ -28,6 +28,7 @@ function TradeDetail() {
     const [tradeType, setTradeType] = useState<TradeTypeOption>('ALL');
     const [start, setStart] = useState<number>(0);
     const [end, setEnd] = useState<number>(0);
+    const [page, setPage] = useState<number>(1);
 
     const openOption = (value: 'dateRange' | 'tradeType') => {
         value === 'dateRange' ? setIsDateRangeOpen(true) : setIsTradeTypeOpen(true);
@@ -97,7 +98,13 @@ function TradeDetail() {
                         <Loading />
                     </div>
                 ) : (
-                    <TradeDetailList end={end} start={start} tradeType={tradeType} />
+                    <TradeDetailList
+                        end={end}
+                        page={page}
+                        setPage={setPage}
+                        start={start}
+                        tradeType={tradeType}
+                    />
                 )}
                 <DateRangeDrawer
                     activeDate={activeDate}

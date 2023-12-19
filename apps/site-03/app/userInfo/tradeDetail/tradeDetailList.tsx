@@ -17,9 +17,11 @@ interface TradeDetailListProps {
     end: number;
     start: number;
     tradeType: TradeTypeOption;
+    page: number;
+    setPage: (page: number) => void;
 }
 
-function TradeDetailList({ end, start, tradeType }: TradeDetailListProps) {
+function TradeDetailList({ end, start, tradeType, page, setPage }: TradeDetailListProps) {
     const tradeDetailList = useTardeDetailStore.use.tradeDetailList().detailList;
     const pagination = useTardeDetailStore.use.tradeDetailList().pagination;
     const setTradeDetailList = useTardeDetailStore.use.setTradeDetailList();
@@ -29,17 +31,18 @@ function TradeDetailList({ end, start, tradeType }: TradeDetailListProps) {
             startTime: start,
             endTime: end,
             changeTypeCategory: tradeType,
-            currencyPage: 1,
+            currencyPage: page + 1,
             prepage: 20
         });
         if (data.success) {
             setTradeDetailList({
-                detailList: data.data.list,
+                detailList: tradeDetailList.concat(data.data.list),
                 pagination: {
                     pageCount: data.data.totalPages,
                     totalCount: data.data.totalCount
                 }
             });
+            setPage(page + 1);
         }
     };
 
