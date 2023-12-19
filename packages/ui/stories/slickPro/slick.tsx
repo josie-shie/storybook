@@ -103,7 +103,7 @@ function SlickNav({
 }
 
 function Slick({ tabs, children, styling = 'button', initialSlide = 0, className }: SlickProps) {
-    const [activeIndex, setActiveIndex] = useState(0);
+    const [activeIndex, setActiveIndex] = useState(initialSlide);
     const [direction, setDirection] = useState('prev');
     const swiperRef = useRef<Swiper | null>(null);
     const tabWidth = 100 / tabs.length;

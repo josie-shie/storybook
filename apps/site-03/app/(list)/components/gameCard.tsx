@@ -60,7 +60,7 @@ function AnimateLine({ contestInfo, matchId }: { contestInfo: ContestInfo; match
                 ) : null}
             </div>
             <div className={style.corner}>
-                角:
+                角{' '}
                 <span className={style.ratio}>{syncData.homeCorner || contestInfo.homeCorner}</span>
                 -
                 <span className={style.ratio}>{syncData.awayCorner || contestInfo.awayCorner}</span>
