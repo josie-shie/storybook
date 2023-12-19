@@ -4,9 +4,6 @@ import { type RechargeData } from '../tradeDetailStore';
 import style from './rechargeItem.module.scss';
 import recharge from './img/recharge.png';
 
-// import payment from './img/payment.png';
-// import income from './img/income.png';
-
 interface PropsType {
     data: RechargeData;
 }
