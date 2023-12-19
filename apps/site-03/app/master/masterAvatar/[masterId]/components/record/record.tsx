@@ -10,7 +10,7 @@ function Record({ individualGuessInfo }: { individualGuessInfo: MemberIndividual
             showContent: false
         },
         title: {
-            text: `{${individualGuessInfo.rank}|1} \n周排名`,
+            text: `${individualGuessInfo.rank} \n周排名`,
             left: '46%',
             top: '47%',
             textAlign: 'center',

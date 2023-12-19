@@ -3,8 +3,9 @@ import { getMemberIndividualGuessMatches, type MemberIndividualGuessMatch } from
 import { useEffect, useState } from 'react';
 import { timestampToString } from 'lib';
 import UnlockButton from '@/components/unlockButton/unlockButton';
-import iconWin from './img/win.png';
-import iconDefeat from './img/defeat.png';
+import IconWin from './img/win.png';
+import IconLose from './img/lose.png';
+import IconDraw from './img/draw.png';
 import style from './bettingPlan.module.scss';
 
 type Tab = 0 | 1 | 2;
@@ -32,10 +33,9 @@ function BettingPlan({ planActiveTab }: { planActiveTab: Tab }) {
     };
 
     const filterIcon = {
-        WIN: <Image alt="icon" className={style.iconWin} src={iconWin} />,
-        LOSE: <Image alt="icon" className={style.iconDefeat} src={iconDefeat} />,
-        DRAW: <Image alt="icon" className={style.iconDefeat} src={iconDefeat} />,
-        NONE: <Image alt="icon" className={style.iconDefeat} src={iconDefeat} />
+        WIN: <Image alt="icon" className={style.iconWin} src={IconWin} />,
+        LOSE: <Image alt="icon" className={style.iconDefeat} src={IconLose} />,
+        DRAW: <Image alt="icon" className={style.iconDefeat} src={IconDraw} />
     };
 
     const filterPlay = {
@@ -86,7 +86,9 @@ function BettingPlan({ planActiveTab }: { planActiveTab: Tab }) {
                                     : item.overUnderOdds}
                                 {item.predictionResult}
                             </div>
-                            {item.isPaidToRead ? <UnlockButton /> : ''}
+
+                            {/* TODO: 請後端吐價格 */}
+                            {item.isPaidToRead ? <UnlockButton price={20} /> : ''}
                         </div>
                     </div>
                 );

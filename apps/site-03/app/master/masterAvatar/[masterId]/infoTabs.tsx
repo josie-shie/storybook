@@ -4,9 +4,11 @@ import { useSearchParams } from 'next/navigation';
 import {
     getMemberIndividualGuess,
     type GetMemberIndividualGuessResponse,
-    type MemberIndividualGuessRecord
+    type MemberIndividualGuessRecord,
+    type RecommendPost
 } from 'data-center';
-import { creatMasterAvatarStore } from './masterAvatarStore';
+import { getPostList } from 'data-center';
+import { motion } from 'framer-motion';
 import AnalysisItem from './components/analysisItem/analysisItem';
 import MasterItem from './components/masterItem/masterItem';
 import BettingPlan from './components/bettingPlan/bettingPlan';
@@ -16,7 +18,13 @@ import Record from './components/record/record';
 type DateTab = 'byWeek' | 'byMonth' | 'byQuarter';
 type Tab = 0 | 1 | 2;
 
-function InfoTabs({ params }: { params: { masterId: string } }) {
+function InfoTabs({
+    params,
+    setArticleLength
+}: {
+    params: { masterId: string };
+    setArticleLength: (val: number) => void;
+}) {
     const searchParams = useSearchParams();
     const status = searchParams.get('status');
     const [dateActiveTab, setDateActiveTab] = useState<DateTab>('byWeek');
@@ -43,10 +51,7 @@ function InfoTabs({ params }: { params: { masterId: string } }) {
             lose: 0
         }
     } as MemberIndividualGuessRecord);
-
-    creatMasterAvatarStore({
-        predictArticleList: []
-    });
+    const [predictArticleList, setPredictArticleList] = useState<RecommendPost[]>([]);
 
     const handleTabClick = (tabName: DateTab) => {
         setDateActiveTab(tabName);
@@ -56,8 +61,7 @@ function InfoTabs({ params }: { params: { masterId: string } }) {
             byMonth: individualGuess.byMonth,
             byQuarter: individualGuess.byQuarter
         };
-
-        const item = info[dateActiveTab];
+        const item = info[tabName];
         setIndividualGuessInfo(item);
     };
 
@@ -79,15 +83,36 @@ function InfoTabs({ params }: { params: { masterId: string } }) {
         }
     };
 
+    const fetchAnalysis = async () => {
+        try {
+            const res = await getPostList({
+                memberId: Number(params.masterId),
+                postFilter: ['all']
+            });
+
+            if (!res.success) {
+                return new Error();
+            }
+            setPredictArticleList(res.data.posts);
+            setArticleLength(res.data.totalArticle);
+        } catch (error) {
+            return new Error();
+        }
+    };
+
     useEffect(() => {
-        void fetchData();
-    }, []);
+        if (status === 'analysis') {
+            void fetchAnalysis();
+        } else if (status === 'guess') {
+            void fetchData();
+        }
+    }, [status]);
 
     return (
         <div className={style.infoTabs}>
             {status === 'analysis' && (
                 <div className={style.tabContest}>
-                    <AnalysisItem params={params} />
+                    <AnalysisItem predictArticleList={predictArticleList} />
                 </div>
             )}
 
@@ -96,30 +121,42 @@ function InfoTabs({ params }: { params: { masterId: string } }) {
                     <div className={style.title}>
                         <span>近期战绩</span>
                         <div className={style.tab}>
-                            <span
-                                className={dateActiveTab === 'byWeek' ? style.active : ''}
+                            <motion.button
+                                className={`${style.defaultButton} ${
+                                    dateActiveTab === 'byWeek' ? style.active : ''
+                                }`}
                                 onClick={() => {
                                     handleTabClick('byWeek');
                                 }}
+                                type="button"
+                                whileTap={{ scale: 0.9 }}
                             >
                                 周榜
-                            </span>
-                            <span
-                                className={dateActiveTab === 'byMonth' ? style.active : ''}
+                            </motion.button>
+                            <motion.button
+                                className={`${style.defaultButton} ${
+                                    dateActiveTab === 'byMonth' ? style.active : ''
+                                }`}
                                 onClick={() => {
                                     handleTabClick('byMonth');
                                 }}
+                                type="button"
+                                whileTap={{ scale: 0.9 }}
                             >
                                 月榜
-                            </span>
-                            <span
-                                className={dateActiveTab === 'byQuarter' ? style.active : ''}
+                            </motion.button>
+                            <motion.button
+                                className={`${style.defaultButton} ${
+                                    dateActiveTab === 'byQuarter' ? style.active : ''
+                                }`}
                                 onClick={() => {
                                     handleTabClick('byQuarter');
                                 }}
+                                type="button"
+                                whileTap={{ scale: 0.9 }}
                             >
                                 季榜
-                            </span>
+                            </motion.button>
                         </div>
                     </div>
                     <div className={style.recentGames}>
