@@ -236,7 +236,7 @@ export const PAY_FOR_PRO_GUESS_MUTATION = `
 `;
 
 export const PAY_FOR_POST_MUTATION = `
-    mutation payForPost($input: AddGuessInput) {
+    mutation payForPost($input: PayForPostInput!) {
         payForPost(input: $input) {
             code
             message

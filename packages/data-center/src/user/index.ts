@@ -589,11 +589,11 @@ const MemberTagsSchema = z.object({
 });
 
 const GetUnlockedPostSchema = z.object({
-    postId: z.number(),
+    postId: z.string(),
     analysisTitle: z.string(),
     analysisContent: z.string(),
     predictionResult: PredictionResultSchema,
-    mentorId: z.number(),
+    mentorId: z.string(),
     mentorName: z.string(),
     avatarPath: z.string(),
     matchId: z.number(),
@@ -605,7 +605,6 @@ const GetUnlockedPostSchema = z.object({
     awayTeamName: z.string(),
     matchTime: z.number(),
     createdAt: z.number(),
-    predictStat: z.number(),
     memberTags: TagSchema
 });
 

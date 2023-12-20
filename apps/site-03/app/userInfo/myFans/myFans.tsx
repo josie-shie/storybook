@@ -114,7 +114,7 @@ function MyFocus() {
                             src={backLeftArrowImg}
                             width={24}
                         />
-                        <div className={style.text}>我的关注</div>
+                        <div className={style.text}>我的粉丝</div>
                     </div>
                 </div>
             </div>

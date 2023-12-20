@@ -7,6 +7,7 @@ import { ButtonBase } from '@mui/material';
 import Skeleton from '@mui/material/Skeleton';
 import Image from 'next/image';
 import Cookies from 'js-cookie';
+import { formatNumberWithCommas } from 'lib';
 import { useNotificationStore } from '@/app/notificationStore';
 import Tag from '@/components/tag/tag';
 import Header from '@/components/header/headerTitleNoBg';
@@ -75,9 +76,9 @@ function UserInfo() {
         router.push('/userInfo/account');
     };
 
-    // const goRecharge = () => {
-    //     router.push('/userInfo/recharge');
-    // };
+    const goRecharge = () => {
+        router.push('/userInfo/recharge');
+    };
 
     const goSubscribe = () => {
         router.push('/userInfo/subscribe');
@@ -234,7 +235,7 @@ function UserInfo() {
                                     <Image alt="" height={14} src={Star} width={14} />
                                     <span>可用馀额：</span>
                                     {mounted && !userInfoIsLoading ? (
-                                        <>{userInfo.balance}</>
+                                        <>{formatNumberWithCommas(userInfo.balance)}</>
                                     ) : (
                                         <Skeleton
                                             animation="wave"
@@ -244,14 +245,14 @@ function UserInfo() {
                                         />
                                     )}
                                 </span>
-                                {/* <span
+                                <span
                                     className={style.button}
                                     onClick={() => {
                                         goRecharge();
                                     }}
                                 >
                                     充值
-                                </span> */}
+                                </span>
                             </div>
                             <div className={`${style.item} ${style.second}`}>
                                 <span className={style.text}>

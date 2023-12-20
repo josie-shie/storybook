@@ -68,7 +68,6 @@ interface GetUnlockPostProps {
         awayTeamName: string;
         matchTime: number;
         createdAt: number;
-        predictStat: number;
         memberTags: Tags;
     };
 }
@@ -153,15 +152,17 @@ function ArticleItem({ item }: GetUnlockPostProps) {
                     goDetail(item.postId);
                 }}
             >
-                <div className={style.detail}>
-                    {item.leagueName}
-                    <span className={style.time}>
-                        {' '}
-                        | {timestampToString(item.matchTime, 'MM-DD HH:mm')}
-                    </span>
-                </div>
-                <div className={style.combination}>
-                    {item.homeTeamName} vs {item.awayTeamName}
+                <div className={style.rows}>
+                    <div className={style.detail}>
+                        {item.leagueName}
+                        <span className={style.time}>
+                            {' '}
+                            | {timestampToString(item.matchTime, 'MM-DD HH:mm')}
+                        </span>
+                    </div>
+                    <div className={style.combination}>
+                        {item.homeTeamName} vs {item.awayTeamName}
+                    </div>
                 </div>
                 {item.predictionResult === 'WIN' && (
                     <Image alt="" height={36} src={Win} width={36} />
