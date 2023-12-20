@@ -6,7 +6,6 @@ import Image from 'next/image';
 import Footer from '@/components/footer/footer';
 import Header from '@/components/header/headerLogo';
 import Loading from '@/components/loading/loading';
-import { useUserStore } from '@/app/userStore';
 import AnimationData from './animationData';
 import content from './img/content.png';
 import style from './layout.module.scss';
@@ -18,10 +17,8 @@ import searchWhite from './img/searchWhite.png';
 import RecordFilter from './components/recordFilter/recordFilter';
 
 function AnalysisLayout({ children }: { children: ReactNode }) {
-    const isVipUseAnalysis = useUserStore.use.isVipUseAnalysis();
-    const setIsVipUseAnalysis = useUserStore.use.setIsVipUseAnalysis();
+    const [analysisTime, setAnalysisTime] = useState(true);
     const [showRecord, setShowRecord] = useState(false);
-
     creatDiscSelectStore({
         openNoramlDialog: false,
         dialogContentType: '',
@@ -55,14 +52,14 @@ function AnalysisLayout({ children }: { children: ReactNode }) {
     ];
 
     const handleAnalysisTimes = (newTestValue: boolean) => {
-        setIsVipUseAnalysis(newTestValue);
+        setAnalysisTime(newTestValue);
     };
 
     return (
         <>
             <Header />
-            <AnimationData analysisTime={isVipUseAnalysis} onUpdateAnalysis={handleAnalysisTimes} />
-            {isVipUseAnalysis ? (
+            <AnimationData analysisTime={analysisTime} onUpdateAnalysis={handleAnalysisTimes} />
+            {analysisTime ? (
                 <div className={style.main}>
                     <Tabs
                         buttonRadius={tabStyle.buttonRadius}

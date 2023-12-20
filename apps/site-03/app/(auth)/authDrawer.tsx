@@ -31,8 +31,6 @@ function AuthDrawer() {
     const title = useAuthStore.use.title();
     const setTitle = useAuthStore.use.setTitle();
 
-    const setIsVipUseAnalysis = useUserStore.use.setIsVipUseAnalysis();
-
     const resetAuthContent = () => {
         if (authQuery === 'register') {
             setAuthContent(<Register />);
@@ -75,12 +73,6 @@ function AuthDrawer() {
             });
             if (subscriptionRespons.success) {
                 setMemberSubscribeStatus(subscriptionRespons.data);
-
-                if (subscriptionRespons.data.planId === 1 || userId.balance >= 80) {
-                    setIsVipUseAnalysis(true);
-                } else {
-                    setIsVipUseAnalysis(false);
-                }
             }
         };
         if (isToken) void fetchSubscription();

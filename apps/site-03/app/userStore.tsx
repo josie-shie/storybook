@@ -18,7 +18,6 @@ interface UserState extends InitState {
     authQuery: string;
     inviteCode: string;
     userInfoIsLoading: boolean;
-    isVipUseAnalysis: boolean;
     setIsLogin: (isLogin: boolean) => void;
     setUserInfoIsLoading: (userInfoIsLoading: boolean) => void;
     setToken: (token: string) => void;
@@ -26,7 +25,6 @@ interface UserState extends InitState {
     setUserInfo: (userInfo: GetMemberInfoResponse) => void;
     setTags: (tags: TagType) => void;
     setMemberSubscribeStatus: (memberSubscribeStatus: GetMemberSubscriptionStatusResponse) => void;
-    setIsVipUseAnalysis: (isVipUseAnalysis: boolean) => void;
 }
 
 let isInit = true;
@@ -37,7 +35,6 @@ const initialState = (set: (updater: (state: UserState) => Partial<UserState>) =
     tags: {} as TagType,
     memberSubscribeStatus: {} as GetMemberSubscriptionStatusResponse,
     userInfoIsLoading: false,
-    isVipUseAnalysis: false,
     isLogin: false,
     token: '',
     setIsLogin: (isLogin: boolean) => {
@@ -78,14 +75,6 @@ const initialState = (set: (updater: (state: UserState) => Partial<UserState>) =
             return {
                 ...state,
                 userInfoIsLoading
-            };
-        });
-    },
-    setIsVipUseAnalysis: (isVipUseAnalysis: boolean) => {
-        set(state => {
-            return {
-                ...state,
-                isVipUseAnalysis
             };
         });
     },

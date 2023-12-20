@@ -1,6 +1,9 @@
 'use client';
+import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useUserStore } from '@/app/userStore';
+import PaidDialog from '@/components/paidDialog/paidDialog';
 import banner from './img/banner.png';
 import dataText from './img/dataText.png';
 import blueText from './img/blueText.png';
@@ -24,8 +27,24 @@ interface TestProps {
 }
 
 function AnimationData({ analysisTime, onUpdateAnalysis }: TestProps) {
+    const userBalance = useUserStore.use.userInfo().balance;
+    const [openPaid, setOpenPaid] = useState(false);
+    const [plan, setPlan] = useState(false);
+
+    const handleLocalClickOpen = (getPlan: string) => {
+        if (getPlan === 'single') {
+            setPlan(true);
+        }
+        setOpenPaid(true);
+    };
+
+    const handleClickClose = () => {
+        setOpenPaid(false);
+    };
+
     const handleConfirm = () => {
         onUpdateAnalysis(true);
+        setOpenPaid(false);
     };
 
     const animateLines = [
@@ -57,6 +76,7 @@ function AnimationData({ analysisTime, onUpdateAnalysis }: TestProps) {
                 ) : (
                     <div className={style.enough}>
                         <div className={style.column}>
+                            <span className={style.time}>今日可用次数已用完</span>
                             <Image alt="title" height={36} src={enoughTitle} width={146} />
                             <Image alt="title" height={34} src={enoughText} width={258} />
                             <Link className={style.goVip} href="/userInfo/subscribe">
@@ -73,7 +93,7 @@ function AnimationData({ analysisTime, onUpdateAnalysis }: TestProps) {
                                 className={style.goSingle}
                                 href=""
                                 onClick={() => {
-                                    handleConfirm();
+                                    handleLocalClickOpen('single');
                                 }}
                             >
                                 單次分析 80$
@@ -88,6 +108,15 @@ function AnimationData({ analysisTime, onUpdateAnalysis }: TestProps) {
                     ))}
                 </div>
             </div>
+            <PaidDialog
+                amount={80}
+                balance={userBalance}
+                onClose={handleClickClose}
+                onConfirm={handleConfirm}
+                openPaid={openPaid}
+                plan={plan}
+                value="进行单次分析？"
+            />
         </div>
     );
 }
