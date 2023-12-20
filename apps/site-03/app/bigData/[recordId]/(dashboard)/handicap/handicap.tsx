@@ -203,7 +203,7 @@ function Handicap() {
                                 setPlayTypeSwitch(value);
                             }}
                             options={[
-                                { label: '让球', value: 'handicap' },
+                                { label: '让分', value: 'handicap' },
                                 { label: '大小', value: 'overUnder' },
                                 { label: '独赢', value: 'moneyLine' }
                             ]}
@@ -218,7 +218,7 @@ function Handicap() {
                 </div>
             </div>
             <div className={style.tableContainer}>
-                <div className={style.header}>半場讓球</div>
+                <div className={style.header}>半場让分</div>
                 <div className={style.header}>半場大小</div>
                 <div className={style.header}>半場獨贏</div>
                 <TableCell

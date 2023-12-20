@@ -24,7 +24,7 @@ function BettingPlan({ result }: PropsType) {
                 <span className={style.time}> | 09-05 16:45</span>
             </div>
             <div className={style.mid}>
-                <span className={style.plan}>让球</span>
+                <span className={style.plan}>让分</span>
                 <div className={style.combination}>德國U20A vs 斯洛文尼亚U20</div>
             </div>
             <div className={style.bot}>

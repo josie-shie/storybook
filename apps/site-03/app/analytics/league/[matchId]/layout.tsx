@@ -108,7 +108,7 @@ function DetailLayout({ children }: { children: ReactNode }) {
             </div>
             <div className={style.tabsContainer}>
                 <Tabs
-                    labels={['積分', '賽程', '讓球', '總進球', '射手榜']}
+                    labels={['積分', '賽程', '让分', '總進球', '射手榜']}
                     paths={[
                         `/analytics/league/${matchId}`,
                         `/analytics/league/${matchId}/schedule`,

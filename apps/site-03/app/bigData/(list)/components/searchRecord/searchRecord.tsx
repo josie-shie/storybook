@@ -36,7 +36,7 @@ function SearchRecord({ index, recordData }: PropsType) {
             <div className={style.detail}>
                 <div className={style.content}>
                     <div className={style.item}>
-                        全場讓球 讓方
+                        全場让分 讓方
                         <span>{handicapTeam[recordData.handicapSide] || '全部'}</span>
                         、盤口<span>{recordData.handicapValues}</span>
                     </div>
