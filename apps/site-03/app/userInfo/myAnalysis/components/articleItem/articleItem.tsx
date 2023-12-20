@@ -1,6 +1,5 @@
 'use client';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { useCallback } from 'react';
+import { useRouter } from 'next/navigation';
 import { timestampToString } from 'lib';
 import Image from 'next/image';
 import Tag from '@/components/tag/tag';
@@ -74,30 +73,13 @@ interface GetUnlockPostProps {
 
 function ArticleItem({ item }: GetUnlockPostProps) {
     const router = useRouter();
-    const searchParams = useSearchParams();
-
-    const createQueryString = useCallback(
-        (name: string, value?: string) => {
-            const params = new URLSearchParams(searchParams);
-            if (value) {
-                params.set(name, value);
-            } else {
-                params.delete(name);
-            }
-
-            return params.toString();
-        },
-        [searchParams]
-    );
 
     const goDetail = (id: number) => {
-        router.push(`/recommend/predict/${id}`);
+        router.push(`/master/article/${id}`);
     };
 
-    const goInfo = (id: number) => {
-        router.push(
-            `/recommend/predict/masterAvatar?${createQueryString('mentorId', id.toString())}`
-        );
+    const goInfo = (mentorId: number) => {
+        router.push(`/master/masterAvatar/${mentorId}?status=analysis`);
     };
 
     return (
@@ -106,7 +88,7 @@ function ArticleItem({ item }: GetUnlockPostProps) {
                 <div
                     className={style.avatarContainer}
                     onClick={() => {
-                        goInfo(item.postId);
+                        goInfo(item.mentorId);
                     }}
                 >
                     <Avatar borderColor="#4489FF" />

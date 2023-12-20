@@ -1,6 +1,7 @@
 'use client';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
+import Link from 'next/link';
 import Avatar from '@/components/avatar/avatar';
 import Tag from '@/components/tag/tag';
 import Fire from '@/app/img/fire.png';
@@ -69,11 +70,13 @@ function MasterItem({ uid, item, onFollowToggle }: FansProps) {
         <div className={style.masterItem} key={item.memberId}>
             <div className={style.info}>
                 <div className={style.avatarContainer}>
-                    <Avatar
-                        borderColor="#4489FF"
-                        size={46}
-                        src={item.avatarPath && item.avatarPath !== '0' ? item.avatarPath : ''}
-                    />
+                    <Link href={`/master/masterAvatar/${item.memberId}?status=analysis`}>
+                        <Avatar
+                            borderColor="#4489FF"
+                            size={46}
+                            src={item.avatarPath && item.avatarPath !== '0' ? item.avatarPath : ''}
+                        />
+                    </Link>
                 </div>
                 <div className={style.about}>
                     <div className={style.top}>
