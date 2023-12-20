@@ -28,7 +28,8 @@ import {
     GET_MEMBER_GUESS_VIEWING_RECORDS_QUERY,
     GET_MEMBER_SUBSCRIPTION_STATUS_QUERY,
     GET_RECHARGE_OPTION_LIST_QUERY,
-    GET_MEMBER_TRANSACTION_LIST_QUERY
+    GET_MEMBER_TRANSACTION_LIST_QUERY,
+    RECHARGE_PLATFORM_CURRENCY_MUTATION
 } from './graphqlQueries';
 
 const RegisterResultSchema = z.object({
@@ -947,6 +948,37 @@ export const getRechargeOptionList = async ({ currencyCode }: GetRechargeOptionL
             success: true,
             data: data.getRechargeOptionList
         };
+    } catch (error) {
+        return handleApiError(error);
+    }
+};
+
+export interface RechargePlatformCurrencyRequest {
+    currencyRechargeAmount: number;
+    rechargeAmount: number;
+}
+
+/**
+ * 平台幣充值
+ * - params {@link RechargePlatformCurrencyRequest}
+ */
+export const rechargePlatformCurrency = async (
+    input: RechargePlatformCurrencyRequest
+): Promise<ReturnData<null>> => {
+    try {
+        const res: { data: null } = await fetcher(
+            {
+                data: {
+                    query: RECHARGE_PLATFORM_CURRENCY_MUTATION,
+                    variables: {
+                        input
+                    }
+                }
+            },
+            { cache: 'no-store' }
+        );
+
+        return { success: true, data: res.data };
     } catch (error) {
         return handleApiError(error);
     }
