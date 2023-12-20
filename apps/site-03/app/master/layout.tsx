@@ -10,7 +10,9 @@ import style from './layout.module.scss';
 function MasterLayout({ children }: { children: ReactNode }) {
     const params = useParams();
     const route = usePathname().split('/');
-    const isNone = route.includes('masterAvatar');
+    const config = ['masterAvatar', 'memberAvatar'];
+    const isNone = config.some(configItem => route.includes(configItem));
+
     return (
         <div className={style.articleLayout}>
             {params.articleId || isNone ? null : <Header />}

@@ -15,9 +15,9 @@ import Avatar from '@/components/avatar/avatar';
 import Tag from '@/components/tag/tag';
 import Fire from '@/app/img/fire.png';
 import { useUserStore } from '../../../../../userStore';
-import style from './masterItem.module.scss';
+import style from './memberItem.module.scss';
 
-function MasterItem({ params }: { params: { masterId } }) {
+function MasterItem({ params }: { params: { memberId: string } }) {
     const [masterItem, setMasterItem] = useState<GetFollowersResponse>([]);
 
     const router = useRouter();
@@ -41,8 +41,8 @@ function MasterItem({ params }: { params: { masterId } }) {
     const onIsFocused = async (id: number, follow: boolean) => {
         try {
             const res = follow
-                ? await unFollow({ followerId: Number(params.masterId) || 1, followedId: id })
-                : await updateFollow({ followerId: Number(params.masterId) || 1, followedId: id });
+                ? await unFollow({ followerId: Number(params.memberId) || 1, followedId: id })
+                : await updateFollow({ followerId: Number(params.memberId) || 1, followedId: id });
             if (!res.success) {
                 return new Error();
             }
