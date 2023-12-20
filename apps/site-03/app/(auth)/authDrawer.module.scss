@@ -1,4 +1,4 @@
-$borderBottom: 1px solid rgba(255, 255, 255, 0.3);
+$borderBottom: 1px solid rgb(255 255 255 / 30%);
 
 .loginDrawer {
     height: 100%;
@@ -27,6 +27,14 @@ $borderBottom: 1px solid rgba(255, 255, 255, 0.3);
             position: absolute;
             right: 12px;
             top: 34px;
+        }
+
+        .backBtn {
+            position: absolute;
+            left: 12px;
+            top: 34px;
+            width: 24px;
+            height: 24px;
         }
     }
 
@@ -63,7 +71,7 @@ $borderBottom: 1px solid rgba(255, 255, 255, 0.3);
         input:-webkit-autofill:focus {
             background-color: #1665df !important;
             color: #fff !important;
-            -webkit-box-shadow: 0 0 0 1000px #1665df inset !important;
+            box-shadow: 0 0 0 1000px #1665df inset !important;
             -webkit-text-fill-color: #fff !important;
             border: 0 !important;
         }
@@ -78,7 +86,7 @@ $borderBottom: 1px solid rgba(255, 255, 255, 0.3);
     .future {
         background: linear-gradient(91deg, #00ceff 8.31%, #0085ff 114.96%);
         background-clip: text;
-        -webkit-background-clip: text;
+        background-clip: text;
         -webkit-text-fill-color: transparent;
     }
 }
