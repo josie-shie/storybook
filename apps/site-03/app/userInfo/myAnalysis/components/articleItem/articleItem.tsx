@@ -138,7 +138,6 @@ function ArticleItem({ item }: GetUnlockPostProps) {
                     <div className={style.detail}>
                         {item.leagueName}
                         <span className={style.time}>
-                            {' '}
                             | {timestampToString(item.matchTime, 'MM-DD HH:mm')}
                         </span>
                     </div>
