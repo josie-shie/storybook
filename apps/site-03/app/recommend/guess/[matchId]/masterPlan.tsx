@@ -65,9 +65,18 @@ function MasterPlan() {
             return;
         }
         if (typeof selectedGameId === 'number') {
-            await payForProGuess({ guessId: selectedGameId });
-            // response 處理 (高手方案)
+            // 解鎖高手方案
+            const res = await payForProGuess({ guessId: selectedGameId });
+            if (res.success) {
+                const data = res.data;
+                const idx = masterPlanList.findIndex(ele => ele.guessId === data.guessId);
+                const newList = [...masterPlanList];
+                newList[idx].predictedPlay = data.predictedPlay;
+                setMasterPlanList(newList);
+                setUserInfo({ ...userInfo, balance: data.currentBalance });
+            }
         } else {
+            // 解鎖高手風向
             const res = await payForProDistrib({ matchId: Number(matchId) });
             if (res.success) {
                 const data = res.data;
