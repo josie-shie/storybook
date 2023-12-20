@@ -1,29 +1,16 @@
-import { useRouter, useSearchParams, usePathname } from 'next/navigation';
-import { useCallback } from 'react';
 import Image from 'next/image';
 import FilterIcon from '../../img/filter.png';
+import { useArticleStore } from '../../articleStore';
 import style from './filterButton.module.scss';
 
 function FilterButton() {
-    const searchParams = useSearchParams();
-    const pathname = usePathname();
-    const router = useRouter();
-
-    const createQueryString = useCallback(
-        (name: string, value: string) => {
-            const params = new URLSearchParams(searchParams);
-            params.set(name, value);
-
-            return params.toString();
-        },
-        [searchParams]
-    );
+    const setFilterIsOpen = useArticleStore.use.setFilterIsOpen();
 
     return (
         <div
             className={style.filter}
             onClick={() => {
-                router.push(`${pathname}?${createQueryString('filter', 'open')}`);
+                setFilterIsOpen({ status: true });
             }}
         >
             赛事筛选

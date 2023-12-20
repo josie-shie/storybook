@@ -1,30 +1,36 @@
 'use client';
 import { motion } from 'framer-motion';
 import { Tab, Tabs } from 'ui';
-import { useSearchParams, useRouter, usePathname } from 'next/navigation';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import BottomDrawer from '@/components/drawer/bottomDrawer';
+import { useNotificationStore } from '@/app/notificationStore';
 import { useArticleStore } from '../../articleStore';
 import style from './filter.module.scss';
 
 function FilterSection({ group }: { group: 'league' | 'country' }) {
+    const setIsVisible = useNotificationStore.use.setIsVisible();
     const filterInfo = useArticleStore.use.filterInfo();
     const filterSelected = useArticleStore.use.filterSelected();
     const filterPick = useArticleStore.use.setFilterSelected();
     const filterSubmit = useArticleStore.use.setFilterList();
     const revertFilter = useArticleStore.use.revertFilterList();
     const selectAll = useArticleStore.use.selectAll();
-
-    const pathname = usePathname();
-    const router = useRouter();
+    const setFilterResultIsOpen = useArticleStore.use.setFilterResultIsOpen();
+    const setIsOpen = useArticleStore.use.setFilterIsOpen();
 
     const filterCounter = () => {
         return Object.values(filterSelected[group]).filter(value => value).length;
     };
 
     const submit = () => {
+        if (filterCounter() === 0) {
+            setIsVisible('至少选择一笔', 'error');
+            return;
+        }
+
         filterSubmit(group);
-        router.replace(`${pathname}?filterResult=open`);
+        setIsOpen({ status: false });
+        setFilterResultIsOpen({ status: true });
     };
 
     const filterList = Object.entries(filterInfo[group].infoObj)
@@ -93,6 +99,8 @@ function FilterSection({ group }: { group: 'league' | 'country' }) {
 
 function Filter() {
     const [onMounted, setOnMounted] = useState(false);
+    const filterIsOpen = useArticleStore.use.filterIsOpen();
+    const setFilterIsOpen = useArticleStore.use.setFilterIsOpen();
 
     useEffect(() => {
         setOnMounted(true);
@@ -104,31 +112,13 @@ function Filter() {
         buttonRadius: 30
     };
 
-    const searchParams = useSearchParams();
-    const isOpen = searchParams.get('filter');
-    const pathname = usePathname();
-    const router = useRouter();
-
     const tabActive = useRef(0);
 
-    const createQueryString = useCallback(
-        (name: string, value?: string) => {
-            const params = new URLSearchParams(searchParams);
-            if (value) {
-                params.set(name, value);
-            } else {
-                params.delete(name);
-            }
-
-            return params.toString();
-        },
-        [searchParams]
-    );
     const onClose = () => {
-        router.push(`${pathname}?${createQueryString('filter')}`);
+        setFilterIsOpen({ status: false });
     };
     const onOpen = () => {
-        router.push(`${pathname}?${createQueryString('filter', 'open')}`);
+        setFilterIsOpen({ status: true });
     };
 
     const saveTabStatus = (tab: string) => {
@@ -138,7 +128,7 @@ function Filter() {
     return (
         <>
             {onMounted ? (
-                <BottomDrawer isOpen={isOpen === 'open'} onClose={onClose} onOpen={onOpen}>
+                <BottomDrawer isOpen={filterIsOpen} onClose={onClose} onOpen={onOpen}>
                     <div className={style.filter}>
                         <h2>赛事筛选</h2>
                         <div className={style.tab}>

@@ -1,6 +1,5 @@
 'use client';
-import { useSearchParams, useRouter, usePathname } from 'next/navigation';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { RecommendPost } from 'data-center';
 import { getPostList } from 'data-center';
 import BottomDrawer from '@/components/drawer/bottomDrawer';
@@ -17,24 +16,8 @@ function FilterResult() {
     const userInfo = useUserStore.use.userInfo();
     const setFilterResult = useArticleStore.use.setFilterResult();
     const filterList = useArticleStore.use.filterList();
-    const searchParams = useSearchParams();
-    const isOpen = searchParams.get('filterResult');
-    const pathname = usePathname();
-    const router = useRouter();
-
-    const createQueryString = useCallback(
-        (name: string, value?: string) => {
-            const params = new URLSearchParams(searchParams);
-            if (value) {
-                params.set(name, value);
-            } else {
-                params.delete(name);
-            }
-
-            return params.toString();
-        },
-        [searchParams]
-    );
+    const filterResultIsOpen = useArticleStore.use.filterResultIsOpen();
+    const setFilterResultIsOpen = useArticleStore.use.setFilterResultIsOpen();
 
     const contestFormat = (postList: RecommendPost[]) => {
         const contestList: HashTableType = {};
@@ -71,22 +54,22 @@ function FilterResult() {
     }, []);
 
     useEffect(() => {
-        if (isOpen === 'open') {
+        if (filterResultIsOpen) {
             void fetchArticleList();
         }
-    }, [isOpen]);
+    }, [filterResultIsOpen]);
 
     const onClose = () => {
-        router.push(`${pathname}?${createQueryString('filterResult')}`);
+        setFilterResultIsOpen({ status: false });
     };
     const onOpen = () => {
-        router.push(`${pathname}?${createQueryString('filterResult', 'open')}`);
+        setFilterResultIsOpen({ status: true });
     };
 
     return (
         <>
             {onMounted ? (
-                <BottomDrawer isOpen={isOpen === 'open'} onClose={onClose} onOpen={onOpen}>
+                <BottomDrawer isOpen={filterResultIsOpen} onClose={onClose} onOpen={onOpen}>
                     <div className={style.filterResults}>
                         <ContestList />
                         <ArticleList />
