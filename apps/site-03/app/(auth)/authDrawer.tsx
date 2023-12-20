@@ -12,6 +12,7 @@ import BottomDrawer from '@/components/drawer/bottomDrawer';
 import ChangePassword from '@/app/(auth)/changePassword/changePassword';
 import headerBg from './components/authComponent/img/headerBg.jpeg';
 import closeIcon from './components/authComponent/img/closeIcon.png';
+import backIcon from './components/authComponent/img/backIcon.png';
 import style from './authDrawer.module.scss';
 import { useAuthStore } from './authStore';
 
@@ -50,9 +51,6 @@ function AuthDrawer() {
         } else if (authQuery === 'changePassword') {
             setAuthContent(<ChangePassword />);
             setTitle(<p>修改密码</p>);
-        } else {
-            setAuthContent(null);
-            setTitle(null);
         }
     };
 
@@ -63,6 +61,8 @@ function AuthDrawer() {
         }
         setIsDrawerOpen(false);
         removeInvitCode();
+        setAuthContent(null);
+        setTitle(null);
     };
     const setMemberSubscribeStatus = useUserStore.use.setMemberSubscribeStatus();
     const userId = useUserStore.use.userInfo();
@@ -70,13 +70,13 @@ function AuthDrawer() {
     const isToken = Cookies.get('access');
     useEffect(() => {
         const fetchSubscription = async () => {
-            const subscriptionRespons = await getMemberSubscriptionStatus({
+            const subscriptionResponse = await getMemberSubscriptionStatus({
                 memberId: userId.uid
             });
-            if (subscriptionRespons.success) {
-                setMemberSubscribeStatus(subscriptionRespons.data);
+            if (subscriptionResponse.success) {
+                setMemberSubscribeStatus(subscriptionResponse.data);
 
-                if (subscriptionRespons.data.planId === 1 || userId.balance >= 80) {
+                if (subscriptionResponse.data.planId === 1 || userId.balance >= 80) {
                     setIsVipUseAnalysis(true);
                 } else {
                     setIsVipUseAnalysis(false);
@@ -87,6 +87,7 @@ function AuthDrawer() {
     });
 
     useEffect(() => {
+        if (!isDrawerOpen || authQuery === '') return;
         resetAuthContent();
     }, [isDrawerOpen, authQuery]);
 
@@ -129,6 +130,18 @@ function AuthDrawer() {
                         src={closeIcon.src}
                         width={16}
                     />
+                    {['register', 'forgetPassword'].includes(authQuery) && (
+                        <Image
+                            alt=""
+                            className={style.backBtn}
+                            height={16}
+                            onClick={() => {
+                                setAuthQuery('login');
+                            }}
+                            src={backIcon.src}
+                            width={16}
+                        />
+                    )}
                     {authContent}
                 </div>
             </div>
