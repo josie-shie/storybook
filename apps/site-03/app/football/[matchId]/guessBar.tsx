@@ -3,10 +3,10 @@ import { useEffect, useRef } from 'react';
 import { getGuessProportion, addGuess } from 'data-center';
 import { useParams } from 'next/navigation';
 import { ProgressBar } from 'ui';
-import style from './guessBar.module.scss';
-import { useContestDetailStore } from './contestDetailStore';
 import { useUserStore } from '@/app/userStore';
 import { useAuthStore } from '@/app/(auth)/authStore';
+import style from './guessBar.module.scss';
+import { useContestDetailStore } from './contestDetailStore';
 
 interface GuessProps {
     isLogin: boolean;
@@ -24,8 +24,8 @@ const calculatePercentage = (a: number, b: number) => {
 function Guess({ play, isLogin }: GuessProps) {
     const matchId = Number(useParams().matchId);
     const guessTypeLabel = {
-        HANDICAP: { left: '主', play: '半/ㄧ', right: '客' },
-        OVERUNDER: { left: '大', play: '2/2.5', right: '小' }
+        HANDICAP: { left: '主', right: '客' },
+        OVERUNDER: { left: '大', right: '小' }
     };
     const guessProportion = useContestDetailStore.use.guessProportion();
     const setIsDrawerOpen = useAuthStore.use.setIsDrawerOpen();
@@ -37,6 +37,10 @@ function Guess({ play, isLogin }: GuessProps) {
             : guessProportion.over.itemType === '';
     const leftBox = play === 'HANDICAP' ? guessProportion.home : guessProportion.over;
     const rightBox = play === 'HANDICAP' ? guessProportion.away : guessProportion.under;
+    const guessLabel =
+        play === 'HANDICAP'
+            ? guessProportion.handicapInChinese
+            : guessProportion.overUnder.toString();
 
     const leftPercent = calculatePercentage(leftBox.peopleNum, rightBox.peopleNum);
     const rightPercent = 100 - leftPercent;
@@ -78,7 +82,7 @@ function Guess({ play, isLogin }: GuessProps) {
                 {noGuess ? null : <div className={style.percentage}>{leftPercent}%</div>}
             </div>
             <div className={style.middle}>
-                <p className={style.lable}>{guessTypeLabel[play].play}</p>
+                <p className={style.lable}>{guessLabel}</p>
                 {noGuess ? (
                     <div className={style.lineBar} />
                 ) : (

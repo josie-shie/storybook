@@ -85,7 +85,8 @@ function MasterPlan() {
                     home: data.home,
                     away: data.away,
                     over: data.over,
-                    under: data.under
+                    under: data.under,
+                    memberPermission: true
                 };
                 setHighWinRateTrend(newProDistrib);
                 const newUserInfo = { ...userInfo, balance: data.currentBalance };

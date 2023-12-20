@@ -66,6 +66,9 @@ export const GET_GUESS_RANK_QUERY = `
 export const GET_GUESS_PROPORTION_QUERY = `
     query getGuessProportion($matchId: Int, $memberId: Int){
         getGuessProportion(matchId: $matchId, memberId: $memberId) {
+            handicap
+            handicapInChinese
+            overUnder
             home {
               peopleNum
               itemType

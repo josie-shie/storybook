@@ -4,13 +4,16 @@ import type { GetProDistribResponse, ProGuess } from 'data-center';
 
 // 競猜詳情 上半部預測
 export interface DetailType {
-    leagueName: string; // 賽事名稱
-    dateTime: number; // 日期時間
+    leagueName: string;
+    dateTime: number;
     homeTeamLogo: string;
     homeTeamName: string;
     awayTeamLogo: string;
     awayTeamName: string;
     participants: number; // 參與競猜人數
+    handicap: number;
+    handicapInChinese: string;
+    overUnder: number;
     guessHomeAway: 'home' | 'away' | 'none'; // 猜 主客
     guessBigSmall: 'over' | 'under' | 'none'; // 猜 大小
     home: number; // 猜 主隊 人數

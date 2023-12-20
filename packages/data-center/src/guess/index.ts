@@ -197,6 +197,9 @@ const GuessItemSchema = z.object({
 });
 
 const GetGuessProportionSchema = z.object({
+    handicap: z.number(),
+    handicapInChinese: z.string(),
+    overUnder: z.number(),
     home: GuessItemSchema,
     away: GuessItemSchema,
     over: GuessItemSchema,
