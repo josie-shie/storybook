@@ -19,9 +19,6 @@ interface BettingProps {
 }
 
 const calculatePercentage = (a: number, b: number) => {
-    if (b === 0) {
-        return 0;
-    }
     const percentage = Math.round((a / (a + b)) * 100);
     return percentage;
 };
