@@ -182,18 +182,21 @@ export const GET_RRO_GUESS_QUERY = `
                 memberId
                 memberName
                 avatarPath
+                records
+                predictedType
+                predictedPlay
+                predictionResult
+                handicapOdds
+                handicapInChinese
+                overUnderOdds
                 highlights {
                     id
                     type
                     value
                 } 
-                records
-                predictedType
-                predictedPlay
-                predictionResult
-                }
-                unlockPrice
-                freeUnlockChance
+            }
+            unlockPrice
+            freeUnlockChance
         }
     }
 `;

@@ -23,7 +23,6 @@ export interface DetailType {
 }
 
 interface InitState {
-    guessesLeft: number; // 競猜剩餘次數
     detail: DetailType;
     highWinRateTrend: GetProDistribResponse;
     masterPlanPrice: number;
@@ -31,6 +30,7 @@ interface InitState {
 }
 
 interface GuessDetailState extends InitState {
+    guessesLeft: number;
     setDetail: (detail: DetailType) => void;
     setGuessesLeft: (leftNumber: number) => void;
     setMasterPlanPrice: (price: number) => void;

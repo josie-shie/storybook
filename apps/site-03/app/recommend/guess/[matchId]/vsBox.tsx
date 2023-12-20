@@ -41,7 +41,6 @@ function BettingColumn({ detail, leftLabel, rightLabel }: BettingProps) {
     const guessTeam = direction === 'left' ? detail.homeTeamName : detail.awayTeamName;
 
     const isLogin = useUserStore.use.isLogin();
-    const guessesLeft = useGuessDetailStore.use.guessesLeft();
     const setGuessDetail = useGuessDetailStore.use.setDetail();
     const setGuessesLeft = useGuessDetailStore.use.setGuessesLeft();
     const setIsDrawerOpen = useAuthStore.use.setIsDrawerOpen();
@@ -65,24 +64,31 @@ function BettingColumn({ detail, leftLabel, rightLabel }: BettingProps) {
         setOpenGuessDialog(false);
         if (leftLabel === '主') {
             const betting = direction === 'left' ? 'home' : 'away';
-            const newDetail: DetailType = { ...detail, guessHomeAway: betting };
-            await addGuess({
+            const newDetail: DetailType = {
+                ...detail,
+                guessHomeAway: betting,
+                [betting]: detail[betting] + 1
+            };
+            const res = await addGuess({
                 matchId: Number(matchId),
                 predictedPlay: betting.toUpperCase() as 'HOME' | 'AWAY'
             });
-            // set res 回傳剩餘競猜次數
             setGuessDetail({ ...newDetail });
-            setGuessesLeft(guessesLeft - 1);
+            if (res.success) setGuessesLeft(res.data.remainingGuessTimes);
         } else {
             const betting = direction === 'left' ? 'over' : 'under';
-            const newDetail: DetailType = { ...detail, guessBigSmall: betting };
-            await addGuess({
+            const convertKey = betting === 'over' ? 'big' : 'small';
+            const newDetail: DetailType = {
+                ...detail,
+                guessBigSmall: betting,
+                [convertKey]: detail[convertKey] + 1
+            };
+            const res = await addGuess({
                 matchId: Number(matchId),
                 predictedPlay: betting.toUpperCase() as 'OVER' | 'UNDER'
             });
-            // set res 回傳剩餘競猜次數
             setGuessDetail({ ...newDetail });
-            setGuessesLeft(guessesLeft - 1);
+            if (res.success) setGuessesLeft(res.data.remainingGuessTimes);
         }
     };
 
