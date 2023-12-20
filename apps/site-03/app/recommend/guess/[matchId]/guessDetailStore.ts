@@ -23,14 +23,14 @@ export interface DetailType {
 }
 
 interface InitState {
-    detail: DetailType;
-    highWinRateTrend: GetProDistribResponse;
-    masterPlanPrice: number;
     masterPlanList: ProGuess[];
 }
 
 interface GuessDetailState extends InitState {
     guessesLeft: number;
+    detail: DetailType;
+    highWinRateTrend: GetProDistribResponse;
+    masterPlanPrice: number;
     setDetail: (detail: DetailType) => void;
     setGuessesLeft: (leftNumber: number) => void;
     setMasterPlanPrice: (price: number) => void;
@@ -42,9 +42,34 @@ let useGuessDetailStore: StoreWithSelectors<GuessDetailState>;
 
 const initialState = (set: (data: Partial<GuessDetailState>) => void) => ({
     guessesLeft: 0,
-    detail: {} as DetailType,
-    highWinRateTrend: {} as GetProDistribResponse,
-    masterPlanPrice: 0,
+    detail: {
+        leagueName: '歐錦U20A',
+        dateTime: 1678880400,
+        homeTeamLogo: '',
+        homeTeamName: '-',
+        awayTeamLogo: '',
+        awayTeamName: '-',
+        participants: 200,
+        handicap: 0,
+        handicapInChinese: '平手',
+        overUnder: 0,
+        guessHomeAway: 'none',
+        guessBigSmall: 'none',
+        home: 721,
+        away: 84,
+        big: 996,
+        small: 355
+    } as DetailType,
+    highWinRateTrend: {
+        home: 50,
+        away: 50,
+        over: 50,
+        under: 50,
+        enoughProData: true,
+        memberPermission: false,
+        unlockPrice: 10
+    },
+    masterPlanPrice: 20,
     masterPlanList: [],
     setHighWinRateTrend: (highWinRateTrend: GetProDistribResponse) => {
         set({ highWinRateTrend });
