@@ -255,8 +255,8 @@ export interface GetMemberIndividualGuessRequest {
 }
 
 const MemberIndividualGuessRecordSchema = z.object({
-    recordPeriod: z.union([z.literal(1), z.literal(2), z.literal(3)]),
-    // 榜單類型 ( 1: 週榜, 2: 月榜, 3: 季榜 )
+    recordPeriod: z.union([z.literal(0), z.literal(1), z.literal(2), z.literal(3)]),
+    // 榜單類型 ( 0: 全部, 1: 週榜, 2: 月榜, 3: 季榜 )
     rank: z.number(),
     totalPlay: z.number(),
     totalPlayWin: z.number(),

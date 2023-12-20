@@ -61,37 +61,29 @@ function Info({ params }: { params: { masterId: string } }) {
     const userInfo = useUserStore.use.userInfo();
 
     const onIsFocused = async (id: number, follow: boolean) => {
-        try {
-            const res = follow
-                ? await unFollow({ followerId: userInfo.uid, followedId: id })
-                : await updateFollow({ followerId: userInfo.uid, followedId: id });
-            if (!res.success) {
-                return new Error();
-            }
-
-            setInfo(prevData => ({
-                ...prevData,
-                isFollowed: !prevData.isFollowed
-            }));
-        } catch (error) {
+        const res = follow
+            ? await unFollow({ followerId: userInfo.uid, followedId: id })
+            : await updateFollow({ followerId: userInfo.uid, followedId: id });
+        if (!res.success) {
             return new Error();
         }
+
+        setInfo(prevData => ({
+            ...prevData,
+            isFollowed: !prevData.isFollowed
+        }));
     };
 
     const fetchData = async () => {
-        try {
-            const res = await getMentorList({
-                memberId: userInfo.uid ? userInfo.uid : 1,
-                mentorId: Number(params.masterId)
-            });
+        const res = await getMentorList({
+            memberId: userInfo.uid ? userInfo.uid : 1,
+            mentorId: Number(params.masterId)
+        });
 
-            if (!res.success) {
-                return new Error();
-            }
-            setInfo(res.data[0]);
-        } catch (error) {
+        if (!res.success) {
             return new Error();
         }
+        setInfo(res.data[0]);
     };
 
     useEffect(() => {
