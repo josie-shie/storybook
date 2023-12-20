@@ -54,7 +54,7 @@ function PeriodListItem() {
                                     hasHighWinRate ? style.redFill : ''
                                 }`}
                             >
-                                <span>{item.hitRate}</span>
+                                <span>{Math.floor(item.hitRate)}</span>
                                 <span className={style.percent}>%</span>
                             </span>
                         </div>
