@@ -241,11 +241,11 @@ function HandicapAnalysisForm() {
         }
     }, [dialogErrorType, setDialogContent]);
 
-    const submit = async () => {
+    const submit = () => {
         if (!isVip) {
             setOpenDialog(true);
         } else {
-            await getTrendAnalysis(startDate, endDate);
+            void getTrendAnalysis(startDate, endDate);
         }
     };
 
@@ -270,9 +270,7 @@ function HandicapAnalysisForm() {
             <motion.button
                 className={`${style.search} ${!startDate || !endDate ? style.disableButton : ''}`}
                 disabled={!startDate || !endDate}
-                onClick={async () => {
-                    await submit();
-                }}
+                onClick={submit}
                 type="button"
                 whileTap={{ scale: 0.9 }}
             >
