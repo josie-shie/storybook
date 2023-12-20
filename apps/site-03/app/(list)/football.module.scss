@@ -26,10 +26,16 @@
 
 .banner {
     background-color: #f3f3f3;
-    aspect-ratio: 6 / 1;
+    aspect-ratio: 366 / 61;
     width: calc(100% - 24px);
     border-radius: 8px;
     margin: 0 12px;
+    font-size: 0;
+
+    img {
+        width: 100%;
+        height: auto;
+    }
 }
 
 .toolbar {

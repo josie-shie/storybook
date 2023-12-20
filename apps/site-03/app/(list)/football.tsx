@@ -5,18 +5,24 @@ import { InfiniteScroll } from 'ui';
 import CircularProgress from '@mui/material/CircularProgress';
 import Image from 'next/image';
 import { useContestInfoStore } from '@/app/contestInfoStore';
+import type { FilterList } from '@/components/contestFilter/contestFilter';
 import GameCard from './components/gameCard';
 import style from './football.module.scss';
 import { creatContestListStore, useContestListStore } from './contestListStore';
 import BaseDatePicker from './components/baseDatePicker/baseDatePicker';
 import SettingIcon from './img/setting.png';
 import Setting from './components/setting';
-import FilterButton from './components/filterButton';
+import FootballFilter from './components/footballFilter';
+import BannerImg from './img/banner.png';
 
 type Status = 'all' | 'progress' | 'schedule' | 'result';
 
 function Banner() {
-    return <div className={style.banner} />;
+    return (
+        <div className={style.banner}>
+            <Image alt="注册会员送 80" src={BannerImg} />
+        </div>
+    );
 }
 
 function DatePicker({
@@ -83,11 +89,19 @@ function ContestList({
     const contestList = useContestListStore.use.contestList();
     const contestInfo = useContestListStore.use.contestInfo();
     const globalStore = useContestInfoStore.use.contestInfo();
-    const filterList = useContestListStore.use.filterList();
     const setContestList = useContestListStore.use.setContestList();
     const setContestInfo = useContestListStore.use.setContestInfo();
     const setFilterInit = useContestListStore.use.setFilterInit();
     const [isMounted, setIsMounted] = useState(false);
+
+    const [filterList, setFilterList] = useState<FilterList>({
+        group: 'league',
+        selectedTable: {}
+    });
+
+    const updateFilterList = (newList: FilterList) => {
+        setFilterList(newList);
+    };
 
     useEffect(() => {
         setIsMounted(true);
@@ -184,7 +198,10 @@ function ContestList({
         <>
             <Banner />
             <div className={style.toolbar}>
-                <FilterButton />
+                <FootballFilter
+                    statusFunc={statusTable[status]}
+                    updateFilterList={updateFilterList}
+                />
                 <Image alt="setting" onClick={switchSetting} sizes="32" src={SettingIcon} />
             </div>
             {isLoading ? (
