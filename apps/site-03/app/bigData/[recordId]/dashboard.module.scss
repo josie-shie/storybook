@@ -68,3 +68,42 @@
         }
     }
 }
+
+.tutorial {
+    .slide {
+        .images {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 50px;
+            padding: 50px 30px 0px 30px;
+        }
+    }
+
+    .tutorialTop {
+        position: relative;
+
+        .highlightImage {
+            position: absolute;
+            left: 0;
+            top: 74px;
+            filter: drop-shadow(0px 0px 17px rgba(255, 255, 255, 0.6));
+        }
+    }
+
+    .tutorialBottom {
+        position: relative;
+
+        .highlightImage {
+            position: absolute;
+            left: 0;
+            box-shadow: 0px 0px 17px 0px rgba(255, 255, 255, 0.6);
+        }
+    }
+
+    .bottomButton {
+        text-align: center;
+        font-size: 14px;
+        color: #8d8d8d;
+    }
+}

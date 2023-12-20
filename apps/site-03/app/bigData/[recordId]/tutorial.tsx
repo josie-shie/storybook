@@ -1,0 +1,160 @@
+'use client';
+import Image from 'next/image';
+import 'swiper/css/pagination';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
+import style from './dashboard.module.scss';
+import backgroundImage from './img/tutorial/background.png';
+import handicapTopBar from './img/tutorial/handicapTopBar.png';
+import handicapBottomTable from './img/tutorial/handicapBottomTable.png';
+import handicapTop from './img/tutorial/handicapTop.png';
+import handicapBottom from './img/tutorial/handicapBottom.png';
+import handicapTips from './img/tutorial/handicapTips.png';
+import minutesTop from './img/tutorial/minutesTop.png';
+import minutesChart from './img/tutorial/minutesChart.png';
+import minutesBottom from './img/tutorial/minutesBottom.png';
+import minutesBottomTable from './img/tutorial/minutesBottomTable.png';
+import goalRangeTop from './img/tutorial/goalRangeTop.png';
+import goalRangeTopChart from './img/tutorial/goalRangeTopChart.png';
+import goalRangeBottom from './img/tutorial/goalRangeBottom.png';
+import goalRangeBottomTable from './img/tutorial/goalRangeBottomTable.png';
+import bodanTop from './img/tutorial/bodanTop.png';
+import bodanTopTable from './img/tutorial/bodanTopTable.png';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/scrollbar';
+
+interface ImageType {
+    height: number;
+    src: string;
+    width: number;
+}
+
+function TutorialSection({
+    topImages,
+    bottomImages,
+    extraBottomImage
+}: {
+    topImages: ImageType[];
+    bottomImages?: ImageType[];
+    extraBottomImage?: ImageType;
+}) {
+    return (
+        <div className={style.images}>
+            <div className={style.tutorialTop}>
+                {topImages.map((img, index) => (
+                    <Image alt="" key={`${index.toString()}`} {...img} />
+                ))}
+            </div>
+            {bottomImages ? (
+                <div className={style.tutorialBottom}>
+                    {bottomImages.map((img, index) => (
+                        <Image alt="" key={`${index.toString()}`} {...img} />
+                    ))}
+                </div>
+            ) : null}
+            {extraBottomImage ? <Image alt="" {...extraBottomImage} /> : null}
+        </div>
+    );
+}
+
+function Bodan() {
+    const topImages = [
+        {
+            className: style.highlightImage,
+            height: 35,
+            src: bodanTopTable.src,
+            width: 130,
+            style: { top: '144px' }
+        },
+        { height: 246, src: bodanTop.src, width: 330 }
+    ];
+
+    return <TutorialSection topImages={topImages} />;
+}
+
+function Range() {
+    const topImages = [
+        { className: style.highlightImage, height: 199, src: goalRangeTopChart.src, width: 227 },
+        { height: 272, src: goalRangeTop.src, width: 330 }
+    ];
+    const bottomImages = [
+        { className: style.highlightImage, height: 71, src: goalRangeBottomTable.src, width: 96 },
+        { height: 71, src: goalRangeBottom.src, width: 330 }
+    ];
+
+    return <TutorialSection bottomImages={bottomImages} topImages={topImages} />;
+}
+
+function Minutes() {
+    const topImages = [
+        { className: style.highlightImage, height: 160, src: minutesChart.src, width: 134 },
+        { height: 290, src: minutesTop.src, width: 330 }
+    ];
+    const bottomImages = [
+        { className: style.highlightImage, height: 110, src: minutesBottomTable.src, width: 130 },
+        { height: 110, src: minutesBottom.src, width: 330 }
+    ];
+
+    return <TutorialSection bottomImages={bottomImages} topImages={topImages} />;
+}
+
+function Handicap() {
+    const topImages = [
+        { className: style.highlightImage, height: 277, src: handicapTopBar.src, width: 66 },
+        { height: 377, src: handicapTop.src, width: 330 }
+    ];
+    const bottomImages = [
+        { className: style.highlightImage, height: 71, src: handicapBottomTable.src, width: 130 },
+        { height: 71, src: handicapBottom.src, width: 330 }
+    ];
+    const extraBottomImage = { height: 98, src: handicapTips.src, width: 332 };
+
+    return (
+        <TutorialSection
+            bottomImages={bottomImages}
+            extraBottomImage={extraBottomImage}
+            topImages={topImages}
+        />
+    );
+}
+
+function Tutorial() {
+    return (
+        <div
+            className={style.tutorial}
+            style={{ height: '100vh', backgroundImage: `url(${backgroundImage.src})` }}
+        >
+            <Swiper
+                modules={[Navigation, Pagination, Scrollbar, A11y]}
+                pagination={{ clickable: true }}
+                slidesPerView={1}
+                style={{ height: 'calc(100vh - 100px)' }}
+            >
+                <SwiperSlide>
+                    <div className={style.slide}>
+                        <Handicap />
+                    </div>
+                </SwiperSlide>
+                <SwiperSlide>
+                    <div className={style.slide}>
+                        <Minutes />
+                    </div>
+                </SwiperSlide>
+                <SwiperSlide>
+                    <div className={style.slide}>
+                        <Range />
+                    </div>
+                </SwiperSlide>
+                <SwiperSlide>
+                    <div className={style.slide}>
+                        <Bodan />
+                    </div>
+                </SwiperSlide>
+            </Swiper>
+            <div className={style.bottomButton}>跳过</div>
+        </div>
+    );
+}
+
+export default Tutorial;
