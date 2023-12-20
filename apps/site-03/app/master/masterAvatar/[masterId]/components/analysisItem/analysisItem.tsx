@@ -1,20 +1,15 @@
 import Image from 'next/image';
 import { timestampToString, timestampToMonthDay } from 'lib';
-import { useEffect } from 'react';
-import { getPostList } from 'data-center';
 import { useRouter } from 'next/navigation';
-import { useMasterAvatarStore } from '../../masterAvatarStore';
+import { type RecommendPost } from 'data-center';
+import type { PredictArticleType } from '@/types/predict';
+import UnlockButton from '@/components/unlockButton/unlockButton';
 import style from './analysisItem.module.scss';
 import IconWin from './img/win.png';
 import IconDraw from './img/draw.png';
 import IconLose from './img/lose.png';
-import type { PredictArticleType } from '@/types/predict';
-import UnlockButton from '@/components/unlockButton/unlockButton';
 
-function AnalysisItem({ params }: { params: { masterId: string } }) {
-    const predictArticleList = useMasterAvatarStore.use.predictArticleList();
-    const setPredictArticleList = useMasterAvatarStore.use.setPredictArticleList();
-
+function AnalysisItem({ predictArticleList }: { predictArticleList: RecommendPost[] }) {
     const router = useRouter();
 
     const filterImage = (value: PredictArticleType): string => {
@@ -30,35 +25,14 @@ function AnalysisItem({ params }: { params: { masterId: string } }) {
         HOME: '大小',
         AWAY: '大小',
         OVER: '让分',
-        UNDER: '大小',
+        UNDER: '让分',
         HANDICAP: '大小',
         OVERUNDER: '让分'
-    };
-
-    const fetchData = async () => {
-        try {
-            const res = await getPostList({
-                memberId: Number(params.masterId),
-                postFilter: ['all']
-            });
-
-            if (!res.success) {
-                return new Error();
-            }
-
-            setPredictArticleList({ predictArticleList: res.data.posts });
-        } catch (error) {
-            return new Error();
-        }
     };
 
     const goArticleDetail = (id: number) => {
         router.push(`/master/article/${id}`);
     };
-
-    useEffect(() => {
-        void fetchData();
-    }, []);
 
     return (
         <>
@@ -66,7 +40,10 @@ function AnalysisItem({ params }: { params: { masterId: string } }) {
                 return (
                     <div className={style.analysisItem} key={item.id}>
                         <div className={style.top}>
-                            <div className={style.title}>{item.analysisTitle}</div>
+                            <div className={style.left}>
+                                <div className={style.decorate} />
+                                <div className={style.title}>{item.analysisTitle}</div>
+                            </div>
                             <div className={style.unlockStatus}>
                                 {item.isUnlocked ? (
                                     <span className={style.unlocked}>已解鎖</span>

@@ -1,21 +1,14 @@
 'use client';
 
-import type { ReactNode } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useState } from 'react';
 import { Tab, Tabs } from 'ui';
-import Header from '@/components/header/headerTitle';
 import style from './layout.module.scss';
 import Info from './info';
+import MasterAvatar from './masterAvatar';
+import Header from '@/components/header/headerTitle';
 
-function MasterAvatarLayout({
-    children,
-    params
-}: {
-    children: ReactNode;
-    params: { masterId: string };
-}) {
-    const searchParams = useSearchParams();
-    const status = searchParams.get('status');
+function MasterAvatarLayout({ params }: { params: { masterId: string } }) {
+    const [articleLength, setArticleLength] = useState(0);
 
     const headerProps = {
         title: '专家预测'
@@ -27,7 +20,7 @@ function MasterAvatarLayout({
     };
     const tabList = [
         {
-            label: `预测文章(${100})`,
+            label: `预测文章(${articleLength})`,
             to: `/master/masterAvatar/${params.masterId}?status=analysis`,
             status: 'analysis'
         },
@@ -58,7 +51,7 @@ function MasterAvatarLayout({
                     {tabList.map(item => {
                         return (
                             <Tab key={item.label} label={item.label} to={item.to}>
-                                {item.status === status && children}
+                                <MasterAvatar params={params} setArticleLength={setArticleLength} />
                             </Tab>
                         );
                     })}
