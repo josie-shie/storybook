@@ -2,7 +2,9 @@
 import Image from 'next/image';
 import 'swiper/css/pagination';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import type { Swiper as SwiperClass } from 'swiper';
 import { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
+import { useState } from 'react';
 import style from './dashboard.module.scss';
 import backgroundImage from './img/tutorial/background.png';
 import handicapTopBar from './img/tutorial/handicapTopBar.png';
@@ -119,14 +121,35 @@ function Handicap() {
     );
 }
 
-function Tutorial() {
+function Tutorial({ setDefaultPageIndex }: { setDefaultPageIndex: (val: number) => void }) {
+    const [closeTutorial, setCloseTutorial] = useState(false);
+    const [bottomText, setBottomText] = useState('跳过');
+
+    const handleSlideChange = (swiper: SwiperClass) => {
+        setDefaultPageIndex(swiper.activeIndex);
+        if (swiper.activeIndex === 3) {
+            setBottomText('关闭');
+        } else {
+            setBottomText('跳过');
+        }
+    };
+
+    const handleClose = () => {
+        setCloseTutorial(true);
+    };
+
     return (
         <div
             className={style.tutorial}
-            style={{ height: '100vh', backgroundImage: `url(${backgroundImage.src})` }}
+            style={{
+                height: '100vh',
+                backgroundImage: `url(${backgroundImage.src})`,
+                display: closeTutorial ? 'none' : ''
+            }}
         >
             <Swiper
                 modules={[Navigation, Pagination, Scrollbar, A11y]}
+                onSlideChange={handleSlideChange}
                 pagination={{ clickable: true }}
                 slidesPerView={1}
                 style={{ height: 'calc(100vh - 100px)' }}
@@ -152,7 +175,9 @@ function Tutorial() {
                     </div>
                 </SwiperSlide>
             </Swiper>
-            <div className={style.bottomButton}>跳过</div>
+            <div className={style.bottomButton} onClick={handleClose}>
+                {bottomText}
+            </div>
         </div>
     );
 }

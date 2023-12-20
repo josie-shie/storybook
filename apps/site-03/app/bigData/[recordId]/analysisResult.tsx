@@ -11,6 +11,7 @@ import ContestDrawerList from './components/contestDrawerList/contestDrawerList'
 import Minutes from './(dashboard)/minutes/minutes';
 import Bodan from './(dashboard)/bodan/bodan';
 import Range from './(dashboard)/range/range';
+import Tutorial from './tutorial';
 
 type HandicapSideType = 'home' | 'away';
 
@@ -79,56 +80,65 @@ function ResultContent() {
 
     return (
         <>
-            <HeaderTitleFilter backHandler={backHandler} title="分析结果" />
-            <div className={style.bigDataGame}>
-                <div className={style.column}>
-                    <div className={style.row}>
-                        <span className={style.title}>全场让分</span>
-                        <span className={style.name}>
-                            让方/
-                            {handicapTeam[analysisData.handicapSide as HandicapSideType] || '全部'}
-                            、盘口/
-                            {analysisData.handicapValues ||
-                                analysisData.handicapValues === '0' ||
-                                '不挑選'}
-                        </span>
+            <div className={style.analysisResult}>
+                <div className={style.resultPage}>
+                    <HeaderTitleFilter backHandler={backHandler} title="分析结果" />
+                    <div className={style.bigDataGame}>
+                        <div className={style.column}>
+                            <div className={style.row}>
+                                <span className={style.title}>全场让分</span>
+                                <span className={style.name}>
+                                    让方/
+                                    {handicapTeam[analysisData.handicapSide as HandicapSideType] ||
+                                        '全部'}
+                                    、盘口/
+                                    {analysisData.handicapValues ||
+                                        analysisData.handicapValues === '0' ||
+                                        '不挑選'}
+                                </span>
+                            </div>
+                            <div className={style.row}>
+                                <span className={style.title}>全场大小</span>
+                                <span className={style.name}>
+                                    {analysisData.overUnderValues || '不挑選'}
+                                </span>
+                            </div>
+                        </div>
+                        <div className={style.column}>
+                            <div className={style.row}>
+                                <span className={style.title}>時間區間</span>
+                                <span className={style.date}>
+                                    {timestampToString(analysisData.startTime, 'YYYY-MM-DD')} ~{' '}
+                                    {timestampToString(analysisData.endTime, 'YYYY-MM-DD')}
+                                </span>
+                            </div>
+                        </div>
                     </div>
-                    <div className={style.row}>
-                        <span className={style.title}>全场大小</span>
-                        <span className={style.name}>
-                            {analysisData.overUnderValues || '不挑選'}
-                        </span>
+                    <div className={style.dashboard}>
+                        <Tabs
+                            buttonRadius={tabStyle.buttonRadius}
+                            defaultValue={defaultPageIndex}
+                            gap={tabStyle.gap}
+                            position="flexStart"
+                            scrolling={tabStyle.scrolling}
+                            styling="button"
+                            swiperOpen={tabStyle.swiperOpen}
+                        >
+                            {tabList.map(item => {
+                                return (
+                                    <Tab key={item.params} label={item.label}>
+                                        {item.content}
+                                    </Tab>
+                                );
+                            })}
+                        </Tabs>
                     </div>
                 </div>
-                <div className={style.column}>
-                    <div className={style.row}>
-                        <span className={style.title}>時間區間</span>
-                        <span className={style.date}>
-                            {timestampToString(analysisData.startTime, 'YYYY-MM-DD')} ~{' '}
-                            {timestampToString(analysisData.endTime, 'YYYY-MM-DD')}
-                        </span>
-                    </div>
+                <div className={style.tutorialBlock}>
+                    <Tutorial setDefaultPageIndex={setDefaultPageIndex} />
                 </div>
             </div>
-            <div className={style.dashboard}>
-                <Tabs
-                    buttonRadius={tabStyle.buttonRadius}
-                    defaultValue={defaultPageIndex}
-                    gap={tabStyle.gap}
-                    position="flexStart"
-                    scrolling={tabStyle.scrolling}
-                    styling="button"
-                    swiperOpen={tabStyle.swiperOpen}
-                >
-                    {tabList.map(item => {
-                        return (
-                            <Tab key={item.params} label={item.label}>
-                                {item.content}
-                            </Tab>
-                        );
-                    })}
-                </Tabs>
-            </div>
+
             <ContestDrawerList
                 isOpen={showContestDrawer}
                 matchList={contestList}
