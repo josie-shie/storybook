@@ -48,7 +48,7 @@ function AnalysisItem({ predictArticleList }: { predictArticleList: RecommendPos
                                 {item.isUnlocked ? (
                                     <span className={style.unlocked}>已解鎖</span>
                                 ) : (
-                                    <UnlockButton />
+                                    <UnlockButton price={item.price} />
                                 )}
                             </div>
                         </div>
