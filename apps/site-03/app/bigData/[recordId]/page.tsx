@@ -1,12 +1,12 @@
 import type { Metadata } from 'next';
-import Handicap from './(dashboard)/handicap/handicap';
+import AnalysisResult from './analysisResult';
 
 export const metadata: Metadata = {
     title: '分析结果'
 };
 
 function Page() {
-    return <Handicap />;
+    return <AnalysisResult />;
 }
 
 export default Page;

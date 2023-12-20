@@ -1,6 +1,7 @@
 import type { ReactElement } from 'react';
 import { cloneElement, useEffect, useState } from 'react';
 import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
 import style from './footer.module.scss';
 
 interface Menu {
@@ -46,6 +47,8 @@ function Footer({
     isShow = true,
     activeRouter = menuList[0].value
 }: FooterProps) {
+    const router = useRouter();
+    const pathname = usePathname();
     const [activedItem, setActivedItem] = useState(activeRouter);
     const [isFirstActived, setIsFirstActived] = useState(true);
 
@@ -81,6 +84,10 @@ function Footer({
         setActivedItem(activeRouter);
     }, [activeRouter]);
 
+    useEffect(() => {
+        changeActivedItem(pathname);
+    }, [router]);
+
     return (
         <>
             {isShow ? (
@@ -98,9 +105,6 @@ function Footer({
                                             }`}
                                             href={menu.value}
                                             key={menu.value}
-                                            onClick={() => {
-                                                changeActivedItem(menu.value);
-                                            }}
                                             style={{ backgroundColor: bgColor }}
                                         >
                                             {menu.icon ? (

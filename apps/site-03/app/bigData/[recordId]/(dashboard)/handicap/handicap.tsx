@@ -218,121 +218,121 @@ function Handicap() {
                 </div>
             </div>
             <div className={style.tableContainer}>
-                <div className={style.header}>半場让分</div>
-                <div className={style.header}>半場大小</div>
-                <div className={style.header}>半場獨贏</div>
+                <div className={style.header}>半场让分</div>
+                <div className={style.header}>半场大小</div>
+                <div className={style.header}>半场獨贏</div>
                 <TableCell
                     cellValue={analysisRecord.halfHandicapUpper}
                     label="上"
                     openMatchListDrawer={openMatchListDrawer}
-                    selectedType="半場讓球"
+                    selectedType="半场让分"
                 />
                 <TableCell
                     cellValue={analysisRecord.halfOverUnderOver}
                     label="上"
                     openMatchListDrawer={openMatchListDrawer}
-                    selectedType="半場大小"
+                    selectedType="半场大小"
                 />{' '}
                 <TableCell
                     cellValue={analysisRecord.halfTimeHomeWin}
                     label="上"
                     openMatchListDrawer={openMatchListDrawer}
-                    selectedType="半場獨贏"
+                    selectedType="半场獨贏"
                 />
                 <TableCell
                     cellValue={analysisRecord.halfHandicapLower}
                     label="下"
                     openMatchListDrawer={openMatchListDrawer}
-                    selectedType="半場讓球"
+                    selectedType="半场让分"
                 />
                 <TableCell
                     cellValue={analysisRecord.halfOverUnderUnder}
                     label="下"
                     openMatchListDrawer={openMatchListDrawer}
-                    selectedType="半場大小"
+                    selectedType="半场大小"
                 />
                 <TableCell
                     cellValue={analysisRecord.halfTimeAwayWin}
                     label="下"
                     openMatchListDrawer={openMatchListDrawer}
-                    selectedType="半場獨贏"
+                    selectedType="半场獨贏"
                 />
                 <TableCell
                     cellValue={analysisRecord.halfHandicapDraw}
                     label="走"
                     openMatchListDrawer={openMatchListDrawer}
-                    selectedType="半場讓球"
+                    selectedType="半场让分"
                 />
                 <TableCell
                     cellValue={analysisRecord.halfOverUnderDraw}
                     label="走"
                     openMatchListDrawer={openMatchListDrawer}
-                    selectedType="半場大小"
+                    selectedType="半场大小"
                 />
                 <TableCell
                     cellValue={analysisRecord.halfTimeDraw}
                     label="走"
                     openMatchListDrawer={openMatchListDrawer}
-                    selectedType="半場獨贏"
+                    selectedType="半场獨贏"
                 />
             </div>
             <div className={style.tableContainer}>
-                <div className={style.header}>全場讓球</div>
-                <div className={style.header}>全場大小</div>
-                <div className={style.header}>全場獨贏</div>
+                <div className={style.header}>全场让分</div>
+                <div className={style.header}>全场大小</div>
+                <div className={style.header}>全场獨贏</div>
                 <TableCell
                     cellValue={analysisRecord.fullHandicapUpper}
                     label="上"
                     openMatchListDrawer={openMatchListDrawer}
-                    selectedType="全場讓球"
+                    selectedType="全场让分"
                 />
                 <TableCell
                     cellValue={analysisRecord.fullOverUnderOver}
                     label="上"
                     openMatchListDrawer={openMatchListDrawer}
-                    selectedType="全場大小"
+                    selectedType="全场大小"
                 />
                 <TableCell
                     cellValue={analysisRecord.fullTimeHomeWin}
                     label="上"
                     openMatchListDrawer={openMatchListDrawer}
-                    selectedType="全場獨贏"
+                    selectedType="全场獨贏"
                 />
                 <TableCell
                     cellValue={analysisRecord.fullHandicapLower}
                     label="下"
                     openMatchListDrawer={openMatchListDrawer}
-                    selectedType="全場讓球"
+                    selectedType="全场让分"
                 />
                 <TableCell
                     cellValue={analysisRecord.fullOverUnderUnder}
                     label="下"
                     openMatchListDrawer={openMatchListDrawer}
-                    selectedType="全場大小"
+                    selectedType="全场大小"
                 />
                 <TableCell
                     cellValue={analysisRecord.fullTimeAwayWin}
                     label="下"
                     openMatchListDrawer={openMatchListDrawer}
-                    selectedType="全場獨贏"
+                    selectedType="全场獨贏"
                 />
                 <TableCell
                     cellValue={analysisRecord.fullHandicapDraw}
                     label="走"
                     openMatchListDrawer={openMatchListDrawer}
-                    selectedType="全場讓球"
+                    selectedType="全场让分"
                 />
                 <TableCell
                     cellValue={analysisRecord.fullOverUnderDraw}
                     label="走"
                     openMatchListDrawer={openMatchListDrawer}
-                    selectedType="全場大小"
+                    selectedType="全场大小"
                 />
                 <TableCell
                     cellValue={analysisRecord.fullTimeDraw}
                     label="走"
                     openMatchListDrawer={openMatchListDrawer}
-                    selectedType="全場獨贏"
+                    selectedType="全场獨贏"
                 />
             </div>
         </>

@@ -31,7 +31,7 @@ interface HandicapAnalysisFormState extends InitState {
     setOpenNormalDialog: (openNoramlDialog: boolean) => void;
     setDialogContent: (dialogContent: ReactNode) => void;
     setRecordList: (recordList: Record[]) => void;
-    updateRecord: (recordId: string) => void;
+    updateRecord: (recordId: string, missionType: string) => void;
     showRecord: boolean;
     setShowRecord: (showRecord: boolean) => void;
     openDatePicker: boolean;
@@ -121,11 +121,11 @@ const initialState = (
             return { ...state, recordList };
         });
     },
-    updateRecord: (recordId: string) => {
+    updateRecord: (recordId: string, missionType: string) => {
         set(prevState => {
             const updatedRecordList = prevState.recordList.map(record => {
                 if (record.ticketId === recordId) {
-                    return { ...record, state: 1 };
+                    return { ...record, isCompleted: missionType === 'done' };
                 }
                 return record;
             });
