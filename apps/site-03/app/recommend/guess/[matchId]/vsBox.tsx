@@ -13,10 +13,9 @@ import GuessDialog from './components/guessDialog/guessDialog';
 import type { DetailType } from './guessDetailStore';
 
 interface BettingProps {
-    play: string;
     detail: DetailType;
-    homeType: string;
-    awayType: string;
+    leftLabel: string;
+    rightLabel: string;
 }
 
 const calculatePercentage = (a: number, b: number) => {
@@ -27,17 +26,18 @@ const calculatePercentage = (a: number, b: number) => {
     return percentage;
 };
 
-function BettingColumn({ play, detail, homeType, awayType }: BettingProps) {
+function BettingColumn({ detail, leftLabel, rightLabel }: BettingProps) {
     const matchId = useParams().matchId;
     const [openGuessDialog, setOpenGuessDialog] = useState(false);
     const [direction, setDirection] = useState('left');
 
     const leftPercent =
-        homeType === '主'
+        leftLabel === '主'
             ? calculatePercentage(detail.home, detail.away)
             : calculatePercentage(detail.big, detail.small);
     const rightPercent = 100 - leftPercent;
-    const guessStatus = homeType === '主' ? detail.guessHomeAway : detail.guessBigSmall;
+    const guessLabel = leftLabel === '主' ? detail.handicapInChinese : detail.overUnder.toString();
+    const guessStatus = leftLabel === '主' ? detail.guessHomeAway : detail.guessBigSmall;
     const guessTeam = direction === 'left' ? detail.homeTeamName : detail.awayTeamName;
 
     const isLogin = useUserStore.use.isLogin();
@@ -63,7 +63,7 @@ function BettingColumn({ play, detail, homeType, awayType }: BettingProps) {
 
     const handleConfirmGuess = async () => {
         setOpenGuessDialog(false);
-        if (homeType === '主') {
+        if (leftLabel === '主') {
             const betting = direction === 'left' ? 'home' : 'away';
             const newDetail: DetailType = { ...detail, guessHomeAway: betting };
             await addGuess({
@@ -104,10 +104,10 @@ function BettingColumn({ play, detail, homeType, awayType }: BettingProps) {
                             handleGuess('left');
                         }}
                     >
-                        {homeType}
+                        {leftLabel}
                     </div>
                     <div className={style.progress}>
-                        <div className={style.play}>{play}</div>
+                        <div className={style.play}>{guessLabel}</div>
                         <div className={style.line} />
                     </div>
                     <div
@@ -116,7 +116,7 @@ function BettingColumn({ play, detail, homeType, awayType }: BettingProps) {
                             handleGuess('right');
                         }}
                     >
-                        {awayType}
+                        {rightLabel}
                     </div>
                 </>
             ) : (
@@ -126,7 +126,7 @@ function BettingColumn({ play, detail, homeType, awayType }: BettingProps) {
                             guessStatus === 'away' || guessStatus === 'under' ? style.noSelect : ''
                         }`}
                     >
-                        <span className={style.team}>{homeType}</span>
+                        <span className={style.team}>{leftLabel}</span>
                         <span className={style.user}>{leftPercent}%</span>
                         {(guessStatus === 'home' || guessStatus === 'over') && (
                             <Image alt="" height={20} src={selectDecoration} width={20} />
@@ -135,11 +135,11 @@ function BettingColumn({ play, detail, homeType, awayType }: BettingProps) {
                     <div className={style.progress}>
                         <div className={style.play}>
                             <span className={style.home}>
-                                {homeType === '主' ? detail.home : detail.big}
+                                {leftLabel === '主' ? detail.home : detail.big}
                             </span>
-                            <span className={style.ing}>{play}</span>
+                            <span className={style.ing}>{guessLabel}</span>
                             <span className={style.away}>
-                                {homeType === '主' ? detail.away : detail.small}
+                                {leftLabel === '主' ? detail.away : detail.small}
                             </span>
                         </div>
                         <ProgressBar
@@ -155,7 +155,7 @@ function BettingColumn({ play, detail, homeType, awayType }: BettingProps) {
                             guessStatus === 'home' || guessStatus === 'over' ? style.noSelect : ''
                         }`}
                     >
-                        <span className={style.team}>{awayType}</span>
+                        <span className={style.team}>{rightLabel}</span>
                         <span className={style.user}>{rightPercent}%</span>
                         {(guessStatus === 'away' || guessStatus === 'under') && (
                             <Image alt="" height={20} src={selectDecoration} width={20} />
@@ -210,6 +210,9 @@ function VsBox() {
                     awayTeamLogo: baseData.awayLogo,
                     awayTeamName: baseData.awayChs,
                     participants: guessData.guessNum,
+                    handicap: guessData.handicap,
+                    handicapInChinese: guessData.handicapInChinese,
+                    overUnder: guessData.overUnder,
                     guessHomeAway: covertGuessStatus(true, guessData.home.itemType) as
                         | 'home'
                         | 'away'
@@ -261,8 +264,8 @@ function VsBox() {
                 </span>
             </div>
             <div className={style.betting}>
-                <BettingColumn awayType="客" detail={detailInfo} homeType="主" play="一球/球半" />
-                <BettingColumn awayType="小" detail={detailInfo} homeType="大" play="一球/球半" />
+                <BettingColumn detail={detailInfo} leftLabel="主" rightLabel="客" />
+                <BettingColumn detail={detailInfo} leftLabel="大" rightLabel="小" />
             </div>
         </div>
     );
