@@ -9,10 +9,11 @@ import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Image from 'next/image';
+import { useNotificationStore } from '@/app/notificationStore';
+import { useHandicapAnalysisFormStore } from '../../handicapAnalysisFormStore';
 import style from './datepicker.module.scss';
 import 'react-datepicker/dist/react-datepicker.css';
 import DateIcon from './img/date.png';
-import { useNotificationStore } from '@/app/notificationStore';
 
 registerLocale('zh-CN', zhCN);
 
@@ -31,6 +32,7 @@ function Datepicker({
     const maxDate = dayjs().subtract(1, 'day').toDate();
     const minDate = dayjs().subtract(91, 'day').toDate();
     const setNotificationVisible = useNotificationStore.use.setIsVisible();
+    const setTimeRange = useHandicapAnalysisFormStore.use.setTimeRange();
 
     const closeModal = () => {
         setOpenModal(false);
@@ -52,6 +54,7 @@ function Datepicker({
                 Math.floor(endDate.getTime() / 1000)
             );
         }
+        setTimeRange('setRange');
         setOpenModal(false);
     };
 

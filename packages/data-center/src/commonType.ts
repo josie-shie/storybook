@@ -74,7 +74,9 @@ export type ChangeTypeCategory = z.infer<typeof ChangeTypeCategorySchema>;
 export const RechargeStatusSchema = z.union([
     z.literal('SUCCESS'),
     z.literal('PENDING'),
-    z.literal('FAIL')
+    z.literal('FAIL'),
+    // 等有真資料要拿掉這個空字串
+    z.literal('')
 ]);
 
 export type RechargeStatus = z.infer<typeof RechargeStatusSchema>;

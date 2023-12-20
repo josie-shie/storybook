@@ -197,6 +197,9 @@ const GuessItemSchema = z.object({
 });
 
 const GetGuessProportionSchema = z.object({
+    handicap: z.number(),
+    handicapInChinese: z.string(),
+    overUnder: z.number(),
     home: GuessItemSchema,
     away: GuessItemSchema,
     over: GuessItemSchema,
@@ -252,8 +255,8 @@ export interface GetMemberIndividualGuessRequest {
 }
 
 const MemberIndividualGuessRecordSchema = z.object({
-    recordPeriod: z.union([z.literal(0), z.literal(1), z.literal(2)]),
-    // 榜單類型 ( 0: 週榜, 1: 月榜, 2: 季榜 )
+    recordPeriod: z.union([z.literal(1), z.literal(2), z.literal(3)]),
+    // 榜單類型 ( 1: 週榜, 2: 月榜, 3: 季榜 )
     rank: z.number(),
     totalPlay: z.number(),
     totalPlayWin: z.number(),
@@ -520,6 +523,9 @@ const ProGuessSchema = z.object({
     memberId: z.number(),
     memberName: z.string(),
     avatarPath: z.string(),
+    handicapOdds: z.number(),
+    handicapInChinese: z.string(),
+    overUnderOdds: z.number(),
     highlights: z.array(HighlightsSchema),
     records: z.array(PredictionResultSchema),
     predictedType: z.union([z.literal('HANDICAP'), z.literal('OVERUNDER')]),
@@ -740,14 +746,30 @@ export interface PayForProGuessRequest {
     guessId: number;
 }
 
+const PayForProGuessSchema = z.object({
+    guessId: z.number(),
+    currentBalance: z.number(),
+    predictedPlay: PredictedPlaySchema
+});
+
+export type PayForProGuessResponse = z.infer<typeof PayForProGuessSchema>;
+
+const PayForProGuessResultSchema = z.object({
+    payForProGuess: PayForProGuessSchema
+});
+
+type PayForProGuessResult = z.infer<typeof PayForProGuessResultSchema>;
+
 /**
  * 高手方案付費
+ * - params {@link PayForProGuessRequest}
+ * - returns {@link PayForProGuessResponse}
  */
 export const payForProGuess = async ({
     guessId
-}: PayForProGuessRequest): Promise<ReturnData<null>> => {
+}: PayForProGuessRequest): Promise<ReturnData<PayForProGuessResponse>> => {
     try {
-        const res: { data: null } = await fetcher(
+        const { data }: { data: PayForProGuessResult } = await fetcher(
             {
                 data: {
                     query: PAY_FOR_PRO_GUESS_MUTATION,
@@ -757,7 +779,7 @@ export const payForProGuess = async ({
             { cache: 'no-store' }
         );
 
-        return { success: true, data: res.data };
+        return { success: true, data: data.payForProGuess };
     } catch (error) {
         return handleApiError(error);
     }

@@ -9,47 +9,26 @@ import { GameFilter } from './components/gameFilter/gameFilter';
 import SelectOption from './components/selectOption/selectOption';
 import RecordFilter from './components/recordFilter/recordFilter';
 import starIcon from './img/star.png';
+import disabledStarIcon from './img/disabledStar.png';
 import Datepicker from './components/datepicker/datepicker';
 import { useHandicapAnalysisFormStore } from './handicapAnalysisFormStore';
 import searchIcon from './img/search.png';
 import Dialog from './components/dialog/dialog';
+import { useDiscSelectStore } from './discSelectStore';
 
-function PaymentAlert() {
+function PaymentAlert({
+    getTrendAnalysis
+}: {
+    getTrendAnalysis: (startDate: number, endDate: number) => Promise<void>;
+}) {
     const setOpenDialog = useHandicapAnalysisFormStore.use.setOpenNormalDialog();
     const userInfo = useUserStore.use.userInfo();
     const startDate = useHandicapAnalysisFormStore.use.startDate();
     const endDate = useHandicapAnalysisFormStore.use.endDate();
-    const setAnalysisError = useHandicapAnalysisFormStore.use.setAnalysisError();
-    const teamSelected = useHandicapAnalysisFormStore.use.teamSelected();
-    const teamHandicapOdds = useHandicapAnalysisFormStore.use.teamHandicapOdds();
-    const handicapOddsSelected = useHandicapAnalysisFormStore.use.handicapOddsSelected();
-    const setShowRecord = useHandicapAnalysisFormStore.use.setShowRecord();
 
     const comfirm = async () => {
         setOpenDialog(false);
-        await getTrendAnalysis();
-    };
-
-    const getTrendAnalysis = async () => {
-        if (!startDate || !endDate) {
-            setAnalysisError('请选择时间区间');
-            return;
-        }
-
-        const params = {
-            mission: 'create',
-            memberId: userInfo.uid,
-            message: '',
-            ticketId: '',
-            handicapSide: teamSelected,
-            handicapValues: teamHandicapOdds,
-            overUnderValues: handicapOddsSelected,
-            startTime: startDate,
-            endTime: endDate
-        };
-
-        await mqttService.publishAnalysis(params);
-        setShowRecord(true);
+        await getTrendAnalysis(startDate, endDate);
     };
 
     return (
@@ -99,17 +78,17 @@ function TimeRange({ timeRange }: { timeRange: string }) {
     ) => {
         if (type) {
             setTimeRange(type);
-            setStartDate(dayjs().subtract(1, 'day').toDate().getTime());
+            setStartDate(Math.floor(dayjs().subtract(1, 'day').toDate().getTime() / 1000));
 
             switch (type) {
                 case 'week':
-                    setEndDate(dayjs().subtract(8, 'day').toDate().getTime());
+                    setEndDate(Math.floor(dayjs().subtract(8, 'day').toDate().getTime() / 1000));
                     break;
                 case 'month':
-                    setEndDate(dayjs().subtract(31, 'day').toDate().getTime());
+                    setEndDate(Math.floor(dayjs().subtract(31, 'day').toDate().getTime() / 1000));
                     break;
                 case 'season':
-                    setEndDate(dayjs().subtract(91, 'day').toDate().getTime());
+                    setEndDate(Math.floor(dayjs().subtract(91, 'day').toDate().getTime() / 1000));
                     break;
             }
         } else if (startDateSelected && endDateSelected) {
@@ -215,17 +194,60 @@ function HandicapAnalysisForm() {
     const dialogContent = useHandicapAnalysisFormStore.use.dialogContent();
     const setDialogContent = useHandicapAnalysisFormStore.use.setDialogContent();
     const openDialog = useHandicapAnalysisFormStore.use.openNoramlDialog();
+    const isVip = useUserStore.use.memberSubscribeStatus().planId; // 1是VIP
+    const setAnalysisError = useHandicapAnalysisFormStore.use.setAnalysisError();
+    const userInfo = useUserStore.use.userInfo();
+    const startDate = useHandicapAnalysisFormStore.use.startDate();
+    const endDate = useHandicapAnalysisFormStore.use.endDate();
+    const setDialogContentType = useDiscSelectStore.use.setDialogContentType();
+    const setOpenNormalDialog = useDiscSelectStore.use.setOpenNormalDialog();
+
+    const getTrendAnalysis = async (currentStartDate: number, currentEndDate: number) => {
+        if (!currentStartDate || !currentEndDate) {
+            setAnalysisError('请选择时间区间');
+            return;
+        }
+
+        if (userInfo.balance < 80) {
+            setDialogContentType('balance');
+            setOpenNormalDialog(true);
+            return;
+        }
+
+        const params = {
+            mission: 'create',
+            memberId: userInfo.uid,
+            message: '',
+            ticketId: '',
+            handicapSide: teamSelected,
+            handicapValues: teamHandicapOdds,
+            overUnderValues: handicapOddsSelected,
+            startTime: currentStartDate,
+            endTime: currentEndDate
+        };
+
+        await mqttService.publishAnalysis(params);
+        setShowRecord(true);
+    };
 
     useEffect(() => {
         switch (dialogErrorType) {
             case 'payment':
-                setDialogContent(<PaymentAlert />);
+                setDialogContent(<PaymentAlert getTrendAnalysis={getTrendAnalysis} />);
                 break;
             default:
                 setDialogContent(null);
                 break;
         }
     }, [dialogErrorType, setDialogContent]);
+
+    const submit = () => {
+        if (!isVip) {
+            setOpenDialog(true);
+        } else {
+            void getTrendAnalysis(startDate, endDate);
+        }
+    };
 
     return (
         <>
@@ -246,14 +268,18 @@ function HandicapAnalysisForm() {
             </div>
             <div className={style.error}>{analysisError}</div>
             <motion.button
-                className={style.search}
-                onClick={() => {
-                    setOpenDialog(true);
-                }}
+                className={`${style.search} ${!startDate || !endDate ? style.disableButton : ''}`}
+                disabled={!startDate || !endDate}
+                onClick={submit}
                 type="button"
                 whileTap={{ scale: 0.9 }}
             >
-                <Image alt="" height={14} src={starIcon.src} width={14} />
+                <Image
+                    alt=""
+                    height={14}
+                    src={!startDate || !endDate ? disabledStarIcon.src : starIcon.src}
+                    width={14}
+                />
                 获得趋势分析
             </motion.button>
             <RecordFilter

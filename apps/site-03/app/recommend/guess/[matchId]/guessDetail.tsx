@@ -27,32 +27,6 @@ function GuessDetail({ backHistory }: { backHistory: boolean }) {
     };
 
     createGuessDetailStore({
-        guessesLeft: 6,
-        masterPlanPrice: 20,
-        detail: {
-            leagueName: '歐錦U20A',
-            dateTime: 1678880400,
-            homeTeamLogo: '',
-            homeTeamName: '泰国国立法政大学',
-            awayTeamLogo: '',
-            awayTeamName: '北曼谷學院',
-            participants: 200,
-            guessHomeAway: 'none',
-            guessBigSmall: 'none',
-            home: 721,
-            away: 84,
-            big: 996,
-            small: 355
-        },
-        highWinRateTrend: {
-            home: 50,
-            away: 50,
-            over: 50,
-            under: 50,
-            enoughProData: true,
-            memberPermission: false,
-            unlockPrice: 1
-        },
         masterPlanList: []
     });
 

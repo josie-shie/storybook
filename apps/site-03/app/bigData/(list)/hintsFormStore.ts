@@ -69,19 +69,19 @@ const initialState = (
     },
     playList: [
         {
-            label: '全場大小球',
+            label: '全场大小球',
             value: 'OVERUNDER'
         },
         {
-            label: '半場大小球',
+            label: '半场大小球',
             value: 'OVERUNDERHALF'
         },
         {
-            label: '全場让分',
+            label: '全场让分',
             value: 'HANDICAP'
         },
         {
-            label: '半場让分',
+            label: '半场让分',
             value: 'HANDICAPHALF'
         }
     ]

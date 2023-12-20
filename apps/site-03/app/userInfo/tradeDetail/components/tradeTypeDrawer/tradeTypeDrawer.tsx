@@ -1,37 +1,47 @@
 import { Button } from '@mui/material';
 import type { Dispatch, SetStateAction } from 'react';
+import { getMemberTransactionList } from 'data-center';
 import BottomDrawer from '@/components/drawer/bottomDrawer';
 import { useTardeDetailStore, type TradeTypeOption } from '../../tradeDetailStore';
+import { tradeOption } from '../../options';
 import style from './tradeTypeDrawer.module.scss';
 
 interface TradeTypeProps {
+    start: number;
+    end: number;
     tradeType: TradeTypeOption;
     isTradeTypeOpen: boolean;
     setTradeType: Dispatch<SetStateAction<TradeTypeOption>>;
     setIsTradeTypeOpen: (arg: boolean) => void;
-    handleChangeOption: ({
-        start,
-        end,
-        type
-    }: {
-        start?: number;
-        end?: number;
-        type?: TradeTypeOption;
-    }) => void;
 }
 
 function TradeTypeDrawer({
+    start,
+    end,
     isTradeTypeOpen,
     setIsTradeTypeOpen,
     tradeType,
-    setTradeType,
-    handleChangeOption
+    setTradeType
 }: TradeTypeProps) {
-    const tradeOption = useTardeDetailStore.use.tradeOption();
-
-    const handleChangeType = (type: TradeTypeOption) => {
+    const setTradeDetailList = useTardeDetailStore.use.setTradeDetailList();
+    const handleChangeType = async (type: TradeTypeOption) => {
+        const data = await getMemberTransactionList({
+            startTime: start ? start : 0,
+            endTime: end ? end : 0,
+            changeTypeCategory: type,
+            currencyPage: 1,
+            prepage: 20
+        });
+        if (data.success) {
+            setTradeDetailList({
+                detailList: data.data.list,
+                pagination: {
+                    pageCount: data.data.totalPages,
+                    totalCount: data.data.totalCount
+                }
+            });
+        }
         setTradeType(type);
-        handleChangeOption({ type });
         setIsTradeTypeOpen(false);
     };
 
@@ -49,7 +59,7 @@ function TradeTypeDrawer({
                 <div className={style.title}>
                     <span>選擇交易類別</span>
                 </div>
-                <div className={style.buttomBlock}>
+                <div className={style.buttonBlock}>
                     {tradeOption.map(option => (
                         <Button
                             className={`${style.filterButton} ${
@@ -57,7 +67,7 @@ function TradeTypeDrawer({
                             }`}
                             key={option.value}
                             onClick={() => {
-                                handleChangeType(option.value as TradeTypeOption);
+                                void handleChangeType(option.value as TradeTypeOption);
                             }}
                         >
                             {option.label}

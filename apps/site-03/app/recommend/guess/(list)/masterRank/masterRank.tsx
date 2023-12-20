@@ -14,6 +14,7 @@ import { creatMasterRankStore, useMasterRankStore } from './masterRankStore';
 import style from './masterRank.module.scss';
 
 function UserMasterRank() {
+    const userInfo = useUserStore.use.userInfo();
     const memberInfo = useMasterRankStore.use.member();
     const setMember = useMasterRankStore.use.setMember();
     const setMasterRankList = useMasterRankStore.use.setMasterRankList();
@@ -21,7 +22,7 @@ function UserMasterRank() {
     useEffect(() => {
         async function fetchMasterRank() {
             const masterRank = await getGuessRank({
-                memberId: 17, // 會員 ID 待改
+                memberId: userInfo.uid,
                 rankType: 3
             });
             if (masterRank.success) {

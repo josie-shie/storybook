@@ -19,6 +19,7 @@ interface PeriodBackgroundMap {
 
 function Rank() {
     const isLogin = useUserStore.use.isLogin();
+    const userInfo = useUserStore.use.userInfo();
     const searchParams = useSearchParams();
     const currentPeriod = searchParams.get('status') as keyof PeriodBackgroundMap;
     const rankTypeMap: Record<string, 0 | 1 | 2> = {
@@ -51,7 +52,7 @@ function Rank() {
     useEffect(() => {
         async function fetchGuessRank() {
             const memberRank = await getGuessRank({
-                memberId: 17, // 會員 ID 待改
+                memberId: userInfo.uid,
                 rankType: rankTypeMap[currentPeriod]
             });
             if (memberRank.success) {

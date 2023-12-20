@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import Image from 'next/image';
 import { getMemberSubscriptionStatus } from 'data-center';
 import Cookies from 'js-cookie';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import Register from '@/app/(auth)/register/register';
 import Login from '@/app/(auth)/login/login';
 import { useUserStore } from '@/app/userStore';
@@ -15,17 +16,22 @@ import style from './authDrawer.module.scss';
 import { useAuthStore } from './authStore';
 
 function AuthDrawer() {
+    const pathname = usePathname();
+    const router = useRouter();
+    const searchParams = useSearchParams();
+    const auth = searchParams.get('auth');
     const authQuery = useUserStore.use.authQuery();
     const isDrawerOpen = useAuthStore.use.isDrawerOpen();
     const setIsDrawerOpen = useAuthStore.use.setIsDrawerOpen();
     const setAuthQuery = useUserStore.use.setAuthQuery();
-    const removeAuthQuery = useAuthStore.use.removeAuthQuery();
     const removeInvitCode = useAuthStore.use.removeInvitCode();
 
     const authContent = useAuthStore.use.authContent();
     const setAuthContent = useAuthStore.use.setAuthContent();
     const title = useAuthStore.use.title();
     const setTitle = useAuthStore.use.setTitle();
+
+    const setIsVipUseAnalysis = useUserStore.use.setIsVipUseAnalysis();
 
     const resetAuthContent = () => {
         if (authQuery === 'register') {
@@ -51,9 +57,11 @@ function AuthDrawer() {
     };
 
     const closeDrawer = () => {
-        setAuthQuery('');
+        if (auth) {
+            setAuthQuery('');
+            router.push(pathname);
+        }
         setIsDrawerOpen(false);
-        removeAuthQuery();
         removeInvitCode();
     };
     const setMemberSubscribeStatus = useUserStore.use.setMemberSubscribeStatus();
@@ -67,15 +75,30 @@ function AuthDrawer() {
             });
             if (subscriptionRespons.success) {
                 setMemberSubscribeStatus(subscriptionRespons.data);
+
+                if (subscriptionRespons.data.planId === 1 || userId.balance >= 80) {
+                    setIsVipUseAnalysis(true);
+                } else {
+                    setIsVipUseAnalysis(false);
+                }
             }
         };
         if (isToken) void fetchSubscription();
-        if (authContent) setIsDrawerOpen(true);
     });
 
     useEffect(() => {
         resetAuthContent();
     }, [isDrawerOpen, authQuery]);
+
+    useEffect(() => {
+        if (auth) {
+            setAuthQuery(auth);
+            resetAuthContent();
+            setIsDrawerOpen(true);
+        } else {
+            closeDrawer();
+        }
+    }, [auth]);
 
     return (
         <BottomDrawer

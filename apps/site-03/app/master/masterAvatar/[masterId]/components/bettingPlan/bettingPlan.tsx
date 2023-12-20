@@ -1,37 +1,95 @@
 import Image from 'next/image';
+import { getMemberIndividualGuessMatches, type MemberIndividualGuessMatch } from 'data-center';
+import { useEffect, useState } from 'react';
+import { timestampToString } from 'lib';
 import UnlockButton from '@/components/unlockButton/unlockButton';
-import iconWin from './img/win.png';
-import iconDefeat from './img/defeat.png';
+import IconWin from './img/win.png';
+import IconLose from './img/lose.png';
+import IconDraw from './img/draw.png';
 import style from './bettingPlan.module.scss';
 
-interface PropsType {
-    result?: 'win' | 'defeat';
-}
+type Tab = 0 | 1 | 2;
 
-const iconMap = {
-    win: <Image alt="icon" className={style.iconWin} src={iconWin} />,
-    defeat: <Image alt="icon" className={style.iconDefeat} src={iconDefeat} />
-};
+function BettingPlan({ planActiveTab }: { planActiveTab: Tab }) {
+    const [guessMatchesList, setGuessMatchesList] = useState<MemberIndividualGuessMatch[]>([]);
 
-function BettingPlan({ result }: PropsType) {
-    const icon = result ? iconMap[result] : null;
+    const fetchData = async () => {
+        const res = await getMemberIndividualGuessMatches({
+            memberId: 1,
+            currentPage: 1,
+            pageSize: 1,
+            guessType: planActiveTab
+        });
+
+        if (!res.success) {
+            return new Error();
+        }
+
+        setGuessMatchesList(res.data.guessMatchList);
+    };
+
+    const filterIcon = {
+        WIN: <Image alt="icon" className={style.iconWin} src={IconWin} />,
+        LOSE: <Image alt="icon" className={style.iconDefeat} src={IconLose} />,
+        DRAW: <Image alt="icon" className={style.iconDefeat} src={IconDraw} />
+    };
+
+    const filterPlay = {
+        HOME: '让球',
+        AWAY: '让球',
+        OVER: '大小',
+        UNDER: '大小',
+        HANDICAP: '让球',
+        OVERUNDER: '大小'
+    };
+
+    const filterOdds = {
+        HOME: 'handicap',
+        AWAY: 'handicap',
+        OVER: 'overUnder',
+        UNDER: 'overUnder',
+        HANDICAP: 'handicap',
+        OVERUNDER: 'overUnder'
+    };
+
+    useEffect(() => {
+        void fetchData();
+    }, []);
 
     return (
-        <div className={style.bettingPlan}>
-            {icon}
-            <div className={style.top}>
-                欧锦U20A
-                <span className={style.time}> | 09-05 16:45</span>
-            </div>
-            <div className={style.mid}>
-                <span className={style.plan}>让分</span>
-                <div className={style.combination}>德國U20A vs 斯洛文尼亚U20</div>
-            </div>
-            <div className={style.bot}>
-                <div className={style.message}>2.5 大</div>
-                <UnlockButton />
-            </div>
-        </div>
+        <>
+            {guessMatchesList.map(item => {
+                return (
+                    <div className={style.bettingPlan} key={item.id}>
+                        {filterIcon[item.predictionResult]}
+                        <div className={style.top}>
+                            {item.leagueName}
+                            <span className={style.time}>
+                                {' '}
+                                | {timestampToString(item.matchTime, 'MM-DD HH:mm')}
+                            </span>
+                        </div>
+                        <div className={style.mid}>
+                            <span className={style.plan}>{filterPlay[item.predictedPlay]}</span>
+                            <div className={style.combination}>
+                                {item.homeTeamName} vs {item.awayTeamName}
+                            </div>
+                        </div>
+                        <div className={style.bot}>
+                            <div className={style.message}>
+                                {filterOdds[item.handicapOdds] === 'handicap'
+                                    ? item.handicapOdds
+                                    : item.overUnderOdds}
+                                {item.predictionResult}
+                            </div>
+
+                            {/* TODO: 請後端吐價格 */}
+                            {item.isPaidToRead ? <UnlockButton price={20} /> : null}
+                        </div>
+                    </div>
+                );
+            })}
+        </>
     );
 }
 
