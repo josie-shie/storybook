@@ -78,17 +78,17 @@ function TimeRange({ timeRange }: { timeRange: string }) {
     ) => {
         if (type) {
             setTimeRange(type);
-            setStartDate(Math.floor(dayjs().subtract(1, 'day').toDate().getTime() / 1000));
+            setEndDate(Math.floor(dayjs().subtract(1, 'day').toDate().getTime() / 1000));
 
             switch (type) {
                 case 'week':
-                    setEndDate(Math.floor(dayjs().subtract(8, 'day').toDate().getTime() / 1000));
+                    setStartDate(Math.floor(dayjs().subtract(8, 'day').toDate().getTime() / 1000));
                     break;
                 case 'month':
-                    setEndDate(Math.floor(dayjs().subtract(31, 'day').toDate().getTime() / 1000));
+                    setStartDate(Math.floor(dayjs().subtract(31, 'day').toDate().getTime() / 1000));
                     break;
                 case 'season':
-                    setEndDate(Math.floor(dayjs().subtract(91, 'day').toDate().getTime() / 1000));
+                    setStartDate(Math.floor(dayjs().subtract(91, 'day').toDate().getTime() / 1000));
                     break;
             }
         } else if (startDateSelected && endDateSelected) {
