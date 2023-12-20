@@ -1,6 +1,7 @@
 'use client';
 import { getContestList, type GetContestListResponse } from 'data-center';
-import { useEffect, useState } from 'react';
+import type { Ref } from 'react';
+import { useEffect, useState, forwardRef } from 'react';
 import { InfiniteScroll } from 'ui';
 import CircularProgress from '@mui/material/CircularProgress';
 import Image from 'next/image';
@@ -107,6 +108,10 @@ function ContestList({
         setIsMounted(true);
     }, []);
 
+    const resetRows = () => {
+        setRows({ full: 20, notYet: 0, finish: 0 });
+    };
+
     useEffect(() => {
         const dateString = scheduleDate || resultsDate || Date.now();
         const fetchContestdata = async (timestamp: number) => {
@@ -117,6 +122,7 @@ function ContestList({
                 }
                 setContestList({ contestList: todayContest.data.contestList });
                 setContestInfo({ contestInfo: todayContest.data.contestInfo });
+                resetRows();
                 closeLoading();
             } catch (error) {
                 closeLoading();
@@ -245,13 +251,16 @@ function ContestList({
     );
 }
 
-function Football({
-    todayContest,
-    status
-}: {
-    todayContest: GetContestListResponse;
-    status: Status;
-}) {
+const Football = forwardRef(function Football(
+    {
+        todayContest,
+        status
+    }: {
+        todayContest: GetContestListResponse;
+        status: Status;
+    },
+    ref: Ref<HTMLDivElement>
+) {
     creatContestListStore(todayContest);
     const [showSetting, setShowSetting] = useState(false);
 
@@ -280,23 +289,21 @@ function Football({
     };
 
     return (
-        <>
-            <div className={style.football}>
-                <DatePicker
-                    handleDate={handleDate}
-                    resultsDate={resultsDate}
-                    scheduleDate={scheduleDate}
-                    status={status}
-                />
-                <ContestList
-                    closeLoading={closeLoading}
-                    isLoading={isLoading}
-                    resultsDate={resultsDate}
-                    scheduleDate={scheduleDate}
-                    status={status}
-                    switchSetting={switchSetting}
-                />
-            </div>
+        <div className={style.football} ref={ref}>
+            <DatePicker
+                handleDate={handleDate}
+                resultsDate={resultsDate}
+                scheduleDate={scheduleDate}
+                status={status}
+            />
+            <ContestList
+                closeLoading={closeLoading}
+                isLoading={isLoading}
+                resultsDate={resultsDate}
+                scheduleDate={scheduleDate}
+                status={status}
+                switchSetting={switchSetting}
+            />
             <Setting
                 isOpen={showSetting}
                 onClose={() => {
@@ -306,8 +313,8 @@ function Football({
                     setShowSetting(true);
                 }}
             />
-        </>
+        </div>
     );
-}
+});
 
 export default Football;

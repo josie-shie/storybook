@@ -2,12 +2,17 @@
 import { Slick } from 'ui/stories/slickPro/slick';
 import { type GetContestListResponse } from 'data-center';
 import { useSearchParams } from 'next/navigation';
+import { useRef } from 'react';
 import Football from './football';
 import style from './list.module.scss';
 
 function List({ todayContest }: { todayContest: GetContestListResponse }) {
     const searchParams = useSearchParams();
     const status = searchParams.get('status');
+    const allRef = useRef<HTMLDivElement>(null);
+    const progressRef = useRef<HTMLDivElement>(null);
+    const scheduleRef = useRef<HTMLDivElement>(null);
+    const resultRef = useRef<HTMLDivElement>(null);
 
     const tabList = [
         {
@@ -33,19 +38,33 @@ function List({ todayContest }: { todayContest: GetContestListResponse }) {
     ];
     const initialSlide = status ? tabList.findIndex(tab => tab.status === status) : 0;
 
+    const onSlickEnd = (nowIndex, prevIndex: number) => {
+        const tabRef = [allRef, progressRef, scheduleRef, resultRef];
+        const currentRef = tabRef[prevIndex].current;
+        if (currentRef) {
+            currentRef.scrollTop = 0;
+        }
+    };
+
     return (
-        <Slick className={style.slick} initialSlide={initialSlide} styling="button" tabs={tabList}>
+        <Slick
+            className={style.slick}
+            initialSlide={initialSlide}
+            onSlickEnd={onSlickEnd}
+            styling="button"
+            tabs={tabList}
+        >
             <div className={style.largeGap}>
-                <Football status="all" todayContest={todayContest} />
+                <Football ref={allRef} status="all" todayContest={todayContest} />
             </div>
             <div className={style.largeGap}>
-                <Football status="progress" todayContest={todayContest} />
+                <Football ref={progressRef} status="progress" todayContest={todayContest} />
             </div>
             <div className={style.largeGap}>
-                <Football status="schedule" todayContest={todayContest} />
+                <Football ref={scheduleRef} status="schedule" todayContest={todayContest} />
             </div>
             <div className={style.largeGap}>
-                <Football status="result" todayContest={todayContest} />
+                <Football ref={resultRef} status="result" todayContest={todayContest} />
             </div>
         </Slick>
     );

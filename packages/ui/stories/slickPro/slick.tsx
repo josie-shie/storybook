@@ -15,6 +15,7 @@ interface SlickProps {
     styling?: Styling;
     initialSlide?: number;
     className?: string;
+    onSlickEnd: (nowIndex: number, prevIndex: number) => void;
 }
 interface SwiperExpansion extends Swiper {
     maxTranslate: () => number;
@@ -102,7 +103,14 @@ function SlickNav({
     );
 }
 
-function Slick({ tabs, children, styling = 'button', initialSlide = 0, className }: SlickProps) {
+function Slick({
+    tabs,
+    children,
+    styling = 'button',
+    initialSlide = 0,
+    className,
+    onSlickEnd
+}: SlickProps) {
     const [activeIndex, setActiveIndex] = useState(initialSlide);
     const [direction, setDirection] = useState('prev');
     const swiperRef = useRef<Swiper | null>(null);
@@ -128,10 +136,11 @@ function Slick({ tabs, children, styling = 'button', initialSlide = 0, className
         swiperRef.current && swiperRef.current.slideTo(index);
     };
 
-    const transitionEnd = (index: number) => {
-        if (tabs[index].href) {
-            history.replaceState({}, '', tabs[index].href);
+    const transitionEnd = (nowIndex: number, prevIndex: number) => {
+        if (tabs[nowIndex].href) {
+            history.replaceState({}, '', tabs[nowIndex].href);
         }
+        onSlickEnd(nowIndex, prevIndex);
     };
 
     return (
@@ -150,7 +159,7 @@ function Slick({ tabs, children, styling = 'button', initialSlide = 0, className
                     setActiveIndex(swiper.activeIndex);
                 }}
                 onSlideChangeTransitionEnd={swiper => {
-                    transitionEnd(swiper.activeIndex);
+                    transitionEnd(swiper.activeIndex, swiper.previousIndex);
                 }}
                 onSliderMove={swiper => {
                     updateTabPosition(swiper);

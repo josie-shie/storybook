@@ -128,6 +128,7 @@ function Filter({
 
     const [filterSelected, setFilterSelected] = useState(initFilterSelected);
     const [filterCounter, setFilterCounter] = useState(initFilterCounter);
+
     const filterInfo = {
         league: initLeague,
         country: initCountry
