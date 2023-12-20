@@ -55,70 +55,27 @@ function GameCard({ matchId }: { matchId: number }) {
                         </div>
                         <div>
                             <div className={style.dataInfo}>
-                                {syncData.handicapHomeCurrentOdds ||
-                                contestInfo.handicapHomeOdds ||
-                                syncData.handicapAwayCurrentOdds ||
-                                contestInfo.handicapAwayOdds ? (
-                                    <ul>
-                                        <li>
-                                            <CompareOdds
-                                                value={
-                                                    syncData.handicapHomeCurrentOdds ||
-                                                    contestInfo.handicapHomeOdds
-                                                }
-                                            />
-                                        </li>
-                                        <li>
-                                            <CompareOdds
-                                                defaultColor="blue"
-                                                value={
-                                                    syncData.handicapCurrent ||
-                                                    convertHandicap(contestInfo.handicap)
-                                                }
-                                            />
-                                        </li>
-                                        <li>
-                                            <CompareOdds
-                                                value={
-                                                    syncData.handicapAwayCurrentOdds ||
-                                                    contestInfo.handicapAwayOdds
-                                                }
-                                            />
-                                        </li>
-                                    </ul>
-                                ) : null}
-                                {syncData.overUnderUnderCurrentOdds ||
-                                contestInfo.overUnderOverOdds ||
-                                syncData.overUnderOverCurrentOdds ||
-                                contestInfo.overUnderUnderOdds ? (
-                                    <ul>
-                                        <li>
-                                            <CompareOdds
-                                                value={
-                                                    syncData.overUnderUnderCurrentOdds ||
-                                                    contestInfo.overUnderOverOdds
-                                                }
-                                            />
-                                        </li>
-                                        <li>
-                                            <CompareOdds
-                                                defaultColor="blue"
-                                                value={
-                                                    syncData.overUnderCurrent ||
-                                                    convertHandicap(contestInfo.overUnder)
-                                                }
-                                            />
-                                        </li>
-                                        <li>
-                                            <CompareOdds
-                                                value={
-                                                    syncData.overUnderOverCurrentOdds ||
-                                                    contestInfo.overUnderUnderOdds
-                                                }
-                                            />
-                                        </li>
-                                    </ul>
-                                ) : null}
+                                <div className={style.odds}>
+                                    <div>初盤讓球</div>
+                                    <CompareOdds
+                                        defaultColor="blue"
+                                        value={
+                                            syncData.handicapCurrent ||
+                                            convertHandicap(contestInfo.handicap)
+                                        }
+                                    />
+                                </div>
+
+                                <div className={style.odds}>
+                                    <div>初盤大小</div>
+                                    <CompareOdds
+                                        defaultColor="blue"
+                                        value={
+                                            syncData.overUnderCurrent ||
+                                            convertHandicap(contestInfo.overUnder)
+                                        }
+                                    />
+                                </div>
                             </div>
                         </div>
                     </div>
