@@ -36,6 +36,7 @@ const initialState = (set: (data: Partial<ContestDetail>) => void): ContestDetai
             peopleNum: 0,
             itemType: ''
         },
+        guessNum: 0,
         remainingGuessTimes: 0
     },
     layoutDisplayed: true,

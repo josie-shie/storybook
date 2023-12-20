@@ -4,8 +4,8 @@ import { ProgressBar } from 'ui/stories/progressBar/progressBar';
 import { useEffect, useState } from 'react';
 import { getMatchDetail, getGuessProportion, addGuess } from 'data-center';
 import { useParams } from 'next/navigation';
-import NorthBangKokClubIcon from './img/northBangkokClubIcon.png';
-import ThaiUniversityClubIcon from './img/thaiUniversityClubIcon.png';
+import { useAuthStore } from '@/app/(auth)/authStore';
+import { useUserStore } from '@/app/userStore';
 import { useGuessDetailStore } from './guessDetailStore';
 import style from './vsBox.module.scss';
 import selectDecoration from './img/select.png';
@@ -40,17 +40,27 @@ function BettingColumn({ play, detail, homeType, awayType }: BettingProps) {
     const guessStatus = homeType === '主' ? detail.guessHomeAway : detail.guessBigSmall;
     const guessTeam = direction === 'left' ? detail.homeTeamName : detail.awayTeamName;
 
+    const isLogin = useUserStore.use.isLogin();
     const guessesLeft = useGuessDetailStore.use.guessesLeft();
     const setGuessDetail = useGuessDetailStore.use.setDetail();
     const setGuessesLeft = useGuessDetailStore.use.setGuessesLeft();
+    const setIsDrawerOpen = useAuthStore.use.setIsDrawerOpen();
+    const setAuthQuery = useUserStore.use.setAuthQuery();
 
     const handleGuess = (guessDirection: 'left' | 'right') => {
+        if (!isLogin) {
+            setAuthQuery('login');
+            setIsDrawerOpen(true);
+            return;
+        }
         setOpenGuessDialog(true);
         setDirection(guessDirection);
     };
+
     const handleClickClose = () => {
         setOpenGuessDialog(false);
     };
+
     const handleConfirmGuess = async () => {
         setOpenGuessDialog(false);
         if (homeType === '主') {
@@ -159,6 +169,7 @@ function BettingColumn({ play, detail, homeType, awayType }: BettingProps) {
 
 function VsBox() {
     const matchId = useParams().matchId;
+    const userInfo = useUserStore.use.userInfo();
     const detailInfo = useGuessDetailStore.use.detail();
     const setDetailInfo = useGuessDetailStore.use.setDetail();
     const setGuessesLeft = useGuessDetailStore.use.setGuessesLeft();
@@ -186,7 +197,7 @@ function VsBox() {
             const matchDetail = await getMatchDetail(Number(matchId));
             const guessProportion = await getGuessProportion({
                 matchId: Number(matchId),
-                memberId: 16 // TODO: memberId 從 useInfo Store
+                memberId: userInfo.uid
             });
             if (matchDetail.success && guessProportion.success) {
                 const baseData = matchDetail.data;
@@ -198,7 +209,7 @@ function VsBox() {
                     homeTeamName: baseData.homeChs,
                     awayTeamLogo: baseData.awayLogo,
                     awayTeamName: baseData.awayChs,
-                    participants: 1276, // 參與競猜人數(getGuessProportion API 欄位待新增)
+                    participants: guessData.guessNum,
                     guessHomeAway: covertGuessStatus(true, guessData.home.itemType) as
                         | 'home'
                         | 'away'
@@ -212,11 +223,11 @@ function VsBox() {
                     big: guessData.over.peopleNum,
                     small: guessData.under.peopleNum
                 });
-                setGuessesLeft(guessData.remainingGuessTimes);
+                setGuessesLeft(guessData.remainingGuessTimes); // 搬到 userStore
             }
         }
         void fetchMatchDetail();
-    }, [matchId]);
+    }, [matchId, userInfo.uid]);
 
     return (
         <div className={style.vsBox}>
@@ -228,7 +239,7 @@ function VsBox() {
                     <Image
                         alt=""
                         height={48}
-                        src={detailInfo.homeTeamLogo || ThaiUniversityClubIcon}
+                        src={detailInfo.homeTeamLogo === '0' ? '' : detailInfo.homeTeamLogo}
                         width={48}
                     />
                     <div className={style.name}>{detailInfo.homeTeamName}</div>
@@ -238,7 +249,7 @@ function VsBox() {
                     <Image
                         alt=""
                         height={48}
-                        src={detailInfo.awayTeamLogo || NorthBangKokClubIcon}
+                        src={detailInfo.awayTeamLogo === '0' ? '' : detailInfo.awayTeamLogo}
                         width={48}
                     />
                     <div className={style.name}>{detailInfo.awayTeamName}</div>

@@ -8,7 +8,7 @@ function NoData() {
         <div className={style.noDataBox}>
             <div className={style.content}>
                 <Image alt="" src={NoDataIcon} width={100} />
-                <p>暫無數據</p>
+                <p>暂无资料</p>
             </div>
         </div>
     );

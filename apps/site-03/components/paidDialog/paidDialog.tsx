@@ -60,47 +60,71 @@ function PaidDialog({
             onClose={onClose}
             open={openPaid}
         >
-            <div className={style.paidDialog}>
-                {plan ? (
-                    <>
-                        <div className={style.content}>
-                            <div className={style.price}>
-                                <span className={style.text}>支付</span>
-                                <span className={style.number}>
-                                    <Image alt="" className={style.image} src={Star} width={14} />
-                                    {amount}
-                                </span>
-                            </div>
-                            <span className={style.text}>{value ? value : '进行查看？'}</span>
+            {balance === 0 ? (
+                <div className={style.paidDialog}>
+                    <div className={style.lack}>餘額不足，請充值</div>
+                    <div className={style.footer}>
+                        <div className={style.close} onClick={onClose}>
+                            取消
                         </div>
-                        <div className={style.balance}>我的餘額: {balance}金幣</div>
-                    </>
-                ) : (
-                    <>
-                        <div className={style.content}>
-                            <div className={style.price}>
-                                <span className={style.text}>支付</span>
-                                <span className={style.number}>
-                                    <Image alt="" className={style.image} src={Star} width={14} />
-                                    {amount}
-                                </span>
-                            </div>
-                            <span className={style.text}>付費包月訂閱?</span>
+                        <div className={style.confirm} onClick={onConfirm}>
+                            去充值
                         </div>
-                        <div className={style.date}>
-                            生效期間: {formatDate(today)}~{formatDate(nextMonth)}
-                        </div>
-                    </>
-                )}
-                <div className={style.footer}>
-                    <div className={style.close} onClick={onClose}>
-                        取消
-                    </div>
-                    <div className={style.confirm} onClick={onConfirm}>
-                        確認
                     </div>
                 </div>
-            </div>
+            ) : (
+                <div className={style.paidDialog}>
+                    {plan ? (
+                        <>
+                            <div className={style.content}>
+                                <div className={style.price}>
+                                    <span className={style.text}>支付</span>
+                                    <span className={style.number}>
+                                        <Image
+                                            alt=""
+                                            className={style.image}
+                                            src={Star}
+                                            width={14}
+                                        />
+                                        {amount}
+                                    </span>
+                                </div>
+                                <span className={style.text}>{value ? value : '进行查看？'}</span>
+                            </div>
+                            <div className={style.balance}>我的餘額: {balance}金幣</div>
+                        </>
+                    ) : (
+                        <>
+                            <div className={style.content}>
+                                <div className={style.price}>
+                                    <span className={style.text}>支付</span>
+                                    <span className={style.number}>
+                                        <Image
+                                            alt=""
+                                            className={style.image}
+                                            src={Star}
+                                            width={14}
+                                        />
+                                        {amount}
+                                    </span>
+                                </div>
+                                <span className={style.text}>付費包月訂閱?</span>
+                            </div>
+                            <div className={style.date}>
+                                生效期間: {formatDate(today)}~{formatDate(nextMonth)}
+                            </div>
+                        </>
+                    )}
+                    <div className={style.footer}>
+                        <div className={style.close} onClick={onClose}>
+                            取消
+                        </div>
+                        <div className={style.confirm} onClick={onConfirm}>
+                            確認
+                        </div>
+                    </div>
+                </div>
+            )}
         </Dialog>
     );
 }

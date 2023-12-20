@@ -3,6 +3,7 @@
 import { getGuessRank } from 'data-center';
 import { useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
+import { useUserStore } from '@/app/userStore';
 import PeriodListItem from '../components/period/periodListItem';
 import UserSwitch from '../components/userSwitch/userSwitch';
 import Rule from '../components/rule/rule';
@@ -17,6 +18,7 @@ interface PeriodBackgroundMap {
 }
 
 function Rank() {
+    const isLogin = useUserStore.use.isLogin();
     const searchParams = useSearchParams();
     const currentPeriod = searchParams.get('status') as keyof PeriodBackgroundMap;
     const rankTypeMap: Record<string, 0 | 1 | 2> = {
@@ -74,7 +76,7 @@ function Rank() {
                     <Rule />
                 </div>
             </div>
-            <UserRank />
+            {isLogin ? <UserRank /> : null}
             <PeriodListItem />
         </div>
     );
