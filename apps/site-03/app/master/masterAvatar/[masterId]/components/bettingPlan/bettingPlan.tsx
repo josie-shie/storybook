@@ -14,22 +14,18 @@ function BettingPlan({ planActiveTab }: { planActiveTab: Tab }) {
     const [guessMatchesList, setGuessMatchesList] = useState<MemberIndividualGuessMatch[]>([]);
 
     const fetchData = async () => {
-        try {
-            const res = await getMemberIndividualGuessMatches({
-                memberId: 1,
-                currentPage: 1,
-                pageSize: 1,
-                guessType: planActiveTab
-            });
+        const res = await getMemberIndividualGuessMatches({
+            memberId: 1,
+            currentPage: 1,
+            pageSize: 1,
+            guessType: planActiveTab
+        });
 
-            if (!res.success) {
-                return new Error();
-            }
-
-            setGuessMatchesList(res.data.guessMatchList);
-        } catch (error) {
+        if (!res.success) {
             return new Error();
         }
+
+        setGuessMatchesList(res.data.guessMatchList);
     };
 
     const filterIcon = {
@@ -88,7 +84,7 @@ function BettingPlan({ planActiveTab }: { planActiveTab: Tab }) {
                             </div>
 
                             {/* TODO: 請後端吐價格 */}
-                            {item.isPaidToRead ? <UnlockButton price={20} /> : ''}
+                            {item.isPaidToRead ? <UnlockButton price={20} /> : null}
                         </div>
                     </div>
                 );

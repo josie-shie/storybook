@@ -3,6 +3,12 @@ import ReactEcharts from 'echarts-for-react';
 import { type MemberIndividualGuessRecord } from 'data-center';
 import style from './record.module.scss';
 
+const formatRate = (lose: number, win: number) => {
+    if (lose === 0 && win === 0) return 0;
+    const winRate = (win / (lose + win)) * 100;
+    return Number.isInteger(winRate) ? winRate : winRate.toFixed(1);
+};
+
 function Record({ individualGuessInfo }: { individualGuessInfo: MemberIndividualGuessRecord }) {
     const chartOption = {
         tooltip: {
@@ -67,12 +73,6 @@ function Record({ individualGuessInfo }: { individualGuessInfo: MemberIndividual
                 ]
             }
         ]
-    };
-
-    const formatRate = (lose: number, win: number) => {
-        if (lose === 0 && win === 0) return 0;
-        const winRate = (win / (lose + win)) * 100;
-        return Number.isInteger(winRate) ? winRate : winRate.toFixed(1);
     };
 
     return (

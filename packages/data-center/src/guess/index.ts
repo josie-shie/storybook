@@ -304,7 +304,7 @@ const GetMemberIndividualGuessResultSchema = z.object({
     })
 });
 
-export type GetMemberIndividualGuessResult = z.infer<typeof GetMemberIndividualGuessResultSchema>;
+type GetMemberIndividualGuessResult = z.infer<typeof GetMemberIndividualGuessResultSchema>;
 
 /**
  * 取得會員個人競猜勝、負、走統計
@@ -452,7 +452,7 @@ const GetMemberIndividualGuessMatchesResultSchema = z.object({
     getMemberIndividualGuessMatches: GetMemberIndividualGuessMatchesSchema
 });
 
-export type GetMemberIndividualGuessMatchesResult = z.infer<
+type GetMemberIndividualGuessMatchesResult = z.infer<
     typeof GetMemberIndividualGuessMatchesResultSchema
 >;
 

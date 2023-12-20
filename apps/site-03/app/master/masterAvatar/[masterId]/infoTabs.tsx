@@ -69,42 +69,34 @@ function InfoTabs({
         setPlanActiveTab(tabName);
     };
 
-    const fetchData = async () => {
-        try {
-            const res = await getMemberIndividualGuess({ memberId: Number(params.masterId) });
+    const fetchGuess = async () => {
+        const res = await getMemberIndividualGuess({ memberId: Number(params.masterId) });
 
-            if (!res.success) {
-                return new Error();
-            }
-            setIndividualGuess(res.data);
-            setIndividualGuessInfo(res.data.byWeek);
-        } catch (error) {
+        if (!res.success) {
             return new Error();
         }
+        setIndividualGuess(res.data);
+        setIndividualGuessInfo(res.data.byWeek);
     };
 
     const fetchAnalysis = async () => {
-        try {
-            const res = await getPostList({
-                memberId: Number(params.masterId),
-                postFilter: ['all']
-            });
+        const res = await getPostList({
+            memberId: Number(params.masterId),
+            postFilter: ['all']
+        });
 
-            if (!res.success) {
-                return new Error();
-            }
-            setPredictArticleList(res.data.posts);
-            setArticleLength(res.data.totalArticle);
-        } catch (error) {
+        if (!res.success) {
             return new Error();
         }
+        setPredictArticleList(res.data.posts);
+        setArticleLength(res.data.totalArticle);
     };
 
     useEffect(() => {
         if (status === 'analysis') {
             void fetchAnalysis();
         } else if (status === 'guess') {
-            void fetchData();
+            void fetchGuess();
         }
     }, [status]);
 
