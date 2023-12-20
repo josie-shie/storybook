@@ -12,6 +12,7 @@ import TradeDetailList from './tradeDetailList';
 import DateRangeDrawer from './components/dateOptionDrawer/dateOptionDrawer';
 import TradeTypeDrawer from './components/tradeTypeDrawer/tradeTypeDrawer';
 import { useTardeDetailStore, type DateOption, type TradeTypeOption } from './tradeDetailStore';
+import { dateOption, tradeOption } from './options';
 
 function TradeDetail() {
     const router = useRouter();
@@ -19,8 +20,6 @@ function TradeDetail() {
         router.push('/userInfo');
     };
     const setTradeDetailList = useTardeDetailStore.use.setTradeDetailList();
-    const dateOption = useTardeDetailStore.use.dateOption();
-    const tradeOption = useTardeDetailStore.use.tradeOption();
     const [isLoading, setIsLoading] = useState(false);
     const [isDateRangeOpen, setIsDateRangeOpen] = useState(false);
     const [isTradeTypeOpen, setIsTradeTypeOpen] = useState(false);

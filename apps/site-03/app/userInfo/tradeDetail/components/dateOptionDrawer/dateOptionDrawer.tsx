@@ -6,6 +6,7 @@ import BottomDrawer from '@/components/drawer/bottomDrawer';
 import DatePicker from '../datepicker/datepicker';
 import { useTardeDetailStore } from '../../tradeDetailStore';
 import type { TradeTypeOption, DateOption } from '../../tradeDetailStore';
+import { dateOption } from '../../options';
 import style from './dateOptionDrawer.module.scss';
 
 interface DateRangeProps {
@@ -28,7 +29,6 @@ function DateRangeOption({
     setEndDate
 }: DateRangeProps) {
     const setTradeDetailList = useTardeDetailStore.use.setTradeDetailList();
-    const dateList = useTardeDetailStore.use.dateOption();
     const [isOpenDatePick, setIsOpenDatePick] = useState(false);
 
     const getStartDate = (type: string) => {
@@ -87,7 +87,7 @@ function DateRangeOption({
                         <span>选择时间</span>
                     </div>
                     <div className={style.buttonBlock}>
-                        {dateList.map(option => (
+                        {dateOption.map(option => (
                             <Button
                                 className={`${style.filterButton} ${
                                     activeDate === option.value && style.active

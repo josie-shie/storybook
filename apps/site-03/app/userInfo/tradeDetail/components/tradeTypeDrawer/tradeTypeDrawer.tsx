@@ -3,11 +3,12 @@ import type { Dispatch, SetStateAction } from 'react';
 import { getMemberTransactionList } from 'data-center';
 import BottomDrawer from '@/components/drawer/bottomDrawer';
 import { useTardeDetailStore, type TradeTypeOption } from '../../tradeDetailStore';
+import { tradeOption } from '../../options';
 import style from './tradeTypeDrawer.module.scss';
 
 interface TradeTypeProps {
-    start: number | undefined;
-    end: number | undefined;
+    start: number;
+    end: number;
     tradeType: TradeTypeOption;
     isTradeTypeOpen: boolean;
     setTradeType: Dispatch<SetStateAction<TradeTypeOption>>;
@@ -22,7 +23,6 @@ function TradeTypeDrawer({
     tradeType,
     setTradeType
 }: TradeTypeProps) {
-    const tradeOption = useTardeDetailStore.use.tradeOption();
     const setTradeDetailList = useTardeDetailStore.use.setTradeDetailList();
     const handleChangeType = async (type: TradeTypeOption) => {
         const data = await getMemberTransactionList({

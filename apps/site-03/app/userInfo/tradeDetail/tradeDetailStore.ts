@@ -27,11 +27,6 @@ export interface PaymentData {
     createdAt: number;
 }
 
-interface OptionType {
-    label: string;
-    value: string;
-}
-
 interface TradeDetailItem {
     balanceId: number;
     changeTypeCategory: Omit<TradeTypeOption, 'ALL'>;
@@ -53,8 +48,6 @@ interface InitState {
 
 interface TradeDetailState extends InitState {
     setTradeDetailList: (tradeDetailList: TradeDetailInterface) => void;
-    dateOption: OptionType[];
-    tradeOption: OptionType[];
 }
 
 const initialState = (
@@ -67,42 +60,6 @@ const initialState = (
             totalCount: 0
         }
     },
-    dateOption: [
-        {
-            label: '全部時間',
-            value: 'ALL'
-        },
-        {
-            label: '一週',
-            value: 'WEEK'
-        },
-        {
-            label: '兩週',
-            value: 'TWOWEEKS'
-        },
-        {
-            label: '一个月',
-            value: 'MONTH'
-        }
-    ],
-    tradeOption: [
-        {
-            label: '全部分类',
-            value: 'ALL'
-        },
-        {
-            label: '充值',
-            value: 'RECHARGE'
-        },
-        {
-            label: '收入',
-            value: 'INCOME'
-        },
-        {
-            label: '支付',
-            value: 'PAY'
-        }
-    ],
     setTradeDetailList: (tradeDetailList: TradeDetailInterface) => {
         set(state => {
             return {
