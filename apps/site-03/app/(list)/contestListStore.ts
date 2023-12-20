@@ -50,6 +50,7 @@ const formatCounterAndSelected = (league: FilterMap, country: FilterMap) => {
             filterCounter.league += league.countMap[leagueName] || 0;
         });
     });
+
     Object.values(country.infoObj).forEach((value: string[]) => {
         value.forEach(countryName => {
             filterSelected.country[countryName] = true;
