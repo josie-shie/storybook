@@ -95,7 +95,7 @@ function ArticleDetail({ params }: { params: { articleId: string } }) {
         }
     } as GetPostDetailResponse);
     const headerProps = {
-        title: '专家预测'
+        title: '专家预测文章'
     };
 
     const fetchData = async () => {
