@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import dayjs from 'dayjs';
+import { timestampToString } from 'lib';
 import { type RechargeData } from '../tradeDetailStore';
 import style from './rechargeItem.module.scss';
 import recharge from './img/recharge.png';
@@ -38,7 +38,7 @@ function RechargeItem({ data }: PropsType) {
                     </div>
                 )}
                 <div className={style.content}>
-                    {dayjs(data.createdAt).format('YYYY/MM/DD HH:mm')}
+                    {timestampToString(data.createdAt, 'YYYY/MM/DD HH:mm')}
                 </div>
                 <div className={style.content}>交易编号:{data.rechargeId}</div>
             </div>

@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import dayjs from 'dayjs';
+import { timestampToString } from 'lib';
 import { type PaymentData } from '../tradeDetailStore';
 import style from './payment.module.scss';
 import incomeIcon from './img/income.png';
@@ -27,7 +27,7 @@ function Payment({ data }: PropsType) {
                     {data.changeTypeDisplayName}
                 </div>
                 <div className={style.content}>
-                    {dayjs(data.createdAt).format('YYYY/MM/DD HH:mm')}
+                    {timestampToString(data.createdAt, 'YYYY/MM/DD HH:mm')}
                 </div>
             </div>
             <div className={style.right}>
