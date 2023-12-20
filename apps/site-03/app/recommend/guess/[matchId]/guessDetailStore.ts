@@ -43,33 +43,33 @@ let useGuessDetailStore: StoreWithSelectors<GuessDetailState>;
 const initialState = (set: (data: Partial<GuessDetailState>) => void) => ({
     guessesLeft: 0,
     detail: {
-        leagueName: '歐錦U20A',
+        leagueName: '',
         dateTime: 1678880400,
         homeTeamLogo: '',
         homeTeamName: '-',
         awayTeamLogo: '',
         awayTeamName: '-',
-        participants: 200,
+        participants: 0,
         handicap: 0,
-        handicapInChinese: '平手',
+        handicapInChinese: '-',
         overUnder: 0,
         guessHomeAway: 'none',
         guessBigSmall: 'none',
-        home: 721,
-        away: 84,
-        big: 996,
-        small: 355
+        home: 0,
+        away: 0,
+        big: 0,
+        small: 0
     } as DetailType,
     highWinRateTrend: {
-        home: 50,
-        away: 50,
-        over: 50,
-        under: 50,
+        home: 0,
+        away: 0,
+        over: 0,
+        under: 0,
         enoughProData: true,
         memberPermission: false,
-        unlockPrice: 10
+        unlockPrice: 0
     },
-    masterPlanPrice: 20,
+    masterPlanPrice: 0,
     masterPlanList: [],
     setHighWinRateTrend: (highWinRateTrend: GetProDistribResponse) => {
         set({ highWinRateTrend });
