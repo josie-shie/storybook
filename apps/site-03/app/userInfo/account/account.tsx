@@ -1,6 +1,6 @@
 'use client';
 import type { ChangeEvent } from 'react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import type { UpdateMemberInfoRequest } from 'data-center';
@@ -11,7 +11,9 @@ import { useNotificationStore } from '@/app/notificationStore';
 import { useUserStore } from '../../userStore';
 import style from './account.module.scss';
 import Avatar from './img/avatar.png';
+import Date from './img/date.png';
 import { useAccountStore } from './accountStore';
+import Datepicker from './component/datePicker/datepicker';
 
 interface UploadResponse {
     filePath: string;
@@ -69,6 +71,8 @@ function Account() {
     const setImgUpload = useAccountStore.use.setImgUpload();
     const setIsSubmitted = useAccountStore.use.setIsSubmitted();
     const setIsVisible = useNotificationStore.use.setIsVisible();
+
+    const [isOpenCalendar, setIsOpenCalendar] = useState(false);
 
     const back = () => {
         router.push('/userInfo');
@@ -163,11 +167,9 @@ function Account() {
         };
         setSubmittedState(newSubmittedState);
 
-        const dateValue = new Date(formState.birthday);
-
         const obj: UpdateMemberInfoRequest = {
             avatarPath: imgUpload || userInfo.avatarPath,
-            birthday: userInfo.birthday || dateValue.getTime() / 1000,
+            birthday: userInfo.birthday || formState.birthday,
             wechat: formState.wechat,
             qqNumber: formState.qq,
             email: formState.email,
@@ -227,15 +229,33 @@ function Account() {
                         type="text"
                         value={formState.nickName}
                     />
-                    <FormField
-                        label="出生日期："
-                        name="birthday"
-                        onChange={handleInputChange}
-                        placeholder="新增"
-                        submitted={submittedState.birthday}
-                        type="date"
-                        value={formState.birthday}
-                    />
+                    <div className={style.dateInput}>
+                        <FormField
+                            label="出生日期："
+                            name="birthday"
+                            onChange={handleInputChange}
+                            placeholder="新增"
+                            submitted={submittedState.birthday}
+                            type="text"
+                            value={
+                                formState.birthday === 0
+                                    ? ''
+                                    : timestampToString(formState.birthday, 'YYYY/MM/DD')
+                            }
+                        />
+                        {!submittedState.birthday && (
+                            <Image
+                                alt="大头贴"
+                                className={style.avatar}
+                                height={24}
+                                onClick={() => {
+                                    setIsOpenCalendar(true);
+                                }}
+                                src={Date}
+                                width={24}
+                            />
+                        )}
+                    </div>
                     <FormField
                         label="手机号："
                         name="phoneNumber"
@@ -316,6 +336,11 @@ function Account() {
                     )}
                 </form>
             </div>
+            <Datepicker
+                openModal={isOpenCalendar}
+                setFormState={setFormState}
+                setOpenModal={setIsOpenCalendar}
+            />
         </>
     );
 }
