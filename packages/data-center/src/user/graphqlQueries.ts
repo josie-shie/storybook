@@ -353,3 +353,9 @@ export const GET_RECHARGE_OPTION_LIST_QUERY = `
         }
     }
 `;
+
+export const RECHARGE_PLATFORM_CURRENCY_MUTATION = `
+    mutation recharge($input: RechargeInput!) {
+        recharge(input: $input)
+    }
+`;

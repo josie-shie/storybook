@@ -3,7 +3,12 @@ import Image from 'next/image';
 import { useRef, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Dialog, DialogTitle } from '@mui/material';
-import { getSubscriptionPlanList, subscribePlan, getRechargeOptionList } from 'data-center';
+import {
+    getSubscriptionPlanList,
+    subscribePlan,
+    getRechargeOptionList,
+    rechargePlatformCurrency
+} from 'data-center';
 import { timestampToString } from 'lib';
 import { useUserStore } from '@/app/userStore';
 import { useNotificationStore } from '@/app/notificationStore';
@@ -30,9 +35,13 @@ function Subscribe({ backHistory }: { backHistory: boolean }) {
     const planList = useSubscribeStore.use.planList();
     const yearPlanList = useSubscribeStore.use.yearPlanList();
     const planId = useSubscribeStore.use.planId();
+    const platformAmount = useSubscribeStore.use.platformAmount();
+    const currencyAmount = useSubscribeStore.use.currencyAmount();
     const isVip = useSubscribeStore.use.isVip();
     const isChecked = useSubscribeStore.use.isChecked();
     const setPlanId = useSubscribeStore.use.setPlanId();
+    const setPlatformAmount = useSubscribeStore.use.setPlatformAmount();
+    const setCurrencyAmount = useSubscribeStore.use.setCurrencyAmount();
     const setIsVip = useSubscribeStore.use.setIsVip();
     const setIsChecked = useSubscribeStore.use.setIsChecked();
     const setYearPlanList = useSubscribeStore.use.setYearPlanList();
@@ -67,8 +76,10 @@ function Subscribe({ backHistory }: { backHistory: boolean }) {
         }
     };
 
-    const handlePlanClick = (id: number) => {
+    const handlePlanClick = (id: number, cash: number, coin: number) => {
         setPlanId(id);
+        setCurrencyAmount(cash);
+        setPlatformAmount(coin);
         setIsVip(false);
     };
 
@@ -80,23 +91,35 @@ function Subscribe({ backHistory }: { backHistory: boolean }) {
     const handleSubscribeButtonOnClick = async () => {
         if (isVip || memberSubscribeStatus.planId === 1) {
             const res = await subscribePlan({ memberId: userInfo.uid, planId: yearPlanList[0].id });
-            if (res.success) {
-                setIsVisible(
-                    `您的年卡訂閱已開通\n生效期間: ${timestampToString(
-                        res.data.planStartAt,
-                        'YYYY-MM-DD'
-                    )}~${timestampToString(res.data.planEndAt, 'YYYY-MM-DD')}`,
-                    'success'
-                );
-                setTimeout(() => {
-                    router.push('/userInfo');
-                }, 2000);
-            } else {
-                setIsVisible('余额不足!', 'error');
+            if (!res.success) {
+                const errorMessage = res.error ? res.error : '余额不足!';
+                setIsVisible(errorMessage, 'error');
+                return;
             }
+
+            setIsVisible(
+                `您的年卡訂閱已開通\n生效期間: ${timestampToString(
+                    res.data.planStartAt,
+                    'YYYY-MM-DD'
+                )}~${timestampToString(res.data.planEndAt, 'YYYY-MM-DD')}`,
+                'success'
+            );
+            setTimeout(() => {
+                router.push('/userInfo');
+            }, 2000);
         }
 
         if (!isVip) {
+            const res = await rechargePlatformCurrency({
+                currencyRechargeAmount: currencyAmount,
+                rechargeAmount: platformAmount
+            });
+            if (!res.success) {
+                const errorMessage = res.error ? res.error : '充值失敗！';
+                setIsVisible(errorMessage, 'error');
+                return;
+            }
+
             setIsVisible('充值成功!', 'success');
             setTimeout(() => {
                 router.push('/userInfo');
@@ -190,7 +213,11 @@ function Subscribe({ backHistory }: { backHistory: boolean }) {
                                                     planId === plan.id ? style.selectedPlan : ''
                                                 }`}
                                                 onClick={() => {
-                                                    handlePlanClick(plan.id);
+                                                    handlePlanClick(
+                                                        plan.id,
+                                                        plan.paymentAmount,
+                                                        plan.rechargeAmount
+                                                    );
                                                 }}
                                             >
                                                 <div className={style.discount}>
