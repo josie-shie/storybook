@@ -1,24 +1,23 @@
 import Image from 'next/image';
+import { timestampToString } from 'lib';
 import { type RechargeData } from '../tradeDetailStore';
 import style from './rechargeItem.module.scss';
 import recharge from './img/recharge.png';
-// import payment from './img/payment.png';
-// import income from './img/income.png';
 
 interface PropsType {
     data: RechargeData;
 }
 
 const statusStyleMap = {
-    pedding: style.pedding,
-    succes: style.succes,
-    fail: style.fail
+    PENDING: style.pending,
+    SUCCESS: style.success,
+    FAIL: style.fail
 };
 
 const statusTextMap = {
-    pedding: '處理中',
-    succes: '已完成',
-    fail: '交易失敗'
+    PENDING: '处理中',
+    SUCCESS: '已完成',
+    FAIL: '交易失败'
 };
 
 function RechargeItem({ data }: PropsType) {
@@ -33,19 +32,19 @@ function RechargeItem({ data }: PropsType) {
             </div>
             <div className={style.center}>
                 <div className={style.title}>{data.changeTypeDisplayName}</div>
-                {data.rechargeStatus !== 'fail' && (
+                {data.rechargeStatus !== 'FAIL' && (
                     <div className={style.content}>
-                        {data.currencyCode}:平台幣 = 1:{data.exchangeRate}
+                        {data.currencyCode}:平台币 = 1:{data.exchangeRate}
                     </div>
                 )}
-                <div className={style.content}>{data.createdAt}</div>
-                <div className={style.content}>交易編號:{data.rechargeId}</div>
+                <div className={style.content}>
+                    {timestampToString(data.createdAt, 'YYYY/MM/DD HH:mm')}
+                </div>
+                <div className={style.content}>交易编号:{data.rechargeId}</div>
             </div>
             <div className={style.right}>
-                <div
-                    className={`${style.money} ${data.rechargeStatus === 'fail' ? style.grey : ''}`}
-                >
-                    RMB {money}
+                <div className={`${style.money} ${data.rechargeStatus === 'FAIL' && style.grey}`}>
+                    平台币 {money}
                 </div>
                 <div className={style.result}>
                     <div className={`${style.status} ${statusStyle}`}>{statusLabel}</div>

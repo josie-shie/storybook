@@ -1,14 +1,14 @@
 import { initStore } from 'lib';
 import type { StoreWithSelectors } from 'lib';
 
-export type DateOption = 'ALL' | 'TOADY' | 'WEEK' | 'MONTH' | 'THREEWEEKS' | 'RANGE';
+export type DateOption = 'ALL' | 'WEEK' | 'TWOWEEKS' | 'MONTH' | 'RANGE';
 export type TradeTypeOption = 'ALL' | 'RECHARGE' | 'INCOME' | 'PAY';
 export interface RechargeData {
     balanceLogId: number;
     changeTypeDisplayName: string;
     changeTypeCategory: string;
     changeTypeCategoryDisplayName: string;
-    rechargeStatus: 'pedding' | 'fail' | 'succes';
+    rechargeStatus: 'PENDING' | 'FAIL' | 'SUCCESS';
     rechargeId: string;
     currencyCode: string;
     exchangeRate: number;
@@ -25,11 +25,6 @@ export interface PaymentData {
     amountOfChange: number;
     balanceAfter: number;
     createdAt: number;
-}
-
-interface OptionType {
-    label: string;
-    value: string;
 }
 
 interface TradeDetailItem {
@@ -53,8 +48,6 @@ interface InitState {
 
 interface TradeDetailState extends InitState {
     setTradeDetailList: (tradeDetailList: TradeDetailInterface) => void;
-    dateOption: OptionType[];
-    tradeOption: OptionType[];
 }
 
 const initialState = (
@@ -67,46 +60,6 @@ const initialState = (
             totalCount: 0
         }
     },
-    dateOption: [
-        {
-            label: '全部時間',
-            value: 'all'
-        },
-        {
-            label: '今日',
-            value: 'today'
-        },
-        {
-            label: '最近一週',
-            value: 'week'
-        },
-        {
-            label: '最近一个月',
-            value: 'month'
-        },
-        {
-            label: '最近三个月',
-            value: 'threeMonths'
-        }
-    ],
-    tradeOption: [
-        {
-            label: '全部分类',
-            value: 'all'
-        },
-        {
-            label: '充值',
-            value: 'deposit'
-        },
-        {
-            label: '收入',
-            value: 'inCome'
-        },
-        {
-            label: '支付',
-            value: 'expend'
-        }
-    ],
     setTradeDetailList: (tradeDetailList: TradeDetailInterface) => {
         set(state => {
             return {

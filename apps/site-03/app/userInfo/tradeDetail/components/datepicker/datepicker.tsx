@@ -7,6 +7,7 @@ import 'dayjs/locale/zh-cn';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
+import type { DateOption } from '../../tradeDetailStore';
 import style from './datepicker.module.scss';
 import 'react-datepicker/dist/react-datepicker.css';
 
@@ -16,14 +17,18 @@ function Datepicker({
     openModal,
     setOpenModal,
     setIsDateRangeOpen,
+    handleChangDate,
+    setActiveDate,
     setEnd,
     setStart
 }: {
     openModal: boolean;
+    handleChangDate: (dateRange: number[], type: DateOption) => Promise<void>;
     setOpenModal: (openModal: boolean) => void;
     setEnd: (date: number) => void;
     setStart: (date: number) => void;
     setIsDateRangeOpen: (isOpen: boolean) => void;
+    setActiveDate: (type: DateOption) => void;
 }) {
     const [startDate, setStartDate] = useState<Date | null>(new Date());
     const [endDate, setEndDate] = useState<Date | null>(new Date());
@@ -37,13 +42,26 @@ function Datepicker({
         setEndDate(null);
     };
 
+    const formatSelectedOneDay = (start: Date) => {
+        const startOfDay = new Date(start);
+        startOfDay.setHours(0, 0, 0, 0);
+        const endOfDay = new Date(startOfDay);
+        endOfDay.setDate(startOfDay.getDate() + 1);
+        return { startOfDay, endOfDay };
+    };
+
     const handleConfirmDate = () => {
         if (startDate && endDate) {
-            setEnd(endDate.getTime());
-            setStart(startDate.getTime());
+            void handleChangDate([startDate.getTime(), endDate.getTime()], 'RANGE');
+        } else if (startDate) {
+            const { startOfDay, endOfDay } = formatSelectedOneDay(startDate);
+            void handleChangDate([startOfDay.getTime(), endOfDay.getTime()], 'RANGE');
         }
         setOpenModal(false);
         setIsDateRangeOpen(false);
+        setActiveDate('RANGE');
+        setEnd(endDate ? endDate.getTime() : 0);
+        setStart(startDate ? startDate.getTime() : 0);
     };
 
     return (

@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { timestampToString } from 'lib';
 import { type PaymentData } from '../tradeDetailStore';
 import style from './payment.module.scss';
 import incomeIcon from './img/income.png';
@@ -10,7 +11,7 @@ interface PropsType {
 
 function Payment({ data }: PropsType) {
     const money = data.amountOfChange > 0 ? `+${data.amountOfChange}` : data.amountOfChange;
-    const isPayment = data.type === 1 || data.type === 2;
+    const isPayment = data.changeTypeCategory === 'PAY';
 
     return (
         <div className={style.payment}>
@@ -25,10 +26,12 @@ function Payment({ data }: PropsType) {
                 <div className={`${style.title} ${isPayment && style.black}`}>
                     {data.changeTypeDisplayName}
                 </div>
-                <div className={style.content}>{data.createdAt}</div>
+                <div className={style.content}>
+                    {timestampToString(data.createdAt, 'YYYY/MM/DD HH:mm')}
+                </div>
             </div>
             <div className={style.right}>
-                <div className={`${style.money} ${isPayment && style.black}`}>RMB {money}</div>
+                <div className={`${style.money} ${isPayment && style.black}`}>平台币 {money}</div>
                 <div className={style.overage}>可用馀额：{data.balanceAfter}</div>
             </div>
         </div>

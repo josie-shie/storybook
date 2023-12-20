@@ -835,7 +835,7 @@ const GetMemberTransactionDataSchema = z.object({
     changeTypeCategory: ChangeTypeCategorySchema,
     changeTypeCategoryDisplayName: z.string(),
     rechargeStatus: RechargeStatusSchema.optional(),
-    rechargeId: z.number().optional(),
+    rechargeId: z.string().optional(),
     currencyCode: z.string().optional(),
     exchangeRate: z.number().optional(),
     amountOfChange: z.number(),
