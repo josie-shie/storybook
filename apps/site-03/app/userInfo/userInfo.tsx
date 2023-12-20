@@ -1,5 +1,4 @@
 'use client';
-import { IconFlame } from '@tabler/icons-react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -12,6 +11,7 @@ import { useNotificationStore } from '@/app/notificationStore';
 import Tag from '@/components/tag/tag';
 import Header from '@/components/header/headerTitleNoBg';
 import Footer from '@/components/footer/footer';
+import Fire from '@/app/img/fire.png';
 import { useAuthStore } from '../(auth)/authStore';
 import { useUserStore } from '../userStore';
 import userInfoBg from './img/userInfoBg.png';
@@ -141,8 +141,8 @@ function UserInfo() {
                                         <div className={style.tags}>
                                             {tags.winMaxAccurateStreak >= 3 ? (
                                                 <Tag
-                                                    icon={<IconFlame size={10} />}
-                                                    text={`${tags.winMaxAccurateStreak}连红`}
+                                                    icon={<Image alt="fire" src={Fire} />}
+                                                    text={`${tags.winMaxAccurateStreak} 连红`}
                                                 />
                                             ) : null}
                                             {tags.weekRanking >= 3 ? (

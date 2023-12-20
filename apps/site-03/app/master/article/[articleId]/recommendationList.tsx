@@ -6,9 +6,15 @@ import Link from 'next/link';
 import { type RecommendPost } from 'data-center';
 import style from './recommendationList.module.scss';
 import Star from './img/star.png';
+import Win from './img/win.png';
+import Draw from './img/draw.png';
 
 function RecommendationItem({ recommendationList }: { recommendationList: RecommendPost[] }) {
     const formatHandicapName = {
+        HOME: '让分',
+        AWAY: '让分',
+        UNDER: '大小',
+        OVER: '大小',
         HANDICAP: '大小',
         OVERUNDER: '让分'
     };
@@ -35,6 +41,12 @@ function RecommendationItem({ recommendationList }: { recommendationList: Recomm
                                 <span className={style.name}>
                                     {item.homeTeamName} vs {item.awayTeamName}
                                 </span>
+                                {item.predictionResult === 'WIN' && (
+                                    <Image alt="" height={36} src={Win} width={36} />
+                                )}
+                                {item.predictionResult === 'DRAW' && (
+                                    <Image alt="" height={36} src={Draw} width={36} />
+                                )}
                             </div>
                         </div>
                         <div className={style.right}>

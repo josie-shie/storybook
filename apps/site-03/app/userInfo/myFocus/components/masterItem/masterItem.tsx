@@ -1,8 +1,9 @@
 'use client';
-import { IconFlame } from '@tabler/icons-react';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 import Avatar from '@/components/avatar/avatar';
 import Tag from '@/components/tag/tag';
+import Fire from '@/app/img/fire.png';
 import style from './masterItem.module.scss';
 
 interface Tags {
@@ -79,7 +80,7 @@ function MasterItem({ uid, item, onFollowToggle }: FocusProps) {
                         <span>{item.username}</span>
                         {item.tags.winMaxAccurateStreak > 3 && (
                             <Tag
-                                icon={<IconFlame size={10} />}
+                                icon={<Image alt="fire" src={Fire} />}
                                 text={`${item.tags.winMaxAccurateStreak}连红`}
                             />
                         )}

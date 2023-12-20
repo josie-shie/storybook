@@ -2,21 +2,22 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { IconFlame } from '@tabler/icons-react';
 import { useRouter } from 'next/navigation';
 import { timestampToMonthDay, timestampToString } from 'lib';
 import { getPostList } from 'data-center';
 import { type PostFilter, type RecommendPost } from 'data-center';
 import { InfiniteScroll } from 'ui';
 import CircularProgress from '@mui/material/CircularProgress';
-import WeekButton from '../components/weekButton/weekButton';
-import style from './articleList.module.scss';
-import Win from './img/win.png';
-import { useArticleStore } from './articleStore';
 import Avatar from '@/components/avatar/avatar';
 import Tag from '@/components/tag/tag';
 import UnlockButton from '@/components/unlockButton/unlockButton';
 import { useUserStore } from '@/app/userStore';
+import Fire from '@/app/img/fire.png';
+import WeekButton from '../components/weekButton/weekButton';
+import style from './articleList.module.scss';
+import Win from './img/win.png';
+import DRAW from './img/draw.png';
+import { useArticleStore } from './articleStore';
 
 interface ArticleItemProps {
     loadMoreList: () => void;
@@ -51,8 +52,8 @@ function ArticleItem({ loadMoreList, articleList, currentPage, totalPage }: Arti
                                 <div className={style.tagsContainer}>
                                     {item.tag.winMaxAccurateStreak > 0 && (
                                         <Tag
-                                            icon={<IconFlame size={10} />}
-                                            text={`${item.tag.winMaxAccurateStreak}連紅`}
+                                            icon={<Image alt="fire" src={Fire} />}
+                                            text={`${item.tag.winMaxAccurateStreak} 連紅`}
                                         />
                                     )}
                                     {item.tag.weekRanking > 0 && (
@@ -105,6 +106,9 @@ function ArticleItem({ loadMoreList, articleList, currentPage, totalPage }: Arti
                                 </div>
                                 {item.predictionResult === 'WIN' && (
                                     <Image alt="" height={36} src={Win} width={36} />
+                                )}
+                                {item.predictionResult === 'DRAW' && (
+                                    <Image alt="" height={36} src={DRAW} width={36} />
                                 )}
                             </div>
                         </Link>

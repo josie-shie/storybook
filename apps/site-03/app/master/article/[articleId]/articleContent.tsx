@@ -123,150 +123,157 @@ function ArticleContent({ params, article }: ArticleContentProps) {
 
     return (
         <div className={style.articleContent}>
-            <div className={style.container}>
-                <div className={style.time}>
-                    发表于今天 {timestampToMonthDay(article.createdAt)}
-                </div>
-                <div className={style.title}>{article.analysisTitle}</div>
-                <div className={style.article}>
-                    <div className={style.leagueName}>
-                        {article.leagueName} {timestampToString(article.matchTime, 'MM-DD HH:mm')}
+            <div className={style.articleLayout}>
+                <div className={style.container}>
+                    <div className={style.time}>
+                        发表于今天 {timestampToMonthDay(article.createdAt)}
                     </div>
-                    <div className={style.clubInfo}>
-                        <div className={style.team}>
-                            <Image
-                                alt=""
-                                height={48}
-                                src={article.homeTeam.logo === '0' ? '' : article.homeTeam.logo}
-                                width={48}
-                            />
-                            <div className={style.name}>{article.homeTeam.name}</div>
+                    <div className={style.title}>{article.analysisTitle}</div>
+                    <div className={style.article}>
+                        <div className={style.leagueName}>
+                            {article.leagueName}{' '}
+                            {timestampToString(article.matchTime, 'MM-DD HH:mm')}
                         </div>
-                        <div className={style.fight}>VS</div>
-                        <div className={style.team}>
-                            <Image
-                                alt=""
-                                height={48}
-                                src={article.awayTeam.logo === '0' ? '' : article.awayTeam.logo}
-                                width={48}
-                            />
-                            <div className={style.name}>{article.awayTeam.name}</div>
-                        </div>
-                    </div>
-
-                    {article.predictedPlay === 'LOCK' && (
-                        <div className={style.paidButton}>
-                            <div className={style.content}>{article.shortAnalysisContent}</div>
-                            <div className={style.buttonArea}>
-                                <div className={style.backDrop} />
-                                <div className={style.text}>
-                                    Lorem ipsum dolor sit amet consectetur consect.
-                                </div>
-                            </div>
-                            <div className={style.button} onClick={unlockArticle}>
-                                <Image alt="" className={style.image} src={Star} width={14} />
-                                <span className={style.text}>{article.price} 金币解锁本场预测</span>
-                            </div>
-                        </div>
-                    )}
-
-                    {article.predictedPlay !== 'LOCK' ? (
-                        <div className={style.paidArea}>
-                            <article className={style.content}>{article.analysisContent}</article>
+                        <div className={style.clubInfo}>
                             <div className={style.team}>
-                                <div
-                                    className={`${style.table} ${
-                                        article.playType === 'HOMEAWAY' ? style.active : ''
-                                    }`}
-                                >
-                                    {article.playType === 'HOMEAWAY' && (
-                                        <Image
-                                            alt=""
-                                            height={32}
-                                            src={filterImage(article.predictionResult)}
-                                            width={32}
-                                        />
-                                    )}
-                                    <div
-                                        className={`${style.header} ${
-                                            article.playType === 'HOMEAWAY'
-                                                ? style[
-                                                      article.predictionResult.toLocaleLowerCase()
-                                                  ]
-                                                : style.normal
-                                        }`}
-                                    >
-                                        {article.playType === 'HOMEAWAY'
-                                            ? article.homeTeam.name
-                                            : '大於'}
-                                    </div>
-                                    <div className={style.score}>
-                                        <span>
-                                            {adjustHandicap(
-                                                article.playType === 'HOMEAWAY'
-                                                    ? article.odds.handicap
-                                                    : article.odds.overUnder,
-                                                'home'
-                                            )}
-                                            {convertHandicap(
-                                                article.playType === 'HOMEAWAY'
-                                                    ? Math.abs(article.odds.handicap)
-                                                    : Math.abs(article.odds.overUnder)
-                                            )}
-                                        </span>
+                                <Image
+                                    alt=""
+                                    height={48}
+                                    src={article.homeTeam.logo === '0' ? '' : article.homeTeam.logo}
+                                    width={48}
+                                />
+                                <div className={style.name}>{article.homeTeam.name}</div>
+                            </div>
+                            <div className={style.fight}>VS</div>
+                            <div className={style.team}>
+                                <Image
+                                    alt=""
+                                    height={48}
+                                    src={article.awayTeam.logo === '0' ? '' : article.awayTeam.logo}
+                                    width={48}
+                                />
+                                <div className={style.name}>{article.awayTeam.name}</div>
+                            </div>
+                        </div>
+
+                        {article.predictedPlay === 'LOCK' && (
+                            <div className={style.paidButton}>
+                                <div className={style.content}>{article.shortAnalysisContent}</div>
+                                <div className={style.buttonArea}>
+                                    <div className={style.backDrop} />
+                                    <div className={style.text}>
+                                        Lorem ipsum dolor sit amet consectetur consect.
                                     </div>
                                 </div>
-                                <div
-                                    className={`${style.table} ${
-                                        article.playType === 'OVERUNDER' ? style.active : ''
-                                    }`}
-                                >
-                                    {article.playType === 'OVERUNDER' && (
-                                        <Image
-                                            alt=""
-                                            height={32}
-                                            src={filterImage(article.predictionResult)}
-                                            width={32}
-                                        />
-                                    )}
+                                <div className={style.button} onClick={unlockArticle}>
+                                    <Image alt="" className={style.image} src={Star} width={14} />
+                                    <span className={style.text}>
+                                        {article.price} 金币解锁本场预测
+                                    </span>
+                                </div>
+                            </div>
+                        )}
+
+                        {article.predictedPlay !== 'LOCK' ? (
+                            <div className={style.paidArea}>
+                                <article className={style.content}>
+                                    {article.analysisContent}
+                                </article>
+                                <div className={style.team}>
                                     <div
-                                        className={`${style.header} ${
-                                            article.playType === 'OVERUNDER'
-                                                ? style[
-                                                      article.predictionResult.toLocaleLowerCase()
-                                                  ]
-                                                : style.normal
+                                        className={`${style.table} ${
+                                            article.playType === 'HOMEAWAY' ? style.active : ''
                                         }`}
                                     >
-                                        {article.playType === 'HOMEAWAY'
-                                            ? article.awayTeam.name
-                                            : '小於'}
+                                        {article.playType === 'HOMEAWAY' && (
+                                            <Image
+                                                alt=""
+                                                height={32}
+                                                src={filterImage(article.predictionResult)}
+                                                width={32}
+                                            />
+                                        )}
+                                        <div
+                                            className={`${style.header} ${
+                                                article.playType === 'HOMEAWAY'
+                                                    ? style[
+                                                          article.predictionResult.toLocaleLowerCase()
+                                                      ]
+                                                    : style.normal
+                                            }`}
+                                        >
+                                            {article.playType === 'HOMEAWAY'
+                                                ? article.homeTeam.name
+                                                : '大於'}
+                                        </div>
+                                        <div className={style.score}>
+                                            <span>
+                                                {adjustHandicap(
+                                                    article.playType === 'HOMEAWAY'
+                                                        ? article.odds.handicap
+                                                        : article.odds.overUnder,
+                                                    'home'
+                                                )}
+                                                {convertHandicap(
+                                                    article.playType === 'HOMEAWAY'
+                                                        ? Math.abs(article.odds.handicap)
+                                                        : Math.abs(article.odds.overUnder)
+                                                )}
+                                            </span>
+                                        </div>
                                     </div>
-                                    <div className={style.score}>
-                                        <span>
-                                            {adjustHandicap(
-                                                article.playType === 'HOMEAWAY'
-                                                    ? article.odds.handicap
-                                                    : article.odds.overUnder,
-                                                'away'
-                                            )}
-                                            {convertHandicap(
-                                                article.playType === 'HOMEAWAY'
-                                                    ? Math.abs(article.odds.handicap)
-                                                    : Math.abs(article.odds.overUnder)
-                                            )}
-                                        </span>
+                                    <div
+                                        className={`${style.table} ${
+                                            article.playType === 'OVERUNDER' ? style.active : ''
+                                        }`}
+                                    >
+                                        {article.playType === 'OVERUNDER' && (
+                                            <Image
+                                                alt=""
+                                                height={32}
+                                                src={filterImage(article.predictionResult)}
+                                                width={32}
+                                            />
+                                        )}
+                                        <div
+                                            className={`${style.header} ${
+                                                article.playType === 'OVERUNDER'
+                                                    ? style[
+                                                          article.predictionResult.toLocaleLowerCase()
+                                                      ]
+                                                    : style.normal
+                                            }`}
+                                        >
+                                            {article.playType === 'HOMEAWAY'
+                                                ? article.awayTeam.name
+                                                : '小於'}
+                                        </div>
+                                        <div className={style.score}>
+                                            <span>
+                                                {adjustHandicap(
+                                                    article.playType === 'HOMEAWAY'
+                                                        ? article.odds.handicap
+                                                        : article.odds.overUnder,
+                                                    'away'
+                                                )}
+                                                {convertHandicap(
+                                                    article.playType === 'HOMEAWAY'
+                                                        ? Math.abs(article.odds.handicap)
+                                                        : Math.abs(article.odds.overUnder)
+                                                )}
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    ) : null}
+                        ) : null}
+                    </div>
                 </div>
-            </div>
 
-            <div className={style.otherList}>
-                <div className={style.title}>Ta还推荐了... ({recommendationList.length})</div>
-                <RecommendationList recommendationList={recommendationList} />
+                <div className={style.otherList}>
+                    <div className={style.title}>Ta还推荐了... ({recommendationList.length})</div>
+                    <RecommendationList recommendationList={recommendationList} />
+                </div>
             </div>
             <NormalDialog
                 cancelText="取消"
