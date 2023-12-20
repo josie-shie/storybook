@@ -1,12 +1,13 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { IconFlame } from '@tabler/icons-react';
 import { getMentorList, type GetMentor } from 'data-center';
 import { unFollow, updateFollow } from 'data-center';
-import style from './info.module.scss';
+import Image from 'next/image';
 import Avatar from '@/components/avatar/avatar';
 import Tag from '@/components/tag/tag';
 import { useUserStore } from '@/app/userStore';
+import Fire from '@/app/img/fire.png';
+import style from './info.module.scss';
 
 function Info({ params }: { params: { masterId: string } }) {
     const [info, setInfo] = useState({
@@ -107,8 +108,33 @@ function Info({ params }: { params: { masterId: string } }) {
                 <div className={style.content}>
                     <span className={style.name}>{info.username}</span>
                     <div className={style.top}>
-                        <Tag icon={<IconFlame size={10} />} text="9連紅" />
-                        <Tag background="#fff" color="#4489ff" text="月榜 10" />
+                        {info.tags.winMaxAccurateStreak > 0 && (
+                            <Tag
+                                icon={<Image alt="fire" src={Fire} />}
+                                text={`${info.tags.winMaxAccurateStreak} 連紅`}
+                            />
+                        )}
+                        {info.tags.weekRanking > 0 && (
+                            <Tag
+                                background="#fff"
+                                color="#4489ff"
+                                text={`周榜 ${info.tags.weekRanking}`}
+                            />
+                        )}
+                        {info.tags.monthRanking > 0 && (
+                            <Tag
+                                background="#fff"
+                                color="#4489ff"
+                                text={`月榜 ${info.tags.monthRanking}`}
+                            />
+                        )}
+                        {info.tags.quarterRanking > 0 && (
+                            <Tag
+                                background="#fff"
+                                color="#4489ff"
+                                text={`季榜 ${info.tags.quarterRanking}`}
+                            />
+                        )}
                     </div>
                     <div className={style.bottom}>
                         <span>粉絲: {info.fans}</span>

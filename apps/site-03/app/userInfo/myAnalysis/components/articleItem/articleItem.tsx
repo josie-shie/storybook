@@ -1,11 +1,11 @@
 'use client';
-import { IconFlame } from '@tabler/icons-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback } from 'react';
 import { timestampToString } from 'lib';
 import Image from 'next/image';
 import Tag from '@/components/tag/tag';
 import Avatar from '@/components/avatar/avatar';
+import Fire from '@/app/img/fire.png';
 import style from './articleItem.module.scss';
 import Win from './img/win.png';
 import Lose from './img/lose.png';
@@ -68,7 +68,6 @@ interface GetUnlockPostProps {
         awayTeamName: string;
         matchTime: number;
         createdAt: number;
-        predictStat: number;
         memberTags: Tags;
     };
 }
@@ -116,7 +115,7 @@ function ArticleItem({ item }: GetUnlockPostProps) {
                     <div className={style.userName}>{item.mentorName}</div>
                     {item.memberTags.winMaxAccurateStreak > 3 && (
                         <Tag
-                            icon={<IconFlame size={10} />}
+                            icon={<Image alt="fire" src={Fire} />}
                             text={`${item.memberTags.winMaxAccurateStreak}连红`}
                         />
                     )}
@@ -153,15 +152,17 @@ function ArticleItem({ item }: GetUnlockPostProps) {
                     goDetail(item.postId);
                 }}
             >
-                <div className={style.detail}>
-                    {item.leagueName}
-                    <span className={style.time}>
-                        {' '}
-                        | {timestampToString(item.matchTime, 'MM-DD HH:mm')}
-                    </span>
-                </div>
-                <div className={style.combination}>
-                    {item.homeTeamName} vs {item.awayTeamName}
+                <div className={style.rows}>
+                    <div className={style.detail}>
+                        {item.leagueName}
+                        <span className={style.time}>
+                            {' '}
+                            | {timestampToString(item.matchTime, 'MM-DD HH:mm')}
+                        </span>
+                    </div>
+                    <div className={style.combination}>
+                        {item.homeTeamName} vs {item.awayTeamName}
+                    </div>
                 </div>
                 {item.predictionResult === 'WIN' && (
                     <Image alt="" height={36} src={Win} width={36} />

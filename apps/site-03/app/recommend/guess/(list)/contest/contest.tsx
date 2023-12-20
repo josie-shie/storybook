@@ -4,6 +4,7 @@ import { InfiniteScroll } from 'ui';
 import CircularProgress from '@mui/material/CircularProgress';
 import { getTodayGuessMatches, type GetTodayGuessMatchesResponse } from 'data-center';
 import Image from 'next/image';
+import BaseNoData from '@/components/baseNoData/noData';
 import Banner from '../img/banner.png';
 import { creatGuessContestListStore, useGuessContestListStore } from './contestStore';
 import GameCard from './gameCard';
@@ -51,6 +52,7 @@ function ContestList() {
         }
     };
 
+    if (displayList.length === 0) return <BaseNoData />;
     return (
         <>
             {displayList.map(matchId => {

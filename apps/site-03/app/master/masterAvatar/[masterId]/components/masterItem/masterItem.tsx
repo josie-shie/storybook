@@ -1,13 +1,14 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { IconFlame } from '@tabler/icons-react';
 import { motion } from 'framer-motion';
 import { unFollow, updateFollow, getFollowers, type GetFollowersResponse } from 'data-center';
 import { useRouter } from 'next/navigation';
-import style from './masterItem.module.scss';
+import Image from 'next/image';
 import Avatar from '@/components/avatar/avatar';
 import Tag from '@/components/tag/tag';
+import Fire from '@/app/img/fire.png';
+import style from './masterItem.module.scss';
 
 function MasterItem({ params }: { params: { masterId } }) {
     const [masterItem, setMasterItem] = useState<GetFollowersResponse>([]);
@@ -78,7 +79,7 @@ function MasterItem({ params }: { params: { masterId } }) {
                                 <div className={style.top}>
                                     {item.tags.winMaxAccurateStreak > 0 && (
                                         <Tag
-                                            icon={<IconFlame size={10} />}
+                                            icon={<Image alt="fire" src={Fire} />}
                                             text={`${item.tags.winMaxAccurateStreak} 連紅`}
                                         />
                                     )}

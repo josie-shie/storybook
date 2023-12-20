@@ -1,10 +1,11 @@
 'use client';
-import { IconFlame } from '@tabler/icons-react';
 import { unFollow, updateFollow } from 'data-center';
 import { type GetPostDetailResponse } from 'data-center';
 import type { Dispatch, SetStateAction } from 'react';
+import Image from 'next/image';
 import Avatar from '@/components/avatar/avatar';
 import Tag from '@/components/tag/tag';
+import Fire from '@/app/img/fire.png';
 import { useUserStore } from '../../../userStore';
 import style from './info.module.scss';
 
@@ -45,7 +46,7 @@ function Info({ article, setArticle }: InfoProps) {
                     <div>
                         {article.tag.winMaxAccurateStreak > 0 && (
                             <Tag
-                                icon={<IconFlame size={10} />}
+                                icon={<Image alt="fire" src={Fire} />}
                                 text={`${article.tag.winMaxAccurateStreak} 連紅`}
                             />
                         )}
@@ -76,7 +77,9 @@ function Info({ article, setArticle }: InfoProps) {
                         {article.fansNumber > 0 && <span>粉絲: {article.fansNumber} </span>}
                         {article.unlockNumber > 0 && <span>解鎖: {article.unlockNumber} </span>}
                         {article.tag.quarterHitRate > 0 && (
-                            <span>近一季猜球胜率: {article.tag.quarterHitRate}%</span>
+                            <span>
+                                近一季猜球胜率: {Math.round(article.tag.quarterHitRate * 100)}%
+                            </span>
                         )}
                     </div>
                 </div>

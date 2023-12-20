@@ -149,7 +149,7 @@ function HandicapSelect({
 
     return (
         <section className={style.items}>
-            <p className={style.title}>全场让球</p>
+            <p className={style.title}>全场让分</p>
             <div className={style.select}>
                 <div className={style.selectTitle}>让方</div>
                 <GameFilter

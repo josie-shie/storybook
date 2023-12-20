@@ -3,7 +3,7 @@ export { soundList, soundMap, soundSource, soundDefault } from './src/sound';
 export type { Sound } from './src/sound';
 export { uploadImage } from './src/uploadImage';
 export { initStore } from './src/store';
-export { truncateFloatingPoint } from './src/formatNumber';
+export { truncateFloatingPoint, formatNumberWithCommas } from './src/formatNumber';
 export { getRandomInt } from './src/random';
 export { handicapToString, convertHandicap, convertOdds } from './src/formatHandicap';
 export type { StoreWithSelectors } from './src/store';

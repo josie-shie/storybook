@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Avatar from '@/components/avatar/avatar';
+import BaseNoData from '@/components/baseNoData/noData';
 import { useMasterRankStore } from '../../masterRank/masterRankStore';
 import style from './hotStreakListItem.module.scss';
 import Streak from './img/streak.png';
@@ -14,6 +15,7 @@ function HotStreakListItem() {
         return ranking > 0 && ranking < 6 ? style[`ranking${ranking}`] : '';
     };
 
+    if (masterRankList.length === 0) return <BaseNoData />;
     return (
         <>
             {masterRankList.map(item => {

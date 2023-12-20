@@ -3,6 +3,49 @@
     justify-content: space-between;
     padding: 0 4px;
 
+    .right {
+        .masterPredict {
+            height: 24px;
+            padding: 0 16px;
+            background-color: #4489ff1a;
+            color: #4489ff;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 32px;
+            font-family: 'PingFang SC';
+
+            img {
+                margin-right: 4px;
+            }
+
+            span {
+                font-size: 14px;
+                margin-right: 4px;
+                font-weight: 500;
+            }
+        }
+
+        .dataInfo {
+            font-size: 12px;
+            margin-top: 16px;
+
+            .odds {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                font-weight: 500;
+                font-size: 12px;
+
+                > div {
+                    color: #8d8d8d;
+                    margin-top: 4px;
+                }
+            }
+        }
+    }
+
     .left {
         .gameTitle {
             color: #6cf;
@@ -15,8 +58,10 @@
         }
 
         .team {
-            margin-top: 16px;
             font-size: 14px;
+            font-weight: 500;
+            color: #222;
+            margin-top: 16px;
 
             .homeTeamName {
                 display: flex;
@@ -35,81 +80,6 @@
                 img {
                     margin-right: 4px;
                 }
-            }
-        }
-    }
-
-    .right {
-        .masterPredict {
-            height: 24px;
-            padding: 0 16px;
-            background-color: #4489ff1a;
-            color: #4489ff;
-            font-size: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 32px;
-            font-family: 'PingFang SC';
-
-            span {
-                font-size: 14px;
-                margin-right: 4px;
-                font-weight: 500;
-            }
-
-            img {
-                margin-right: 4px;
-            }
-        }
-
-        .dataInfo {
-            font-size: 12px;
-            margin-top: 16px;
-
-            ul {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                position: relative;
-
-                li {
-                    width: calc(100% / 3);
-                    text-align: center;
-                    color: #8d8d8d;
-                }
-
-                li:nth-child(1) {
-                    padding-right: 8px;
-                }
-
-                li:nth-child(3) {
-                    padding-left: 8px;
-                }
-
-                li:nth-child(2)::before {
-                    content: '';
-                    height: 12px;
-                    width: 1px;
-                    position: absolute;
-                    top: 3px;
-                    left: 34px;
-                    background-color: #d3d3d3;
-                }
-
-                li:nth-child(2)::after {
-                    content: '';
-                    height: 12px;
-                    width: 1px;
-                    position: absolute;
-                    top: 3px;
-                    right: 34px;
-                    background-color: #d3d3d3;
-                }
-            }
-
-            ul:last-child {
-                margin-top: 8px;
             }
         }
     }

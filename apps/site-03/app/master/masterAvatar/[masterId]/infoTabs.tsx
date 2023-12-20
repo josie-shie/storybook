@@ -155,7 +155,7 @@ function InfoTabs({ params }: { params: { masterId: string } }) {
                             </div>
                             <div className={style.detailBlock}>
                                 <div className={style.top}>
-                                    <div className={style.total}>讓球75场</div>
+                                    <div className={style.total}>让分75场</div>
                                     <div className={style.percentage}>
                                         <div className={style.win}>胜 50</div>
                                         <div className={style.walk}>走 10</div>
@@ -205,12 +205,12 @@ function InfoTabs({ params }: { params: { masterId: string } }) {
                                 全部
                             </span>
                             <span
-                                className={planActiveTab === '让球' ? style.active : ''}
+                                className={planActiveTab === '让分' ? style.active : ''}
                                 onClick={() => {
-                                    handlePlanTabClick('让球');
+                                    handlePlanTabClick('让分');
                                 }}
                             >
-                                让球
+                                让分
                             </span>
                             <span
                                 className={planActiveTab === '大小' ? style.active : ''}
