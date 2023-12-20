@@ -20,31 +20,51 @@ function Profile() {
     };
 
     return (
-        <div className={style.profile}>
-            {memberSubscribeStatus.planId === 1 ? (
-                <Image alt="" className={style.icon} height={24} src={profileVipIcon} width={24} />
-            ) : (
-                <Image alt="" className={style.icon} height={24} src={profileIcon} width={24} />
-            )}
-            <div
-                className={`${style.totalNumber} ${
-                    memberSubscribeStatus.planId === 1 ? style.vipTotalNumber : ''
-                }`}
-            >
-                {isLogin && typeof userInfo.balance === 'number' ? (
-                    <Link href="/userInfo">{formatNumberWithCommas(userInfo.balance)}</Link>
-                ) : (
-                    <div
-                        className={style.loginButton}
-                        onClick={() => {
-                            openLoginDrawer();
-                        }}
-                    >
-                        登入注册
+        <>
+            {isLogin && memberSubscribeStatus.planId === 1 ? (
+                <div className={style.vipProfile}>
+                    <Image
+                        alt=""
+                        className={style.icon}
+                        height={12}
+                        src={profileVipIcon}
+                        width={14}
+                    />
+                    <div className={style.totalNumber}>
+                        {typeof userInfo.balance === 'number' ? (
+                            <Link href="/userInfo">{formatNumberWithCommas(userInfo.balance)}</Link>
+                        ) : (
+                            <div
+                                className={style.loginButton}
+                                onClick={() => {
+                                    openLoginDrawer();
+                                }}
+                            >
+                                登入注册
+                            </div>
+                        )}
                     </div>
-                )}
-            </div>
-        </div>
+                </div>
+            ) : (
+                <div className={style.profile}>
+                    <Image alt="" className={style.icon} height={24} src={profileIcon} width={24} />
+                    <div className={style.totalNumber}>
+                        {isLogin && typeof userInfo.balance === 'number' ? (
+                            <Link href="/userInfo">{formatNumberWithCommas(userInfo.balance)}</Link>
+                        ) : (
+                            <div
+                                className={style.loginButton}
+                                onClick={() => {
+                                    openLoginDrawer();
+                                }}
+                            >
+                                登入注册
+                            </div>
+                        )}
+                    </div>
+                </div>
+            )}
+        </>
     );
 }
 
