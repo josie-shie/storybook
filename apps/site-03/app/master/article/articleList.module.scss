@@ -60,6 +60,12 @@
         font-weight: 600;
         padding: 6px 0;
         color: #4a4a4a;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
+        max-height: 50px;
+        word-break: break-all;
     }
 
     .game {

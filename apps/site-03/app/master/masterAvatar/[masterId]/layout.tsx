@@ -2,16 +2,16 @@
 
 import { useState } from 'react';
 import { Tab, Tabs } from 'ui';
+import Header from '@/components/header/headerTitle';
 import style from './layout.module.scss';
 import Info from './info';
 import MasterAvatar from './masterAvatar';
-import Header from '@/components/header/headerTitle';
 
 function MasterAvatarLayout({ params }: { params: { masterId: string } }) {
     const [articleLength, setArticleLength] = useState(0);
 
     const headerProps = {
-        title: '专家预测'
+        title: '专家聊球'
     };
     const tabStyle = {
         gap: 0,
