@@ -589,11 +589,11 @@ const MemberTagsSchema = z.object({
 });
 
 const GetUnlockedPostSchema = z.object({
-    postId: z.string(),
+    postId: z.number(),
     analysisTitle: z.string(),
     analysisContent: z.string(),
     predictionResult: PredictionResultSchema,
-    mentorId: z.string(),
+    mentorId: z.number(),
     mentorName: z.string(),
     avatarPath: z.string(),
     matchId: z.number(),
