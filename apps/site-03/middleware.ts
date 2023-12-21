@@ -7,5 +7,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-    matcher: ['/userInfo/:path*', '/notice/:path*', '/bigData/:path*', '/master/:path*']
+    matcher: ['/userInfo/:path*', '/notice/:path*', '/bigData/:path*']
 };
