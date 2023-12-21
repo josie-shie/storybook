@@ -52,6 +52,12 @@
         width: 70px;
         height: 72px;
 
+        .play {
+            color: #8d8d8d;
+            font-size: 14px;
+            text-align: center;
+        }
+
         .hit {
             position: relative;
             display: flex;
@@ -60,12 +66,10 @@
             flex-direction: column;
             gap: 4px;
             height: 100%;
-        }
 
-        .play {
-            color: #8d8d8d;
-            font-size: 14px;
-            text-align: center;
+            .play {
+                width: 100%;
+            }
         }
 
         .paidContent {
