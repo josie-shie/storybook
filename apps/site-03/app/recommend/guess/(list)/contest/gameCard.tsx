@@ -3,6 +3,7 @@ import { convertHandicap } from 'lib';
 import Link from 'next/link';
 import { useContestInfoStore } from '@/app/contestInfoStore';
 import { useFormattedTime } from '@/hooks/useFormattedTime';
+import defaultTeamLogo from '@/app/football/[matchId]/img/defaultTeamLogo.png';
 import MasterIcon from '../img/master.png';
 import { CompareOdds } from './compareOdds';
 import { useGuessContestListStore } from './contestStore';
@@ -32,7 +33,11 @@ function GameCard({ matchId }: { matchId: number }) {
                                 <Image
                                     alt=""
                                     height={20}
-                                    src={contestInfo.homeLogo === '0' ? '' : contestInfo.homeLogo}
+                                    src={
+                                        contestInfo.homeLogo === '0'
+                                            ? defaultTeamLogo.src
+                                            : contestInfo.homeLogo
+                                    }
                                     width={20}
                                 />
                                 {contestInfo.homeName}
@@ -41,7 +46,11 @@ function GameCard({ matchId }: { matchId: number }) {
                                 <Image
                                     alt=""
                                     height={20}
-                                    src={contestInfo.awayLogo === '0' ? '' : contestInfo.awayLogo}
+                                    src={
+                                        contestInfo.awayLogo === '0'
+                                            ? defaultTeamLogo.src
+                                            : contestInfo.awayLogo
+                                    }
                                     width={20}
                                 />
                                 {contestInfo.awayName}
