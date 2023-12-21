@@ -3,8 +3,9 @@ import Image from 'next/image';
 import 'swiper/css/pagination';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import type { Swiper as SwiperClass } from 'swiper';
-import { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
+import { Navigation, Pagination, Scrollbar, A11y, EffectFade } from 'swiper';
 import { useState } from 'react';
+import { motion } from 'framer-motion';
 import style from './dashboard.module.scss';
 import backgroundImage from './img/tutorial/background.png';
 import handicapTopBar from './img/tutorial/handicapTopBar.png';
@@ -25,6 +26,7 @@ import bodanTopTable from './img/tutorial/bodanTopTable.png';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/scrollbar';
+import 'swiper/css/effect-fade';
 
 interface ImageType {
     height: number;
@@ -41,6 +43,11 @@ function TutorialSection({
     bottomImages?: ImageType[];
     extraBottomImage?: ImageType;
 }) {
+    const fadeInOut = {
+        hidden: { opacity: 0 },
+        visible: { opacity: 1 }
+    };
+
     return (
         <div className={style.images}>
             <div className={style.tutorialTop}>
@@ -51,11 +58,30 @@ function TutorialSection({
             {bottomImages ? (
                 <div className={style.tutorialBottom}>
                     {bottomImages.map((img, index) => (
-                        <Image alt="" key={`${index.toString()}`} {...img} />
+                        <motion.div
+                            animate="visible"
+                            exit="hidden"
+                            initial="hidden"
+                            key={`${index.toString()}`}
+                            transition={{ duration: 0.5, delay: 0.8 }}
+                            variants={fadeInOut}
+                        >
+                            <Image alt="" {...img} />
+                        </motion.div>
                     ))}
                 </div>
             ) : null}
-            {extraBottomImage ? <Image alt="" {...extraBottomImage} /> : null}
+            {extraBottomImage ? (
+                <motion.div
+                    animate="visible"
+                    exit="hidden"
+                    initial="hidden"
+                    transition={{ duration: 0.5, delay: 1.5 }}
+                    variants={fadeInOut}
+                >
+                    <Image alt="" {...extraBottomImage} />
+                </motion.div>
+            ) : null}
         </div>
     );
 }
@@ -63,7 +89,7 @@ function TutorialSection({
 function Bodan() {
     const topImages = [
         {
-            className: style.highlightImage,
+            className: `${style.highlightImage} ${style.bodanAnimation}`,
             height: 35,
             src: bodanTopTable.src,
             width: 130,
@@ -77,7 +103,12 @@ function Bodan() {
 
 function Range() {
     const topImages = [
-        { className: style.highlightImage, height: 199, src: goalRangeTopChart.src, width: 227 },
+        {
+            className: `${style.highlightImage} ${style.rangeAnimation}`,
+            height: 199,
+            src: goalRangeTopChart.src,
+            width: 227
+        },
         { height: 272, src: goalRangeTop.src, width: 330 }
     ];
     const bottomImages = [
@@ -90,7 +121,12 @@ function Range() {
 
 function Minutes() {
     const topImages = [
-        { className: style.highlightImage, height: 160, src: minutesChart.src, width: 134 },
+        {
+            className: `${style.highlightImage} ${style.minutesAnimation}`,
+            height: 160,
+            src: minutesChart.src,
+            width: 134
+        },
         { height: 290, src: minutesTop.src, width: 330 }
     ];
     const bottomImages = [
@@ -103,7 +139,12 @@ function Minutes() {
 
 function Handicap() {
     const topImages = [
-        { className: style.highlightImage, height: 277, src: handicapTopBar.src, width: 66 },
+        {
+            className: `${style.highlightImage} ${style.handicapAnimation}`,
+            height: 277,
+            src: handicapTopBar.src,
+            width: 66
+        },
         { height: 377, src: handicapTop.src, width: 330 }
     ];
     const bottomImages = [
@@ -124,8 +165,10 @@ function Handicap() {
 function Tutorial({ setDefaultPageIndex }: { setDefaultPageIndex: (val: number) => void }) {
     const [closeTutorial, setCloseTutorial] = useState(false);
     const [bottomText, setBottomText] = useState('跳过');
+    const [currentIndex, setCurrentIndex] = useState(0);
 
     const handleSlideChange = (swiper: SwiperClass) => {
+        setCurrentIndex(swiper.activeIndex);
         setDefaultPageIndex(swiper.activeIndex);
         if (swiper.activeIndex === 3) {
             setBottomText('关闭');
@@ -148,30 +191,31 @@ function Tutorial({ setDefaultPageIndex }: { setDefaultPageIndex: (val: number) 
             }}
         >
             <Swiper
-                modules={[Navigation, Pagination, Scrollbar, A11y]}
+                effect="fade"
+                fadeEffect={{ crossFade: true }}
+                modules={[Navigation, Pagination, Scrollbar, A11y, EffectFade]}
                 onSlideChange={handleSlideChange}
                 pagination={{ clickable: true }}
                 slidesPerView={1}
                 style={{ height: 'calc(100vh - 100px)' }}
             >
                 <SwiperSlide>
+                    {/* 需要判斷index不然預設全部渲染就沒有動畫效果 */}
+                    <div className={style.slide}>{currentIndex === 0 && <Handicap />}</div>
+                </SwiperSlide>
+                <SwiperSlide>
                     <div className={style.slide}>
-                        <Handicap />
+                        <div className={style.slide}>{currentIndex === 1 && <Minutes />}</div>
                     </div>
                 </SwiperSlide>
                 <SwiperSlide>
                     <div className={style.slide}>
-                        <Minutes />
+                        <div className={style.slide}>{currentIndex === 2 && <Range />}</div>
                     </div>
                 </SwiperSlide>
                 <SwiperSlide>
                     <div className={style.slide}>
-                        <Range />
-                    </div>
-                </SwiperSlide>
-                <SwiperSlide>
-                    <div className={style.slide}>
-                        <Bodan />
+                        <div className={style.slide}>{currentIndex === 3 && <Bodan />}</div>
                     </div>
                 </SwiperSlide>
             </Swiper>
