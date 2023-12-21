@@ -144,7 +144,10 @@ function MasterPlan() {
                             <div className={style.mask}>
                                 <button
                                     onClick={() => {
-                                        handleUnlockTrendDialogOpen(10, 'single');
+                                        handleUnlockTrendDialogOpen(
+                                            highWinRateTrend.unlockPrice,
+                                            'single'
+                                        );
                                     }}
                                     type="button"
                                 >
