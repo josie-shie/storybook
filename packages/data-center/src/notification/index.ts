@@ -112,7 +112,7 @@ export const deleteMailMember = async ({
     mailMemberIds
 }: DeleteMailMemberRequest): Promise<ReturnData<null>> => {
     try {
-        const res: { data: null; errors: { message: string }[] } = await fetcher(
+        const res: { data: null; errors?: { message: string }[] } = await fetcher(
             {
                 data: {
                     query: DELETE_MAIL_MEMBER_MUTATION,
@@ -125,7 +125,7 @@ export const deleteMailMember = async ({
             },
             { cache: 'no-store' }
         );
-        if (res.errors[0].message) {
+        if (res.errors?.[0].message) {
             throw new Error(res.errors[0].message);
         }
         return { success: true, data: res.data };
