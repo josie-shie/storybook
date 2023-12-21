@@ -40,7 +40,7 @@ function ForgetPassword() {
     const { sendCodeSuccess, setSendCodeSuccess, countDownNumber, setCountDownNumber } =
         registerStore;
 
-    const { control, formState, handleSubmit, watch } = useForm({
+    const { control, formState, handleSubmit, watch, reset } = useForm({
         resolver: yupResolver(schema),
         defaultValues: {
             mobileNumber: '',
@@ -87,6 +87,7 @@ function ForgetPassword() {
 
         setSendCodeSuccess(true);
         setCountDown();
+        reset();
     };
 
     const setCountDown = () => {
