@@ -59,9 +59,7 @@ function Profile() {
                         />
                         <div className={style.totalNumber}>
                             {isLogin && typeof userInfo.balance === 'number' ? (
-                                <Link href="/userInfo">
-                                    {formatNumberWithCommas(userInfo.balance)}
-                                </Link>
+                                <>{formatNumberWithCommas(userInfo.balance)}</>
                             ) : (
                                 <div
                                     className={style.loginButton}
