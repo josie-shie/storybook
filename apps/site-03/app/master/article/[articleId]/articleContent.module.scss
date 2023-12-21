@@ -31,6 +31,7 @@
             font-weight: 600;
             color: #222;
             text-align: left;
+            word-break: break-all;
 
             &::before {
                 content: '';

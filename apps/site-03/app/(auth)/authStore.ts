@@ -122,8 +122,8 @@ const initialState = (set: (updater: (state: AuthState) => Partial<AuthState>) =
         setSendCodeSuccess: (sendCodeSuccess: boolean) => {
             set(state => {
                 return {
-                    register: {
-                        ...state.register,
+                    forgetPassword: {
+                        ...state.forgetPassword,
                         sendCodeSuccess
                     }
                 };
@@ -133,8 +133,8 @@ const initialState = (set: (updater: (state: AuthState) => Partial<AuthState>) =
         setCountDownNumber: (countDownNumber: number) => {
             set(state => {
                 return {
-                    register: {
-                        ...state.register,
+                    forgetPassword: {
+                        ...state.forgetPassword,
                         countDownNumber
                     }
                 };
@@ -146,8 +146,8 @@ const initialState = (set: (updater: (state: AuthState) => Partial<AuthState>) =
         setSendCodeSuccess: (sendCodeSuccess: boolean) => {
             set(state => {
                 return {
-                    register: {
-                        ...state.register,
+                    changePassword: {
+                        ...state.changePassword,
                         sendCodeSuccess
                     }
                 };
@@ -157,8 +157,8 @@ const initialState = (set: (updater: (state: AuthState) => Partial<AuthState>) =
         setCountDownNumber: (countDownNumber: number) => {
             set(state => {
                 return {
-                    register: {
-                        ...state.register,
+                    changePassword: {
+                        ...state.changePassword,
                         countDownNumber
                     }
                 };

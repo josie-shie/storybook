@@ -36,7 +36,7 @@ function ChangePassword() {
     const { sendCodeSuccess, setSendCodeSuccess, countDownNumber, setCountDownNumber } =
         changePasswordStore;
 
-    const { control, formState, handleSubmit, watch } = useForm({
+    const { control, formState, handleSubmit, watch, reset } = useForm({
         resolver: yupResolver(schema),
         defaultValues: {
             verificationCode: '',
@@ -63,6 +63,7 @@ function ChangePassword() {
 
         setIsDrawerOpen(false);
         setIsVisible('修改密码成功！', 'success');
+        reset();
     };
 
     const getVerificationCode = async () => {

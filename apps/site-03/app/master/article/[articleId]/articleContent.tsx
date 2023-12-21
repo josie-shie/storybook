@@ -4,8 +4,9 @@ import Image from 'next/image';
 import { timestampToMonthDay, timestampToString, convertHandicap } from 'lib';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { type GetPostDetailResponse, type RecommendPost } from 'data-center';
+import { type GetPostDetailResponse, getMemberInfo, type RecommendPost } from 'data-center';
 import { getPostList, payForPost } from 'data-center';
+import Cookies from 'js-cookie';
 import { useUserStore } from '@/app/userStore';
 import NormalDialog from '@/components/normalDialog/normalDialog';
 import type { GuessType } from '@/types/predict';
@@ -41,8 +42,9 @@ function Content({ article }: { article: GetPostDetailResponse }) {
 interface ArticleContentProps {
     article: GetPostDetailResponse;
     params: { articleId: string };
+    fetchPostDetail: () => void;
 }
-function ArticleContent({ params, article }: ArticleContentProps) {
+function ArticleContent({ params, article, fetchPostDetail }: ArticleContentProps) {
     const [openPaid, setOpenPaid] = useState(false);
     const [openDialog, setOpenDialog] = useState(false);
     const [recommendationList, setRecommendationList] = useState<RecommendPost[]>([]);
@@ -50,8 +52,14 @@ function ArticleContent({ params, article }: ArticleContentProps) {
     const router = useRouter();
 
     const userInfo = useUserStore.use.userInfo();
+    const setUserInfo = useUserStore.use.setUserInfo();
 
     const unlockArticle = () => {
+        const isCookieExist = Cookies.get('access');
+        if (!isCookieExist) {
+            router.push(`/master/article/${params.articleId}?auth=login`);
+            return;
+        }
         setOpenPaid(true);
     };
 
@@ -67,12 +75,21 @@ function ArticleContent({ params, article }: ArticleContentProps) {
             if (!res.success) {
                 return new Error();
             }
-            void fetchData();
+            fetchPostDetail();
+            void getUser();
         } catch (error) {
             return new Error();
         } finally {
             setOpenPaid(false);
         }
+    };
+
+    const getUser = async () => {
+        const res = await getMemberInfo();
+        if (!res.success) {
+            return new Error();
+        }
+        setUserInfo(res.data);
     };
 
     const filterImage = (value: GuessType): string => {
@@ -100,21 +117,17 @@ function ArticleContent({ params, article }: ArticleContentProps) {
     };
 
     const fetchData = async () => {
-        try {
-            const res = await getPostList({
-                memberId: userInfo.uid,
-                filterId: [article.mentorId],
-                postFilter: ['mentor'],
-                pageSize: 20
-            });
+        const res = await getPostList({
+            memberId: userInfo.uid ? userInfo.uid : 1,
+            filterId: [article.mentorId],
+            postFilter: ['mentor'],
+            pageSize: 20
+        });
 
-            if (!res.success) {
-                return new Error();
-            }
-            setRecommendationList(res.data.posts);
-        } catch (error) {
+        if (!res.success) {
             return new Error();
         }
+        setRecommendationList(res.data.posts);
     };
 
     useEffect(() => {

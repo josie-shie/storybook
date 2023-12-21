@@ -6,6 +6,7 @@ import { getMatchDetail, getGuessProportion, addGuess } from 'data-center';
 import { useParams } from 'next/navigation';
 import { useAuthStore } from '@/app/(auth)/authStore';
 import { useUserStore } from '@/app/userStore';
+import defaultTeamLogo from '@/app/football/[matchId]/img/defaultTeamLogo.png';
 import { useGuessDetailStore } from './guessDetailStore';
 import style from './vsBox.module.scss';
 import selectDecoration from './img/select.png';
@@ -172,6 +173,7 @@ function BettingColumn({ detail, leftLabel, rightLabel }: BettingProps) {
 
 function VsBox() {
     const matchId = useParams().matchId;
+    const isLogin = useUserStore.use.isLogin();
     const userInfo = useUserStore.use.userInfo();
     const detailInfo = useGuessDetailStore.use.detail();
     const setDetailInfo = useGuessDetailStore.use.setDetail();
@@ -200,7 +202,7 @@ function VsBox() {
             const matchDetail = await getMatchDetail(Number(matchId));
             const guessProportion = await getGuessProportion({
                 matchId: Number(matchId),
-                memberId: userInfo.uid
+                memberId: isLogin ? userInfo.uid : 1
             });
             if (matchDetail.success && guessProportion.success) {
                 const baseData = matchDetail.data;
@@ -233,7 +235,7 @@ function VsBox() {
             }
         }
         void fetchMatchDetail();
-    }, [matchId, userInfo.uid]);
+    }, [matchId, isLogin, userInfo.uid]);
 
     return (
         <div className={style.vsBox}>
@@ -245,7 +247,11 @@ function VsBox() {
                     <Image
                         alt=""
                         height={48}
-                        src={detailInfo.homeTeamLogo === '0' ? '' : detailInfo.homeTeamLogo}
+                        src={
+                            detailInfo.homeTeamLogo === '0'
+                                ? defaultTeamLogo.src
+                                : detailInfo.homeTeamLogo
+                        }
                         width={48}
                     />
                     <div className={style.name}>{detailInfo.homeTeamName}</div>
@@ -255,7 +261,11 @@ function VsBox() {
                     <Image
                         alt=""
                         height={48}
-                        src={detailInfo.awayTeamLogo === '0' ? '' : detailInfo.awayTeamLogo}
+                        src={
+                            detailInfo.awayTeamLogo === '0'
+                                ? defaultTeamLogo.src
+                                : detailInfo.awayTeamLogo
+                        }
                         width={48}
                     />
                     <div className={style.name}>{detailInfo.awayTeamName}</div>

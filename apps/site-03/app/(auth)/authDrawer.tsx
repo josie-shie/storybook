@@ -14,6 +14,7 @@ import headerBg from './components/authComponent/img/headerBg.jpeg';
 import closeIcon from './components/authComponent/img/closeIcon.png';
 import style from './authDrawer.module.scss';
 import { useAuthStore } from './authStore';
+import backIcon from './components/authComponent/img/backIcon.png';
 
 function AuthDrawer() {
     const pathname = usePathname();
@@ -129,6 +130,18 @@ function AuthDrawer() {
                         src={closeIcon.src}
                         width={16}
                     />
+                    {['register', 'forgetPassword'].includes(authQuery) && (
+                        <Image
+                            alt=""
+                            className={style.backBtn}
+                            height={16}
+                            onClick={() => {
+                                setAuthQuery('login');
+                            }}
+                            src={backIcon.src}
+                            width={16}
+                        />
+                    )}
                     {authContent}
                 </div>
             </div>

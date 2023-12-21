@@ -10,6 +10,7 @@ import Image from 'next/image';
 import Tag from '@/components/tag/tag';
 import Avatar from '@/components/avatar/avatar';
 import Fire from '@/app/img/fire.png';
+import NoData from '@/components/baseNoData/noData';
 import WeekButton from '../components/weekButton/weekButton';
 import { useUserStore } from '../../userStore';
 import style from './expertList.module.scss';
@@ -166,12 +167,18 @@ function MasterList() {
     }, [userInfo.uid, isActive]);
 
     return (
-        <div className={style.master}>
-            <WeekButton isActive={isActive} updateActive={updateActive} />
-            <div className={style.expertLayout}>
-                <ExpertItem mentorList={mentorList} setMentorList={setMentorList} />
-            </div>
-        </div>
+        <>
+            {mentorList.length > 0 ? (
+                <div className={style.master}>
+                    <WeekButton isActive={isActive} updateActive={updateActive} />
+                    <div className={style.expertLayout}>
+                        <ExpertItem mentorList={mentorList} setMentorList={setMentorList} />
+                    </div>
+                </div>
+            ) : (
+                <NoData />
+            )}
+        </>
     );
 }
 

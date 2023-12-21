@@ -5,6 +5,7 @@ import { getProDistrib, getProGuess, payForProDistrib, payForProGuess } from 'da
 import { useParams, useRouter } from 'next/navigation';
 import PaidDialog from '@/components/paidDialog/paidDialog';
 import { useUserStore } from '@/app/userStore';
+import { useAuthStore } from '@/app/(auth)/authStore';
 import BaseNoData from '@/components/baseNoData/noData';
 import Rule from './components/rule/rule';
 import GameCard from './gameCard';
@@ -22,15 +23,19 @@ function MasterPlan() {
     const [amount, setAmount] = useState(0);
     const [plan, setPlan] = useState(false);
 
+    const isLogin = useUserStore.use.isLogin();
     const userInfo = useUserStore.use.userInfo();
     const userBalance = userInfo.balance;
     const highWinRateTrend = useGuessDetailStore.use.highWinRateTrend();
     const masterPlanList = useGuessDetailStore.use.masterPlanList();
+    const masterPlanPrice = useGuessDetailStore.use.masterPlanPrice();
 
     const setUserInfo = useUserStore.use.setUserInfo();
     const setHighWinRateTrend = useGuessDetailStore.use.setHighWinRateTrend();
     const setMasterPlanPrice = useGuessDetailStore.use.setMasterPlanPrice();
     const setMasterPlanList = useGuessDetailStore.use.setMasterPlanList();
+    const setIsDrawerOpen = useAuthStore.use.setIsDrawerOpen();
+    const setAuthQuery = useUserStore.use.setAuthQuery();
 
     const handleUnlockTrendDialogOpen = (newAmount: number, getPlan: string) => {
         if (getPlan === 'single') {
@@ -102,15 +107,16 @@ function MasterPlan() {
     };
 
     useEffect(() => {
+        const memberId = isLogin ? userInfo.uid : 1;
         async function fetchProDistrib() {
-            const proDistribution = await getProDistrib({ matchId: Number(matchId), memberId: 16 });
+            const proDistribution = await getProDistrib({ matchId: Number(matchId), memberId });
             if (proDistribution.success) {
                 const data = proDistribution.data;
                 setHighWinRateTrend(data);
             }
         }
         async function fetchProGuess() {
-            const proGuess = await getProGuess({ matchId: Number(matchId), memberId: 16 });
+            const proGuess = await getProGuess({ matchId: Number(matchId), memberId });
             if (proGuess.success) {
                 const data = proGuess.data;
                 setMasterPlanList(data.proGuess);
@@ -121,7 +127,7 @@ function MasterPlan() {
         }
         void fetchProDistrib();
         void fetchProGuess();
-    }, [matchId]);
+    }, [isLogin, matchId, userInfo.uid]);
 
     return (
         <div className={style.masterPlan}>
@@ -144,7 +150,15 @@ function MasterPlan() {
                             <div className={style.mask}>
                                 <button
                                     onClick={() => {
-                                        handleUnlockTrendDialogOpen(10, 'single');
+                                        if (!isLogin) {
+                                            setAuthQuery('login');
+                                            setIsDrawerOpen(true);
+                                            return;
+                                        }
+                                        handleUnlockTrendDialogOpen(
+                                            highWinRateTrend.unlockPrice,
+                                            'single'
+                                        );
                                     }}
                                     type="button"
                                 >
@@ -159,6 +173,11 @@ function MasterPlan() {
                                 {/* 訂閱方案流程待改 */}
                                 <button
                                     onClick={() => {
+                                        if (!isLogin) {
+                                            setAuthQuery('login');
+                                            setIsDrawerOpen(true);
+                                            return;
+                                        }
                                         handleUnlockTrendDialogOpen(200, 'monthly');
                                     }}
                                     type="button"
@@ -189,7 +208,12 @@ function MasterPlan() {
                             <GameCard
                                 key={idx}
                                 onOpenPaidDialog={() => {
-                                    handleLocalClickOpen(el.guessId, 20, 'single');
+                                    if (!isLogin) {
+                                        setAuthQuery('login');
+                                        setIsDrawerOpen(true);
+                                        return;
+                                    }
+                                    handleLocalClickOpen(el.guessId, masterPlanPrice, 'single');
                                 }}
                                 plan={el}
                             />

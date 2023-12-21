@@ -391,6 +391,7 @@ export const getMentorList = async (
 
 export type PostFilter =
     | 'league'
+    | 'country'
     | 'match'
     | 'mentor'
     | 'all'

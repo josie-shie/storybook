@@ -66,3 +66,67 @@ export const formatContestMap = (currentInfo: FilterInfo, filterKey: keyof Conte
     }
     return newArr;
 };
+
+interface CountryList {
+    countryId: number;
+    countryName: string;
+}
+
+interface LeagueList {
+    leagueId: number;
+    leagueName: string;
+}
+
+interface CurrentArticleFilter {
+    country: CountryList[];
+    leagues: LeagueList[];
+}
+
+interface FormattedArticleFilterData {
+    league: FilterMap;
+    country: FilterMap;
+}
+
+export const formatArticleFilterMap = (
+    currentArticleFilter: CurrentArticleFilter
+): FormattedArticleFilterData => {
+    const countryMap: Record<string, number> = {};
+    const leaguesMap: Record<string, number> = {};
+
+    for (const country of currentArticleFilter.country) {
+        countryMap[country.countryName] = country.countryId;
+    }
+
+    for (const league of currentArticleFilter.leagues) {
+        leaguesMap[league.leagueName] = league.leagueId;
+    }
+
+    const formattedCountries = currentArticleFilter.country.reduce<Record<string, string[]>>(
+        (acc, country) => {
+            const initial = pinyin(country.countryName, { toneType: 'none' })[0].toUpperCase();
+            if (!(initial in acc)) {
+                acc[initial] = [];
+            }
+            acc[initial].push(country.countryName);
+            return acc;
+        },
+        {}
+    );
+
+    const formattedLeagues = currentArticleFilter.leagues.reduce<Record<string, string[]>>(
+        (acc, league) => {
+            const initial = pinyin(league.leagueName, { toneType: 'none' })[0].toUpperCase();
+            if (!(initial in acc)) {
+                acc[initial] = [];
+            }
+            acc[initial].push(league.leagueName);
+            return acc;
+        },
+        {}
+    );
+
+    return {
+        country: { infoObj: formattedCountries, countMap: countryMap },
+        league: { infoObj: formattedLeagues, countMap: leaguesMap }
+    };
+};

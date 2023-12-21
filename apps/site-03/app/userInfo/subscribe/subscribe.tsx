@@ -174,7 +174,7 @@ function Subscribe({ backHistory }: { backHistory: boolean }) {
                         高级会员方案
                         <Image alt="" height={4} src={lineRight} width={28} />
                     </div>
-                    <Image alt="" className={style.vip} src={Vip} />
+                    <Image alt="" className={style.vip} onClick={handleVipClick} src={Vip} />
                     {memberSubscribeStatus.planId !== 1 && (
                         <div className={style.block}>
                             <button

@@ -5,6 +5,7 @@ import { FormControl } from '@mui/material';
 import type { ForgetPasswordRequest } from 'data-center';
 import { forgetPasswordReset, sendVerificationCode } from 'data-center';
 import { useNotificationStore } from '@/app/notificationStore';
+import { useUserStore } from '@/app/userStore';
 import {
     CountryCodeInput,
     PasswordInput,
@@ -34,12 +35,12 @@ const schema = yup.object().shape({
 
 function ForgetPassword() {
     const registerStore = useAuthStore.use.register();
-    const setIsDrawerOpen = useAuthStore.use.setIsDrawerOpen();
     const setIsVisible = useNotificationStore.use.setIsVisible();
+    const setAuthQuery = useUserStore.use.setAuthQuery();
     const { sendCodeSuccess, setSendCodeSuccess, countDownNumber, setCountDownNumber } =
         registerStore;
 
-    const { control, formState, handleSubmit, watch } = useForm({
+    const { control, formState, handleSubmit, watch, reset } = useForm({
         resolver: yupResolver(schema),
         defaultValues: {
             mobileNumber: '',
@@ -61,13 +62,13 @@ function ForgetPassword() {
         const res = await forgetPasswordReset(data);
 
         if (!res.success) {
-            const errorMessage = res.error ? res.error : '提交失败，请确认资料无误';
+            const errorMessage = res.error ? res.error : '密码设定失败，请确认资料无误';
             setIsVisible(errorMessage, 'error');
             return;
         }
 
-        setIsDrawerOpen(false);
-        setIsVisible('提交成功！', 'success');
+        setIsVisible('密码设定成功！', 'success');
+        setAuthQuery('login');
     };
 
     const getVerificationCode = async () => {
@@ -86,6 +87,7 @@ function ForgetPassword() {
 
         setSendCodeSuccess(true);
         setCountDown();
+        reset();
     };
 
     const setCountDown = () => {

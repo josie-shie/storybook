@@ -32,9 +32,7 @@ function Datepicker({
 }) {
     const [startDate, setStartDate] = useState<Date | null>(new Date());
     const [endDate, setEndDate] = useState<Date | null>(new Date());
-
     const maxDate = dayjs().subtract(1, 'day').toDate();
-    const minDate = dayjs().subtract(91, 'day').toDate();
 
     const closeModal = () => {
         setOpenModal(false);
@@ -83,7 +81,6 @@ function Datepicker({
                     inline
                     locale="zh-CN"
                     maxDate={maxDate}
-                    minDate={minDate}
                     onChange={dates => {
                         const [start, end] = dates;
                         setStartDate(start);
