@@ -41,7 +41,7 @@ function RecordContent({ setPage, page }: ContentProps) {
             {guessRecordList.length > 0 ? (
                 <>
                     {guessRecordList.map(item => (
-                        <RecordCard key={item.recordMemberId} recordItem={item} />
+                        <RecordCard key={item.matchId} recordItem={item} />
                     ))}
                     {guessRecordList.length < pagination.totalCount ? (
                         <InfiniteScroll onVisible={loadMoreList}>

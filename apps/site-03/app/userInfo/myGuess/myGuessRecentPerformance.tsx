@@ -3,6 +3,8 @@ import { ProgressBar } from 'ui';
 import { useEffect, useState } from 'react';
 import ReactEcharts from 'echarts-for-react';
 import { getMemberIndividualGuess } from 'data-center';
+import Loading from '@/components/loading/loading';
+import { useUserStore } from '@/app/userStore';
 import {
     useMyGuessStore,
     type RecentPerformance,
@@ -10,8 +12,6 @@ import {
     type PerformanceDetail
 } from './myGuessStore';
 import style from './myGuess.module.scss';
-import Loading from '@/components/loading/loading';
-import { useUserStore } from '@/app/userStore';
 
 const dateActiveMap = {
     byWeek: { display: '周', value: 'byWeek' },
@@ -37,7 +37,9 @@ function ReactEchartsComponent({
             showContent: false
         },
         title: {
-            text: `{large|${myGuessData.rank}} \n${dateType}排名`,
+            text: `{large|${
+                myGuessData.rank === 0 ? '1000+' : myGuessData.rank
+            }} \n${dateType}排名`,
             left: '46%',
             top: '47%',
             textAlign: 'center',
@@ -48,7 +50,7 @@ function ReactEchartsComponent({
                 lineHeight: 20,
                 rich: {
                     large: {
-                        fontSize: 24,
+                        fontSize: 20,
                         fontWeight: 'bold'
                     }
                 }
@@ -79,17 +81,17 @@ function ReactEchartsComponent({
                     {
                         value: myGuessData[focusDetail].win,
                         name: 'Plan1',
-                        itemStyle: { color: '#F3F3F3', borderWidth: 2, borderColor: '#fff' }
+                        itemStyle: { color: '#ED3A45', borderWidth: 2, borderColor: '#fff' }
                     },
                     {
                         value: myGuessData[focusDetail].draw,
                         name: 'Plan2',
-                        itemStyle: { color: '#BFBFBF', borderWidth: 2, borderColor: '#fff' }
+                        itemStyle: { color: '#F3F3F3', borderWidth: 2, borderColor: '#fff' }
                     },
                     {
                         value: myGuessData[focusDetail].lose,
                         name: 'Plan3',
-                        itemStyle: { color: '#ED3A45', borderWidth: 2, borderColor: '#fff' }
+                        itemStyle: { color: '#BFBFBF', borderWidth: 2, borderColor: '#fff' }
                     }
                 ]
             }
@@ -98,11 +100,11 @@ function ReactEchartsComponent({
     return <ReactEcharts option={chartOption} style={{ width: 120, height: 120 }} />;
 }
 
-function PerformenceBar({ guessDetail }: { guessDetail: PerformanceDetail }) {
+function PerformanceBar({ guessDetail }: { guessDetail: PerformanceDetail }) {
     const formatRate = (lose: number, win: number) => {
         if (lose === 0 && win === 0) return 0;
         const winRate = (win / (lose + win)) * 100;
-        return Number.isInteger(winRate) ? winRate : winRate.toFixed(1);
+        return Number.isInteger(winRate) ? winRate : Number(winRate.toFixed(1));
     };
     return (
         <>
@@ -119,19 +121,20 @@ function PerformenceBar({ guessDetail }: { guessDetail: PerformanceDetail }) {
                     胜率
                     {formatRate(guessDetail.lose, guessDetail.win)}%
                 </div>
+                <div>{guessDetail.win}</div>
                 <ProgressBar
                     background="#8D8D8D"
                     gapSize="small"
                     height={4}
                     radius
-                    value={guessDetail.win}
+                    value={formatRate(guessDetail.lose, guessDetail.win)}
                 />
             </div>
         </>
     );
 }
 
-function RecentPerformenceContent({ dateActiveTab }: { dateActiveTab: string }) {
+function RecentPerformanceContent({ dateActiveTab }: { dateActiveTab: string }) {
     const [focusDetail, setFocusDetail] = useState<FocusDetailType>('summary');
 
     const handleChangeFocusDetail = (value: FocusDetailType) => {
@@ -156,7 +159,7 @@ function RecentPerformenceContent({ dateActiveTab }: { dateActiveTab: string }) 
                         handleChangeFocusDetail('summary');
                     }}
                 >
-                    <PerformenceBar guessDetail={myGuessData.summary} />
+                    <PerformanceBar guessDetail={myGuessData.summary} />
                 </div>
                 <div
                     className={`${style.detailBlock} ${
@@ -166,7 +169,7 @@ function RecentPerformenceContent({ dateActiveTab }: { dateActiveTab: string }) 
                         handleChangeFocusDetail('size');
                     }}
                 >
-                    <PerformenceBar guessDetail={myGuessData.handicap} />
+                    <PerformanceBar guessDetail={myGuessData.handicap} />
                 </div>
                 <div
                     className={`${style.detailBlock} ${
@@ -176,14 +179,14 @@ function RecentPerformenceContent({ dateActiveTab }: { dateActiveTab: string }) 
                         handleChangeFocusDetail('handicap');
                     }}
                 >
-                    <PerformenceBar guessDetail={myGuessData.size} />
+                    <PerformanceBar guessDetail={myGuessData.size} />
                 </div>
             </div>
         </>
     );
 }
 
-function MyGuessRecentPerformence() {
+function MyGuessRecentPerformance() {
     const [dateActiveTab, setDateActiveTab] = useState(dateActiveMap.byWeek.value);
     const handleTabClick = (tabName: string) => {
         setDateActiveTab(tabName);
@@ -224,15 +227,15 @@ function MyGuessRecentPerformence() {
             </div>
             <div className={style.recentGames}>
                 {isPerformanceLoading ? (
-                    <div className={style.loderBox}>
+                    <div className={style.loaderBox}>
                         <Loading />
                     </div>
                 ) : (
-                    <RecentPerformenceContent dateActiveTab={dateActiveTab} />
+                    <RecentPerformanceContent dateActiveTab={dateActiveTab} />
                 )}
             </div>
         </>
     );
 }
 
-export default MyGuessRecentPerformence;
+export default MyGuessRecentPerformance;
