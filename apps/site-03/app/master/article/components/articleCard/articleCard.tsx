@@ -34,7 +34,7 @@ function ArticleCard({ article }: { article: RecommendPost }) {
                         {article.tag.winMaxAccurateStreak > 0 && (
                             <Tag
                                 icon={<IconFlame size={10} />}
-                                text={`${article.tag.winMaxAccurateStreak}連紅`}
+                                text={`${article.tag.winMaxAccurateStreak} 連紅`}
                             />
                         )}
                         {article.tag.weekRanking > 0 && (

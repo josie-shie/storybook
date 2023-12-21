@@ -25,11 +25,13 @@
             font-size: 14px;
             font-weight: 600;
             color: #4a4a4a;
-            height: 40px;
+            max-height: 40px;
             display: -webkit-box;
             -webkit-box-orient: vertical;
             -webkit-line-clamp: 2;
             overflow: hidden;
+            word-break: break-all;
+            padding-right: 4px;
         }
     }
 
