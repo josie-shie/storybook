@@ -71,7 +71,7 @@ function InfoTabs({ params }: { params: { memberId: string } }) {
 
     useEffect(() => {
         void fetchGuess();
-    }, [status]);
+    }, []);
 
     return (
         <div className={style.infoTabs}>
