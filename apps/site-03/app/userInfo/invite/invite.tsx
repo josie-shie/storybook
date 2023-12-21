@@ -78,11 +78,11 @@ function Invite() {
                     <div className={style.bounsArea}>
                         <Image alt="friend" height={104} src={Friend} width={260} />
                         <div className={style.title}>
-                            <span>邀請好友領福利</span>
-                            <span>多邀多得無上限</span>
+                            <span>邀请好友领福利</span>
+                            <span>多邀多得无上限</span>
                             <span>
-                                每邀請一人，最高獲得<span className={style.money}>88元</span>
-                                現金紅包
+                                每邀请一人，最高获得<span className={style.money}>88元</span>
+                                现金红包
                             </span>
                         </div>
                         <div className={style.success}>
@@ -107,7 +107,7 @@ function Invite() {
                                 const host = window.location.host;
                                 const baseUrl = `${protocol}//${host}`;
                                 void coypLink(
-                                    `${userInfo.username}邀請您一起獲得<未來體育平台(站名)>88元紅包,點擊網址後註冊加入即可獲得最新賽事預測、賽事智能分析服務: ${baseUrl}/?auth=register&invitCode=${inviteCode}`
+                                    `${userInfo.username}邀请您一起获得<未来体育平台(站名)>88元红包,点击网址后注册加入即可获得最新赛事预测、赛事智能分析服务: ${baseUrl}/?auth=register&invitCode=${inviteCode}`
                                 );
                             }}
                         >
@@ -137,7 +137,7 @@ function Invite() {
                                 <li>
                                     若出现不正当手段获取奖励，经核实后，本平台有权取消该用户参与本活动的资格，并对其帐号进行封禁；同时有权收回活动中所发放的奖励，拒绝赋予其今后参加本公司任何活动的权利，并追究相关法律责任
                                 </li>
-                                <li>本活動規則最終解釋權歸本平台運營團隊所有</li>
+                                <li>本活动规则最终解释权归本平台运营团队所有</li>
                             </ol>
                         </div>
                     </div>
