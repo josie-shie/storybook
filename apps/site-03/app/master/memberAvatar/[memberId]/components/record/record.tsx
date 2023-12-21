@@ -16,18 +16,20 @@ function Record({ individualGuessInfo }: { individualGuessInfo: MemberIndividual
             showContent: false
         },
         title: {
-            text: `${individualGuessInfo.rank} \n周排名`,
+            text: `{large|${
+                individualGuessInfo.rank === 0 ? '1000+' : individualGuessInfo.rank
+            }} \n周排名`,
             left: '46%',
             top: '47%',
             textAlign: 'center',
             textVerticalAlign: 'middle',
             textStyle: {
-                fontSize: 12, // 調整字體大小
+                fontSize: 18, // 調整字體大小
                 fontWeight: 'bold',
                 lineHeight: 20,
                 rich: {
                     large: {
-                        fontSize: 24,
+                        fontSize: 20,
                         fontWeight: 'bold'
                     }
                 }
