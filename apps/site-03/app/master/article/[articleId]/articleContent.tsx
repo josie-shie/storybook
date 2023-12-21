@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { type GetPostDetailResponse, type RecommendPost } from 'data-center';
 import { getPostList, payForPost } from 'data-center';
+import Cookies from 'js-cookie';
 import { useUserStore } from '@/app/userStore';
 import NormalDialog from '@/components/normalDialog/normalDialog';
 import type { GuessType } from '@/types/predict';
@@ -41,8 +42,9 @@ function Content({ article }: { article: GetPostDetailResponse }) {
 interface ArticleContentProps {
     article: GetPostDetailResponse;
     params: { articleId: string };
+    fetchPostDetail: () => void;
 }
-function ArticleContent({ params, article }: ArticleContentProps) {
+function ArticleContent({ params, article, fetchPostDetail }: ArticleContentProps) {
     const [openPaid, setOpenPaid] = useState(false);
     const [openDialog, setOpenDialog] = useState(false);
     const [recommendationList, setRecommendationList] = useState<RecommendPost[]>([]);
@@ -52,6 +54,11 @@ function ArticleContent({ params, article }: ArticleContentProps) {
     const userInfo = useUserStore.use.userInfo();
 
     const unlockArticle = () => {
+        const isCookieExist = Cookies.get('access');
+        if (!isCookieExist) {
+            router.push(`/master/article/${params.articleId}?auth=login`);
+            return;
+        }
         setOpenPaid(true);
     };
 
@@ -67,7 +74,7 @@ function ArticleContent({ params, article }: ArticleContentProps) {
             if (!res.success) {
                 return new Error();
             }
-            void fetchData();
+            fetchPostDetail();
         } catch (error) {
             return new Error();
         } finally {
