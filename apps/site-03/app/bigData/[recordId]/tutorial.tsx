@@ -166,6 +166,7 @@ function Tutorial({ setDefaultPageIndex }: { setDefaultPageIndex: (val: number) 
     const [closeTutorial, setCloseTutorial] = useState(false);
     const [bottomText, setBottomText] = useState('跳过');
     const [currentIndex, setCurrentIndex] = useState(0);
+    const showAnalysisTutorial = localStorage.getItem('showAnalysisTutorial');
 
     const handleSlideChange = (swiper: SwiperClass) => {
         setCurrentIndex(swiper.activeIndex);
@@ -179,6 +180,7 @@ function Tutorial({ setDefaultPageIndex }: { setDefaultPageIndex: (val: number) 
 
     const handleClose = () => {
         setCloseTutorial(true);
+        showAnalysisTutorial === null && localStorage.setItem('showAnalysisTutorial', 'false');
     };
 
     return (

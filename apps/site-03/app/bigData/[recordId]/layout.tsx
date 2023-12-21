@@ -13,8 +13,11 @@ function CreateStore({
     resultData: GetFootballStatsReportResponse;
     children: ReactNode;
 }) {
+    const showAnalysisTutorial = localStorage.getItem('showAnalysisTutorial');
+
     createAnalysisResultStore({
-        analysisResultData: resultData
+        analysisResultData: resultData,
+        showTutorial: !showAnalysisTutorial
     });
 
     creatMatchFilterStore({
