@@ -67,7 +67,7 @@ function FormField({
 
 function Account() {
     const headerProps = {
-        title: '个人資料'
+        title: '个人资料'
     };
     const router = useRouter();
     const userInfo = useUserStore.use.userInfo();
@@ -131,7 +131,7 @@ function Account() {
                     setImgUpload(data.filePath);
                     setIsVisible('上传成功', 'success');
                 } else {
-                    setIsVisible('上传失敗', 'error');
+                    setIsVisible('上传失败', 'error');
                 }
             } catch (error) {
                 console.error('上传图片过程中发生错误', error);
@@ -220,7 +220,7 @@ function Account() {
                         width={72}
                     />
                     <label className={style.uploadBtn}>
-                        編輯頭像
+                        编辑头像
                         <input
                             accept="image/*"
                             onChange={uploadImg}
@@ -228,7 +228,7 @@ function Account() {
                             type="file"
                         />
                     </label>
-                    <p>*圖片規格為100*100</p>
+                    <p>*图片规格为100*100</p>
                 </div>
                 <form onSubmit={handleSubmit}>
                     <FormField
@@ -243,7 +243,7 @@ function Account() {
                     <div className={style.dateInput}>
                         <FormField
                             disabled
-                            label="出生日期："
+                            label="生日: "
                             name="birthday"
                             onChange={handleInputChange}
                             placeholder="新增"
