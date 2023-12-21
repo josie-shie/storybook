@@ -52,7 +52,7 @@ function Rank() {
     useEffect(() => {
         async function fetchGuessRank() {
             const memberRank = await getGuessRank({
-                memberId: userInfo.uid,
+                memberId: isLogin ? userInfo.uid : 1,
                 rankType: rankTypeMap[currentPeriod]
             });
             if (memberRank.success) {
@@ -62,7 +62,7 @@ function Rank() {
             }
         }
         void fetchGuessRank();
-    }, [currentPeriod]);
+    }, [currentPeriod, isLogin]);
 
     return (
         <div className={style.rank}>

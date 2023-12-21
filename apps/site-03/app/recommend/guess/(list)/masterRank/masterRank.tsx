@@ -14,6 +14,7 @@ import { creatMasterRankStore, useMasterRankStore } from './masterRankStore';
 import style from './masterRank.module.scss';
 
 function UserMasterRank() {
+    const isLogin = useUserStore.use.isLogin();
     const userInfo = useUserStore.use.userInfo();
     const memberInfo = useMasterRankStore.use.member();
     const setMember = useMasterRankStore.use.setMember();
@@ -22,7 +23,7 @@ function UserMasterRank() {
     useEffect(() => {
         async function fetchMasterRank() {
             const masterRank = await getGuessRank({
-                memberId: userInfo.uid,
+                memberId: isLogin ? userInfo.uid : 1,
                 rankType: 3
             });
             if (masterRank.success) {
@@ -32,7 +33,7 @@ function UserMasterRank() {
             }
         }
         void fetchMasterRank();
-    }, []);
+    }, [isLogin]);
 
     return (
         <div className={style.userHotStreak}>
