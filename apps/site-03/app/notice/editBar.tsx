@@ -44,6 +44,22 @@ function EditBar() {
         }
     };
 
+    const handleSelectAll = () => {
+        if (pathName === 'notice') {
+            setSelected(0, 'allMail');
+        } else {
+            setSelected(0, 'allChat');
+        }
+    };
+
+    const handleCounterSelect = () => {
+        if (pathName === 'notice') {
+            setSelected(0, 'counterMail');
+        } else {
+            setSelected(0, 'counterChat');
+        }
+    };
+
     useEffect(() => {
         const handleRes = (res: MessageResponse) => {
             if (res.action === 'delete_private_room') {
@@ -67,7 +83,7 @@ function EditBar() {
             <div className={style.group}>
                 <Button
                     onClick={() => {
-                        setSelected(0, 'clear');
+                        handleCounterSelect();
                     }}
                     size="small"
                     variant="outlined"
@@ -76,7 +92,7 @@ function EditBar() {
                 </Button>
                 <Button
                     onClick={() => {
-                        setSelected(0, 'allMail');
+                        handleSelectAll();
                     }}
                     size="small"
                     variant="outlined"
