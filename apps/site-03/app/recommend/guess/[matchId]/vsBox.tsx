@@ -172,6 +172,7 @@ function BettingColumn({ detail, leftLabel, rightLabel }: BettingProps) {
 
 function VsBox() {
     const matchId = useParams().matchId;
+    const isLogin = useUserStore.use.isLogin();
     const userInfo = useUserStore.use.userInfo();
     const detailInfo = useGuessDetailStore.use.detail();
     const setDetailInfo = useGuessDetailStore.use.setDetail();
@@ -200,7 +201,7 @@ function VsBox() {
             const matchDetail = await getMatchDetail(Number(matchId));
             const guessProportion = await getGuessProportion({
                 matchId: Number(matchId),
-                memberId: userInfo.uid
+                memberId: isLogin ? userInfo.uid : 1
             });
             if (matchDetail.success && guessProportion.success) {
                 const baseData = matchDetail.data;
@@ -233,7 +234,7 @@ function VsBox() {
             }
         }
         void fetchMatchDetail();
-    }, [matchId, userInfo.uid]);
+    }, [matchId, isLogin, userInfo.uid]);
 
     return (
         <div className={style.vsBox}>
