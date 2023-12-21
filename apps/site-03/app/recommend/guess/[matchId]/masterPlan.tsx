@@ -22,6 +22,7 @@ function MasterPlan() {
     const [amount, setAmount] = useState(0);
     const [plan, setPlan] = useState(false);
 
+    const isLogin = useUserStore.use.isLogin();
     const userInfo = useUserStore.use.userInfo();
     const userBalance = userInfo.balance;
     const highWinRateTrend = useGuessDetailStore.use.highWinRateTrend();
@@ -102,15 +103,16 @@ function MasterPlan() {
     };
 
     useEffect(() => {
+        const memberId = isLogin ? userInfo.uid : 1;
         async function fetchProDistrib() {
-            const proDistribution = await getProDistrib({ matchId: Number(matchId), memberId: 16 });
+            const proDistribution = await getProDistrib({ matchId: Number(matchId), memberId });
             if (proDistribution.success) {
                 const data = proDistribution.data;
                 setHighWinRateTrend(data);
             }
         }
         async function fetchProGuess() {
-            const proGuess = await getProGuess({ matchId: Number(matchId), memberId: 16 });
+            const proGuess = await getProGuess({ matchId: Number(matchId), memberId });
             if (proGuess.success) {
                 const data = proGuess.data;
                 setMasterPlanList(data.proGuess);
@@ -121,7 +123,7 @@ function MasterPlan() {
         }
         void fetchProDistrib();
         void fetchProGuess();
-    }, [matchId]);
+    }, [isLogin, matchId, userInfo.uid]);
 
     return (
         <div className={style.masterPlan}>
