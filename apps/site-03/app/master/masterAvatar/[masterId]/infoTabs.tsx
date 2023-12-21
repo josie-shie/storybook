@@ -27,6 +27,7 @@ function InfoTabs({
 }) {
     const searchParams = useSearchParams();
     const status = searchParams.get('status');
+    const [guessLength, setGuessLength] = useState<number>(0);
     const [dateActiveTab, setDateActiveTab] = useState<DateTab>('byWeek');
     const [planActiveTab, setPlanActiveTab] = useState<Tab>(0);
     const [individualGuess, setIndividualGuess] = useState({} as GetMemberIndividualGuessResponse);
@@ -152,7 +153,7 @@ function InfoTabs({
                         <Record individualGuessInfo={individualGuessInfo} />
                     </div>
                     <div className={style.title}>
-                        <span>方案</span>
+                        <span>專家猜球方案({guessLength})</span>
                         <div className={style.tabText}>
                             <span
                                 className={planActiveTab === 0 ? style.active : ''}
@@ -181,7 +182,10 @@ function InfoTabs({
                         </div>
                     </div>
                     <div>
-                        <BettingPlan planActiveTab={planActiveTab} />
+                        <BettingPlan
+                            planActiveTab={planActiveTab}
+                            setGuessLength={setGuessLength}
+                        />
                     </div>
                 </div>
             )}

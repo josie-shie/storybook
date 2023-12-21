@@ -10,7 +10,13 @@ import style from './bettingPlan.module.scss';
 
 type Tab = 0 | 1 | 2;
 
-function BettingPlan({ planActiveTab }: { planActiveTab: Tab }) {
+function BettingPlan({
+    planActiveTab,
+    setGuessLength
+}: {
+    planActiveTab: Tab;
+    setGuessLength: (val: number) => void;
+}) {
     const [guessMatchesList, setGuessMatchesList] = useState<MemberIndividualGuessMatch[]>([]);
 
     const fetchData = async () => {
@@ -26,6 +32,7 @@ function BettingPlan({ planActiveTab }: { planActiveTab: Tab }) {
         }
 
         setGuessMatchesList(res.data.guessMatchList);
+        setGuessLength(res.data.guessMatchList.length);
     };
 
     const filterIcon = {
