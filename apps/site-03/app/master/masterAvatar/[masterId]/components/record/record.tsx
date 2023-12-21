@@ -1,6 +1,7 @@
 import { ProgressBar } from 'ui';
 import ReactEcharts from 'echarts-for-react';
 import { type MemberIndividualGuessRecord } from 'data-center';
+import { useState } from 'react';
 import style from './record.module.scss';
 
 const formatRate = (lose: number, win: number) => {
@@ -9,7 +10,15 @@ const formatRate = (lose: number, win: number) => {
     return Number.isInteger(winRate) ? winRate : winRate.toFixed(1);
 };
 
+const tabMap = {
+    summary: 'summary',
+    handicap: 'handicap',
+    size: 'size'
+};
+
 function Record({ individualGuessInfo }: { individualGuessInfo: MemberIndividualGuessRecord }) {
+    const [showTab, setShowTab] = useState<string>('summary');
+
     const chartOption = {
         tooltip: {
             trigger: 'item',
@@ -58,17 +67,17 @@ function Record({ individualGuessInfo }: { individualGuessInfo: MemberIndividual
                 },
                 data: [
                     {
-                        value: 548,
+                        value: individualGuessInfo[showTab as keyof typeof tabMap].win,
                         name: 'Plan1',
                         itemStyle: { color: '#F3F3F3', borderWidth: 2, borderColor: '#fff' }
                     },
                     {
-                        value: 415,
+                        value: individualGuessInfo[showTab as keyof typeof tabMap].draw,
                         name: 'Plan2',
                         itemStyle: { color: '#BFBFBF', borderWidth: 2, borderColor: '#fff' }
                     },
                     {
-                        value: 680,
+                        value: individualGuessInfo[showTab as keyof typeof tabMap].lose,
                         name: 'Plan3',
                         itemStyle: { color: '#ED3A45', borderWidth: 2, borderColor: '#fff' }
                     }
@@ -82,7 +91,12 @@ function Record({ individualGuessInfo }: { individualGuessInfo: MemberIndividual
             <ReactEcharts option={chartOption} style={{ width: 120, height: 120 }} />
 
             <div className={style.detailContainer}>
-                <div className={`${style.detailBlock} ${style.focusDetail}`}>
+                <div
+                    className={`${style.detailBlock} ${showTab === 'summary' && style.focusDetail}`}
+                    onClick={() => {
+                        setShowTab('summary');
+                    }}
+                >
                     <div className={style.top}>
                         <div className={style.total}>共{individualGuessInfo.summary.play}场</div>
                         <div className={style.percentage}>
@@ -116,7 +130,14 @@ function Record({ individualGuessInfo }: { individualGuessInfo: MemberIndividual
                         />
                     </div>
                 </div>
-                <div className={style.detailBlock}>
+                <div
+                    className={`${style.detailBlock}  ${
+                        showTab === 'handicap' && style.focusDetail
+                    }`}
+                    onClick={() => {
+                        setShowTab('handicap');
+                    }}
+                >
                     <div className={style.top}>
                         <div className={style.total}>讓球{individualGuessInfo.handicap.play}场</div>
                         <div className={style.percentage}>
@@ -150,7 +171,12 @@ function Record({ individualGuessInfo }: { individualGuessInfo: MemberIndividual
                         />
                     </div>
                 </div>
-                <div className={style.detailBlock}>
+                <div
+                    className={`${style.detailBlock} ${showTab === 'size' && style.focusDetail}`}
+                    onClick={() => {
+                        setShowTab('size');
+                    }}
+                >
                     <div className={style.top}>
                         <div className={style.total}>大小25场</div>
                         <div className={style.percentage}>
