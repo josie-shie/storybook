@@ -19,22 +19,22 @@ const CategoryList = [
         label: '赛事',
         value: '/',
         includedRouters: ['/news'],
-        icon: <Image alt="" className={style.icon} src={gameIcon} />,
-        activedIcon: <Image alt="" className={style.icon} src={activeGame} />
+        icon: <Image alt="" height={24} src={gameIcon} width={24} />,
+        activedIcon: <Image alt="" height={24} src={activeGame} width={24} />
     },
     {
         label: '猜球',
         value: '/recommend/guess',
         includedRouters: ['/recommend/guess'],
-        icon: <Image alt="" className={style.icon} src={guessIcon} />,
-        activedIcon: <Image alt="" className={style.icon} src={activeGuess} />
+        icon: <Image alt="" height={24} src={guessIcon} width={24} />,
+        activedIcon: <Image alt="" height={24} src={activeGuess} width={24} />
     },
     {
         label: '智能分析',
         value: '/bigData?status=analysis',
         includedRouters: ['/bigData'],
-        icon: <Image alt="" className={style.icon} src={analyzeIcon} />,
-        activedIcon: <Image alt="" className={style.icon} src={activeAnalyze} />
+        icon: <Image alt="" height={24} src={analyzeIcon} width={24} />,
+        activedIcon: <Image alt="" height={24} src={activeAnalyze} width={24} />
     },
     {
         label: '专家',
@@ -45,15 +45,15 @@ const CategoryList = [
             '/master/masterAvatar',
             '/master/memberAvatar'
         ],
-        icon: <Image alt="" className={style.icon} src={recommendIcon} />,
-        activedIcon: <Image alt="" className={style.icon} src={activeRecommend} />
+        icon: <Image alt="" height={24} src={recommendIcon} width={24} />,
+        activedIcon: <Image alt="" height={24} src={activeRecommend} width={24} />
     },
     {
         label: '数据',
         value: '/analytics',
         includedRouters: ['/analytics'],
-        icon: <Image alt="" className={style.icon} src={dataIcon} />,
-        activedIcon: <Image alt="" className={style.icon} src={activeData} />
+        icon: <Image alt="" height={24} src={dataIcon} width={24} />,
+        activedIcon: <Image alt="" height={24} src={activeData} width={24} />
     }
 ];
 

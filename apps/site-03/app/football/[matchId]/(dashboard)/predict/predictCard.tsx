@@ -4,8 +4,8 @@ import { handleMatchDateTime } from 'lib';
 import { useRouter } from 'next/navigation';
 import Tag from '@/components/tag/tag';
 import Avatar from '@/components/avatar/avatar';
-import style from './predict.module.scss';
 import hotIcon from './img/hot.png';
+import style from './predict.module.scss';
 import coinIcon from './img/coin.png';
 
 function PredictCard({ predictInfo }: { predictInfo: RecommendPost }) {
@@ -33,11 +33,30 @@ function PredictCard({ predictInfo }: { predictInfo: RecommendPost }) {
                     <div className={style.avatarBar}>
                         <h3 className={style.mentorName}>{predictInfo.mentorName}</h3>
                         <div className={style.tag}>
-                            <Tag
-                                icon={<Image alt="" height={10} src={hotIcon} width={8} />}
-                                text="9连红"
-                            />
-                            <Tag background="#4489FF" color="#FFF" text="月榜 10" />
+                            {predictInfo.tag.winMaxAccurateStreak > 0 && (
+                                <Tag
+                                    icon={<Image alt="" height={10} src={hotIcon} width={8} />}
+                                    text={`${predictInfo.tag.winMaxAccurateStreak}連紅`}
+                                />
+                            )}
+                            {predictInfo.tag.quarterRanking > 0 && (
+                                <Tag
+                                    background="#4489FF"
+                                    text={`季榜 ${predictInfo.tag.quarterRanking}`}
+                                />
+                            )}
+                            {predictInfo.tag.monthRanking > 0 && (
+                                <Tag
+                                    background="#4489FF"
+                                    text={`月榜 ${predictInfo.tag.monthRanking}`}
+                                />
+                            )}
+                            {predictInfo.tag.weekRanking > 0 && (
+                                <Tag
+                                    background="#4489FF"
+                                    text={`周榜 ${predictInfo.tag.weekRanking}`}
+                                />
+                            )}
                         </div>
                     </div>
                 </div>
