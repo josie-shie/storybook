@@ -22,12 +22,14 @@ const calculatePercentage = (a: number, b: number) => {
 };
 
 function Guess({ play, isLogin }: GuessProps) {
+    const userInfo = useUserStore.use.userInfo();
     const matchId = Number(useParams().matchId);
     const guessTypeLabel = {
         HANDICAP: { left: '主', right: '客' },
         OVERUNDER: { left: '大', right: '小' }
     };
     const guessProportion = useContestDetailStore.use.guessProportion();
+    const setGuessProportion = useContestDetailStore.use.setGuessProportion();
     const setIsDrawerOpen = useAuthStore.use.setIsDrawerOpen();
     const setAuthQuery = useUserStore.use.setAuthQuery();
 
@@ -56,6 +58,7 @@ function Guess({ play, isLogin }: GuessProps) {
             const res = await addGuess({ matchId, predictedPlay: guessWay });
             if (res.success) {
                 // set global remainingGuessTimes
+                void fetchGuessProportion();
             } else {
                 // TODO : 競猜錯誤
             }
@@ -64,10 +67,16 @@ function Guess({ play, isLogin }: GuessProps) {
             const res = await addGuess({ matchId, predictedPlay: guessWay });
             if (res.success) {
                 // set global remainingGuessTimes
+                void fetchGuessProportion();
             } else {
                 // TODO : 競猜錯誤
             }
         }
+    };
+
+    const fetchGuessProportion = async () => {
+        const newGuessProportion = await getGuessProportion({ matchId, memberId: userInfo.uid });
+        if (newGuessProportion.success) setGuessProportion(newGuessProportion.data);
     };
 
     return (

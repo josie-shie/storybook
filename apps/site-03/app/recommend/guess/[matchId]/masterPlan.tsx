@@ -5,6 +5,7 @@ import { getProDistrib, getProGuess, payForProDistrib, payForProGuess } from 'da
 import { useParams, useRouter } from 'next/navigation';
 import PaidDialog from '@/components/paidDialog/paidDialog';
 import { useUserStore } from '@/app/userStore';
+import { useAuthStore } from '@/app/(auth)/authStore';
 import BaseNoData from '@/components/baseNoData/noData';
 import Rule from './components/rule/rule';
 import GameCard from './gameCard';
@@ -27,11 +28,14 @@ function MasterPlan() {
     const userBalance = userInfo.balance;
     const highWinRateTrend = useGuessDetailStore.use.highWinRateTrend();
     const masterPlanList = useGuessDetailStore.use.masterPlanList();
+    const masterPlanPrice = useGuessDetailStore.use.masterPlanPrice();
 
     const setUserInfo = useUserStore.use.setUserInfo();
     const setHighWinRateTrend = useGuessDetailStore.use.setHighWinRateTrend();
     const setMasterPlanPrice = useGuessDetailStore.use.setMasterPlanPrice();
     const setMasterPlanList = useGuessDetailStore.use.setMasterPlanList();
+    const setIsDrawerOpen = useAuthStore.use.setIsDrawerOpen();
+    const setAuthQuery = useUserStore.use.setAuthQuery();
 
     const handleUnlockTrendDialogOpen = (newAmount: number, getPlan: string) => {
         if (getPlan === 'single') {
@@ -146,6 +150,11 @@ function MasterPlan() {
                             <div className={style.mask}>
                                 <button
                                     onClick={() => {
+                                        if (!isLogin) {
+                                            setAuthQuery('login');
+                                            setIsDrawerOpen(true);
+                                            return;
+                                        }
                                         handleUnlockTrendDialogOpen(
                                             highWinRateTrend.unlockPrice,
                                             'single'
@@ -164,6 +173,11 @@ function MasterPlan() {
                                 {/* 訂閱方案流程待改 */}
                                 <button
                                     onClick={() => {
+                                        if (!isLogin) {
+                                            setAuthQuery('login');
+                                            setIsDrawerOpen(true);
+                                            return;
+                                        }
                                         handleUnlockTrendDialogOpen(200, 'monthly');
                                     }}
                                     type="button"
@@ -194,7 +208,12 @@ function MasterPlan() {
                             <GameCard
                                 key={idx}
                                 onOpenPaidDialog={() => {
-                                    handleLocalClickOpen(el.guessId, 20, 'single');
+                                    if (!isLogin) {
+                                        setAuthQuery('login');
+                                        setIsDrawerOpen(true);
+                                        return;
+                                    }
+                                    handleLocalClickOpen(el.guessId, masterPlanPrice, 'single');
                                 }}
                                 plan={el}
                             />
