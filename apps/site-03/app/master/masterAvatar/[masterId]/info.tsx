@@ -3,6 +3,8 @@ import { useEffect, useState } from 'react';
 import { getMentorList, type GetMentor } from 'data-center';
 import { unFollow, updateFollow } from 'data-center';
 import Image from 'next/image';
+import Cookies from 'js-cookie';
+import { useRouter } from 'next/navigation';
 import Avatar from '@/components/avatar/avatar';
 import Tag from '@/components/tag/tag';
 import { useUserStore } from '@/app/userStore';
@@ -58,9 +60,16 @@ function Info({ params }: { params: { masterId: string } }) {
         }
     } as GetMentor);
 
+    const router = useRouter();
+
     const userInfo = useUserStore.use.userInfo();
 
     const onIsFocused = async (id: number, follow: boolean) => {
+        const isCookieExist = Cookies.get('access');
+        if (!isCookieExist) {
+            router.push(`/master/masterAvatar/${params.masterId}?status=analysis&auth=login`);
+            return;
+        }
         const res = follow
             ? await unFollow({ followerId: userInfo.uid, followedId: id })
             : await updateFollow({ followerId: userInfo.uid, followedId: id });

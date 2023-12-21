@@ -11,6 +11,7 @@ import {
 } from 'data-center';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import Cookies from 'js-cookie';
 import Avatar from '@/components/avatar/avatar';
 import Tag from '@/components/tag/tag';
 import Fire from '@/app/img/fire.png';
@@ -39,22 +40,23 @@ function MasterItem({ params }: { params: { masterId } }) {
     };
 
     const onIsFocused = async (id: number, follow: boolean) => {
-        try {
-            const res = follow
-                ? await unFollow({ followerId: Number(params.masterId) || 1, followedId: id })
-                : await updateFollow({ followerId: Number(params.masterId) || 1, followedId: id });
-            if (!res.success) {
-                return new Error();
-            }
-
-            setMasterItem(prevData =>
-                prevData.map(item =>
-                    item.memberId === id ? { ...item, isFollowed: !item.isFollowed } : item
-                )
-            );
-        } catch (error) {
+        const isCookieExist = Cookies.get('access');
+        if (!isCookieExist) {
+            router.push(`/master/masterAvatar/${params.masterId}?status=focus&auth=login`);
+            return;
+        }
+        const res = follow
+            ? await unFollow({ followerId: Number(params.masterId) || 1, followedId: id })
+            : await updateFollow({ followerId: Number(params.masterId) || 1, followedId: id });
+        if (!res.success) {
             return new Error();
         }
+
+        setMasterItem(prevData =>
+            prevData.map(item =>
+                item.memberId === id ? { ...item, isFollowed: !item.isFollowed } : item
+            )
+        );
     };
 
     const goMasterPredict = async (id: number) => {

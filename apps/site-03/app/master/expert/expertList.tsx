@@ -7,6 +7,7 @@ import { type MentorFilter, type GetMentorListResponse } from 'data-center';
 import { getMentorList, unFollow, updateFollow } from 'data-center';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import Cookies from 'js-cookie';
 import Tag from '@/components/tag/tag';
 import Avatar from '@/components/avatar/avatar';
 import Fire from '@/app/img/fire.png';
@@ -26,22 +27,23 @@ function ExpertItem({ mentorList, setMentorList }: ExpertItemProps) {
     const router = useRouter();
 
     const onFocused = async (isFollow: boolean, id: number) => {
-        try {
-            const res = isFollow
-                ? await unFollow({ followerId: userInfo.uid, followedId: id })
-                : await updateFollow({ followerId: userInfo.uid, followedId: id });
-            if (!res.success) {
-                return new Error();
-            }
-
-            setMentorList(prevData =>
-                prevData.map(item =>
-                    item.memberId === id ? { ...item, isFollowed: !item.isFollowed } : item
-                )
-            );
-        } catch (error) {
+        const isCookieExist = Cookies.get('access');
+        if (!isCookieExist) {
+            router.push('/master/expert/?auth=login');
+            return;
+        }
+        const res = isFollow
+            ? await unFollow({ followerId: userInfo.uid, followedId: id })
+            : await updateFollow({ followerId: userInfo.uid, followedId: id });
+        if (!res.success) {
             return new Error();
         }
+
+        setMentorList(prevData =>
+            prevData.map(item =>
+                item.memberId === id ? { ...item, isFollowed: !item.isFollowed } : item
+            )
+        );
     };
 
     const goMasterPredict = (id: number) => {

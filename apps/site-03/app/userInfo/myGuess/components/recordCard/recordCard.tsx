@@ -90,11 +90,14 @@ function RecordCard({ recordItem }: { recordItem: RecordItem }) {
             <div className={style.paid}>
                 <div className={style.hit}>
                     {iconMap[`BIG${recordItem.predictionResult}`]}
-                    <div className={style.play}>{playDisplay(recordItem)}</div>
+                    <div className={style.play}>
+                        {playDisplay(recordItem)}
+                        {['AWAY', 'HOME'].includes(recordItem.predictedPlay) ? '球' : ''}
+                    </div>
                     <div className={style.paidContent}>
                         <div
                             className={`${style.play} ${
-                                recordItem.predictionResult === 'WIN' && style.WIN
+                                recordItem.predictionResult === 'WIN' && style.win
                             }`}
                         >
                             {guessMap[recordItem.predictedPlay]}
