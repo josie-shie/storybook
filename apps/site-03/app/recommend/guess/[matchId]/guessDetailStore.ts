@@ -1,6 +1,7 @@
 import { initStore } from 'lib';
 import type { StoreWithSelectors } from 'lib';
 import type { GetProDistribResponse, ProGuess } from 'data-center';
+import defaultTeamLogo from '@/app/football/[matchId]/img/defaultTeamLogo.png';
 
 // 競猜詳情 上半部預測
 export interface DetailType {
@@ -45,9 +46,9 @@ const initialState = (set: (data: Partial<GuessDetailState>) => void) => ({
     detail: {
         leagueName: '',
         dateTime: 1678880400,
-        homeTeamLogo: '',
+        homeTeamLogo: defaultTeamLogo.src,
         homeTeamName: '-',
-        awayTeamLogo: '',
+        awayTeamLogo: defaultTeamLogo.src,
         awayTeamName: '-',
         participants: 0,
         handicap: 0,
