@@ -10,6 +10,7 @@ import Cookies from 'js-cookie';
 import { useUserStore } from '@/app/userStore';
 import NormalDialog from '@/components/normalDialog/normalDialog';
 import type { GuessType } from '@/types/predict';
+import DefaultLogo from '../../../football/[matchId]/img/defaultTeamLogo.png';
 import Star from './img/star.png';
 import Push from './img/push.png';
 import Win from './img/win.png';
@@ -152,7 +153,11 @@ function ArticleContent({ params, article, fetchPostDetail }: ArticleContentProp
                                 <Image
                                     alt=""
                                     height={48}
-                                    src={article.homeTeam.logo === '0' ? '' : article.homeTeam.logo}
+                                    src={
+                                        article.homeTeam.logo === '0'
+                                            ? DefaultLogo
+                                            : article.homeTeam.logo
+                                    }
                                     width={48}
                                 />
                                 <div className={style.name}>{article.homeTeam.name}</div>
@@ -162,7 +167,11 @@ function ArticleContent({ params, article, fetchPostDetail }: ArticleContentProp
                                 <Image
                                     alt=""
                                     height={48}
-                                    src={article.awayTeam.logo === '0' ? '' : article.awayTeam.logo}
+                                    src={
+                                        article.awayTeam.logo === '0'
+                                            ? DefaultLogo
+                                            : article.awayTeam.logo
+                                    }
                                     width={48}
                                 />
                                 <div className={style.name}>{article.awayTeam.name}</div>

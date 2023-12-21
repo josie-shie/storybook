@@ -83,7 +83,7 @@ function AnalysisItem({ predictArticleList }: { predictArticleList: RecommendPos
                             </div>
                         </div>
                         <div className={style.postTime}>
-                            发表于 {timestampToMonthDay(item.createdAt)}
+                            发表于今天 {timestampToMonthDay(item.createdAt)}
                         </div>
                     </div>
                 );

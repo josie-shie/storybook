@@ -102,7 +102,18 @@ function Record({ individualGuessInfo }: { individualGuessInfo: MemberIndividual
                             )}
                             %
                         </div>
-                        <ProgressBar background="#8D8D8D" gapSize="small" height={4} radius />
+                        <ProgressBar
+                            background="#8D8D8D"
+                            gapSize="small"
+                            height={4}
+                            radius
+                            value={Number(
+                                formatRate(
+                                    individualGuessInfo.summary.lose,
+                                    individualGuessInfo.summary.win
+                                )
+                            )}
+                        />
                     </div>
                 </div>
                 <div className={style.detailBlock}>
@@ -125,7 +136,18 @@ function Record({ individualGuessInfo }: { individualGuessInfo: MemberIndividual
                             )}
                             %
                         </div>
-                        <ProgressBar background="#8D8D8D" gapSize="small" height={4} radius />
+                        <ProgressBar
+                            background="#8D8D8D"
+                            gapSize="small"
+                            height={4}
+                            radius
+                            value={Number(
+                                formatRate(
+                                    individualGuessInfo.handicap.lose,
+                                    individualGuessInfo.handicap.win
+                                )
+                            )}
+                        />
                     </div>
                 </div>
                 <div className={style.detailBlock}>
@@ -148,7 +170,18 @@ function Record({ individualGuessInfo }: { individualGuessInfo: MemberIndividual
                             )}
                             %
                         </div>
-                        <ProgressBar background="#8D8D8D" gapSize="small" height={4} radius />
+                        <ProgressBar
+                            background="#8D8D8D"
+                            gapSize="small"
+                            height={4}
+                            radius
+                            value={Number(
+                                formatRate(
+                                    individualGuessInfo.handicap.lose,
+                                    individualGuessInfo.handicap.win
+                                )
+                            )}
+                        />
                     </div>
                 </div>
             </div>
