@@ -4,6 +4,7 @@ import { type GetPostDetailResponse } from 'data-center';
 import type { Dispatch, SetStateAction } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import Cookies from 'js-cookie';
 import Avatar from '@/components/avatar/avatar';
 import Tag from '@/components/tag/tag';
 import Fire from '@/app/img/fire.png';
@@ -21,6 +22,11 @@ function Info({ article, setArticle }: InfoProps) {
     const router = useRouter();
 
     const onIsFocused = async (id: number, follow: boolean) => {
+        const isCookieExist = Cookies.get('access');
+        if (!isCookieExist) {
+            router.push('/master/expert/?auth=login');
+            return;
+        }
         const res = follow
             ? await unFollow({ followerId: userInfo.uid, followedId: id })
             : await updateFollow({ followerId: userInfo.uid, followedId: id });

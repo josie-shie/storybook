@@ -93,12 +93,9 @@ function InfoTabs({
     };
 
     useEffect(() => {
-        if (status === 'analysis') {
-            void fetchAnalysis();
-        } else if (status === 'guess') {
-            void fetchGuess();
-        }
-    }, [status]);
+        void fetchAnalysis();
+        void fetchGuess();
+    }, []);
 
     return (
         <div className={style.infoTabs}>

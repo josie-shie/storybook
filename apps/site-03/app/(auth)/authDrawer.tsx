@@ -60,7 +60,11 @@ function AuthDrawer() {
     const closeDrawer = () => {
         if (auth) {
             setAuthQuery('');
-            router.push(pathname);
+            router.push(
+                `${pathname}${
+                    searchParams.get('status') ? `?status=${searchParams.get('status')}` : ''
+                }`
+            );
         }
         setIsDrawerOpen(false);
         removeInvitCode();
