@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { timestampToMonthDay, timestampToString, convertHandicap } from 'lib';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { type GetPostDetailResponse, type RecommendPost } from 'data-center';
+import { type GetPostDetailResponse, getMemberInfo, type RecommendPost } from 'data-center';
 import { getPostList, payForPost } from 'data-center';
 import Cookies from 'js-cookie';
 import { useUserStore } from '@/app/userStore';
@@ -52,6 +52,7 @@ function ArticleContent({ params, article, fetchPostDetail }: ArticleContentProp
     const router = useRouter();
 
     const userInfo = useUserStore.use.userInfo();
+    const setUserInfo = useUserStore.use.setUserInfo();
 
     const unlockArticle = () => {
         const isCookieExist = Cookies.get('access');
@@ -75,11 +76,20 @@ function ArticleContent({ params, article, fetchPostDetail }: ArticleContentProp
                 return new Error();
             }
             fetchPostDetail();
+            void getUser();
         } catch (error) {
             return new Error();
         } finally {
             setOpenPaid(false);
         }
+    };
+
+    const getUser = async () => {
+        const res = await getMemberInfo();
+        if (!res.success) {
+            return new Error();
+        }
+        setUserInfo(res.data);
     };
 
     const filterImage = (value: GuessType): string => {
