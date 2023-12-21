@@ -100,21 +100,17 @@ function ArticleContent({ params, article }: ArticleContentProps) {
     };
 
     const fetchData = async () => {
-        try {
-            const res = await getPostList({
-                memberId: userInfo.uid,
-                filterId: [article.mentorId],
-                postFilter: ['mentor'],
-                pageSize: 20
-            });
+        const res = await getPostList({
+            memberId: userInfo.uid ? userInfo.uid : 1,
+            filterId: [article.mentorId],
+            postFilter: ['mentor'],
+            pageSize: 20
+        });
 
-            if (!res.success) {
-                return new Error();
-            }
-            setRecommendationList(res.data.posts);
-        } catch (error) {
+        if (!res.success) {
             return new Error();
         }
+        setRecommendationList(res.data.posts);
     };
 
     useEffect(() => {

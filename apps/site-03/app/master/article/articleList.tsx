@@ -81,7 +81,7 @@ function ArticleItem({ loadMoreList, articleList, currentPage, totalPage }: Arti
                                     <span className={style.unlocked}>已解鎖</span>
                                 ) : (
                                     <>
-                                        <UnlockButton />
+                                        <UnlockButton price={item.price} />
                                         <span className={style.unlockNumber}>
                                             已有{item.unlockCounts}人解鎖
                                         </span>

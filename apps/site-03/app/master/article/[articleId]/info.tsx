@@ -3,6 +3,7 @@ import { unFollow, updateFollow } from 'data-center';
 import { type GetPostDetailResponse } from 'data-center';
 import type { Dispatch, SetStateAction } from 'react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import Avatar from '@/components/avatar/avatar';
 import Tag from '@/components/tag/tag';
 import Fire from '@/app/img/fire.png';
@@ -17,28 +18,36 @@ interface InfoProps {
 function Info({ article, setArticle }: InfoProps) {
     const userInfo = useUserStore.use.userInfo();
 
-    const onIsFocused = async (id: number, follow: boolean) => {
-        try {
-            const res = follow
-                ? await unFollow({ followerId: userInfo.uid, followedId: id })
-                : await updateFollow({ followerId: userInfo.uid, followedId: id });
-            if (!res.success) {
-                return new Error();
-            }
+    const router = useRouter();
 
-            setArticle(prevData => ({
-                ...prevData,
-                followed: !prevData.followed
-            }));
-        } catch (error) {
+    const onIsFocused = async (id: number, follow: boolean) => {
+        const res = follow
+            ? await unFollow({ followerId: userInfo.uid, followedId: id })
+            : await updateFollow({ followerId: userInfo.uid, followedId: id });
+        if (!res.success) {
             return new Error();
         }
+
+        setArticle(prevData => ({
+            ...prevData,
+            followed: !prevData.followed
+        }));
+    };
+
+    const goMasterPredict = (id: number) => {
+        router.push(`/master/masterAvatar/${id}?status=analysis`);
     };
 
     return (
         <section className={style.info}>
             <div className={style.detail}>
-                <Avatar borderColor="#fff" size={54} src={article.mentorImage} />
+                <div
+                    onClick={() => {
+                        goMasterPredict(article.mentorId);
+                    }}
+                >
+                    <Avatar borderColor="#fff" size={54} src={article.mentorImage} />
+                </div>
                 <div className={style.content}>
                     <div className={style.top}>
                         <span className={style.name}>{article.mentorName}</span>
