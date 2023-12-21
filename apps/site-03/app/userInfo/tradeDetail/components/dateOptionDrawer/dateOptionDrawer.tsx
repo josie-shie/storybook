@@ -32,7 +32,7 @@ function DateRangeOption({
     const [isOpenDatePick, setIsOpenDatePick] = useState(false);
 
     const getStartDate = (type: string) => {
-        const today = dayjs().startOf('day').toDate().getTime();
+        const today = new Date().getTime();
         switch (type) {
             case 'ALL':
                 return [0, 0];
