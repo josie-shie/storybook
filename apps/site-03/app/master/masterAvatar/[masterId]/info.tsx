@@ -132,8 +132,8 @@ function Info({ params }: { params: { masterId: string } }) {
                         )}
                     </div>
                     <div className={style.bottom}>
-                        <span>粉絲: {info.fans}</span>
-                        <span>解鎖: {info.unlocked}</span>
+                        <span>粉丝: {info.fans}</span>
+                        <span>解锁: {info.unlocked}</span>
                         {Boolean(info.tags) && (
                             <span>
                                 近一季猜球胜率: {Math.round(info.tags.quarterHitRate * 100)}%
