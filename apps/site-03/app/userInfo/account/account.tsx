@@ -20,6 +20,7 @@ interface UploadResponse {
 }
 
 interface FormFieldProps {
+    disabled?: boolean;
     label: string;
     type: string;
     name: string;
@@ -29,7 +30,16 @@ interface FormFieldProps {
     submitted: boolean;
 }
 
-function FormField({ label, type, name, value, placeholder, onChange, submitted }: FormFieldProps) {
+function FormField({
+    label,
+    type,
+    name,
+    value,
+    placeholder,
+    onChange,
+    submitted,
+    disabled = false
+}: FormFieldProps) {
     let displayValue = value;
     if (name === 'birthday' && typeof value === 'number') {
         displayValue = timestampToString(value, 'YYYY-MM-DD');
@@ -43,6 +53,7 @@ function FormField({ label, type, name, value, placeholder, onChange, submitted 
         <div className={style.item}>
             <label htmlFor={name}>{label}：</label>
             <input
+                disabled={disabled}
                 id={name}
                 name={name}
                 onChange={onChange}
@@ -231,6 +242,7 @@ function Account() {
                     />
                     <div className={style.dateInput}>
                         <FormField
+                            disabled
                             label="出生日期："
                             name="birthday"
                             onChange={handleInputChange}

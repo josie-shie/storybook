@@ -11,22 +11,22 @@ interface PropsType {
 }
 
 const iconMap = {
-    win: <Image alt="icon" className={style.iconWin} src={BigWin} />,
-    lose: <Image alt="icon" className={style.iconDefeat} src={BigLose} />,
-    draw: <Image alt="icon" className={style.iconDefeat} src={BigGone} />,
-    none: null
+    WIN: <Image alt="icon" className={style.iconWin} src={BigWin} />,
+    LOSE: <Image alt="icon" className={style.iconDefeat} src={BigLose} />,
+    DRAW: <Image alt="icon" className={style.iconDefeat} src={BigGone} />,
+    NONE: null
 };
 
 const messageFormat = (predictedPlay: string, item: Plan) => {
     switch (predictedPlay) {
-        case 'over':
+        case 'OVER':
             return `${item.overUnderOdds} 大`;
-        case 'under':
+        case 'UNDER':
             return `${item.overUnderOdds} 小`;
-        case 'home':
-            return `${item.handicapOdds} ${item.homeTeamName}`;
-        case 'away':
-            return `${item.handicapOdds} ${item.awayTeamName}`;
+        case 'HOME':
+            return `${item.handicapInChinese} ${item.homeTeamName}`;
+        case 'AWAY':
+            return `${item.handicapInChinese} ${item.awayTeamName}`;
     }
 };
 
