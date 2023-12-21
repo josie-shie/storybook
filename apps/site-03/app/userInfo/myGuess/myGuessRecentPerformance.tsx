@@ -3,6 +3,8 @@ import { ProgressBar } from 'ui';
 import { useEffect, useState } from 'react';
 import ReactEcharts from 'echarts-for-react';
 import { getMemberIndividualGuess } from 'data-center';
+import Loading from '@/components/loading/loading';
+import { useUserStore } from '@/app/userStore';
 import {
     useMyGuessStore,
     type RecentPerformance,
@@ -10,8 +12,6 @@ import {
     type PerformanceDetail
 } from './myGuessStore';
 import style from './myGuess.module.scss';
-import Loading from '@/components/loading/loading';
-import { useUserStore } from '@/app/userStore';
 
 const dateActiveMap = {
     byWeek: { display: '周', value: 'byWeek' },
