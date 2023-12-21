@@ -60,6 +60,11 @@ function MasterItem({ params }: { params: { masterId } }) {
     };
 
     const goMasterPredict = async (id: number) => {
+        const isCookieExist = Cookies.get('access');
+        if (!isCookieExist) {
+            router.push(`/master/masterAvatar/${params.masterId}?status=focus&auth=login`);
+            return;
+        }
         const res = await getMentorList({
             memberId: userInfo.uid ? userInfo.uid : 1,
             mentorId: id
