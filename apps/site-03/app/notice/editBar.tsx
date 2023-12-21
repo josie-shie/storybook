@@ -44,6 +44,22 @@ function EditBar() {
         }
     };
 
+    const handleSelectAll = () => {
+        if (pathName === 'notice') {
+            setSelected(0, 'allMail');
+        } else {
+            setSelected(0, 'allChat');
+        }
+    };
+
+    const handleCounterSelect = () => {
+        if (pathName === 'notice') {
+            setSelected(0, 'counterMail');
+        } else {
+            setSelected(0, 'counterChat');
+        }
+    };
+
     useEffect(() => {
         const handleRes = (res: MessageResponse) => {
             if (res.action === 'delete_private_room') {
@@ -65,22 +81,10 @@ function EditBar() {
     return (
         <div className={`${style.editBar} ${editStatus && style.isEdit}`}>
             <div className={style.group}>
-                <Button
-                    onClick={() => {
-                        setSelected(0, 'clear');
-                    }}
-                    size="small"
-                    variant="outlined"
-                >
+                <Button onClick={handleCounterSelect} size="small" variant="outlined">
                     反選
                 </Button>
-                <Button
-                    onClick={() => {
-                        setSelected(0, 'allMail');
-                    }}
-                    size="small"
-                    variant="outlined"
-                >
+                <Button onClick={handleSelectAll} size="small" variant="outlined">
                     全選
                 </Button>
             </div>
