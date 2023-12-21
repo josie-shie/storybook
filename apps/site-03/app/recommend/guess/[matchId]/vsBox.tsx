@@ -6,6 +6,7 @@ import { getMatchDetail, getGuessProportion, addGuess } from 'data-center';
 import { useParams } from 'next/navigation';
 import { useAuthStore } from '@/app/(auth)/authStore';
 import { useUserStore } from '@/app/userStore';
+import defaultTeamLogo from '@/app/football/[matchId]/img/defaultTeamLogo.png';
 import { useGuessDetailStore } from './guessDetailStore';
 import style from './vsBox.module.scss';
 import selectDecoration from './img/select.png';
@@ -246,7 +247,11 @@ function VsBox() {
                     <Image
                         alt=""
                         height={48}
-                        src={detailInfo.homeTeamLogo === '0' ? '' : detailInfo.homeTeamLogo}
+                        src={
+                            detailInfo.homeTeamLogo === '0'
+                                ? defaultTeamLogo.src
+                                : detailInfo.homeTeamLogo
+                        }
                         width={48}
                     />
                     <div className={style.name}>{detailInfo.homeTeamName}</div>
@@ -256,7 +261,11 @@ function VsBox() {
                     <Image
                         alt=""
                         height={48}
-                        src={detailInfo.awayTeamLogo === '0' ? '' : detailInfo.awayTeamLogo}
+                        src={
+                            detailInfo.awayTeamLogo === '0'
+                                ? defaultTeamLogo.src
+                                : detailInfo.awayTeamLogo
+                        }
                         width={48}
                     />
                     <div className={style.name}>{detailInfo.awayTeamName}</div>
