@@ -41,8 +41,9 @@ function Content({ article }: { article: GetPostDetailResponse }) {
 interface ArticleContentProps {
     article: GetPostDetailResponse;
     params: { articleId: string };
+    fetchPostDetail: () => void;
 }
-function ArticleContent({ params, article }: ArticleContentProps) {
+function ArticleContent({ params, article, fetchPostDetail }: ArticleContentProps) {
     const [openPaid, setOpenPaid] = useState(false);
     const [openDialog, setOpenDialog] = useState(false);
     const [recommendationList, setRecommendationList] = useState<RecommendPost[]>([]);
@@ -67,7 +68,7 @@ function ArticleContent({ params, article }: ArticleContentProps) {
             if (!res.success) {
                 return new Error();
             }
-            void fetchData();
+            fetchPostDetail();
         } catch (error) {
             return new Error();
         } finally {

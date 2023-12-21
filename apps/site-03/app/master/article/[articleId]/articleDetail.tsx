@@ -98,7 +98,7 @@ function ArticleDetail({ params }: { params: { articleId: string } }) {
         title: '专家预测文章'
     };
 
-    const fetchData = async () => {
+    const fetchPostDetail = async () => {
         try {
             const res = await getPostDetail({ postId: Number(params.articleId) });
             if (!res.success) {
@@ -112,14 +112,14 @@ function ArticleDetail({ params }: { params: { articleId: string } }) {
     };
 
     useEffect(() => {
-        void fetchData();
+        void fetchPostDetail();
     }, []);
 
     return (
         <>
             <Header title={headerProps.title} />
             <Info article={article} setArticle={setArticle} />
-            <ArticleContent article={article} params={params} />
+            <ArticleContent article={article} fetchPostDetail={fetchPostDetail} params={params} />
         </>
     );
 }
