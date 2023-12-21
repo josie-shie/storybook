@@ -143,7 +143,7 @@ function GuessBar() {
         return () => {
             init = false;
         };
-    }, [isLogin, matchId, userInfo.uid]);
+    }, [isLogin, matchId, setGuessProportion, userInfo.uid]);
 
     useEffect(() => {
         const currentRef = liveBarRef.current;
