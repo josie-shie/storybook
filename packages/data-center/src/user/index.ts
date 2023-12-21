@@ -373,7 +373,7 @@ export const forgetPasswordReset = async ({
     newPassword
 }: ForgetPasswordRequest): Promise<ReturnData<null>> => {
     try {
-        const res: { data: null } = await fetcher({
+        const res: { data: null; errors: { message: string }[] } = await fetcher({
             data: {
                 query: FORGET_PASSWORD_RESET_MUTATION,
                 variables: {
@@ -386,6 +386,9 @@ export const forgetPasswordReset = async ({
                 }
             }
         });
+        if (res.errors[0].message) {
+            throw new Error(res.errors[0].message);
+        }
         return { success: true, data: res.data };
     } catch (error) {
         return handleApiError(error);
@@ -402,7 +405,7 @@ export const updatePassword = async ({
     newPassword
 }: UpdatePasswordRequest): Promise<ReturnData<null>> => {
     try {
-        const res: { data: null } = await fetcher({
+        const res: { data: null; errors: { message: string }[] } = await fetcher({
             data: {
                 query: UPDATE_PASSWORD_MUTATION,
                 variables: {
@@ -414,6 +417,9 @@ export const updatePassword = async ({
                 }
             }
         });
+        if (res.errors[0].message) {
+            throw new Error(res.errors[0].message);
+        }
         return { success: true, data: res.data };
     } catch (error) {
         return handleApiError(error);
@@ -429,7 +435,7 @@ export const updateMemberInfo = async (
     input: UpdateMemberInfoRequest
 ): Promise<ReturnData<null>> => {
     try {
-        const res: { data: null } = await fetcher({
+        const res: { data: null; errors: { message: string }[] } = await fetcher({
             data: {
                 query: UPDATE_MEMBER_INFO_MUTATION,
                 variables: {
@@ -437,7 +443,9 @@ export const updateMemberInfo = async (
                 }
             }
         });
-
+        if (res.errors[0].message) {
+            throw new Error(res.errors[0].message);
+        }
         return { success: true, data: res.data };
     } catch (error) {
         return handleApiError(error);
@@ -965,7 +973,7 @@ export const rechargePlatformCurrency = async (
     input: RechargePlatformCurrencyRequest
 ): Promise<ReturnData<null>> => {
     try {
-        const res: { data: null } = await fetcher(
+        const res: { data: null; errors: { message: string }[] } = await fetcher(
             {
                 data: {
                     query: RECHARGE_PLATFORM_CURRENCY_MUTATION,
@@ -976,7 +984,9 @@ export const rechargePlatformCurrency = async (
             },
             { cache: 'no-store' }
         );
-
+        if (res.errors[0].message) {
+            throw new Error(res.errors[0].message);
+        }
         return { success: true, data: res.data };
     } catch (error) {
         return handleApiError(error);
