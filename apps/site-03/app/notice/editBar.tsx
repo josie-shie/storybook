@@ -81,22 +81,10 @@ function EditBar() {
     return (
         <div className={`${style.editBar} ${editStatus && style.isEdit}`}>
             <div className={style.group}>
-                <Button
-                    onClick={() => {
-                        handleCounterSelect();
-                    }}
-                    size="small"
-                    variant="outlined"
-                >
+                <Button onClick={handleCounterSelect} size="small" variant="outlined">
                     反選
                 </Button>
-                <Button
-                    onClick={() => {
-                        handleSelectAll();
-                    }}
-                    size="small"
-                    variant="outlined"
-                >
+                <Button onClick={handleSelectAll} size="small" variant="outlined">
                     全選
                 </Button>
             </div>
