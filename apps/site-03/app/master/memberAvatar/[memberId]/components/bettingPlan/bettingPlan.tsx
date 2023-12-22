@@ -2,6 +2,7 @@ import Image from 'next/image';
 import { getMemberIndividualGuessMatches, type MemberIndividualGuessMatch } from 'data-center';
 import { useEffect, useState } from 'react';
 import { timestampToString } from 'lib';
+import NoData from '@/components/baseNoData/noData';
 import IconWin from './img/win.png';
 import IconLose from './img/lose.png';
 import IconDraw from './img/draw.png';
@@ -64,34 +65,42 @@ function BettingPlan({
 
     return (
         <>
-            {guessMatchesList.map(item => {
-                return (
-                    <div className={style.bettingPlan} key={item.id}>
-                        {filterIcon[item.predictionResult]}
-                        <div className={style.top}>
-                            {item.leagueName}
-                            <span className={style.time}>
-                                {' '}
-                                | {timestampToString(item.matchTime, 'MM-DD HH:mm')}
-                            </span>
-                        </div>
-                        <div className={style.mid}>
-                            <span className={style.plan}>{filterPlay[item.predictedPlay]}</span>
-                            <div className={style.combination}>
-                                {item.homeTeamName} vs {item.awayTeamName}
+            {guessMatchesList.length > 0 ? (
+                <>
+                    {guessMatchesList.map(item => {
+                        return (
+                            <div className={style.bettingPlan} key={item.id}>
+                                {filterIcon[item.predictionResult]}
+                                <div className={style.top}>
+                                    {item.leagueName}
+                                    <span className={style.time}>
+                                        {' '}
+                                        | {timestampToString(item.matchTime, 'MM-DD HH:mm')}
+                                    </span>
+                                </div>
+                                <div className={style.mid}>
+                                    <span className={style.plan}>
+                                        {filterPlay[item.predictedPlay]}
+                                    </span>
+                                    <div className={style.combination}>
+                                        {item.homeTeamName} vs {item.awayTeamName}
+                                    </div>
+                                </div>
+                                <div className={style.bot}>
+                                    <div className={style.message}>
+                                        {filterOdds[item.handicapOdds] === 'handicap'
+                                            ? item.handicapOdds
+                                            : item.overUnderOdds}
+                                        {item.predictionResult}
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <div className={style.bot}>
-                            <div className={style.message}>
-                                {filterOdds[item.handicapOdds] === 'handicap'
-                                    ? item.handicapOdds
-                                    : item.overUnderOdds}
-                                {item.predictionResult}
-                            </div>
-                        </div>
-                    </div>
-                );
-            })}
+                        );
+                    })}
+                </>
+            ) : (
+                <NoData />
+            )}
         </>
     );
 }

@@ -3,6 +3,7 @@ import { getMemberIndividualGuessMatches, type MemberIndividualGuessMatch } from
 import { useEffect, useState } from 'react';
 import { timestampToString } from 'lib';
 import UnlockButton from '@/components/unlockButton/unlockButton';
+import NoData from '@/components/baseNoData/noData';
 import IconWin from './img/win.png';
 import IconLose from './img/lose.png';
 import IconDraw from './img/draw.png';
@@ -65,37 +66,45 @@ function BettingPlan({
 
     return (
         <>
-            {guessMatchesList.map(item => {
-                return (
-                    <div className={style.bettingPlan} key={item.id}>
-                        {filterIcon[item.predictionResult]}
-                        <div className={style.top}>
-                            {item.leagueName}
-                            <span className={style.time}>
-                                {' '}
-                                | {timestampToString(item.matchTime, 'MM-DD HH:mm')}
-                            </span>
-                        </div>
-                        <div className={style.mid}>
-                            <span className={style.plan}>{filterPlay[item.predictedPlay]}</span>
-                            <div className={style.combination}>
-                                {item.homeTeamName} vs {item.awayTeamName}
-                            </div>
-                        </div>
-                        <div className={style.bot}>
-                            <div className={style.message}>
-                                {filterOdds[item.handicapOdds] === 'handicap'
-                                    ? item.handicapOdds
-                                    : item.overUnderOdds}
-                                {item.predictionResult}
-                            </div>
+            {guessMatchesList.length > 0 ? (
+                <>
+                    {guessMatchesList.map(item => {
+                        return (
+                            <div className={style.bettingPlan} key={item.id}>
+                                {filterIcon[item.predictionResult]}
+                                <div className={style.top}>
+                                    {item.leagueName}
+                                    <span className={style.time}>
+                                        {' '}
+                                        | {timestampToString(item.matchTime, 'MM-DD HH:mm')}
+                                    </span>
+                                </div>
+                                <div className={style.mid}>
+                                    <span className={style.plan}>
+                                        {filterPlay[item.predictedPlay]}
+                                    </span>
+                                    <div className={style.combination}>
+                                        {item.homeTeamName} vs {item.awayTeamName}
+                                    </div>
+                                </div>
+                                <div className={style.bot}>
+                                    <div className={style.message}>
+                                        {filterOdds[item.handicapOdds] === 'handicap'
+                                            ? item.handicapOdds
+                                            : item.overUnderOdds}
+                                        {item.predictionResult}
+                                    </div>
 
-                            {/* TODO: 請後端吐價格 */}
-                            {item.isPaidToRead ? <UnlockButton price={20} /> : null}
-                        </div>
-                    </div>
-                );
-            })}
+                                    {/* TODO: 請後端吐價格 */}
+                                    {item.isPaidToRead ? <UnlockButton price={20} /> : null}
+                                </div>
+                            </div>
+                        );
+                    })}
+                </>
+            ) : (
+                <NoData />
+            )}
         </>
     );
 }
