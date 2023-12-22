@@ -25,7 +25,7 @@ function NoticeLayout({ children }: { children: ReactNode }) {
 
     const tabList = [
         {
-            label: '信息',
+            label: '消息',
             to: '/notice',
             status: 'notice'
         },

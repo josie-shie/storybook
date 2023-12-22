@@ -97,3 +97,18 @@
     flex-direction: column;
     row-gap: 12px;
 }
+
+.noMessage {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 0;
+
+    .text {
+        margin-top: 10px;
+        text-align: center;
+        font-size: 14px;
+        color: #9b9b9b;
+    }
+}

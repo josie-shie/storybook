@@ -17,6 +17,8 @@ function ChatCard({ chatData }: { chatData: MessageRoomType }) {
     const setSelected = useNoticeStore.use.setSelected();
     const setSelectedChatData = useNoticeStore.use.setSelectedChatData();
 
+    const roomUserId = chatData.roomId.split('-');
+
     const handleChatInfo = () => {
         setSelectedChatData(chatData);
     };
@@ -29,6 +31,16 @@ function ChatCard({ chatData }: { chatData: MessageRoomType }) {
         }
     };
 
+    const handleLastMessage = () => {
+        const lastMessages = chatData.lastMessages[0];
+        if (chatData.lastMessages[0].content) {
+            return lastMessages.content;
+        }
+        return lastMessages.user.uid === roomUserId[0]
+            ? '贴图已传送'
+            : `${lastMessages.user.name}传送了贴图`;
+    };
+
     return (
         <li className={`${style.chatCard}  ${editStatus && style.isEdit}`}>
             <Checkbox
@@ -39,7 +51,12 @@ function ChatCard({ chatData }: { chatData: MessageRoomType }) {
                 onChange={handleChange}
             />
             <div className={style.card}>
-                <Badge color="error" invisible={chatData.messageIsRead} variant="dot">
+                <Badge
+                    className={style.avatar}
+                    color="error"
+                    invisible={chatData.messageIsRead}
+                    variant="dot"
+                >
                     <Avatar
                         borderColor="#FFFFFF"
                         size={40}
@@ -53,17 +70,13 @@ function ChatCard({ chatData }: { chatData: MessageRoomType }) {
                     }}
                 >
                     <div className={style.topBar}>
-                        <div className={style.name}>{chatData.user.name || 'unkonw name'}</div>
+                        <div className={style.name}>{chatData.user.name || 'unknown name'}</div>
                         <p className={style.date}>
                             {timestampToString(Number(chatData.date), 'YYYY-M-DD HH:mm')}
                         </p>
                     </div>
                     <div className={style.bottomBar}>
-                        <p className={style.content}>
-                            {(chatData.lastMessages.length > 0 &&
-                                chatData.lastMessages[0].content) ||
-                                '尚无信息'}
-                        </p>
+                        <p className={style.content}>{handleLastMessage()}</p>
                     </div>
                 </div>
             </div>
