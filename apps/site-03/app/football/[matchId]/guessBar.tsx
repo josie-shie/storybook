@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { getGuessProportion, addGuess } from 'data-center';
 import { useParams } from 'next/navigation';
 import { ProgressBar } from 'ui';
@@ -7,6 +7,7 @@ import { useUserStore } from '@/app/userStore';
 import { useAuthStore } from '@/app/(auth)/authStore';
 import style from './guessBar.module.scss';
 import { useContestDetailStore } from './contestDetailStore';
+import GuessDialog from './components/guessDialog/guessDialog';
 
 interface GuessProps {
     isLogin: boolean;
@@ -24,11 +25,15 @@ const calculatePercentage = (a: number, b: number) => {
 function Guess({ play, isLogin }: GuessProps) {
     const userInfo = useUserStore.use.userInfo();
     const matchId = Number(useParams().matchId);
+    const [direction, setDirection] = useState<'left' | 'right'>('left');
+    const [openGuessDialog, setOpenGuessDialog] = useState(false);
     const guessTypeLabel = {
         HANDICAP: { left: '主', right: '客' },
         OVERUNDER: { left: '大', right: '小' }
     };
     const guessProportion = useContestDetailStore.use.guessProportion();
+    const matchDetail = useContestDetailStore.use.matchDetail();
+    const guessTeamName = direction === 'left' ? matchDetail.homeChs : matchDetail.awayChs;
     const setGuessProportion = useContestDetailStore.use.setGuessProportion();
     const setIsDrawerOpen = useAuthStore.use.setIsDrawerOpen();
     const setAuthQuery = useUserStore.use.setAuthQuery();
@@ -47,17 +52,25 @@ function Guess({ play, isLogin }: GuessProps) {
     const leftPercent = calculatePercentage(leftBox.peopleNum, rightBox.peopleNum);
     const rightPercent = 100 - leftPercent;
 
-    const handleAddGuess = async (direction: 'left' | 'right') => {
+    const handleAddGuess = (direct: 'left' | 'right') => {
         if (!isLogin) {
             setAuthQuery('login');
             setIsDrawerOpen(true);
             return;
         }
+        setDirection(direct);
+        setOpenGuessDialog(true);
+    };
+
+    const confirmGuess = async () => {
         if (play === 'HANDICAP') {
             const guessWay = direction === 'left' ? 'HOME' : 'AWAY';
             const res = await addGuess({ matchId, predictedPlay: guessWay });
             if (res.success) {
-                // set global remainingGuessTimes
+                setGuessProportion({
+                    ...guessProportion,
+                    remainingGuessTimes: res.data.remainingGuessTimes
+                });
                 void fetchGuessProportion();
             } else {
                 // TODO : 競猜錯誤
@@ -66,12 +79,16 @@ function Guess({ play, isLogin }: GuessProps) {
             const guessWay = direction === 'left' ? 'OVER' : 'UNDER';
             const res = await addGuess({ matchId, predictedPlay: guessWay });
             if (res.success) {
-                // set global remainingGuessTimes
+                setGuessProportion({
+                    ...guessProportion,
+                    remainingGuessTimes: res.data.remainingGuessTimes
+                });
                 void fetchGuessProportion();
             } else {
                 // TODO : 競猜錯誤
             }
         }
+        setOpenGuessDialog(false);
     };
 
     const fetchGuessProportion = async () => {
@@ -81,10 +98,20 @@ function Guess({ play, isLogin }: GuessProps) {
 
     return (
         <div className={style.box}>
+            <GuessDialog
+                handicap="让一球/球半"
+                onClose={() => {
+                    setOpenGuessDialog(false);
+                }}
+                onConfirm={confirmGuess}
+                openPaid={openGuessDialog}
+                play="让分"
+                teamName={guessTeamName}
+            />
             <div
                 className={`${style.team} ${leftBox.itemType === 'selected' ? style.selected : ''}`}
                 onClick={() => {
-                    if (leftBox.itemType === '') void handleAddGuess('left');
+                    if (leftBox.itemType === '') handleAddGuess('left');
                 }}
             >
                 <div>{guessTypeLabel[play].left}</div>
@@ -110,7 +137,7 @@ function Guess({ play, isLogin }: GuessProps) {
                     rightBox.itemType === 'selected' ? style.selected : ''
                 }`}
                 onClick={() => {
-                    if (rightBox.itemType === '') void handleAddGuess('right');
+                    if (rightBox.itemType === '') handleAddGuess('right');
                 }}
             >
                 <div>{guessTypeLabel[play].right}</div>
