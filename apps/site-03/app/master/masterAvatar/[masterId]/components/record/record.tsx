@@ -10,14 +10,10 @@ const formatRate = (lose: number, win: number) => {
     return Number.isInteger(winRate) ? winRate : winRate.toFixed(1);
 };
 
-const tabMap = {
-    summary: 'summary',
-    handicap: 'handicap',
-    size: 'size'
-};
+type TabType = 'summary' | 'handicap' | 'size';
 
 function Record({ individualGuessInfo }: { individualGuessInfo: MemberIndividualGuessRecord }) {
-    const [showTab, setShowTab] = useState<string>('summary');
+    const [showTab, setShowTab] = useState<TabType>('summary');
 
     const chartOption = {
         tooltip: {
@@ -67,17 +63,17 @@ function Record({ individualGuessInfo }: { individualGuessInfo: MemberIndividual
                 },
                 data: [
                     {
-                        value: individualGuessInfo[showTab as keyof typeof tabMap].win,
+                        value: individualGuessInfo[showTab].win,
                         name: 'Plan1',
                         itemStyle: { color: '#F3F3F3', borderWidth: 2, borderColor: '#fff' }
                     },
                     {
-                        value: individualGuessInfo[showTab as keyof typeof tabMap].draw,
+                        value: individualGuessInfo[showTab].draw,
                         name: 'Plan2',
                         itemStyle: { color: '#BFBFBF', borderWidth: 2, borderColor: '#fff' }
                     },
                     {
-                        value: individualGuessInfo[showTab as keyof typeof tabMap].lose,
+                        value: individualGuessInfo[showTab].lose,
                         name: 'Plan3',
                         itemStyle: { color: '#ED3A45', borderWidth: 2, borderColor: '#fff' }
                     }
