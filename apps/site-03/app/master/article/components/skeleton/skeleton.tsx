@@ -15,9 +15,9 @@ function SkeletonLayout() {
                             <div>
                                 <Skeleton
                                     animation="wave"
-                                    height={46}
+                                    height={40}
                                     variant="circular"
-                                    width={46}
+                                    width={40}
                                 >
                                     <Avatar />
                                 </Skeleton>
