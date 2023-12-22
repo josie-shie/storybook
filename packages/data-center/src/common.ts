@@ -10,6 +10,20 @@ export type ReturnData<T> =
           error: string;
       };
 
+interface ErrorMessages {
+    message: string;
+}
+export interface FetchResultData<T> {
+    data: T;
+    errors?: { message: string }[];
+}
+
+export const throwErrorMessage = (errors?: ErrorMessages[]) => {
+    if (errors?.[0].message) {
+        throw new Error(errors[0].message);
+    }
+};
+
 export const handleApiError = (error: unknown): { success: false; error: string } => {
     let errorMessage = '<001> An unexpected error occurred.'; // 未知錯誤
     console.error(error);

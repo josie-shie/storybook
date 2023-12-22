@@ -1,7 +1,7 @@
 import { fetcher } from 'lib';
 import { z } from 'zod';
-import { handleApiError } from '../common';
-import type { ReturnData } from '../common';
+import { handleApiError, throwErrorMessage } from '../common';
+import type { ReturnData, FetchResultData } from '../common';
 import {
     GET_HOT_MATCH_QUERY,
     GET_LEISU_NEWS_LIST_QUERY,
@@ -186,7 +186,7 @@ export const getHotMatchList = async ({
     dateTime
 }: GetHotMatchListRequest): Promise<ReturnData<GetHotMatchListResponse>> => {
     try {
-        const { data }: { data: GetHotMatchResult } = await fetcher(
+        const { data, errors } = await fetcher<FetchResultData<GetHotMatchResult>, unknown>(
             {
                 data: {
                     query: GET_HOT_MATCH_QUERY,
@@ -200,6 +200,7 @@ export const getHotMatchList = async ({
             { cache: 'no-store' }
         );
 
+        throwErrorMessage(errors);
         GetHotMatchResultSchema.parse(data);
         const formattedData = formatToGetHotMatchResponse(data);
 
@@ -219,7 +220,7 @@ export const getHotMatchList = async ({
  */
 export const getLeisuNewsList = async (): Promise<ReturnData<GetLeisuNewsListResponse>> => {
     try {
-        const { data }: { data: GetLeisuNewsListResult } = await fetcher(
+        const { data, errors } = await fetcher<FetchResultData<GetLeisuNewsListResult>, unknown>(
             {
                 data: {
                     query: GET_LEISU_NEWS_LIST_QUERY
@@ -228,6 +229,7 @@ export const getLeisuNewsList = async (): Promise<ReturnData<GetLeisuNewsListRes
             { cache: 'no-store' }
         );
 
+        throwErrorMessage(errors);
         GetLeisuNewsListResultSchema.parse(data);
 
         return {
@@ -249,7 +251,7 @@ export const getLeisuNewsContent = async ({
     id
 }: GetLeisuNewsContentRequest): Promise<ReturnData<GetLeisuNewsContentResponse>> => {
     try {
-        const { data }: { data: GetLeisuNewsContentResult } = await fetcher(
+        const { data, errors } = await fetcher<FetchResultData<GetLeisuNewsContentResult>, unknown>(
             {
                 data: {
                     query: GET_LEISU_NEWS_CONTENT_QUERY,
@@ -263,6 +265,7 @@ export const getLeisuNewsContent = async ({
             { cache: 'no-store' }
         );
 
+        throwErrorMessage(errors);
         GetLeisuNewsContentResultSchema.parse(data);
 
         return {
@@ -284,7 +287,7 @@ export const getHomepageBanner = async ({
     dateTime
 }: GetHomepageBannerRequest): Promise<ReturnData<GetHomepageBannerResponse>> => {
     try {
-        const { data }: { data: GetHomepageBannerResult } = await fetcher(
+        const { data, errors } = await fetcher<FetchResultData<GetHomepageBannerResult>, unknown>(
             {
                 data: {
                     query: GET_HOME_PAGE_BANNER_QUERY,
@@ -298,6 +301,7 @@ export const getHomepageBanner = async ({
             { cache: 'no-store' }
         );
 
+        throwErrorMessage(errors);
         GetHomepageBannerResultSchema.parse(data);
 
         return {

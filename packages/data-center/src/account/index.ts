@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { fetcher } from 'lib';
-import { handleApiError } from '../common';
-import type { ReturnData } from '../common';
+import { handleApiError, throwErrorMessage } from '../common';
+import type { ReturnData, FetchResultData } from '../common';
 import {
     GET_FOLLOWERS_QUERY,
     UPDATE_FOLLOW_MUTATION,
@@ -112,7 +112,7 @@ export const getFollowers = async ({
     isFans
 }: GetFollowersRequest): Promise<ReturnData<GetFollowersResponse>> => {
     try {
-        const { data }: { data: FollowersResult } = await fetcher(
+        const { data, errors } = await fetcher<FetchResultData<FollowersResult>, unknown>(
             {
                 data: {
                     query: GET_FOLLOWERS_QUERY,
@@ -127,6 +127,7 @@ export const getFollowers = async ({
             { cache: 'no-store' }
         );
 
+        throwErrorMessage(errors);
         FollowersResultSchema.parse(data);
 
         return {
@@ -148,7 +149,7 @@ export const updateFollow = async ({
     followedId
 }: UpdateFollowRequest): Promise<ReturnData<UpdateFollowResponse>> => {
     try {
-        const { data }: { data: UpdateFollowResult } = await fetcher(
+        const { data, errors } = await fetcher<FetchResultData<UpdateFollowResult>, unknown>(
             {
                 data: {
                     query: UPDATE_FOLLOW_MUTATION,
@@ -163,6 +164,7 @@ export const updateFollow = async ({
             { cache: 'no-store' }
         );
 
+        throwErrorMessage(errors);
         UpdateFollowResultSchema.parse(data);
 
         return { success: true, data: data.updateFollow };
@@ -181,7 +183,7 @@ export const unFollow = async ({
     followedId
 }: UpdateFollowRequest): Promise<ReturnData<UpdateFollowResponse>> => {
     try {
-        const { data }: { data: UnFollowResult } = await fetcher(
+        const { data, errors } = await fetcher<FetchResultData<UnFollowResult>, unknown>(
             {
                 data: {
                     query: DELETE_FOLLOW_MUTATION,
@@ -196,6 +198,7 @@ export const unFollow = async ({
             { cache: 'no-store' }
         );
 
+        throwErrorMessage(errors);
         UnFollowResultSchema.parse(data);
 
         return { success: true, data: data.deleteFollow };

@@ -1,7 +1,7 @@
 import { fetcher, timestampToString } from 'lib';
 import { z } from 'zod';
-import { handleApiError } from '../common';
-import type { ReturnData } from '../common';
+import { handleApiError, throwErrorMessage } from '../common';
+import type { ReturnData, FetchResultData } from '../common';
 import { PredictedPlaySchema, PredictionResultSchema } from '../commonType';
 import { GET_MATCH_POSTS_QUERY } from './graphqlQueries';
 
@@ -78,7 +78,10 @@ export const getPredictionMatchPosts = async (
     input: GetPredictionMatchPostsRequest
 ): Promise<ReturnData<GetPredictionMatchPostsResponse>> => {
     try {
-        const { data }: { data: GetPredictionMatchPostsResult } = await fetcher(
+        const { data, errors } = await fetcher<
+            FetchResultData<GetPredictionMatchPostsResult>,
+            unknown
+        >(
             {
                 data: {
                     query: GET_MATCH_POSTS_QUERY,
@@ -94,6 +97,7 @@ export const getPredictionMatchPosts = async (
             { cache: 'no-store' }
         );
 
+        throwErrorMessage(errors);
         GetPredictionMatchPostsResultSchema.parse(data);
 
         const { posts } = data.getMatchPosts;
