@@ -231,7 +231,7 @@ function VsBox() {
                     big: guessData.over.peopleNum,
                     small: guessData.under.peopleNum
                 });
-                setGuessesLeft(guessData.remainingGuessTimes); // 搬到 userStore
+                setGuessesLeft(guessData.remainingGuessTimes);
             }
         }
         void fetchMatchDetail();
