@@ -66,6 +66,8 @@ function Datepicker({
                         if (date) setNewDate(date);
                     }}
                     selectsStart
+                    showMonthDropdown
+                    showYearDropdown
                 />
                 <div className={style.modalButtons}>
                     <Button
