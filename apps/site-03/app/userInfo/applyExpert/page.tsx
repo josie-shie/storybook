@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import ApplyExpert from './applyExpert';
 
 export const metadata: Metadata = {
-    title: '专家申请'
+    title: '专家申请 | FutureSport'
 };
 
 function Page() {

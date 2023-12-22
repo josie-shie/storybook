@@ -4,16 +4,16 @@ import type { ReactNode } from 'react';
 import type { Metadata } from 'next';
 import { cookies } from 'next/headers';
 import { getMemberInfo, type GetMemberInfoResponse } from 'data-center';
+import Notification from '@/app/notification';
+import Auth from '@/app/(auth)/auth';
 import GlobalStore from './globalStore';
 import MqttService from './mqttService';
 import WebsocketService from './websocketService';
 import GoalAlert from './goalAlert';
 import ContestStoreHandler from './contestStoreHandler';
-import Notification from '@/app/notification';
-import Auth from '@/app/(auth)/auth';
 
 export const metadata: Metadata = {
-    title: 'Sport',
+    title: '未来体育 | FutureSport',
     description: 'The best sport site'
 };
 

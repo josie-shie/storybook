@@ -3,7 +3,7 @@ import { getContestList } from 'data-center';
 import CreateArticle from './createArticle';
 
 export const metadata: Metadata = {
-    title: '发布文章'
+    title: '发布文章 | FutureSport'
 };
 
 async function Page() {

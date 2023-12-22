@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import MyGuess from './myGuess';
 
 export const metadata: Metadata = {
-    title: '我的竟猜'
+    title: '我的竟猜 | FutureSport'
 };
 
 function Page() {

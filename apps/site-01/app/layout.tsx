@@ -4,7 +4,7 @@ import type { ReactNode } from 'react';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'Sport',
+    title: '未来体育 | FutureSport',
     description: 'The best sport site'
 };
 
