@@ -92,6 +92,10 @@
             gap: 50px;
             padding: 50px 30px 0px 30px;
         }
+
+        .centerImage {
+            padding-top: 127px;
+        }
     }
 
     .tutorialTop {
@@ -105,23 +109,23 @@
 
         .handicapAnimation {
             animation:
-                handicapExpandAnimation 1s forwards,
-                dropTopShadowFadeOut 1s forwards;
+                handicapExpandAnimation 0.8s forwards,
+                dropTopShadowFadeOut 2s forwards;
         }
         .minutesAnimation {
             animation:
-                minutesExpandAnimation 1s forwards,
-                dropTopShadowFadeOut 1s forwards;
+                minutesExpandAnimation 0.6s forwards,
+                dropTopShadowFadeOut 2s forwards;
         }
         .rangeAnimation {
             animation:
-                rangeExpandAnimation 1s forwards,
-                dropTopShadowFadeOut 1s forwards;
+                rangeExpandAnimation 0.6s forwards,
+                dropTopShadowFadeOut 2s forwards;
         }
         .bodanAnimation {
             animation:
-                bodanExpandAnimation 1s forwards,
-                dropTopShadowFadeOut 1s forwards;
+                bodanExpandAnimation 0.8s forwards,
+                dropTopShadowFadeOut 2s forwards;
         }
     }
 
@@ -131,7 +135,10 @@
         .highlightImage {
             position: absolute;
             left: 0;
-            animation: dropBottomShadowFadeOut 1s forwards;
+        }
+
+        .hightlightAnimation {
+            animation: dropBottomShadowFadeOut 2s forwards;
             animation-delay: 0.8s;
         }
     }
@@ -141,11 +148,20 @@
         font-size: 14px;
         color: #8d8d8d;
     }
+
+    :global {
+        .swiper-pagination-bullet {
+            background-color: #ffffff33;
+        }
+        .swiper-pagination-bullet-active {
+            background-color: #fff;
+        }
+    }
 }
 
 @keyframes dropTopShadowFadeOut {
     0%,
-    80% {
+    60% {
         filter: drop-shadow(0px 0px 17px rgba(255, 255, 255, 0.6));
     }
     100% {
@@ -155,7 +171,7 @@
 
 @keyframes dropBottomShadowFadeOut {
     0%,
-    80% {
+    60% {
         box-shadow: 0px 0px 17px 0px rgba(255, 255, 255, 0.6);
     }
     100% {
@@ -176,7 +192,7 @@
 @keyframes minutesExpandAnimation {
     0% {
         width: 66px;
-        height: 277px;
+        height: 180px;
     }
     100% {
         width: 134px;
