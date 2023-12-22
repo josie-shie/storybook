@@ -43,7 +43,7 @@ export interface MessageResponse {
 export interface MessageRoomType {
     roomId: string;
     receiver: { uid: string };
-    lastMessages: { content: string }[];
+    lastMessages: MessageItem[];
     lastReadId: string;
     messageIsRead: boolean;
     date: string;
