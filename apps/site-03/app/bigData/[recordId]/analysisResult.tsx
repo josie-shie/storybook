@@ -26,7 +26,7 @@ function ResultContent() {
     const selectedResult = useAnalyticsResultStore.use.selectedResult();
     const contestList = useAnalyticsResultStore.use.contestList();
     const analysisData = useAnalyticsResultStore.use.analysisResultData();
-    const showTutorial = useAnalyticsResultStore.use.showTutorial();
+    const showedTutorial = localStorage.getItem('showAnalysisTutorial');
 
     const tabStyle = {
         gap: 4,
@@ -135,7 +135,7 @@ function ResultContent() {
                         </Tabs>
                     </div>
                 </div>
-                {showTutorial ? (
+                {!showedTutorial ? (
                     <div className={style.tutorialBlock}>
                         <Tutorial setDefaultPageIndex={setDefaultPageIndex} />
                     </div>

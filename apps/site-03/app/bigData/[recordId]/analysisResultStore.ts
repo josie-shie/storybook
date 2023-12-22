@@ -51,7 +51,6 @@ function groupSameWeek(dayListData: Record<string, Statistics>) {
 
 interface InitState {
     analysisResultData: GetFootballStatsReportResponse;
-    showTutorial: boolean;
 }
 
 interface AnalysisResultState extends InitState {
@@ -332,8 +331,7 @@ const initialState = (
                 selectedResult
             };
         });
-    },
-    showTutorial: false
+    }
 });
 
 const createAnalysisResultStore = (init: InitState) =>
