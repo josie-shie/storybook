@@ -61,12 +61,14 @@ function Subscribe({ backHistory }: { backHistory: boolean }) {
 
             if (res.success) {
                 setPlanList(res.data.list);
+                setCurrencyAmount(res.data.list[0].paymentAmount);
+                setPlatformAmount(res.data.list[0].rechargeAmount);
             }
         };
 
         void getYearSubscribe();
         void getRechargeList();
-    }, [setYearPlanList, setPlanList]);
+    }, [setYearPlanList, setPlanList, platformAmount, currencyAmount]);
 
     const back = () => {
         if (backHistory) {

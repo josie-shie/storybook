@@ -1,0 +1,78 @@
+.layout {
+    position: relative;
+    z-index: 100;
+    top: 0;
+    height: calc(100vh - 68px);
+    margin-top: -12px;
+    overflow: hidden;
+}
+
+.longDragon {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 8px 16px 36px;
+    background: linear-gradient(to right, #194fa9 0%, #3981fa 100%);
+
+    .column {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 16px;
+
+        .row {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 4px;
+
+            .title {
+                font-size: 12px;
+                color: #fff;
+                font-weight: 400;
+            }
+
+            .name,
+            .date {
+                color: #fff;
+                font-size: 12px;
+                font-weight: 600;
+            }
+        }
+    }
+}
+
+.dashboard {
+    border-radius: 16px 16px 0 0;
+    margin-top: -28px;
+    padding: 12px 0;
+    background: #fff;
+
+    .toolBar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 12px;
+
+        .filter {
+            all: unset;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            color: #4489ff;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .image {
+            width: 16px;
+            height: 16px;
+        }
+    }
+}
+
+.wrapper {
+    width: 100%;
+    height: calc(100vh - 204px);
+    overflow: scroll;
+}
