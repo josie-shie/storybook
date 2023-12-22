@@ -6,6 +6,7 @@ import { type PostFilter } from 'data-center';
 import { InfiniteScroll } from 'ui';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useUserStore } from '@/app/userStore';
+import NoData from '@/components/baseNoData/noData';
 import WeekButton from '../components/weekButton/weekButton';
 import style from './articleList.module.scss';
 import { useArticleStore } from './articleStore';
@@ -63,21 +64,27 @@ function ArticleList() {
 
     return (
         <>
-            <div className={style.button}>
-                <WeekButton isActive={isActive} updateActive={updateActive} />
-            </div>
-            <ul className={style.article}>
-                {articleList.map(article => {
-                    return <ArticleCard article={article} key={article.id} />;
-                })}
-                {currentPage < totalPage && (
-                    <InfiniteScroll onVisible={loadMoreList}>
-                        <div className={style.loadMore}>
-                            <CircularProgress size={24} />
-                        </div>
-                    </InfiniteScroll>
-                )}
-            </ul>
+            {articleList.length > 0 ? (
+                <>
+                    <div className={style.button}>
+                        <WeekButton isActive={isActive} updateActive={updateActive} />
+                    </div>
+                    <ul className={style.article}>
+                        {articleList.map(article => {
+                            return <ArticleCard article={article} key={article.id} />;
+                        })}
+                        {currentPage < totalPage && (
+                            <InfiniteScroll onVisible={loadMoreList}>
+                                <div className={style.loadMore}>
+                                    <CircularProgress size={24} />
+                                </div>
+                            </InfiniteScroll>
+                        )}
+                    </ul>
+                </>
+            ) : (
+                <NoData />
+            )}
         </>
     );
 }

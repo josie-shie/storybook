@@ -8,6 +8,7 @@ import { InfiniteScroll } from 'ui';
 import CircularProgress from '@mui/material/CircularProgress';
 import type { PredictArticleType } from '@/types/predict';
 import UnlockButton from '@/components/unlockButton/unlockButton';
+import NoData from '@/components/baseNoData/noData';
 import style from './analysisItem.module.scss';
 import IconWin from './img/win.png';
 import IconDraw from './img/draw.png';
@@ -77,64 +78,70 @@ function AnalysisItem({
 
     return (
         <>
-            {predictArticleList.map(item => {
-                return (
-                    <div className={style.analysisItem} key={item.id}>
-                        <div className={style.top}>
-                            <div className={style.left}>
-                                <div className={style.decorate} />
-                                <div className={style.title}>{item.analysisTitle}</div>
-                            </div>
-                            <div className={style.unlockStatus}>
-                                {item.isUnlocked ? (
-                                    <span className={style.unlocked}>已解鎖</span>
-                                ) : (
-                                    <UnlockButton price={item.price} />
-                                )}
-                            </div>
-                        </div>
-                        <div
-                            className={style.mid}
-                            onClick={() => {
-                                goArticleDetail(item.id);
-                            }}
-                        >
-                            <div className={style.combination}>
-                                <div className={style.detail}>
-                                    {item.leagueName}
-                                    <span className={style.time}>
-                                        | {timestampToString(item.matchTime, 'MM-DD HH:mm')}
-                                    </span>
+            {predictArticleList.length > 0 ? (
+                <>
+                    {predictArticleList.map(item => {
+                        return (
+                            <div className={style.analysisItem} key={item.id}>
+                                <div className={style.top}>
+                                    <div className={style.left}>
+                                        <div className={style.decorate} />
+                                        <div className={style.title}>{item.analysisTitle}</div>
+                                    </div>
+                                    <div className={style.unlockStatus}>
+                                        {item.isUnlocked ? (
+                                            <span className={style.unlocked}>已解鎖</span>
+                                        ) : (
+                                            <UnlockButton price={item.price} />
+                                        )}
+                                    </div>
                                 </div>
-                                <div className={style.team}>
-                                    <span className={style.tag}>
-                                        {formatHandicapName[item.predictedPlay]}
-                                    </span>
-                                    {item.homeTeamName} vs {item.awayTeamName}
+                                <div
+                                    className={style.mid}
+                                    onClick={() => {
+                                        goArticleDetail(item.id);
+                                    }}
+                                >
+                                    <div className={style.combination}>
+                                        <div className={style.detail}>
+                                            {item.leagueName}
+                                            <span className={style.time}>
+                                                | {timestampToString(item.matchTime, 'MM-DD HH:mm')}
+                                            </span>
+                                        </div>
+                                        <div className={style.team}>
+                                            <span className={style.tag}>
+                                                {formatHandicapName[item.predictedPlay]}
+                                            </span>
+                                            {item.homeTeamName} vs {item.awayTeamName}
+                                        </div>
+                                        {item.predictionResult === 'NONE' ? null : (
+                                            <Image
+                                                alt=""
+                                                className={style.icon}
+                                                height={46}
+                                                src={filterImage(item.predictionResult)}
+                                                width={46}
+                                            />
+                                        )}
+                                    </div>
                                 </div>
-                                {item.predictionResult === 'NONE' ? null : (
-                                    <Image
-                                        alt=""
-                                        className={style.icon}
-                                        height={46}
-                                        src={filterImage(item.predictionResult)}
-                                        width={46}
-                                    />
-                                )}
+                                <div className={style.postTime}>
+                                    发表于今天 {timestampToMonthDay(item.createdAt)}
+                                </div>
                             </div>
-                        </div>
-                        <div className={style.postTime}>
-                            发表于今天 {timestampToMonthDay(item.createdAt)}
-                        </div>
-                    </div>
-                );
-            })}
-            {currentPage < totalPage && (
-                <InfiniteScroll onVisible={loadMoreList}>
-                    <div className={style.loadMore}>
-                        <CircularProgress size={24} />
-                    </div>
-                </InfiniteScroll>
+                        );
+                    })}
+                    {currentPage < totalPage && (
+                        <InfiniteScroll onVisible={loadMoreList}>
+                            <div className={style.loadMore}>
+                                <CircularProgress size={24} />
+                            </div>
+                        </InfiniteScroll>
+                    )}
+                </>
+            ) : (
+                <NoData />
             )}
         </>
     );
