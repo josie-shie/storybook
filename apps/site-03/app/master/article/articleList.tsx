@@ -11,6 +11,7 @@ import WeekButton from '../components/weekButton/weekButton';
 import style from './articleList.module.scss';
 import { useArticleStore } from './articleStore';
 import ArticleCard from './components/articleCard/articleCard';
+import SkeletonLayout from './components/skeleton/skeleton';
 
 function ArticleList() {
     const [isActive, setIsActive] = useState<PostFilter[]>([]);
@@ -64,27 +65,27 @@ function ArticleList() {
 
     return (
         <>
+            <div className={style.button}>
+                <WeekButton isActive={isActive} updateActive={updateActive} />
+            </div>
             {articleList.length > 0 ? (
-                <>
-                    <div className={style.button}>
-                        <WeekButton isActive={isActive} updateActive={updateActive} />
-                    </div>
-                    <ul className={style.article}>
-                        {articleList.map(article => {
-                            return <ArticleCard article={article} key={article.id} />;
-                        })}
-                        {currentPage < totalPage && (
-                            <InfiniteScroll onVisible={loadMoreList}>
-                                <div className={style.loadMore}>
-                                    <CircularProgress size={24} />
-                                </div>
-                            </InfiniteScroll>
-                        )}
-                    </ul>
-                </>
+                <ul className={style.article}>
+                    {articleList.map(article => {
+                        return <ArticleCard article={article} key={article.id} />;
+                    })}
+                    {currentPage < totalPage && (
+                        <InfiniteScroll onVisible={loadMoreList}>
+                            <div className={style.loadMore}>
+                                <CircularProgress size={24} />
+                            </div>
+                        </InfiniteScroll>
+                    )}
+                </ul>
             ) : (
-                <NoData />
+                <SkeletonLayout />
             )}
+
+            {articleList.length === 0 && <NoData />}
         </>
     );
 }
