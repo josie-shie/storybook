@@ -443,7 +443,7 @@ export const getPostList = async (
             },
             { cache: 'no-store' }
         );
-        // GetPostListResultSchema.parse(data);
+        GetPostListResultSchema.parse(data);
 
         return {
             success: true,
