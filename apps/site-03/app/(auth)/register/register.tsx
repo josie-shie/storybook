@@ -5,6 +5,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import type { RegisterRequest } from 'data-center';
 import { sendVerificationCode, register } from 'data-center';
+import { useSearchParams } from 'next/navigation';
 import {
     NicknameInput,
     PhoneNumberInput,
@@ -35,14 +36,14 @@ const schema = yup.object().shape({
 
 function Register() {
     const setToken = useUserStore.use.setToken();
-    // const inviteCode = useUserStore.use.inviteCode(); // 邀請碼等api添加邀請碼欄位在使用
+    const searchParams = useSearchParams();
+    const inviteCode = searchParams.get('inviteCode');
     const setIsDrawerOpen = useAuthStore.use.setIsDrawerOpen();
     const setIsVisible = useNotificationStore.use.setIsVisible();
     const registerStore = useAuthStore.use.register();
     const { sendCodeSuccess, setSendCodeSuccess, countDownNumber, setCountDownNumber } =
         registerStore;
     const removeAuthQuery = useAuthStore.use.removeAuthQuery();
-    const removeInvitCode = useAuthStore.use.removeInvitCode();
 
     const {
         control,
@@ -101,7 +102,10 @@ function Register() {
     };
 
     const onSubmit = async (data: RegisterRequest) => {
-        const res = await register(data);
+        const res = await register({
+            ...data,
+            ...(inviteCode && { invitationCode: inviteCode })
+        });
 
         if (!res.success) {
             const errorMessage = res.error ? res.error : '注册失败，请确认资料无误';
@@ -113,8 +117,6 @@ function Register() {
         setToken(res.data);
         setIsVisible('注册成功！', 'success');
         removeAuthQuery();
-        removeInvitCode();
-
         location.reload();
     };
 

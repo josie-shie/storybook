@@ -16,7 +16,6 @@ interface InitState {
 
 interface UserState extends InitState {
     authQuery: string;
-    inviteCode: string;
     userInfoIsLoading: boolean;
     isVipUseAnalysis: boolean;
     setIsLogin: (isLogin: boolean) => void;
@@ -110,8 +109,7 @@ const initialState = (set: (updater: (state: UserState) => Partial<UserState>) =
                 authQuery
             };
         });
-    },
-    inviteCode: ''
+    }
 });
 
 const creatUserStore = (init: InitState) => {
