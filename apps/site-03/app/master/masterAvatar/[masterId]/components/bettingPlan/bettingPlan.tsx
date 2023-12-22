@@ -10,6 +10,30 @@ import style from './bettingPlan.module.scss';
 
 type Tab = 0 | 1 | 2;
 
+const filterIcon = {
+    WIN: <Image alt="icon" className={style.iconWin} src={IconWin} />,
+    LOSE: <Image alt="icon" className={style.iconDefeat} src={IconLose} />,
+    DRAW: <Image alt="icon" className={style.iconDefeat} src={IconDraw} />
+};
+
+const filterPlay = {
+    HOME: '让球',
+    AWAY: '让球',
+    OVER: '大小',
+    UNDER: '大小',
+    HANDICAP: '让球',
+    OVERUNDER: '大小'
+};
+
+const filterOdds = {
+    HOME: 'handicap',
+    AWAY: 'handicap',
+    OVER: 'overUnder',
+    UNDER: 'overUnder',
+    HANDICAP: 'handicap',
+    OVERUNDER: 'overUnder'
+};
+
 function BettingPlan({
     planActiveTab,
     setGuessLength
@@ -33,30 +57,6 @@ function BettingPlan({
 
         setGuessMatchesList(res.data.guessMatchList);
         setGuessLength(res.data.guessMatchList.length);
-    };
-
-    const filterIcon = {
-        WIN: <Image alt="icon" className={style.iconWin} src={IconWin} />,
-        LOSE: <Image alt="icon" className={style.iconDefeat} src={IconLose} />,
-        DRAW: <Image alt="icon" className={style.iconDefeat} src={IconDraw} />
-    };
-
-    const filterPlay = {
-        HOME: '让球',
-        AWAY: '让球',
-        OVER: '大小',
-        UNDER: '大小',
-        HANDICAP: '让球',
-        OVERUNDER: '大小'
-    };
-
-    const filterOdds = {
-        HOME: 'handicap',
-        AWAY: 'handicap',
-        OVER: 'overUnder',
-        UNDER: 'overUnder',
-        HANDICAP: 'handicap',
-        OVERUNDER: 'overUnder'
     };
 
     useEffect(() => {

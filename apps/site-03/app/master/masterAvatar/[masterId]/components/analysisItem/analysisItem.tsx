@@ -2,6 +2,10 @@ import Image from 'next/image';
 import { timestampToString, timestampToMonthDay } from 'lib';
 import { useRouter } from 'next/navigation';
 import { type RecommendPost } from 'data-center';
+import { useEffect, useState } from 'react';
+import { getPostList } from 'data-center';
+import { InfiniteScroll } from 'ui';
+import CircularProgress from '@mui/material/CircularProgress';
 import type { PredictArticleType } from '@/types/predict';
 import UnlockButton from '@/components/unlockButton/unlockButton';
 import style from './analysisItem.module.scss';
@@ -9,30 +13,67 @@ import IconWin from './img/win.png';
 import IconDraw from './img/draw.png';
 import IconLose from './img/lose.png';
 
-function AnalysisItem({ predictArticleList }: { predictArticleList: RecommendPost[] }) {
+const filterImage = (value: PredictArticleType): string => {
+    const result = {
+        WIN: IconWin.src,
+        DRAW: IconDraw.src,
+        LOSE: IconLose.src
+    };
+    return result[value];
+};
+
+const formatHandicapName = {
+    HOME: '大小',
+    AWAY: '大小',
+    OVER: '让分',
+    UNDER: '让分',
+    HANDICAP: '大小',
+    OVERUNDER: '让分'
+};
+
+function AnalysisItem({
+    params,
+    setArticleLength
+}: {
+    params: { masterId: string };
+    setArticleLength: (val: number) => void;
+}) {
+    const [currentPage, setCurrentPage] = useState<number>(1);
+    const [totalPage, setTotalPage] = useState<number>(1);
+    const [predictArticleList, setPredictArticleList] = useState<RecommendPost[]>([]);
+
     const router = useRouter();
 
-    const filterImage = (value: PredictArticleType): string => {
-        const result = {
-            WIN: IconWin.src,
-            DRAW: IconDraw.src,
-            LOSE: IconLose.src
-        };
-        return result[value];
-    };
+    const fetchData = async () => {
+        const res = await getPostList({
+            memberId: Number(params.masterId),
+            postFilter: ['all'],
+            currentPage,
+            pageSize: 30
+        });
 
-    const formatHandicapName = {
-        HOME: '大小',
-        AWAY: '大小',
-        OVER: '让分',
-        UNDER: '让分',
-        HANDICAP: '大小',
-        OVERUNDER: '让分'
+        if (!res.success) {
+            return new Error();
+        }
+        const updatedArticleList = [...predictArticleList, ...res.data.posts];
+        setPredictArticleList(updatedArticleList);
+        setArticleLength(res.data.totalArticle);
+        setTotalPage(res.data.totalPage);
     };
 
     const goArticleDetail = (id: number) => {
         router.push(`/master/article/${id}`);
     };
+
+    const loadMoreList = () => {
+        if (currentPage <= Math.round(predictArticleList.length / 30) && currentPage < totalPage) {
+            setCurrentPage(prevData => prevData + 1);
+        }
+    };
+
+    useEffect(() => {
+        void fetchData();
+    }, [currentPage]);
 
     return (
         <>
@@ -88,6 +129,13 @@ function AnalysisItem({ predictArticleList }: { predictArticleList: RecommendPos
                     </div>
                 );
             })}
+            {currentPage < totalPage && (
+                <InfiniteScroll onVisible={loadMoreList}>
+                    <div className={style.loadMore}>
+                        <CircularProgress size={24} />
+                    </div>
+                </InfiniteScroll>
+            )}
         </>
     );
 }

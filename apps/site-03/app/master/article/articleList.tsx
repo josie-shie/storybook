@@ -35,24 +35,20 @@ function ArticleList() {
     };
 
     const fetchData = async () => {
-        try {
-            const res = await getPostList({
-                memberId: userInfo.uid ? userInfo.uid : 1,
-                filterId: [],
-                postFilter: isActive.length === 0 ? ['all'] : isActive,
-                currentPage,
-                pageSize: 30
-            });
+        const res = await getPostList({
+            memberId: userInfo.uid ? userInfo.uid : 1,
+            filterId: [],
+            postFilter: isActive.length === 0 ? ['all'] : isActive,
+            currentPage,
+            pageSize: 30
+        });
 
-            if (!res.success) {
-                return new Error();
-            }
-            const updatedArticleList = [...articleList, ...res.data.posts];
-            setArticleList({ articleList: updatedArticleList });
-            setTotalPage(res.data.totalPage);
-        } catch (error) {
+        if (!res.success) {
             return new Error();
         }
+        const updatedArticleList = [...articleList, ...res.data.posts];
+        setArticleList({ articleList: updatedArticleList });
+        setTotalPage(res.data.totalPage);
     };
 
     const loadMoreList = () => {
