@@ -47,6 +47,7 @@ export interface RegisterRequest {
     password: string;
     parentId?: string;
     verificationCode: string;
+    invitationCode?: string;
 }
 
 const SendVerificationCodeResultSchema = z.object({
@@ -161,7 +162,8 @@ export const register = async ({
     username,
     password,
     parentId = '123', // TODO: 需改為選填，123 沒意義
-    verificationCode
+    verificationCode,
+    invitationCode
 }: RegisterRequest): Promise<ReturnData<string>> => {
     try {
         const { data, errors } = await fetcher<FetchResultData<RegisterResult>, unknown>({
@@ -174,7 +176,8 @@ export const register = async ({
                         username,
                         password: btoa(password),
                         parentId,
-                        verificationCode
+                        verificationCode,
+                        invitationCode
                     }
                 }
             }
