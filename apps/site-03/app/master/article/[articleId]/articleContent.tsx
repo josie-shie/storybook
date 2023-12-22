@@ -10,7 +10,7 @@ import Cookies from 'js-cookie';
 import { useUserStore } from '@/app/userStore';
 import NormalDialog from '@/components/normalDialog/normalDialog';
 import type { GuessType } from '@/types/predict';
-import DefaultLogo from '../../../football/[matchId]/img/defaultTeamLogo.png';
+import DefaultLogo from '@/app/football/[matchId]/img/defaultTeamLogo.png';
 import Star from './img/star.png';
 import Push from './img/push.png';
 import Win from './img/win.png';
