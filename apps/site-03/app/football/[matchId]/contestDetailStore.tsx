@@ -20,6 +20,9 @@ let useContestDetailStore: StoreWithSelectors<ContestDetail>;
 const initialState = (set: (data: Partial<ContestDetail>) => void): ContestDetail => ({
     matchDetail: {} as GetSingleMatchResponse,
     guessProportion: {
+        handicap: 0,
+        handicapInChinese: '-',
+        overUnder: 0,
         home: {
             peopleNum: 0,
             itemType: ''
@@ -36,6 +39,7 @@ const initialState = (set: (data: Partial<ContestDetail>) => void): ContestDetai
             peopleNum: 0,
             itemType: ''
         },
+        guessNum: 0,
         remainingGuessTimes: 0
     },
     layoutDisplayed: true,

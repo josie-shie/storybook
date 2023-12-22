@@ -51,6 +51,9 @@ function GameCard({ plan, onOpenPaidDialog }: GameCardProps) {
     };
     const guessWayMap = { HOME: '主', AWAY: '客', OVER: '大', UNDER: '小' };
 
+    const playWayLabel =
+        plan.predictedType === 'HANDICAP' ? plan.handicapInChinese : plan.overUnderOdds;
+
     return (
         <div className={style.gameCard}>
             <div className={style.detail}>
@@ -84,7 +87,7 @@ function GameCard({ plan, onOpenPaidDialog }: GameCardProps) {
                         {plan.predictionResult !== 'NONE'
                             ? resultIconMap[plan.predictionResult]
                             : null}
-                        <div className={style.play}>一球/球半</div>
+                        <div className={style.play}>{playWayLabel}</div>
                         <div className={style.paidContent}>
                             <div className={style.play}>{guessWayMap[plan.predictedPlay]}</div>
                         </div>

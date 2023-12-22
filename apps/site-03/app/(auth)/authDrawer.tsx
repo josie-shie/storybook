@@ -14,6 +14,7 @@ import headerBg from './components/authComponent/img/headerBg.jpeg';
 import closeIcon from './components/authComponent/img/closeIcon.png';
 import style from './authDrawer.module.scss';
 import { useAuthStore } from './authStore';
+import backIcon from './components/authComponent/img/backIcon.png';
 
 function AuthDrawer() {
     const pathname = usePathname();
@@ -30,6 +31,8 @@ function AuthDrawer() {
     const setAuthContent = useAuthStore.use.setAuthContent();
     const title = useAuthStore.use.title();
     const setTitle = useAuthStore.use.setTitle();
+
+    const setIsVipUseAnalysis = useUserStore.use.setIsVipUseAnalysis();
 
     const resetAuthContent = () => {
         if (authQuery === 'register') {
@@ -57,7 +60,11 @@ function AuthDrawer() {
     const closeDrawer = () => {
         if (auth) {
             setAuthQuery('');
-            router.push(pathname);
+            router.push(
+                `${pathname}${
+                    searchParams.get('status') ? `?status=${searchParams.get('status')}` : ''
+                }`
+            );
         }
         setIsDrawerOpen(false);
         removeInvitCode();
@@ -73,6 +80,12 @@ function AuthDrawer() {
             });
             if (subscriptionRespons.success) {
                 setMemberSubscribeStatus(subscriptionRespons.data);
+
+                if (subscriptionRespons.data.planId === 1 || userId.balance >= 80) {
+                    setIsVipUseAnalysis(true);
+                } else {
+                    setIsVipUseAnalysis(false);
+                }
             }
         };
         if (isToken) void fetchSubscription();
@@ -121,6 +134,18 @@ function AuthDrawer() {
                         src={closeIcon.src}
                         width={16}
                     />
+                    {['register', 'forgetPassword'].includes(authQuery) && (
+                        <Image
+                            alt=""
+                            className={style.backBtn}
+                            height={16}
+                            onClick={() => {
+                                setAuthQuery('login');
+                            }}
+                            src={backIcon.src}
+                            width={16}
+                        />
+                    )}
                     {authContent}
                 </div>
             </div>

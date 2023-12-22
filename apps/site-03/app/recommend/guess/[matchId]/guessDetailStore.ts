@@ -1,16 +1,20 @@
 import { initStore } from 'lib';
 import type { StoreWithSelectors } from 'lib';
 import type { GetProDistribResponse, ProGuess } from 'data-center';
+import defaultTeamLogo from '@/app/football/[matchId]/img/defaultTeamLogo.png';
 
 // 競猜詳情 上半部預測
 export interface DetailType {
-    leagueName: string; // 賽事名稱
-    dateTime: number; // 日期時間
+    leagueName: string;
+    dateTime: number;
     homeTeamLogo: string;
     homeTeamName: string;
     awayTeamLogo: string;
     awayTeamName: string;
     participants: number; // 參與競猜人數
+    handicap: number;
+    handicapInChinese: string;
+    overUnder: number;
     guessHomeAway: 'home' | 'away' | 'none'; // 猜 主客
     guessBigSmall: 'over' | 'under' | 'none'; // 猜 大小
     home: number; // 猜 主隊 人數
@@ -20,14 +24,14 @@ export interface DetailType {
 }
 
 interface InitState {
-    guessesLeft: number; // 競猜剩餘次數
-    detail: DetailType;
-    highWinRateTrend: GetProDistribResponse;
-    masterPlanPrice: number;
     masterPlanList: ProGuess[];
 }
 
 interface GuessDetailState extends InitState {
+    guessesLeft: number;
+    detail: DetailType;
+    highWinRateTrend: GetProDistribResponse;
+    masterPlanPrice: number;
     setDetail: (detail: DetailType) => void;
     setGuessesLeft: (leftNumber: number) => void;
     setMasterPlanPrice: (price: number) => void;
@@ -39,8 +43,33 @@ let useGuessDetailStore: StoreWithSelectors<GuessDetailState>;
 
 const initialState = (set: (data: Partial<GuessDetailState>) => void) => ({
     guessesLeft: 0,
-    detail: {} as DetailType,
-    highWinRateTrend: {} as GetProDistribResponse,
+    detail: {
+        leagueName: '',
+        dateTime: 1678880400,
+        homeTeamLogo: defaultTeamLogo.src,
+        homeTeamName: '-',
+        awayTeamLogo: defaultTeamLogo.src,
+        awayTeamName: '-',
+        participants: 0,
+        handicap: 0,
+        handicapInChinese: '-',
+        overUnder: 0,
+        guessHomeAway: 'none',
+        guessBigSmall: 'none',
+        home: 0,
+        away: 0,
+        big: 0,
+        small: 0
+    } as DetailType,
+    highWinRateTrend: {
+        home: 0,
+        away: 0,
+        over: 0,
+        under: 0,
+        enoughProData: true,
+        memberPermission: false,
+        unlockPrice: 0
+    },
     masterPlanPrice: 0,
     masterPlanList: [],
     setHighWinRateTrend: (highWinRateTrend: GetProDistribResponse) => {

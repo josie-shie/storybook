@@ -3,6 +3,7 @@
 import { getGuessRank } from 'data-center';
 import { useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
+import { useUserStore } from '@/app/userStore';
 import PeriodListItem from '../components/period/periodListItem';
 import UserSwitch from '../components/userSwitch/userSwitch';
 import Rule from '../components/rule/rule';
@@ -17,6 +18,8 @@ interface PeriodBackgroundMap {
 }
 
 function Rank() {
+    const isLogin = useUserStore.use.isLogin();
+    const userInfo = useUserStore.use.userInfo();
     const searchParams = useSearchParams();
     const currentPeriod = searchParams.get('status') as keyof PeriodBackgroundMap;
     const rankTypeMap: Record<string, 0 | 1 | 2> = {
@@ -49,7 +52,7 @@ function Rank() {
     useEffect(() => {
         async function fetchGuessRank() {
             const memberRank = await getGuessRank({
-                memberId: 17, // 會員 ID 待改
+                memberId: isLogin ? userInfo.uid : 1,
                 rankType: rankTypeMap[currentPeriod]
             });
             if (memberRank.success) {
@@ -59,7 +62,7 @@ function Rank() {
             }
         }
         void fetchGuessRank();
-    }, [currentPeriod]);
+    }, [currentPeriod, isLogin]);
 
     return (
         <div className={style.rank}>
@@ -74,7 +77,7 @@ function Rank() {
                     <Rule />
                 </div>
             </div>
-            <UserRank />
+            {isLogin ? <UserRank /> : null}
             <PeriodListItem />
         </div>
     );

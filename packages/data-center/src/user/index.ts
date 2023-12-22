@@ -28,7 +28,8 @@ import {
     GET_MEMBER_GUESS_VIEWING_RECORDS_QUERY,
     GET_MEMBER_SUBSCRIPTION_STATUS_QUERY,
     GET_RECHARGE_OPTION_LIST_QUERY,
-    GET_MEMBER_TRANSACTION_LIST_QUERY
+    GET_MEMBER_TRANSACTION_LIST_QUERY,
+    RECHARGE_PLATFORM_CURRENCY_MUTATION
 } from './graphqlQueries';
 
 const RegisterResultSchema = z.object({
@@ -372,7 +373,7 @@ export const forgetPasswordReset = async ({
     newPassword
 }: ForgetPasswordRequest): Promise<ReturnData<null>> => {
     try {
-        const res: { data: null } = await fetcher({
+        const res: { data: null; errors?: { message: string }[] } = await fetcher({
             data: {
                 query: FORGET_PASSWORD_RESET_MUTATION,
                 variables: {
@@ -385,6 +386,9 @@ export const forgetPasswordReset = async ({
                 }
             }
         });
+        if (res.errors?.[0].message) {
+            throw new Error(res.errors[0].message);
+        }
         return { success: true, data: res.data };
     } catch (error) {
         return handleApiError(error);
@@ -401,7 +405,7 @@ export const updatePassword = async ({
     newPassword
 }: UpdatePasswordRequest): Promise<ReturnData<null>> => {
     try {
-        const res: { data: null } = await fetcher({
+        const res: { data: null; errors?: { message: string }[] } = await fetcher({
             data: {
                 query: UPDATE_PASSWORD_MUTATION,
                 variables: {
@@ -413,6 +417,9 @@ export const updatePassword = async ({
                 }
             }
         });
+        if (res.errors?.[0].message) {
+            throw new Error(res.errors[0].message);
+        }
         return { success: true, data: res.data };
     } catch (error) {
         return handleApiError(error);
@@ -428,7 +435,7 @@ export const updateMemberInfo = async (
     input: UpdateMemberInfoRequest
 ): Promise<ReturnData<null>> => {
     try {
-        const res: { data: null } = await fetcher({
+        const res: { data: null; errors?: { message: string }[] } = await fetcher({
             data: {
                 query: UPDATE_MEMBER_INFO_MUTATION,
                 variables: {
@@ -436,7 +443,9 @@ export const updateMemberInfo = async (
                 }
             }
         });
-
+        if (res.errors?.[0].message) {
+            throw new Error(res.errors[0].message);
+        }
         return { success: true, data: res.data };
     } catch (error) {
         return handleApiError(error);
@@ -604,7 +613,6 @@ const GetUnlockedPostSchema = z.object({
     awayTeamName: z.string(),
     matchTime: z.number(),
     createdAt: z.number(),
-    predictStat: z.number(),
     memberTags: TagSchema
 });
 
@@ -835,7 +843,7 @@ const GetMemberTransactionDataSchema = z.object({
     changeTypeCategory: ChangeTypeCategorySchema,
     changeTypeCategoryDisplayName: z.string(),
     rechargeStatus: RechargeStatusSchema.optional(),
-    rechargeId: z.number().optional(),
+    rechargeId: z.string().optional(),
     currencyCode: z.string().optional(),
     exchangeRate: z.number().optional(),
     amountOfChange: z.number(),
@@ -947,6 +955,39 @@ export const getRechargeOptionList = async ({ currencyCode }: GetRechargeOptionL
             success: true,
             data: data.getRechargeOptionList
         };
+    } catch (error) {
+        return handleApiError(error);
+    }
+};
+
+export interface RechargePlatformCurrencyRequest {
+    currencyRechargeAmount: number;
+    rechargeAmount: number;
+}
+
+/**
+ * 平台幣充值
+ * - params {@link RechargePlatformCurrencyRequest}
+ */
+export const rechargePlatformCurrency = async (
+    input: RechargePlatformCurrencyRequest
+): Promise<ReturnData<null>> => {
+    try {
+        const res: { data: null; errors?: { message: string }[] } = await fetcher(
+            {
+                data: {
+                    query: RECHARGE_PLATFORM_CURRENCY_MUTATION,
+                    variables: {
+                        input
+                    }
+                }
+            },
+            { cache: 'no-store' }
+        );
+        if (res.errors?.[0].message) {
+            throw new Error(res.errors[0].message);
+        }
+        return { success: true, data: res.data };
     } catch (error) {
         return handleApiError(error);
     }

@@ -3,10 +3,10 @@ import { useEffect, useRef } from 'react';
 import { getGuessProportion, addGuess } from 'data-center';
 import { useParams } from 'next/navigation';
 import { ProgressBar } from 'ui';
-import style from './guessBar.module.scss';
-import { useContestDetailStore } from './contestDetailStore';
 import { useUserStore } from '@/app/userStore';
 import { useAuthStore } from '@/app/(auth)/authStore';
+import style from './guessBar.module.scss';
+import { useContestDetailStore } from './contestDetailStore';
 
 interface GuessProps {
     isLogin: boolean;
@@ -22,12 +22,14 @@ const calculatePercentage = (a: number, b: number) => {
 };
 
 function Guess({ play, isLogin }: GuessProps) {
+    const userInfo = useUserStore.use.userInfo();
     const matchId = Number(useParams().matchId);
     const guessTypeLabel = {
-        HANDICAP: { left: '主', play: '半/ㄧ', right: '客' },
-        OVERUNDER: { left: '大', play: '2/2.5', right: '小' }
+        HANDICAP: { left: '主', right: '客' },
+        OVERUNDER: { left: '大', right: '小' }
     };
     const guessProportion = useContestDetailStore.use.guessProportion();
+    const setGuessProportion = useContestDetailStore.use.setGuessProportion();
     const setIsDrawerOpen = useAuthStore.use.setIsDrawerOpen();
     const setAuthQuery = useUserStore.use.setAuthQuery();
 
@@ -37,6 +39,10 @@ function Guess({ play, isLogin }: GuessProps) {
             : guessProportion.over.itemType === '';
     const leftBox = play === 'HANDICAP' ? guessProportion.home : guessProportion.over;
     const rightBox = play === 'HANDICAP' ? guessProportion.away : guessProportion.under;
+    const guessLabel =
+        play === 'HANDICAP'
+            ? guessProportion.handicapInChinese
+            : guessProportion.overUnder.toString();
 
     const leftPercent = calculatePercentage(leftBox.peopleNum, rightBox.peopleNum);
     const rightPercent = 100 - leftPercent;
@@ -52,6 +58,7 @@ function Guess({ play, isLogin }: GuessProps) {
             const res = await addGuess({ matchId, predictedPlay: guessWay });
             if (res.success) {
                 // set global remainingGuessTimes
+                void fetchGuessProportion();
             } else {
                 // TODO : 競猜錯誤
             }
@@ -60,10 +67,16 @@ function Guess({ play, isLogin }: GuessProps) {
             const res = await addGuess({ matchId, predictedPlay: guessWay });
             if (res.success) {
                 // set global remainingGuessTimes
+                void fetchGuessProportion();
             } else {
                 // TODO : 競猜錯誤
             }
         }
+    };
+
+    const fetchGuessProportion = async () => {
+        const newGuessProportion = await getGuessProportion({ matchId, memberId: userInfo.uid });
+        if (newGuessProportion.success) setGuessProportion(newGuessProportion.data);
     };
 
     return (
@@ -78,7 +91,7 @@ function Guess({ play, isLogin }: GuessProps) {
                 {noGuess ? null : <div className={style.percentage}>{leftPercent}%</div>}
             </div>
             <div className={style.middle}>
-                <p className={style.lable}>{guessTypeLabel[play].play}</p>
+                <p className={style.lable}>{guessLabel}</p>
                 {noGuess ? (
                     <div className={style.lineBar} />
                 ) : (
@@ -117,13 +130,19 @@ function GuessBar() {
     const liveBarRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
+        let init = true;
         async function fetchGuessProportion() {
             const guessProportion = await getGuessProportion({ matchId, memberId: userInfo.uid });
+            if (!init) return;
             if (guessProportion.success) {
                 setGuessProportion(guessProportion.data);
             }
         }
         if (isLogin) void fetchGuessProportion();
+
+        return () => {
+            init = false;
+        };
     }, [isLogin, matchId, userInfo.uid]);
 
     useEffect(() => {

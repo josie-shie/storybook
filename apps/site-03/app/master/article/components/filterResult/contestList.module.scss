@@ -1,0 +1,84 @@
+.contestList {
+    width: 100%;
+    height: 100%;
+
+    .contestCard {
+        display: flex;
+        align-items: center;
+        column-gap: 20px;
+        padding: 12px;
+        border-bottom: 1px solid #f3f3f3;
+    }
+
+    .information {
+        display: flex;
+        flex-direction: column;
+        row-gap: 2px;
+        flex: 1;
+
+        .contestInfo {
+            display: flex;
+            align-items: center;
+            column-gap: 12px;
+            font-size: 12px;
+            line-height: normal;
+
+            .league {
+                color: #4489ff;
+                font-weight: 600;
+            }
+
+            .startTime {
+                color: #8d8d8d;
+                font-weight: 500;
+            }
+        }
+
+        .battleInfo {
+            height: 40px;
+            display: flex;
+            align-items: center;
+            column-gap: 4px;
+
+            .teamName {
+                max-width: calc((100% - 30px) / 2);
+                max-height: 40px;
+                flex: 1;
+                color: #222;
+                font-size: 14px;
+                font-weight: 500;
+                line-height: normal;
+                text-overflow: ellipsis;
+                overflow: hidden;
+
+                &:first-of-type {
+                    text-align: right;
+                }
+            }
+
+            .vs {
+                width: 22px;
+                color: #8d8d8d;
+                font-size: 14px;
+                font-family: Vazirmatn, sans-serif;
+                font-weight: 700;
+                letter-spacing: 1.12px;
+            }
+        }
+    }
+
+    .articleBtn {
+        height: 32px;
+        background-color: #4489ff;
+        border-radius: 32px;
+        padding: 4px 12px;
+        font-size: 12px;
+        font-weight: 600;
+        line-height: normal;
+
+        :global .MuiButton-startIcon {
+            margin-left: initial;
+            margin-right: 4px;
+        }
+    }
+}

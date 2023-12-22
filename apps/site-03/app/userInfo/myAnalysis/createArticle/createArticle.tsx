@@ -220,7 +220,7 @@ function CreateArticle({ todayContest }: { todayContest: GetContestListResponse 
                         <div className={style.title}>选择盘口</div>
                         <div className={style.playSection}>
                             <div className={style.area}>
-                                <div className={style.title}>讓球 一球/球半</div>
+                                <div className={style.title}>让分 一球/球半</div>
                                 <div className={style.button}>
                                     <div
                                         className={`${style.border} ${

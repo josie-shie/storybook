@@ -66,6 +66,9 @@ export const GET_GUESS_RANK_QUERY = `
 export const GET_GUESS_PROPORTION_QUERY = `
     query getGuessProportion($matchId: Int, $memberId: Int){
         getGuessProportion(matchId: $matchId, memberId: $memberId) {
+            handicap
+            handicapInChinese
+            overUnder
             home {
               peopleNum
               itemType
@@ -82,6 +85,7 @@ export const GET_GUESS_PROPORTION_QUERY = `
               peopleNum
               itemType
             }
+            guessNum
             remainingGuessTimes
         }
     }
@@ -178,18 +182,21 @@ export const GET_RRO_GUESS_QUERY = `
                 memberId
                 memberName
                 avatarPath
+                records
+                predictedType
+                predictedPlay
+                predictionResult
+                handicapOdds
+                handicapInChinese
+                overUnderOdds
                 highlights {
                     id
                     type
                     value
                 } 
-                records
-                predictedType
-                predictedPlay
-                predictionResult
-                }
-                unlockPrice
-                freeUnlockChance
+            }
+            unlockPrice
+            freeUnlockChance
         }
     }
 `;
@@ -229,8 +236,12 @@ export const PAY_FOR_PRO_DISTRIB_MUTATION = `
 `;
 
 export const PAY_FOR_PRO_GUESS_MUTATION = `
-    mutation PayForProGuess($guessId: Int!) {
-        PayForProGuess(guessId: $guessId)
+    mutation payForProGuess($guessId: Int!) {
+        payForProGuess(guessId: $guessId) { 
+            guessId
+            currentBalance
+            predictedPlay
+        }
     }
 `;
 

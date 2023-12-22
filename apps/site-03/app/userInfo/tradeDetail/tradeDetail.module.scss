@@ -30,3 +30,18 @@
         }
     }
 }
+
+.listEnd {
+    text-align: center;
+
+    p {
+        color: rgb(169 170 171);
+        font-size: 12px;
+        padding-top: 16px;
+    }
+}
+
+.loadMore {
+    display: flex;
+    justify-content: center;
+}

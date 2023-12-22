@@ -1,8 +1,10 @@
 'use client';
-import { IconFlame } from '@tabler/icons-react';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import Avatar from '@/components/avatar/avatar';
 import Tag from '@/components/tag/tag';
+import Fire from '@/app/img/fire.png';
 import style from './masterItem.module.scss';
 
 interface Tags {
@@ -60,26 +62,38 @@ interface FansProps {
 }
 
 function MasterItem({ uid, item, onFollowToggle }: FansProps) {
+    const router = useRouter();
+
     const handleFollowClick = () => {
         onFollowToggle(uid, item.memberId, !item.isFollowed);
+    };
+
+    const goMasterPredict = (id: number) => {
+        router.push(`/master/masterAvatar/${id}?status=analysis`);
     };
 
     return (
         <div className={style.masterItem} key={item.memberId}>
             <div className={style.info}>
                 <div className={style.avatarContainer}>
-                    <Avatar
-                        borderColor="#4489FF"
-                        size={46}
-                        src={item.avatarPath && item.avatarPath !== '0' ? item.avatarPath : ''}
-                    />
+                    <div
+                        onClick={() => {
+                            goMasterPredict(item.memberId);
+                        }}
+                    >
+                        <Avatar
+                            borderColor="#4489FF"
+                            size={46}
+                            src={item.avatarPath && item.avatarPath !== '0' ? item.avatarPath : ''}
+                        />
+                    </div>
                 </div>
                 <div className={style.about}>
                     <div className={style.top}>
                         <span>{item.username}</span>
                         {item.tags.winMaxAccurateStreak > 3 && (
                             <Tag
-                                icon={<IconFlame size={10} />}
+                                icon={<Image alt="fire" src={Fire} />}
                                 text={`${item.tags.winMaxAccurateStreak}连红`}
                             />
                         )}

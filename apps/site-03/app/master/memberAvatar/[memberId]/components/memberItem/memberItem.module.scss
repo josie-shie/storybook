@@ -1,0 +1,67 @@
+.masterItem {
+    border-bottom: 1px solid #f3f3f3;
+    margin-bottom: 16px;
+}
+
+.info {
+    display: flex;
+
+    img {
+        height: 46px;
+        width: 46px;
+    }
+}
+
+.avatarContainer {
+    padding-right: 10px;
+}
+
+.about {
+    flex-grow: 1;
+
+    .top {
+        font-size: 11px;
+        font-weight: 500;
+        color: #222;
+        display: flex;
+        align-items: center;
+        margin: 4px 0;
+    }
+
+    .bot {
+        font-size: 13px;
+        color: #757575;
+        display: flex;
+        gap: 6px;
+    }
+}
+
+.followButton {
+    font-size: 14px;
+    font-weight: 500;
+    height: fit-content;
+    background: #fff;
+    color: #4489ff;
+    padding: 4px 12px;
+    border: 1px solid #4489ff;
+    border-radius: 30px;
+    margin-top: 6px;
+}
+
+.followedButton {
+    font-size: 14px;
+    font-weight: 500;
+    height: fit-content;
+    background: #e6effe;
+    color: #4489ff;
+    padding: 4px 12px;
+    border: 1px solid #e6effe;
+    border-radius: 30px;
+    margin-top: 6px;
+}
+
+.description {
+    font-size: 13px;
+    padding: 8px 0;
+    color: #757575;
+}

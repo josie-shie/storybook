@@ -1,18 +1,29 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { IconFlame } from '@tabler/icons-react';
 import { motion } from 'framer-motion';
-import { unFollow, updateFollow, getFollowers, type GetFollowersResponse } from 'data-center';
+import {
+    unFollow,
+    updateFollow,
+    getFollowers,
+    getMentorList,
+    type GetFollowersResponse
+} from 'data-center';
 import { useRouter } from 'next/navigation';
-import style from './masterItem.module.scss';
+import Image from 'next/image';
+import Cookies from 'js-cookie';
 import Avatar from '@/components/avatar/avatar';
 import Tag from '@/components/tag/tag';
+import Fire from '@/app/img/fire.png';
+import { useUserStore } from '../../../../../userStore';
+import style from './masterItem.module.scss';
 
 function MasterItem({ params }: { params: { masterId } }) {
     const [masterItem, setMasterItem] = useState<GetFollowersResponse>([]);
 
     const router = useRouter();
+
+    const userInfo = useUserStore.use.userInfo();
 
     const fetchData = async () => {
         try {
@@ -29,25 +40,39 @@ function MasterItem({ params }: { params: { masterId } }) {
     };
 
     const onIsFocused = async (id: number, follow: boolean) => {
-        try {
-            const res = follow
-                ? await unFollow({ followerId: Number(params.masterId) || 1, followedId: id })
-                : await updateFollow({ followerId: Number(params.masterId) || 1, followedId: id });
-            if (!res.success) {
-                return new Error();
-            }
-
-            setMasterItem(prevData =>
-                prevData.map(item =>
-                    item.memberId === id ? { ...item, isFollowed: !item.isFollowed } : item
-                )
-            );
-        } catch (error) {
+        const isCookieExist = Cookies.get('access');
+        if (!isCookieExist) {
+            router.push(`/master/masterAvatar/${params.masterId}?status=focus&auth=login`);
+            return;
+        }
+        const res = follow
+            ? await unFollow({ followerId: Number(params.masterId) || 1, followedId: id })
+            : await updateFollow({ followerId: Number(params.masterId) || 1, followedId: id });
+        if (!res.success) {
             return new Error();
         }
+
+        setMasterItem(prevData =>
+            prevData.map(item =>
+                item.memberId === id ? { ...item, isFollowed: !item.isFollowed } : item
+            )
+        );
     };
 
-    const goMasterPredict = (id: number) => {
+    const goMasterPredict = async (id: number) => {
+        const res = await getMentorList({
+            memberId: userInfo.uid ? userInfo.uid : 1,
+            mentorId: id
+        });
+
+        if (!res.success) {
+            return new Error();
+        }
+        if (res.data.length === 0) {
+            router.push(`/master/memberAvatar/${id}?status=guess`);
+            return;
+        }
+
         router.push(`/master/masterAvatar/${id}?status=analysis`);
     };
 
@@ -64,7 +89,7 @@ function MasterItem({ params }: { params: { masterId } }) {
                             <div
                                 className={style.avatarContainer}
                                 onClick={() => {
-                                    goMasterPredict(item.memberId);
+                                    void goMasterPredict(item.memberId);
                                 }}
                             >
                                 <Avatar
@@ -78,7 +103,7 @@ function MasterItem({ params }: { params: { masterId } }) {
                                 <div className={style.top}>
                                     {item.tags.winMaxAccurateStreak > 0 && (
                                         <Tag
-                                            icon={<IconFlame size={10} />}
+                                            icon={<Image alt="fire" src={Fire} />}
                                             text={`${item.tags.winMaxAccurateStreak} 連紅`}
                                         />
                                     )}

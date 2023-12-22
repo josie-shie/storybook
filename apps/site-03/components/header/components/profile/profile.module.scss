@@ -26,13 +26,52 @@
         align-items: center;
         justify-content: center;
 
-        &.vipTotalNumber {
-            background: linear-gradient(to right, #fffded 0%, #ffe075 100%);
-            border: 2px solid #c0a54d;
+        a {
+            color: #222;
+        }
+    }
 
-            a {
-                color: #6b6040;
-            }
+    .loginButton {
+        font-size: 11px;
+        padding: 0;
+    }
+}
+
+.vipProfile {
+    display: flex;
+    align-items: center;
+    position: relative;
+    cursor: pointer;
+
+    .icon {
+        color: transparent;
+        position: absolute;
+        left: 10px;
+        z-index: 100;
+    }
+
+    .totalNumber {
+        min-width: 84px;
+        height: 22px;
+        border-radius: 4px;
+        background: linear-gradient(to right, #ffffff 0%, #d2d2d2 100%);
+        border: 2px solid #c0c0c0;
+        color: #222;
+        font-size: 11px;
+        transform: scale(0.9167);
+        font-weight: 500;
+        padding: 2px 8px 2px 26px;
+        white-space: nowrap;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        a {
+            background: linear-gradient(104deg, #9a9a9a -16.25%, #413823 100%, #2d2d2d 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
     }
 

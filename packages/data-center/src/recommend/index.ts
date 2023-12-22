@@ -9,7 +9,8 @@ import {
     GET_POST_DETAIL_QUERY,
     GET_MENTOR_LIST_QUERY,
     GET_POST_LIST_QUERY,
-    GET_MEMBER_PROFILE_WITH_MEMBER_ID_QUERY
+    GET_MEMBER_PROFILE_WITH_MEMBER_ID_QUERY,
+    GET_LEAGUE_OF_POST_LIST_QUERY
 } from './graphqlQueries';
 
 export interface GetIndexPostsRequest {
@@ -390,6 +391,7 @@ export const getMentorList = async (
 
 export type PostFilter =
     | 'league'
+    | 'country'
     | 'match'
     | 'mentor'
     | 'all'
@@ -505,6 +507,57 @@ export const getMemberProfileWithMemberId = async (
         return {
             success: true,
             data: data.getMemberProfileWithMemberId
+        };
+    } catch (error) {
+        return handleApiError(error);
+    }
+};
+
+const GetLeagueOfPostCountrySchema = z.object({
+    countryId: z.number(),
+    countryName: z.string()
+});
+
+export type GetLeagueOfPostCountry = z.infer<typeof GetLeagueOfPostCountrySchema>;
+
+const GetLeagueOfPostLeagueSchema = z.object({
+    leagueId: z.number(),
+    leagueName: z.string()
+});
+
+export type GetLeagueOfPostLeague = z.infer<typeof GetLeagueOfPostLeagueSchema>;
+
+const GetLeagueOfPostListSchema = z.object({
+    country: z.array(GetLeagueOfPostCountrySchema),
+    leagues: z.array(GetLeagueOfPostLeagueSchema)
+});
+
+export type GetLeagueOfPostListResponse = z.infer<typeof GetLeagueOfPostListSchema>;
+
+const GetLeagueOfPostListResultSchema = z.object({
+    getLeagueOfPostList: GetLeagueOfPostListSchema
+});
+
+export type GetLeagueOfPostListResult = z.infer<typeof GetLeagueOfPostListResultSchema>;
+
+/**
+ * 專家-取得文章列表所屬聯賽及國家
+ * - returns {@link GetLeagueOfPostListResponse}
+ */
+export const getLeagueOfPostList = async (): Promise<ReturnData<GetLeagueOfPostListResponse>> => {
+    try {
+        const { data }: { data: GetLeagueOfPostListResult } = await fetcher(
+            {
+                data: {
+                    query: GET_LEAGUE_OF_POST_LIST_QUERY
+                }
+            },
+            { cache: 'no-store' }
+        );
+
+        return {
+            success: true,
+            data: data.getLeagueOfPostList
         };
     } catch (error) {
         return handleApiError(error);

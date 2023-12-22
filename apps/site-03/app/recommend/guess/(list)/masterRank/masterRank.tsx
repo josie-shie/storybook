@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { useEffect } from 'react';
 import { getGuessRank } from 'data-center';
 import Avatar from '@/components/avatar/avatar';
+import { useUserStore } from '@/app/userStore';
 import HotStreakListItem from '../components/hotStreak/hotStreakListItem';
 import UserSwitch from '../components/userSwitch/userSwitch';
 import Rule from '../components/rule/rule';
@@ -13,6 +14,8 @@ import { creatMasterRankStore, useMasterRankStore } from './masterRankStore';
 import style from './masterRank.module.scss';
 
 function UserMasterRank() {
+    const isLogin = useUserStore.use.isLogin();
+    const userInfo = useUserStore.use.userInfo();
     const memberInfo = useMasterRankStore.use.member();
     const setMember = useMasterRankStore.use.setMember();
     const setMasterRankList = useMasterRankStore.use.setMasterRankList();
@@ -20,7 +23,7 @@ function UserMasterRank() {
     useEffect(() => {
         async function fetchMasterRank() {
             const masterRank = await getGuessRank({
-                memberId: 17, // 會員 ID 待改
+                memberId: isLogin ? userInfo.uid : 1,
                 rankType: 3
             });
             if (masterRank.success) {
@@ -30,7 +33,7 @@ function UserMasterRank() {
             }
         }
         void fetchMasterRank();
-    }, []);
+    }, [isLogin]);
 
     return (
         <div className={style.userHotStreak}>
@@ -70,6 +73,7 @@ function UserMasterRank() {
 }
 
 function RankList() {
+    const isLogin = useUserStore.use.isLogin();
     creatMasterRankStore({
         member: {
             memberId: 0,
@@ -102,7 +106,7 @@ function RankList() {
                     <Rule />
                 </div>
             </div>
-            <UserMasterRank />
+            {isLogin ? <UserMasterRank /> : null}
             <HotStreakListItem />
         </div>
     );

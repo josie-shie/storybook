@@ -1,94 +1,131 @@
 import { Button } from '@mui/material';
 import dayjs from 'dayjs';
-import type { Dispatch, SetStateAction } from 'react';
+import { useState, type Dispatch, type SetStateAction } from 'react';
+import { getMemberTransactionList } from 'data-center';
 import BottomDrawer from '@/components/drawer/bottomDrawer';
-import { useTardeDetailStore, type DateOption, type TradeTypeOption } from '../../tradeDetailStore';
+import DatePicker from '../datepicker/datepicker';
+import { useTardeDetailStore } from '../../tradeDetailStore';
+import type { TradeTypeOption, DateOption } from '../../tradeDetailStore';
+import { dateOption } from '../../options';
 import style from './dateOptionDrawer.module.scss';
 
 interface DateRangeProps {
     activeDate: DateOption;
+    tradeType: TradeTypeOption;
     isDateRangeOpen: boolean;
     setIsDateRangeOpen: (arg: boolean) => void;
-    setStartDate: Dispatch<SetStateAction<number | undefined>>;
-    setEndDate: Dispatch<SetStateAction<number | undefined>>;
+    setStartDate: Dispatch<SetStateAction<number>>;
+    setEndDate: Dispatch<SetStateAction<number>>;
     setActiveDate: Dispatch<SetStateAction<DateOption>>;
-    handleChangeOption: ({
-        start,
-        end,
-        type
-    }: {
-        start?: number;
-        end?: number;
-        type?: TradeTypeOption;
-    }) => void;
 }
 
 function DateRangeOption({
+    tradeType,
     setActiveDate,
     activeDate,
-    handleChangeOption,
     isDateRangeOpen,
     setIsDateRangeOpen,
     setStartDate,
     setEndDate
 }: DateRangeProps) {
-    const dateList = useTardeDetailStore.use.dateOption();
-    const getStartDate = (type: DateOption) => {
+    const setTradeDetailList = useTardeDetailStore.use.setTradeDetailList();
+    const [isOpenDatePick, setIsOpenDatePick] = useState(false);
+
+    const getStartDate = (type: string) => {
         const today = dayjs().startOf('day').toDate().getTime();
         switch (type) {
-            case 'all':
-                return [undefined, undefined];
-            case 'today':
+            case 'ALL':
+                return [0, 0];
+            case 'WEEK':
                 return [dayjs().subtract(1, 'week').toDate().getTime(), today];
-            case 'week':
-                return [dayjs().subtract(1, 'week').toDate().getTime(), today];
-            case 'month':
+            case 'TWOWEEKS':
+                return [dayjs().subtract(2, 'week').toDate().getTime(), today];
+            case 'MONTH':
                 return [dayjs().subtract(1, 'month').toDate().getTime(), today];
-            case 'threeMonths':
-                return [dayjs().subtract(3, 'month').toDate().getTime(), today];
+            default:
+                return [];
         }
     };
 
-    const handleChangDate = (type: DateOption) => {
-        const [start, end] = getStartDate(type);
+    const handleChangDate = async (dateRange: number[], type: DateOption) => {
         setActiveDate(type);
-        setEndDate(end);
-        setStartDate(start);
-        handleChangeOption({ start, end });
+        setStartDate(dateRange[0]);
+        setEndDate(dateRange[1]);
+
+        const recordList = await getMemberTransactionList({
+            startTime: dateRange[0],
+            endTime: dateRange[1],
+            changeTypeCategory: tradeType,
+            currencyPage: 1,
+            prepage: 20
+        });
+        if (recordList.success) {
+            setTradeDetailList({
+                detailList: recordList.data.list,
+                pagination: {
+                    pageCount: recordList.data.totalPages,
+                    totalCount: recordList.data.totalCount
+                }
+            });
+        }
         setIsDateRangeOpen(false);
     };
 
     return (
-        <BottomDrawer
-            isOpen={isDateRangeOpen}
-            onClose={() => {
-                setIsDateRangeOpen(false);
-            }}
-            onOpen={() => {
-                setIsDateRangeOpen(true);
-            }}
-        >
-            <div className={style.dateRangeDrawer}>
-                <div className={style.title}>
-                    <span>选择时间</span>
-                </div>
-                <div className={style.buttomBlock}>
-                    {dateList.map(option => (
+        <>
+            <BottomDrawer
+                isOpen={isDateRangeOpen}
+                onClose={() => {
+                    setIsDateRangeOpen(false);
+                }}
+                onOpen={() => {
+                    setIsDateRangeOpen(true);
+                }}
+            >
+                <div className={style.dateRangeDrawer}>
+                    <div className={style.title}>
+                        <span>选择时间</span>
+                    </div>
+                    <div className={style.buttonBlock}>
+                        {dateOption.map(option => (
+                            <Button
+                                className={`${style.filterButton} ${
+                                    activeDate === option.value && style.active
+                                }`}
+                                key={option.value}
+                                onClick={() => {
+                                    void handleChangDate(
+                                        getStartDate(option.value),
+                                        option.value as DateOption
+                                    );
+                                }}
+                            >
+                                {option.label}
+                            </Button>
+                        ))}
                         <Button
                             className={`${style.filterButton} ${
-                                activeDate === option.value && style.active
+                                activeDate === 'RANGE' && style.active
                             }`}
-                            key={option.value}
                             onClick={() => {
-                                handleChangDate(option.value as DateOption);
+                                setIsOpenDatePick(true);
                             }}
                         >
-                            {option.label}
+                            选择时间
                         </Button>
-                    ))}
+                    </div>
                 </div>
-            </div>
-        </BottomDrawer>
+            </BottomDrawer>
+            <DatePicker
+                handleChangDate={handleChangDate}
+                openModal={isOpenDatePick}
+                setActiveDate={setActiveDate}
+                setEnd={setEndDate}
+                setIsDateRangeOpen={setIsDateRangeOpen}
+                setOpenModal={setIsOpenDatePick}
+                setStart={setStartDate}
+            />
+        </>
     );
 }
 

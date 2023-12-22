@@ -1,9 +1,13 @@
 .articleContent {
     margin-top: -30px;
     border-radius: 16px 16px 0 0;
-    overflow: auto;
-    height: calc(100vh - 232px);
+    overflow: hidden;
     background: #f8f8f8;
+
+    .articleLayout {
+        height: calc(100vh - 209px);
+        overflow: scroll;
+    }
 
     .container {
         padding: 12px;
@@ -27,6 +31,7 @@
             font-weight: 600;
             color: #222;
             text-align: left;
+            word-break: break-all;
 
             &::before {
                 content: '';

@@ -24,7 +24,7 @@ const initialState = (set: (data: Partial<ExponentState>) => void) => ({
     loading: false,
     options: [
         {
-            label: '让球',
+            label: '让分',
             value: 'handicapsData'
         },
         {

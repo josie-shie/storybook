@@ -4,8 +4,9 @@ import { ProgressBar } from 'ui/stories/progressBar/progressBar';
 import { useEffect, useState } from 'react';
 import { getMatchDetail, getGuessProportion, addGuess } from 'data-center';
 import { useParams } from 'next/navigation';
-import NorthBangKokClubIcon from './img/northBangkokClubIcon.png';
-import ThaiUniversityClubIcon from './img/thaiUniversityClubIcon.png';
+import { useAuthStore } from '@/app/(auth)/authStore';
+import { useUserStore } from '@/app/userStore';
+import defaultTeamLogo from '@/app/football/[matchId]/img/defaultTeamLogo.png';
 import { useGuessDetailStore } from './guessDetailStore';
 import style from './vsBox.module.scss';
 import selectDecoration from './img/select.png';
@@ -13,66 +14,79 @@ import GuessDialog from './components/guessDialog/guessDialog';
 import type { DetailType } from './guessDetailStore';
 
 interface BettingProps {
-    play: string;
     detail: DetailType;
-    homeType: string;
-    awayType: string;
+    leftLabel: string;
+    rightLabel: string;
 }
 
 const calculatePercentage = (a: number, b: number) => {
-    if (b === 0) {
-        return 0;
-    }
     const percentage = Math.round((a / (a + b)) * 100);
     return percentage;
 };
 
-function BettingColumn({ play, detail, homeType, awayType }: BettingProps) {
+function BettingColumn({ detail, leftLabel, rightLabel }: BettingProps) {
     const matchId = useParams().matchId;
     const [openGuessDialog, setOpenGuessDialog] = useState(false);
     const [direction, setDirection] = useState('left');
 
     const leftPercent =
-        homeType === '主'
+        leftLabel === '主'
             ? calculatePercentage(detail.home, detail.away)
             : calculatePercentage(detail.big, detail.small);
     const rightPercent = 100 - leftPercent;
-    const guessStatus = homeType === '主' ? detail.guessHomeAway : detail.guessBigSmall;
+    const guessLabel = leftLabel === '主' ? detail.handicapInChinese : detail.overUnder.toString();
+    const guessStatus = leftLabel === '主' ? detail.guessHomeAway : detail.guessBigSmall;
     const guessTeam = direction === 'left' ? detail.homeTeamName : detail.awayTeamName;
 
-    const guessesLeft = useGuessDetailStore.use.guessesLeft();
+    const isLogin = useUserStore.use.isLogin();
     const setGuessDetail = useGuessDetailStore.use.setDetail();
     const setGuessesLeft = useGuessDetailStore.use.setGuessesLeft();
+    const setIsDrawerOpen = useAuthStore.use.setIsDrawerOpen();
+    const setAuthQuery = useUserStore.use.setAuthQuery();
 
     const handleGuess = (guessDirection: 'left' | 'right') => {
+        if (!isLogin) {
+            setAuthQuery('login');
+            setIsDrawerOpen(true);
+            return;
+        }
         setOpenGuessDialog(true);
         setDirection(guessDirection);
     };
+
     const handleClickClose = () => {
         setOpenGuessDialog(false);
     };
+
     const handleConfirmGuess = async () => {
         setOpenGuessDialog(false);
-        if (homeType === '主') {
+        if (leftLabel === '主') {
             const betting = direction === 'left' ? 'home' : 'away';
-            const newDetail: DetailType = { ...detail, guessHomeAway: betting };
-            await addGuess({
+            const newDetail: DetailType = {
+                ...detail,
+                guessHomeAway: betting,
+                [betting]: detail[betting] + 1
+            };
+            const res = await addGuess({
                 matchId: Number(matchId),
                 predictedPlay: betting.toUpperCase() as 'HOME' | 'AWAY'
             });
-            // set res 回傳剩餘競猜次數
             setGuessDetail({ ...newDetail });
-            setGuessesLeft(guessesLeft - 1);
+            if (res.success) setGuessesLeft(res.data.remainingGuessTimes);
         } else {
             const betting = direction === 'left' ? 'over' : 'under';
-            const newDetail: DetailType = { ...detail, guessBigSmall: betting };
-            await addGuess({
+            const convertKey = betting === 'over' ? 'big' : 'small';
+            const newDetail: DetailType = {
+                ...detail,
+                guessBigSmall: betting,
+                [convertKey]: detail[convertKey] + 1
+            };
+            const res = await addGuess({
                 matchId: Number(matchId),
                 predictedPlay: betting.toUpperCase() as 'OVER' | 'UNDER'
             });
-            // set res 回傳剩餘競猜次數
             setGuessDetail({ ...newDetail });
-            setGuessesLeft(guessesLeft - 1);
+            if (res.success) setGuessesLeft(res.data.remainingGuessTimes);
         }
     };
 
@@ -94,10 +108,10 @@ function BettingColumn({ play, detail, homeType, awayType }: BettingProps) {
                             handleGuess('left');
                         }}
                     >
-                        {homeType}
+                        {leftLabel}
                     </div>
                     <div className={style.progress}>
-                        <div className={style.play}>{play}</div>
+                        <div className={style.play}>{guessLabel}</div>
                         <div className={style.line} />
                     </div>
                     <div
@@ -106,7 +120,7 @@ function BettingColumn({ play, detail, homeType, awayType }: BettingProps) {
                             handleGuess('right');
                         }}
                     >
-                        {awayType}
+                        {rightLabel}
                     </div>
                 </>
             ) : (
@@ -116,7 +130,7 @@ function BettingColumn({ play, detail, homeType, awayType }: BettingProps) {
                             guessStatus === 'away' || guessStatus === 'under' ? style.noSelect : ''
                         }`}
                     >
-                        <span className={style.team}>{homeType}</span>
+                        <span className={style.team}>{leftLabel}</span>
                         <span className={style.user}>{leftPercent}%</span>
                         {(guessStatus === 'home' || guessStatus === 'over') && (
                             <Image alt="" height={20} src={selectDecoration} width={20} />
@@ -125,11 +139,11 @@ function BettingColumn({ play, detail, homeType, awayType }: BettingProps) {
                     <div className={style.progress}>
                         <div className={style.play}>
                             <span className={style.home}>
-                                {homeType === '主' ? detail.home : detail.big}
+                                {leftLabel === '主' ? detail.home : detail.big}
                             </span>
-                            <span className={style.ing}>{play}</span>
+                            <span className={style.ing}>{guessLabel}</span>
                             <span className={style.away}>
-                                {homeType === '主' ? detail.away : detail.small}
+                                {leftLabel === '主' ? detail.away : detail.small}
                             </span>
                         </div>
                         <ProgressBar
@@ -145,7 +159,7 @@ function BettingColumn({ play, detail, homeType, awayType }: BettingProps) {
                             guessStatus === 'home' || guessStatus === 'over' ? style.noSelect : ''
                         }`}
                     >
-                        <span className={style.team}>{awayType}</span>
+                        <span className={style.team}>{rightLabel}</span>
                         <span className={style.user}>{rightPercent}%</span>
                         {(guessStatus === 'away' || guessStatus === 'under') && (
                             <Image alt="" height={20} src={selectDecoration} width={20} />
@@ -159,6 +173,8 @@ function BettingColumn({ play, detail, homeType, awayType }: BettingProps) {
 
 function VsBox() {
     const matchId = useParams().matchId;
+    const isLogin = useUserStore.use.isLogin();
+    const userInfo = useUserStore.use.userInfo();
     const detailInfo = useGuessDetailStore.use.detail();
     const setDetailInfo = useGuessDetailStore.use.setDetail();
     const setGuessesLeft = useGuessDetailStore.use.setGuessesLeft();
@@ -186,7 +202,7 @@ function VsBox() {
             const matchDetail = await getMatchDetail(Number(matchId));
             const guessProportion = await getGuessProportion({
                 matchId: Number(matchId),
-                memberId: 16 // TODO: memberId 從 useInfo Store
+                memberId: isLogin ? userInfo.uid : 1
             });
             if (matchDetail.success && guessProportion.success) {
                 const baseData = matchDetail.data;
@@ -198,7 +214,10 @@ function VsBox() {
                     homeTeamName: baseData.homeChs,
                     awayTeamLogo: baseData.awayLogo,
                     awayTeamName: baseData.awayChs,
-                    participants: 1276, // 參與競猜人數(getGuessProportion API 欄位待新增)
+                    participants: guessData.guessNum,
+                    handicap: guessData.handicap,
+                    handicapInChinese: guessData.handicapInChinese,
+                    overUnder: guessData.overUnder,
                     guessHomeAway: covertGuessStatus(true, guessData.home.itemType) as
                         | 'home'
                         | 'away'
@@ -212,11 +231,11 @@ function VsBox() {
                     big: guessData.over.peopleNum,
                     small: guessData.under.peopleNum
                 });
-                setGuessesLeft(guessData.remainingGuessTimes);
+                setGuessesLeft(guessData.remainingGuessTimes); // 搬到 userStore
             }
         }
         void fetchMatchDetail();
-    }, [matchId]);
+    }, [matchId, isLogin, userInfo.uid]);
 
     return (
         <div className={style.vsBox}>
@@ -228,7 +247,11 @@ function VsBox() {
                     <Image
                         alt=""
                         height={48}
-                        src={detailInfo.homeTeamLogo || ThaiUniversityClubIcon}
+                        src={
+                            detailInfo.homeTeamLogo === '0'
+                                ? defaultTeamLogo.src
+                                : detailInfo.homeTeamLogo
+                        }
                         width={48}
                     />
                     <div className={style.name}>{detailInfo.homeTeamName}</div>
@@ -238,7 +261,11 @@ function VsBox() {
                     <Image
                         alt=""
                         height={48}
-                        src={detailInfo.awayTeamLogo || NorthBangKokClubIcon}
+                        src={
+                            detailInfo.awayTeamLogo === '0'
+                                ? defaultTeamLogo.src
+                                : detailInfo.awayTeamLogo
+                        }
                         width={48}
                     />
                     <div className={style.name}>{detailInfo.awayTeamName}</div>
@@ -250,8 +277,8 @@ function VsBox() {
                 </span>
             </div>
             <div className={style.betting}>
-                <BettingColumn awayType="客" detail={detailInfo} homeType="主" play="一球/球半" />
-                <BettingColumn awayType="小" detail={detailInfo} homeType="大" play="一球/球半" />
+                <BettingColumn detail={detailInfo} leftLabel="主" rightLabel="客" />
+                <BettingColumn detail={detailInfo} leftLabel="大" rightLabel="小" />
             </div>
         </div>
     );

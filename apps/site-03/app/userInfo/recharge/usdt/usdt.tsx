@@ -46,8 +46,9 @@ function BlockChain({ selectTitle, options, onSelectChain }: SectionSelectProps)
 function Usdt() {
     const router = useRouter();
     const back = () => {
-        router.push('/userInfo');
+        router.back();
     };
+
     const headerProps = {
         title: '虚拟货币(USDT)充值'
     };

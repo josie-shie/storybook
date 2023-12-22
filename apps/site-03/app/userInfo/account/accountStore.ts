@@ -5,7 +5,7 @@ interface InitState {
     loading: boolean;
 }
 
-interface FormState {
+export interface FormState {
     nickName: string;
     birthday: number;
     phoneNumber: string;

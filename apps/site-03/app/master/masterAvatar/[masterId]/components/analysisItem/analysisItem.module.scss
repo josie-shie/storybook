@@ -7,28 +7,32 @@
     justify-content: space-between;
     align-items: flex-start;
 
-    .title {
-        font-size: 14px;
-        font-weight: 600;
-        color: #4a4a4a;
+    .left {
+        display: flex;
         justify-content: flex-start;
-        padding-right: 8px;
-        max-height: 44px;
-        height: 44px;
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 2;
-        overflow: hidden;
-    }
 
-    .title::before {
-        content: '';
-        display: inline-block;
-        width: 3px;
-        height: 14px;
-        background: #4489ff;
-        margin-right: 6px;
-        border-radius: 1px;
+        .decorate::before {
+            content: '';
+            display: inline-block;
+            width: 4px;
+            height: 16px;
+            background: #4489ff;
+            border-radius: 1px;
+            margin-right: 8px;
+        }
+
+        .title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #4a4a4a;
+            height: 40px;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+            overflow: hidden;
+            word-break: break-all;
+            padding-right: 4px;
+        }
     }
 
     .unlockStatus {
@@ -48,7 +52,7 @@
             font-weight: 500;
             word-break: keep-all;
             color: #4489ff;
-            padding: 4px 8px 8px;
+            padding: 0 8px 8px;
         }
     }
 }

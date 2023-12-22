@@ -3,6 +3,8 @@ import Image from 'next/image';
 import type { TagType } from 'data-center';
 import { convertHandicap } from 'lib';
 import Avatar from '@mui/material/Avatar';
+import Link from 'next/link';
+import Tag from '@/components/tag/tag';
 import { type RecordItem } from '../../myGuessStore';
 import Win from '../img/win.png';
 import BigWin from '../img/bigWin.png';
@@ -12,7 +14,6 @@ import BigGone from '../img/bigGone.png';
 import Gone from '../img/gone.png';
 import Fire from '../img/fire.png';
 import style from './recordCard.module.scss';
-import Tag from '@/components/tag/tag';
 
 function RecordCard({ recordItem }: { recordItem: RecordItem }) {
     const iconMap = {
@@ -40,13 +41,13 @@ function RecordCard({ recordItem }: { recordItem: RecordItem }) {
         );
     };
 
-    const tagListFormat = (tageData: TagType) => {
+    const tagListFormat = (tagsData: TagType) => {
         const displayData = {
-            weekRanking: { rate: tageData.weekRanking, display: `週榜 ${tageData.weekRanking}` },
-            monthRanking: { rate: tageData.monthRanking, display: `月榜 ${tageData.monthRanking}` },
+            weekRanking: { rate: tagsData.weekRanking, display: `週榜 ${tagsData.weekRanking}` },
+            monthRanking: { rate: tagsData.monthRanking, display: `月榜 ${tagsData.monthRanking}` },
             quarterRanking: {
-                rate: tageData.quarterRanking,
-                display: `季榜 ${tageData.quarterRanking}`
+                rate: tagsData.quarterRanking,
+                display: `季榜 ${tagsData.quarterRanking}`
             }
         };
         return Object.entries(displayData).map(([key, value]) => {
@@ -60,7 +61,9 @@ function RecordCard({ recordItem }: { recordItem: RecordItem }) {
     return (
         <div className={style.recordCard}>
             <div className={style.detail}>
-                <Avatar />
+                <Link href={`/master/masterAvatar/${recordItem.recordMemberId}?status=analysis`}>
+                    <Avatar />
+                </Link>
                 <div className={style.details}>
                     <div className={style.nameRow}>
                         <span>{recordItem.memberName}</span>
@@ -87,11 +90,14 @@ function RecordCard({ recordItem }: { recordItem: RecordItem }) {
             <div className={style.paid}>
                 <div className={style.hit}>
                     {iconMap[`BIG${recordItem.predictionResult}`]}
-                    <div className={style.play}>{playDisplay(recordItem)}</div>
+                    <div className={style.play}>
+                        {playDisplay(recordItem)}
+                        {['AWAY', 'HOME'].includes(recordItem.predictedPlay) ? '球' : ''}
+                    </div>
                     <div className={style.paidContent}>
                         <div
                             className={`${style.play} ${
-                                recordItem.predictionResult === 'WIN' && style.WIN
+                                recordItem.predictionResult === 'WIN' && style.win
                             }`}
                         >
                             {guessMap[recordItem.predictedPlay]}

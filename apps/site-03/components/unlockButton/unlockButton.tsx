@@ -7,7 +7,7 @@ interface PropsType {
     price?: number;
 }
 
-function UnlockButton({ price = 20 }: PropsType) {
+function UnlockButton({ price }: PropsType) {
     return (
         <motion.button className={style.unlockButton} type="button" whileTap={{ scale: 0.9 }}>
             <Image alt="icon" src={star} style={{ width: '14px', height: '14px' }} />

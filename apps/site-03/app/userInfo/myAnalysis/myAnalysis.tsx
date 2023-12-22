@@ -43,11 +43,13 @@ function MyAnalysis() {
         }
 
         if (articleList.length > 0) {
-            <div className={style.main}>
-                {articleList.map(item => (
-                    <ArticleItem item={item} key={item.postId} />
-                ))}
-            </div>;
+            return (
+                <div className={style.main}>
+                    {articleList.map(item => (
+                        <ArticleItem item={item} key={item.postId} />
+                    ))}
+                </div>
+            );
         }
 
         return (

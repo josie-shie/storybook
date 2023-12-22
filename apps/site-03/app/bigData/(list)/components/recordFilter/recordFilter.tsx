@@ -49,11 +49,14 @@ function RecordFilter({
     // 監聽MQTT是否推送已經有處理完成的分析結果
     useEffect(() => {
         const syncAnalysisStore = (message: Partial<AnalysisResponse>) => {
+            const currentRecordList = useHandicapAnalysisFormStore.use.recordList();
             // eslint-disable-next-line no-console -- MQTT response
             console.dir(message);
             if (message.memberId !== userInfo.uid) return;
 
-            const currentRecord = recordList.find(item => item.ticketId === message.ticketId);
+            const currentRecord = currentRecordList.find(
+                item => item.ticketId === message.ticketId
+            );
 
             if (message.mission === 'done') {
                 if (currentRecord) {
