@@ -35,7 +35,7 @@ const schema = yup.object().shape({
 
 function Register() {
     const setToken = useUserStore.use.setToken();
-    // const inviteCode = useUserStore.use.inviteCode(); // 邀請碼等api添加邀請碼欄位在使用
+    const inviteCode = useUserStore.use.inviteCode();
     const setIsDrawerOpen = useAuthStore.use.setIsDrawerOpen();
     const setIsVisible = useNotificationStore.use.setIsVisible();
     const registerStore = useAuthStore.use.register();
@@ -101,7 +101,10 @@ function Register() {
     };
 
     const onSubmit = async (data: RegisterRequest) => {
-        const res = await register(data);
+        const res = await register({
+            ...data,
+            ...(inviteCode !== '' && { invitationCode: inviteCode })
+        });
 
         if (!res.success) {
             const errorMessage = res.error ? res.error : '注册失败，请确认资料无误';
