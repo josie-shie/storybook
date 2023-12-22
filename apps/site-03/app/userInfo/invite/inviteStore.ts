@@ -8,10 +8,8 @@ interface InitState {
 interface InviteState extends InitState {
     invitedCount: number;
     totalCoins: number;
-    inviteCode: string;
     setInvitedCount: (invitedCount: number) => void;
     setTotalCoins: (totalCoins: number) => void;
-    setInviteCode: (inviteCode: string) => void;
 }
 
 let useInviteStore: StoreWithSelectors<InviteState>;
@@ -20,15 +18,11 @@ const initialState = (set: (updater: (state: InviteState) => Partial<InviteState
     loading: false,
     invitedCount: 0,
     totalCoins: 0,
-    inviteCode: '',
     setInvitedCount: (invitedCount: number) => {
         set(state => ({ ...state, invitedCount }));
     },
     setTotalCoins: (totalCoins: number) => {
         set(state => ({ ...state, totalCoins }));
-    },
-    setInviteCode: (inviteCode: string) => {
-        set(state => ({ ...state, inviteCode }));
     }
 });
 

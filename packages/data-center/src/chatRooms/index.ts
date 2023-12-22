@@ -1,7 +1,7 @@
 import { fetcher } from 'lib';
 import { z } from 'zod';
-import { handleApiError } from '../common';
-import type { ReturnData } from '../common';
+import { handleApiError, throwErrorMessage } from '../common';
+import type { ReturnData, FetchResultData } from '../common';
 import { GET_FORBIDDEN_WORDS_QUERY } from './graphqlQueries';
 
 const GetForbiddenWordSchema = z.object({
@@ -26,10 +26,12 @@ export type GetForbiddenWordResponse = GetForbiddenWord[];
  */
 export const getForbiddenWords = async (): Promise<ReturnData<GetForbiddenWordResponse>> => {
     try {
-        const { data }: { data: GetForbiddenWordResult } = await fetcher(
+        const { data, errors } = await fetcher<FetchResultData<GetForbiddenWordResult>, unknown>(
             { data: { query: GET_FORBIDDEN_WORDS_QUERY } },
             { cache: 'no-store' }
         );
+
+        throwErrorMessage(errors);
         GetForbiddenWordResultSchema.parse(data);
         return { success: true, data: data.getForbiddenWords };
     } catch (error) {

@@ -1,7 +1,7 @@
 import { fetcher, truncateFloatingPoint } from 'lib';
 import { z } from 'zod';
-import { handleApiError } from '../common';
-import type { ReturnData } from '../common';
+import { handleApiError, throwErrorMessage } from '../common';
+import type { ReturnData, FetchResultData } from '../common';
 import { GET_COMPANY_ODDS_DETAIL_QUERY } from './graphqlQueries';
 
 const HandicapsInfoSchema = z.object({
@@ -143,7 +143,7 @@ export const getExponent = async (
     companyId: number
 ): Promise<ReturnData<GetExponentResponse>> => {
     try {
-        const { data }: { data: CompanyDetailResult } = await fetcher(
+        const { data, errors } = await fetcher<FetchResultData<CompanyDetailResult>, unknown>(
             {
                 data: {
                     query: GET_COMPANY_ODDS_DETAIL_QUERY,
@@ -157,6 +157,8 @@ export const getExponent = async (
             },
             { cache: 'no-store' }
         );
+
+        throwErrorMessage(errors);
         CompanyDetailSchema.parse(data);
         const resData = data.getCompanyOddsDetail.companyOdds;
 

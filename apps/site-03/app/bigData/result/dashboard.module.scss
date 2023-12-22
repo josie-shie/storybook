@@ -33,38 +33,189 @@
     }
 }
 
-.bigDataGame {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    margin-top: -12px;
-    padding: 8px 16px 36px;
-    background: linear-gradient(91deg, #003c9f 0.72%, #2575fc 98.56%);
+.analysisResult {
+    position: relative;
 
-    .column {
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
-        gap: 16px;
+    .tutorialBlock {
+        position: absolute;
+        top: 0;
+        z-index: 2;
+        left: 0;
+        right: 0;
+    }
 
-        .row {
+    .resultPage {
+        .bigDataGame {
             display: flex;
-            align-items: center;
-            justify-content: flex-start;
+            flex-direction: column;
             gap: 4px;
+            margin-top: -12px;
+            padding: 8px 16px 36px;
+            background: linear-gradient(91deg, #003c9f 0.72%, #2575fc 98.56%);
 
-            .title {
-                font-size: 12px;
-                color: #fff;
-                font-weight: 400;
-            }
+            .column {
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                gap: 16px;
 
-            .name,
-            .date {
-                color: #fff;
-                font-size: 12px;
-                font-weight: 600;
+                .row {
+                    display: flex;
+                    align-items: center;
+                    justify-content: flex-start;
+                    gap: 4px;
+
+                    .title {
+                        font-size: 12px;
+                        color: #fff;
+                        font-weight: 400;
+                    }
+
+                    .name,
+                    .date {
+                        color: #fff;
+                        font-size: 12px;
+                        font-weight: 600;
+                    }
+                }
             }
         }
+    }
+}
+
+.tutorial {
+    .slide {
+        .images {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 50px;
+            padding: 50px 30px 0px 30px;
+        }
+
+        .centerImage {
+            padding-top: 127px;
+        }
+    }
+
+    .tutorialTop {
+        position: relative;
+
+        .highlightImage {
+            position: absolute;
+            left: 0;
+            top: 74px;
+        }
+
+        .handicapAnimation {
+            animation:
+                handicapExpandAnimation 0.8s forwards,
+                dropTopShadowFadeOut 2s forwards;
+        }
+        .minutesAnimation {
+            animation:
+                minutesExpandAnimation 0.6s forwards,
+                dropTopShadowFadeOut 2s forwards;
+        }
+        .rangeAnimation {
+            animation:
+                rangeExpandAnimation 0.6s forwards,
+                dropTopShadowFadeOut 2s forwards;
+        }
+        .bodanAnimation {
+            animation:
+                bodanExpandAnimation 0.8s forwards,
+                dropTopShadowFadeOut 2s forwards;
+        }
+    }
+
+    .tutorialBottom {
+        position: relative;
+
+        .highlightImage {
+            position: absolute;
+            left: 0;
+        }
+
+        .hightlightAnimation {
+            animation: dropBottomShadowFadeOut 2s forwards;
+            animation-delay: 0.8s;
+        }
+    }
+
+    .bottomButton {
+        text-align: center;
+        font-size: 14px;
+        color: #8d8d8d;
+    }
+
+    :global {
+        .swiper-pagination-bullet {
+            background-color: #ffffff33;
+        }
+        .swiper-pagination-bullet-active {
+            background-color: #fff;
+        }
+    }
+}
+
+@keyframes dropTopShadowFadeOut {
+    0%,
+    60% {
+        filter: drop-shadow(0px 0px 17px rgba(255, 255, 255, 0.6));
+    }
+    100% {
+        filter: none;
+    }
+}
+
+@keyframes dropBottomShadowFadeOut {
+    0%,
+    60% {
+        box-shadow: 0px 0px 17px 0px rgba(255, 255, 255, 0.6);
+    }
+    100% {
+        box-shadow: none;
+    }
+}
+
+@keyframes handicapExpandAnimation {
+    0% {
+        width: 10px;
+        height: 10px;
+    }
+    100% {
+        width: 66px;
+        height: 277px;
+    }
+}
+@keyframes minutesExpandAnimation {
+    0% {
+        width: 66px;
+        height: 180px;
+    }
+    100% {
+        width: 134px;
+        height: 160px;
+    }
+}
+@keyframes rangeExpandAnimation {
+    0% {
+        width: 134px;
+        height: 160px;
+    }
+    100% {
+        width: 227px;
+        height: 199px;
+    }
+}
+@keyframes bodanExpandAnimation {
+    0% {
+        width: 0px;
+        height: 0px;
+    }
+    100% {
+        width: 130px;
+        height: 35px;
     }
 }

@@ -39,7 +39,6 @@ function Login() {
     const setIsVisible = useNotificationStore.use.setIsVisible();
     const setAuthQuery = useUserStore.use.setAuthQuery();
     const removeAuthQuery = useAuthStore.use.removeAuthQuery();
-    const removeInvitCode = useAuthStore.use.removeInvitCode();
 
     const {
         control,
@@ -71,7 +70,6 @@ function Login() {
         setToken(res.data);
         setIsVisible('登入成功！', 'success');
         removeAuthQuery();
-        removeInvitCode();
         location.reload();
     };
 
