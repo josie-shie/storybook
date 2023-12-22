@@ -31,6 +31,12 @@
             }
         }
     }
+
+    :global {
+        .ui-loading {
+            height: calc(100vh - 166px);
+        }
+    }
 }
 
 .analysisResult {

@@ -12,7 +12,6 @@ import content from './img/content.png';
 import style from './layout.module.scss';
 import { creatDiscSelectStore } from './discSelectStore';
 import { creatMatchFilterStore } from './matchFilterStore';
-import { creatHandicapAnalysisStore } from './handicapAnalysisFormStore';
 import { creatHintsFormStore } from './hintsFormStore';
 import searchWhite from './img/searchWhite.png';
 import RecordFilter from './components/recordFilter/recordFilter';
@@ -29,9 +28,6 @@ function AnalysisLayout({ children }: { children: ReactNode }) {
     creatMatchFilterStore({
         contestList: [],
         contestInfo: {}
-    });
-    creatHandicapAnalysisStore({
-        recordList: []
     });
     creatHintsFormStore({
         handicapTips: []

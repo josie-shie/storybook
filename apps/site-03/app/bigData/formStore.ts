@@ -24,6 +24,8 @@ interface InitState {
 }
 
 interface HandicapAnalysisFormState extends InitState {
+    loading: boolean;
+    setLoading: (loading: boolean) => void;
     dialogContentType: string;
     dialogContent: ReactNode;
     openNoramlDialog: boolean;
@@ -149,6 +151,15 @@ const initialState = (
     setDialogContent: (dialogContent: ReactNode) => {
         set(state => {
             return { ...state, dialogContent };
+        });
+    },
+    loading: false,
+    setLoading: (loading: boolean) => {
+        set(state => {
+            return {
+                ...state,
+                loading
+            };
         });
     },
     teamList: [
