@@ -7,7 +7,7 @@ import { useNotificationStore } from '@/app/notificationStore';
 import { useUserStore } from '@/app/userStore';
 import NoData from '@/components/baseNoData/noData';
 import SearchRecord from '../searchRecord/searchRecord';
-import { useHandicapAnalysisFormStore } from '../../handicapAnalysisFormStore';
+import { useHandicapAnalysisFormStore } from '../../../formStore';
 import { useDiscSelectStore } from '../../discSelectStore';
 import style from './recordFilter.module.scss';
 
