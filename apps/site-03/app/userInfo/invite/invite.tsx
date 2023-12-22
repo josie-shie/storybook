@@ -46,7 +46,7 @@ function Invite() {
         void getRewardInfo();
     }, []);
 
-    const coypLink = async (textToCopy: string) => {
+    const copyLink = async (textToCopy: string) => {
         try {
             await navigator.clipboard.writeText(textToCopy);
             setModalShow(true);
@@ -75,7 +75,7 @@ function Invite() {
                     </div>
                 </div>
                 <div className={style.invite}>
-                    <div className={style.bounsArea}>
+                    <div className={style.bonusArea}>
                         <Image alt="friend" height={104} src={Friend} width={260} />
                         <div className={style.title}>
                             <span>邀请好友领福利</span>
@@ -106,7 +106,7 @@ function Invite() {
                                 const protocol = window.location.protocol;
                                 const host = window.location.host;
                                 const baseUrl = `${protocol}//${host}`;
-                                void coypLink(
+                                void copyLink(
                                     `${userInfo.username}邀请您一起获得<未来体育平台(站名)>88元红包,点击网址后注册加入即可获得最新赛事预测、赛事智能分析服务: ${baseUrl}/?auth=register&invitCode=${inviteCode}`
                                 );
                             }}
