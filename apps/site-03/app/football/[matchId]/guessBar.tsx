@@ -67,10 +67,6 @@ function Guess({ play, isLogin }: GuessProps) {
             const guessWay = direction === 'left' ? 'HOME' : 'AWAY';
             const res = await addGuess({ matchId, predictedPlay: guessWay });
             if (res.success) {
-                setGuessProportion({
-                    ...guessProportion,
-                    remainingGuessTimes: res.data.remainingGuessTimes
-                });
                 void fetchGuessProportion();
             } else {
                 // TODO : 競猜錯誤
@@ -79,10 +75,6 @@ function Guess({ play, isLogin }: GuessProps) {
             const guessWay = direction === 'left' ? 'OVER' : 'UNDER';
             const res = await addGuess({ matchId, predictedPlay: guessWay });
             if (res.success) {
-                setGuessProportion({
-                    ...guessProportion,
-                    remainingGuessTimes: res.data.remainingGuessTimes
-                });
                 void fetchGuessProportion();
             } else {
                 // TODO : 競猜錯誤
