@@ -15,11 +15,10 @@ import style from './invite.module.scss';
 function Invite() {
     const router = useRouter();
     const [modalShow, setModalShow] = useState(false);
+    const [inviteCode, setInviteCode] = useState<string>();
     const userInfo = useUserStore.use.userInfo();
     const invitedCount = useInviteStore.use.invitedCount();
     const totalCoins = useInviteStore.use.totalCoins();
-    const inviteCode = useInviteStore.use.inviteCode();
-    const setInviteCode = useInviteStore.use.setInviteCode();
     const setInvitedCount = useInviteStore.use.setInvitedCount();
     const setTotalCoins = useInviteStore.use.setTotalCoins();
     const setIsVisible = useNotificationStore.use.setIsVisible();
@@ -107,7 +106,7 @@ function Invite() {
                                 const host = window.location.host;
                                 const baseUrl = `${protocol}//${host}`;
                                 void copyLink(
-                                    `${userInfo.username}邀请您一起获得<未来体育平台(站名)>88元红包,点击网址后注册加入即可获得最新赛事预测、赛事智能分析服务: ${baseUrl}/?auth=register&invitCode=${inviteCode}`
+                                    `${userInfo.username}邀请您一起获得<未来体育平台(站名)>88元红包,点击网址后注册加入即可获得最新赛事预测、赛事智能分析服务: ${baseUrl}/?auth=register&inviteCode=${inviteCode}`
                                 );
                             }}
                         >

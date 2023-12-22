@@ -14,7 +14,6 @@ interface AuthState extends InitState {
     isDrawerOpen: boolean;
     setIsDrawerOpen: (isOpen: boolean) => void;
     removeAuthQuery: () => void;
-    removeInvitCode: () => void;
     register: {
         sendCodeSuccess: boolean;
         setSendCodeSuccess: (sendCodeSuccess: boolean) => void;
@@ -73,11 +72,6 @@ const initialState = (set: (updater: (state: AuthState) => Partial<AuthState>) =
     removeAuthQuery: () => {
         const url = new URL(window.document.URL);
         url.searchParams.delete('auth');
-        history.pushState({}, '', url);
-    },
-    removeInvitCode: () => {
-        const url = new URL(window.document.URL);
-        url.searchParams.delete('invitCode');
         history.pushState({}, '', url);
     },
     register: {
