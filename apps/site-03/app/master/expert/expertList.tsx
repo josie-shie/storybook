@@ -15,6 +15,7 @@ import NoData from '@/components/baseNoData/noData';
 import WeekButton from '../components/weekButton/weekButton';
 import { useUserStore } from '../../userStore';
 import style from './expertList.module.scss';
+import SkeletonLayout from './components/skeleton/skeleton';
 
 interface ExpertItemProps {
     mentorList: GetMentorListResponse;
@@ -170,16 +171,17 @@ function MasterList() {
 
     return (
         <>
-            {mentorList.length > 0 ? (
-                <div className={style.master}>
-                    <WeekButton isActive={isActive} updateActive={updateActive} />
+            <div className={style.master}>
+                <WeekButton isActive={isActive} updateActive={updateActive} />
+                {mentorList.length > 0 ? (
                     <div className={style.expertLayout}>
                         <ExpertItem mentorList={mentorList} setMentorList={setMentorList} />
                     </div>
-                </div>
-            ) : (
-                <NoData />
-            )}
+                ) : (
+                    <SkeletonLayout />
+                )}
+            </div>
+            {mentorList.length === 0 && <NoData />}
         </>
     );
 }
