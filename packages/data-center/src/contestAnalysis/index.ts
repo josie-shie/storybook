@@ -6,8 +6,8 @@ import {
     convertOdds
 } from 'lib';
 import { z } from 'zod';
-import { handleApiError } from '../common';
-import type { ReturnData } from '../common';
+import { handleApiError, throwErrorMessage } from '../common';
+import type { ReturnData, FetchResultData } from '../common';
 import {
     GET_BEFORE_GAME_INDEX_ANALYZE_QUERY,
     GET_LEAGUE_STANDINGS_QUERY,
@@ -958,7 +958,7 @@ export const getBeforeGameIndex = async (
     companyId: number
 ): Promise<ReturnData<GetBeforeGameIndexResponse>> => {
     try {
-        const { data }: { data: GetBeforeGameIndexResult } = await fetcher(
+        const { data, errors } = await fetcher<FetchResultData<GetBeforeGameIndexResult>, unknown>(
             {
                 data: {
                     query: GET_BEFORE_GAME_INDEX_ANALYZE_QUERY,
@@ -972,6 +972,8 @@ export const getBeforeGameIndex = async (
             },
             { cache: 'no-store' }
         );
+
+        throwErrorMessage(errors);
         GetBeforeGameIndexResultSchema.parse(data);
         const companyOdds = data.getCompanyOddsDetail.companyOdds;
         const rows: GetBeforeGameIndexResponse = [
@@ -1036,7 +1038,7 @@ export const getLeaguePointsRank = async (
     matchId: number
 ): Promise<ReturnData<GetLeaguePointsRankResponse>> => {
     try {
-        const { data }: { data: GetLeaguePointsRankResult } = await fetcher(
+        const { data, errors } = await fetcher<FetchResultData<GetLeaguePointsRankResult>, unknown>(
             {
                 data: {
                     query: GET_LEAGUE_STANDINGS_QUERY,
@@ -1050,6 +1052,7 @@ export const getLeaguePointsRank = async (
             { cache: 'no-store' }
         );
 
+        throwErrorMessage(errors);
         GetLeaguePointsRankSchema.parse(data);
 
         const { homeTeamStandings, awayTeamStandings } = data.getLeagueStandings;
@@ -1184,7 +1187,10 @@ export const getAnalysisOthers = async (
     matchId: number
 ): Promise<ReturnData<GetAnalysisOthersResponse>> => {
     try {
-        const { data: analysis }: { data: GetAnalyzeResult } = await fetcher(
+        const { data: analysis, errors } = await fetcher<
+            FetchResultData<GetAnalyzeResult>,
+            unknown
+        >(
             {
                 data: {
                     query: GET_ANALYSIS_QUERY,
@@ -1211,7 +1217,10 @@ export const getAnalysisOthers = async (
         const awayLastMatchesId = awayLastMatches.map(item => item.matchId);
 
         /* 取得全部不同三方的對戰紀錄 */
-        const { data: matchesOddsDetails }: { data: GetMatchesOddsDetailsResult } = await fetcher(
+        const { data: matchesOddsDetails, errors: errors2 } = await fetcher<
+            FetchResultData<GetMatchesOddsDetailsResult>,
+            unknown
+        >(
             {
                 data: {
                     query: GET_MATCHES_ODDS_DETAIL_QUERY,
@@ -1231,46 +1240,52 @@ export const getAnalysisOthers = async (
         );
 
         /* 取得主場隊伍不同三方的對戰紀錄 */
-        const { data: homeMatchesOddsDetails }: { data: GetMatchesOddsDetailsResult } =
-            await fetcher(
-                {
-                    data: {
-                        query: GET_MATCHES_ODDS_DETAIL_QUERY,
-                        variables: {
-                            input1: {
-                                matchIds: homeLastMatchesId,
-                                companyId: 3
-                            },
-                            input2: {
-                                matchIds: homeLastMatchesId,
-                                companyId: 8
-                            }
+        const { data: homeMatchesOddsDetails, errors: errors3 } = await fetcher<
+            FetchResultData<GetMatchesOddsDetailsResult>,
+            unknown
+        >(
+            {
+                data: {
+                    query: GET_MATCHES_ODDS_DETAIL_QUERY,
+                    variables: {
+                        input1: {
+                            matchIds: homeLastMatchesId,
+                            companyId: 3
+                        },
+                        input2: {
+                            matchIds: homeLastMatchesId,
+                            companyId: 8
                         }
                     }
-                },
-                { cache: 'no-store' }
-            );
+                }
+            },
+            { cache: 'no-store' }
+        );
 
         /* 取得客場隊伍不同三方的對戰紀錄 */
-        const { data: awayMatchesOddsDetails }: { data: GetMatchesOddsDetailsResult } =
-            await fetcher(
-                {
-                    data: {
-                        query: GET_MATCHES_ODDS_DETAIL_QUERY,
-                        variables: {
-                            input1: {
-                                matchIds: awayLastMatchesId,
-                                companyId: 3
-                            },
-                            input2: {
-                                matchIds: awayLastMatchesId,
-                                companyId: 8
-                            }
+        const { data: awayMatchesOddsDetails, errors: errors4 } = await fetcher<
+            FetchResultData<GetMatchesOddsDetailsResult>,
+            unknown
+        >(
+            {
+                data: {
+                    query: GET_MATCHES_ODDS_DETAIL_QUERY,
+                    variables: {
+                        input1: {
+                            matchIds: awayLastMatchesId,
+                            companyId: 3
+                        },
+                        input2: {
+                            matchIds: awayLastMatchesId,
+                            companyId: 8
                         }
                     }
-                },
-                { cache: 'no-store' }
-            );
+                }
+            },
+            { cache: 'no-store' }
+        );
+
+        throwErrorMessage(errors || errors2 || errors3 || errors4);
 
         MatchesOddsDetailsSchema.parse(matchesOddsDetails);
         MatchesOddsDetailsSchema.parse(homeMatchesOddsDetails);

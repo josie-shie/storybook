@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { Tab, Tabs } from 'ui';
 import { useEffect, useRef, useState } from 'react';
 import BottomDrawer from '@/components/drawer/bottomDrawer';
-import { useMatchFilterStore } from '../../../(list)/matchFilterStore';
+import { useMatchFilterStore } from '../../../analysis/matchFilterStore';
 import style from './matchFilterDrawer.module.scss';
 
 interface PropsType {

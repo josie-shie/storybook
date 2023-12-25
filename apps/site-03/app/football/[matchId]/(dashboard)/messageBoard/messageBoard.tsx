@@ -14,6 +14,16 @@ import { useAuthStore } from '@/app/(auth)/authStore';
 import style from './messageBoard.module.scss';
 import SentIcon from './img/sent.png';
 import SmileIcon from './img/smile.png';
+import NoMessageImage from './img/noMessage.png';
+
+function NoMessage() {
+    return (
+        <div className={style.noMessage}>
+            <Image alt="No Message" height={100} src={NoMessageImage} width={100} />
+            <p className={style.text}>暂无聊天讯息</p>
+        </div>
+    );
+}
 
 function MessageBoard({ matchId }: { matchId: number }) {
     const firstTimeRef = useRef(true);
@@ -107,6 +117,7 @@ function MessageBoard({ matchId }: { matchId: number }) {
                         addMessage={addMessage}
                         group
                         messagesList={messageList}
+                        noMessage={<NoMessage />}
                         sendBtn
                         sendIcon={<Image alt="sent" height={24} src={SentIcon} width={24} />}
                         silence={forbiddenWords}

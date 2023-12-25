@@ -7,8 +7,8 @@ import { useRouter } from 'next/navigation';
 import HeaderTitleFilter from '@/components/header/headerTitleFilter';
 import { useNotificationStore } from '@/app/notificationStore';
 import Loading from '@/components/loading/loading';
-import { useMatchFilterStore } from '../(list)/matchFilterStore';
-import { useHintsFormStore } from '../(list)/hintsFormStore';
+import { useMatchFilterStore } from '../analysis/matchFilterStore';
+import { useHintsFormStore } from '../analysis/hintsFormStore';
 import MatchFilterDrawer from './components/matchFilterDrawer/matchFilterDrawer';
 import LongButton from './components/longButton/longButton';
 import iconFilter from './img/filterIcon.png';
@@ -40,7 +40,7 @@ function LongDragonResult() {
     const [isActive, setIsActive] = useState<LongFilter[]>([]);
 
     const backHandler = () => {
-        router.push('/bigData?status=tips');
+        router.push('/bigData/analysis?status=tips');
     };
 
     const updateActive = (newActive: LongFilter[]) => {
@@ -58,7 +58,7 @@ function LongDragonResult() {
             const errorMessage = res.error ? res.error : '获取失败，请联系客服！';
             setIsVisible(errorMessage, 'error');
             setTimeout(() => {
-                router.push('/bigData?status=tips');
+                router.push('/bigData/analysis?status=tips');
             }, 1000);
             return;
         }

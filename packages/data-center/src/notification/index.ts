@@ -1,7 +1,7 @@
 import { fetcher } from 'lib';
 import { z } from 'zod';
-import { handleApiError } from '../common';
-import type { ReturnData } from '../common';
+import { handleApiError, throwErrorMessage } from '../common';
+import type { ReturnData, FetchResultData } from '../common';
 import {
     GET_MAIL_MEMBER_LIST_QUERY,
     GET_MAIL_MEMBER_QUERY,
@@ -50,7 +50,7 @@ export interface DeleteMailMemberRequest {
  */
 export const getMailMemberList = async (): Promise<ReturnData<GetMailMemberListResponse>> => {
     try {
-        const { data }: { data: GetMailMemberListResult } = await fetcher(
+        const { data, errors } = await fetcher<FetchResultData<GetMailMemberListResult>, unknown>(
             {
                 data: {
                     query: GET_MAIL_MEMBER_LIST_QUERY
@@ -59,6 +59,7 @@ export const getMailMemberList = async (): Promise<ReturnData<GetMailMemberListR
             { cache: 'no-store' }
         );
 
+        throwErrorMessage(errors);
         GetMailMemberListResultSchema.parse(data);
 
         return {
@@ -79,7 +80,7 @@ export const getMailMember = async ({
     mailMemberId
 }: GetMailMemberRequest): Promise<ReturnData<GetMailMemberResponse>> => {
     try {
-        const { data }: { data: GetMailMemberResult } = await fetcher(
+        const { data, errors } = await fetcher<FetchResultData<GetMailMemberResult>, unknown>(
             {
                 data: {
                     query: GET_MAIL_MEMBER_QUERY,
@@ -93,6 +94,7 @@ export const getMailMember = async ({
             { cache: 'no-store' }
         );
 
+        throwErrorMessage(errors);
         GetMailMemberResultSchema.parse(data);
 
         return {
@@ -112,7 +114,7 @@ export const deleteMailMember = async ({
     mailMemberIds
 }: DeleteMailMemberRequest): Promise<ReturnData<null>> => {
     try {
-        const res: { data: null; errors?: { message: string }[] } = await fetcher(
+        const { data, errors } = await fetcher<FetchResultData<null>, unknown>(
             {
                 data: {
                     query: DELETE_MAIL_MEMBER_MUTATION,
@@ -125,10 +127,10 @@ export const deleteMailMember = async ({
             },
             { cache: 'no-store' }
         );
-        if (res.errors?.[0].message) {
-            throw new Error(res.errors[0].message);
-        }
-        return { success: true, data: res.data };
+
+        throwErrorMessage(errors);
+
+        return { success: true, data };
     } catch (error) {
         return handleApiError(error);
     }

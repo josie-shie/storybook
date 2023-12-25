@@ -1,7 +1,7 @@
 import { fetcher, convertHandicap, truncateFloatingPoint } from 'lib';
 import { z } from 'zod';
-import { handleApiError } from '../common';
-import type { ReturnData } from '../common';
+import { handleApiError, throwErrorMessage } from '../common';
+import type { ReturnData, FetchResultData } from '../common';
 import { GET_CONTEST_LIST_QUERY } from './graphqlQueries';
 
 const ContestInfoSchema = z.object({
@@ -74,7 +74,7 @@ export const getContestList = async (
     dateTime: number
 ): Promise<ReturnData<GetContestListResponse>> => {
     try {
-        const { data }: { data: GetContestListResult } = await fetcher(
+        const { data, errors } = await fetcher<FetchResultData<GetContestListResult>, unknown>(
             {
                 data: {
                     query: GET_CONTEST_LIST_QUERY,
@@ -89,6 +89,7 @@ export const getContestList = async (
             { cache: 'no-store' }
         );
 
+        throwErrorMessage(errors);
         GetContestListResultSchema.parse(data);
         const contestList: ContestListType = [];
         const contestInfo: ContestInfoType = {};

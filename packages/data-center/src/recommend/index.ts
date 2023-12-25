@@ -1,7 +1,7 @@
 import { fetcher } from 'lib';
 import { z } from 'zod';
-import { handleApiError } from '../common';
-import type { ReturnData } from '../common';
+import { handleApiError, throwErrorMessage } from '../common';
+import type { ReturnData, FetchResultData } from '../common';
 import { PredictionResultSchema, PredictedPlaySchema, TagSchema } from '../commonType';
 import {
     GET_INDEX_POSTS_QUERY,
@@ -88,7 +88,7 @@ export const getIndexPosts = async (
     input: GetIndexPostsRequest
 ): Promise<ReturnData<GetIndexPostsResponse>> => {
     try {
-        const { data }: { data: GetIndexPostsResult } = await fetcher(
+        const { data, errors } = await fetcher<FetchResultData<GetIndexPostsResult>, unknown>(
             {
                 data: {
                     query: GET_INDEX_POSTS_QUERY,
@@ -100,6 +100,7 @@ export const getIndexPosts = async (
             { cache: 'no-store' }
         );
 
+        throwErrorMessage(errors);
         GetIndexPostsResultSchema.parse(data);
 
         return {
@@ -146,7 +147,7 @@ export const getMentorPosts = async ({
     mentorId
 }: GetMentorPostsRequest): Promise<ReturnData<GetMentorPostsResponse>> => {
     try {
-        const { data }: { data: GetMentorPostsResult } = await fetcher(
+        const { data, errors } = await fetcher<FetchResultData<GetMentorPostsResult>, unknown>(
             {
                 data: {
                     query: GET_MENTOR_POSTS_QUERY,
@@ -160,6 +161,7 @@ export const getMentorPosts = async ({
             { cache: 'no-store' }
         );
 
+        throwErrorMessage(errors);
         GetMentorPostsResultSchema.parse(data);
 
         return {
@@ -301,7 +303,7 @@ export const getPostDetail = async ({
     postId
 }: GetPostDetailRequest): Promise<ReturnData<GetPostDetailResponse>> => {
     try {
-        const { data }: { data: GetPostDetailResult } = await fetcher(
+        const { data, errors } = await fetcher<FetchResultData<GetPostDetailResult>, unknown>(
             {
                 data: {
                     query: GET_POST_DETAIL_QUERY,
@@ -315,6 +317,7 @@ export const getPostDetail = async ({
             { cache: 'no-store' }
         );
 
+        throwErrorMessage(errors);
         GetPostDetailResultSchema.parse(data);
 
         return {
@@ -366,7 +369,7 @@ export const getMentorList = async (
     input: GetMentorListRequest
 ): Promise<ReturnData<GetMentorListResponse>> => {
     try {
-        const { data }: { data: GetMentorResult } = await fetcher(
+        const { data, errors } = await fetcher<FetchResultData<GetMentorResult>, unknown>(
             {
                 data: {
                     query: GET_MENTOR_LIST_QUERY,
@@ -378,6 +381,7 @@ export const getMentorList = async (
             { cache: 'no-store' }
         );
 
+        throwErrorMessage(errors);
         GetMentorResultSchema.parse(data);
 
         return {
@@ -432,7 +436,7 @@ export const getPostList = async (
     input: GetPostListRequest
 ): Promise<ReturnData<GetPostListResponse>> => {
     try {
-        const { data }: { data: GetPostListResult } = await fetcher(
+        const { data, errors } = await fetcher<FetchResultData<GetPostListResult>, unknown>(
             {
                 data: {
                     query: GET_POST_LIST_QUERY,
@@ -443,7 +447,9 @@ export const getPostList = async (
             },
             { cache: 'no-store' }
         );
-        // GetPostListResultSchema.parse(data);
+
+        throwErrorMessage(errors);
+        GetPostListResultSchema.parse(data);
 
         return {
             success: true,
@@ -491,7 +497,10 @@ export const getMemberProfileWithMemberId = async (
     input: GetMemberProfileWithMemberIdRequest
 ): Promise<ReturnData<GetMemberProfileWithMemberIdResponse>> => {
     try {
-        const { data }: { data: GetMemberProfileWithMemberIdResult } = await fetcher(
+        const { data, errors } = await fetcher<
+            FetchResultData<GetMemberProfileWithMemberIdResult>,
+            unknown
+        >(
             {
                 data: {
                     query: GET_MEMBER_PROFILE_WITH_MEMBER_ID_QUERY,
@@ -502,6 +511,8 @@ export const getMemberProfileWithMemberId = async (
             },
             { cache: 'no-store' }
         );
+
+        throwErrorMessage(errors);
         GetMemberProfileWithMemberIdResultSchema.parse(data);
 
         return {
@@ -546,7 +557,7 @@ export type GetLeagueOfPostListResult = z.infer<typeof GetLeagueOfPostListResult
  */
 export const getLeagueOfPostList = async (): Promise<ReturnData<GetLeagueOfPostListResponse>> => {
     try {
-        const { data }: { data: GetLeagueOfPostListResult } = await fetcher(
+        const { data, errors } = await fetcher<FetchResultData<GetLeagueOfPostListResult>, unknown>(
             {
                 data: {
                     query: GET_LEAGUE_OF_POST_LIST_QUERY
@@ -554,6 +565,9 @@ export const getLeagueOfPostList = async (): Promise<ReturnData<GetLeagueOfPostL
             },
             { cache: 'no-store' }
         );
+
+        throwErrorMessage(errors);
+        GetLeagueOfPostListResultSchema.parse(data);
 
         return {
             success: true,

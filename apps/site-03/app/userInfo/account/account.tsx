@@ -6,8 +6,10 @@ import Image from 'next/image';
 import type { UpdateMemberInfoRequest } from 'data-center';
 import { timestampToString, uploadImage } from 'lib';
 import { updateMemberInfo } from 'data-center';
+import { Button } from '@mui/material';
 import Header from '@/components/header/headerTitleDetail';
 import { useNotificationStore } from '@/app/notificationStore';
+import AvatarCropperDrawer from '@/components/avatarCropperDrawer/avatarCropperDrawer';
 import { useUserStore } from '../../userStore';
 import style from './account.module.scss';
 import Avatar from './img/avatar.png';
@@ -46,12 +48,12 @@ function FormField({
     }
     return submitted ? (
         <div className={style.item}>
-            <span className={style.title}>{label}</span>
+            <span className={style.title}>{label} : </span>
             <span className={style.content}>{displayValue}</span>
         </div>
     ) : (
         <div className={style.item}>
-            <label htmlFor={name}>{label}：</label>
+            <label htmlFor={name}>{label} : </label>
             <input
                 disabled={disabled}
                 id={name}
@@ -67,7 +69,7 @@ function FormField({
 
 function Account() {
     const headerProps = {
-        title: '个人資料'
+        title: '个人资料'
     };
     const router = useRouter();
     const userInfo = useUserStore.use.userInfo();
@@ -84,6 +86,7 @@ function Account() {
     const setIsVisible = useNotificationStore.use.setIsVisible();
 
     const [isOpenCalendar, setIsOpenCalendar] = useState(false);
+    const [isAvatarCropperOpen, setIsAvatarCropperOpen] = useState(false);
 
     const back = () => {
         router.push('/userInfo');
@@ -116,26 +119,28 @@ function Account() {
         setSubmittedState(newSubmittedState);
     }, [userInfo, setFormState, setImgSrc, setSubmittedState]);
 
-    const uploadImg = async (event: ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = e => {
-                setImgSrc(e.target?.result as string);
-            };
-            reader.readAsDataURL(file);
+    const handleUploadImg = (arg: Blob) => {
+        setIsAvatarCropperOpen(false);
+        void uploadImgWithBlob(arg);
+    };
 
-            try {
-                const data: UploadResponse = await uploadImage(file);
-                if (data.filePath) {
-                    setImgUpload(data.filePath);
-                    setIsVisible('上传成功', 'success');
-                } else {
-                    setIsVisible('上传失敗', 'error');
-                }
-            } catch (error) {
-                console.error('上传图片过程中发生错误', error);
+    const uploadImgWithBlob = async (blob: Blob) => {
+        const reader = new FileReader();
+        reader.onload = e => {
+            setImgSrc(e.target?.result as string);
+        };
+        reader.readAsDataURL(blob);
+
+        try {
+            const data: UploadResponse = await uploadImage(blob);
+            if (data.filePath) {
+                setImgUpload(data.filePath);
+                setIsVisible('上传成功', 'success');
+            } else {
+                setIsVisible('上传失败', 'error');
             }
+        } catch (error) {
+            console.error('上传图片过程中发生错误', error);
         }
     };
 
@@ -219,20 +224,19 @@ function Account() {
                         src={imgSrc || Avatar}
                         width={72}
                     />
-                    <label className={style.uploadBtn}>
-                        編輯頭像
-                        <input
-                            accept="image/*"
-                            onChange={uploadImg}
-                            style={{ display: 'none' }}
-                            type="file"
-                        />
-                    </label>
-                    <p>*圖片規格為100*100</p>
+                    <Button
+                        className={style.uploadBtn}
+                        onClick={() => {
+                            setIsAvatarCropperOpen(true);
+                        }}
+                    >
+                        编辑头像
+                    </Button>
+                    <p>*图片规格为100*100</p>
                 </div>
                 <form onSubmit={handleSubmit}>
                     <FormField
-                        label="昵称："
+                        label="昵称"
                         name="nickName"
                         onChange={handleInputChange}
                         placeholder="新增"
@@ -243,7 +247,7 @@ function Account() {
                     <div className={style.dateInput}>
                         <FormField
                             disabled
-                            label="出生日期："
+                            label="生日"
                             name="birthday"
                             onChange={handleInputChange}
                             placeholder="新增"
@@ -269,7 +273,7 @@ function Account() {
                         )}
                     </div>
                     <FormField
-                        label="手机号："
+                        label="手机号"
                         name="phoneNumber"
                         onChange={handleInputChange}
                         placeholder="新增"
@@ -278,7 +282,7 @@ function Account() {
                         value={formState.phoneNumber}
                     />
                     <FormField
-                        label="微信号："
+                        label="微信号"
                         name="wechat"
                         onChange={handleInputChange}
                         placeholder="新增"
@@ -287,7 +291,7 @@ function Account() {
                         value={formState.wechat}
                     />
                     <FormField
-                        label="QQ号："
+                        label="QQ号"
                         name="qq"
                         onChange={handleInputChange}
                         placeholder="新增"
@@ -296,7 +300,7 @@ function Account() {
                         value={formState.qq}
                     />
                     <FormField
-                        label="邮箱："
+                        label="邮箱"
                         name="email"
                         onChange={handleInputChange}
                         placeholder="新增"
@@ -325,6 +329,7 @@ function Account() {
                         <div className={style.item}>
                             <label htmlFor="description">简介：</label>
                             <textarea
+                                className={style.textarea}
                                 id="description"
                                 name="description"
                                 onChange={handleTextareaChange}
@@ -334,7 +339,7 @@ function Account() {
                         </div>
                     )}
                     <p className={style.tip}>
-                        ＊「头像」「简介」可重新编辑，其馀栏位提交后无法再次修改，请谨慎填写
+                        ＊「头像」、「简介」可重新编辑，其馀栏位提交后无法再次修改，请谨慎填写
                     </p>
                     {!isSubmitted && (
                         <button
@@ -352,6 +357,12 @@ function Account() {
                 openModal={isOpenCalendar}
                 setFormState={setFormState}
                 setOpenModal={setIsOpenCalendar}
+            />
+            <AvatarCropperDrawer
+                imgSrc={imgSrc}
+                isDrawerOpen={isAvatarCropperOpen}
+                setImgSrc={handleUploadImg}
+                setIsDrawerOpen={setIsAvatarCropperOpen}
             />
         </>
     );

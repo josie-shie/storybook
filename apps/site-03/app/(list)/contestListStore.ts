@@ -65,6 +65,7 @@ const initFilter = (contestInfo: ContestInfoType) => {
     const league = formatFilterMap(contestInfo, 'leagueChsShort');
     const country = formatFilterMap(contestInfo, 'countryCn');
     const { filterSelected, filterCounter } = formatCounterAndSelected(league, country);
+
     return { filterSelected, filterCounter, league, country };
 };
 

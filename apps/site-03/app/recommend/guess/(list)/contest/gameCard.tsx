@@ -60,7 +60,7 @@ function GameCard({ matchId }: { matchId: number }) {
                     <div className={style.right}>
                         <div className={style.masterPredict}>
                             <Image alt="" src={MasterIcon} />
-                            <span>{contestInfo.totalNum}</span> 专家预测
+                            <span>{contestInfo.totalNum}</span> 玩家预测
                         </div>
                         <div>
                             <div className={style.dataInfo}>

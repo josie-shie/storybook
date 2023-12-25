@@ -7,12 +7,12 @@ import Footer from '@/components/footer/footer';
 import Header from '@/components/header/headerLogo';
 import Loading from '@/components/loading/loading';
 import { useUserStore } from '@/app/userStore';
+import { creatHandicapAnalysisStore } from '../formStore';
 import AnimationData from './animationData';
 import content from './img/content.png';
 import style from './layout.module.scss';
 import { creatDiscSelectStore } from './discSelectStore';
 import { creatMatchFilterStore } from './matchFilterStore';
-import { creatHandicapAnalysisStore } from './handicapAnalysisFormStore';
 import { creatHintsFormStore } from './hintsFormStore';
 import searchWhite from './img/searchWhite.png';
 import RecordFilter from './components/recordFilter/recordFilter';
@@ -45,11 +45,11 @@ function AnalysisLayout({ children }: { children: ReactNode }) {
     const tabList = [
         {
             label: '盘路分析',
-            to: '/bigData?status=analysis'
+            to: '/bigData/analysis?status=analysis'
         },
         {
             label: '今日长龙赛事',
-            to: '/bigData?status=tips'
+            to: '/bigData/analysis?status=tips'
         }
     ];
 

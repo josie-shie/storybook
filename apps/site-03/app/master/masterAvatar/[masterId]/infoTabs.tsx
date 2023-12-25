@@ -4,10 +4,8 @@ import { useSearchParams } from 'next/navigation';
 import {
     getMemberIndividualGuess,
     type GetMemberIndividualGuessResponse,
-    type MemberIndividualGuessRecord,
-    type RecommendPost
+    type MemberIndividualGuessRecord
 } from 'data-center';
-import { getPostList } from 'data-center';
 import { motion } from 'framer-motion';
 import AnalysisItem from './components/analysisItem/analysisItem';
 import MasterItem from './components/masterItem/masterItem';
@@ -27,6 +25,7 @@ function InfoTabs({
 }) {
     const searchParams = useSearchParams();
     const status = searchParams.get('status');
+    const [guessLength, setGuessLength] = useState<number>(0);
     const [dateActiveTab, setDateActiveTab] = useState<DateTab>('byWeek');
     const [planActiveTab, setPlanActiveTab] = useState<Tab>(0);
     const [individualGuess, setIndividualGuess] = useState({} as GetMemberIndividualGuessResponse);
@@ -51,7 +50,6 @@ function InfoTabs({
             lose: 0
         }
     } as MemberIndividualGuessRecord);
-    const [predictArticleList, setPredictArticleList] = useState<RecommendPost[]>([]);
 
     const handleTabClick = (tabName: DateTab) => {
         setDateActiveTab(tabName);
@@ -79,21 +77,7 @@ function InfoTabs({
         setIndividualGuessInfo(res.data.byWeek);
     };
 
-    const fetchAnalysis = async () => {
-        const res = await getPostList({
-            memberId: Number(params.masterId),
-            postFilter: ['all']
-        });
-
-        if (!res.success) {
-            return new Error();
-        }
-        setPredictArticleList(res.data.posts);
-        setArticleLength(res.data.totalArticle);
-    };
-
     useEffect(() => {
-        void fetchAnalysis();
         void fetchGuess();
     }, []);
 
@@ -101,7 +85,7 @@ function InfoTabs({
         <div className={style.infoTabs}>
             {status === 'analysis' && (
                 <div className={style.tabContest}>
-                    <AnalysisItem predictArticleList={predictArticleList} />
+                    <AnalysisItem params={params} setArticleLength={setArticleLength} />
                 </div>
             )}
 
@@ -152,7 +136,7 @@ function InfoTabs({
                         <Record individualGuessInfo={individualGuessInfo} />
                     </div>
                     <div className={style.title}>
-                        <span>方案</span>
+                        <span>專家猜球方案({guessLength})</span>
                         <div className={style.tabText}>
                             <span
                                 className={planActiveTab === 0 ? style.active : ''}
@@ -181,7 +165,10 @@ function InfoTabs({
                         </div>
                     </div>
                     <div>
-                        <BettingPlan planActiveTab={planActiveTab} />
+                        <BettingPlan
+                            planActiveTab={planActiveTab}
+                            setGuessLength={setGuessLength}
+                        />
                     </div>
                 </div>
             )}

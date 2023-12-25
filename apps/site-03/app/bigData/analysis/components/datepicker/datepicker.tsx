@@ -10,7 +10,7 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Image from 'next/image';
 import { useNotificationStore } from '@/app/notificationStore';
-import { useHandicapAnalysisFormStore } from '../../handicapAnalysisFormStore';
+import { useHandicapAnalysisFormStore } from '../../../formStore';
 import style from './datepicker.module.scss';
 import 'react-datepicker/dist/react-datepicker.css';
 import DateIcon from './img/date.png';

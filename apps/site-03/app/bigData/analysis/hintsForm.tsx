@@ -3,12 +3,12 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useUserStore } from '@/app/userStore';
+import { useHandicapAnalysisFormStore } from '../formStore';
 import style from './disSelect.module.scss';
 import starIcon from './img/star.png';
 import selectIcon from './img/select.png';
 import switchIcon from './img/switch.png';
 import Dialog from './components/dialog/dialog';
-import { useHandicapAnalysisFormStore } from './handicapAnalysisFormStore';
 
 function PaymentAlert() {
     const router = useRouter();

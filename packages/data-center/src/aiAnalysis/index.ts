@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { fetcher } from 'lib';
-import { handleApiError } from '../common';
-import type { ReturnData } from '../common';
+import { handleApiError, throwErrorMessage } from '../common';
+import type { ReturnData, FetchResultData } from '../common';
 import {
     GET_ODDS_HINT_LIST_QUERY,
     GET_FOOTBALL_STATS_RECORD_QUERY,
@@ -202,7 +202,10 @@ export const getFootballStatsRecord = async ({
     memberId
 }: GetFootballStatsRecordRequest): Promise<ReturnData<GetFootballStatsRecordResponse>> => {
     try {
-        const { data }: { data: GetFootballStatsRecordResult } = await fetcher(
+        const { data, errors } = await fetcher<
+            FetchResultData<GetFootballStatsRecordResult>,
+            unknown
+        >(
             {
                 data: {
                     query: GET_FOOTBALL_STATS_RECORD_QUERY,
@@ -216,6 +219,7 @@ export const getFootballStatsRecord = async ({
             { cache: 'no-store' }
         );
 
+        throwErrorMessage(errors);
         GetFootballStatsRecordResultSchema.parse(data);
 
         return {
@@ -238,7 +242,7 @@ export const getBigdataHint = async ({
     progress
 }: OddsHintRequest): Promise<ReturnData<BigDataHintListResponse>> => {
     try {
-        const { data }: { data: BigDataHintListResult } = await fetcher(
+        const { data, errors } = await fetcher<FetchResultData<BigDataHintListResult>, unknown>(
             {
                 data: {
                     query: GET_ODDS_HINT_LIST_QUERY,
@@ -253,6 +257,7 @@ export const getBigdataHint = async ({
             { cache: 'no-store' }
         );
 
+        throwErrorMessage(errors);
         BigDataHintListResultSchema.parse(data);
 
         return {
@@ -273,7 +278,10 @@ export const getFootballStatsResult = async (
     input: GetFootballStatsReportRequest
 ): Promise<ReturnData<GetFootballStatsReportResponse>> => {
     try {
-        const { data }: { data: GetFootballStatsReportResult } = await fetcher(
+        const { data, errors } = await fetcher<
+            FetchResultData<GetFootballStatsReportResult>,
+            unknown
+        >(
             {
                 data: {
                     query: GET_FOOTBALL_STATS_RESULT_QUERY,
@@ -285,6 +293,7 @@ export const getFootballStatsResult = async (
             { cache: 'no-store' }
         );
 
+        throwErrorMessage(errors);
         GetFootballStatsReportResultSchema.parse(data);
 
         return {
@@ -306,7 +315,10 @@ export const getFootballStatsMatches = async (
     input: GetFootballStatsMatchesRequest
 ): Promise<ReturnData<GetFootballStatsMatchesResponse>> => {
     try {
-        const { data }: { data: GetFootballStatsMatchesResult } = await fetcher(
+        const { data, errors } = await fetcher<
+            FetchResultData<GetFootballStatsMatchesResult>,
+            unknown
+        >(
             {
                 data: {
                     query: GET_FOOTBALL_STATS_MATCHES_QUERY,
@@ -318,6 +330,7 @@ export const getFootballStatsMatches = async (
             { cache: 'no-store' }
         );
 
+        throwErrorMessage(errors);
         GetFootballStatsMatchesResultSchema.parse(data);
 
         return {

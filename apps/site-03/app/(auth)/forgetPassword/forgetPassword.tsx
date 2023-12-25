@@ -128,7 +128,7 @@ function ForgetPassword() {
                     </FormControl>
                 </div>
                 {errors.mobileNumber ? (
-                    <div className={style.errorMessage}>请输入手机号码</div>
+                    <div className={style.errorMessage}>请输入手机验证码</div>
                 ) : null}
             </div>
             <FormControl fullWidth>

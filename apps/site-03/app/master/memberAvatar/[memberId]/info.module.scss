@@ -65,5 +65,11 @@
         font-size: 12px;
         font-weight: 400;
         color: #fff;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
+        max-height: 50px;
+        word-break: break-all;
     }
 }

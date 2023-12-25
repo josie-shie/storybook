@@ -1,7 +1,7 @@
 import { fetcher, handicapToString, truncateFloatingPoint, timestampToString } from 'lib';
 import { z } from 'zod';
-import { handleApiError } from '../common';
-import type { ReturnData } from '../common';
+import { handleApiError, throwErrorMessage } from '../common';
+import type { ReturnData, FetchResultData } from '../common';
 import {
     GET_SINGLE_MATCH_QUERY,
     GET_DETAIL_STATUS_QUERY,
@@ -421,7 +421,7 @@ export const getMatchDetail = async (
     matchId: number
 ): Promise<ReturnData<GetSingleMatchResponse>> => {
     try {
-        const { data }: { data: GetSingleMatchResult } = await fetcher(
+        const { data, errors } = await fetcher<FetchResultData<GetSingleMatchResult>, unknown>(
             {
                 data: {
                     query: GET_SINGLE_MATCH_QUERY,
@@ -434,6 +434,8 @@ export const getMatchDetail = async (
             },
             { cache: 'no-store' }
         );
+
+        throwErrorMessage(errors);
         GetSingleMatchResultSchema.parse(data);
 
         const formatDateTime: GetSingleMatchResponse = {
@@ -459,7 +461,7 @@ export const getDetailStatus = async (
     matchId: number
 ): Promise<ReturnData<GetDetailStatusResponse>> => {
     try {
-        const { data }: { data: GetDetailStatusResult } = await fetcher(
+        const { data, errors } = await fetcher<FetchResultData<GetDetailStatusResult>, unknown>(
             {
                 data: {
                     query: GET_DETAIL_STATUS_QUERY,
@@ -473,6 +475,7 @@ export const getDetailStatus = async (
             { cache: 'no-store' }
         );
 
+        throwErrorMessage(errors);
         GetDetailStatusResultSchema.parse(data);
 
         const handicapsData: HandicapsDataType = {
@@ -649,7 +652,7 @@ export const getLiveText = async (matchId: number): Promise<ReturnData<GetLiveTe
     }
 
     try {
-        const { data }: { data: GetLiveTextResult } = await fetcher(
+        const { data, errors } = await fetcher<FetchResultData<GetLiveTextResult>, unknown>(
             {
                 data: {
                     query: GET_LIVE_TEXT_QUERY,
@@ -663,6 +666,7 @@ export const getLiveText = async (matchId: number): Promise<ReturnData<GetLiveTe
             { cache: 'no-store' }
         );
 
+        throwErrorMessage(errors);
         GetLiveTextResultSchema.parse(data);
 
         const liveTextList = formatArray(data.getDetailStatus.liveText);
@@ -687,7 +691,7 @@ export const getOddsRunning = async (
     playType: RequestPlayType
 ): Promise<ReturnData<OddsRunningResponse>> => {
     try {
-        const { data }: { data: OddsRunningResult } = await fetcher(
+        const { data, errors } = await fetcher<FetchResultData<OddsRunningResult>, unknown>(
             {
                 data: {
                     query: GET_ODDS_RUNNING_QUERY,
@@ -703,6 +707,7 @@ export const getOddsRunning = async (
             { cache: 'no-store' }
         );
 
+        throwErrorMessage(errors);
         OddsRunningResultSchema.parse(data);
 
         const oddsList = [...data.getOddsRunning.oddsRunning, ...data.getOddsRunning.oddsPrematch];

@@ -100,7 +100,13 @@ function ReactEchartsComponent({
     return <ReactEcharts option={chartOption} style={{ width: 120, height: 120 }} />;
 }
 
-function PerformanceBar({ guessDetail }: { guessDetail: PerformanceDetail }) {
+function PerformanceBar({
+    guessDetail,
+    title
+}: {
+    guessDetail: PerformanceDetail;
+    title?: string;
+}) {
     const formatRate = (lose: number, win: number) => {
         if (lose === 0 && win === 0) return 0;
         const winRate = (win / (lose + win)) * 100;
@@ -109,7 +115,9 @@ function PerformanceBar({ guessDetail }: { guessDetail: PerformanceDetail }) {
     return (
         <>
             <div className={style.top}>
-                <div className={style.total}>共{guessDetail.play}场</div>
+                <div className={style.total}>
+                    {title}共{guessDetail.play}场
+                </div>
                 <div className={style.percentage}>
                     <div className={style.win}>胜 {guessDetail.win}</div>
                     <div className={style.walk}>走 {guessDetail.draw}</div>
@@ -159,7 +167,7 @@ function RecentPerformanceContent({ dateActiveTab }: { dateActiveTab: string }) 
                         handleChangeFocusDetail('summary');
                     }}
                 >
-                    <PerformanceBar guessDetail={myGuessData.summary} />
+                    <PerformanceBar guessDetail={myGuessData.summary} title="" />
                 </div>
                 <div
                     className={`${style.detailBlock} ${
@@ -169,7 +177,7 @@ function RecentPerformanceContent({ dateActiveTab }: { dateActiveTab: string }) 
                         handleChangeFocusDetail('size');
                     }}
                 >
-                    <PerformanceBar guessDetail={myGuessData.handicap} />
+                    <PerformanceBar guessDetail={myGuessData.handicap} title="讓球" />
                 </div>
                 <div
                     className={`${style.detailBlock} ${
@@ -179,7 +187,7 @@ function RecentPerformanceContent({ dateActiveTab }: { dateActiveTab: string }) 
                         handleChangeFocusDetail('handicap');
                     }}
                 >
-                    <PerformanceBar guessDetail={myGuessData.size} />
+                    <PerformanceBar guessDetail={myGuessData.size} title="大小" />
                 </div>
             </div>
         </>

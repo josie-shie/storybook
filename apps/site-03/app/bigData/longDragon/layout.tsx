@@ -2,8 +2,8 @@
 import type { ReactNode } from 'react';
 import { usePathname } from 'next/navigation';
 import { AnimatePresence, motion } from 'framer-motion';
-import { creatHintsFormStore } from '../(list)/hintsFormStore';
-import { creatMatchFilterStore } from '../(list)/matchFilterStore';
+import { creatMatchFilterStore } from '../analysis/matchFilterStore';
+import { creatHintsFormStore } from '../analysis/hintsFormStore';
 import style from './layout.module.scss';
 
 const pageTransitionVariants = {

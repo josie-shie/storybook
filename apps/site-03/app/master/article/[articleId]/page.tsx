@@ -3,7 +3,7 @@ import Footer from '@/components/footer/footer';
 import ArticleDetail from './articleDetail';
 
 export const metadata: Metadata = {
-    title: '专家预测'
+    title: '专家预测 | FutureSport'
 };
 
 function Page({ params }: { params: { articleId: string } }) {
