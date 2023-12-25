@@ -31,7 +31,7 @@ function Content({ article }: { article: GetPostDetailResponse }) {
                         {article.price}
                     </span>
                 </div>
-                <span className={style.text}>开通年卡订阅</span>
+                <span className={style.text}>解锁本场 ?</span>
             </div>
             <div className={style.balance}>
                 我的餘額: {userInfo.balance ? userInfo.balance : 0}金幣
