@@ -18,11 +18,11 @@ function Rule() {
         <>
             <ButtonBase>
                 <div className={style.rule}>
-                    <span onClick={handleClickOpen}>規則</span>
+                    <span onClick={handleClickOpen}>规则</span>
                 </div>
             </ButtonBase>
             <Dialog onClose={handleClose} open={open}>
-                <DialogTitle>規則說明</DialogTitle>
+                <DialogTitle>规则说明</DialogTitle>
                 <div className={style.ruleContent}>
                     <p>
                         參與者預測比賽結果，通常包括主客比分、勝負或其他特定事件。
