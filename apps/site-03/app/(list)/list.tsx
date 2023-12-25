@@ -2,7 +2,7 @@
 import { Slick } from 'ui/stories/slickPro/slick';
 import { type GetContestListResponse } from 'data-center';
 import { useSearchParams } from 'next/navigation';
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Football from './football';
 import style from './list.module.scss';
 
@@ -13,6 +13,11 @@ function List({ todayContest }: { todayContest: GetContestListResponse }) {
     const progressRef = useRef<HTMLDivElement>(null);
     const scheduleRef = useRef<HTMLDivElement>(null);
     const resultRef = useRef<HTMLDivElement>(null);
+    const [secendRender, setSecendRender] = useState(false);
+
+    useEffect(() => {
+        setSecendRender(true);
+    }, []);
 
     const tabList = [
         {
@@ -55,16 +60,24 @@ function List({ todayContest }: { todayContest: GetContestListResponse }) {
             tabs={tabList}
         >
             <div className={style.largeGap}>
-                <Football ref={allRef} status="all" todayContest={todayContest} />
+                {secendRender || status === '' ? (
+                    <Football ref={allRef} status="all" todayContest={todayContest} />
+                ) : null}
             </div>
             <div className={style.largeGap}>
-                <Football ref={progressRef} status="progress" todayContest={todayContest} />
+                {secendRender || status === 'progress' ? (
+                    <Football ref={progressRef} status="progress" todayContest={todayContest} />
+                ) : null}
             </div>
             <div className={style.largeGap}>
-                <Football ref={scheduleRef} status="schedule" todayContest={todayContest} />
+                {secendRender || status === 'schedule' ? (
+                    <Football ref={scheduleRef} status="schedule" todayContest={todayContest} />
+                ) : null}
             </div>
             <div className={style.largeGap}>
-                <Football ref={resultRef} status="result" todayContest={todayContest} />
+                {secendRender || status === 'result' ? (
+                    <Football ref={resultRef} status="result" todayContest={todayContest} />
+                ) : null}
             </div>
         </Slick>
     );
