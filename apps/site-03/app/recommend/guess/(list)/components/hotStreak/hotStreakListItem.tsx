@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import Avatar from '@/components/avatar/avatar';
 import BaseNoData from '@/components/baseNoData/noData';
 import { useMasterRankStore } from '../../masterRank/masterRankStore';
@@ -22,7 +23,11 @@ function HotStreakListItem() {
                 if (onlyShowToday && !item.today) return null;
 
                 return (
-                    <div className={style.hotStreakListItem} key={item.memberId}>
+                    <Link
+                        className={style.hotStreakListItem}
+                        href={`/master/masterAvatar/${item.memberId}?status=analysis`}
+                        key={item.memberId}
+                    >
                         <div className={`${style.rankingFlag} ${rankingClass(item.ranking)}`}>
                             {item.ranking > 3 ? (
                                 <Image alt="" height={24} src={Rank} width={24} />
@@ -58,7 +63,7 @@ function HotStreakListItem() {
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </Link>
                 );
             })}
         </>
