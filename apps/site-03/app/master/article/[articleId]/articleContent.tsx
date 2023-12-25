@@ -11,6 +11,7 @@ import { useUserStore } from '@/app/userStore';
 import NormalDialog from '@/components/normalDialog/normalDialog';
 import type { GuessType } from '@/types/predict';
 import DefaultLogo from '@/app/football/[matchId]/img/defaultTeamLogo.png';
+import ConfirmPayArticle from '../components/confirmPayArticle/confirmPayArticle';
 import Star from './img/star.png';
 import Push from './img/push.png';
 import Win from './img/win.png';
@@ -18,27 +19,6 @@ import Lose from './img/lose.png';
 import Draw from './img/draw.png';
 import style from './articleContent.module.scss';
 import RecommendationList from './recommendationList';
-
-function Content({ article }: { article: GetPostDetailResponse }) {
-    const userInfo = useUserStore.use.userInfo();
-    return (
-        <>
-            <div className={style.payContent}>
-                <div className={style.price}>
-                    <span className={style.text}>支付</span>
-                    <span className={style.number}>
-                        <Image alt="" className={style.image} src={Star} width={14} />
-                        {article.price}
-                    </span>
-                </div>
-                <span className={style.text}>解锁本场 ?</span>
-            </div>
-            <div className={style.balance}>
-                我的餘額: {userInfo.balance ? userInfo.balance : 0}金幣
-            </div>
-        </>
-    );
-}
 
 interface ArticleContentProps {
     article: GetPostDetailResponse;
@@ -145,7 +125,7 @@ function ArticleContent({ params, article, fetchPostDetail }: ArticleContentProp
                     <div className={style.title}>{article.analysisTitle}</div>
                     <div className={style.article}>
                         <div className={style.leagueName}>
-                            {article.leagueName}{' '}
+                            {article.leagueName}
                             {timestampToString(article.matchTime, 'MM-DD HH:mm')}
                         </div>
                         <div className={style.clubInfo}>
@@ -300,7 +280,7 @@ function ArticleContent({ params, article, fetchPostDetail }: ArticleContentProp
             <NormalDialog
                 cancelText="取消"
                 confirmText="確認支付"
-                content={<Content article={article} />}
+                content={<ConfirmPayArticle price={article.price} />}
                 onClose={() => {
                     setOpenPaid(false);
                 }}
