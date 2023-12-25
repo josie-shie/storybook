@@ -15,9 +15,9 @@ function NoData() {
                     <div className="tr">
                         <div className="th">公司</div>
                         <div className="th" />
-                        <div className="th">主勝</div>
+                        <div className="th">主胜</div>
                         <div className="th">平局</div>
-                        <div className="th">客勝</div>
+                        <div className="th">客胜</div>
                     </div>
                 </div>
                 <div className="tableBody">

@@ -4,12 +4,13 @@ import Image from 'next/image';
 import { timestampToMonthDay, timestampToString, convertHandicap } from 'lib';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { type GetPostDetailResponse, type RecommendPost } from 'data-center';
+import { type GetPostDetailResponse, getMemberInfo, type RecommendPost } from 'data-center';
 import { getPostList, payForPost } from 'data-center';
 import Cookies from 'js-cookie';
 import { useUserStore } from '@/app/userStore';
 import NormalDialog from '@/components/normalDialog/normalDialog';
 import type { GuessType } from '@/types/predict';
+import DefaultLogo from '@/app/football/[matchId]/img/defaultTeamLogo.png';
 import Star from './img/star.png';
 import Push from './img/push.png';
 import Win from './img/win.png';
@@ -52,6 +53,7 @@ function ArticleContent({ params, article, fetchPostDetail }: ArticleContentProp
     const router = useRouter();
 
     const userInfo = useUserStore.use.userInfo();
+    const setUserInfo = useUserStore.use.setUserInfo();
 
     const unlockArticle = () => {
         const isCookieExist = Cookies.get('access');
@@ -75,11 +77,20 @@ function ArticleContent({ params, article, fetchPostDetail }: ArticleContentProp
                 return new Error();
             }
             fetchPostDetail();
+            void getUser();
         } catch (error) {
             return new Error();
         } finally {
             setOpenPaid(false);
         }
+    };
+
+    const getUser = async () => {
+        const res = await getMemberInfo();
+        if (!res.success) {
+            return new Error();
+        }
+        setUserInfo(res.data);
     };
 
     const filterImage = (value: GuessType): string => {
@@ -142,7 +153,11 @@ function ArticleContent({ params, article, fetchPostDetail }: ArticleContentProp
                                 <Image
                                     alt=""
                                     height={48}
-                                    src={article.homeTeam.logo === '0' ? '' : article.homeTeam.logo}
+                                    src={
+                                        article.homeTeam.logo === '0'
+                                            ? DefaultLogo
+                                            : article.homeTeam.logo
+                                    }
                                     width={48}
                                 />
                                 <div className={style.name}>{article.homeTeam.name}</div>
@@ -152,7 +167,11 @@ function ArticleContent({ params, article, fetchPostDetail }: ArticleContentProp
                                 <Image
                                     alt=""
                                     height={48}
-                                    src={article.awayTeam.logo === '0' ? '' : article.awayTeam.logo}
+                                    src={
+                                        article.awayTeam.logo === '0'
+                                            ? DefaultLogo
+                                            : article.awayTeam.logo
+                                    }
                                     width={48}
                                 />
                                 <div className={style.name}>{article.awayTeam.name}</div>

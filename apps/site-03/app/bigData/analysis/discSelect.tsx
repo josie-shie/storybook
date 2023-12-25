@@ -1,5 +1,5 @@
 'use client';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
@@ -105,6 +105,7 @@ function SystemError() {
 }
 
 function DiscSelect() {
+    const router = useRouter();
     const searchParams = useSearchParams();
     const search = searchParams.get('status');
     const openNoramlDialog = useDiscSelectStore.use.openNoramlDialog();
@@ -130,6 +131,12 @@ function DiscSelect() {
                 break;
         }
     }, [dialogErrorType, setDialogContent]);
+
+    useEffect(() => {
+        if (!search) {
+            router.push('/bigData?status=analysis');
+        }
+    }, [router, search]);
 
     return (
         <>

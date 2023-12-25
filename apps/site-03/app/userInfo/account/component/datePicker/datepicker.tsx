@@ -25,7 +25,6 @@ function Datepicker({
 }) {
     const setIsVisible = useNotificationStore.use.setIsVisible();
     const maxDate = dayjs().subtract(1, 'day').toDate();
-    const minDate = dayjs().subtract(91, 'day').toDate();
     const formState = useAccountStore.use.formState();
     const [newDate, setNewDate] = useState<Date | null>(new Date());
     const closeModal = () => {
@@ -63,11 +62,12 @@ function Datepicker({
                     inline
                     locale="zh-CN"
                     maxDate={maxDate}
-                    minDate={minDate}
                     onChange={date => {
                         if (date) setNewDate(date);
                     }}
                     selectsStart
+                    showMonthDropdown
+                    showYearDropdown
                 />
                 <div className={style.modalButtons}>
                     <Button

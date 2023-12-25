@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import MyAnaylsis from './myAnalysis';
 
 export const metadata: Metadata = {
-    title: '我的分析'
+    title: '未来体育 | FutureSport'
 };
 
 function Page() {

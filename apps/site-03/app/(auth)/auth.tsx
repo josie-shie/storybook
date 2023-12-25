@@ -6,14 +6,14 @@ import type {
 } from 'data-center';
 import Cookies from 'js-cookie';
 import { useSearchParams } from 'next/navigation';
-import AuthDrawer from './authDrawer';
 import { creatUserStore } from '@/app/userStore';
+import AuthDrawer from './authDrawer';
 
 function Auth({ userInfo }: { userInfo: null | GetMemberInfoResponse }) {
     const isCookieExist = Cookies.get('access');
     const searchParams = useSearchParams();
     const query = searchParams.get('auth');
-    const invite = searchParams.get('invitCode');
+    const invite = searchParams.get('inviteCode');
 
     const info = isCookieExist
         ? {

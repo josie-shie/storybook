@@ -156,7 +156,7 @@ function ArticleItem({ item }: GetUnlockPostProps) {
                 )}
             </div>
             <div className={style.postTime}>
-                发表于 {timestampToString(item.createdAt, 'YYYY-M-DD')}
+                发表于今天 {timestampToString(item.createdAt, 'YYYY-M-DD')}
             </div>
         </div>
     );

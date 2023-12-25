@@ -1,8 +1,8 @@
 import { fetcher } from 'lib';
 import Cookies from 'js-cookie';
 import { z } from 'zod';
-import { handleApiError } from '../common';
-import type { ReturnData } from '../common';
+import { handleApiError, throwErrorMessage } from '../common';
+import type { ReturnData, FetchResultData } from '../common';
 import type { ChangeTypeCategory } from '../commonType';
 import {
     PredictionResultSchema,
@@ -47,6 +47,7 @@ export interface RegisterRequest {
     password: string;
     parentId?: string;
     verificationCode: string;
+    invitationCode?: string;
 }
 
 const SendVerificationCodeResultSchema = z.object({
@@ -161,10 +162,11 @@ export const register = async ({
     username,
     password,
     parentId = '123', // TODO: 需改為選填，123 沒意義
-    verificationCode
+    verificationCode,
+    invitationCode
 }: RegisterRequest): Promise<ReturnData<string>> => {
     try {
-        const { data }: { data: RegisterResult } = await fetcher({
+        const { data, errors } = await fetcher<FetchResultData<RegisterResult>, unknown>({
             data: {
                 query: REGISTER_MUTATION,
                 variables: {
@@ -174,12 +176,14 @@ export const register = async ({
                         username,
                         password: btoa(password),
                         parentId,
-                        verificationCode
+                        verificationCode,
+                        invitationCode
                     }
                 }
             }
         });
 
+        throwErrorMessage(errors);
         RegisterResultSchema.parse(data);
         const access = data.register.jwtToken;
 
@@ -210,30 +214,26 @@ export const sendVerificationCode = async ({
     checkExistingAccount
 }: SendVerificationCodeRequest): Promise<ReturnData<string>> => {
     try {
-        const {
-            data,
-            errors
-        }: { data: SendVerificationCodeResult; errors?: { message: string; path: string[] }[] } =
-            await fetcher({
-                data: {
-                    query: SEND_VERIFICATION_CODE_MUTATION,
-                    variables: {
-                        input: {
-                            countryCode,
-                            mobileNumber,
-                            verificationType,
-                            checkExistingAccount
-                        }
+        const { data, errors } = await fetcher<
+            FetchResultData<SendVerificationCodeResult>,
+            unknown
+        >({
+            data: {
+                query: SEND_VERIFICATION_CODE_MUTATION,
+                variables: {
+                    input: {
+                        countryCode,
+                        mobileNumber,
+                        verificationType,
+                        checkExistingAccount
                     }
                 }
-            });
+            }
+        });
 
+        throwErrorMessage(errors);
         SendVerificationCodeResultSchema.parse(data);
         const captcha = data.sendVerificationCode?.captcha;
-
-        if (errors && !captcha) {
-            throw new Error(errors[0].message);
-        }
 
         if (!captcha) {
             throw new Error('Expected captcha but got nothing.');
@@ -258,7 +258,10 @@ export const sendVerificationCodeInLogged = async ({
     checkExistingAccount
 }: SendVerificationCodeLoggedInRequest): Promise<ReturnData<string>> => {
     try {
-        const { data }: { data: SendVerificationCodeLoggedInResult } = await fetcher({
+        const { data, errors } = await fetcher<
+            FetchResultData<SendVerificationCodeLoggedInResult>,
+            unknown
+        >({
             data: {
                 query: SEND_VERIFICATION_CODE_IN_LOGGED_MUTATION,
                 variables: {
@@ -269,6 +272,8 @@ export const sendVerificationCodeInLogged = async ({
                 }
             }
         });
+
+        throwErrorMessage(errors);
         SendVerificationCodeLoggedInResultSchema.parse(data);
         const captcha = data.SendVerificationCodeLoggedIn.captcha;
 
@@ -297,10 +302,7 @@ export const login = async ({
     verificationCode
 }: LoginRequest): Promise<ReturnData<string>> => {
     try {
-        const {
-            data,
-            errors
-        }: { data: LoginResult; errors?: { message: string; path: string[] }[] } = await fetcher({
+        const { data, errors } = await fetcher<FetchResultData<LoginResult>, unknown>({
             data: {
                 query: LOGIN_MUTATION,
                 variables: {
@@ -313,12 +315,10 @@ export const login = async ({
                 }
             }
         });
+
+        throwErrorMessage(errors);
         LoginResultSchema.parse(data);
         const access = data.login?.jwtToken;
-
-        if (errors && !access) {
-            throw new Error(errors[0].message);
-        }
 
         if (!access) {
             throw new Error('Expected jwtToken but got nothing.');
@@ -341,7 +341,7 @@ export const login = async ({
  */
 export const getMemberInfo = async (token?: string): Promise<ReturnData<GetMemberInfoResponse>> => {
     try {
-        const { data }: { data: GetMemberInfoResult } = await fetcher({
+        const { data, errors } = await fetcher<FetchResultData<GetMemberInfoResult>, unknown>({
             data: {
                 query: GET_MEMBER_INFO_QUERY
             },
@@ -351,6 +351,8 @@ export const getMemberInfo = async (token?: string): Promise<ReturnData<GetMembe
                   }
                 : {}
         });
+
+        throwErrorMessage(errors);
         GetMemberInfoResponseSchema.parse(data);
 
         return {
@@ -373,7 +375,7 @@ export const forgetPasswordReset = async ({
     newPassword
 }: ForgetPasswordRequest): Promise<ReturnData<null>> => {
     try {
-        const res: { data: null; errors?: { message: string }[] } = await fetcher({
+        const { data, errors } = await fetcher<FetchResultData<null>, unknown>({
             data: {
                 query: FORGET_PASSWORD_RESET_MUTATION,
                 variables: {
@@ -386,10 +388,9 @@ export const forgetPasswordReset = async ({
                 }
             }
         });
-        if (res.errors?.[0].message) {
-            throw new Error(res.errors[0].message);
-        }
-        return { success: true, data: res.data };
+
+        throwErrorMessage(errors);
+        return { success: true, data };
     } catch (error) {
         return handleApiError(error);
     }
@@ -405,7 +406,7 @@ export const updatePassword = async ({
     newPassword
 }: UpdatePasswordRequest): Promise<ReturnData<null>> => {
     try {
-        const res: { data: null; errors?: { message: string }[] } = await fetcher({
+        const { data, errors } = await fetcher<FetchResultData<null>, unknown>({
             data: {
                 query: UPDATE_PASSWORD_MUTATION,
                 variables: {
@@ -417,10 +418,10 @@ export const updatePassword = async ({
                 }
             }
         });
-        if (res.errors?.[0].message) {
-            throw new Error(res.errors[0].message);
-        }
-        return { success: true, data: res.data };
+
+        throwErrorMessage(errors);
+
+        return { success: true, data };
     } catch (error) {
         return handleApiError(error);
     }
@@ -435,7 +436,7 @@ export const updateMemberInfo = async (
     input: UpdateMemberInfoRequest
 ): Promise<ReturnData<null>> => {
     try {
-        const res: { data: null; errors?: { message: string }[] } = await fetcher({
+        const { data, errors } = await fetcher<FetchResultData<null>, unknown>({
             data: {
                 query: UPDATE_MEMBER_INFO_MUTATION,
                 variables: {
@@ -443,10 +444,10 @@ export const updateMemberInfo = async (
                 }
             }
         });
-        if (res.errors?.[0].message) {
-            throw new Error(res.errors[0].message);
-        }
-        return { success: true, data: res.data };
+
+        throwErrorMessage(errors);
+
+        return { success: true, data };
     } catch (error) {
         return handleApiError(error);
     }
@@ -469,13 +470,14 @@ export type GetInvitationCodeResponse = z.infer<typeof GetInvitationCodeSchema>;
  */
 export const getInvitationCode = async (): Promise<ReturnData<GetInvitationCodeResponse>> => {
     try {
-        const { data }: { data: GetInvitationCodeResult } = await fetcher(
+        const { data, errors } = await fetcher<FetchResultData<GetInvitationCodeResult>, unknown>(
             {
                 data: { query: GET_INVITATION_CODE_QUERY }
             },
             { cache: 'no-store' }
         );
 
+        throwErrorMessage(errors);
         GetInvitationCodeResultSchema.parse(data);
 
         return { success: true, data: data.getInvitationCode };
@@ -521,13 +523,17 @@ export const getSubscriptionPlanList = async (): Promise<
     ReturnData<GetSubscriptionPlanListResponse>
 > => {
     try {
-        const { data }: { data: GetSubscriptionPlanListResult } = await fetcher(
+        const { data, errors } = await fetcher<
+            FetchResultData<GetSubscriptionPlanListResult>,
+            unknown
+        >(
             {
                 data: { query: GET_SUBSCRIPTION_QUERY }
             },
             { cache: 'no-store' }
         );
 
+        throwErrorMessage(errors);
         GetSubscriptionPlanListResultSchema.parse(data);
 
         return { success: true, data: data.getSubscriptionPlanList.subscriptionPlans };
@@ -563,7 +569,7 @@ export const subscribePlan = async ({
     planId
 }: SubscribePlanRequest): Promise<ReturnData<SubscribePlanResponse>> => {
     try {
-        const { data }: { data: SubscribePlanSchemaResult } = await fetcher(
+        const { data, errors } = await fetcher<FetchResultData<SubscribePlanSchemaResult>, unknown>(
             {
                 data: {
                     query: SUBSCRIBE_PLAN_MUTATION,
@@ -578,6 +584,7 @@ export const subscribePlan = async ({
             { cache: 'no-store' }
         );
 
+        throwErrorMessage(errors);
         SubscribePlanSchemaResultSchema.parse(data);
 
         return { success: true, data: data.subscribePlan };
@@ -639,7 +646,7 @@ export const getUnlockedPost = async ({
     memberId
 }: GetUnlockedPostRequest): Promise<ReturnData<GetUnlockedPostResponse>> => {
     try {
-        const { data }: { data: GetUnlockedPostResult } = await fetcher(
+        const { data, errors } = await fetcher<FetchResultData<GetUnlockedPostResult>, unknown>(
             {
                 data: {
                     query: GET_UNLOCKED_QUERY,
@@ -653,6 +660,7 @@ export const getUnlockedPost = async ({
             { cache: 'no-store' }
         );
 
+        throwErrorMessage(errors);
         GetUnlockedPostResultSchema.parse(data);
 
         return { success: true, data: data.getUnlockedPost.list };
@@ -686,7 +694,10 @@ export const getInvitationActivityRewardInfo = async (): Promise<
     ReturnData<GetInvitationActivityRewardInfoResponse>
 > => {
     try {
-        const { data }: { data: GetInvitationActivityRewardInfoResult } = await fetcher(
+        const { data, errors } = await fetcher<
+            FetchResultData<GetInvitationActivityRewardInfoResult>,
+            unknown
+        >(
             {
                 data: {
                     query: GET_INVITATION_ACTIVITY_REWARD_INFO_QUERY
@@ -695,6 +706,7 @@ export const getInvitationActivityRewardInfo = async (): Promise<
             { cache: 'no-store' }
         );
 
+        throwErrorMessage(errors);
         GetInvitationActivityRewardInfoResultSchema.parse(data);
 
         return { success: true, data: data.getInvitationActivityRewardInfo };
@@ -760,7 +772,10 @@ export const getMemberGuessViewingRecords = async ({
     ReturnData<GetMemberGuessViewingRecordsResponse>
 > => {
     try {
-        const { data }: { data: GetMemberGuessViewingRecordsResult } = await fetcher(
+        const { data, errors } = await fetcher<
+            FetchResultData<GetMemberGuessViewingRecordsResult>,
+            unknown
+        >(
             {
                 data: {
                     query: GET_MEMBER_GUESS_VIEWING_RECORDS_QUERY,
@@ -775,6 +790,7 @@ export const getMemberGuessViewingRecords = async ({
             { cache: 'no-store' }
         );
 
+        throwErrorMessage(errors);
         GetMemberGuessViewingRecordsResultSchema.parse(data);
 
         return { success: true, data: data.getMemberGuessViewingRecords };
@@ -810,7 +826,10 @@ export const getMemberSubscriptionStatus = async (
     input: GetMemberSubscriptionStatusRequest
 ): Promise<ReturnData<GetMemberSubscriptionStatusResponse>> => {
     try {
-        const { data }: { data: GetMemberSubscriptionStatusResult } = await fetcher(
+        const { data, errors } = await fetcher<
+            FetchResultData<GetMemberSubscriptionStatusResult>,
+            unknown
+        >(
             {
                 data: {
                     query: GET_MEMBER_SUBSCRIPTION_STATUS_QUERY,
@@ -822,6 +841,7 @@ export const getMemberSubscriptionStatus = async (
             { cache: 'no-store' }
         );
 
+        throwErrorMessage(errors);
         GetMemberSubscriptionStatusResultSchema.parse(data);
 
         return { success: true, data: data.getMemberSubscriptionStatus };
@@ -885,7 +905,10 @@ export const getMemberTransactionList = async (
     input: GetMemberTransactionListRequest
 ): Promise<ReturnData<GetMemberTransactionListResponse>> => {
     try {
-        const { data }: { data: GetMemberTransactionResult } = await fetcher(
+        const { data, errors } = await fetcher<
+            FetchResultData<GetMemberTransactionResult>,
+            unknown
+        >(
             {
                 data: {
                     query: GET_MEMBER_TRANSACTION_LIST_QUERY,
@@ -897,6 +920,7 @@ export const getMemberTransactionList = async (
             { cache: 'no-store' }
         );
 
+        throwErrorMessage(errors);
         GetMemberTransactionResultSchema.parse(data);
 
         return {
@@ -937,7 +961,10 @@ type GetRechargeOptionListResult = z.infer<typeof GetRechargeOptionListResultSch
  */
 export const getRechargeOptionList = async ({ currencyCode }: GetRechargeOptionListRequest) => {
     try {
-        const { data }: { data: GetRechargeOptionListResult } = await fetcher(
+        const { data, errors } = await fetcher<
+            FetchResultData<GetRechargeOptionListResult>,
+            unknown
+        >(
             {
                 data: {
                     query: GET_RECHARGE_OPTION_LIST_QUERY,
@@ -949,6 +976,7 @@ export const getRechargeOptionList = async ({ currencyCode }: GetRechargeOptionL
             { cache: 'no-store' }
         );
 
+        throwErrorMessage(errors);
         GetRechargeOptionListResultSchema.parse(data);
 
         return {
@@ -973,7 +1001,7 @@ export const rechargePlatformCurrency = async (
     input: RechargePlatformCurrencyRequest
 ): Promise<ReturnData<null>> => {
     try {
-        const res: { data: null; errors?: { message: string }[] } = await fetcher(
+        const { data, errors } = await fetcher<FetchResultData<null>, unknown>(
             {
                 data: {
                     query: RECHARGE_PLATFORM_CURRENCY_MUTATION,
@@ -984,10 +1012,9 @@ export const rechargePlatformCurrency = async (
             },
             { cache: 'no-store' }
         );
-        if (res.errors?.[0].message) {
-            throw new Error(res.errors[0].message);
-        }
-        return { success: true, data: res.data };
+
+        throwErrorMessage(errors);
+        return { success: true, data };
     } catch (error) {
         return handleApiError(error);
     }

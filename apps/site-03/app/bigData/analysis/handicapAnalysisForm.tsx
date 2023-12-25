@@ -1,9 +1,10 @@
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import dayjs from 'dayjs';
-import { mqttService } from 'lib';
 import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { useUserStore } from '@/app/userStore';
+import { useHandicapAnalysisFormStore } from '../formStore';
 import style from './disSelect.module.scss';
 import { GameFilter } from './components/gameFilter/gameFilter';
 import SelectOption from './components/selectOption/selectOption';
@@ -11,24 +12,18 @@ import RecordFilter from './components/recordFilter/recordFilter';
 import starIcon from './img/star.png';
 import disabledStarIcon from './img/disabledStar.png';
 import Datepicker from './components/datepicker/datepicker';
-import { useHandicapAnalysisFormStore } from './handicapAnalysisFormStore';
 import searchIcon from './img/search.png';
 import Dialog from './components/dialog/dialog';
 import { useDiscSelectStore } from './discSelectStore';
 
-function PaymentAlert({
-    getTrendAnalysis
-}: {
-    getTrendAnalysis: (startDate: number, endDate: number) => Promise<void>;
-}) {
+function PaymentAlert() {
+    const router = useRouter();
     const setOpenDialog = useHandicapAnalysisFormStore.use.setOpenNormalDialog();
     const userInfo = useUserStore.use.userInfo();
-    const startDate = useHandicapAnalysisFormStore.use.startDate();
-    const endDate = useHandicapAnalysisFormStore.use.endDate();
 
-    const comfirm = async () => {
+    const comfirm = () => {
         setOpenDialog(false);
-        await getTrendAnalysis(startDate, endDate);
+        router.push('/bigData/result');
     };
 
     return (
@@ -50,12 +45,7 @@ function PaymentAlert({
                 >
                     返回
                 </div>
-                <div
-                    className={style.confirm}
-                    onClick={() => {
-                        void comfirm();
-                    }}
-                >
+                <div className={style.confirm} onClick={comfirm}>
                     确认支付
                 </div>
             </div>
@@ -78,17 +68,17 @@ function TimeRange({ timeRange }: { timeRange: string }) {
     ) => {
         if (type) {
             setTimeRange(type);
-            setStartDate(Math.floor(dayjs().subtract(1, 'day').toDate().getTime() / 1000));
+            setEndDate(Math.floor(dayjs().subtract(1, 'day').toDate().getTime() / 1000));
 
             switch (type) {
                 case 'week':
-                    setEndDate(Math.floor(dayjs().subtract(8, 'day').toDate().getTime() / 1000));
+                    setStartDate(Math.floor(dayjs().subtract(8, 'day').toDate().getTime() / 1000));
                     break;
                 case 'month':
-                    setEndDate(Math.floor(dayjs().subtract(31, 'day').toDate().getTime() / 1000));
+                    setStartDate(Math.floor(dayjs().subtract(31, 'day').toDate().getTime() / 1000));
                     break;
                 case 'season':
-                    setEndDate(Math.floor(dayjs().subtract(91, 'day').toDate().getTime() / 1000));
+                    setStartDate(Math.floor(dayjs().subtract(91, 'day').toDate().getTime() / 1000));
                     break;
             }
         } else if (startDateSelected && endDateSelected) {
@@ -170,7 +160,7 @@ function HandicapSelect({
                     }}
                     options={handicapNumberList}
                     placeholder="选择让球"
-                    preValueText="让球数"
+                    preValueText="让分数"
                     showCloseButton={false}
                     showDragBar
                     title="选择让方"
@@ -182,6 +172,7 @@ function HandicapSelect({
 }
 
 function HandicapAnalysisForm() {
+    const router = useRouter();
     const showRecord = useHandicapAnalysisFormStore.use.showRecord();
     const setShowRecord = useHandicapAnalysisFormStore.use.setShowRecord();
     const timeRange = useHandicapAnalysisFormStore.use.timeRange();
@@ -202,38 +193,10 @@ function HandicapAnalysisForm() {
     const setDialogContentType = useDiscSelectStore.use.setDialogContentType();
     const setOpenNormalDialog = useDiscSelectStore.use.setOpenNormalDialog();
 
-    const getTrendAnalysis = async (currentStartDate: number, currentEndDate: number) => {
-        if (!currentStartDate || !currentEndDate) {
-            setAnalysisError('请选择时间区间');
-            return;
-        }
-
-        if (userInfo.balance < 80) {
-            setDialogContentType('balance');
-            setOpenNormalDialog(true);
-            return;
-        }
-
-        const params = {
-            mission: 'create',
-            memberId: userInfo.uid,
-            message: '',
-            ticketId: '',
-            handicapSide: teamSelected,
-            handicapValues: teamHandicapOdds,
-            overUnderValues: handicapOddsSelected,
-            startTime: currentStartDate,
-            endTime: currentEndDate
-        };
-
-        await mqttService.publishAnalysis(params);
-        setShowRecord(true);
-    };
-
     useEffect(() => {
         switch (dialogErrorType) {
             case 'payment':
-                setDialogContent(<PaymentAlert getTrendAnalysis={getTrendAnalysis} />);
+                setDialogContent(<PaymentAlert />);
                 break;
             default:
                 setDialogContent(null);
@@ -244,9 +207,21 @@ function HandicapAnalysisForm() {
     const submit = () => {
         if (!isVip) {
             setOpenDialog(true);
-        } else {
-            void getTrendAnalysis(startDate, endDate);
+            return;
         }
+
+        if (!startDate || !endDate) {
+            setAnalysisError('请选择时间区间');
+            return;
+        }
+
+        if (userInfo.balance < 80) {
+            setDialogContentType('balance');
+            setOpenNormalDialog(true);
+            return;
+        }
+
+        router.push('/bigData/result');
     };
 
     return (

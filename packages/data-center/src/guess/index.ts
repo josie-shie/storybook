@@ -1,7 +1,7 @@
 import { fetcher } from 'lib';
 import { z } from 'zod';
-import { handleApiError } from '../common';
-import type { ReturnData } from '../common';
+import { handleApiError, throwErrorMessage } from '../common';
+import type { ReturnData, FetchResultData } from '../common';
 import { PredictedPlaySchema, PredictionResultSchema } from '../commonType';
 import type { PredictedPlay } from '../commonType';
 import {
@@ -67,7 +67,10 @@ type GetTodayGuessMatchesResult = z.infer<typeof GetTodayGuessMatchesResultSchem
  */
 export const getTodayGuessMatches = async (): Promise<ReturnData<GetTodayGuessMatchesResponse>> => {
     try {
-        const { data }: { data: GetTodayGuessMatchesResult } = await fetcher(
+        const { data, errors } = await fetcher<
+            FetchResultData<GetTodayGuessMatchesResult>,
+            unknown
+        >(
             {
                 data: {
                     query: GET_TODAY_GUESS_MATCHES_QUERY
@@ -76,6 +79,7 @@ export const getTodayGuessMatches = async (): Promise<ReturnData<GetTodayGuessMa
             { cache: 'no-store' }
         );
 
+        throwErrorMessage(errors);
         GetTodayGuessMatchesResultSchema.parse(data);
 
         const contestGuessList: ContestGuessList = [];
@@ -160,7 +164,7 @@ export const getGuessRank = async ({
     rankType
 }: GetGuessRankRequest): Promise<ReturnData<GetGuessRankResponse>> => {
     try {
-        const { data }: { data: GetGuessRankResult } = await fetcher(
+        const { data, errors } = await fetcher<FetchResultData<GetGuessRankResult>, unknown>(
             {
                 data: {
                     query: GET_GUESS_RANK_QUERY,
@@ -175,6 +179,7 @@ export const getGuessRank = async ({
             { cache: 'no-store' }
         );
 
+        throwErrorMessage(errors);
         GetGuessRankResultSchema.parse(data);
 
         return {
@@ -226,7 +231,7 @@ export const getGuessProportion = async ({
     memberId
 }: GetGuessProportionRequest): Promise<ReturnData<GetGuessProportionResponse>> => {
     try {
-        const { data }: { data: GetGuessProportionResult } = await fetcher(
+        const { data, errors } = await fetcher<FetchResultData<GetGuessProportionResult>, unknown>(
             {
                 data: {
                     query: GET_GUESS_PROPORTION_QUERY,
@@ -239,6 +244,7 @@ export const getGuessProportion = async ({
             { cache: 'no-store' }
         );
 
+        throwErrorMessage(errors);
         GetGuessProportionResultSchema.parse(data);
 
         return {
@@ -319,7 +325,10 @@ export const getMemberIndividualGuess = async ({
     memberId
 }: GetMemberIndividualGuessRequest): Promise<ReturnData<GetMemberIndividualGuessResponse>> => {
     try {
-        const { data }: { data: GetMemberIndividualGuessResult } = await fetcher(
+        const { data, errors } = await fetcher<
+            FetchResultData<GetMemberIndividualGuessResult>,
+            unknown
+        >(
             {
                 data: {
                     query: GET_MEMBER_INDIVIDUAL_GUESS_QUERY,
@@ -333,6 +342,7 @@ export const getMemberIndividualGuess = async ({
             { cache: 'no-store' }
         );
 
+        throwErrorMessage(errors);
         GetMemberIndividualGuessResultSchema.parse(data);
         const { weekRecord, monthRecord, quarterRecord } = data.getMemberIndividualGuess;
 
@@ -432,7 +442,7 @@ const MemberIndividualGuessMatchSchema = z.object({
     overUnderOdds: z.number(),
     predictedPlay: PredictedPlaySchema,
     predictionResult: PredictionResultSchema,
-    isPaidToRead: z.boolean()
+    isPaidToRead: z.number()
 });
 
 export type MemberIndividualGuessMatch = z.infer<typeof MemberIndividualGuessMatchSchema>;
@@ -478,7 +488,10 @@ export const getMemberIndividualGuessMatches = async ({
     ReturnData<GetMemberIndividualGuessMatchesResponse>
 > => {
     try {
-        const { data }: { data: GetMemberIndividualGuessMatchesResult } = await fetcher(
+        const { data, errors } = await fetcher<
+            FetchResultData<GetMemberIndividualGuessMatchesResult>,
+            unknown
+        >(
             {
                 data: {
                     query: GET_MEMBER_INDIVIDUAL_GUESS_MATCHES_QUERY,
@@ -495,6 +508,7 @@ export const getMemberIndividualGuessMatches = async ({
             { cache: 'no-store' }
         );
 
+        throwErrorMessage(errors);
         GetMemberIndividualGuessMatchesResultSchema.parse(data);
 
         return {
@@ -563,7 +577,7 @@ export const getProGuess = async ({
     memberId
 }: GetProGuessRequest): Promise<ReturnData<GetProGuessResponse>> => {
     try {
-        const { data }: { data: GetProGuessResult } = await fetcher(
+        const { data, errors } = await fetcher<FetchResultData<GetProGuessResult>, unknown>(
             {
                 data: {
                     query: GET_RRO_GUESS_QUERY,
@@ -576,6 +590,7 @@ export const getProGuess = async ({
             { cache: 'no-store' }
         );
 
+        throwErrorMessage(errors);
         GetProGuessResultSchema.parse(data);
 
         if (!data.getProGuess) {
@@ -624,7 +639,7 @@ export const getProDistrib = async ({
     memberId
 }: GetProDistribRequest): Promise<ReturnData<GetProDistribResponse>> => {
     try {
-        const { data }: { data: GetProDistribResult } = await fetcher(
+        const { data, errors } = await fetcher<FetchResultData<GetProDistribResult>, unknown>(
             {
                 data: {
                     query: GET_RRO_DISTRIB_QUERY,
@@ -637,6 +652,7 @@ export const getProDistrib = async ({
             { cache: 'no-store' }
         );
 
+        throwErrorMessage(errors);
         GetProDistribResultSchema.parse(data);
 
         return {
@@ -675,7 +691,7 @@ export const addGuess = async ({
     predictedPlay
 }: AddGuessRequest): Promise<ReturnData<AddGuessResponse>> => {
     try {
-        const { data }: { data: AddGuessResult } = await fetcher(
+        const { data, errors } = await fetcher<FetchResultData<AddGuessResult>, unknown>(
             {
                 data: {
                     query: ADD_GUESS_MUTATION,
@@ -690,6 +706,7 @@ export const addGuess = async ({
             { cache: 'no-store' }
         );
 
+        throwErrorMessage(errors);
         AddGuessResultSchema.parse(data);
 
         return { success: true, data: data.addGuess };
@@ -726,7 +743,7 @@ export const payForProDistrib = async ({
     matchId
 }: PayForProDistribRequest): Promise<ReturnData<PayForProDistribResponse>> => {
     try {
-        const { data }: { data: PayForProDistribResult } = await fetcher(
+        const { data, errors } = await fetcher<FetchResultData<PayForProDistribResult>, unknown>(
             {
                 data: {
                     query: PAY_FOR_PRO_DISTRIB_MUTATION,
@@ -735,6 +752,8 @@ export const payForProDistrib = async ({
             },
             { cache: 'no-store' }
         );
+
+        throwErrorMessage(errors);
 
         return { success: true, data: data.payForProDistrib };
     } catch (error) {
@@ -769,7 +788,7 @@ export const payForProGuess = async ({
     guessId
 }: PayForProGuessRequest): Promise<ReturnData<PayForProGuessResponse>> => {
     try {
-        const { data }: { data: PayForProGuessResult } = await fetcher(
+        const { data, errors } = await fetcher<FetchResultData<PayForProGuessResult>, unknown>(
             {
                 data: {
                     query: PAY_FOR_PRO_GUESS_MUTATION,
@@ -778,6 +797,8 @@ export const payForProGuess = async ({
             },
             { cache: 'no-store' }
         );
+
+        throwErrorMessage(errors);
 
         return { success: true, data: data.payForProGuess };
     } catch (error) {
@@ -811,7 +832,7 @@ export const payForPost = async ({
     postId
 }: PayForPostRequest): Promise<ReturnData<PayForPostResponse>> => {
     try {
-        const { data }: { data: PayForPostResult } = await fetcher(
+        const { data, errors } = await fetcher<FetchResultData<PayForPostResult>, unknown>(
             {
                 data: {
                     query: PAY_FOR_POST_MUTATION,
@@ -825,6 +846,7 @@ export const payForPost = async ({
             { cache: 'no-store' }
         );
 
+        throwErrorMessage(errors);
         PayForPostResultSchema.parse(data);
 
         return { success: true, data: data.payForPost };

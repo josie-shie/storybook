@@ -7,7 +7,7 @@ import { useNotificationStore } from '@/app/notificationStore';
 import { useUserStore } from '@/app/userStore';
 import NoData from '@/components/baseNoData/noData';
 import SearchRecord from '../searchRecord/searchRecord';
-import { useHandicapAnalysisFormStore } from '../../handicapAnalysisFormStore';
+import { useHandicapAnalysisFormStore } from '../../../formStore';
 import { useDiscSelectStore } from '../../discSelectStore';
 import style from './recordFilter.module.scss';
 
@@ -49,7 +49,7 @@ function RecordFilter({
     // 監聽MQTT是否推送已經有處理完成的分析結果
     useEffect(() => {
         const syncAnalysisStore = (message: Partial<AnalysisResponse>) => {
-            const currentRecordList = useHandicapAnalysisFormStore.use.recordList();
+            const currentRecordList = useHandicapAnalysisFormStore.getState().recordList;
             // eslint-disable-next-line no-console -- MQTT response
             console.dir(message);
             if (message.memberId !== userInfo.uid) return;

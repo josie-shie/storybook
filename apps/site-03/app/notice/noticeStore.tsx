@@ -45,6 +45,8 @@ const initialState = (
     setSelected: (selectId: number | string, action: string) => {
         set(state => {
             const newSelected = new Set(state.selected);
+            const scratchPool = new Set<string | number>();
+
             switch (action) {
                 case 'add':
                     newSelected.add(selectId);
@@ -61,9 +63,25 @@ const initialState = (
                 case 'allChat':
                     for (const chat of state.chatList) newSelected.add(chat.roomId);
                     break;
+                case 'counterMail':
+                    for (const notice of state.mailList) {
+                        if (!newSelected.has(notice.mailMemberId)) {
+                            scratchPool.add(notice.mailMemberId);
+                        }
+                    }
+                    return { selected: scratchPool };
+                case 'counterChat':
+                    for (const chat of state.chatList) {
+                        if (!newSelected.has(chat.roomId)) {
+                            scratchPool.add(chat.roomId);
+                        }
+                    }
+                    return { selected: scratchPool };
+
                 default:
                     break;
             }
+
             return { selected: newSelected };
         });
     },

@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import UserInfo from './userInfo';
 
 export const metadata: Metadata = {
-    title: '個人中心'
+    title: '个人中心 | FutureSport'
 };
 
 function Page() {

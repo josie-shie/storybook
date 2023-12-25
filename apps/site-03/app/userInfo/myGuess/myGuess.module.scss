@@ -8,7 +8,7 @@
     background: #fff;
     border-radius: 16px 16px 0 0;
 
-    .loderBox {
+    .loaderBox {
         height: 30vh;
         display: flex;
         justify-content: center;
@@ -172,8 +172,8 @@
         text-align: center;
 
         p {
-            font-size: 14px;
-            color: #343333;
+            color: rgb(169 170 171);
+            font-size: 12px;
             padding-top: 16px;
         }
     }

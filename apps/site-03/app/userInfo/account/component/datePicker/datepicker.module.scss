@@ -1,43 +1,3 @@
-.baseDatePicker {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    padding: 0 8px;
-
-    :global(.MuiTabs-root) {
-        flex: 1;
-        display: flex;
-        gap: 4px;
-    }
-
-    :global(.MuiTab-root) {
-        color: #4a4a4a99;
-
-        .tabDate {
-            font-size: 12px;
-            font-weight: 500;
-        }
-
-        .tabTitle {
-            font-size: 12px;
-            font-weight: 400;
-        }
-
-        min-width: fit-content;
-        padding: 0;
-        margin: 8px;
-    }
-
-    :global(.MuiTab-root.Mui-selected) {
-        color: #4489ff;
-    }
-
-    :global(.MuiTabs-indicator) {
-        bottom: 8px;
-        background-color: #4489ff;
-    }
-}
-
 .datePickerModal {
     :global {
         .react-datepicker {
@@ -80,6 +40,11 @@
 
         .react-datepicker__day--selected {
             background-color: #4489ff;
+        }
+
+        .react-datepicker__day--keyboard-selected:hover {
+            background-color: #4489ff;
+            color: #fff;
         }
     }
 }

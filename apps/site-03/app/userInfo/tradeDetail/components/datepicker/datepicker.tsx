@@ -1,6 +1,5 @@
 'use client';
 import React, { useState } from 'react';
-import dayjs from 'dayjs';
 import DatePicker, { registerLocale } from 'react-datepicker';
 import zhCN from 'date-fns/locale/zh-CN';
 import 'dayjs/locale/zh-cn';
@@ -32,9 +31,7 @@ function Datepicker({
 }) {
     const [startDate, setStartDate] = useState<Date | null>(new Date());
     const [endDate, setEndDate] = useState<Date | null>(new Date());
-
-    const maxDate = dayjs().subtract(1, 'day').toDate();
-    const minDate = dayjs().subtract(91, 'day').toDate();
+    const maxDate = new Date();
 
     const closeModal = () => {
         setOpenModal(false);
@@ -83,7 +80,6 @@ function Datepicker({
                     inline
                     locale="zh-CN"
                     maxDate={maxDate}
-                    minDate={minDate}
                     onChange={dates => {
                         const [start, end] = dates;
                         setStartDate(start);

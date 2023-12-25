@@ -25,7 +25,6 @@ function AuthDrawer() {
     const isDrawerOpen = useAuthStore.use.isDrawerOpen();
     const setIsDrawerOpen = useAuthStore.use.setIsDrawerOpen();
     const setAuthQuery = useUserStore.use.setAuthQuery();
-    const removeInvitCode = useAuthStore.use.removeInvitCode();
 
     const authContent = useAuthStore.use.authContent();
     const setAuthContent = useAuthStore.use.setAuthContent();
@@ -60,10 +59,13 @@ function AuthDrawer() {
     const closeDrawer = () => {
         if (auth) {
             setAuthQuery('');
-            router.push(pathname);
+            router.push(
+                `${pathname}${
+                    searchParams.get('status') ? `?status=${searchParams.get('status')}` : ''
+                }`
+            );
         }
         setIsDrawerOpen(false);
-        removeInvitCode();
     };
     const setMemberSubscribeStatus = useUserStore.use.setMemberSubscribeStatus();
     const userId = useUserStore.use.userInfo();
@@ -71,13 +73,13 @@ function AuthDrawer() {
     const isToken = Cookies.get('access');
     useEffect(() => {
         const fetchSubscription = async () => {
-            const subscriptionRespons = await getMemberSubscriptionStatus({
+            const subscriptionResponse = await getMemberSubscriptionStatus({
                 memberId: userId.uid
             });
-            if (subscriptionRespons.success) {
-                setMemberSubscribeStatus(subscriptionRespons.data);
+            if (subscriptionResponse.success) {
+                setMemberSubscribeStatus(subscriptionResponse.data);
 
-                if (subscriptionRespons.data.planId === 1 || userId.balance >= 80) {
+                if (subscriptionResponse.data.planId === 1 || userId.balance >= 80) {
                     setIsVipUseAnalysis(true);
                 } else {
                     setIsVipUseAnalysis(false);

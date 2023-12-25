@@ -20,6 +20,7 @@ interface UploadResponse {
 }
 
 interface FormFieldProps {
+    disabled?: boolean;
     label: string;
     type: string;
     name: string;
@@ -29,20 +30,30 @@ interface FormFieldProps {
     submitted: boolean;
 }
 
-function FormField({ label, type, name, value, placeholder, onChange, submitted }: FormFieldProps) {
+function FormField({
+    label,
+    type,
+    name,
+    value,
+    placeholder,
+    onChange,
+    submitted,
+    disabled = false
+}: FormFieldProps) {
     let displayValue = value;
     if (name === 'birthday' && typeof value === 'number') {
         displayValue = timestampToString(value, 'YYYY-MM-DD');
     }
     return submitted ? (
         <div className={style.item}>
-            <span className={style.title}>{label}</span>
+            <span className={style.title}>{label} : </span>
             <span className={style.content}>{displayValue}</span>
         </div>
     ) : (
         <div className={style.item}>
-            <label htmlFor={name}>{label}：</label>
+            <label htmlFor={name}>{label} : </label>
             <input
+                disabled={disabled}
                 id={name}
                 name={name}
                 onChange={onChange}
@@ -56,7 +67,7 @@ function FormField({ label, type, name, value, placeholder, onChange, submitted 
 
 function Account() {
     const headerProps = {
-        title: '个人資料'
+        title: '个人资料'
     };
     const router = useRouter();
     const userInfo = useUserStore.use.userInfo();
@@ -120,7 +131,7 @@ function Account() {
                     setImgUpload(data.filePath);
                     setIsVisible('上传成功', 'success');
                 } else {
-                    setIsVisible('上传失敗', 'error');
+                    setIsVisible('上传失败', 'error');
                 }
             } catch (error) {
                 console.error('上传图片过程中发生错误', error);
@@ -209,7 +220,7 @@ function Account() {
                         width={72}
                     />
                     <label className={style.uploadBtn}>
-                        編輯頭像
+                        编辑头像
                         <input
                             accept="image/*"
                             onChange={uploadImg}
@@ -217,11 +228,11 @@ function Account() {
                             type="file"
                         />
                     </label>
-                    <p>*圖片規格為100*100</p>
+                    <p>*图片规格为100*100</p>
                 </div>
                 <form onSubmit={handleSubmit}>
                     <FormField
-                        label="昵称："
+                        label="昵称"
                         name="nickName"
                         onChange={handleInputChange}
                         placeholder="新增"
@@ -231,7 +242,8 @@ function Account() {
                     />
                     <div className={style.dateInput}>
                         <FormField
-                            label="出生日期："
+                            disabled
+                            label="生日"
                             name="birthday"
                             onChange={handleInputChange}
                             placeholder="新增"
@@ -257,7 +269,7 @@ function Account() {
                         )}
                     </div>
                     <FormField
-                        label="手机号："
+                        label="手机号"
                         name="phoneNumber"
                         onChange={handleInputChange}
                         placeholder="新增"
@@ -266,7 +278,7 @@ function Account() {
                         value={formState.phoneNumber}
                     />
                     <FormField
-                        label="微信号："
+                        label="微信号"
                         name="wechat"
                         onChange={handleInputChange}
                         placeholder="新增"
@@ -275,7 +287,7 @@ function Account() {
                         value={formState.wechat}
                     />
                     <FormField
-                        label="QQ号："
+                        label="QQ号"
                         name="qq"
                         onChange={handleInputChange}
                         placeholder="新增"
@@ -284,7 +296,7 @@ function Account() {
                         value={formState.qq}
                     />
                     <FormField
-                        label="邮箱："
+                        label="邮箱"
                         name="email"
                         onChange={handleInputChange}
                         placeholder="新增"
@@ -322,7 +334,7 @@ function Account() {
                         </div>
                     )}
                     <p className={style.tip}>
-                        ＊「头像」「简介」可重新编辑，其馀栏位提交后无法再次修改，请谨慎填写
+                        ＊「头像」、「简介」可重新编辑，其馀栏位提交后无法再次修改，请谨慎填写
                     </p>
                     {!isSubmitted && (
                         <button

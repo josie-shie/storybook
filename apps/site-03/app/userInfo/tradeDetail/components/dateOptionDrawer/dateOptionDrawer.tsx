@@ -32,16 +32,16 @@ function DateRangeOption({
     const [isOpenDatePick, setIsOpenDatePick] = useState(false);
 
     const getStartDate = (type: string) => {
-        const today = dayjs().startOf('day').toDate().getTime();
+        const today = Math.floor(new Date().getTime() / 1000);
         switch (type) {
             case 'ALL':
                 return [0, 0];
             case 'WEEK':
-                return [dayjs().subtract(1, 'week').toDate().getTime(), today];
+                return [Math.floor(dayjs().subtract(1, 'week').toDate().getTime() / 1000), today];
             case 'TWOWEEKS':
-                return [dayjs().subtract(2, 'week').toDate().getTime(), today];
+                return [Math.floor(dayjs().subtract(2, 'week').toDate().getTime() / 1000), today];
             case 'MONTH':
-                return [dayjs().subtract(1, 'month').toDate().getTime(), today];
+                return [Math.floor(dayjs().subtract(1, 'month').toDate().getTime() / 1000), today];
             default:
                 return [];
         }
