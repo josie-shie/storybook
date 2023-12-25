@@ -1,8 +1,7 @@
 'use client';
 import { motion } from 'framer-motion';
 import { Tab, Tabs } from 'ui';
-import { useSearchParams, useRouter, usePathname } from 'next/navigation';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import BottomDrawer from '@/components/drawer/bottomDrawer';
 import { useContestListStore } from '../contestListStore';
 import style from './filter.module.scss';
@@ -85,8 +84,17 @@ function FilterSection({ group, onClose }: { group: 'league' | 'country'; onClos
     );
 }
 
-function Filter() {
+function Filter({
+    isOpen,
+    onOpen,
+    onClose
+}: {
+    isOpen: boolean;
+    onOpen: () => void;
+    onClose: () => void;
+}) {
     const [onMounted, setOnMounted] = useState(false);
+    const tabActive = useRef(0);
 
     useEffect(() => {
         setOnMounted(true);
@@ -98,33 +106,6 @@ function Filter() {
         buttonRadius: 30
     };
 
-    const searchParams = useSearchParams();
-    const isOpen = searchParams.get('filter');
-    const pathname = usePathname();
-    const router = useRouter();
-
-    const tabActive = useRef(0);
-
-    const createQueryString = useCallback(
-        (name: string, value?: string) => {
-            const params = new URLSearchParams(searchParams);
-            if (value) {
-                params.set(name, value);
-            } else {
-                params.delete(name);
-            }
-
-            return params.toString();
-        },
-        [searchParams]
-    );
-    const onClose = () => {
-        router.push(`${pathname}?${createQueryString('filter')}`);
-    };
-    const onOpen = () => {
-        router.push(`${pathname}?${createQueryString('filter', 'open')}`);
-    };
-
     const saveTabStatus = (tab: string) => {
         tabActive.current = tab === 'contest' ? 0 : 1;
     };
@@ -132,7 +113,7 @@ function Filter() {
     return (
         <>
             {onMounted ? (
-                <BottomDrawer isOpen={isOpen === 'open'} onClose={onClose} onOpen={onOpen}>
+                <BottomDrawer isOpen={isOpen} onClose={onClose} onOpen={onOpen}>
                     <div className={style.filter}>
                         <h2>赛事筛选</h2>
                         <div className={style.tab}>

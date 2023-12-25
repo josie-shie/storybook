@@ -1,43 +1,43 @@
 'use client';
 import { getContestList, type GetContestListResponse } from 'data-center';
-import { useEffect, useState } from 'react';
+import type { Ref } from 'react';
+import { useEffect, useState, forwardRef } from 'react';
 import { InfiniteScroll } from 'ui';
 import CircularProgress from '@mui/material/CircularProgress';
-import { useSearchParams, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { useContestInfoStore } from '@/app/contestInfoStore';
+import type { FilterList } from '@/components/contestFilter/contestFilter';
 import GameCard from './components/gameCard';
 import style from './football.module.scss';
 import { creatContestListStore, useContestListStore } from './contestListStore';
-import Filter from './components/filter';
 import BaseDatePicker from './components/baseDatePicker/baseDatePicker';
 import SettingIcon from './img/setting.png';
 import Setting from './components/setting';
-import FilterButton from './components/filterButton';
+import FootballFilter from './components/footballFilter';
+import BannerImg from './img/banner.png';
+
+type Status = 'all' | 'progress' | 'schedule' | 'result';
 
 function Banner() {
-    return <div className={style.banner} />;
+    return (
+        <div className={style.banner}>
+            <Image alt="注册会员送 80" src={BannerImg} />
+        </div>
+    );
 }
 
-function DatePicker() {
+function DatePicker({
+    status,
+    scheduleDate,
+    resultsDate,
+    handleDate
+}: {
+    status: Status;
+    scheduleDate: number;
+    resultsDate: number;
+    handleDate: (date: Date) => void;
+}) {
     const [isMounted, setIsMounted] = useState(false);
-    const searchParams = useSearchParams();
-    const status = searchParams.get('status');
-    const router = useRouter();
-    const resultsDate = searchParams.get('resultsDate') || Date.now();
-    const scheduleDate = searchParams.get('scheduleDate') || Date.now();
-
-    const handleDate = (date: Date) => {
-        const dateFormat = date.getTime();
-
-        if (status === 'result') {
-            router.push(`?status=${status}&resultsDate=${dateFormat}`);
-            return;
-        }
-        if (status === 'schedule') {
-            router.push(`?status=${status}&scheduleDate=${dateFormat}`);
-        }
-    };
 
     useEffect(() => {
         setIsMounted(true);
@@ -71,44 +71,67 @@ function DatePicker() {
     );
 }
 
-function ContestList({ switchSetting }: { switchSetting: () => void }) {
+function ContestList({
+    switchSetting,
+    status = 'all',
+    scheduleDate,
+    resultsDate,
+    isLoading,
+    closeLoading
+}: {
+    switchSetting: () => void;
+    status: Status;
+    scheduleDate: number;
+    resultsDate: number;
+    isLoading: boolean;
+    closeLoading: () => void;
+}) {
     const [rows, setRows] = useState({ full: 20, notYet: 0, finish: 0 });
     const contestList = useContestListStore.use.contestList();
     const contestInfo = useContestListStore.use.contestInfo();
     const globalStore = useContestInfoStore.use.contestInfo();
-    const filterList = useContestListStore.use.filterList();
     const setContestList = useContestListStore.use.setContestList();
     const setContestInfo = useContestListStore.use.setContestInfo();
     const setFilterInit = useContestListStore.use.setFilterInit();
-
-    const searchParams = useSearchParams();
-    const status = searchParams.get('status') || 'all';
-    const resultsDate = searchParams.get('resultsDate');
-    const scheduleDate = searchParams.get('scheduleDate');
     const [isMounted, setIsMounted] = useState(false);
+
+    const [filterList, setFilterList] = useState<FilterList>({
+        group: 'league',
+        selectedTable: {}
+    });
+
+    const updateFilterList = (newList: FilterList) => {
+        setFilterList(newList);
+    };
 
     useEffect(() => {
         setIsMounted(true);
     }, []);
 
-    const fetchContestdata = async (timestamp: number) => {
-        try {
-            const todayContest = await getContestList(timestamp);
-            if (!todayContest.success) {
-                return new Error();
-            }
-
-            setContestList({ contestList: todayContest.data.contestList });
-            setContestInfo({ contestInfo: todayContest.data.contestInfo });
-        } catch (error) {
-            return new Error();
-        }
+    const resetRows = () => {
+        setRows({ full: 20, notYet: 0, finish: 0 });
     };
 
     useEffect(() => {
         const dateString = scheduleDate || resultsDate || Date.now();
+        const fetchContestdata = async (timestamp: number) => {
+            try {
+                const todayContest = await getContestList(timestamp);
+                if (!todayContest.success) {
+                    return new Error();
+                }
+                setContestList({ contestList: todayContest.data.contestList });
+                setContestInfo({ contestInfo: todayContest.data.contestInfo });
+                updateFilterList({ group: 'league', selectedTable: {} });
+                resetRows();
+                closeLoading();
+            } catch (error) {
+                closeLoading();
+                return new Error();
+            }
+        };
         void fetchContestdata(Math.floor(Number(dateString) / 1000));
-    }, [resultsDate, scheduleDate]);
+    }, [resultsDate, scheduleDate, setContestList, setContestInfo]);
 
     const statusTable: Record<string, (state: number) => boolean> = {
         all: state => state >= 1 && state < 5,
@@ -182,43 +205,63 @@ function ContestList({ switchSetting }: { switchSetting: () => void }) {
         <>
             <Banner />
             <div className={style.toolbar}>
-                <FilterButton />
+                <FootballFilter
+                    statusFunc={statusTable[status]}
+                    updateFilterList={updateFilterList}
+                />
                 <Image alt="setting" onClick={switchSetting} sizes="32" src={SettingIcon} />
             </div>
-            <ul>
-                {displayList.map(matchId => {
-                    return <GameCard key={matchId} matchId={matchId} />;
-                })}
-                {status === 'all' && displayNotYetList.length > 0 && (
-                    <li className={style.line}>尚未开赛</li>
-                )}
-                {displayNotYetList.map(matchId => {
-                    return <GameCard key={matchId} matchId={matchId} />;
-                })}
-                {status === 'all' && displayFinishList.length > 0 && (
-                    <li className={style.line}>完赛</li>
-                )}
-                {displayFinishList.map(matchId => {
-                    return <GameCard key={matchId} matchId={matchId} />;
-                })}
-                {status !== 'all' && displayList.length === 0 && (
-                    <li className={style.noneContest}>暂无赛事</li>
-                )}
-            </ul>
-            {((status === 'all' && rows.finish < finishList.length) ||
-                (status !== 'all' && rows.full < currentList.length)) &&
-            isMounted ? (
-                <InfiniteScroll onVisible={loadMoreList}>
-                    <div className={style.loadMore}>
-                        <CircularProgress size={24} />
-                    </div>
-                </InfiniteScroll>
-            ) : null}
+            {isLoading ? (
+                <div className={style.loading}>
+                    {isMounted ? <CircularProgress size={24} /> : null}
+                </div>
+            ) : (
+                <>
+                    <ul>
+                        {displayList.map(matchId => {
+                            return <GameCard key={matchId} matchId={matchId} />;
+                        })}
+                        {status === 'all' && displayNotYetList.length > 0 && (
+                            <li className={style.line}>尚未开赛</li>
+                        )}
+                        {displayNotYetList.map(matchId => {
+                            return <GameCard key={matchId} matchId={matchId} />;
+                        })}
+                        {status === 'all' && displayFinishList.length > 0 && (
+                            <li className={style.line}>完赛</li>
+                        )}
+                        {displayFinishList.map(matchId => {
+                            return <GameCard key={matchId} matchId={matchId} />;
+                        })}
+                        {status !== 'all' && displayList.length === 0 && (
+                            <li className={style.noneContest}>暂无赛事</li>
+                        )}
+                    </ul>
+                    {((status === 'all' && rows.finish < finishList.length) ||
+                        (status !== 'all' && rows.full < currentList.length)) &&
+                    isMounted ? (
+                        <InfiniteScroll onVisible={loadMoreList}>
+                            <div className={style.loadMore}>
+                                <CircularProgress size={24} />
+                            </div>
+                        </InfiniteScroll>
+                    ) : null}
+                </>
+            )}
         </>
     );
 }
 
-function Football({ todayContest }: { todayContest: GetContestListResponse }) {
+const Football = forwardRef(function Football(
+    {
+        todayContest,
+        status
+    }: {
+        todayContest: GetContestListResponse;
+        status: Status;
+    },
+    ref: Ref<HTMLDivElement>
+) {
     creatContestListStore(todayContest);
     const [showSetting, setShowSetting] = useState(false);
 
@@ -226,13 +269,42 @@ function Football({ todayContest }: { todayContest: GetContestListResponse }) {
         setShowSetting(!showSetting);
     };
 
+    const [resultsDate, setResultsDate] = useState(Date.now());
+    const [scheduleDate, setScheduleDate] = useState(Date.now());
+    const [isLoading, setIsLoading] = useState(false);
+
+    const handleDate = (date: Date) => {
+        const dateFormat = date.getTime();
+
+        if (status === 'result') {
+            setResultsDate(dateFormat);
+            return;
+        }
+        if (status === 'schedule') {
+            setScheduleDate(dateFormat);
+        }
+        setIsLoading(true);
+    };
+    const closeLoading = () => {
+        setIsLoading(false);
+    };
+
     return (
-        <>
-            <div className={style.football}>
-                <DatePicker />
-                <ContestList switchSetting={switchSetting} />
-            </div>
-            <Filter />
+        <div className={style.football} ref={ref}>
+            <DatePicker
+                handleDate={handleDate}
+                resultsDate={resultsDate}
+                scheduleDate={scheduleDate}
+                status={status}
+            />
+            <ContestList
+                closeLoading={closeLoading}
+                isLoading={isLoading}
+                resultsDate={resultsDate}
+                scheduleDate={scheduleDate}
+                status={status}
+                switchSetting={switchSetting}
+            />
             <Setting
                 isOpen={showSetting}
                 onClose={() => {
@@ -242,8 +314,8 @@ function Football({ todayContest }: { todayContest: GetContestListResponse }) {
                     setShowSetting(true);
                 }}
             />
-        </>
+        </div>
     );
-}
+});
 
 export default Football;
