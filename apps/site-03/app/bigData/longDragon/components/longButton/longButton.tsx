@@ -2,12 +2,12 @@
 
 import style from './longButton.module.scss';
 
-interface WeekButtonProps {
+interface LongButtonProps {
     isActive: string[];
-    updateActive: (val: string) => void;
+    updateActive: (val: string[]) => void;
 }
 
-function LongButton({ isActive = [], updateActive }: WeekButtonProps) {
+function LongButton({ isActive = [], updateActive }: LongButtonProps) {
     const longList = [
         {
             label: '3连',
@@ -27,6 +27,13 @@ function LongButton({ isActive = [], updateActive }: WeekButtonProps) {
         }
     ];
 
+    const handleClick = (value: string) => {
+        const filterActive = isActive.includes(value)
+            ? isActive.filter(item => item !== value)
+            : [...isActive, value];
+        updateActive(filterActive);
+    };
+
     return (
         <div className={style.longButton}>
             {longList.map(item => {
@@ -35,7 +42,7 @@ function LongButton({ isActive = [], updateActive }: WeekButtonProps) {
                         className={`${isActive.includes(item.value) ? style.active : ''}`}
                         key={item.value}
                         onClick={() => {
-                            updateActive(item.value);
+                            handleClick(item.value);
                         }}
                     >
                         {item.label}

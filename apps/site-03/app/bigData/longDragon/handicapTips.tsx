@@ -10,10 +10,12 @@ import style from './handicapTip.module.scss';
 
 function HandicapTips({
     hintsSelectPlay,
-    hintsSelectProgres
+    hintsSelectProgres,
+    activeFilters
 }: {
     hintsSelectPlay: string;
     hintsSelectProgres: string;
+    activeFilters: string[];
 }) {
     const handicapTips = useHintsFormStore.use.handicapTips();
     const contestInfo = useMatchFilterStore.use.contestInfo();
@@ -33,8 +35,25 @@ function HandicapTips({
         });
     };
 
+    const filterMatches = (matches: typeof handicapTips) => {
+        if (activeFilters.length === 0) {
+            return matches;
+        }
+        return matches.filter(match => {
+            return activeFilters.some(filter => {
+                if (filter === '3rd') return match.longOddsTimes === 3;
+                if (filter === '4rd') return match.longOddsTimes === 4;
+                if (filter === '4rdUp') return match.longOddsTimes > 4;
+                if (filter === 'hot') return match.longOddsTimes >= 6;
+                return false;
+            });
+        });
+    };
+
     const currentList = filterByStatus(contestList);
-    const displayList = handicapTips.filter(match => currentList.includes(match.matchId));
+    let displayList = handicapTips.filter(match => currentList.includes(match.matchId));
+
+    displayList = filterMatches(displayList);
 
     const playMappings: Record<string, string> = {
         HANDICAP: '大小球',
@@ -66,7 +85,7 @@ function HandicapTips({
                                     {formatProgress(hintsSelectProgres)}
                                 </div>
                                 <div className={style.tag}>{formatPlay(hintsSelectPlay)}</div>
-                                {item.longOddsTimes >= 5 && (
+                                {item.longOddsTimes >= 6 && (
                                     <div className={style.hot}>
                                         <Image alt="" className={style.image} src={iconHot} />
                                         <span>热</span>
@@ -106,10 +125,16 @@ function HandicapTips({
                                         {item.homeChs}
                                     </span>
                                 </div>
-                                {(item.longOddsType === '赢' || item.longOddsType === '大') &&
+                                {item.longOddsType === '大' &&
                                     item.longOddsTeamId === item.homeId && (
                                         <div className={style.redTag}>
                                             {item.longOddsType}球{item.longOddsTimes}連
+                                        </div>
+                                    )}
+                                {item.longOddsType === '赢' &&
+                                    item.longOddsTeamId === item.homeId && (
+                                        <div className={style.redTag}>
+                                            {item.longOddsTimes}連{item.longOddsType}
                                         </div>
                                     )}
                                 {(item.longOddsType === '输' || item.longOddsType === '小') &&

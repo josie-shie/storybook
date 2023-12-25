@@ -6,6 +6,7 @@ import { getBigdataHint } from 'data-center';
 import { useRouter } from 'next/navigation';
 import HeaderTitleFilter from '@/components/header/headerTitleFilter';
 import { useNotificationStore } from '@/app/notificationStore';
+import Loading from '@/components/loading/loading';
 import { useMatchFilterStore } from '../(list)/matchFilterStore';
 import { useHintsFormStore } from '../(list)/hintsFormStore';
 import MatchFilterDrawer from './components/matchFilterDrawer/matchFilterDrawer';
@@ -22,6 +23,7 @@ function LongDragonResult() {
     const [hintsSelectPlay, setHintsSelectPlay] = useState('');
     const [hintsSelectType, setHintsSelectType] = useState('');
     const [hintsSelectProgres, setHintsSelectProgres] = useState('');
+    const [isLoading, setIsLoading] = useState<boolean>(true);
 
     const contestInfo = useMatchFilterStore.use.contestInfo();
     const setContestList = useMatchFilterStore.use.setContestList();
@@ -38,22 +40,16 @@ function LongDragonResult() {
     const [isActive, setIsActive] = useState<LongFilter[]>([]);
 
     const backHandler = () => {
-        router.push('/bigData?status=tip');
+        router.push('/bigData?status=tips');
     };
 
-    const updateActive = (value: LongFilter) => {
-        setIsActive(current => {
-            const isExist = current.includes(value);
-            if (isExist) {
-                return current.filter(item => item !== value);
-            }
-            return [...current, value];
-        });
+    const updateActive = (newActive: LongFilter[]) => {
+        setIsActive(newActive);
     };
 
     const getBigdataHintList = async () => {
-        const savedSelectType = localStorage.getItem('getSelectsType');
-        const savedSelectProgres = localStorage.getItem('getSelectsProgres');
+        const savedSelectType = sessionStorage.getItem('getSelectsType');
+        const savedSelectProgres = sessionStorage.getItem('getSelectsProgres');
         const res = await getBigdataHint({
             continuity: savedSelectType as OddsHintsType,
             progress: savedSelectProgres as OddsHintsProgress
@@ -61,6 +57,9 @@ function LongDragonResult() {
         if (!res.success) {
             const errorMessage = res.error ? res.error : '获取失败，请联系客服！';
             setIsVisible(errorMessage, 'error');
+            setTimeout(() => {
+                router.push('/bigData?status=tips');
+            }, 1000);
             return;
         }
         setHandicapTips(res.data);
@@ -71,6 +70,7 @@ function LongDragonResult() {
         setContestInfo({
             contestList: res.data
         });
+        setIsLoading(false);
     };
 
     const closeFilter = () => {
@@ -114,9 +114,9 @@ function LongDragonResult() {
     const formatProgress = (name: string) => progressMappings[name];
 
     useEffect(() => {
-        const savedSelectPlay = localStorage.getItem('getSelectsPlay');
-        const savedSelectType = localStorage.getItem('getSelectsType');
-        const savedSelectProgres = localStorage.getItem('getSelectsProgres');
+        const savedSelectPlay = sessionStorage.getItem('getSelectsPlay');
+        const savedSelectType = sessionStorage.getItem('getSelectsType');
+        const savedSelectProgres = sessionStorage.getItem('getSelectsProgres');
 
         if (savedSelectPlay) setHintsSelectPlay(savedSelectPlay);
         if (savedSelectType) setHintsSelectType(savedSelectType);
@@ -165,10 +165,15 @@ function LongDragonResult() {
                     </div>
                     <LongButton isActive={isActive} updateActive={updateActive} />
                     <div className={style.wrapper}>
-                        <HandicapTips
-                            hintsSelectPlay={hintsSelectPlay}
-                            hintsSelectProgres={hintsSelectProgres}
-                        />
+                        {isLoading ? (
+                            <Loading />
+                        ) : (
+                            <HandicapTips
+                                activeFilters={isActive}
+                                hintsSelectPlay={hintsSelectPlay}
+                                hintsSelectProgres={hintsSelectProgres}
+                            />
+                        )}
                     </div>
                 </div>
             </div>

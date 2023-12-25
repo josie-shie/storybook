@@ -1,11 +1,51 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
 import { motion } from 'framer-motion';
+import { useRouter } from 'next/navigation';
+import { useUserStore } from '@/app/userStore';
 import style from './disSelect.module.scss';
 import starIcon from './img/star.png';
 import selectIcon from './img/select.png';
 import switchIcon from './img/switch.png';
+import Dialog from './components/dialog/dialog';
+import { useHandicapAnalysisFormStore } from './handicapAnalysisFormStore';
+
+function PaymentAlert() {
+    const router = useRouter();
+    const setOpenDialog = useHandicapAnalysisFormStore.use.setOpenNormalDialog();
+    const userInfo = useUserStore.use.userInfo();
+
+    const comfirm = () => {
+        setOpenDialog(false);
+        router.push('/bigData/longDragon');
+    };
+
+    return (
+        <>
+            <div className={style.dialogMessage}>
+                <p className={style.message}>
+                    支付
+                    <Image alt="" height={14} src={starIcon.src} width={14} /> 40
+                </p>
+                <p>购买今日长龙赛事？</p>
+            </div>
+            <div className={style.detail}>我的余额: {userInfo.balance}金币</div>
+            <div className={style.footer}>
+                <div
+                    className={style.close}
+                    onClick={() => {
+                        setOpenDialog(false);
+                    }}
+                >
+                    返回
+                </div>
+                <div className={style.confirm} onClick={comfirm}>
+                    确认支付
+                </div>
+            </div>
+        </>
+    );
+}
 
 function StepIndicator({ stepNumber, text }: { stepNumber: string; text: string }) {
     return (
@@ -44,37 +84,54 @@ function OptionButton({
 }
 
 function HandicapAnalysisForm() {
+    const router = useRouter();
+
+    const openDialog = useHandicapAnalysisFormStore.use.openNoramlDialog();
+    const setOpenDialog = useHandicapAnalysisFormStore.use.setOpenNormalDialog();
+    const dialogContent = useHandicapAnalysisFormStore.use.dialogContent();
+    const setDialogContent = useHandicapAnalysisFormStore.use.setDialogContent();
+    const isVip = useUserStore.use.memberSubscribeStatus().planId; // 1是VIP
+
     const [hintsSelectPlay, setHintsSelectPlay] = useState('HANDICAP');
     const [hintsSelectType, setHintsSelectType] = useState('OVER');
     const [hintsSelectProgres, setHintsSelectProgres] = useState('HALF');
 
     const selectsPlay = (name: string) => {
         setHintsSelectPlay(name);
-        localStorage.setItem('getSelectsPlay', name);
+        sessionStorage.setItem('getSelectsPlay', name);
         if (name === 'HANDICAP') {
             setHintsSelectType('OVER');
-            localStorage.setItem('getSelectsType', 'OVER');
+            sessionStorage.setItem('getSelectsType', 'OVER');
         }
         if (name === 'OVERUNDER') {
             setHintsSelectType('WIN');
-            localStorage.setItem('getSelectsType', 'WIN');
+            sessionStorage.setItem('getSelectsType', 'WIN');
         }
     };
 
     const selectsType = (name: string) => {
         setHintsSelectType(name);
-        localStorage.setItem('getSelectsType', name);
+        sessionStorage.setItem('getSelectsType', name);
     };
 
     const selectsProgress = (name: string) => {
         setHintsSelectProgres(name);
-        localStorage.setItem('getSelectsProgres', name);
+        sessionStorage.setItem('getSelectsProgres', name);
+    };
+
+    const payLong = () => {
+        if (!isVip) {
+            setOpenDialog(true);
+        } else {
+            router.push('/bigData/longDragon');
+        }
     };
 
     useEffect(() => {
-        localStorage.setItem('getSelectsPlay', 'HANDICAP');
-        localStorage.setItem('getSelectsType', 'OVER');
-        localStorage.setItem('getSelectsProgres', 'HALF');
+        sessionStorage.setItem('getSelectsPlay', 'HANDICAP');
+        sessionStorage.setItem('getSelectsType', 'OVER');
+        sessionStorage.setItem('getSelectsProgres', 'HALF');
+        setDialogContent(<PaymentAlert />);
     }, []);
 
     return (
@@ -185,12 +242,22 @@ function HandicapAnalysisForm() {
                 数据中心会將符合您条件设定的24小時內即將開場賽事汇整列出
             </div>
             {/* <div className={style.error}>{hintsError}</div> */}
-            <Link href="bigData/longDragon">
-                <motion.button className={style.search} type="button" whileTap={{ scale: 0.9 }}>
-                    <Image alt="" height={14} src={starIcon.src} width={14} />
-                    获得今日长龙赛事
-                </motion.button>
-            </Link>
+            <motion.button
+                className={style.search}
+                onClick={payLong}
+                type="button"
+                whileTap={{ scale: 0.9 }}
+            >
+                <Image alt="" height={14} src={starIcon.src} width={14} />
+                获得今日长龙赛事
+            </motion.button>
+            <Dialog
+                content={<div className={style.dialogContent}>{dialogContent}</div>}
+                onClose={() => {
+                    setOpenDialog(false);
+                }}
+                openDialog={openDialog}
+            />
         </>
     );
 }
