@@ -9,7 +9,7 @@ message MqttMessage {
   string ticketId = 3;           // tickey ID
   string message = 4;            // 錯誤種類：0. 系統錯誤 1. 參數錯誤 2. 查無資料錯誤 3. 餘額不足
   string handicapSide = 5;       // 让球方
-  string handicapValues = 6;     // 让球数
+  string handicapValues = 6;     // 让分数
   string overUnderValues = 7;    // 大小球
   int64 startTime = 8;           // 开始时间
   int64 endTime = 9;             // 结束时间

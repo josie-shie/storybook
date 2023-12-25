@@ -45,11 +45,11 @@ function AnalysisLayout({ children }: { children: ReactNode }) {
     const tabList = [
         {
             label: '盘路分析',
-            to: '/bigData?status=analysis'
+            to: '/bigData/analysis?status=analysis'
         },
         {
             label: '盘路提示',
-            to: '/bigData?status=tips'
+            to: '/bigData/analysis?status=tips'
         }
     ];
 

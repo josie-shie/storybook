@@ -31,7 +31,7 @@ const CategoryList = [
     },
     {
         label: '智能分析',
-        value: '/bigData?status=analysis',
+        value: '/bigData/analysis?status=analysis',
         includedRouters: ['/bigData'],
         icon: <Image alt="" height={24} src={analyzeIcon} width={24} />,
         activedIcon: <Image alt="" height={24} src={activeAnalyze} width={24} />
