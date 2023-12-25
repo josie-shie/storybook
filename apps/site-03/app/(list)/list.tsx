@@ -60,7 +60,7 @@ function List({ todayContest }: { todayContest: GetContestListResponse }) {
             tabs={tabList}
         >
             <div className={style.largeGap}>
-                {secendRender || status === '' ? (
+                {secendRender || !status ? (
                     <Football ref={allRef} status="all" todayContest={todayContest} />
                 ) : null}
             </div>
