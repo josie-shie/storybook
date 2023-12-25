@@ -36,6 +36,7 @@ function FilterSection({
     filterCounter: { league: number; country: number };
 }) {
     const submit = () => {
+        if (filterCounter[group] < 1) return;
         filterSubmit(group);
         onClose();
     };
@@ -96,7 +97,11 @@ function FilterSection({
                     已选 <span className={style.blue}>{filterCounter[group]}</span> 场
                 </div>
 
-                <motion.div className={style.confirm} onClick={submit} whileTap={{ scale: 0.9 }}>
+                <motion.div
+                    className={`${style.confirm} ${filterCounter[group] < 1 ? style.disabled : ''}`}
+                    onClick={submit}
+                    whileTap={{ scale: filterCounter[group] < 1 ? 1 : 0.9 }}
+                >
                     确定
                 </motion.div>
             </div>
