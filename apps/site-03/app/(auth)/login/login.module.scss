@@ -19,15 +19,6 @@
         }
     }
 
-    .forgotPass {
-        color: #fff;
-        height: 32px;
-        padding: 4px 0 5px;
-        white-space: nowrap;
-        font-size: 12px;
-        font-weight: 500;
-    }
-
     .register {
         color: #fff;
         text-align: center;
@@ -38,17 +29,47 @@
 
     .footer {
         display: flex;
-        gap: 32px;
+        gap: 16px;
         white-space: nowrap;
         justify-content: center;
+        align-items: center;
+
+        .delimiter {
+            width: 1px;
+            height: 18px;
+            opacity: 0.3;
+            background-color: #fff;
+        }
 
         p {
             font-size: 12px;
+            font-weight: 500;
             color: #fff;
+        }
+
+        .forgotPass {
+            width: initial;
+            min-width: initial;
+            height: 18px;
+            padding: 0;
+            color: #fff;
+            white-space: nowrap;
+            font-size: 12px;
+            font-weight: 500;
         }
     }
 
     .aggrement {
         padding-bottom: 102px;
+    }
+
+    .errorMessage {
+        color: #ffc42d;
+        font-size: 10px;
+        font-weight: 400;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
     }
 }

@@ -176,7 +176,7 @@ function Register() {
                         <PasswordInput
                             error={errors.password}
                             field={field}
-                            placeholder="密码请输入6-16位英文+数字"
+                            placeholder="6-16位英文+数字密码"
                         />
                     )}
                 />

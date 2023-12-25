@@ -21,7 +21,7 @@ import style from './login.module.scss';
 const schema = yup.object().shape({
     mobileNumber: yup
         .string()
-        .matches(/^[0-9]+$/)
+        .matches(/^\+(?:[0-9] ?){6,14}[0-9]$/)
         .required(),
     password: yup
         .string()
@@ -122,17 +122,8 @@ function Login() {
                         <PasswordInput
                             error={errors.password}
                             field={field}
-                            placeholder="密码请输入6-16位英文+数字"
-                        >
-                            <Button
-                                className={style.forgotPass}
-                                onClick={() => {
-                                    setAuthQuery('forgetPassword');
-                                }}
-                            >
-                                忘记密码
-                            </Button>
-                        </PasswordInput>
+                            placeholder="6-16位英文+数字密码"
+                        />
                     )}
                 />
             </FormControl>
@@ -167,8 +158,16 @@ function Login() {
                 立即注册
             </Button>
             <div className={style.footer}>
+                <Button
+                    className={style.forgotPass}
+                    onClick={() => {
+                        setAuthQuery('forgetPassword');
+                    }}
+                >
+                    忘记密码
+                </Button>
+                <span className={style.delimiter} />
                 <p>常見問題</p>
-                <p>聯繫客服</p>
             </div>
         </form>
     );
