@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import type { ReactNode } from 'react';
+import { useState, type ReactNode } from 'react';
 import { Button, IconButton, Input } from '@mui/material';
 import { CustomSelect } from 'ui';
 import type { FieldError, FieldValues } from 'react-hook-form';
@@ -13,6 +13,8 @@ import shieldIcon from './img/shieldIcon.png';
 import exclamationIcon from './img/exclamation.png';
 import userIcon from './img/user.png';
 import reloadIcon from './img/reloadIcon.png';
+import ShowPasswordIcon from './img/showPassword.png';
+import HidePasswordIcon from './img/hidePassword.png';
 
 export function NicknameInput({
     field,
@@ -32,12 +34,12 @@ export function NicknameInput({
                         disableUnderline
                         error={Boolean(error)}
                         id="username"
-                        placeholder="昵称请输入2-10位中文、英文或数字"
+                        placeholder="昵称2-10位中文、英文或数字"
                     />
                 </div>
             </div>
             <div className={style.errorMessage}>
-                {error ? <span>昵称请输入2-10位中文、英文或数字</span> : null}
+                {error ? <span>昵称2-10位中文、英文或数字</span> : null}
             </div>
         </>
     );
@@ -92,7 +94,7 @@ export function VertifyCode({
                     disableUnderline
                     error={Boolean(error)}
                     id="verificationCode"
-                    placeholder="请输入手机验证码"
+                    placeholder="输入手机验证码"
                 />
                 {sendCodeSuccess ? (
                     <p className={style.getVertifyCode}>验证码已送出({countDownNumber})</p>
@@ -163,7 +165,7 @@ export function VertifyCodeByImage({
                     disabled={vertifyDisable}
                     onClick={getVerificationCode}
                 >
-                    獲取驗證碼
+                    获取验证码
                 </Button>
             )}
         </div>
@@ -179,6 +181,8 @@ interface PasswordPropsType {
 }
 
 export function PasswordInput({ children, placeholder, field, error, id }: PasswordPropsType) {
+    const [showPassword, setShowPassword] = useState<boolean>(false);
+
     return (
         <>
             <div className={style.password}>
@@ -191,9 +195,35 @@ export function PasswordInput({ children, placeholder, field, error, id }: Passw
                         error={Boolean(error)}
                         id={id ? id : 'password'}
                         placeholder={placeholder}
-                        type="password"
+                        type={showPassword ? 'text' : 'password'}
                     />
-                    {children}
+                    {children ? (
+                        children
+                    ) : (
+                        <div>
+                            {showPassword ? (
+                                <Image
+                                    alt=""
+                                    height={24}
+                                    onClick={() => {
+                                        setShowPassword(false);
+                                    }}
+                                    src={ShowPasswordIcon.src}
+                                    width={24}
+                                />
+                            ) : (
+                                <Image
+                                    alt=""
+                                    height={24}
+                                    onClick={() => {
+                                        setShowPassword(true);
+                                    }}
+                                    src={HidePasswordIcon.src}
+                                    width={24}
+                                />
+                            )}
+                        </div>
+                    )}
                 </div>
             </div>
 
@@ -233,7 +263,8 @@ export function PhoneNumberInput({
                 disableUnderline
                 error={Boolean(error)}
                 id="mobileNumber"
-                placeholder="请输入手机号码"
+                placeholder="手机号码"
+                type="number"
             />
         </div>
     );
