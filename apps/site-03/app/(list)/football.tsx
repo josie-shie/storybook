@@ -122,6 +122,7 @@ function ContestList({
                 }
                 setContestList({ contestList: todayContest.data.contestList });
                 setContestInfo({ contestInfo: todayContest.data.contestInfo });
+                updateFilterList({ group: 'league', selectedTable: {} });
                 resetRows();
                 closeLoading();
             } catch (error) {

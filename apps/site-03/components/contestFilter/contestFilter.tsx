@@ -142,6 +142,11 @@ function Filter({
         }
     };
 
+    useEffect(() => {
+        setFilterSelected(initFilterSelected);
+        setFilterCounter(initFilterCounter);
+    }, [initFilterSelected, initFilterCounter]);
+
     const filterPick = (name: string, group: GroupType) => {
         const groupState = filterSelected[group] as Record<string, boolean> | undefined;
 
