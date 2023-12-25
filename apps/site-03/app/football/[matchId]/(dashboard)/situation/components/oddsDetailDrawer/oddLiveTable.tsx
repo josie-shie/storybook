@@ -2,7 +2,7 @@ import type { OddsRunningType } from 'data-center';
 import { truncateFloatingPoint, handleMatchDateTime } from 'lib';
 
 function OddLiveTable({ dataList = [] }: { dataList?: OddsRunningType[] }) {
-    const headColumns = ['狀態', '比分', '', '盤口', '', '時間'];
+    const headColumns = ['状态', '比分', '', '盘口', '', '时间'];
 
     return (
         <div className="dataTable">

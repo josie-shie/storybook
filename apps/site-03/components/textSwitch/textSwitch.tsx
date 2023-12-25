@@ -28,7 +28,7 @@ function TextRadio({ value, onChange }: PropsType) {
                     ${value === 'full' ? style.active : undefined}`}
                 htmlFor="full"
             >
-                全場
+                全场
             </label>
             <Image alt="icon" height={16} src={SwitchIcon} width={16} />
             <label
@@ -36,7 +36,7 @@ function TextRadio({ value, onChange }: PropsType) {
                     ${value === 'half' ? style.active : undefined}`}
                 htmlFor="half"
             >
-                半場
+                半场
             </label>
         </div>
     );
