@@ -7,3 +7,4 @@ export { GameStatus } from './stories/gameStatus/gameStatus';
 export { CustomSelect } from './stories/select/select';
 export { InfiniteScroll } from './stories/infiniteScroll/infiniteScroll';
 export { Slick } from './stories/slick/slick';
+export { BaseCropper } from './stories/baseCropper/baseCropper';

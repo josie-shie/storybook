@@ -6,8 +6,10 @@ import Image from 'next/image';
 import type { UpdateMemberInfoRequest } from 'data-center';
 import { timestampToString, uploadImage } from 'lib';
 import { updateMemberInfo } from 'data-center';
+import { Button } from '@mui/material';
 import Header from '@/components/header/headerTitleDetail';
 import { useNotificationStore } from '@/app/notificationStore';
+import AvatarCropperDrawer from '@/components/avatarCropperDrawer/avatarCropperDrawer';
 import { useUserStore } from '../../userStore';
 import style from './account.module.scss';
 import Avatar from './img/avatar.png';
@@ -84,6 +86,7 @@ function Account() {
     const setIsVisible = useNotificationStore.use.setIsVisible();
 
     const [isOpenCalendar, setIsOpenCalendar] = useState(false);
+    const [isAvatarCropperOpen, setIsAvatarCropperOpen] = useState(false);
 
     const back = () => {
         router.push('/userInfo');
@@ -116,26 +119,28 @@ function Account() {
         setSubmittedState(newSubmittedState);
     }, [userInfo, setFormState, setImgSrc, setSubmittedState]);
 
-    const uploadImg = async (event: ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = e => {
-                setImgSrc(e.target?.result as string);
-            };
-            reader.readAsDataURL(file);
+    const handleUploadImg = (arg: Blob) => {
+        setIsAvatarCropperOpen(false);
+        void uploadImgWithBlob(arg);
+    };
 
-            try {
-                const data: UploadResponse = await uploadImage(file);
-                if (data.filePath) {
-                    setImgUpload(data.filePath);
-                    setIsVisible('上传成功', 'success');
-                } else {
-                    setIsVisible('上传失败', 'error');
-                }
-            } catch (error) {
-                console.error('上传图片过程中发生错误', error);
+    const uploadImgWithBlob = async (blob: Blob) => {
+        const reader = new FileReader();
+        reader.onload = e => {
+            setImgSrc(e.target?.result as string);
+        };
+        reader.readAsDataURL(blob);
+
+        try {
+            const data: UploadResponse = await uploadImage(blob);
+            if (data.filePath) {
+                setImgUpload(data.filePath);
+                setIsVisible('上传成功', 'success');
+            } else {
+                setIsVisible('上传失败', 'error');
             }
+        } catch (error) {
+            console.error('上传图片过程中发生错误', error);
         }
     };
 
@@ -219,15 +224,14 @@ function Account() {
                         src={imgSrc || Avatar}
                         width={72}
                     />
-                    <label className={style.uploadBtn}>
+                    <Button
+                        className={style.uploadBtn}
+                        onClick={() => {
+                            setIsAvatarCropperOpen(true);
+                        }}
+                    >
                         编辑头像
-                        <input
-                            accept="image/*"
-                            onChange={uploadImg}
-                            style={{ display: 'none' }}
-                            type="file"
-                        />
-                    </label>
+                    </Button>
                     <p>*图片规格为100*100</p>
                 </div>
                 <form onSubmit={handleSubmit}>
@@ -325,6 +329,7 @@ function Account() {
                         <div className={style.item}>
                             <label htmlFor="description">简介：</label>
                             <textarea
+                                className={style.textarea}
                                 id="description"
                                 name="description"
                                 onChange={handleTextareaChange}
@@ -352,6 +357,12 @@ function Account() {
                 openModal={isOpenCalendar}
                 setFormState={setFormState}
                 setOpenModal={setIsOpenCalendar}
+            />
+            <AvatarCropperDrawer
+                imgSrc={imgSrc}
+                isDrawerOpen={isAvatarCropperOpen}
+                setImgSrc={handleUploadImg}
+                setIsDrawerOpen={setIsAvatarCropperOpen}
             />
         </>
     );
