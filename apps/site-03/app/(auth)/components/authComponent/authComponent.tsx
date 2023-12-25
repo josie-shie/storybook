@@ -92,7 +92,7 @@ export function VertifyCode({
                     disableUnderline
                     error={Boolean(error)}
                     id="verificationCode"
-                    placeholder="请输入手机号码验证"
+                    placeholder="请输入手机验证码"
                 />
                 {sendCodeSuccess ? (
                     <p className={style.getVertifyCode}>验证码已送出({countDownNumber})</p>
