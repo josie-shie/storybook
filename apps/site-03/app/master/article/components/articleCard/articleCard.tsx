@@ -24,11 +24,6 @@ function ArticleCard({ article }: { article: RecommendPost }) {
     const goMasterPredict = (id: number) => {
         router.push(`/master/masterAvatar/${id}?status=analysis`);
     };
-    const goSubscribe = () => {
-        setIsOpenRecharge(false);
-        router.push('/userInfo/subscribe');
-    };
-
     const userInfo = useUserStore.use.userInfo();
     const setUserInfo = useUserStore.use.setUserInfo();
 
@@ -61,10 +56,16 @@ function ArticleCard({ article }: { article: RecommendPost }) {
         }
     };
 
+    const goSubscribe = () => {
+        setIsOpenRecharge(false);
+        router.push('/userInfo/subscribe');
+    };
+
     const goArticleDetail = () => {
         setIsOpenPaid(false);
         router.push(`/master/article/${article.id}`);
     };
+
     return (
         <div className="div">
             <li className={style.articleCard}>
