@@ -15,6 +15,7 @@ interface GuessProps {
 }
 
 const calculatePercentage = (a: number, b: number) => {
+    if (a === 0 && b === 0) return 50;
     const percentage = Math.round((a / (a + b)) * 100);
     return percentage;
 };

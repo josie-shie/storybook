@@ -21,7 +21,7 @@ interface TagProps {
 function HighlightTag({ type, value }: TagProps) {
     //戰績標籤類別 0:週 1:月 2:季 3:連紅
     const periodMap = {
-        0: '週',
+        0: '周',
         1: '月',
         2: '季'
     };

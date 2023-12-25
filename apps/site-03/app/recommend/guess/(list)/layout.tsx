@@ -12,7 +12,7 @@ function ContestLayout({ children }: { children: ReactNode }) {
             <div className={style.guess}>
                 <div className={style.childrenTab}>
                     <Tabs
-                        labels={['賽事', '週榜', '月榜', '季榜', '連紅榜']}
+                        labels={['赛事', '周榜', '月榜', '季榜', '连红榜']}
                         paths={[
                             '/recommend/guess',
                             '/recommend/guess/rank?status=week',
