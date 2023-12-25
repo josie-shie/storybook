@@ -9,6 +9,13 @@ import defaultIcon from './img/defaultIcon.png';
 import iconHot from './img/hot.png';
 import style from './handicapTip.module.scss';
 
+interface RenderTeamProp {
+    longOddsType: string;
+    longOddsTimes: number;
+    teamLogo: string;
+    teamChs: string;
+}
+
 function HandicapTips({
     hintsSelectPlay,
     hintsSelectProgres,
@@ -69,6 +76,45 @@ function HandicapTips({
     const formatPlay = (name: string) => playMappings[name];
     const formatProgress = (name: string) => progressMappings[name];
 
+    const renderTeam = (team: RenderTeamProp, isHome: boolean) => {
+        const { longOddsType, longOddsTimes, teamLogo, teamChs } = team;
+        const isActiveRed = ['赢', '大'].includes(longOddsType) && isHome;
+        const isActiveGreen = ['输', '小'].includes(longOddsType) && isHome;
+
+        let tagStyle = '';
+        if (isActiveRed) {
+            tagStyle = style.redTag;
+        } else if (isActiveGreen) {
+            tagStyle = style.greenTag;
+        }
+
+        const oddsText = ['大', '小'].includes(longOddsType)
+            ? `${longOddsType}球${longOddsTimes}连`
+            : `${longOddsTimes} 连${longOddsType}`;
+
+        return (
+            <div className={style.team}>
+                <div className={style.name}>
+                    <Image
+                        alt=""
+                        className={style.image}
+                        height={20}
+                        src={teamLogo && teamLogo !== '0' ? teamLogo : defaultIcon}
+                        width={20}
+                    />
+                    <span
+                        className={`${style.text} ${isActiveRed ? style.redActive : ''} ${
+                            isActiveGreen ? style.greenActive : ''
+                        }`}
+                    >
+                        {teamChs}
+                    </span>
+                </div>
+                {isActiveRed || isActiveGreen ? <div className={tagStyle}>{oddsText}</div> : null}
+            </div>
+        );
+    };
+
     return (
         <>
             {displayList.length ? (
@@ -99,118 +145,24 @@ function HandicapTips({
                                 </div>
                             </div>
                             <div className={style.content}>
-                                <div className={style.team}>
-                                    <div className={style.name}>
-                                        <Image
-                                            alt=""
-                                            className={style.image}
-                                            height={20}
-                                            src={
-                                                item.homeLogo && item.homeLogo !== '0'
-                                                    ? item.homeLogo
-                                                    : defaultIcon
-                                            }
-                                            width={20}
-                                        />
-                                        <span
-                                            className={`${style.text} ${
-                                                (item.longOddsType === '赢' ||
-                                                    item.longOddsType === '大') &&
-                                                item.longOddsTeamId === item.homeId
-                                                    ? style.redActive
-                                                    : ''
-                                            } ${
-                                                (item.longOddsType === '输' ||
-                                                    item.longOddsType === '小') &&
-                                                item.longOddsTeamId === item.homeId
-                                                    ? style.greenActive
-                                                    : ''
-                                            }`}
-                                        >
-                                            {item.homeChs}
-                                        </span>
-                                    </div>
-                                    {item.longOddsType === '大' &&
-                                        item.longOddsTeamId === item.homeId && (
-                                            <div className={style.redTag}>
-                                                {item.longOddsType}球{item.longOddsTimes}連
-                                            </div>
-                                        )}
-                                    {item.longOddsType === '赢' &&
-                                        item.longOddsTeamId === item.homeId && (
-                                            <div className={style.redTag}>
-                                                {item.longOddsTimes} 連{item.longOddsType}
-                                            </div>
-                                        )}
-                                    {item.longOddsType === '小' &&
-                                        item.longOddsTeamId === item.homeId && (
-                                            <div className={style.greenTag}>
-                                                {item.longOddsType}球{item.longOddsTimes}連
-                                            </div>
-                                        )}
-                                    {item.longOddsType === '输' &&
-                                        item.longOddsTeamId === item.homeId && (
-                                            <div className={style.greenTag}>
-                                                {item.longOddsTimes} 連{item.longOddsType}
-                                            </div>
-                                        )}
-                                </div>
-                                <div className={style.team}>
-                                    <div className={style.name}>
-                                        <Image
-                                            alt=""
-                                            className={style.image}
-                                            height={20}
-                                            src={
-                                                item.awayLogo && item.awayLogo !== '0'
-                                                    ? item.awayLogo
-                                                    : defaultIcon
-                                            }
-                                            width={20}
-                                        />
-                                        <span
-                                            className={`${style.text} ${
-                                                (item.longOddsType === '赢' ||
-                                                    item.longOddsType === '大') &&
-                                                item.longOddsTeamId === item.awayId
-                                                    ? style.redActive
-                                                    : ''
-                                            } ${
-                                                (item.longOddsType === '输' ||
-                                                    item.longOddsType === '小') &&
-                                                item.longOddsTeamId === item.awayId
-                                                    ? style.greenActive
-                                                    : ''
-                                            }`}
-                                        >
-                                            {item.awayChs}
-                                        </span>
-                                    </div>
-                                    {item.longOddsType === '大' &&
-                                        item.longOddsTeamId === item.awayId && (
-                                            <div className={style.redTag}>
-                                                {item.longOddsType}球{item.longOddsTimes}連
-                                            </div>
-                                        )}
-                                    {item.longOddsType === '赢' &&
-                                        item.longOddsTeamId === item.awayId && (
-                                            <div className={style.redTag}>
-                                                {item.longOddsTimes} 連{item.longOddsType}
-                                            </div>
-                                        )}
-                                    {item.longOddsType === '小' &&
-                                        item.longOddsTeamId === item.awayId && (
-                                            <div className={style.greenTag}>
-                                                {item.longOddsType}球{item.longOddsTimes}連
-                                            </div>
-                                        )}
-                                    {item.longOddsType === '输' &&
-                                        item.longOddsTeamId === item.awayId && (
-                                            <div className={style.greenTag}>
-                                                {item.longOddsTimes} 連{item.longOddsType}
-                                            </div>
-                                        )}
-                                </div>
+                                {renderTeam(
+                                    {
+                                        longOddsType: item.longOddsType,
+                                        longOddsTimes: item.longOddsTimes,
+                                        teamLogo: item.homeLogo,
+                                        teamChs: item.homeChs
+                                    },
+                                    item.longOddsTeamId === item.homeId
+                                )}
+                                {renderTeam(
+                                    {
+                                        longOddsType: item.longOddsType,
+                                        longOddsTimes: item.longOddsTimes,
+                                        teamLogo: item.awayLogo,
+                                        teamChs: item.awayChs
+                                    },
+                                    item.longOddsTeamId === item.awayId
+                                )}
                             </div>
                         </div>
                     </Link>
