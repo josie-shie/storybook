@@ -317,6 +317,9 @@ importers:
       next:
         specifier: ^13.4.19
         version: 13.4.19(@babel/core@7.22.11)(react-dom@18.2.0)(react@18.2.0)(sass@1.68.0)
+      react-cropper:
+        specifier: ^2.3.3
+        version: 2.3.3(react@18.2.0)
       react-slick:
         specifier: ^0.29.0
         version: 0.29.0(react-dom@18.2.0)(react@18.2.0)
@@ -6262,6 +6265,10 @@ packages:
     resolution: {integrity: sha512-dcKFX3jn0MpIaXjisoRvexIJVEKzaq7z2rZKxf+MSr9TkdmHmsU4m2lcLojrj/FHl8mk5VxMmYA+ftRkP/3oKQ==}
     dev: true
 
+  /cropperjs@1.6.1:
+    resolution: {integrity: sha512-F4wsi+XkDHCOMrHMYjrTEE4QBOrsHHN5/2VsVAaRq8P7E5z7xQpT75S+f/9WikmBEailas3+yo+6zPIomW+NOA==}
+    dev: false
+
   /cross-spawn@7.0.3:
     resolution: {integrity: sha512-iRDPJKUPVEND7dHPO8rkbOnPpyDygcDFtWjpeWNCgy8WP2rXcxXL8TskReQl6OrB2G7+UJrags1q15Fudc7G6w==}
     engines: {node: '>= 8'}
@@ -10331,6 +10338,15 @@ packages:
       react: 18.2.0
       tween-functions: 1.2.0
     dev: true
+
+  /react-cropper@2.3.3(react@18.2.0):
+    resolution: {integrity: sha512-zghiEYkUb41kqtu+2jpX2Ntigf+Jj1dF9ew4lAobPzI2adaPE31z0p+5TcWngK6TvmWQUwK3lj4G+NDh1PDQ1w==}
+    peerDependencies:
+      react: '>=17.0.2'
+    dependencies:
+      cropperjs: 1.6.1
+      react: 18.2.0
+    dev: false
 
   /react-datepicker@4.21.0(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-z0DtuRrKMz9i7dcTusW29VacbM9pn08g1yw0cG+Y5GpodJDxSWv7zUMxl3IwKN9Ap/AMphiepvmT5P+iNCgEiA==}
