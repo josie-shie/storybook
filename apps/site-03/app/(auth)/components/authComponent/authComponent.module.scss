@@ -94,6 +94,11 @@ $border-bottom: 1px solid rgb(255 255 255 / 30%);
         font-size: 12px;
         font-weight: 500;
         padding: 0;
+
+        &:global(.Mui-disabled) {
+            color: #ffc42d;
+            opacity: 0.7;
+        }
     }
 }
 

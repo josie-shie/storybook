@@ -21,7 +21,7 @@ import style from './login.module.scss';
 const schema = yup.object().shape({
     mobileNumber: yup
         .string()
-        .matches(/^\+(?:[0-9] ?){6,14}[0-9]$/)
+        .matches(/^[0-9]+$/)
         .required(),
     password: yup
         .string()
