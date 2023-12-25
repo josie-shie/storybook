@@ -57,7 +57,7 @@ function AnimationData({ analysisTime, onUpdateAnalysis }: TestProps) {
                 ) : (
                     <div className={style.enough}>
                         <div className={style.column}>
-                            <Image alt="title" height={36} src={enoughTitle} width={146} />
+                            <Image alt="title" height={19} src={enoughTitle} width={145} />
                             <Image alt="title" height={34} src={enoughText} width={258} />
                             <Link className={style.goVip} href="/userInfo/subscribe">
                                 <Image

@@ -1,110 +1,262 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import type { OddsHintsType } from 'data-center';
-import { getBigdataHint } from 'data-center';
 import { motion } from 'framer-motion';
+import { useRouter } from 'next/navigation';
+import { useUserStore } from '@/app/userStore';
+import { useHandicapAnalysisFormStore } from '../formStore';
 import style from './disSelect.module.scss';
-import SelectOption from './components/selectOption/selectOption';
-import { useHintsFormStore } from './hintsFormStore';
 import starIcon from './img/star.png';
-import HandicapDrawer from './components/handicapDrawer/handicapDrawer';
-import { useMatchFilterStore } from './matchFilterStore';
-import { useDiscSelectStore } from './discSelectStore';
+import selectIcon from './img/select.png';
+import switchIcon from './img/switch.png';
+import Dialog from './components/dialog/dialog';
 
-function HintsSelect({ hintsSelected }: { hintsSelected: string }) {
-    const playList = useHintsFormStore.use.playList();
-    const setHintsSelected = useHintsFormStore.use.setHintsSelected();
+function PaymentAlert() {
+    const router = useRouter();
+    const setOpenDialog = useHandicapAnalysisFormStore.use.setOpenNormalDialog();
+    const userInfo = useUserStore.use.userInfo();
+
+    const comfirm = () => {
+        setOpenDialog(false);
+        router.push('/bigData/longDragon');
+    };
 
     return (
-        <SelectOption
-            hideTitle
-            options={playList}
-            placeholder="选择全场大小球"
-            selectTitle=""
-            setSelected={setHintsSelected}
-            title="玩法筛选"
-            valueSelected={hintsSelected}
-        />
+        <>
+            <div className={style.dialogMessage}>
+                <p className={style.message}>
+                    支付
+                    <Image alt="" height={14} src={starIcon.src} width={14} /> 40
+                </p>
+                <p>购买今日长龙赛事？</p>
+            </div>
+            <div className={style.detail}>我的余额: {userInfo.balance}金币</div>
+            <div className={style.footer}>
+                <div
+                    className={style.close}
+                    onClick={() => {
+                        setOpenDialog(false);
+                    }}
+                >
+                    返回
+                </div>
+                <div className={style.confirm} onClick={comfirm}>
+                    确认支付
+                </div>
+            </div>
+        </>
+    );
+}
+
+function StepIndicator({ stepNumber, text }: { stepNumber: string; text: string }) {
+    return (
+        <div className={style.step}>
+            <span className={style.stepNumber}>
+                <span className={style.number}>{stepNumber}</span>
+                <span className={style.text}>{text}</span>
+            </span>
+        </div>
+    );
+}
+
+function OptionButton({
+    active,
+    onClick,
+    label,
+    imageSrc
+}: {
+    active: boolean;
+    onClick: () => void;
+    label: string;
+    imageSrc: string;
+}) {
+    return (
+        <button
+            className={`${style.option} ${active ? style.active : ''}`}
+            onClick={onClick}
+            type="button"
+        >
+            {active ? (
+                <Image alt="" className={style.select} height={15} src={imageSrc} width={16} />
+            ) : null}
+            {label}
+        </button>
     );
 }
 
 function HandicapAnalysisForm() {
-    const setHandicapTips = useHintsFormStore.use.setHandicapTips();
-    const hintsSelected = useHintsFormStore.use.hintsSelected();
-    const hintsError = useHintsFormStore.use.hintsError();
-    const setHintsError = useHintsFormStore.use.setHintsError();
-    const showHintsDrawer = useHintsFormStore.use.showHintsDrawer();
-    const setShowHintsDrawer = useHintsFormStore.use.setShowHintsDrawer();
+    const router = useRouter();
 
-    // for match filter
-    const contestInfo = useMatchFilterStore.use.contestInfo();
-    const setContestList = useMatchFilterStore.use.setContestList();
-    const setContestInfo = useMatchFilterStore.use.setContestInfo();
-    const setFilterInit = useMatchFilterStore.use.setFilterInit();
-    const setDialogContentType = useDiscSelectStore.use.setDialogContentType();
-    const setOpenNormalDialog = useDiscSelectStore.use.setOpenNormalDialog();
+    const openDialog = useHandicapAnalysisFormStore.use.openNoramlDialog();
+    const setOpenDialog = useHandicapAnalysisFormStore.use.setOpenNormalDialog();
+    const dialogContent = useHandicapAnalysisFormStore.use.dialogContent();
+    const setDialogContent = useHandicapAnalysisFormStore.use.setDialogContent();
+    const isVip = useUserStore.use.memberSubscribeStatus().planId; // 1是VIP
 
-    const openHintsDrawer = async () => {
-        if (!hintsSelected) {
-            setHintsError('请选择大小球类别');
-            return;
+    const [hintsSelectPlay, setHintsSelectPlay] = useState('HANDICAP');
+    const [hintsSelectType, setHintsSelectType] = useState('OVER');
+    const [hintsSelectProgres, setHintsSelectProgres] = useState('HALF');
+
+    const selectsPlay = (name: string) => {
+        setHintsSelectPlay(name);
+        sessionStorage.setItem('getSelectsPlay', name);
+        if (name === 'HANDICAP') {
+            setHintsSelectType('OVER');
+            sessionStorage.setItem('getSelectsType', 'OVER');
         }
-
-        setHintsError('');
-
-        const res = await getBigdataHint({ type: hintsSelected as OddsHintsType });
-
-        if (!res.success) {
-            setDialogContentType('system');
-            setOpenNormalDialog(true);
-            return;
+        if (name === 'OVERUNDER') {
+            setHintsSelectType('WIN');
+            sessionStorage.setItem('getSelectsType', 'WIN');
         }
+    };
 
-        if (!res.data.length) {
-            setDialogContentType('empty');
-            setOpenNormalDialog(true);
-            return;
+    const selectsType = (name: string) => {
+        setHintsSelectType(name);
+        sessionStorage.setItem('getSelectsType', name);
+    };
+
+    const selectsProgress = (name: string) => {
+        setHintsSelectProgres(name);
+        sessionStorage.setItem('getSelectsProgres', name);
+    };
+
+    const payLong = () => {
+        if (!isVip) {
+            setOpenDialog(true);
+        } else {
+            router.push('/bigData/longDragon');
         }
-
-        setHandicapTips(res.data);
-        setContestList({
-            contestList: res.data
-        });
-        setContestInfo({
-            contestList: res.data
-        });
-        setShowHintsDrawer(true);
     };
 
     useEffect(() => {
-        setFilterInit();
-    }, [contestInfo, setFilterInit]);
+        sessionStorage.setItem('getSelectsPlay', 'HANDICAP');
+        sessionStorage.setItem('getSelectsType', 'OVER');
+        sessionStorage.setItem('getSelectsProgres', 'HALF');
+        setDialogContent(<PaymentAlert />);
+    }, []);
 
     return (
         <>
-            <HintsSelect hintsSelected={hintsSelected} />
-            <div className={style.tips}>
-                数据中心将会汇整出符合您条件设定，在时间区间内开出相同盘口的赛事
+            <div className={style.step}>
+                <StepIndicator stepNumber="1" text="选择玩法" />
+                <div className={style.options}>
+                    <OptionButton
+                        active={hintsSelectPlay === 'HANDICAP'}
+                        imageSrc={selectIcon.src}
+                        label="大小球"
+                        onClick={() => {
+                            selectsPlay('HANDICAP');
+                        }}
+                    />
+                    <OptionButton
+                        active={hintsSelectPlay === 'OVERUNDER'}
+                        imageSrc={selectIcon.src}
+                        label="让球"
+                        onClick={() => {
+                            selectsPlay('OVERUNDER');
+                        }}
+                    />
+                </div>
             </div>
-            <div className={style.error}>{hintsError}</div>
+            <div className={style.step}>
+                <StepIndicator stepNumber="2" text="连续方式" />
+                <div className={style.options}>
+                    {hintsSelectPlay === 'HANDICAP' && (
+                        <>
+                            <OptionButton
+                                active={hintsSelectType === 'OVER'}
+                                imageSrc={selectIcon.src}
+                                label="连续大球"
+                                onClick={() => {
+                                    selectsType('OVER');
+                                }}
+                            />
+                            <OptionButton
+                                active={hintsSelectType === 'UNDER'}
+                                imageSrc={selectIcon.src}
+                                label="连续小球"
+                                onClick={() => {
+                                    selectsType('UNDER');
+                                }}
+                            />
+                        </>
+                    )}
+                    {hintsSelectPlay === 'OVERUNDER' && (
+                        <>
+                            <OptionButton
+                                active={hintsSelectType === 'WIN'}
+                                imageSrc={selectIcon.src}
+                                label="连续赢盘"
+                                onClick={() => {
+                                    selectsType('WIN');
+                                }}
+                            />
+                            <OptionButton
+                                active={hintsSelectType === 'LOSE'}
+                                imageSrc={selectIcon.src}
+                                label="连续输盘"
+                                onClick={() => {
+                                    selectsType('LOSE');
+                                }}
+                            />
+                        </>
+                    )}
+                </div>
+            </div>
+            <div className={style.step}>
+                <StepIndicator stepNumber="3" text="半/全场" />
+                <div className={style.special}>
+                    <div className={style.specialOptions}>
+                        <button
+                            className={`${style.option} ${
+                                hintsSelectProgres === 'HALF' ? style.first : ''
+                            }`}
+                            onClick={() => {
+                                selectsProgress('HALF');
+                            }}
+                            type="button"
+                        >
+                            半場
+                        </button>
+                        <Image
+                            alt=""
+                            className={style.switch}
+                            height={13}
+                            src={switchIcon.src}
+                            width={16}
+                        />
+                        <button
+                            className={`${style.option} ${
+                                hintsSelectProgres === 'FULL' ? style.second : ''
+                            }`}
+                            onClick={() => {
+                                selectsProgress('FULL');
+                            }}
+                            type="button"
+                        >
+                            全場
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div className={style.tips}>
+                数据中心会將符合您条件设定的24小時內即將開場賽事汇整列出
+            </div>
+            {/* <div className={style.error}>{hintsError}</div> */}
             <motion.button
                 className={style.search}
-                onClick={openHintsDrawer}
+                onClick={payLong}
                 type="button"
                 whileTap={{ scale: 0.9 }}
             >
                 <Image alt="" height={14} src={starIcon.src} width={14} />
-                获得盘路提示
+                获得今日长龙赛事
             </motion.button>
-            <HandicapDrawer
-                hintsSelected={hintsSelected}
-                isOpen={showHintsDrawer}
+            <Dialog
+                content={<div className={style.dialogContent}>{dialogContent}</div>}
                 onClose={() => {
-                    setShowHintsDrawer(false);
+                    setOpenDialog(false);
                 }}
-                onOpen={() => {
-                    setShowHintsDrawer(true);
-                }}
+                openDialog={openDialog}
             />
         </>
     );
