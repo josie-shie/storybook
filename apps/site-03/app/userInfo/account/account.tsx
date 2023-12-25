@@ -124,8 +124,6 @@ function Account() {
         void uploadImgWithBlob(arg);
     };
 
-    // const
-
     const uploadImgWithBlob = async (blob: Blob) => {
         const reader = new FileReader();
         reader.onload = e => {
