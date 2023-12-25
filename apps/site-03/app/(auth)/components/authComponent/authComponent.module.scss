@@ -1,4 +1,4 @@
-$borderBottom: 1px solid rgba(255, 255, 255, 0.3);
+$borderBottom: 1px solid rgb(255 255 255 / 30%);
 
 .codeSelect {
     padding: 0 6px;
@@ -86,7 +86,6 @@ $borderBottom: 1px solid rgba(255, 255, 255, 0.3);
         display: flex;
         justify-content: flex-end;
         align-items: center;
-
         width: 100%;
         color: #fbb03b;
         text-align: right;
@@ -154,7 +153,6 @@ $borderBottom: 1px solid rgba(255, 255, 255, 0.3);
             display: flex;
             justify-content: flex-end;
             align-items: center;
-
             width: 100%;
             color: #fbb03b;
             text-align: right;
@@ -168,6 +166,7 @@ $borderBottom: 1px solid rgba(255, 255, 255, 0.3);
     color: #fff;
     font-size: 10px;
     font-weight: 400;
+
     // margin-left: -15px;
     text-align: left;
 }
@@ -175,7 +174,7 @@ $borderBottom: 1px solid rgba(255, 255, 255, 0.3);
 .disableButton {
     opacity: 0.5;
     color: #fff;
-    background-color: rgba(255, 255, 255, 0.3);
+    background-color: rgb(255 255 255 / 30%);
 }
 
 .ableButton {
