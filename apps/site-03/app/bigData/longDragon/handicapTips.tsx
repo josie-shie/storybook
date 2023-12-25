@@ -134,13 +134,19 @@ function HandicapTips({
                                 {item.longOddsType === '赢' &&
                                     item.longOddsTeamId === item.homeId && (
                                         <div className={style.redTag}>
-                                            {item.longOddsTimes}連{item.longOddsType}
+                                            {item.longOddsTimes} 連{item.longOddsType}
                                         </div>
                                     )}
-                                {(item.longOddsType === '输' || item.longOddsType === '小') &&
+                                {item.longOddsType === '小' &&
                                     item.longOddsTeamId === item.homeId && (
                                         <div className={style.greenTag}>
                                             {item.longOddsType}球{item.longOddsTimes}連
+                                        </div>
+                                    )}
+                                {item.longOddsType === '输' &&
+                                    item.longOddsTeamId === item.homeId && (
+                                        <div className={style.greenTag}>
+                                            {item.longOddsTimes} 連{item.longOddsType}
                                         </div>
                                     )}
                             </div>
@@ -175,16 +181,28 @@ function HandicapTips({
                                         {item.awayChs}
                                     </span>
                                 </div>
-                                {(item.longOddsType === '赢' || item.longOddsType === '大') &&
+                                {item.longOddsType === '大' &&
                                     item.longOddsTeamId === item.awayId && (
                                         <div className={style.redTag}>
                                             {item.longOddsType}球{item.longOddsTimes}連
                                         </div>
                                     )}
-                                {(item.longOddsType === '输' || item.longOddsType === '小') &&
+                                {item.longOddsType === '赢' &&
+                                    item.longOddsTeamId === item.awayId && (
+                                        <div className={style.redTag}>
+                                            {item.longOddsTimes} 連{item.longOddsType}
+                                        </div>
+                                    )}
+                                {item.longOddsType === '小' &&
                                     item.longOddsTeamId === item.awayId && (
                                         <div className={style.greenTag}>
                                             {item.longOddsType}球{item.longOddsTimes}連
+                                        </div>
+                                    )}
+                                {item.longOddsType === '输' &&
+                                    item.longOddsTeamId === item.awayId && (
+                                        <div className={style.greenTag}>
+                                            {item.longOddsTimes} 連{item.longOddsType}
                                         </div>
                                     )}
                             </div>
