@@ -10,7 +10,7 @@ import Info from './info';
 import ArticleContent from './articleContent';
 
 export const metadata: Metadata = {
-    title: '专家预测'
+    title: '专家预测 | FutureSport'
 };
 
 function ArticleDetail({ params }: { params: { articleId: string } }) {

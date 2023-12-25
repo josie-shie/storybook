@@ -8,7 +8,7 @@ import MasterPlan from './masterPlan';
 import { createGuessDetailStore } from './guessDetailStore';
 
 export const metadata: Metadata = {
-    title: '推薦詳情'
+    title: '推荐详情 | FutureSport'
 };
 
 function GuessDetail({ backHistory }: { backHistory: boolean }) {

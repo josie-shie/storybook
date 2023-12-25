@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Wechat from './wechat';
 
 export const metadata: Metadata = {
-    title: '充值方式'
+    title: '充值方式 | FutureSport'
 };
 
 function Page() {
