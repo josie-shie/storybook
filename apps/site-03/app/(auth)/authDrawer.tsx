@@ -10,6 +10,7 @@ import { useUserStore } from '@/app/userStore';
 import ForgetPassword from '@/app/(auth)/forgetPassword/forgetPassword';
 import BottomDrawer from '@/components/drawer/bottomDrawer';
 import ChangePassword from '@/app/(auth)/changePassword/changePassword';
+import { useNotificationStore } from '@/app/notificationStore';
 import headerBg from './components/authComponent/img/headerBg.jpeg';
 import closeIcon from './components/authComponent/img/closeIcon.png';
 import style from './authDrawer.module.scss';
@@ -22,6 +23,7 @@ function AuthDrawer() {
     const searchParams = useSearchParams();
     const auth = searchParams.get('auth');
     const authQuery = useUserStore.use.authQuery();
+
     const isDrawerOpen = useAuthStore.use.isDrawerOpen();
     const setIsDrawerOpen = useAuthStore.use.setIsDrawerOpen();
     const setAuthQuery = useUserStore.use.setAuthQuery();
@@ -32,6 +34,7 @@ function AuthDrawer() {
     const setTitle = useAuthStore.use.setTitle();
 
     const setIsVipUseAnalysis = useUserStore.use.setIsVipUseAnalysis();
+    const setIsVisible = useNotificationStore.use.setIsVisible();
 
     const resetAuthContent = () => {
         if (authQuery === 'register') {
@@ -76,17 +79,24 @@ function AuthDrawer() {
             const subscriptionResponse = await getMemberSubscriptionStatus({
                 memberId: userId.uid
             });
-            if (subscriptionResponse.success) {
-                setMemberSubscribeStatus(subscriptionResponse.data);
 
-                if (subscriptionResponse.data.planId === 1 || userId.balance >= 80) {
-                    setIsVipUseAnalysis(true);
-                } else {
-                    setIsVipUseAnalysis(false);
-                }
+            if (!subscriptionResponse.success) {
+                const errorMessage = !subscriptionResponse.error
+                    ? subscriptionResponse.error
+                    : '连线异常，请联系客服人员';
+                setIsVisible(errorMessage, 'error');
+                return;
+            }
+            setMemberSubscribeStatus(subscriptionResponse.data);
+
+            if (subscriptionResponse.data.planId === 1 || userId.balance >= 80) {
+                setIsVipUseAnalysis(true);
+            } else {
+                setIsVipUseAnalysis(false);
             }
         };
-        if (isToken) void fetchSubscription();
+
+        if (isToken && userId.uid) void fetchSubscription();
     });
 
     useEffect(() => {
