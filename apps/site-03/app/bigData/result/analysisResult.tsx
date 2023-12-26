@@ -98,7 +98,9 @@ function ResultContent() {
                                 <span className={style.title}>全场让分</span>
                                 <span className={style.name}>
                                     让方/
-                                    {handicapTeam[teamSelected as HandicapSideType] || '全部'}
+                                    {teamSelected.length >= 2
+                                        ? '全部'
+                                        : handicapTeam[teamSelected[0] as HandicapSideType]}
                                     、盘口/
                                     {teamHandicapOdds || teamHandicapOdds === '0' || '不挑选'}
                                 </span>
