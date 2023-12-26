@@ -48,7 +48,7 @@ function FormField({
     }
     return submitted ? (
         <div className={style.item}>
-            <span className={style.title}>{label} : </span>
+            <span className={style.title}>{label} </span>
             <span className={style.content}>{displayValue}</span>
         </div>
     ) : (
