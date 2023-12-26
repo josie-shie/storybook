@@ -42,7 +42,7 @@ async function RootLayout({ children }: { children: ReactNode }) {
 
     return (
         <html lang="cn">
-            <body>
+            <body className="rootStyle">
                 <GlobalStore>
                     <MqttService>
                         <WebsocketService>
