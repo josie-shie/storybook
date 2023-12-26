@@ -8,6 +8,7 @@ import IconWin from './img/win.png';
 import IconLose from './img/lose.png';
 import IconDraw from './img/draw.png';
 import style from './bettingPlan.module.scss';
+import SkeletonLayout from './components/skeleton';
 
 type Tab = 0 | 1 | 2;
 
@@ -43,6 +44,7 @@ function BettingPlan({
     setGuessLength: (val: number) => void;
 }) {
     const [guessMatchesList, setGuessMatchesList] = useState<MemberIndividualGuessMatch[]>([]);
+    const [isNoData, setIsNoData] = useState<boolean | null>(null);
 
     const fetchData = async () => {
         const res = await getMemberIndividualGuessMatches({
@@ -58,6 +60,7 @@ function BettingPlan({
 
         setGuessMatchesList(res.data.guessMatchList);
         setGuessLength(res.data.guessMatchList.length);
+        setIsNoData(res.data.guessMatchList.length === 0);
     };
 
     useEffect(() => {
@@ -66,7 +69,11 @@ function BettingPlan({
 
     return (
         <>
-            {guessMatchesList.length > 0 ? (
+            {guessMatchesList.length === 0 && isNoData === null && <SkeletonLayout />}
+
+            {guessMatchesList.length === 0 && isNoData ? (
+                <NoData />
+            ) : (
                 <>
                     {guessMatchesList.map(item => {
                         return (
@@ -103,8 +110,6 @@ function BettingPlan({
                         );
                     })}
                 </>
-            ) : (
-                <NoData />
             )}
         </>
     );
