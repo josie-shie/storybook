@@ -17,6 +17,7 @@ function ArticleList() {
     const [isActive, setIsActive] = useState<PostFilter[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPage, setTotalPage] = useState(1);
+    const [isNoData, setIsNoData] = useState<boolean | null>(null);
 
     const setArticleList = useArticleStore.use.setArticleList();
     const articleList = useArticleStore.use.articleList();
@@ -51,6 +52,7 @@ function ArticleList() {
         const updatedArticleList = [...articleList, ...res.data.posts];
         setArticleList({ articleList: updatedArticleList });
         setTotalPage(res.data.totalPage);
+        setIsNoData(res.data.totalArticle === 0);
     };
 
     const loadMoreList = () => {
@@ -68,7 +70,12 @@ function ArticleList() {
             <div className={style.button}>
                 <WeekButton isActive={isActive} updateActive={updateActive} />
             </div>
-            {articleList.length > 0 ? (
+
+            {articleList.length === 0 && isNoData === null && <SkeletonLayout />}
+
+            {articleList.length === 0 && isNoData ? (
+                <NoData />
+            ) : (
                 <ul className={style.article}>
                     {articleList.map(article => {
                         return <ArticleCard article={article} key={article.id} />;
@@ -81,11 +88,7 @@ function ArticleList() {
                         </InfiniteScroll>
                     )}
                 </ul>
-            ) : (
-                <SkeletonLayout />
             )}
-
-            {articleList.length === 0 && <NoData />}
         </>
     );
 }
