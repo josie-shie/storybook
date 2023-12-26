@@ -160,7 +160,7 @@ function ArticleContent({ params, article, fetchPostDetail }: ArticleContentProp
                             </div>
                         </div>
 
-                        {article.predictedPlay === 'LOCK' && (
+                        {article.predictedPlay === 'LOCK' && article.price !== 0 ? (
                             <div className={style.paidButton}>
                                 <div className={style.content}>{article.shortAnalysisContent}</div>
                                 <div className={style.buttonArea}>
@@ -176,9 +176,7 @@ function ArticleContent({ params, article, fetchPostDetail }: ArticleContentProp
                                     </span>
                                 </div>
                             </div>
-                        )}
-
-                        {article.predictedPlay !== 'LOCK' ? (
+                        ) : (
                             <div className={style.paidArea}>
                                 <article className={style.content}>
                                     {article.analysisContent}
@@ -270,7 +268,7 @@ function ArticleContent({ params, article, fetchPostDetail }: ArticleContentProp
                                     </div>
                                 </div>
                             </div>
-                        ) : null}
+                        )}
                     </div>
                 </div>
 
