@@ -4,12 +4,20 @@ import Image from 'next/image';
 import { timestampToString, timestampToMonthDay } from 'lib';
 import Link from 'next/link';
 import { type RecommendPost } from 'data-center';
+import NoData from '@/components/baseNoData/noData';
 import style from './recommendationList.module.scss';
 import Star from './img/star.png';
 import Win from './img/win.png';
 import Draw from './img/draw.png';
+import SkeletonLayout from './components/skeleton';
 
-function RecommendationItem({ recommendationList }: { recommendationList: RecommendPost[] }) {
+function RecommendationItem({
+    recommendationList,
+    isNoData
+}: {
+    recommendationList: RecommendPost[];
+    isNoData: boolean | null;
+}) {
     const formatHandicapName = {
         HOME: '让分',
         AWAY: '让分',
@@ -21,57 +29,69 @@ function RecommendationItem({ recommendationList }: { recommendationList: Recomm
 
     return (
         <>
-            {recommendationList.map(item => {
-                return (
-                    <Link className={style.item} href={`/master/article/${item.id}`} key={item.id}>
-                        <div className={style.left}>
-                            <div className={style.time}>
-                                发表于今天 {timestampToMonthDay(item.createdAt)}
-                            </div>
-                            <div className={style.leagueName}>
-                                <span className={style.name}>{item.leagueName}</span>
-                                <span className={style.time}>
-                                    | {timestampToString(item.matchTime, 'MM-DD HH:mm')}
-                                </span>
-                            </div>
-                            <div className={style.teamName}>
-                                <span className={style.play}>
-                                    {formatHandicapName[item.predictedPlay]}
-                                </span>
-                                <span className={style.name}>
-                                    {item.homeTeamName} vs {item.awayTeamName}
-                                </span>
-                                {item.predictionResult === 'WIN' && (
-                                    <Image alt="" height={36} src={Win} width={36} />
-                                )}
-                                {item.predictionResult === 'DRAW' && (
-                                    <Image alt="" height={36} src={Draw} width={36} />
-                                )}
-                            </div>
-                        </div>
-                        <div className={style.right}>
-                            {!item.isUnlocked ? (
-                                <>
-                                    <div className={style.noPaid}>
-                                        <Image
-                                            alt=""
-                                            className={style.image}
-                                            src={Star}
-                                            width={14}
-                                        />
-                                        <span className={style.text}>{item.price}元</span>
+            {recommendationList.length === 0 && isNoData === null && <SkeletonLayout />}
+
+            {recommendationList.length === 0 && isNoData ? (
+                <NoData />
+            ) : (
+                <>
+                    {recommendationList.map(item => {
+                        return (
+                            <Link
+                                className={style.item}
+                                href={`/master/article/${item.id}`}
+                                key={item.id}
+                            >
+                                <div className={style.left}>
+                                    <div className={style.time}>
+                                        发表于今天 {timestampToMonthDay(item.createdAt)}
                                     </div>
-                                    <div className={style.unlockMember}>
-                                        已有{item.unlockCounts}人解鎖
+                                    <div className={style.leagueName}>
+                                        <span className={style.name}>{item.leagueName}</span>
+                                        <span className={style.time}>
+                                            | {timestampToString(item.matchTime, 'MM-DD HH:mm')}
+                                        </span>
                                     </div>
-                                </>
-                            ) : (
-                                <div className={style.unlockMember}>已解鎖</div>
-                            )}
-                        </div>
-                    </Link>
-                );
-            })}
+                                    <div className={style.teamName}>
+                                        <span className={style.play}>
+                                            {formatHandicapName[item.predictedPlay]}
+                                        </span>
+                                        <span className={style.name}>
+                                            {item.homeTeamName} vs {item.awayTeamName}
+                                        </span>
+                                        {item.predictionResult === 'WIN' && (
+                                            <Image alt="" height={36} src={Win} width={36} />
+                                        )}
+                                        {item.predictionResult === 'DRAW' && (
+                                            <Image alt="" height={36} src={Draw} width={36} />
+                                        )}
+                                    </div>
+                                </div>
+                                <div className={style.right}>
+                                    {!item.isUnlocked ? (
+                                        <>
+                                            <div className={style.noPaid}>
+                                                <Image
+                                                    alt=""
+                                                    className={style.image}
+                                                    src={Star}
+                                                    width={14}
+                                                />
+                                                <span className={style.text}>{item.price}元</span>
+                                            </div>
+                                            <div className={style.unlockMember}>
+                                                已有{item.unlockCounts}人解鎖
+                                            </div>
+                                        </>
+                                    ) : (
+                                        <div className={style.unlockMember}>已解鎖</div>
+                                    )}
+                                </div>
+                            </Link>
+                        );
+                    })}
+                </>
+            )}
         </>
     );
 }
