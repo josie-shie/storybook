@@ -95,8 +95,9 @@ function BettingPlan({
                                         {item.predictionResult}
                                     </div>
 
-                                    {/* TODO: 請後端吐價格 */}
-                                    {item.isPaidToRead ? <UnlockButton price={20} /> : null}
+                                    {item.isPaidToRead ? (
+                                        <UnlockButton price={item.unlockPrice} />
+                                    ) : null}
                                 </div>
                             </div>
                         );
