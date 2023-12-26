@@ -1,26 +1,28 @@
-$borderBottom: 1px solid rgb(255 255 255 / 30%);
+$border-bottom: 1px solid rgb(255 255 255 / 30%);
 
 .codeSelect {
     padding: 0 6px;
     display: flex;
     align-items: center;
     gap: 6px;
-    border-bottom: $borderBottom;
+    border-bottom: $border-bottom;
     min-height: 44px;
 }
 
 .phoneNumber {
-    border-bottom: $borderBottom;
+    display: flex;
+    align-items: center;
+    border-bottom: $border-bottom;
     min-height: 44px;
 }
 
 .phoneInput {
     width: 100%;
     padding: 0 6px;
+    font-size: 14px;
 
     ::placeholder {
         color: #e6effe;
-        font-size: 14px;
         font-weight: 400;
     }
 }
@@ -31,19 +33,20 @@ $borderBottom: 1px solid rgb(255 255 255 / 30%);
     gap: 6px;
     align-items: center;
     min-height: 44px;
-    border-bottom: $borderBottom;
+    border-bottom: $border-bottom;
 
     .passwordBlock {
+        flex: 1;
         display: flex;
         align-items: center;
 
         .passwordInput {
-            width: 246px;
+            font-size: 14px;
+            font-weight: 400;
+            flex: 1;
 
             ::placeholder {
                 color: #e6effe;
-                font-size: 14px;
-                font-weight: 400;
             }
         }
     }
@@ -52,9 +55,8 @@ $borderBottom: 1px solid rgb(255 255 255 / 30%);
 .vertifyCodeByImage {
     display: flex;
     padding: 0 6px;
-    gap: 6px;
     align-items: center;
-    border-bottom: $borderBottom;
+    border-bottom: $border-bottom;
 
     .vertifyCodeBlock {
         width: 100%;
@@ -87,10 +89,16 @@ $borderBottom: 1px solid rgb(255 255 255 / 30%);
         justify-content: flex-end;
         align-items: center;
         width: 100%;
-        color: #fbb03b;
+        color: #ffc42d;
         text-align: right;
         font-size: 12px;
         font-weight: 500;
+        padding: 0;
+
+        &:global(.Mui-disabled) {
+            color: #ffc42d;
+            opacity: 0.7;
+        }
     }
 }
 
@@ -100,7 +108,7 @@ $borderBottom: 1px solid rgb(255 255 255 / 30%);
     gap: 6px;
     align-items: center;
     min-height: 44px;
-    border-bottom: $borderBottom;
+    border-bottom: $border-bottom;
 
     .nicknameBlock {
         display: flex;
@@ -121,7 +129,6 @@ $borderBottom: 1px solid rgb(255 255 255 / 30%);
 .vertifyCode {
     min-height: 44px;
     display: flex;
-    gap: 6px;
     align-items: center;
     flex-direction: column;
 
@@ -131,7 +138,7 @@ $borderBottom: 1px solid rgb(255 255 255 / 30%);
         width: 100%;
         display: flex;
         align-items: center;
-        border-bottom: $borderBottom;
+        border-bottom: $border-bottom;
 
         .vertifyCodeInput {
             height: 100%;
@@ -154,10 +161,11 @@ $borderBottom: 1px solid rgb(255 255 255 / 30%);
             justify-content: flex-end;
             align-items: center;
             width: 100%;
-            color: #fbb03b;
+            color: #ffc42d;
             text-align: right;
             font-size: 12px;
             font-weight: 500;
+            padding: 0;
         }
     }
 }
@@ -166,12 +174,10 @@ $borderBottom: 1px solid rgb(255 255 255 / 30%);
     color: #fff;
     font-size: 10px;
     font-weight: 400;
-
-    // margin-left: -15px;
     text-align: left;
 }
 
-.disableButton {
+.disableButton:global(.Mui-disabled) {
     opacity: 0.5;
     color: #fff;
     background-color: rgb(255 255 255 / 30%);
@@ -191,11 +197,12 @@ $borderBottom: 1px solid rgb(255 255 255 / 30%);
 }
 
 .errorMessage {
-    color: #fbb03b;
+    color: #ffc42d;
     font-size: 10px;
     font-weight: 400;
     text-align: left;
     width: 100%;
     display: flex;
     align-items: center;
+    margin-top: 6px;
 }

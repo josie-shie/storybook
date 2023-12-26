@@ -3,12 +3,12 @@ import type { StoreWithSelectors } from 'lib';
 import type { GuessRank } from 'data-center';
 
 interface InitState {
-    onlyShowToday: boolean;
     rankList: GuessRank[];
-    member: GuessRank;
 }
 
 interface RankState extends InitState {
+    member: GuessRank;
+    onlyShowToday: boolean;
     setMember: (member: GuessRank) => void;
     setRankList: (rankList: GuessRank[]) => void;
     setOnlyShowToday: (show: boolean) => void;
@@ -32,7 +32,7 @@ const initialState = (set: (data: Partial<RankState>) => void) => ({
         historyMaxWinStreak: 0
     },
     rankList: [],
-    onlyShowToday: true,
+    onlyShowToday: false,
     setMember: (member: GuessRank) => {
         set({ member });
     },

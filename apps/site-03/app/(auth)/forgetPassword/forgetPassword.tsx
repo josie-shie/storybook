@@ -30,7 +30,7 @@ const schema = yup.object().shape({
     confirmPassword: yup
         .string()
         .oneOf([yup.ref('newPassword')], '请输入6-16位英文+数字')
-        .required('请再次输入新密码')
+        .required('再次输入新密码')
 });
 
 function ForgetPassword() {
@@ -40,7 +40,7 @@ function ForgetPassword() {
     const { sendCodeSuccess, setSendCodeSuccess, countDownNumber, setCountDownNumber } =
         registerStore;
 
-    const { control, formState, handleSubmit, watch, reset } = useForm({
+    const { control, formState, handleSubmit, watch } = useForm({
         resolver: yupResolver(schema),
         defaultValues: {
             mobileNumber: '',
@@ -87,7 +87,6 @@ function ForgetPassword() {
 
         setSendCodeSuccess(true);
         setCountDown();
-        reset();
     };
 
     const setCountDown = () => {
@@ -156,7 +155,7 @@ function ForgetPassword() {
                             error={errors.newPassword}
                             field={field}
                             id="newPassword"
-                            placeholder="密码请输入6-16位英文+数字"
+                            placeholder="6-16位英文+数字密码"
                         />
                     )}
                 />
@@ -170,7 +169,7 @@ function ForgetPassword() {
                             error={errors.confirmPassword}
                             field={field}
                             id="confirmPassword"
-                            placeholder="请再次输入新密码"
+                            placeholder="再次输入新密码"
                         />
                     )}
                 />

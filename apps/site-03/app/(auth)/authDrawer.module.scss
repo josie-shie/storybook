@@ -1,4 +1,4 @@
-$borderBottom: 1px solid rgb(255 255 255 / 30%);
+$border-bottom: 1px solid rgb(255 255 255 / 30%);
 
 .loginDrawer {
     height: 100%;
@@ -25,7 +25,7 @@ $borderBottom: 1px solid rgb(255 255 255 / 30%);
 
         .closeBtn {
             position: absolute;
-            right: 12px;
+            right: 18px;
             top: 34px;
         }
 
@@ -62,6 +62,7 @@ $borderBottom: 1px solid rgb(255 255 255 / 30%);
             .ui-select-value {
                 width: 48px;
                 text-align: left;
+                font-weight: 400;
             }
         }
 
@@ -81,11 +82,10 @@ $borderBottom: 1px solid rgb(255 255 255 / 30%);
 .futureTitle {
     font-size: 30px;
     font-weight: 600;
-    font-family: YouSheBiaoTiHei;
+    font-family: YouSheBiaoTiHei, sans-serif;
 
     .future {
         background: linear-gradient(91deg, #00ceff 8.31%, #0085ff 114.96%);
-        background-clip: text;
         background-clip: text;
         -webkit-text-fill-color: transparent;
     }

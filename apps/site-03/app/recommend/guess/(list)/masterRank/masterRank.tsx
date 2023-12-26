@@ -74,24 +74,7 @@ function UserMasterRank() {
 
 function RankList() {
     const isLogin = useUserStore.use.isLogin();
-    creatMasterRankStore({
-        member: {
-            memberId: 0,
-            memberName: '-',
-            memberLevel: 0,
-            memberAvatar: '',
-            ranking: 0,
-            today: false,
-            totalMatches: 0,
-            totalWin: 0,
-            totalLose: 0,
-            hitRate: 0,
-            currentMaxWinStreak: 0,
-            historyMaxWinStreak: 0
-        },
-        onlyShowToday: true,
-        masterRankList: []
-    });
+    creatMasterRankStore({ masterRankList: [] });
 
     return (
         <div className={style.masterRank}>

@@ -65,7 +65,7 @@ function GameCard({ matchId }: { matchId: number }) {
                         <div>
                             <div className={style.dataInfo}>
                                 <div className={style.odds}>
-                                    <div>初盤讓球</div>
+                                    <div>初盤让分</div>
                                     <CompareOdds
                                         defaultColor="blue"
                                         value={

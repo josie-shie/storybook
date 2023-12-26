@@ -59,7 +59,7 @@ function AuthDrawer() {
     const closeDrawer = () => {
         if (auth) {
             setAuthQuery('');
-            router.push(
+            router.replace(
                 `${pathname}${
                     searchParams.get('status') ? `?status=${searchParams.get('status')}` : ''
                 }`
@@ -125,12 +125,12 @@ function AuthDrawer() {
                     <Image
                         alt=""
                         className={style.closeBtn}
-                        height={16}
+                        height={12}
                         onClick={() => {
                             closeDrawer();
                         }}
                         src={closeIcon.src}
-                        width={16}
+                        width={12}
                     />
                     {['register', 'forgetPassword'].includes(authQuery) && (
                         <Image

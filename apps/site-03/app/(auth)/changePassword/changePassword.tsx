@@ -157,7 +157,7 @@ function ChangePassword() {
                             error={errors.confirmPassword}
                             field={field}
                             id="confirmPassword"
-                            placeholder="请再次输入新密码"
+                            placeholder="再次输入新密码"
                         />
                     )}
                 />
