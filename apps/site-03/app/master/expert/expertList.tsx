@@ -135,6 +135,7 @@ function ExpertItem({ mentorList, setMentorList }: ExpertItemProps) {
 function MasterList() {
     const [isActive, setIsActive] = useState<MentorFilter[]>([]);
     const [mentorList, setMentorList] = useState<GetMentorListResponse>([]);
+    const [isNoData, setIsNoData] = useState<boolean | null>(null);
 
     const userInfo = useUserStore.use.userInfo();
 
@@ -149,20 +150,17 @@ function MasterList() {
     };
 
     const fetchData = async () => {
-        try {
-            const res = await getMentorList({
-                memberId: userInfo.uid ? userInfo.uid : 1,
-                filter: isActive.length > 0 ? isActive : undefined
-            });
+        const res = await getMentorList({
+            memberId: userInfo.uid ? userInfo.uid : 1,
+            filter: isActive.length > 0 ? isActive : undefined
+        });
 
-            if (!res.success) {
-                return new Error();
-            }
-
-            setMentorList(res.data);
-        } catch (error) {
+        if (!res.success) {
             return new Error();
         }
+
+        setMentorList(res.data);
+        setIsNoData(res.data.length === 0);
     };
 
     useEffect(() => {
@@ -170,19 +168,21 @@ function MasterList() {
     }, [userInfo.uid, isActive]);
 
     return (
-        <>
-            <div className={style.master}>
-                <WeekButton isActive={isActive} updateActive={updateActive} />
-                {mentorList.length > 0 ? (
+        <div className={style.master}>
+            <WeekButton isActive={isActive} updateActive={updateActive} />
+
+            {mentorList.length === 0 && isNoData === null && <SkeletonLayout />}
+
+            {mentorList.length === 0 && isNoData ? (
+                <NoData />
+            ) : (
+                <ul className={style.article}>
                     <div className={style.expertLayout}>
                         <ExpertItem mentorList={mentorList} setMentorList={setMentorList} />
                     </div>
-                ) : (
-                    <SkeletonLayout />
-                )}
-            </div>
-            {mentorList.length === 0 && <NoData />}
-        </>
+                </ul>
+            )}
+        </div>
     );
 }
 
