@@ -5,11 +5,17 @@ import style from './unlockButton.module.scss';
 
 interface PropsType {
     price?: number;
+    handleClick?: () => void;
 }
 
-function UnlockButton({ price }: PropsType) {
+function UnlockButton({ price, handleClick }: PropsType) {
     return (
-        <motion.button className={style.unlockButton} type="button" whileTap={{ scale: 0.9 }}>
+        <motion.button
+            className={style.unlockButton}
+            onClick={handleClick}
+            type="button"
+            whileTap={{ scale: 0.9 }}
+        >
             <Image alt="icon" src={star} style={{ width: '14px', height: '14px' }} />
             {price}
         </motion.button>
