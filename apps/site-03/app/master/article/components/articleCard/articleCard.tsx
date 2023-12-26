@@ -67,7 +67,7 @@ function ArticleCard({ article }: { article: RecommendPost }) {
     };
 
     return (
-        <div className="div">
+        <>
             <li className={style.articleCard}>
                 <div className={style.user}>
                     <div
@@ -169,7 +169,7 @@ function ArticleCard({ article }: { article: RecommendPost }) {
                 onConfirm={goSubscribe}
                 openDialog={isOpenRecharge}
             />
-        </div>
+        </>
     );
 }
 
