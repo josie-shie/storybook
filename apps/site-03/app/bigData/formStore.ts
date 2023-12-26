@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import { initStore } from 'lib';
 import type { StoreWithSelectors } from 'lib';
 import type { ReactNode } from 'react';
@@ -46,7 +47,7 @@ interface HandicapAnalysisFormState extends InitState {
     setStartDate: (startDate: number) => void;
     endDate: number;
     setEndDate: (endDate: number) => void;
-    teamSelected: string;
+    teamSelected: string[];
     setTeamSelected: (teamSelected: string) => void;
     teamHandicapOdds: string;
     setTeamHandicapOdds: (teamHandicapOdds: string) => void;
@@ -60,6 +61,8 @@ interface HandicapAnalysisFormState extends InitState {
     setOpenTips: (openTips: boolean) => void;
     isTipsOpened: boolean;
     setIsTipsOpened: (isTipsOpened: boolean) => void;
+    checkAllTeam: boolean;
+    setCheckAllTeam: () => void;
 }
 
 let useHandicapAnalysisFormStore: StoreWithSelectors<HandicapAnalysisFormState>;
@@ -91,31 +94,46 @@ const initialState = (
             return { ...state, analysisError };
         });
     },
-    startDate: 0,
+    startDate: Math.floor(dayjs().subtract(7, 'day').toDate().getTime() / 1000),
     setStartDate: (startDate: number) => {
         set(state => {
             return { ...state, startDate };
         });
     },
-    endDate: 0,
+    endDate: Math.floor(dayjs().subtract(1, 'day').toDate().getTime() / 1000),
     setEndDate: (endDate: number) => {
         set(state => {
             return { ...state, endDate };
         });
     },
-    teamSelected: 'home',
+    teamSelected: ['home'],
     setTeamSelected: (teamSelected: string) => {
         set(state => {
-            return { ...state, teamSelected };
+            let newTeamSelected = [...state.teamSelected];
+            if (newTeamSelected.includes(teamSelected)) {
+                newTeamSelected = newTeamSelected.filter(item => item !== teamSelected);
+                if (newTeamSelected.length <= 0) {
+                    newTeamSelected.push(teamSelected);
+                }
+            } else {
+                newTeamSelected.push(teamSelected);
+            }
+
+            return {
+                ...state,
+                teamSelected: newTeamSelected,
+                checkAllTeam: newTeamSelected.length >= 2
+            };
         });
     },
+
     teamHandicapOdds: '0.5',
     setTeamHandicapOdds: (teamHandicapOdds: string) => {
         set(state => {
             return { ...state, teamHandicapOdds };
         });
     },
-    handicapOddsSelected: '',
+    handicapOddsSelected: '2.5',
     setHandicapOddsSelected: (handicapOddsSelected: string) => {
         set(state => {
             return { ...state, handicapOddsSelected };
@@ -305,6 +323,17 @@ const initialState = (
             return {
                 ...state,
                 isTipsOpened
+            };
+        });
+    },
+    checkAllTeam: false,
+    setCheckAllTeam: () => {
+        set(state => {
+            const newCheckedState = !state.checkAllTeam;
+            return {
+                ...state,
+                checkAllTeam: newCheckedState,
+                teamSelected: newCheckedState ? ['home', 'away'] : ['home']
             };
         });
     }
