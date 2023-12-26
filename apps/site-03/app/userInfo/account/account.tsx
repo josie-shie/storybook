@@ -7,12 +7,14 @@ import type { UpdateMemberInfoRequest } from 'data-center';
 import { timestampToString, uploadImage } from 'lib';
 import { updateMemberInfo } from 'data-center';
 import { Button } from '@mui/material';
+import dayjs from 'dayjs';
 import Header from '@/components/header/headerTitleDetail';
 import { useNotificationStore } from '@/app/notificationStore';
 import AvatarCropperDrawer from '@/components/avatarCropperDrawer/avatarCropperDrawer';
 import { useUserStore } from '../../userStore';
 import style from './account.module.scss';
 import Avatar from './img/avatar.png';
+import Date from './img/date.png';
 import { useAccountStore } from './accountStore';
 
 interface UploadResponse {
@@ -26,7 +28,7 @@ interface FormFieldProps {
     name: string;
     value: string | number;
     placeholder: string;
-    onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
     submitted: boolean;
 }
 
@@ -116,7 +118,7 @@ function Account() {
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-
+        if (name === 'birthdayDisplay') return;
         const newFormState = {
             ...formState,
             [name]: value
@@ -155,7 +157,7 @@ function Account() {
 
         const obj: UpdateMemberInfoRequest = {
             avatarPath: imgUpload || userInfo.avatarPath,
-            birthday: userInfo.birthday || formState.birthday,
+            birthday: userInfo.birthday || dayjs(formState.birthday).valueOf() / 1000,
             wechat: formState.wechat,
             qqNumber: formState.qq,
             email: formState.email,
@@ -180,6 +182,15 @@ function Account() {
         };
         setSubmittedState(newSubmittedState);
         setIsSubmitted(false);
+    };
+
+    const formatBirthday = () => {
+        if (submittedState.birthday) {
+            return timestampToString(formState.birthday, 'YYYY/MM/DD');
+        } else if (formState.birthday === 0) {
+            return '';
+        }
+        return formState.birthday;
     };
 
     useEffect(() => {
@@ -241,15 +252,32 @@ function Account() {
                         type="text"
                         value={formState.nickName}
                     />
-                    <FormField
-                        label="出生日期："
-                        name="birthday"
-                        onChange={handleInputChange}
-                        placeholder="添加出生日期"
-                        submitted={submittedState.birthday}
-                        type="date"
-                        value={formState.birthday}
-                    />
+                    <div className={style.dateGroup}>
+                        <FormField
+                            label="生日"
+                            name="birthdayDisplay"
+                            onChange={handleInputChange}
+                            placeholder="新增"
+                            submitted={submittedState.birthday}
+                            type="text"
+                            value={formatBirthday()}
+                        />
+                        {!submittedState.birthday && (
+                            <div className={style.calender}>
+                                <input
+                                    className={style.dateInput}
+                                    id="birthday"
+                                    name="birthday"
+                                    onChange={handleInputChange}
+                                    style={{ opacity: 0 }}
+                                    type="date"
+                                    value={formState.birthday}
+                                />
+                                <Image alt="calender" height={24} src={Date} width={24} />
+                            </div>
+                        )}
+                    </div>
+
                     <FormField
                         label="手机号"
                         name="phoneNumber"
