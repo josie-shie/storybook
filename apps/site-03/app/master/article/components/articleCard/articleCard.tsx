@@ -16,6 +16,7 @@ import { useUserStore } from '@/app/userStore';
 import Win from '../../img/win.png';
 import ConfirmPayArticle from '../confirmPayArticle/confirmPayArticle';
 import style from './articleCard.module.scss';
+import Wallet from './img/wallet.png';
 
 function ArticleCard({ article }: { article: RecommendPost }) {
     const [isOpenPaid, setIsOpenPaid] = useState(false);
@@ -23,6 +24,7 @@ function ArticleCard({ article }: { article: RecommendPost }) {
     const router = useRouter();
     const userInfo = useUserStore.use.userInfo();
     const setUserInfo = useUserStore.use.setUserInfo();
+    const isVip = useUserStore.use.memberSubscribeStatus();
 
     const getUser = async () => {
         const res = await getMemberInfo();
@@ -38,19 +40,14 @@ function ArticleCard({ article }: { article: RecommendPost }) {
             setIsOpenRecharge(true);
             return;
         }
-        try {
-            const res = await payForPost({ postId: Number(article.id) });
+        const res = await payForPost({ postId: Number(article.id) });
 
-            if (!res.success) {
-                return new Error();
-            }
-            goArticleDetail();
-            void getUser();
-        } catch (error) {
+        if (!res.success) {
             return new Error();
-        } finally {
-            setIsOpenPaid(false);
         }
+        goArticleDetail();
+        void getUser();
+        setIsOpenPaid(false);
     };
 
     const goSubscribe = () => {
@@ -61,6 +58,14 @@ function ArticleCard({ article }: { article: RecommendPost }) {
     const goArticleDetail = () => {
         setIsOpenPaid(false);
         router.push(`/master/article/${article.id}`);
+    };
+
+    const isOpenDialog = () => {
+        if (isVip.planId === 1) {
+            router.push(`/master/article/${article.id}`);
+            return;
+        }
+        setIsOpenPaid(true);
     };
 
     return (
@@ -107,12 +112,7 @@ function ArticleCard({ article }: { article: RecommendPost }) {
                             <span className={style.unlocked}>已解鎖</span>
                         ) : (
                             <>
-                                <UnlockButton
-                                    handleClick={() => {
-                                        setIsOpenPaid(true);
-                                    }}
-                                    price={article.price}
-                                />
+                                <UnlockButton handleClick={isOpenDialog} price={article.price} />
                                 <span className={style.unlockNumber}>
                                     已有{article.unlockCounts}人解鎖
                                 </span>
@@ -155,14 +155,14 @@ function ArticleCard({ article }: { article: RecommendPost }) {
                 openDialog={isOpenPaid}
             />
             <NormalDialog
-                cancelText="取消"
-                confirmText="去订阅"
-                content={<div>余额不足，请订阅</div>}
+                confirmText="去充值"
+                content={<div>余额不足，请充值</div>}
                 onClose={() => {
                     setIsOpenRecharge(false);
                 }}
                 onConfirm={goSubscribe}
                 openDialog={isOpenRecharge}
+                srcImage={Wallet}
             />
         </>
     );
