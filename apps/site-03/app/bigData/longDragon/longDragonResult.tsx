@@ -9,6 +9,7 @@ import { useNotificationStore } from '@/app/notificationStore';
 import Loading from '@/components/loading/loading';
 import { useMatchFilterStore } from '../analysis/matchFilterStore';
 import { useHintsFormStore } from '../analysis/hintsFormStore';
+import { useLongDragonStore } from '../longDragonStore';
 import MatchFilterDrawer from './components/matchFilterDrawer/matchFilterDrawer';
 import LongButton from './components/longButton/longButton';
 import iconFilter from './img/filterIcon.png';
@@ -20,9 +21,9 @@ type LongFilter = '3rd' | '4rd' | '4rdUp' | 'hot';
 
 function LongDragonResult() {
     const router = useRouter();
-    const [hintsSelectPlay, setHintsSelectPlay] = useState('');
-    const [hintsSelectType, setHintsSelectType] = useState('');
-    const [hintsSelectProgres, setHintsSelectProgres] = useState('');
+    const hintsSelectPlay = useLongDragonStore.use.hintsSelectPlay();
+    const hintsSelectType = useLongDragonStore.use.hintsSelectType();
+    const hintsSelectProgres = useLongDragonStore.use.hintsSelectProgres();
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
     const contestInfo = useMatchFilterStore.use.contestInfo();
@@ -48,11 +49,16 @@ function LongDragonResult() {
     };
 
     const getBigdataHintList = async () => {
-        const savedSelectType = sessionStorage.getItem('getSelectsType');
-        const savedSelectProgres = sessionStorage.getItem('getSelectsProgres');
+        if (!hintsSelectType && !hintsSelectType) {
+            setIsVisible('请重新获取今日长龙赛事！', 'error');
+            setTimeout(() => {
+                router.push('/bigData/analysis?status=tips');
+            }, 1000);
+            return;
+        }
         const res = await getBigdataHint({
-            continuity: savedSelectType as OddsHintsType,
-            progress: savedSelectProgres as OddsHintsProgress
+            continuity: hintsSelectType as OddsHintsType,
+            progress: hintsSelectProgres as OddsHintsProgress
         });
         if (!res.success) {
             const errorMessage = res.error ? res.error : '获取失败，请联系客服！';
@@ -114,13 +120,6 @@ function LongDragonResult() {
     const formatProgress = (name: string) => progressMappings[name];
 
     useEffect(() => {
-        const savedSelectPlay = sessionStorage.getItem('getSelectsPlay');
-        const savedSelectType = sessionStorage.getItem('getSelectsType');
-        const savedSelectProgres = sessionStorage.getItem('getSelectsProgres');
-
-        if (savedSelectPlay) setHintsSelectPlay(savedSelectPlay);
-        if (savedSelectType) setHintsSelectType(savedSelectType);
-        if (savedSelectProgres) setHintsSelectProgres(savedSelectProgres);
         void getBigdataHintList();
     }, [hintsSelectPlay, hintsSelectType, hintsSelectProgres]);
 

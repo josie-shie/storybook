@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useUserStore } from '@/app/userStore';
 import { useHandicapAnalysisFormStore } from '../formStore';
+import { useLongDragonStore } from '../longDragonStore';
 import style from './disSelect.module.scss';
 import starIcon from './img/star.png';
 import selectIcon from './img/select.png';
@@ -92,31 +93,30 @@ function HandicapAnalysisForm() {
     const setDialogContent = useHandicapAnalysisFormStore.use.setDialogContent();
     const isVip = useUserStore.use.memberSubscribeStatus().planId; // 1是VIP
 
-    const [hintsSelectPlay, setHintsSelectPlay] = useState('HANDICAP');
-    const [hintsSelectType, setHintsSelectType] = useState('OVER');
-    const [hintsSelectProgres, setHintsSelectProgres] = useState('HALF');
+    const hintsSelectPlay = useLongDragonStore.use.hintsSelectPlay();
+    const hintsSelectType = useLongDragonStore.use.hintsSelectType();
+    const hintsSelectProgres = useLongDragonStore.use.hintsSelectProgres();
+
+    const setHintsSelectPlay = useLongDragonStore.use.setHintsSelectPlay();
+    const setHintsSelectType = useLongDragonStore.use.setHintsSelectType();
+    const setHintsSelectProgres = useLongDragonStore.use.setHintsSelectProgres();
 
     const selectsPlay = (name: string) => {
         setHintsSelectPlay(name);
-        sessionStorage.setItem('getSelectsPlay', name);
         if (name === 'HANDICAP') {
             setHintsSelectType('OVER');
-            sessionStorage.setItem('getSelectsType', 'OVER');
         }
         if (name === 'OVERUNDER') {
             setHintsSelectType('WIN');
-            sessionStorage.setItem('getSelectsType', 'WIN');
         }
     };
 
     const selectsType = (name: string) => {
         setHintsSelectType(name);
-        sessionStorage.setItem('getSelectsType', name);
     };
 
     const selectsProgress = (name: string) => {
         setHintsSelectProgres(name);
-        sessionStorage.setItem('getSelectsProgres', name);
     };
 
     const payLong = () => {
@@ -128,9 +128,9 @@ function HandicapAnalysisForm() {
     };
 
     useEffect(() => {
-        sessionStorage.setItem('getSelectsPlay', 'HANDICAP');
-        sessionStorage.setItem('getSelectsType', 'OVER');
-        sessionStorage.setItem('getSelectsProgres', 'HALF');
+        setHintsSelectPlay('HANDICAP');
+        setHintsSelectType('OVER');
+        setHintsSelectProgres('HALF');
         setDialogContent(<PaymentAlert />);
     }, []);
 

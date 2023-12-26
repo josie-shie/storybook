@@ -29,6 +29,7 @@ function ArticleContent({ params, article, fetchPostDetail }: ArticleContentProp
     const [openPaid, setOpenPaid] = useState(false);
     const [openDialog, setOpenDialog] = useState(false);
     const [recommendationList, setRecommendationList] = useState<RecommendPost[]>([]);
+    const [isNoData, setIsNoData] = useState<boolean | null>(null);
 
     const router = useRouter();
 
@@ -109,6 +110,7 @@ function ArticleContent({ params, article, fetchPostDetail }: ArticleContentProp
             return new Error();
         }
         setRecommendationList(res.data.posts);
+        setIsNoData(res.data.posts === 0);
     };
 
     useEffect(() => {
@@ -158,7 +160,7 @@ function ArticleContent({ params, article, fetchPostDetail }: ArticleContentProp
                             </div>
                         </div>
 
-                        {article.predictedPlay === 'LOCK' && (
+                        {article.predictedPlay === 'LOCK' && article.price !== 0 ? (
                             <div className={style.paidButton}>
                                 <div className={style.content}>{article.shortAnalysisContent}</div>
                                 <div className={style.buttonArea}>
@@ -174,9 +176,7 @@ function ArticleContent({ params, article, fetchPostDetail }: ArticleContentProp
                                     </span>
                                 </div>
                             </div>
-                        )}
-
-                        {article.predictedPlay !== 'LOCK' ? (
+                        ) : (
                             <div className={style.paidArea}>
                                 <article className={style.content}>
                                     {article.analysisContent}
@@ -268,13 +268,16 @@ function ArticleContent({ params, article, fetchPostDetail }: ArticleContentProp
                                     </div>
                                 </div>
                             </div>
-                        ) : null}
+                        )}
                     </div>
                 </div>
 
                 <div className={style.otherList}>
                     <div className={style.title}>Ta还推荐了... ({recommendationList.length})</div>
-                    <RecommendationList recommendationList={recommendationList} />
+                    <RecommendationList
+                        isNoData={isNoData}
+                        recommendationList={recommendationList}
+                    />
                 </div>
             </div>
             <NormalDialog

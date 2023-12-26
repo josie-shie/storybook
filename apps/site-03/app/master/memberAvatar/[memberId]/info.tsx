@@ -13,6 +13,7 @@ import Tag from '@/components/tag/tag';
 import { useUserStore } from '@/app/userStore';
 import Fire from '@/app/img/fire.png';
 import style from './info.module.scss';
+import SkeletonLayout from './components/skeleton/skeleton';
 
 function Info({ params }: { params: { memberId: string } }) {
     const [info, setInfo] = useState({
@@ -87,8 +88,10 @@ function Info({ params }: { params: { memberId: string } }) {
     };
 
     const fetchData = async () => {
+        const isCookieExist = Cookies.get('access');
         const res = await getMemberProfileWithMemberId({
-            memberId: Number(params.memberId)
+            memberId: Number(params.memberId),
+            loginMemberId: isCookieExist ? userInfo.uid : 0
         });
 
         if (!res.success) {
@@ -101,65 +104,72 @@ function Info({ params }: { params: { memberId: string } }) {
         void fetchData();
     }, [userInfo.uid]);
     return (
-        <section className={style.info}>
-            <div className={style.detail}>
-                <Avatar
-                    borderColor="#fff"
-                    size={54}
-                    src={info.avatarPath === '0' ? '' : info.avatarPath}
-                />
-                <div className={style.content}>
-                    <span className={style.name}>{info.username}</span>
-                    <div className={style.top}>
-                        {info.highlights.winMaxAccurateStreak > 0 && (
-                            <Tag
-                                icon={<Image alt="fire" src={Fire} />}
-                                text={`${info.highlights.winMaxAccurateStreak} 連紅`}
-                            />
-                        )}
-                        {info.highlights.weekRanking > 0 && (
-                            <Tag
-                                background="#fff"
-                                color="#4489ff"
-                                text={`周榜 ${info.highlights.weekRanking}`}
-                            />
-                        )}
-                        {info.highlights.monthRanking > 0 && (
-                            <Tag
-                                background="#fff"
-                                color="#4489ff"
-                                text={`月榜 ${info.highlights.monthRanking}`}
-                            />
-                        )}
-                        {info.highlights.quarterRanking > 0 && (
-                            <Tag
-                                background="#fff"
-                                color="#4489ff"
-                                text={`季榜 ${info.highlights.quarterRanking}`}
-                            />
-                        )}
+        <>
+            {info.memberId !== 0 ? (
+                <section className={style.info}>
+                    <div className={style.detail}>
+                        <Avatar
+                            borderColor="#fff"
+                            size={54}
+                            src={info.avatarPath === '0' ? '' : info.avatarPath}
+                        />
+                        <div className={style.content}>
+                            <span className={style.name}>{info.username}</span>
+                            <div className={style.top}>
+                                {info.highlights.winMaxAccurateStreak > 0 && (
+                                    <Tag
+                                        icon={<Image alt="fire" src={Fire} />}
+                                        text={`${info.highlights.winMaxAccurateStreak} 連紅`}
+                                    />
+                                )}
+                                {info.highlights.weekRanking > 0 && (
+                                    <Tag
+                                        background="#fff"
+                                        color="#4489ff"
+                                        text={`周榜 ${info.highlights.weekRanking}`}
+                                    />
+                                )}
+                                {info.highlights.monthRanking > 0 && (
+                                    <Tag
+                                        background="#fff"
+                                        color="#4489ff"
+                                        text={`月榜 ${info.highlights.monthRanking}`}
+                                    />
+                                )}
+                                {info.highlights.quarterRanking > 0 && (
+                                    <Tag
+                                        background="#fff"
+                                        color="#4489ff"
+                                        text={`季榜 ${info.highlights.quarterRanking}`}
+                                    />
+                                )}
+                            </div>
+                            <div className={style.bottom}>
+                                {Boolean(info.highlights) && (
+                                    <span>
+                                        近一季猜球胜率:{' '}
+                                        {Math.round(info.highlights.quarterHitRate * 100)}%
+                                    </span>
+                                )}
+                            </div>
+                        </div>
                     </div>
-                    <div className={style.bottom}>
-                        {Boolean(info.highlights) && (
-                            <span>
-                                近一季猜球胜率: {Math.round(info.highlights.quarterHitRate * 100)}%
-                            </span>
-                        )}
+
+                    <div
+                        className={info.isFollowed ? style.focused : style.focus}
+                        onClick={() => {
+                            void onIsFocused(info.memberId, info.isFollowed);
+                        }}
+                    >
+                        {info.isFollowed ? '已关注' : '关注'}
                     </div>
-                </div>
-            </div>
 
-            <div
-                className={info.isFollowed ? style.focused : style.focus}
-                onClick={() => {
-                    void onIsFocused(info.memberId, info.isFollowed);
-                }}
-            >
-                {info.isFollowed ? '已关注' : '关注'}
-            </div>
-
-            <div className={style.introduction}>{info.profile}</div>
-        </section>
+                    <div className={style.introduction}>{info.profile}</div>
+                </section>
+            ) : (
+                <SkeletonLayout />
+            )}
+        </>
     );
 }
 

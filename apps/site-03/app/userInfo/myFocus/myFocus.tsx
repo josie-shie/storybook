@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { getFollowers, updateFollow, unFollow } from 'data-center';
@@ -15,6 +15,7 @@ import style from './myFocus.module.scss';
 
 function MyFocus() {
     const router = useRouter();
+    const debounceTimer = useRef<ReturnType<typeof setTimeout>>();
     const [searchTerm, setSearchTerm] = useState<string>('');
     const setIsVisible = useNotificationStore.use.setIsVisible();
     const userInfo = useUserStore.use.userInfo();
@@ -24,40 +25,15 @@ function MyFocus() {
         useState<GetFollowersResponse>(focusMemberItem);
     const [isLoading, setIsLoading] = useState(true);
 
-    useEffect(() => {
-        setFilteredMasterItems(focusMemberItem);
-    }, [focusMemberItem]);
-
-    useEffect(() => {
-        const getFollowersList = async () => {
-            setIsLoading(true);
-            const res = await getFollowers({ memberId: userInfo.uid, isFans: false });
-            if (res.success) {
-                setFocusMemberItem(res.data);
-            }
-            setIsLoading(false);
-        };
-
-        if (userInfo.uid) {
-            void getFollowersList();
-        }
-    }, [userInfo]);
-
-    const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const onSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+        clearTimeout(debounceTimer.current);
         setSearchTerm(event.target.value);
-    };
-
-    const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-        if (event.key === 'Enter') {
-            handleSearch();
-        }
-    };
-
-    const handleSearch = () => {
-        const filteredItems = focusMemberItem.filter(item =>
-            item.username.toLowerCase().includes(searchTerm.toLowerCase())
-        );
-        setFilteredMasterItems(filteredItems);
+        debounceTimer.current = setTimeout(() => {
+            const filteredItems = focusMemberItem.filter(item =>
+                item.username.toLowerCase().includes(event.target.value.toLowerCase())
+            );
+            setFilteredMasterItems(filteredItems);
+        }, 500);
     };
 
     const toggleFollow = async (uid: number, memberId: number, isFollowed: boolean) => {
@@ -100,6 +76,25 @@ function MyFocus() {
         return <NoData />;
     };
 
+    useEffect(() => {
+        setFilteredMasterItems(focusMemberItem);
+    }, [focusMemberItem]);
+
+    useEffect(() => {
+        const getFollowersList = async () => {
+            setIsLoading(true);
+            const res = await getFollowers({ memberId: userInfo.uid, isFans: false });
+            if (res.success) {
+                setFocusMemberItem(res.data);
+            }
+            setIsLoading(false);
+        };
+
+        if (userInfo.uid) {
+            void getFollowersList();
+        }
+    }, [userInfo]);
+
     return (
         <>
             <div className={style.placeholder}>
@@ -122,15 +117,11 @@ function MyFocus() {
             <div className={style.myFocus}>
                 <div className={style.search}>
                     <input
-                        onChange={handleSearchChange}
-                        onKeyDown={handleKeyDown}
+                        onChange={onSearch}
                         placeholder="请输入用户名"
                         type="text"
                         value={searchTerm}
                     />
-                    <button onClick={handleSearch} type="button">
-                        搜索
-                    </button>
                 </div>
                 {renderContent()}
             </div>

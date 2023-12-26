@@ -13,6 +13,7 @@ import style from './analysisItem.module.scss';
 import IconWin from './img/win.png';
 import IconDraw from './img/draw.png';
 import IconLose from './img/lose.png';
+import SkeletonLayout from './components/skeleton';
 
 const filterImage = (value: PredictArticleType): string => {
     const result = {
@@ -41,6 +42,7 @@ function AnalysisItem({
 }) {
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [totalPage, setTotalPage] = useState<number>(1);
+    const [isNoData, setIsNoData] = useState<boolean | null>(null);
     const [predictArticleList, setPredictArticleList] = useState<RecommendPost[]>([]);
 
     const router = useRouter();
@@ -60,6 +62,7 @@ function AnalysisItem({
         setPredictArticleList(updatedArticleList);
         setArticleLength(res.data.totalArticle);
         setTotalPage(res.data.totalPage);
+        setIsNoData(res.data.totalArticle === 0);
     };
 
     const goArticleDetail = (id: number) => {
@@ -78,8 +81,12 @@ function AnalysisItem({
 
     return (
         <>
-            {predictArticleList.length > 0 ? (
-                <>
+            {predictArticleList.length === 0 && isNoData === null && <SkeletonLayout />}
+
+            {predictArticleList.length === 0 && isNoData ? (
+                <NoData />
+            ) : (
+                <ul className={style.article}>
                     {predictArticleList.map(item => {
                         return (
                             <div className={style.analysisItem} key={item.id}>
@@ -139,9 +146,7 @@ function AnalysisItem({
                             </div>
                         </InfiniteScroll>
                     )}
-                </>
-            ) : (
-                <NoData />
+                </ul>
             )}
         </>
     );

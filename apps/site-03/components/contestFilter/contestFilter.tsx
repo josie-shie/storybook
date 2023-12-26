@@ -148,8 +148,15 @@ function Filter({
     };
 
     useEffect(() => {
-        setFilterSelected(initFilterSelected);
-        setFilterCounter(initFilterCounter);
+        for (const item of Object.values(initLeague.infoObj)) {
+            for (const key of item) {
+                if (!Object.prototype.hasOwnProperty.call(filterSelected.league, key)) {
+                    setFilterSelected(initFilterSelected);
+                    setFilterCounter(initFilterCounter);
+                    break;
+                }
+            }
+        }
     }, [initFilterSelected, initFilterCounter]);
 
     const filterPick = (name: string, group: GroupType) => {

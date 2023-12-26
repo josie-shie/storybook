@@ -92,7 +92,6 @@ function ContestList({
     const globalStore = useContestInfoStore.use.contestInfo();
     const setContestList = useContestListStore.use.setContestList();
     const setContestInfo = useContestListStore.use.setContestInfo();
-    const setFilterInit = useContestListStore.use.setFilterInit();
     const [isMounted, setIsMounted] = useState(false);
 
     const [filterList, setFilterList] = useState<FilterList>({
@@ -197,9 +196,6 @@ function ContestList({
             }));
         }
     };
-    useEffect(() => {
-        setFilterInit({ contestInfo, contestList: status === 'all' ? contestList : currentList });
-    }, [contestInfo, status]);
 
     return (
         <>

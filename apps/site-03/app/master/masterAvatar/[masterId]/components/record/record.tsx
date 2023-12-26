@@ -105,7 +105,7 @@ function Record({ individualGuessInfo }: { individualGuessInfo: MemberIndividual
                     </div>
                     <div className={style.bot}>
                         <div className={style.winRate}>
-                            勝率{' '}
+                            胜率{' '}
                             {formatRate(
                                 individualGuessInfo.summary.lose,
                                 individualGuessInfo.summary.win
@@ -146,7 +146,7 @@ function Record({ individualGuessInfo }: { individualGuessInfo: MemberIndividual
                     </div>
                     <div className={style.bot}>
                         <div className={style.winRate}>
-                            勝率{' '}
+                            胜率{' '}
                             {formatRate(
                                 individualGuessInfo.handicap.lose,
                                 individualGuessInfo.handicap.win
@@ -185,7 +185,7 @@ function Record({ individualGuessInfo }: { individualGuessInfo: MemberIndividual
                     </div>
                     <div className={style.bot}>
                         <div className={style.winRate}>
-                            勝率{' '}
+                            胜率{' '}
                             {formatRate(
                                 individualGuessInfo.handicap.lose,
                                 individualGuessInfo.handicap.win
