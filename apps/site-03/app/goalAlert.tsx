@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { useEffect, useState, useRef } from 'react';
 import type { ContestInfo } from 'data-center';
 import { handleGameTime, soundDefault, soundSource, mqttService } from 'lib';
+import { motion, AnimatePresence } from 'framer-motion';
 import style from './goalAlert.module.scss';
 import Football from './img/football.png';
 import { useContestListGlobalStore } from './contestListGlobalStore';
@@ -35,11 +36,19 @@ function GoalAlert() {
                 if (data.homeScore) void soundSourceMap[soundData.homeSound].play();
                 if (data.awayScore) void soundSourceMap[soundData.awaySound].play();
             }
+            setAlertList(prev => {
+                const updatedList = [...prev, { ...contestInfo, ...currentContestInfo, ...data }];
 
-            setAlertList(prev => [...prev, { ...contestInfo, ...currentContestInfo, ...data }]);
-            setTimeout(() => {
-                setAlertList(prev => prev.slice(1));
-            }, 10000);
+                if (updatedList.length <= 7) {
+                    setTimeout(() => {
+                        setAlertList(prevInner => prevInner.slice(1));
+                    }, 2000);
+                } else if (updatedList.length > 7) {
+                    updatedList.shift();
+                }
+
+                return updatedList;
+            });
         };
         mqttService.getMessage(handleAlertInfo);
     }, []);
@@ -57,76 +66,96 @@ function GoalAlert() {
         <div className={style.goalAlert}>
             {alertList.length > 0 && (
                 <div className={style.alertList} onClick={clearAlert}>
-                    {alertList.map((item, idx) => {
-                        return (
-                            <div
-                                className={style.box}
-                                key={item.matchId}
-                                style={{ transform: `translateY(-${idx * 80}px)` }}
-                            >
-                                <div className={style.left}>
-                                    <Image
-                                        alt="football"
-                                        className={style.footballImg}
-                                        src={Football}
-                                    />
-                                    <div className={style.info}>
-                                        <p>{getStartTime(item.startTime, item.state)}&apos;</p>
-                                        <p>進球</p>
-                                    </div>
-                                    <div className={style.line} />
-                                </div>
-                                <div className={style.right}>
-                                    <div className={style.team}>
+                    <AnimatePresence>
+                        {alertList.map(item => {
+                            return (
+                                <motion.div
+                                    animate={{ y: 0, opacity: 1 }}
+                                    className={style.box}
+                                    exit={{
+                                        y: 50,
+                                        opacity: 0,
+                                        zIndex: -1
+                                    }}
+                                    initial={{ y: 50, opacity: 0 }}
+                                    key={item.matchId}
+                                    layout
+                                    style={{ position: 'relative', zIndex: 1 }}
+                                    transition={{ ease: 'easeOut', duration: 0.3 }}
+                                >
+                                    <div className={style.left}>
+                                        <Image
+                                            alt="football"
+                                            className={style.footballImg}
+                                            height={26}
+                                            src={Football}
+                                            width={26}
+                                        />
                                         <div className={style.info}>
-                                            <p className={style.name}>{item.awayChs}</p>
-                                            <p className={style.score}>{item.awayScore}</p>
-                                        </div>
-                                        <div className={style.info}>
-                                            <p className={style.name}>{item.homeChs}</p>
-                                            <p className={style.score}>{item.homeScore}</p>
+                                            <p>進球</p>
+                                            <p>{getStartTime(item.startTime, item.state)}</p>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                        );
-                    })}
+                                    <div className={style.right}>
+                                        <div className={style.team}>
+                                            <div className={style.info}>
+                                                <div className={style.card}>
+                                                    {item.homeRed ? (
+                                                        <p className={style.redCard}>
+                                                            {item.homeRed}
+                                                        </p>
+                                                    ) : null}
+                                                    {item.homeYellow ? (
+                                                        <p className={style.yellowCard}>
+                                                            {item.homeYellow}
+                                                        </p>
+                                                    ) : null}
+                                                </div>
+                                                <p className={style.name}>{item.homeChs}</p>
+                                                <div className={style.scoreBar}>
+                                                    <Image
+                                                        alt="homeLogo"
+                                                        className={style.footballImg}
+                                                        height={20}
+                                                        src={item.homeLogo}
+                                                        width={20}
+                                                    />
+                                                    <p className={style.score}>{item.homeScore}</p>
+                                                </div>
+                                            </div>
+                                            <div className={style.info}>
+                                                <div className={style.card}>
+                                                    {item.awayRed ? (
+                                                        <p className={style.redCard}>
+                                                            {item.awayRed}
+                                                        </p>
+                                                    ) : null}
+                                                    {item.awayYellow ? (
+                                                        <p className={style.yellowCard}>
+                                                            {item.awayYellow}
+                                                        </p>
+                                                    ) : null}
+                                                </div>
+                                                <p className={style.name}>{item.awayChs}</p>
+                                                <div className={style.scoreBar}>
+                                                    <Image
+                                                        alt="homeLogo"
+                                                        className={style.footballImg}
+                                                        height={20}
+                                                        src={item.awayLogo}
+                                                        width={20}
+                                                    />
+                                                    <p className={style.score}>{item.awayScore}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </motion.div>
+                            );
+                        })}
+                    </AnimatePresence>
                 </div>
             )}
-            {/* <div className={style.alertList} onClick={clearAlert}>
-                <div
-                    className={style.box}
-                    key="test"
-                    style={{ transform: `translateY(-${1 * 80}px)` }}
-                >
-                    <div className={style.left}>
-                        <Image
-                            alt="football"
-                            className={style.footballImg}
-                            height={20}
-                            src={Football}
-                            width={20}
-                        />
-                        <div className={style.info}>
-                            <p>{getStartTime(1700202000, 1)}&apos;</p>
-                            <p>進球</p>
-                        </div>
-                        <div className={style.line} />
-                    </div>
-                    <div className={style.right}>
-                        <div className={style.team}>
-                            <div className={style.info}>
-                                <p className={style.name}>我是主隊</p>
-                                <p className={style.score}>{1}</p>
-                            </div>
-                            <div className={style.info}>
-                                <p className={style.name}>我是客隊</p>
-                                <p className={style.score}>{2}</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div> */}
         </div>
     );
 }
