@@ -87,8 +87,10 @@ function Info({ params }: { params: { memberId: string } }) {
     };
 
     const fetchData = async () => {
+        const isCookieExist = Cookies.get('access');
         const res = await getMemberProfileWithMemberId({
-            memberId: Number(params.memberId)
+            memberId: Number(params.memberId),
+            loginMemberId: isCookieExist ? userInfo.uid : 0
         });
 
         if (!res.success) {
