@@ -20,6 +20,30 @@ import Draw from './img/draw.png';
 import style from './articleContent.module.scss';
 import RecommendationList from './recommendationList';
 
+<<<<<<< HEAD
+=======
+function Content({ article }: { article: GetPostDetailResponse }) {
+    const userInfo = useUserStore.use.userInfo();
+    return (
+        <>
+            <div className={style.payContent}>
+                <div className={style.price}>
+                    <span className={style.text}>支付</span>
+                    <span className={style.number}>
+                        <Image alt="" className={style.image} src={Star} width={14} />
+                        {article.price}
+                    </span>
+                </div>
+                <span className={style.text}>解锁本场</span>
+            </div>
+            <div className={style.balance}>
+                我的餘額: {userInfo.balance ? userInfo.balance : 0}金幣
+            </div>
+        </>
+    );
+}
+
+>>>>>>> 7471bcb1 (feat: edit error text and header back router)
 interface ArticleContentProps {
     article: GetPostDetailResponse;
     params: { articleId: string };
@@ -158,7 +182,7 @@ function ArticleContent({ params, article, fetchPostDetail }: ArticleContentProp
                             </div>
                         </div>
 
-                        {article.predictedPlay === 'LOCK' && article.price !== 0 && (
+                        {article.predictedPlay === 'LOCK' && article.price !== 0 ? (
                             <div className={style.paidButton}>
                                 <div className={style.content}>{article.shortAnalysisContent}</div>
                                 <div className={style.buttonArea}>
@@ -174,9 +198,7 @@ function ArticleContent({ params, article, fetchPostDetail }: ArticleContentProp
                                     </span>
                                 </div>
                             </div>
-                        )}
-
-                        {article.predictedPlay !== 'LOCK' && article.price === 0 ? (
+                        ) : (
                             <div className={style.paidArea}>
                                 <article className={style.content}>
                                     {article.analysisContent}
@@ -268,7 +290,7 @@ function ArticleContent({ params, article, fetchPostDetail }: ArticleContentProp
                                     </div>
                                 </div>
                             </div>
-                        ) : null}
+                        )}
                     </div>
                 </div>
 
