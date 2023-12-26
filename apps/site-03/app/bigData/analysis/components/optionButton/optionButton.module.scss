@@ -1,0 +1,20 @@
+.option {
+    position: relative;
+    flex: 1;
+    color: #d9d9d9;
+    padding: 14px 20px;
+    border: 1px solid #d9d9d9;
+    border-radius: 8px;
+    background: transparent;
+
+    .select {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+    }
+
+    &.active {
+        color: #4489ff;
+        border-color: #4489ff;
+    }
+}
