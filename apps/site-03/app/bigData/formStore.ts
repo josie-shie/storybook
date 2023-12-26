@@ -56,6 +56,10 @@ interface HandicapAnalysisFormState extends InitState {
     handicapNumberList: Option[];
     overUnderNumberList: Option[];
     dateList: Option[];
+    openTips: boolean;
+    setOpenTips: (openTips: boolean) => void;
+    isTipsOpened: boolean;
+    setIsTipsOpened: (isTipsOpened: boolean) => void;
 }
 
 let useHandicapAnalysisFormStore: StoreWithSelectors<HandicapAnalysisFormState>;
@@ -285,7 +289,25 @@ const initialState = (
             label: '選擇時間區間',
             value: 'setRange'
         }
-    ]
+    ],
+    openTips: false,
+    setOpenTips: (openTips: boolean) => {
+        set(state => {
+            return {
+                ...state,
+                openTips
+            };
+        });
+    },
+    isTipsOpened: false,
+    setIsTipsOpened: (isTipsOpened: boolean) => {
+        set(state => {
+            return {
+                ...state,
+                isTipsOpened
+            };
+        });
+    }
 });
 
 const creatHandicapAnalysisStore = (init: InitState) =>
