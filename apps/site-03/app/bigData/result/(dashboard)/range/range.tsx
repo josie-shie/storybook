@@ -46,7 +46,7 @@ function Range() {
     const setMatchList = useAnalyticsResultStore.use.setContestList();
     const setIsNotificationVisible = useNotificationStore.use.setIsVisible();
     const analysisRecord = useAnalyticsResultStore.use.analysisResultData();
-    const [headers, setHeader] = useState<HeaderType[]>([]);
+    const [headers, setHeaders] = useState<HeaderType[]>([]);
 
     const fetchMatchList = async (matchIdList: number[]) => {
         const res = await getFootballStatsMatches({ matchIds: matchIdList });
@@ -81,29 +81,29 @@ function Range() {
     }, [contestInfo, setFilterInit]);
 
     useEffect(() => {
-        setHeader([
+        setHeaders([
             {
                 class: style.first,
                 label: '0-1',
-                value: analysisRecord.goalsInterval0To1,
+                value: analysisRecord?.goalsInterval0To1 || [],
                 color: '#6357F0'
             },
             {
                 class: style.second,
                 label: '2-3',
-                value: analysisRecord.goalsInterval2To3,
+                value: analysisRecord?.goalsInterval2To3 || [],
                 color: '#33AD1F'
             },
             {
                 class: style.three,
                 label: '4-6',
-                value: analysisRecord.goalsInterval4To6,
+                value: analysisRecord?.goalsInterval4To6 || [],
                 color: '#4489FF'
             },
             {
                 class: style.four,
                 label: '7以上',
-                value: analysisRecord.goalsInterval7Plus,
+                value: analysisRecord?.goalsInterval7Plus || [],
                 color: '#FBB03B'
             }
         ]);

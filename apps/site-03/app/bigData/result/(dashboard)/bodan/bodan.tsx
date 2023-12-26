@@ -87,7 +87,7 @@ function Bodan() {
     }, [contestInfo, setFilterInit]);
 
     useEffect(() => {
-        analysisRecord.correctScores.forEach(item => {
+        analysisRecord?.correctScores.forEach(item => {
             scoreListMapping[item.score] = item.matches;
         });
     }, [analysisRecord]);

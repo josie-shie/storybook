@@ -99,15 +99,15 @@ function Minutes() {
     }, [contestInfo, setFilterInit]);
 
     useEffect(() => {
-        setList(analysisRecord.goalsIn15Mins);
-    }, [analysisRecord.goalsIn15Mins]);
+        analysisRecord && setList(analysisRecord.goalsIn15Mins);
+    }, [analysisRecord]);
 
     return (
         <>
             <div className={style.minutes}>
                 <FifteenMinutesChart
                     headers={headers}
-                    minsGoalList={analysisRecord.goalsIn15Mins}
+                    minsGoalList={analysisRecord?.goalsIn15Mins || []}
                 />
                 <div className={style.dot}>
                     <span className={style.big}>大</span>

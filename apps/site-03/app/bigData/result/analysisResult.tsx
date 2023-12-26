@@ -3,9 +3,14 @@ import { Tabs, Tab } from 'ui';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
 import { timestampToString } from 'lib';
+import { getFootballStatsResult } from 'data-center';
+import Image from 'next/image';
+import Link from 'next/link';
 import HeaderTitleFilter from '@/components/header/headerTitleFilter';
 import Loading from '@/components/loading/loading';
+import { useUserStore } from '@/app/userStore';
 import { useHandicapAnalysisFormStore } from '../formStore';
+import ErrorDialog from '../analysis/components/dialog/dialog';
 import style from './dashboard.module.scss';
 import Handicap from './(dashboard)/handicap/handicap';
 import { useAnalyticsResultStore } from './analysisResultStore';
@@ -14,8 +19,110 @@ import Minutes from './(dashboard)/minutes/minutes';
 import Bodan from './(dashboard)/bodan/bodan';
 import Range from './(dashboard)/range/range';
 import Tutorial from './tutorial';
+import systemErrorImage from './img/systemError.png';
+import emptyDataImage from './img/emptyData.png';
 
 type HandicapSideType = 'home' | 'away';
+
+function InsufficientBalance() {
+    const router = useRouter();
+    const setOpenNormalDialog = useAnalyticsResultStore.use.setOpenNormalDialog();
+
+    return (
+        <>
+            <div className={style.dialogMessage}>
+                <p>余额不足，请充值</p>
+            </div>
+            <div className={style.footer}>
+                <div
+                    className={style.close}
+                    onClick={() => {
+                        setOpenNormalDialog(false);
+                        router.push('/bigData/analysis?status=analysis');
+                    }}
+                >
+                    取消
+                </div>
+
+                <div className={style.confirm}>
+                    <Link href="/userInfo/subscribe">去充值</Link>
+                </div>
+            </div>
+        </>
+    );
+}
+
+function EmptyResponseError() {
+    const router = useRouter();
+    const setOpenNormalDialog = useAnalyticsResultStore.use.setOpenNormalDialog();
+
+    return (
+        <>
+            <div className={style.dialogMessage}>
+                <Image alt="" height={100} src={emptyDataImage.src} width={100} />
+                <p>此條件查无资料！请重新修改搜寻条件</p>
+            </div>
+            <div className={style.footer}>
+                <div
+                    className={style.confirm}
+                    onClick={() => {
+                        setOpenNormalDialog(false);
+                        router.push('/bigData/analysis?status=analysis');
+                    }}
+                >
+                    重新查询
+                </div>
+            </div>
+        </>
+    );
+}
+
+function SystemError() {
+    const router = useRouter();
+    const [message, setMessage] = useState('');
+    const setOpenNormalDialog = useAnalyticsResultStore.use.setOpenNormalDialog();
+    const dialogErrorType = useAnalyticsResultStore.use.dialogContentType();
+
+    useEffect(() => {
+        switch (dialogErrorType) {
+            case 'system':
+                setMessage('哎呀，系统暂时出错！ 请稍候重试');
+                break;
+            case 'parameter':
+                setMessage('参数错误，请重新选择');
+                break;
+        }
+    }, [dialogErrorType]);
+
+    return (
+        <>
+            <div className={style.dialogMessage}>
+                <Image alt="" height={100} src={systemErrorImage.src} width={100} />
+                <p>{message}</p>
+            </div>
+            <div className={style.footer}>
+                <div
+                    className={style.close}
+                    onClick={() => {
+                        setOpenNormalDialog(false);
+                        router.push('/bigData/analysis?status=analysis');
+                    }}
+                >
+                    返回
+                </div>
+                <div
+                    className={style.confirm}
+                    onClick={() => {
+                        setOpenNormalDialog(false);
+                        router.push('/bigData/analysis?status=analysis');
+                    }}
+                >
+                    回報錯誤
+                </div>
+            </div>
+        </>
+    );
+}
 
 function ResultContent() {
     const router = useRouter();
@@ -35,6 +142,24 @@ function ResultContent() {
     const teamHandicapOdds = useHandicapAnalysisFormStore.use.teamHandicapOdds();
     const handicapOddsSelected = useHandicapAnalysisFormStore.use.handicapOddsSelected();
     const loading = useHandicapAnalysisFormStore.use.loading();
+    const setLoading = useHandicapAnalysisFormStore.use.setLoading();
+    const userInfo = useUserStore.use.userInfo();
+    const setAnalysisResultData = useAnalyticsResultStore.use.setAnalysisResultData();
+    const setHandicapEchart = useAnalyticsResultStore.use.setHandicapEchart();
+
+    const setDialogContent = useAnalyticsResultStore.use.setDialogContent();
+    const dialogErrorType = useAnalyticsResultStore.use.dialogContentType();
+    const dialogContent = useAnalyticsResultStore.use.dialogContent();
+    const setOpenNormalDialog = useAnalyticsResultStore.use.setOpenNormalDialog();
+    const openNoramlDialog = useAnalyticsResultStore.use.openNoramlDialog();
+    const analysisRecord = useAnalyticsResultStore.use.analysisResultData();
+    // const setDialogContentType = useAnalyticsResultStore.use.setDialogContentType();
+    // 後續API好了會需要傳的參數
+    // const endDate = useHandicapAnalysisFormStore.use.endDate();
+    // const startDate = useHandicapAnalysisFormStore.use.startDate();
+    // const teamSelected = useHandicapAnalysisFormStore.use.teamSelected();
+    // const teamHandicapOdds = useHandicapAnalysisFormStore.use.teamHandicapOdds();
+    // const handicapOddsSelected = useHandicapAnalysisFormStore.use.handicapOddsSelected();
 
     const tabStyle = {
         gap: 4,
@@ -86,6 +211,79 @@ function ResultContent() {
             router.push(`${pathname}?type=handicap`);
         }
     }, [pageType, pathname, router, tabList]);
+
+    const fetchData = async () => {
+        setLoading(true);
+        const res = await getFootballStatsResult({
+            ticketId: '0fbdd0b',
+            memberId: userInfo.uid
+            // // API完成後需要傳的參數
+            // handicapSide: teamSelected.length >= 2 ? 'all' : teamSelected[0],
+            // handicapValues: teamHandicapOdds,
+            // overUnderValues: handicapOddsSelected,
+            // startTime: startDate,
+            // endTime: endDate
+        });
+
+        if (!res.success) {
+            setOpenNormalDialog(true);
+            setLoading(false);
+            setAnalysisResultData(undefined);
+            return;
+        }
+
+        // API完成後的錯誤處理
+        // if (res.data.mission) {
+        //     let dialogType = 'system';
+        //     switch (res.data.mission) {
+        //         case '0':
+        //             dialogType = 'system'; // 系統錯誤
+        //             break;
+        //         case '1':
+        //             dialogType = 'parameter'; // 參數錯誤
+        //             break;
+        //         case '2':
+        //             dialogType = 'empty'; //沒有資料
+        //             break;
+        //         case '3':
+        //             dialogType = 'balance'; // 餘額不足
+        //             break;
+        //         default:
+        //             break;
+        //     }
+        //     setDialogContentType(dialogType);
+        //     setOpenNormalDialog(true);
+        //     setLoading(false);
+        //     setAnalysisResultData(undefined);
+        //     return;
+        // }
+
+        setAnalysisResultData(res.data);
+        setHandicapEchart(res.data);
+        setLoading(false);
+    };
+
+    useEffect(() => {
+        void fetchData();
+    }, []);
+
+    useEffect(() => {
+        switch (dialogErrorType) {
+            case 'system':
+            case 'parameter':
+                setDialogContent(<SystemError />);
+                break;
+            case 'empty':
+                setDialogContent(<EmptyResponseError />);
+                break;
+            case 'balance':
+                setDialogContent(<InsufficientBalance />);
+                break;
+            default:
+                setDialogContent(null);
+                break;
+        }
+    }, [dialogErrorType, setDialogContent]);
 
     return (
         <>
@@ -146,12 +344,19 @@ function ResultContent() {
                         </Tabs>
                     </div>
                 </div>
-                {!showedTutorial ? (
+                {!showedTutorial && analysisRecord ? (
                     <div className={style.tutorialBlock}>
                         <Tutorial setDefaultPageIndex={setDefaultPageIndex} />
                     </div>
                 ) : null}
             </div>
+            <ErrorDialog
+                content={<div className={style.dialogContent}>{dialogContent}</div>}
+                onClose={() => {
+                    setOpenNormalDialog(false);
+                }}
+                openDialog={openNoramlDialog}
+            />
 
             <ContestDrawerList
                 isOpen={showContestDrawer}
@@ -169,13 +374,6 @@ function ResultContent() {
 }
 
 function AnalysisResult() {
-    const analysisResultData = useAnalyticsResultStore.use.analysisResultData();
-    const setHandicapEchart = useAnalyticsResultStore.use.setHandicapEchart();
-
-    useEffect(() => {
-        setHandicapEchart(analysisResultData);
-    }, [analysisResultData, setHandicapEchart]);
-
     return <ResultContent />;
 }
 
