@@ -6,7 +6,7 @@ export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
 export const metadata: Metadata = {
-    title: '未來體育 | FutureSport'
+    title: '未来体育 | FutureSport'
 };
 
 async function Page() {
