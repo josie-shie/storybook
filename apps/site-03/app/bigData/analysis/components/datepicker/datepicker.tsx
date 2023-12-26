@@ -44,7 +44,7 @@ function Datepicker({
         if (startDate && endDate) {
             const daysDiff = dayjs(endDate).diff(dayjs(startDate), 'day');
 
-            if (daysDiff < 7) {
+            if (daysDiff < 6) {
                 setNotificationVisible('选择的日期区间必须至少为7天', 'error');
                 return;
             }
