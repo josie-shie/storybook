@@ -40,21 +40,7 @@
                 .textLabel {
                     font-size: 12px;
                 }
-
-                &.actived {
-                    animation: fade-effect 1s;
-                }
             }
         }
-    }
-}
-
-@keyframes fade-effect {
-    0% {
-        background-color: #d9d9d9;
-    }
-
-    100% {
-        background-color: #ede5e5;
     }
 }

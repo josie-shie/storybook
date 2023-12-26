@@ -44,7 +44,7 @@ function AnalysisLayout({ children }: { children: ReactNode }) {
             to: '/bigData/analysis?status=analysis'
         },
         {
-            label: '盘路提示',
+            label: '今日长龙赛事',
             to: '/bigData/analysis?status=tips'
         }
     ];

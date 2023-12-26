@@ -11,35 +11,7 @@
     border-top-right-radius: 12px;
     background-color: #fff;
     margin-top: -12px;
-
-    :global(.ui-tab) {
-        :global(.ui-tab-header) {
-            padding: 12px;
-
-            :global(.ui-tabs-header) {
-                padding: 2px;
-                gap: 2px;
-                background: #f3f3f3;
-                border-radius: 24px;
-
-                :global(.ui-button) {
-                    padding: 4px 0;
-                    flex: 1;
-                    font-size: 14px;
-                    color: #4489ff;
-
-                    &::before {
-                        background: #4489ff;
-                        border-color: #4489ff;
-                    }
-                }
-
-                :global(.ui-active) {
-                    color: #fff !important;
-                }
-            }
-        }
-    }
+    min-height: 180px;
 
     :global(.swiper-slide) {
         padding: 0 !important;
@@ -47,7 +19,7 @@
 }
 
 .loading {
-    margin-top: 8px;
+    margin-top: 48px;
 }
 
 .modal {

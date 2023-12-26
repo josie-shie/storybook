@@ -18,11 +18,11 @@ function Rule() {
         <>
             <ButtonBase>
                 <div className={style.rule}>
-                    <span onClick={handleClickOpen}>規則</span>
+                    <span onClick={handleClickOpen}>规则</span>
                 </div>
             </ButtonBase>
             <Dialog onClose={handleClose} open={open}>
-                <DialogTitle>規則</DialogTitle>
+                <DialogTitle>规则说明</DialogTitle>
                 <div className={style.ruleContent}>
                     <p>
                         周榜：统计当天起前7日的方案，需发布15场以上（不含15场），按胜率排行。

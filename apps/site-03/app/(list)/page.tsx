@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { getContestList } from 'data-center';
-import Football from './football';
+import List from './list';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -19,7 +19,7 @@ async function Page() {
 
     return (
         <div className="footballContest">
-            <Football todayContest={todayContest.data} />
+            <List todayContest={todayContest.data} />
         </div>
     );
 }

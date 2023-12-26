@@ -27,25 +27,7 @@ function Rank() {
         month: 1,
         season: 2
     };
-
-    creatRankStore({
-        member: {
-            memberId: 0,
-            memberName: '-',
-            memberLevel: 0,
-            memberAvatar: '',
-            ranking: 0,
-            today: false,
-            totalMatches: 0,
-            totalWin: 0,
-            totalLose: 0,
-            hitRate: 0,
-            currentMaxWinStreak: 0,
-            historyMaxWinStreak: 0
-        },
-        onlyShowToday: true,
-        rankList: []
-    });
+    creatRankStore({ rankList: [] });
     const setMember = useRankStore.use.setMember();
     const setRankList = useRankStore.use.setRankList();
 

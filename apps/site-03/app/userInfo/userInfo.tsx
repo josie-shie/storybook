@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { getMemberInfo, getMemberSubscriptionStatus } from 'data-center';
+import { getMemberInfo } from 'data-center';
 import { ButtonBase } from '@mui/material';
 import Skeleton from '@mui/material/Skeleton';
 import Image from 'next/image';
@@ -34,7 +34,6 @@ function UserInfo() {
     const userInfoIsLoading = useUserStore.use.userInfoIsLoading();
     const openChangePasswordDrawer = useAuthStore.use.setIsDrawerOpen();
     const setUserInfo = useUserStore.use.setUserInfo();
-    const setMemberSubscribeStatus = useUserStore.use.setMemberSubscribeStatus();
     const setAuthQuery = useUserStore.use.setAuthQuery();
     const setIsLogin = useUserStore.use.setIsLogin();
     const setIsVisible = useNotificationStore.use.setIsVisible();
@@ -57,13 +56,6 @@ function UserInfo() {
         const res = await getMemberInfo();
         if (res.success) {
             setUserInfo(res.data);
-
-            const subscriptionRespons = await getMemberSubscriptionStatus({
-                memberId: res.data.uid
-            });
-            if (subscriptionRespons.success) {
-                setMemberSubscribeStatus(subscriptionRespons.data);
-            }
             setLoading(false);
         }
     };

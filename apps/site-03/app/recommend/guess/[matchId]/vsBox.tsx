@@ -20,6 +20,7 @@ interface BettingProps {
 }
 
 const calculatePercentage = (a: number, b: number) => {
+    if (a === 0 && b === 0) return 50;
     const percentage = Math.round((a / (a + b)) * 100);
     return percentage;
 };
@@ -231,7 +232,7 @@ function VsBox() {
                     big: guessData.over.peopleNum,
                     small: guessData.under.peopleNum
                 });
-                setGuessesLeft(guessData.remainingGuessTimes); // 搬到 userStore
+                setGuessesLeft(guessData.remainingGuessTimes);
             }
         }
         void fetchMatchDetail();

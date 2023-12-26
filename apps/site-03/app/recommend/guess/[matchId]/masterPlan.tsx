@@ -21,7 +21,6 @@ function MasterPlan() {
     const [selectedGameId, setSelectedGameId] = useState<number | null>(null);
     const [openPaid, setOpenPaid] = useState(false);
     const [amount, setAmount] = useState(0);
-    const [plan, setPlan] = useState(false);
 
     const isLogin = useUserStore.use.isLogin();
     const userInfo = useUserStore.use.userInfo();
@@ -37,22 +36,12 @@ function MasterPlan() {
     const setIsDrawerOpen = useAuthStore.use.setIsDrawerOpen();
     const setAuthQuery = useUserStore.use.setAuthQuery();
 
-    const handleUnlockTrendDialogOpen = (newAmount: number, getPlan: string) => {
-        if (getPlan === 'single') {
-            setPlan(true);
-        } else if (getPlan === 'monthly') {
-            setPlan(false);
-        }
+    const handleUnlockTrendDialogOpen = (newAmount: number) => {
         setAmount(newAmount);
         setOpenPaid(true);
     };
 
-    const handleLocalClickOpen = (gameId: number, newAmount: number, getPlan: string) => {
-        if (getPlan === 'single') {
-            setPlan(true);
-        } else if (getPlan === 'monthly') {
-            setPlan(false);
-        }
+    const handleLocalClickOpen = (gameId: number, newAmount: number) => {
         setSelectedGameId(gameId);
         setAmount(newAmount);
         setOpenPaid(true);
@@ -155,10 +144,7 @@ function MasterPlan() {
                                             setIsDrawerOpen(true);
                                             return;
                                         }
-                                        handleUnlockTrendDialogOpen(
-                                            highWinRateTrend.unlockPrice,
-                                            'single'
-                                        );
+                                        handleUnlockTrendDialogOpen(highWinRateTrend.unlockPrice);
                                     }}
                                     type="button"
                                 >
@@ -170,7 +156,6 @@ function MasterPlan() {
                                     />{' '}
                                     {highWinRateTrend.unlockPrice} 金币解锁本场
                                 </button>
-                                {/* 訂閱方案流程待改 */}
                                 <button
                                     onClick={() => {
                                         if (!isLogin) {
@@ -178,7 +163,7 @@ function MasterPlan() {
                                             setIsDrawerOpen(true);
                                             return;
                                         }
-                                        handleUnlockTrendDialogOpen(200, 'monthly');
+                                        goRechargePage();
                                     }}
                                     type="button"
                                 >
@@ -213,7 +198,7 @@ function MasterPlan() {
                                         setIsDrawerOpen(true);
                                         return;
                                     }
-                                    handleLocalClickOpen(el.guessId, masterPlanPrice, 'single');
+                                    handleLocalClickOpen(el.guessId, masterPlanPrice);
                                 }}
                                 plan={el}
                             />
@@ -227,7 +212,6 @@ function MasterPlan() {
                 onClose={handleClickClose}
                 onConfirm={handleConfirm}
                 openPaid={openPaid}
-                plan={plan}
             />
         </div>
     );

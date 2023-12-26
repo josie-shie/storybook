@@ -4,7 +4,7 @@ import InfoTabs from './infoTabs';
 import style from './masterAvatar.module.scss';
 
 export const metadata: Metadata = {
-    title: '专家预测'
+    title: '专家预测 | FutureSport'
 };
 
 function MasterAvatar({

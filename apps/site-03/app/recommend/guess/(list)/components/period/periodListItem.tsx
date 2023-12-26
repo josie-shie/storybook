@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import Avatar from '@/components/avatar/avatar';
 import BaseNoData from '@/components/baseNoData/noData';
 import { useRankStore } from '../../rank/rankStore';
@@ -23,7 +24,11 @@ function PeriodListItem() {
                 if (onlyShowToday && !item.today) return null;
 
                 return (
-                    <div className={style.periodListItem} key={item.memberId}>
+                    <Link
+                        className={style.periodListItem}
+                        href={`/master/masterAvatar/${item.memberId}?status=analysis`}
+                        key={item.memberId}
+                    >
                         <div className={`${style.rankingFlag} ${rankingClass(item.ranking)}`}>
                             {item.ranking > 3 ? (
                                 <Image alt="" height={24} src={Rank} width={24} />
@@ -58,7 +63,7 @@ function PeriodListItem() {
                                 <span className={style.percent}>%</span>
                             </span>
                         </div>
-                    </div>
+                    </Link>
                 );
             })}
         </>

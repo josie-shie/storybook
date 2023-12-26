@@ -25,9 +25,11 @@ export const GET_ODDS_HINT_LIST_QUERY = `
                 leagueId
                 leagueChsShort: leagueName 
                 homeId
-                homeChs: homeName 
+                homeChs: homeName
+                homeLogo
                 awayId
-                awayChs: awayName 
+                awayChs: awayName
+                awayLogo
                 longOddsTeamId
                 longOddsType
                 longOddsTimes

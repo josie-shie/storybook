@@ -26,7 +26,7 @@ function UserRank() {
         season: seasonBackground
     };
     const periodMap = {
-        week: '週',
+        week: '周',
         month: '月',
         season: '季'
     };
