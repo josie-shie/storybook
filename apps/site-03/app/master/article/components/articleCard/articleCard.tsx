@@ -21,9 +21,6 @@ function ArticleCard({ article }: { article: RecommendPost }) {
     const [isOpenPaid, setIsOpenPaid] = useState(false);
     const [isOpenRecharge, setIsOpenRecharge] = useState(false);
     const router = useRouter();
-    const goMasterPredict = (id: number) => {
-        router.push(`/master/masterAvatar/${id}?status=analysis`);
-    };
     const userInfo = useUserStore.use.userInfo();
     const setUserInfo = useUserStore.use.setUserInfo();
 
@@ -70,14 +67,12 @@ function ArticleCard({ article }: { article: RecommendPost }) {
         <>
             <li className={style.articleCard}>
                 <div className={style.user}>
-                    <div
+                    <Link
                         className={style.avatarContainer}
-                        onClick={() => {
-                            goMasterPredict(article.mentorId);
-                        }}
+                        href={`/master/masterAvatar/${article.mentorId}?status=analysis`}
                     >
                         <Avatar borderColor="#4489FF" src={article.avatarPath} />
-                    </div>
+                    </Link>
                     <div className={style.userInfo}>
                         <div className={style.userName}>{article.mentorName}</div>
                         <div className={style.tagsContainer}>
