@@ -29,6 +29,7 @@ function ArticleContent({ params, article, fetchPostDetail }: ArticleContentProp
     const [openPaid, setOpenPaid] = useState(false);
     const [openDialog, setOpenDialog] = useState(false);
     const [recommendationList, setRecommendationList] = useState<RecommendPost[]>([]);
+    const [isNoData, setIsNoData] = useState<boolean | null>(null);
 
     const router = useRouter();
 
@@ -109,6 +110,7 @@ function ArticleContent({ params, article, fetchPostDetail }: ArticleContentProp
             return new Error();
         }
         setRecommendationList(res.data.posts);
+        setIsNoData(res.data.posts === 0);
     };
 
     useEffect(() => {
@@ -274,7 +276,10 @@ function ArticleContent({ params, article, fetchPostDetail }: ArticleContentProp
 
                 <div className={style.otherList}>
                     <div className={style.title}>Ta还推荐了... ({recommendationList.length})</div>
-                    <RecommendationList recommendationList={recommendationList} />
+                    <RecommendationList
+                        isNoData={isNoData}
+                        recommendationList={recommendationList}
+                    />
                 </div>
             </div>
             <NormalDialog

@@ -18,9 +18,11 @@ import Fire from '@/app/img/fire.png';
 import { useUserStore } from '@/app/userStore';
 import NoData from '@/components/baseNoData/noData';
 import style from './memberItem.module.scss';
+import SkeletonLayout from './components/skeleton';
 
 function MasterItem({ params }: { params: { memberId: string } }) {
     const [masterItem, setMasterItem] = useState<GetFollowersResponse>([]);
+    const [isNoData, setIsNoData] = useState<boolean | null>(null);
 
     const router = useRouter();
 
@@ -35,6 +37,7 @@ function MasterItem({ params }: { params: { memberId: string } }) {
             }
 
             setMasterItem(res.data);
+            setIsNoData(res.data === 0);
         } catch (error) {
             return new Error();
         }
@@ -83,7 +86,11 @@ function MasterItem({ params }: { params: { memberId: string } }) {
 
     return (
         <>
-            {masterItem.length > 0 ? (
+            {masterItem.length === 0 && isNoData === null && <SkeletonLayout />}
+
+            {masterItem.length === 0 && isNoData ? (
+                <NoData />
+            ) : (
                 <>
                     {masterItem.map(item => {
                         return (
@@ -163,8 +170,6 @@ function MasterItem({ params }: { params: { memberId: string } }) {
                         );
                     })}
                 </>
-            ) : (
-                <NoData />
             )}
         </>
     );
