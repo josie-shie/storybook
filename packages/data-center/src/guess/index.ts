@@ -567,7 +567,7 @@ export const getMentorIndividualGuessMatches = async ({
         );
 
         throwErrorMessage(errors);
-        GetMemberIndividualGuessMatchesResultSchema.parse(data);
+        GetMentorIndividualGuessMatchesResultSchema.parse(data);
 
         return {
             success: true,
