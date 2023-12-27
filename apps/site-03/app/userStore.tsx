@@ -36,7 +36,7 @@ const initialState = (set: (updater: (state: UserState) => Partial<UserState>) =
     tags: {} as TagType,
     memberSubscribeStatus: {} as GetMemberSubscriptionStatusResponse,
     userInfoIsLoading: false,
-    isVipUseAnalysis: false,
+    isVipUseAnalysis: true,
     isLogin: false,
     token: '',
     setIsLogin: (isLogin: boolean) => {

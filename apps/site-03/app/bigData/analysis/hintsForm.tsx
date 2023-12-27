@@ -160,7 +160,7 @@ function HandicapAnalysisForm() {
             <div className={style.step}>
                 <StepIndicator stepNumber="2" text="连续方式" />
                 <div className={style.options}>
-                    {hintsSelectPlay === 'HANDICAP' && (
+                    {hintsSelectPlay === 'HANDICAP' ? (
                         <>
                             <OptionButton
                                 active={hintsSelectType === 'OVER'}
@@ -179,8 +179,7 @@ function HandicapAnalysisForm() {
                                 }}
                             />
                         </>
-                    )}
-                    {hintsSelectPlay === 'OVERUNDER' && (
+                    ) : (
                         <>
                             <OptionButton
                                 active={hintsSelectType === 'WIN'}
@@ -238,7 +237,7 @@ function HandicapAnalysisForm() {
                     </div>
                 </div>
             </div>
-            <div className={style.tips}>
+            <div className={style.tip}>
                 数据中心会將符合您条件设定的24小時內即將開場賽事汇整列出
             </div>
             {/* <div className={style.error}>{hintsError}</div> */}

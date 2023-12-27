@@ -5,25 +5,70 @@ import type { OddsHintsType, OddsHintsProgress } from 'data-center';
 import { getBigdataHint } from 'data-center';
 import { useRouter } from 'next/navigation';
 import HeaderTitleFilter from '@/components/header/headerTitleFilter';
-import { useNotificationStore } from '@/app/notificationStore';
 import Loading from '@/components/loading/loading';
 import { useMatchFilterStore } from '../analysis/matchFilterStore';
 import { useHintsFormStore } from '../analysis/hintsFormStore';
 import { useLongDragonStore } from '../longDragonStore';
+import ErrorDialog from './components/dialog/dialog';
 import MatchFilterDrawer from './components/matchFilterDrawer/matchFilterDrawer';
 import LongButton from './components/longButton/longButton';
 import iconFilter from './img/filterIcon.png';
 import iconSort from './img/sort.png';
+import systemErrorImage from './img/systemError.png';
 import style from './longDragon.module.scss';
 import HandicapTips from './handicapTips';
 
 type LongFilter = '3rd' | '4rd' | '4rdUp' | 'hot';
+
+function SystemError() {
+    const router = useRouter();
+    const [message, setMessage] = useState('');
+    const setOpenNormalDialog = useLongDragonStore.use.setOpenNormalDialog();
+
+    useEffect(() => {
+        setMessage('哎呀，系统暂时出错！ 请稍候重试');
+    }, []);
+
+    return (
+        <>
+            <div className={style.dialogMessage}>
+                <Image alt="" height={100} src={systemErrorImage.src} width={100} />
+                <p>{message}</p>
+            </div>
+            <div className={style.footer}>
+                <div
+                    className={style.close}
+                    onClick={() => {
+                        setOpenNormalDialog(false);
+                        router.push('/bigData/analysis?status=tips');
+                    }}
+                >
+                    返回
+                </div>
+                <div
+                    className={style.confirm}
+                    onClick={() => {
+                        setOpenNormalDialog(false);
+                        router.push('/bigData/analysis?status=tips');
+                    }}
+                >
+                    回報錯誤
+                </div>
+            </div>
+        </>
+    );
+}
 
 function LongDragonResult() {
     const router = useRouter();
     const hintsSelectPlay = useLongDragonStore.use.hintsSelectPlay();
     const hintsSelectType = useLongDragonStore.use.hintsSelectType();
     const hintsSelectProgres = useLongDragonStore.use.hintsSelectProgres();
+    const setDialogContent = useLongDragonStore.use.setDialogContent();
+    const dialogContent = useLongDragonStore.use.dialogContent();
+    const setOpenNormalDialog = useLongDragonStore.use.setOpenNormalDialog();
+    const openNoramlDialog = useLongDragonStore.use.openNoramlDialog();
+
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
     const contestInfo = useMatchFilterStore.use.contestInfo();
@@ -35,8 +80,6 @@ function LongDragonResult() {
     const setHandicapTips = useHintsFormStore.use.setHandicapTips();
     const timeAscending = useHintsFormStore.use.timeAscending();
     const setTimeAscending = useHintsFormStore.use.setTimeAscending();
-
-    const setIsVisible = useNotificationStore.use.setIsVisible();
     const [isFilterOpen, setIsFilterOpen] = useState(false);
     const [isActive, setIsActive] = useState<LongFilter[]>([]);
 
@@ -49,23 +92,13 @@ function LongDragonResult() {
     };
 
     const getBigdataHintList = async () => {
-        if (!hintsSelectType && !hintsSelectType) {
-            setIsVisible('请重新获取今日长龙赛事！', 'error');
-            setTimeout(() => {
-                router.push('/bigData/analysis?status=tips');
-            }, 1000);
-            return;
-        }
         const res = await getBigdataHint({
             continuity: hintsSelectType as OddsHintsType,
             progress: hintsSelectProgres as OddsHintsProgress
         });
         if (!res.success) {
-            const errorMessage = res.error ? res.error : '获取失败，请联系客服！';
-            setIsVisible(errorMessage, 'error');
-            setTimeout(() => {
-                router.push('/bigData/analysis?status=tips');
-            }, 1000);
+            setOpenNormalDialog(true);
+            setDialogContent(<SystemError />);
             return;
         }
         setHandicapTips(res.data);
@@ -176,7 +209,13 @@ function LongDragonResult() {
                     </div>
                 </div>
             </div>
-
+            <ErrorDialog
+                content={<div className={style.dialogContent}>{dialogContent}</div>}
+                onClose={() => {
+                    setOpenNormalDialog(false);
+                }}
+                openDialog={openNoramlDialog}
+            />
             <MatchFilterDrawer isOpen={isFilterOpen} onClose={closeFilter} onOpen={openFilter} />
         </>
     );
