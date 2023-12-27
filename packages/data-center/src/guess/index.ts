@@ -443,7 +443,7 @@ const MemberIndividualGuessMatchSchema = z.object({
     overUnderOdds: z.number(),
     predictedPlay: PredictedPlaySchema,
     predictionResult: PredictionResultSchema,
-    isPaidToRead: z.number(),
+    isPaidToRead: z.boolean(),
     unlockPrice: z.number()
 });
 

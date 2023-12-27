@@ -2,6 +2,8 @@ import Image from 'next/image';
 import { getMentorIndividualGuessMatches, type MemberIndividualGuessMatch } from 'data-center';
 import { useEffect, useState } from 'react';
 import { timestampToString } from 'lib';
+import { InfiniteScroll } from 'ui';
+import CircularProgress from '@mui/material/CircularProgress';
 import UnlockButton from '@/components/unlockButton/unlockButton';
 import NoData from '@/components/baseNoData/noData';
 import IconWin from './img/win.png';
@@ -47,12 +49,14 @@ function BettingPlan({
 }) {
     const [guessMatchesList, setGuessMatchesList] = useState<MemberIndividualGuessMatch[]>([]);
     const [isNoData, setIsNoData] = useState<boolean | null>(null);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPage, setTotalPage] = useState(1);
 
     const fetchData = async () => {
         const res = await getMentorIndividualGuessMatches({
             memberId: Number(params.masterId),
-            currentPage: 1,
-            pageSize: 30,
+            currentPage,
+            pageSize: 10,
             guessType: planActiveTab
         });
 
@@ -60,14 +64,22 @@ function BettingPlan({
             return new Error();
         }
 
-        setGuessMatchesList(res.data.guessMatchList);
+        const updatedGuessMatchesList = [...guessMatchesList, ...res.data.guessMatchList];
+        setGuessMatchesList(updatedGuessMatchesList);
         setGuessLength(res.data.guessMatchList.length);
         setIsNoData(res.data.guessMatchList.length === 0);
+        setTotalPage(res.data.pagination.pageCount);
+    };
+
+    const loadMoreList = () => {
+        if (currentPage <= Math.round(guessMatchesList.length / 10) && currentPage < totalPage) {
+            setCurrentPage(prevData => prevData + 1);
+        }
     };
 
     useEffect(() => {
         void fetchData();
-    }, [planActiveTab]);
+    }, [planActiveTab, currentPage]);
 
     return (
         <>
@@ -111,6 +123,13 @@ function BettingPlan({
                             </div>
                         );
                     })}
+                    {currentPage < totalPage && (
+                        <InfiniteScroll onVisible={loadMoreList}>
+                            <div className={style.loadMore}>
+                                <CircularProgress size={24} />
+                            </div>
+                        </InfiniteScroll>
+                    )}
                 </>
             )}
         </>
