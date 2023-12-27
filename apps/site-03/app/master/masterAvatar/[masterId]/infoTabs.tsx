@@ -166,6 +166,7 @@ function InfoTabs({
                     </div>
                     <div>
                         <BettingPlan
+                            params={params}
                             planActiveTab={planActiveTab}
                             setGuessLength={setGuessLength}
                         />

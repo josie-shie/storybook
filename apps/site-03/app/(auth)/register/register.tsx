@@ -4,7 +4,7 @@ import * as yup from 'yup';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import type { RegisterRequest } from 'data-center';
-import { sendVerificationCode, register } from 'data-center';
+import { sendVerificationSms, register } from 'data-center';
 import { useSearchParams } from 'next/navigation';
 import {
     NicknameInput,
@@ -31,7 +31,8 @@ const schema = yup.object().shape({
     username: yup
         .string()
         .matches(/^[\u4e00-\u9fa5a-zA-Z0-9]{2,10}$/)
-        .required()
+        .required(),
+    verifyToken: yup.string().required()
 });
 
 function Register() {
@@ -49,6 +50,7 @@ function Register() {
         control,
         handleSubmit,
         watch,
+        setValue,
         formState: { errors }
     } = useForm({
         resolver: yupResolver(schema),
@@ -57,17 +59,18 @@ function Register() {
             password: '',
             verificationCode: '',
             countryCode: '+86',
-            username: ''
+            username: '',
+            verifyToken: ''
         }
     });
 
-    const { countryCode, mobileNumber, password, verificationCode, username } = watch();
+    const { countryCode, mobileNumber, password, verificationCode, username, verifyToken } =
+        watch();
 
     const getVerificationCode = async () => {
-        const res = await sendVerificationCode({
+        const res = await sendVerificationSms({
             countryCode,
             mobileNumber,
-            verificationType: 0,
             checkExistingAccount: true
         });
 
@@ -79,6 +82,7 @@ function Register() {
 
         setSendCodeSuccess(true);
         setCountDown();
+        setValue('verifyToken', res.data.verifyToken);
     };
 
     const setCountDown = () => {
@@ -122,7 +126,11 @@ function Register() {
 
     const isSendVerificationCodeDisable = !countryCode || !mobileNumber;
     const isRegisterDisable =
-        isSendVerificationCodeDisable || !verificationCode || !username || !password;
+        isSendVerificationCodeDisable ||
+        !verificationCode ||
+        !username ||
+        !password ||
+        !verifyToken;
 
     return (
         <form className={style.register} onSubmit={handleSubmit(onSubmit)}>
@@ -181,7 +189,9 @@ function Register() {
                     )}
                 />
             </FormControl>
-
+            <FormControl>
+                <input name="verifyToken" type="hidden" value={verifyToken} />
+            </FormControl>
             <Aggrement />
             <FormControl fullWidth>
                 <SubmitButton disabled={isRegisterDisable} label="注册" />

@@ -21,10 +21,13 @@ import Wallet from './img/wallet.png';
 function ArticleCard({ article }: { article: RecommendPost }) {
     const [isOpenPaid, setIsOpenPaid] = useState(false);
     const [isOpenRecharge, setIsOpenRecharge] = useState(false);
+
     const router = useRouter();
+
     const userInfo = useUserStore.use.userInfo();
     const setUserInfo = useUserStore.use.setUserInfo();
     const isVip = useUserStore.use.memberSubscribeStatus();
+    const isLogin = useUserStore.use.isLogin();
 
     const getUser = async () => {
         const res = await getMemberInfo();
@@ -40,6 +43,7 @@ function ArticleCard({ article }: { article: RecommendPost }) {
             setIsOpenRecharge(true);
             return;
         }
+
         const res = await payForPost({ postId: Number(article.id) });
 
         if (!res.success) {
@@ -61,6 +65,12 @@ function ArticleCard({ article }: { article: RecommendPost }) {
     };
 
     const isOpenDialog = () => {
+        if (!isLogin) {
+            setIsOpenPaid(false);
+            router.push(`/master/article/?auth=login`);
+            return;
+        }
+
         if (isVip.planId === 1) {
             router.push(`/master/article/${article.id}`);
             return;

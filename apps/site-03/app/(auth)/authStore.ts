@@ -31,6 +31,8 @@ interface AuthState extends InitState {
         setCountDownNumber: (countDownNumber: number) => void;
     };
     changePassword: {
+        verifyPhoto: string;
+        setVerifyPhoto: (verifyPhoto: string) => void;
         sendCodeSuccess: boolean;
         setSendCodeSuccess: (sendCodeSuccess: boolean) => void;
         countDownNumber: number;
@@ -136,6 +138,17 @@ const initialState = (set: (updater: (state: AuthState) => Partial<AuthState>) =
         }
     },
     changePassword: {
+        verifyPhoto: '',
+        setVerifyPhoto: (verifyPhoto: string) => {
+            set(state => {
+                return {
+                    changePassword: {
+                        ...state.changePassword,
+                        verifyPhoto
+                    }
+                };
+            });
+        },
         sendCodeSuccess: false,
         setSendCodeSuccess: (sendCodeSuccess: boolean) => {
             set(state => {
