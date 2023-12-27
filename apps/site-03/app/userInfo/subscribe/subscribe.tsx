@@ -61,21 +61,11 @@ function Subscribe({ backHistory }: { backHistory: boolean }) {
 
         const getRechargeList = async () => {
             const res = await getRechargeOptionList({ currencyCode: 'cny' });
-            if (!res.success) {
-                if ('error' in res) {
-                    const errorMessage = res.error;
-                    setIsVisible(errorMessage, 'error');
-                } else {
-                    const errorMessage = '取得充值礼包失败';
-                    setIsVisible(errorMessage, 'error');
-                }
-                return;
-            }
-            const { list } = res.data;
-            setPlanList(list);
-            if (list.length > 0) {
-                const { id, paymentAmount, rechargeAmount } = list[0];
-                handlePlanClick(id, paymentAmount, rechargeAmount);
+
+            if (res.success) {
+                setPlanList(res.data);
+                setCurrencyAmount(res.data[0].paymentAmount);
+                setPlatformAmount(res.data[0].rechargeAmount);
             }
         };
 

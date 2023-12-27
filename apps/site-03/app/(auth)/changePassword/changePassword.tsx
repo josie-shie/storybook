@@ -3,12 +3,13 @@ import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormControl } from '@mui/material';
 import type { UpdatePasswordRequest } from 'data-center';
-import { sendVerificationCodeInLogged, updatePassword } from 'data-center';
+import { getVerificationCaptcha, updatePassword } from 'data-center';
+import { useEffect } from 'react';
 import { useNotificationStore } from '@/app/notificationStore';
 import {
     PasswordInput,
     SubmitButton,
-    VertifyCode
+    VertifyCodeByImage
 } from '../components/authComponent/authComponent';
 import { useAuthStore } from '../authStore';
 import style from './changePassword.module.scss';
@@ -26,31 +27,33 @@ const schema = yup.object().shape({
     confirmPassword: yup
         .string()
         .oneOf([yup.ref('newPassword')], '请输入6-16位英文+数字')
-        .required('確認密碼為必填欄位')
+        .required('確認密碼為必填欄位'),
+    verifyToken: yup.string().required()
 });
 
 function ChangePassword() {
     const changePasswordStore = useAuthStore.use.changePassword();
     const setIsDrawerOpen = useAuthStore.use.setIsDrawerOpen();
     const setIsVisible = useNotificationStore.use.setIsVisible();
-    const { sendCodeSuccess, setSendCodeSuccess, countDownNumber, setCountDownNumber } =
-        changePasswordStore;
+    const { verifyPhoto, setVerifyPhoto } = changePasswordStore;
 
-    const { control, formState, handleSubmit, watch, reset } = useForm({
+    const { control, formState, handleSubmit, watch, reset, setValue } = useForm({
         resolver: yupResolver(schema),
         defaultValues: {
             verificationCode: '',
             password: '',
             newPassword: '',
-            confirmPassword: ''
+            confirmPassword: '',
+            verifyToken: ''
         }
     });
 
     const errors = formState.errors;
 
-    const { verificationCode, password, newPassword, confirmPassword } = watch();
+    const { verificationCode, password, newPassword, confirmPassword, verifyToken } = watch();
 
-    const isSubmitDisable = !verificationCode || !password || !newPassword || !confirmPassword;
+    const isSubmitDisable =
+        !verificationCode || !password || !newPassword || !confirmPassword || !verifyToken;
 
     const onSubmit = async (data: UpdatePasswordRequest) => {
         const res = await updatePassword(data);
@@ -66,41 +69,22 @@ function ChangePassword() {
         reset();
     };
 
-    const getVerificationCode = async () => {
-        const res = await sendVerificationCodeInLogged({
-            verificationType: 0,
-            checkExistingAccount: false
-        });
+    const getCaptcha = async () => {
+        const res = await getVerificationCaptcha();
 
         if (!res.success) {
-            const errorMessage = res.error ? res.error : '取得验证码失败';
+            const errorMessage = res.error ? res.error : '取得验证图形失败';
             setIsVisible(errorMessage, 'error');
             return;
         }
 
-        setSendCodeSuccess(true);
-        setCountDown();
+        setVerifyPhoto(res.data.captcha);
+        setValue('verifyToken', res.data.verifyToken);
     };
 
-    const setCountDown = () => {
-        let currentSeconds = countDownNumber;
-
-        const interval = setInterval(() => {
-            currentSeconds = currentSeconds === 0 ? 60 : currentSeconds - 1;
-            setCountDownNumber(currentSeconds);
-
-            if (currentSeconds === 0) {
-                clearInterval(interval);
-                setSendCodeSuccess(false);
-            }
-        }, 1000);
-
-        return () => {
-            clearInterval(interval);
-            setSendCodeSuccess(false);
-            setCountDownNumber(60);
-        };
-    };
+    useEffect(() => {
+        void getCaptcha();
+    }, []);
 
     return (
         <form className={style.changePassword} onSubmit={handleSubmit(onSubmit)}>
@@ -109,12 +93,12 @@ function ChangePassword() {
                     control={control}
                     name="verificationCode"
                     render={({ field }) => (
-                        <VertifyCode
-                            countDownNumber={countDownNumber}
+                        <VertifyCodeByImage
                             error={errors.verificationCode}
                             field={field}
-                            getVerificationCode={getVerificationCode}
-                            sendCodeSuccess={sendCodeSuccess}
+                            getVerificationCode={getCaptcha}
+                            placeholder="验证码"
+                            verifyPhoto={verifyPhoto}
                             vertifyDisable={false}
                         />
                     )}
@@ -161,6 +145,9 @@ function ChangePassword() {
                         />
                     )}
                 />
+            </FormControl>
+            <FormControl>
+                <input name="verifyToken" type="hidden" value={verifyToken} />
             </FormControl>
             <FormControl className={style.submitButton} fullWidth>
                 <SubmitButton disabled={isSubmitDisable} label="提交" />
