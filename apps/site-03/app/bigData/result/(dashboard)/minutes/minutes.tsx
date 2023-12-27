@@ -47,7 +47,7 @@ function TimeRangeTable({
 
 function Minutes() {
     const headers = [
-        '開場-14:59',
+        '开场-14:59',
         '15:00-29:59',
         '30:00-半场',
         '下半场-59:59',
