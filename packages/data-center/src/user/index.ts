@@ -30,7 +30,8 @@ import {
     GET_RECHARGE_OPTION_LIST_QUERY,
     GET_MEMBER_TRANSACTION_LIST_QUERY,
     RECHARGE_PLATFORM_CURRENCY_MUTATION,
-    SEND_VERIFICATION_SMS_MUTATION
+    SEND_VERIFICATION_SMS_MUTATION,
+    GET_VERIFICATION_CAPTCHA_MUTATION
 } from './graphqlQueries';
 
 const RegisterResultSchema = z.object({
@@ -1063,13 +1064,13 @@ export const getVerificationCaptcha = async (): Promise<
         >(
             {
                 data: {
-                    query: RECHARGE_PLATFORM_CURRENCY_MUTATION
+                    query: GET_VERIFICATION_CAPTCHA_MUTATION
                 }
             },
             { cache: 'no-store' }
         );
 
-        GetVerificationCaptchaSchema.parse(data);
+        GetVerificationCaptchaResultSchema.parse(data);
 
         throwErrorMessage(errors);
         return { success: true, data: data.getVerificationCaptcha };
