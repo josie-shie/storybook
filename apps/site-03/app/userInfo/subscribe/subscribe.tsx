@@ -67,6 +67,21 @@ function Subscribe({ backHistory }: { backHistory: boolean }) {
                 setCurrencyAmount(res.data[0].paymentAmount);
                 setPlatformAmount(res.data[0].rechargeAmount);
             }
+            if (!res.success) {
+                if ('error' in res) {
+                    const errorMessage = res.error;
+                    setIsVisible(errorMessage, 'error');
+                } else {
+                    const errorMessage = '取得充值礼包失败';
+                    setIsVisible(errorMessage, 'error');
+                }
+                return;
+            }
+            setPlanList(res.data);
+            if (res.data.length > 0) {
+                const { id, paymentAmount, rechargeAmount } = res.data[0];
+                handlePlanClick(id, paymentAmount, rechargeAmount);
+            }
         };
 
         void getYearSubscribe();
