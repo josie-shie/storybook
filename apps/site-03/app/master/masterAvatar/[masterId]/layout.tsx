@@ -38,7 +38,7 @@ function MasterAvatarLayout({ params }: { params: { masterId: string } }) {
 
     return (
         <>
-            <Header title={headerProps.title} />
+            <Header srcPath="/master/expert" title={headerProps.title} />
             <Info params={params} />
             <div className={style.masterAvatar}>
                 <Tabs

@@ -4,6 +4,8 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
 import { timestampToString } from 'lib';
 import HeaderTitleFilter from '@/components/header/headerTitleFilter';
+import Loading from '@/components/loading/loading';
+import { useHandicapAnalysisFormStore } from '../formStore';
 import style from './dashboard.module.scss';
 import Handicap from './(dashboard)/handicap/handicap';
 import { useAnalyticsResultStore } from './analysisResultStore';
@@ -25,8 +27,14 @@ function ResultContent() {
     const setShowContestDrawer = useAnalyticsResultStore.use.setShowContestDrawer();
     const selectedResult = useAnalyticsResultStore.use.selectedResult();
     const contestList = useAnalyticsResultStore.use.contestList();
-    const analysisData = useAnalyticsResultStore.use.analysisResultData();
     const showedTutorial = localStorage.getItem('showAnalysisTutorial');
+
+    const endDate = useHandicapAnalysisFormStore.use.endDate();
+    const startDate = useHandicapAnalysisFormStore.use.startDate();
+    const teamSelected = useHandicapAnalysisFormStore.use.teamSelected();
+    const teamHandicapOdds = useHandicapAnalysisFormStore.use.teamHandicapOdds();
+    const handicapOddsSelected = useHandicapAnalysisFormStore.use.handicapOddsSelected();
+    const loading = useHandicapAnalysisFormStore.use.loading();
 
     const tabStyle = {
         gap: 4,
@@ -90,18 +98,17 @@ function ResultContent() {
                                 <span className={style.title}>全场让分</span>
                                 <span className={style.name}>
                                     让方/
-                                    {handicapTeam[analysisData.handicapSide as HandicapSideType] ||
-                                        '全部'}
+                                    {teamSelected.length >= 2
+                                        ? '全部'
+                                        : handicapTeam[teamSelected[0] as HandicapSideType]}
                                     、盘口/
-                                    {analysisData.handicapValues ||
-                                        analysisData.handicapValues === '0' ||
-                                        '不挑選'}
+                                    {teamHandicapOdds || teamHandicapOdds === '0' || '不挑选'}
                                 </span>
                             </div>
                             <div className={style.row}>
                                 <span className={style.title}>全场大小</span>
                                 <span className={style.name}>
-                                    {analysisData.overUnderValues || '不挑選'}
+                                    {handicapOddsSelected || '不挑選'}
                                 </span>
                             </div>
                         </div>
@@ -109,8 +116,8 @@ function ResultContent() {
                             <div className={style.row}>
                                 <span className={style.title}>時間區間</span>
                                 <span className={style.date}>
-                                    {timestampToString(analysisData.startTime, 'YYYY-MM-DD')} ~{' '}
-                                    {timestampToString(analysisData.endTime, 'YYYY-MM-DD')}
+                                    {timestampToString(startDate, 'YYYY-MM-DD')} ~{' '}
+                                    {timestampToString(endDate, 'YYYY-MM-DD')}
                                 </span>
                             </div>
                         </div>
@@ -128,7 +135,11 @@ function ResultContent() {
                             {tabList.map(item => {
                                 return (
                                     <Tab key={item.params} label={item.label}>
-                                        {item.content}
+                                        {loading ? (
+                                            <Loading loadingText="资料产生中..." />
+                                        ) : (
+                                            item.content
+                                        )}
                                     </Tab>
                                 );
                             })}

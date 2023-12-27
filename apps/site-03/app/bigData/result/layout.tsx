@@ -2,9 +2,9 @@
 import { useState, type ReactNode, useEffect } from 'react';
 import { getFootballStatsResult, type GetFootballStatsReportResponse } from 'data-center';
 import { useUserStore } from '@/app/userStore';
+import { useHandicapAnalysisFormStore } from '../formStore';
 import { createAnalysisResultStore } from './analysisResultStore';
 import { creatMatchFilterStore } from './matchFilterStore';
-// import { useHandicapAnalysisFormStore } from '../formStore';
 
 function CreateStore({
     resultData,
@@ -28,6 +28,7 @@ function CreateStore({
 function DetailLayout({ children }: { children: ReactNode }) {
     const userInfo = useUserStore.use.userInfo();
     const [resultData, setResultData] = useState<GetFootballStatsReportResponse>();
+    const setLoading = useHandicapAnalysisFormStore.use.setLoading();
     // const endDate = useHandicapAnalysisFormStore.use.endDate();
     // const startDate = useHandicapAnalysisFormStore.use.startDate();
     // const teamSelected = useHandicapAnalysisFormStore.use.teamSelected();
@@ -35,6 +36,7 @@ function DetailLayout({ children }: { children: ReactNode }) {
     // const handicapOddsSelected = useHandicapAnalysisFormStore.use.handicapOddsSelected();
 
     const fetchData = async () => {
+        setLoading(true);
         const res = await getFootballStatsResult({
             ticketId: '0fbdd0b',
             memberId: userInfo.uid
@@ -43,6 +45,8 @@ function DetailLayout({ children }: { children: ReactNode }) {
         if (res.success) {
             setResultData(res.data);
         }
+
+        setLoading(false);
     };
 
     useEffect(() => {

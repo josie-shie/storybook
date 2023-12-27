@@ -1,15 +1,39 @@
 'use client';
 
 import Image from 'next/image';
+import { useState } from 'react';
 import { timestampToString, timestampToMonthDay } from 'lib';
 import Link from 'next/link';
 import { type RecommendPost } from 'data-center';
+import { useRouter } from 'next/navigation';
+import { payForPost, getMemberInfo } from 'data-center';
+import NoData from '@/components/baseNoData/noData';
+import UnlockButton from '@/components/unlockButton/unlockButton';
+import { useUserStore } from '@/app/userStore';
+import NormalDialog from '@/components/normalDialog/normalDialog';
+import ConfirmPayArticle from '../components/confirmPayArticle/confirmPayArticle';
 import style from './recommendationList.module.scss';
-import Star from './img/star.png';
 import Win from './img/win.png';
 import Draw from './img/draw.png';
+import SkeletonLayout from './components/skeleton';
 
-function RecommendationItem({ recommendationList }: { recommendationList: RecommendPost[] }) {
+function RecommendationItem({
+    recommendationList,
+    isNoData
+}: {
+    recommendationList: RecommendPost[];
+    isNoData: boolean | null;
+}) {
+    const [isOpenPaid, setIsOpenPaid] = useState(false);
+    const [isOpenRecharge, setIsOpenRecharge] = useState(false);
+    const [articleInfo, setArticleInfo] = useState({} as RecommendPost);
+
+    const isVip = useUserStore.use.memberSubscribeStatus();
+    const userInfo = useUserStore.use.userInfo();
+    const setUserInfo = useUserStore.use.setUserInfo();
+
+    const router = useRouter();
+
     const formatHandicapName = {
         HOME: '让分',
         AWAY: '让分',
@@ -19,59 +43,126 @@ function RecommendationItem({ recommendationList }: { recommendationList: Recomm
         OVERUNDER: '让分'
     };
 
+    const isOpenDialog = (item: RecommendPost) => {
+        if (isVip.planId === 1) {
+            router.push(`/master/article/${item.id}`);
+            return;
+        }
+        setIsOpenPaid(true);
+        setArticleInfo(item);
+    };
+
+    const getUser = async () => {
+        const res = await getMemberInfo();
+        if (!res.success) {
+            return new Error();
+        }
+        setUserInfo(res.data);
+    };
+
+    const onSubmit = async () => {
+        if (userInfo.balance < articleInfo.price) {
+            setIsOpenPaid(false);
+            setIsOpenRecharge(true);
+            return;
+        }
+        const res = await payForPost({ postId: Number(articleInfo.id) });
+
+        if (!res.success) {
+            return new Error();
+        }
+        goArticleDetail();
+        void getUser();
+        setIsOpenPaid(false);
+    };
+
+    const goArticleDetail = () => {
+        setIsOpenPaid(false);
+        router.push(`/master/article/${articleInfo.id}`);
+    };
+
+    const goPayment = () => {
+        setIsOpenRecharge(false);
+        router.push('/userInfo/subscribe');
+    };
+
     return (
         <>
-            {recommendationList.map(item => {
-                return (
-                    <Link className={style.item} href={`/master/article/${item.id}`} key={item.id}>
-                        <div className={style.left}>
-                            <div className={style.time}>
-                                发表于今天 {timestampToMonthDay(item.createdAt)}
-                            </div>
-                            <div className={style.leagueName}>
-                                <span className={style.name}>{item.leagueName}</span>
-                                <span className={style.time}>
-                                    | {timestampToString(item.matchTime, 'MM-DD HH:mm')}
-                                </span>
-                            </div>
-                            <div className={style.teamName}>
-                                <span className={style.play}>
-                                    {formatHandicapName[item.predictedPlay]}
-                                </span>
-                                <span className={style.name}>
-                                    {item.homeTeamName} vs {item.awayTeamName}
-                                </span>
-                                {item.predictionResult === 'WIN' && (
-                                    <Image alt="" height={36} src={Win} width={36} />
-                                )}
-                                {item.predictionResult === 'DRAW' && (
-                                    <Image alt="" height={36} src={Draw} width={36} />
-                                )}
-                            </div>
-                        </div>
-                        <div className={style.right}>
-                            {!item.isUnlocked ? (
-                                <>
-                                    <div className={style.noPaid}>
-                                        <Image
-                                            alt=""
-                                            className={style.image}
-                                            src={Star}
-                                            width={14}
+            {recommendationList.length === 0 && isNoData === null && <SkeletonLayout />}
+
+            {recommendationList.length === 0 && isNoData ? (
+                <NoData />
+            ) : (
+                <>
+                    {recommendationList.map(item => {
+                        return (
+                            <Link
+                                className={style.item}
+                                href={`/master/article/${item.id}`}
+                                key={item.id}
+                            >
+                                <div className={style.left}>
+                                    <div className={style.time}>
+                                        发表于今天 {timestampToMonthDay(item.createdAt)}
+                                    </div>
+                                    <div className={style.leagueName}>
+                                        <span className={style.name}>{item.leagueName}</span>
+                                        <span className={style.time}>
+                                            | {timestampToString(item.matchTime, 'MM-DD HH:mm')}
+                                        </span>
+                                    </div>
+                                    <div className={style.teamName}>
+                                        <span className={style.play}>
+                                            {formatHandicapName[item.predictedPlay]}
+                                        </span>
+                                        <span className={style.name}>
+                                            {item.homeTeamName} vs {item.awayTeamName}
+                                        </span>
+                                        {item.predictionResult === 'WIN' && (
+                                            <Image alt="" height={36} src={Win} width={36} />
+                                        )}
+                                        {item.predictionResult === 'DRAW' && (
+                                            <Image alt="" height={36} src={Draw} width={36} />
+                                        )}
+                                    </div>
+                                </div>
+                                <div className={style.right}>
+                                    {!item.isUnlocked ? (
+                                        <UnlockButton
+                                            handleClick={() => {
+                                                isOpenDialog(item);
+                                            }}
+                                            price={item.price}
                                         />
-                                        <span className={style.text}>{item.price}元</span>
-                                    </div>
-                                    <div className={style.unlockMember}>
-                                        已有{item.unlockCounts}人解鎖
-                                    </div>
-                                </>
-                            ) : (
-                                <div className={style.unlockMember}>已解鎖</div>
-                            )}
-                        </div>
-                    </Link>
-                );
-            })}
+                                    ) : (
+                                        <div className={style.unlockMember}>已解鎖</div>
+                                    )}
+                                </div>
+                            </Link>
+                        );
+                    })}
+                </>
+            )}
+            <NormalDialog
+                cancelText="取消"
+                confirmText="確認支付"
+                content={<ConfirmPayArticle price={articleInfo.price} />}
+                onClose={() => {
+                    setIsOpenPaid(false);
+                }}
+                onConfirm={onSubmit}
+                openDialog={isOpenPaid}
+            />
+            <NormalDialog
+                cancelText="取消"
+                confirmText="去充值"
+                content={<div>余额不足，请充值</div>}
+                onClose={() => {
+                    setIsOpenRecharge(false);
+                }}
+                onConfirm={goPayment}
+                openDialog={isOpenRecharge}
+            />
         </>
     );
 }
