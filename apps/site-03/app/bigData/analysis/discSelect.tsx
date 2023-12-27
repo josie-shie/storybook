@@ -134,7 +134,7 @@ function DiscSelect() {
 
     useEffect(() => {
         if (!search) {
-            router.push('/bigData?status=analysis');
+            router.push('/bigData/analysis?status=analysis');
         }
     }, [router, search]);
 

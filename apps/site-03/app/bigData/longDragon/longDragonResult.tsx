@@ -162,7 +162,7 @@ function LongDragonResult() {
 
     return (
         <>
-            <HeaderTitleFilter backHandler={backHandler} title="今日长龙赛事" />
+            <HeaderTitleFilter backHandler={backHandler} background title="今日长龙赛事" />
             <div className={style.layout}>
                 <div className={style.longDragon}>
                     <div className={style.column}>
@@ -174,8 +174,6 @@ function LongDragonResult() {
                             <span className={style.title}>連續方式</span>
                             <span className={style.name}>{formatType(hintsSelectType)}</span>
                         </div>
-                    </div>
-                    <div className={style.column}>
                         <div className={style.row}>
                             <span className={style.title}>半/全場</span>
                             <span className={style.date}>

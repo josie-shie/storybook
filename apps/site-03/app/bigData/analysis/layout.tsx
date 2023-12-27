@@ -40,7 +40,7 @@ function AnalysisLayout({ children }: { children: ReactNode }) {
     };
     const tabList = [
         {
-            label: '盘路分析',
+            label: '智能盘路分析',
             to: '/bigData/analysis?status=analysis'
         },
         {
@@ -55,7 +55,7 @@ function AnalysisLayout({ children }: { children: ReactNode }) {
 
     return (
         <>
-            <Header />
+            <Header background />
             <AnimationData analysisTime={isVipUseAnalysis} onUpdateAnalysis={handleAnalysisTimes} />
             {isVipUseAnalysis ? (
                 <div className={style.main}>

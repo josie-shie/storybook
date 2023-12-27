@@ -56,14 +56,14 @@
             flex-direction: column;
             gap: 4px;
             margin-top: -12px;
-            padding: 8px 16px 36px;
-            background: linear-gradient(91deg, #003c9f 0.72%, #2575fc 98.56%);
+            padding: 0 16px 36px;
+            background: linear-gradient(to right, #194fa8 0%, #3981fa 100%);
 
             .column {
                 display: flex;
-                align-items: center;
-                justify-content: flex-start;
-                gap: 16px;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 4px;
 
                 .row {
                     display: flex;

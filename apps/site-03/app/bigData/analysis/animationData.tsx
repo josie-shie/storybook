@@ -1,7 +1,6 @@
 'use client';
 import Image from 'next/image';
 import Link from 'next/link';
-import banner from './img/banner.png';
 import dataText from './img/dataText.png';
 import blueText from './img/blueText.png';
 import animateLine1 from './img/animateLine1.png';
@@ -43,7 +42,6 @@ function AnimationData({ analysisTime, onUpdateAnalysis }: TestProps) {
     return (
         <div className={style.animationData}>
             <div className={style.banner}>
-                <Image alt="banner" src={banner} />
                 {analysisTime ? (
                     <div className={style.animate}>
                         <div className={`${style.top} ${style.animated} ${style.fadeInLeft}`}>

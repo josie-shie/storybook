@@ -289,7 +289,7 @@ function ResultContent() {
         <>
             <div className={style.analysisResult}>
                 <div className={style.resultPage}>
-                    <HeaderTitleFilter backHandler={backHandler} title="分析结果" />
+                    <HeaderTitleFilter backHandler={backHandler} background title="分析结果" />
                     <div className={style.bigDataGame}>
                         <div className={style.column}>
                             <div className={style.row}>
@@ -309,8 +309,6 @@ function ResultContent() {
                                     {handicapOddsSelected || '不挑選'}
                                 </span>
                             </div>
-                        </div>
-                        <div className={style.column}>
                             <div className={style.row}>
                                 <span className={style.title}>時間區間</span>
                                 <span className={style.date}>
