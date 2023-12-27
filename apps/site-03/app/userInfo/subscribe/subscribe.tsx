@@ -60,9 +60,9 @@ function Subscribe({ backHistory }: { backHistory: boolean }) {
             const res = await getRechargeOptionList({ currencyCode: 'cny' });
 
             if (res.success) {
-                setPlanList(res.data.list);
-                setCurrencyAmount(res.data.list[0].paymentAmount);
-                setPlatformAmount(res.data.list[0].rechargeAmount);
+                setPlanList(res.data);
+                setCurrencyAmount(res.data[0].paymentAmount);
+                setPlatformAmount(res.data[0].rechargeAmount);
             }
         };
 
