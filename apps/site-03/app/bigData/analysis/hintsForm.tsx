@@ -93,9 +93,9 @@ function HandicapAnalysisForm() {
     const setDialogContent = useHandicapAnalysisFormStore.use.setDialogContent();
     const isVip = useUserStore.use.memberSubscribeStatus().planId; // 1是VIP
 
-    const hintsSelectPlay = useLongDragonStore.use.hintsSelectPlay();
-    const hintsSelectType = useLongDragonStore.use.hintsSelectType();
-    const hintsSelectProgres = useLongDragonStore.use.hintsSelectProgres();
+    const hintsSelectPlay = useLongDragonStore.use.hintsSelectPlay() || 'HANDICAP';
+    const hintsSelectType = useLongDragonStore.use.hintsSelectType() || 'OVER';
+    const hintsSelectProgres = useLongDragonStore.use.hintsSelectProgres() || 'HALF';
 
     const setHintsSelectPlay = useLongDragonStore.use.setHintsSelectPlay();
     const setHintsSelectType = useLongDragonStore.use.setHintsSelectType();
