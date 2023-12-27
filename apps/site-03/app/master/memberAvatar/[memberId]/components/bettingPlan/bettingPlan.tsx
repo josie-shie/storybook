@@ -53,7 +53,7 @@ function BettingPlan({
         const res = await getMentorIndividualGuessMatches({
             memberId: 1,
             currentPage,
-            pageSize: 10,
+            pageSize: 30,
             guessType: planActiveTab
         });
 
@@ -69,7 +69,7 @@ function BettingPlan({
     };
 
     const loadMoreList = () => {
-        if (currentPage <= Math.round(guessMatchesList.length / 10) && currentPage < totalPage) {
+        if (currentPage <= Math.round(guessMatchesList.length / 30) && currentPage < totalPage) {
             setCurrentPage(prevData => prevData + 1);
         }
     };
