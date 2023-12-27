@@ -137,7 +137,7 @@ function LiveBox({
 
     return (
         <div className={style.liveBox} style={{ backgroundImage: `url(${bgImage.src})` }}>
-            <Header back={back} />
+            <Header back={back} matchId={matchId} />
             <div className={style.scoreboard}>
                 <div className={style.gameInfo}>
                     <div className={style.team}>

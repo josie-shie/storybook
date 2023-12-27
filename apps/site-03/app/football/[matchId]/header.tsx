@@ -2,6 +2,7 @@ import Image from 'next/image';
 import { GameStatus } from 'ui';
 import { useContestInfoStore } from '@/app/contestInfoStore';
 import { useFormattedTime } from '@/hooks/useFormattedTime';
+import { useNotificationStore } from '@/app/notificationStore';
 import style from './header.module.scss';
 import BackIcon from './img/back.png';
 import ShareIcon from './img/share.png';
@@ -23,10 +24,11 @@ const statusStyleMap = {
     '-14': 'notYet'
 };
 
-function Header({ back }: { back: () => void }) {
+function Header({ matchId, back }: { matchId: number; back: () => void }) {
     const matchDetail = useContestDetailStore.use.matchDetail();
     const layoutDisplayed = useContestDetailStore.use.layoutDisplayed();
     const globalStore = useContestInfoStore.use.contestInfo();
+    const setIsVisible = useNotificationStore.use.setIsVisible();
 
     const syncData = Object.hasOwnProperty.call(globalStore, matchDetail.matchId)
         ? globalStore[matchDetail.matchId]
@@ -38,6 +40,26 @@ function Header({ back }: { back: () => void }) {
         timeStamp: matchDetail.matchTime,
         formattedString: 'M/DD HH:mm'
     });
+
+    const handleShare = async () => {
+        if (typeof navigator.share !== 'undefined') {
+            await navigator
+                .share({
+                    title: '未来体育 | FutureSport',
+                    url: `${location.origin}/football/${matchId}`
+                })
+                .then(() => {
+                    setIsVisible('分享成功！', 'success');
+                })
+                .catch(async error => {
+                    await navigator.clipboard.writeText(`${location.origin}/football/${matchId}`);
+                    console.error(error);
+                });
+        } else {
+            await navigator.clipboard.writeText(`${location.origin}/football/${matchId}`);
+            setIsVisible('已复制分享连结！', 'success');
+        }
+    };
 
     return (
         <>
@@ -58,7 +80,13 @@ function Header({ back }: { back: () => void }) {
                     </p>
                 </div>
                 <div className={style.share_icon}>
-                    <Image alt="share_icon" height={24} src={ShareIcon} width={24} />
+                    <Image
+                        alt="share_icon"
+                        height={18}
+                        onClick={handleShare}
+                        src={ShareIcon}
+                        width={18}
+                    />
                 </div>
             </header>
 
@@ -85,7 +113,13 @@ function Header({ back }: { back: () => void }) {
                     <TeamLogo alt="" height={24} src={matchDetail.awayLogo} width={24} />
                 </div>
                 <div className={style.share_icon}>
-                    <Image alt="share_icon" height={24} src={ShareIcon} width={24} />
+                    <Image
+                        alt="share_icon"
+                        height={18}
+                        onClick={handleShare}
+                        src={ShareIcon}
+                        width={18}
+                    />
                 </div>
             </header>
         </>
