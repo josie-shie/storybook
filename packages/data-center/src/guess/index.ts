@@ -10,6 +10,7 @@ import {
     GET_GUESS_PROPORTION_QUERY,
     GET_MEMBER_INDIVIDUAL_GUESS_QUERY,
     GET_MEMBER_INDIVIDUAL_GUESS_MATCHES_QUERY,
+    GET_MENTOR_INDIVIDUAL_GUESS_MATCHES_QUERY,
     GET_RRO_GUESS_QUERY,
     GET_RRO_DISTRIB_QUERY,
     ADD_GUESS_MUTATION,
@@ -475,7 +476,7 @@ export type GetMemberIndividualGuessMatchesResponse = z.infer<
 >;
 
 /**
- * 取得用戶個人頁面方案資料，並判斷觀看競猜記錄是否需付費解鎖
+ * 推薦 - 競猜 & 我的 - 我的競猜 - 我的方案 | 取得用戶個人頁面方案資料，並判斷觀看競猜記錄是否需付費解鎖
  * - params {@link GetMemberIndividualGuessMatchesRequest}
  * - returns {@link GetMemberIndividualGuessMatchesResponse}
  * - {@link MemberIndividualGuessMatch} {@link Pagination}
@@ -515,6 +516,62 @@ export const getMemberIndividualGuessMatches = async ({
         return {
             success: true,
             data: data.getMemberIndividualGuessMatches
+        };
+    } catch (error) {
+        return handleApiError(error);
+    }
+};
+
+const GetMentorIndividualGuessMatchesResultSchema = z.object({
+    getMentorIndividualGuessMatches: GetMemberIndividualGuessMatchesSchema
+});
+
+type GetMentorIndividualGuessMatchesResult = z.infer<
+    typeof GetMentorIndividualGuessMatchesResultSchema
+>;
+
+/**
+ * 專家-取得用戶個人頁面方案資料，並判斷觀看競猜記錄是否需付費解鎖
+ * - params {@link GetMemberIndividualGuessMatchesRequest}
+ * - returns {@link GetMemberIndividualGuessMatchesResponse}
+ * - {@link MemberIndividualGuessMatch} {@link Pagination}
+ * 型別與 getMemberIndividualGuessMatches 共用
+ */
+export const getMentorIndividualGuessMatches = async ({
+    memberId,
+    currentPage,
+    pageSize,
+    guessType
+}: GetMemberIndividualGuessMatchesRequest): Promise<
+    ReturnData<GetMemberIndividualGuessMatchesResponse>
+> => {
+    try {
+        const { data, errors } = await fetcher<
+            FetchResultData<GetMentorIndividualGuessMatchesResult>,
+            unknown
+        >(
+            {
+                data: {
+                    query: GET_MENTOR_INDIVIDUAL_GUESS_MATCHES_QUERY,
+                    variables: {
+                        input: {
+                            memberId,
+                            currentPage,
+                            pageSize,
+                            guessType
+                        }
+                    }
+                }
+            },
+            { cache: 'no-store' }
+        );
+
+        throwErrorMessage(errors);
+        GetMentorIndividualGuessMatchesResultSchema.parse(data);
+
+        return {
+            success: true,
+            data: data.getMentorIndividualGuessMatches
         };
     } catch (error) {
         return handleApiError(error);

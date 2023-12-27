@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { getMemberIndividualGuessMatches, type MemberIndividualGuessMatch } from 'data-center';
+import { getMentorIndividualGuessMatches, type MemberIndividualGuessMatch } from 'data-center';
 import { useEffect, useState } from 'react';
 import { timestampToString } from 'lib';
 import UnlockButton from '@/components/unlockButton/unlockButton';
@@ -38,19 +38,21 @@ const filterOdds = {
 
 function BettingPlan({
     planActiveTab,
-    setGuessLength
+    setGuessLength,
+    params
 }: {
     planActiveTab: Tab;
     setGuessLength: (val: number) => void;
+    params: { masterId: string };
 }) {
     const [guessMatchesList, setGuessMatchesList] = useState<MemberIndividualGuessMatch[]>([]);
     const [isNoData, setIsNoData] = useState<boolean | null>(null);
 
     const fetchData = async () => {
-        const res = await getMemberIndividualGuessMatches({
-            memberId: 1,
+        const res = await getMentorIndividualGuessMatches({
+            memberId: Number(params.masterId),
             currentPage: 1,
-            pageSize: 1,
+            pageSize: 30,
             guessType: planActiveTab
         });
 
@@ -65,7 +67,7 @@ function BettingPlan({
 
     useEffect(() => {
         void fetchData();
-    }, []);
+    }, [planActiveTab]);
 
     return (
         <>
