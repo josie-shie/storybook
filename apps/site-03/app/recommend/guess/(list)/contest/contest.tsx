@@ -5,7 +5,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { getTodayGuessMatches, type GetTodayGuessMatchesResponse } from 'data-center';
 import Image from 'next/image';
 import BaseNoData from '@/components/baseNoData/noData';
-import Banner from '../img/banner.png';
+import NewBanner from '../img/newBanner.png';
 import { creatGuessContestListStore, useGuessContestListStore } from './contestStore';
 import GameCard from './gameCard';
 import style from './contest.module.scss';
@@ -74,7 +74,7 @@ function Contest({ todayGuess }: { todayGuess: GetTodayGuessMatchesResponse }) {
 
     return (
         <div className={style.contest}>
-            <Image alt="" className={style.banner} src={Banner} />
+            <Image alt="" className={style.banner} src={NewBanner} />
             <ContestList />
         </div>
     );
