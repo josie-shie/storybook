@@ -8,6 +8,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 import { payForPost, getMemberInfo } from 'data-center';
+import Cookies from 'js-cookie';
 import UnlockButton from '@/components/unlockButton/unlockButton';
 import Tag from '@/components/tag/tag';
 import Avatar from '@/components/avatar/avatar';
@@ -40,6 +41,7 @@ function ArticleCard({ article }: { article: RecommendPost }) {
             setIsOpenRecharge(true);
             return;
         }
+
         const res = await payForPost({ postId: Number(article.id) });
 
         if (!res.success) {
@@ -61,6 +63,13 @@ function ArticleCard({ article }: { article: RecommendPost }) {
     };
 
     const isOpenDialog = () => {
+        const isCookieExist = Cookies.get('access');
+        if (!isCookieExist) {
+            setIsOpenPaid(false);
+            router.push(`/master/article/?auth=login`);
+            return;
+        }
+
         if (isVip.planId === 1) {
             router.push(`/master/article/${article.id}`);
             return;

@@ -3,10 +3,10 @@
 import Image from 'next/image';
 import { useState } from 'react';
 import { timestampToString, timestampToMonthDay } from 'lib';
-import Link from 'next/link';
 import { type RecommendPost } from 'data-center';
 import { useRouter } from 'next/navigation';
 import { payForPost, getMemberInfo } from 'data-center';
+import Cookies from 'js-cookie';
 import NoData from '@/components/baseNoData/noData';
 import UnlockButton from '@/components/unlockButton/unlockButton';
 import { useUserStore } from '@/app/userStore';
@@ -19,10 +19,12 @@ import SkeletonLayout from './components/skeleton';
 
 function RecommendationItem({
     recommendationList,
-    isNoData
+    isNoData,
+    params
 }: {
     recommendationList: RecommendPost[];
     isNoData: boolean | null;
+    params: { articleId: string };
 }) {
     const [isOpenPaid, setIsOpenPaid] = useState(false);
     const [isOpenRecharge, setIsOpenRecharge] = useState(false);
@@ -44,10 +46,18 @@ function RecommendationItem({
     };
 
     const isOpenDialog = (item: RecommendPost) => {
+        const isCookieExist = Cookies.get('access');
+
+        if (!isCookieExist) {
+            router.push(`/master/article/${params.articleId}?auth=login`);
+            return;
+        }
+
         if (isVip.planId === 1) {
             router.push(`/master/article/${item.id}`);
             return;
         }
+
         setIsOpenPaid(true);
         setArticleInfo(item);
     };
@@ -66,6 +76,7 @@ function RecommendationItem({
             setIsOpenRecharge(true);
             return;
         }
+
         const res = await payForPost({ postId: Number(articleInfo.id) });
 
         if (!res.success) {
@@ -86,6 +97,10 @@ function RecommendationItem({
         router.push('/userInfo/subscribe');
     };
 
+    const goArticle = (id: number) => {
+        router.push(`/master/article/${id}`);
+    };
+
     return (
         <>
             {recommendationList.length === 0 && isNoData === null && <SkeletonLayout />}
@@ -96,10 +111,12 @@ function RecommendationItem({
                 <>
                     {recommendationList.map(item => {
                         return (
-                            <Link
+                            <div
                                 className={style.item}
-                                href={`/master/article/${item.id}`}
                                 key={item.id}
+                                onClick={() => {
+                                    goArticle(item.id);
+                                }}
                             >
                                 <div className={style.left}>
                                     <div className={style.time}>
@@ -138,7 +155,7 @@ function RecommendationItem({
                                         <div className={style.unlockMember}>已解鎖</div>
                                     )}
                                 </div>
-                            </Link>
+                            </div>
                         );
                     })}
                 </>

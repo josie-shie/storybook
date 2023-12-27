@@ -272,6 +272,7 @@ function ArticleContent({ params, article, fetchPostDetail }: ArticleContentProp
                     <div className={style.title}>Ta还推荐了... ({recommendationList.length})</div>
                     <RecommendationList
                         isNoData={isNoData}
+                        params={params}
                         recommendationList={recommendationList}
                     />
                 </div>

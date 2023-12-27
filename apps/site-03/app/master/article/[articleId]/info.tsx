@@ -24,7 +24,7 @@ function Info({ article, setArticle }: InfoProps) {
     const onIsFocused = async (id: number, follow: boolean) => {
         const isCookieExist = Cookies.get('access');
         if (!isCookieExist) {
-            router.push('/master/expert/?auth=login');
+            router.push(`/master/masterAvatar/${article.id}?status=analysis&auth=login?auth=login`);
             return;
         }
         const res = follow
