@@ -371,7 +371,7 @@ export const GET_VERIFICATION_CAPTCHA_MUTATION = `
 `;
 
 export const SEND_VERIFICATION_SMS_MUTATION = `
-    mutation sendVerificationSms {
+    mutation sendVerificationSms($input: SendVerificationSmsInput!) {
         sendVerificationSms {
             responseCode
             captcha
