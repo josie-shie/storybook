@@ -76,7 +76,13 @@ function BettingPlan({
 
     useEffect(() => {
         void fetchData();
-    }, [planActiveTab, currentPage]);
+    }, [currentPage]);
+
+    useEffect(() => {
+        setGuessMatchesList([]);
+        setCurrentPage(1);
+        void fetchData();
+    }, [planActiveTab]);
 
     return (
         <>
@@ -106,11 +112,18 @@ function BettingPlan({
                                     </div>
                                 </div>
                                 <div className={style.bot}>
-                                    <div className={style.message}>
+                                    <div
+                                        className={`${style.message} ${
+                                            item.predictionResult === 'WIN' && style.win
+                                        }`}
+                                    >
                                         {filterOdds[item.handicapOdds] === 'handicap'
                                             ? item.handicapOdds
-                                            : item.overUnderOdds}
-                                        {item.predictionResult}
+                                            : item.handicapInChinese}
+                                        {item.predictedPlay === 'OVER' && '小'}{' '}
+                                        {item.predictedPlay === 'UNDER' && '大'}{' '}
+                                        {item.predictedPlay === 'HOME' && item.homeTeamName}
+                                        {item.predictedPlay === 'AWAY' && item.awayTeamName}
                                     </div>
                                 </div>
                             </div>
