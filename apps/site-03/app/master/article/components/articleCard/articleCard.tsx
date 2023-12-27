@@ -89,7 +89,12 @@ function ArticleCard({ article }: { article: RecommendPost }) {
                         <Avatar borderColor="#4489FF" src={article.avatarPath} />
                     </Link>
                     <div className={style.userInfo}>
-                        <div className={style.userName}>{article.mentorName}</div>
+                        <Link
+                            className={style.userName}
+                            href={`/master/masterAvatar/${article.mentorId}?status=analysis`}
+                        >
+                            {article.mentorName}
+                        </Link>
                         <div className={style.tagsContainer}>
                             {article.tag.winMaxAccurateStreak > 0 && (
                                 <Tag

@@ -7,6 +7,7 @@ import { type MentorFilter, type GetMentorListResponse } from 'data-center';
 import { getMentorList, unFollow, updateFollow } from 'data-center';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import Link from 'next/link';
 import Tag from '@/components/tag/tag';
 import Avatar from '@/components/avatar/avatar';
 import Fire from '@/app/img/fire.png';
@@ -46,28 +47,28 @@ function ExpertItem({ mentorList, setMentorList }: ExpertItemProps) {
         );
     };
 
-    const goMasterPredict = (id: number) => {
-        router.push(`/master/masterAvatar/${id}?status=analysis`);
-    };
     return (
         <>
             {mentorList.map(item => {
                 return (
                     <div className={style.masterItem} key={item.username}>
                         <div className={style.info}>
-                            <div
+                            <Link
                                 className={style.avatarContainer}
-                                onClick={() => {
-                                    goMasterPredict(item.memberId);
-                                }}
+                                href={`/master/masterAvatar/${item.memberId}?status=analysis`}
                             >
                                 <Avatar
                                     borderColor="#4489FF"
                                     src={item.avatarPath === '0' ? '' : item.avatarPath}
                                 />
-                            </div>
+                            </Link>
                             <div className={style.about}>
-                                <span>{item.username}</span>
+                                <Link
+                                    className={style.userName}
+                                    href={`/master/masterAvatar/${item.memberId}?status=analysis`}
+                                >
+                                    {item.username}
+                                </Link>
                                 <div>
                                     {item.tags.winMaxAccurateStreak > 0 && (
                                         <Tag

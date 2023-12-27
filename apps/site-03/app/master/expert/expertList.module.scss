@@ -28,6 +28,12 @@
     .about {
         flex-grow: 1;
 
+        .userName {
+            color: #222222;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
         .top {
             font-size: 14px;
             font-weight: 500;
