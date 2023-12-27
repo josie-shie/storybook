@@ -957,7 +957,7 @@ const GetRechargeOptionSchema = z.object({
 });
 
 export type GetRechargeOption = z.infer<typeof GetRechargeOptionSchema>;
-
+export type GetRechargeOptionListResponse = GetRechargeOption[];
 const GetRechargeOptionListResultSchema = z.object({
     getRechargeOptionList: z.object({
         list: z.array(GetRechargeOptionSchema)
@@ -969,10 +969,12 @@ type GetRechargeOptionListResult = z.infer<typeof GetRechargeOptionListResultSch
 /**
  * 取得充值推薦禮包
  * - params {@link GetRechargeOptionListRequest}
- * - returns {@link getRechargeOptionListResponse}
+ * - returns {@link GetRechargeOptionListResponse}
  * - {@link GetRechargeOption}
  */
-export const getRechargeOptionList = async ({ currencyCode }: GetRechargeOptionListRequest) => {
+export const getRechargeOptionList = async ({
+    currencyCode
+}: GetRechargeOptionListRequest): Promise<ReturnData<GetRechargeOptionListResponse>> => {
     try {
         const { data, errors } = await fetcher<
             FetchResultData<GetRechargeOptionListResult>,
@@ -1051,7 +1053,9 @@ type GetVerificationCaptchaResult = z.infer<typeof GetVerificationCaptchaResultS
  * 傳送驗證碼輸出
  * - returns {@link GetVerificationCaptchaResponse}
  */
-export const getVerificationCaptcha = async () => {
+export const getVerificationCaptcha = async (): Promise<
+    ReturnData<GetVerificationCaptchaResponse>
+> => {
     try {
         const { data, errors } = await fetcher<
             FetchResultData<GetVerificationCaptchaResult>,
@@ -1099,7 +1103,9 @@ export interface SendVerificationSmsRequest {
  * - params {@link SendVerificationSmsRequest}
  * - returns {@link SendVerificationSmsResponse}
  */
-export const sendVerificationSms = async (input: SendVerificationSmsRequest) => {
+export const sendVerificationSms = async (
+    input: SendVerificationSmsRequest
+): Promise<ReturnData<SendVerificationSmsResponse>> => {
     try {
         const { data, errors } = await fetcher<FetchResultData<SendVerificationSmsResult>, unknown>(
             {
