@@ -996,7 +996,7 @@ export const getRechargeOptionList = async ({
 
         return {
             success: true,
-            data: data.getRechargeOptionList
+            data: data.getRechargeOptionList.list
         };
     } catch (error) {
         return handleApiError(error);

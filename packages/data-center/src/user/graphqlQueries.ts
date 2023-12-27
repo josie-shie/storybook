@@ -372,7 +372,7 @@ export const GET_VERIFICATION_CAPTCHA_MUTATION = `
 
 export const SEND_VERIFICATION_SMS_MUTATION = `
     mutation sendVerificationSms($input: SendVerificationSmsInput!) {
-        sendVerificationSms {
+        sendVerificationSms(input: $input) {
             responseCode
             message
             verifyToken
