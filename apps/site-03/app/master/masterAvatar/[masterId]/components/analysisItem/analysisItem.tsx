@@ -3,12 +3,15 @@ import { timestampToString, timestampToMonthDay } from 'lib';
 import { useRouter } from 'next/navigation';
 import { type RecommendPost } from 'data-center';
 import { useEffect, useState } from 'react';
-import { getPostList } from 'data-center';
+import { getPostList, payForPost, getMemberInfo } from 'data-center';
 import { InfiniteScroll } from 'ui';
 import CircularProgress from '@mui/material/CircularProgress';
 import type { PredictArticleType } from '@/types/predict';
 import UnlockButton from '@/components/unlockButton/unlockButton';
 import NoData from '@/components/baseNoData/noData';
+import NormalDialog from '@/components/normalDialog/normalDialog';
+import { useUserStore } from '@/app/userStore';
+import ConfirmPayArticle from '@/app/master/article/components/confirmPayArticle/confirmPayArticle';
 import style from './analysisItem.module.scss';
 import IconWin from './img/win.png';
 import IconDraw from './img/draw.png';
@@ -44,8 +47,16 @@ function AnalysisItem({
     const [totalPage, setTotalPage] = useState<number>(1);
     const [isNoData, setIsNoData] = useState<boolean | null>(null);
     const [predictArticleList, setPredictArticleList] = useState<RecommendPost[]>([]);
+    const [isOpenPaid, setIsOpenPaid] = useState(false);
+    const [isOpenRecharge, setIsOpenRecharge] = useState(false);
+    const [articleInfo, setArticleInfo] = useState({} as RecommendPost);
 
     const router = useRouter();
+
+    const isVip = useUserStore.use.memberSubscribeStatus();
+    const userInfo = useUserStore.use.userInfo();
+    const isLogin = useUserStore.use.isLogin();
+    const setUserInfo = useUserStore.use.setUserInfo();
 
     const fetchData = async () => {
         const res = await getPostList({
@@ -75,6 +86,51 @@ function AnalysisItem({
         }
     };
 
+    const goPayment = () => {
+        setIsOpenRecharge(false);
+        router.push('/userInfo/subscribe');
+    };
+
+    const isOpenDialog = (item: RecommendPost) => {
+        if (!isLogin) {
+            setIsOpenPaid(false);
+            router.push(`/master/masterAvatar/${params.masterId}?status=analysis&auth=login`);
+            return;
+        }
+
+        if (isVip.planId === 1) {
+            router.push(`/master/article/${item.id}`);
+            return;
+        }
+        setIsOpenPaid(true);
+        setArticleInfo(item);
+    };
+
+    const onSubmit = async () => {
+        if (userInfo.balance < articleInfo.price) {
+            setIsOpenPaid(false);
+            setIsOpenRecharge(true);
+            return;
+        }
+
+        const res = await payForPost({ postId: Number(articleInfo.id) });
+
+        if (!res.success) {
+            return new Error();
+        }
+        void fetchData();
+        void getUser();
+        setIsOpenPaid(false);
+    };
+
+    const getUser = async () => {
+        const res = await getMemberInfo();
+        if (!res.success) {
+            return new Error();
+        }
+        setUserInfo(res.data);
+    };
+
     useEffect(() => {
         void fetchData();
     }, [currentPage]);
@@ -99,7 +155,12 @@ function AnalysisItem({
                                         {item.isUnlocked ? (
                                             <span className={style.unlocked}>已解鎖</span>
                                         ) : (
-                                            <UnlockButton price={item.price} />
+                                            <UnlockButton
+                                                handleClick={() => {
+                                                    isOpenDialog(item);
+                                                }}
+                                                price={item.price}
+                                            />
                                         )}
                                     </div>
                                 </div>
@@ -148,6 +209,26 @@ function AnalysisItem({
                     )}
                 </ul>
             )}
+            <NormalDialog
+                cancelText="取消"
+                confirmText="確認支付"
+                content={<ConfirmPayArticle price={articleInfo.price} />}
+                onClose={() => {
+                    setIsOpenPaid(false);
+                }}
+                onConfirm={onSubmit}
+                openDialog={isOpenPaid}
+            />
+            <NormalDialog
+                cancelText="取消"
+                confirmText="去充值"
+                content={<div>余额不足，请充值</div>}
+                onClose={() => {
+                    setIsOpenRecharge(false);
+                }}
+                onConfirm={goPayment}
+                openDialog={isOpenRecharge}
+            />
         </>
     );
 }

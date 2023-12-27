@@ -6,7 +6,6 @@ import {
 } from 'data-center';
 import { unFollow, updateFollow } from 'data-center';
 import Image from 'next/image';
-import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
 import Avatar from '@/components/avatar/avatar';
 import Tag from '@/components/tag/tag';
@@ -67,10 +66,10 @@ function Info({ params }: { params: { memberId: string } }) {
     const router = useRouter();
 
     const userInfo = useUserStore.use.userInfo();
+    const isLogin = useUserStore.use.isLogin();
 
     const onIsFocused = async (id: number, follow: boolean) => {
-        const isCookieExist = Cookies.get('access');
-        if (!isCookieExist) {
+        if (!isLogin) {
             router.push(`/master/memberAvatar/${params.memberId}?status=analysis&auth=login`);
             return;
         }
@@ -88,10 +87,9 @@ function Info({ params }: { params: { memberId: string } }) {
     };
 
     const fetchData = async () => {
-        const isCookieExist = Cookies.get('access');
         const res = await getMemberProfileWithMemberId({
             memberId: Number(params.memberId),
-            loginMemberId: isCookieExist ? userInfo.uid : 0
+            loginMemberId: isLogin ? userInfo.uid : 0
         });
 
         if (!res.success) {
