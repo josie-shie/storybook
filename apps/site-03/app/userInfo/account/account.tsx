@@ -245,7 +245,7 @@ function Account() {
                         label="出生日期："
                         name="birthday"
                         onChange={handleInputChange}
-                        placeholder="新增"
+                        placeholder="添加出生日期"
                         submitted={submittedState.birthday}
                         type="date"
                         value={formState.birthday}
