@@ -359,3 +359,23 @@ export const RECHARGE_PLATFORM_CURRENCY_MUTATION = `
         recharge(input: $input)
     }
 `;
+
+export const GET_VERIFICATION_CAPTCHA_MUTATION = `
+    mutation getVerificationCaptcha {
+        getVerificationCaptcha {
+            responseCode
+            captcha
+            verifyToken
+        }
+    }
+`;
+
+export const SEND_VERIFICATION_SMS_MUTATION = `
+    mutation sendVerificationSms($input: SendVerificationSmsInput!) {
+        sendVerificationSms(input: $input) {
+            responseCode
+            message
+            verifyToken
+        }
+    }
+`;

@@ -29,7 +29,9 @@ import {
     GET_MEMBER_SUBSCRIPTION_STATUS_QUERY,
     GET_RECHARGE_OPTION_LIST_QUERY,
     GET_MEMBER_TRANSACTION_LIST_QUERY,
-    RECHARGE_PLATFORM_CURRENCY_MUTATION
+    RECHARGE_PLATFORM_CURRENCY_MUTATION,
+    SEND_VERIFICATION_SMS_MUTATION,
+    GET_VERIFICATION_CAPTCHA_MUTATION
 } from './graphqlQueries';
 
 const RegisterResultSchema = z.object({
@@ -48,6 +50,7 @@ export interface RegisterRequest {
     parentId?: string;
     verificationCode: string;
     invitationCode?: string;
+    verifyToken: string;
 }
 
 const SendVerificationCodeResultSchema = z.object({
@@ -100,6 +103,7 @@ export interface LoginRequest {
     mobileNumber: string;
     password: string;
     verificationCode: string;
+    verifyToken: string;
 }
 
 export interface ForgetPasswordRequest {
@@ -107,12 +111,14 @@ export interface ForgetPasswordRequest {
     mobileNumber: string;
     verificationCode: string;
     newPassword: string;
+    verifyToken: string;
 }
 
 export interface UpdatePasswordRequest {
     verificationCode: string;
     password: string;
     newPassword: string;
+    verifyToken: string;
 }
 
 const MemberInfoSchema = z.object({
@@ -163,7 +169,8 @@ export const register = async ({
     password,
     parentId = '123', // TODO: 需改為選填，123 沒意義
     verificationCode,
-    invitationCode
+    invitationCode,
+    verifyToken
 }: RegisterRequest): Promise<ReturnData<string>> => {
     try {
         const { data, errors } = await fetcher<FetchResultData<RegisterResult>, unknown>({
@@ -177,7 +184,8 @@ export const register = async ({
                         password: btoa(password),
                         parentId,
                         verificationCode,
-                        invitationCode
+                        invitationCode,
+                        verifyToken
                     }
                 }
             }
@@ -203,7 +211,7 @@ export const register = async ({
 };
 
 /**
- * 發送驗證碼
+ * 發送驗證碼 (TODO: 待刪除)
  * - params : {@link SendVerificationCodeRequest}
  * - returns : string
  */
@@ -299,7 +307,8 @@ export const login = async ({
     countryCode,
     mobileNumber,
     password,
-    verificationCode
+    verificationCode,
+    verifyToken
 }: LoginRequest): Promise<ReturnData<string>> => {
     try {
         const { data, errors } = await fetcher<FetchResultData<LoginResult>, unknown>({
@@ -310,7 +319,8 @@ export const login = async ({
                         countryCode,
                         mobileNumber,
                         password: btoa(password),
-                        verificationCode
+                        verificationCode,
+                        verifyToken
                     }
                 }
             }
@@ -372,7 +382,8 @@ export const forgetPasswordReset = async ({
     countryCode,
     mobileNumber,
     verificationCode,
-    newPassword
+    newPassword,
+    verifyToken
 }: ForgetPasswordRequest): Promise<ReturnData<null>> => {
     try {
         const { data, errors } = await fetcher<FetchResultData<null>, unknown>({
@@ -383,7 +394,8 @@ export const forgetPasswordReset = async ({
                         countryCode,
                         mobileNumber,
                         verificationCode,
-                        new_password: btoa(newPassword)
+                        new_password: btoa(newPassword),
+                        verifyToken
                     }
                 }
             }
@@ -403,7 +415,8 @@ export const forgetPasswordReset = async ({
 export const updatePassword = async ({
     verificationCode,
     password,
-    newPassword
+    newPassword,
+    verifyToken
 }: UpdatePasswordRequest): Promise<ReturnData<null>> => {
     try {
         const { data, errors } = await fetcher<FetchResultData<null>, unknown>({
@@ -413,7 +426,8 @@ export const updatePassword = async ({
                     input: {
                         verificationCode,
                         password: btoa(password),
-                        new_password: btoa(newPassword)
+                        new_password: btoa(newPassword),
+                        verifyToken
                     }
                 }
             }
@@ -944,7 +958,7 @@ const GetRechargeOptionSchema = z.object({
 });
 
 export type GetRechargeOption = z.infer<typeof GetRechargeOptionSchema>;
-
+export type GetRechargeOptionListResponse = GetRechargeOption[];
 const GetRechargeOptionListResultSchema = z.object({
     getRechargeOptionList: z.object({
         list: z.array(GetRechargeOptionSchema)
@@ -956,10 +970,12 @@ type GetRechargeOptionListResult = z.infer<typeof GetRechargeOptionListResultSch
 /**
  * 取得充值推薦禮包
  * - params {@link GetRechargeOptionListRequest}
- * - returns {@link getRechargeOptionListResponse}
+ * - returns {@link GetRechargeOptionListResponse}
  * - {@link GetRechargeOption}
  */
-export const getRechargeOptionList = async ({ currencyCode }: GetRechargeOptionListRequest) => {
+export const getRechargeOptionList = async ({
+    currencyCode
+}: GetRechargeOptionListRequest): Promise<ReturnData<GetRechargeOptionListResponse>> => {
     try {
         const { data, errors } = await fetcher<
             FetchResultData<GetRechargeOptionListResult>,
@@ -981,7 +997,7 @@ export const getRechargeOptionList = async ({ currencyCode }: GetRechargeOptionL
 
         return {
             success: true,
-            data: data.getRechargeOptionList
+            data: data.getRechargeOptionList.list
         };
     } catch (error) {
         return handleApiError(error);
@@ -1015,6 +1031,99 @@ export const rechargePlatformCurrency = async (
 
         throwErrorMessage(errors);
         return { success: true, data };
+    } catch (error) {
+        return handleApiError(error);
+    }
+};
+
+const GetVerificationCaptchaSchema = z.object({
+    responseCode: z.number(),
+    captcha: z.string(),
+    verifyToken: z.string()
+});
+
+const GetVerificationCaptchaResultSchema = z.object({
+    getVerificationCaptcha: GetVerificationCaptchaSchema
+});
+
+export type GetVerificationCaptchaResponse = z.infer<typeof GetVerificationCaptchaSchema>;
+
+type GetVerificationCaptchaResult = z.infer<typeof GetVerificationCaptchaResultSchema>;
+
+/**
+ * 傳送驗證碼輸出
+ * - returns {@link GetVerificationCaptchaResponse}
+ */
+export const getVerificationCaptcha = async (): Promise<
+    ReturnData<GetVerificationCaptchaResponse>
+> => {
+    try {
+        const { data, errors } = await fetcher<
+            FetchResultData<GetVerificationCaptchaResult>,
+            unknown
+        >(
+            {
+                data: {
+                    query: GET_VERIFICATION_CAPTCHA_MUTATION
+                }
+            },
+            { cache: 'no-store' }
+        );
+
+        GetVerificationCaptchaResultSchema.parse(data);
+
+        throwErrorMessage(errors);
+        return { success: true, data: data.getVerificationCaptcha };
+    } catch (error) {
+        return handleApiError(error);
+    }
+};
+
+const SendVerificationSmsSchema = z.object({
+    responseCode: z.number(),
+    message: z.string(),
+    verifyToken: z.string()
+});
+
+const SendVerificationSmsResultSchema = z.object({
+    sendVerificationSms: SendVerificationSmsSchema
+});
+
+export type SendVerificationSmsResponse = z.infer<typeof SendVerificationSmsSchema>;
+
+type SendVerificationSmsResult = z.infer<typeof SendVerificationSmsResultSchema>;
+
+export interface SendVerificationSmsRequest {
+    countryCode: string;
+    mobileNumber: string;
+    checkExistingAccount: boolean;
+}
+
+/**
+ * 發送驗證碼
+ * - params {@link SendVerificationSmsRequest}
+ * - returns {@link SendVerificationSmsResponse}
+ */
+export const sendVerificationSms = async (
+    input: SendVerificationSmsRequest
+): Promise<ReturnData<SendVerificationSmsResponse>> => {
+    try {
+        const { data, errors } = await fetcher<FetchResultData<SendVerificationSmsResult>, unknown>(
+            {
+                data: {
+                    query: SEND_VERIFICATION_SMS_MUTATION,
+                    variables: {
+                        input
+                    }
+                }
+            },
+            { cache: 'no-store' }
+        );
+
+        SendVerificationSmsResultSchema.parse(data);
+
+        throwErrorMessage(errors);
+        return { success: true, data: data.sendVerificationSms };
     } catch (error) {
         return handleApiError(error);
     }

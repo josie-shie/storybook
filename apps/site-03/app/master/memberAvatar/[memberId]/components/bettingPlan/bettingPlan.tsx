@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { getMemberIndividualGuessMatches, type MemberIndividualGuessMatch } from 'data-center';
+import { getMentorIndividualGuessMatches, type MemberIndividualGuessMatch } from 'data-center';
 import { useEffect, useState } from 'react';
 import { timestampToString } from 'lib';
 import NoData from '@/components/baseNoData/noData';
@@ -22,10 +22,10 @@ function BettingPlan({
     const [isNoData, setIsNoData] = useState<boolean | null>(null);
 
     const fetchData = async () => {
-        const res = await getMemberIndividualGuessMatches({
+        const res = await getMentorIndividualGuessMatches({
             memberId: 1,
             currentPage: 1,
-            pageSize: 1,
+            pageSize: 30,
             guessType: planActiveTab
         });
 
@@ -64,7 +64,7 @@ function BettingPlan({
 
     useEffect(() => {
         void fetchData();
-    }, []);
+    }, [planActiveTab]);
 
     return (
         <>

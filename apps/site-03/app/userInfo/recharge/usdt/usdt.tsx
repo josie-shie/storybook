@@ -46,7 +46,7 @@ function BlockChain({ selectTitle, options, onSelectChain }: SectionSelectProps)
 function Usdt() {
     const router = useRouter();
     const back = () => {
-        router.back();
+        router.push('/userInfo/recharge');
     };
 
     const headerProps = {
@@ -109,7 +109,7 @@ function Usdt() {
                                 <span>虚拟货币(USDT)</span>
                             </div>
                             <div className={style.pay}>
-                                <div className={style.title}>充值金額:</div>
+                                <div className={style.title}>充值金额:</div>
                                 <div className={style.amount}>
                                     <Image alt="usdt" height={32} src={UsdtIcon} width={32} />
                                     <input
@@ -119,7 +119,6 @@ function Usdt() {
                                         value={amount}
                                     />
                                 </div>
-                                <div className={style.tip}>USDT: 1 : 99999平台幣</div>
                                 <BlockChain
                                     onSelectChain={handleSelectChain}
                                     options={chainList}

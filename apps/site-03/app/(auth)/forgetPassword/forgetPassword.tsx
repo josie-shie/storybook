@@ -3,7 +3,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormControl } from '@mui/material';
 import type { ForgetPasswordRequest } from 'data-center';
-import { forgetPasswordReset, sendVerificationCode } from 'data-center';
+import { forgetPasswordReset, sendVerificationSms } from 'data-center';
 import { useNotificationStore } from '@/app/notificationStore';
 import { useUserStore } from '@/app/userStore';
 import {
@@ -30,7 +30,8 @@ const schema = yup.object().shape({
     confirmPassword: yup
         .string()
         .oneOf([yup.ref('newPassword')], '请输入6-16位英文+数字')
-        .required('再次输入新密码')
+        .required('再次输入新密码'),
+    verifyToken: yup.string().required()
 });
 
 function ForgetPassword() {
@@ -40,23 +41,35 @@ function ForgetPassword() {
     const { sendCodeSuccess, setSendCodeSuccess, countDownNumber, setCountDownNumber } =
         registerStore;
 
-    const { control, formState, handleSubmit, watch } = useForm({
+    const { control, formState, handleSubmit, watch, setValue } = useForm({
         resolver: yupResolver(schema),
         defaultValues: {
             mobileNumber: '',
             verificationCode: '',
             newPassword: '',
             confirmPassword: '',
-            countryCode: '+86'
+            countryCode: '+86',
+            verifyToken: ''
         }
     });
     const errors = formState.errors;
 
-    const { countryCode, mobileNumber, newPassword, confirmPassword, verificationCode } = watch();
+    const {
+        countryCode,
+        mobileNumber,
+        newPassword,
+        confirmPassword,
+        verificationCode,
+        verifyToken
+    } = watch();
 
     const isSendVerificationCodeDisable = !countryCode || !mobileNumber;
     const isSubmitDisable =
-        isSendVerificationCodeDisable || !verificationCode || !newPassword || !confirmPassword;
+        isSendVerificationCodeDisable ||
+        !verificationCode ||
+        !newPassword ||
+        !confirmPassword ||
+        !verifyToken;
 
     const onSubmit = async (data: ForgetPasswordRequest) => {
         const res = await forgetPasswordReset(data);
@@ -72,10 +85,9 @@ function ForgetPassword() {
     };
 
     const getVerificationCode = async () => {
-        const res = await sendVerificationCode({
+        const res = await sendVerificationSms({
             countryCode,
             mobileNumber,
-            verificationType: 0,
             checkExistingAccount: false
         });
 
@@ -87,6 +99,7 @@ function ForgetPassword() {
 
         setSendCodeSuccess(true);
         setCountDown();
+        setValue('verifyToken', res.data.verifyToken);
     };
 
     const setCountDown = () => {
@@ -173,6 +186,9 @@ function ForgetPassword() {
                         />
                     )}
                 />
+            </FormControl>
+            <FormControl>
+                <input name="verifyToken" type="hidden" value={verifyToken} />
             </FormControl>
             <FormControl className={style.submitButton} fullWidth>
                 <SubmitButton disabled={isSubmitDisable} label="提交" />
