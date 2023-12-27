@@ -20,18 +20,20 @@ const calculatePercentage = (a: number, b: number) => {
     return percentage;
 };
 
+const guessTypeLabel = {
+    HANDICAP: { left: '主', right: '客' },
+    OVERUNDER: { left: '大', right: '小' }
+};
+
 function Guess({ play, isLogin }: GuessProps) {
     const userInfo = useUserStore.use.userInfo();
     const matchId = Number(useParams().matchId);
     const [direction, setDirection] = useState<'left' | 'right'>('left');
     const [openGuessDialog, setOpenGuessDialog] = useState(false);
-    const guessTypeLabel = {
-        HANDICAP: { left: '主', right: '客' },
-        OVERUNDER: { left: '大', right: '小' }
-    };
+
     const guessProportion = useContestDetailStore.use.guessProportion();
     const matchDetail = useContestDetailStore.use.matchDetail();
-    const guessTeamName = direction === 'left' ? matchDetail.homeChs : matchDetail.awayChs;
+
     const setGuessProportion = useContestDetailStore.use.setGuessProportion();
     const setIsDrawerOpen = useAuthStore.use.setIsDrawerOpen();
     const setAuthQuery = useUserStore.use.setAuthQuery();
@@ -89,14 +91,15 @@ function Guess({ play, isLogin }: GuessProps) {
     return (
         <div className={style.box}>
             <GuessDialog
-                handicap="让一球/球半"
+                awayTeamName={matchDetail.awayChs}
+                handicap={guessLabel}
+                homeTeamName={matchDetail.homeChs}
                 onClose={() => {
                     setOpenGuessDialog(false);
                 }}
                 onConfirm={confirmGuess}
                 openPaid={openGuessDialog}
-                play="让分"
-                teamName={guessTeamName}
+                play={guessTypeLabel[play][direction]}
             />
             <div
                 className={`${style.team} ${leftBox.itemType === 'selected' ? style.selected : ''}`}
