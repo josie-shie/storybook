@@ -49,10 +49,20 @@ function Datepicker({
 
     const handleConfirmDate = () => {
         if (startDate && endDate) {
-            void handleChangDate([startDate.getTime(), endDate.getTime()], 'RANGE');
+            const startDateTime = startDate.getTime() / 1000;
+            const endDateTime = endDate.getTime() / 1000;
+            const { startOfDay, endOfDay } = formatSelectedOneDay(startDate);
+            if (startDateTime === endDateTime) {
+                void handleChangDate(
+                    [startOfDay.getTime() / 1000, endOfDay.getTime() / 1000],
+                    'RANGE'
+                );
+            } else {
+                void handleChangDate([startDateTime, endDateTime], 'RANGE');
+            }
         } else if (startDate) {
             const { startOfDay, endOfDay } = formatSelectedOneDay(startDate);
-            void handleChangDate([startOfDay.getTime(), endOfDay.getTime()], 'RANGE');
+            void handleChangDate([startOfDay.getTime() / 1000, endOfDay.getTime() / 1000], 'RANGE');
         }
         setOpenModal(false);
         setIsDateRangeOpen(false);
