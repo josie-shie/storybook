@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import CircularProgress from '@mui/material/CircularProgress';
 import Avatar from '@/components/avatar/avatar';
 import BaseNoData from '@/components/baseNoData/noData';
 import { useRankStore } from '../../rank/rankStore';
@@ -8,7 +9,7 @@ import Soccer from './img/soccer.png';
 import Crown from './img/crown.png';
 import Rank from './img/rank.png';
 
-function PeriodListItem() {
+function PeriodListItem({ isLoading }: { isLoading: boolean }) {
     const rankList = useRankStore.use.rankList();
     const onlyShowToday = useRankStore.use.onlyShowToday();
 
@@ -16,6 +17,12 @@ function PeriodListItem() {
         return ranking > 0 && ranking < 6 ? style[`ranking${ranking}`] : '';
     };
 
+    if (isLoading)
+        return (
+            <div className={style.loadingBlock}>
+                <CircularProgress size={24} />
+            </div>
+        );
     if (rankList.length === 0) return <BaseNoData />;
     return (
         <>
@@ -38,7 +45,7 @@ function PeriodListItem() {
                             <span>{item.ranking}</span>
                         </div>
                         <div className={style.avatarContainer}>
-                            <Avatar src={item.memberAvatar} />
+                            <Avatar src={item.memberAvatar === '0' ? '' : item.memberAvatar} />
                         </div>
                         <div className={style.content}>
                             <div className={style.name}>{item.memberName}</div>
