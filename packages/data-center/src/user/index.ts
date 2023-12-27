@@ -29,7 +29,8 @@ import {
     GET_MEMBER_SUBSCRIPTION_STATUS_QUERY,
     GET_RECHARGE_OPTION_LIST_QUERY,
     GET_MEMBER_TRANSACTION_LIST_QUERY,
-    RECHARGE_PLATFORM_CURRENCY_MUTATION
+    RECHARGE_PLATFORM_CURRENCY_MUTATION,
+    SEND_VERIFICATION_SMS_MUTATION
 } from './graphqlQueries';
 
 const RegisterResultSchema = z.object({
@@ -1015,6 +1016,95 @@ export const rechargePlatformCurrency = async (
 
         throwErrorMessage(errors);
         return { success: true, data };
+    } catch (error) {
+        return handleApiError(error);
+    }
+};
+
+const GetVerificationCaptchaSchema = z.object({
+    responseCode: z.number(),
+    captcha: z.string(),
+    verifyToken: z.string()
+});
+
+const GetVerificationCaptchaResultSchema = z.object({
+    getVerificationCaptcha: GetVerificationCaptchaSchema
+});
+
+export type GetVerificationCaptchaResponse = z.infer<typeof GetVerificationCaptchaSchema>;
+
+type GetVerificationCaptchaResult = z.infer<typeof GetVerificationCaptchaResultSchema>;
+
+/**
+ * 傳送驗證碼輸出
+ * - returns {@link GetVerificationCaptchaResponse}
+ */
+export const getVerificationCaptcha = async () => {
+    try {
+        const { data, errors } = await fetcher<
+            FetchResultData<GetVerificationCaptchaResult>,
+            unknown
+        >(
+            {
+                data: {
+                    query: RECHARGE_PLATFORM_CURRENCY_MUTATION
+                }
+            },
+            { cache: 'no-store' }
+        );
+
+        GetVerificationCaptchaSchema.parse(data);
+
+        throwErrorMessage(errors);
+        return { success: true, data: data.getVerificationCaptcha };
+    } catch (error) {
+        return handleApiError(error);
+    }
+};
+
+const SendVerificationSmsSchema = z.object({
+    responseCode: z.number(),
+    message: z.string(),
+    verifyToken: z.string()
+});
+
+const SendVerificationSmsResultSchema = z.object({
+    sendVerificationSms: SendVerificationSmsSchema
+});
+
+export type SendVerificationSmsResponse = z.infer<typeof SendVerificationSmsSchema>;
+
+type SendVerificationSmsResult = z.infer<typeof SendVerificationSmsResultSchema>;
+
+export interface SendVerificationSmsRequest {
+    countryCode: string;
+    mobileNumber: string;
+    checkExistingAccount: boolean;
+}
+
+/**
+ * 發送驗證碼
+ * - params {@link SendVerificationSmsRequest}
+ * - returns {@link SendVerificationSmsResponse}
+ */
+export const sendVerificationSms = async (input: SendVerificationSmsRequest) => {
+    try {
+        const { data, errors } = await fetcher<FetchResultData<SendVerificationSmsResult>, unknown>(
+            {
+                data: {
+                    query: SEND_VERIFICATION_SMS_MUTATION,
+                    variables: {
+                        input
+                    }
+                }
+            },
+            { cache: 'no-store' }
+        );
+
+        SendVerificationSmsResultSchema.parse(data);
+
+        throwErrorMessage(errors);
+        return { success: true, data: data.sendVerificationSms };
     } catch (error) {
         return handleApiError(error);
     }
