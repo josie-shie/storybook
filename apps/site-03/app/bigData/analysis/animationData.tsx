@@ -41,7 +41,7 @@ function AnimationData({ analysisTime, onUpdateAnalysis }: TestProps) {
 
     return (
         <div className={style.animationData}>
-            <div className={style.banner}>
+            <div className={`${style.banner} ${!analysisTime ? style.isVip : ''}`}>
                 {analysisTime ? (
                     <div className={style.animate}>
                         <div className={`${style.top} ${style.animated} ${style.fadeInLeft}`}>

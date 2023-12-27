@@ -32,6 +32,10 @@
         height: 202px;
         overflow: hidden;
 
+        &.isVip {
+            height: 250px;
+        }
+
         .enough {
             position: absolute;
             top: 24px;
