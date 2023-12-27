@@ -7,7 +7,6 @@ import { type MentorFilter, type GetMentorListResponse } from 'data-center';
 import { getMentorList, unFollow, updateFollow } from 'data-center';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import Cookies from 'js-cookie';
 import Tag from '@/components/tag/tag';
 import Avatar from '@/components/avatar/avatar';
 import Fire from '@/app/img/fire.png';
@@ -24,12 +23,12 @@ interface ExpertItemProps {
 
 function ExpertItem({ mentorList, setMentorList }: ExpertItemProps) {
     const userInfo = useUserStore.use.userInfo();
+    const isLogin = useUserStore.use.isLogin();
 
     const router = useRouter();
 
     const onFocused = async (isFollow: boolean, id: number) => {
-        const isCookieExist = Cookies.get('access');
-        if (!isCookieExist) {
+        if (!isLogin) {
             router.push('/master/expert/?auth=login');
             return;
         }

@@ -6,13 +6,12 @@ import { useEffect, useState } from 'react';
 import { getPostList, payForPost, getMemberInfo } from 'data-center';
 import { InfiniteScroll } from 'ui';
 import CircularProgress from '@mui/material/CircularProgress';
-import Cookies from 'js-cookie';
 import type { PredictArticleType } from '@/types/predict';
 import UnlockButton from '@/components/unlockButton/unlockButton';
 import NoData from '@/components/baseNoData/noData';
 import NormalDialog from '@/components/normalDialog/normalDialog';
 import { useUserStore } from '@/app/userStore';
-import ConfirmPayArticle from '../../../../article/components/confirmPayArticle/confirmPayArticle';
+import ConfirmPayArticle from '@/app/master/article/components/confirmPayArticle/confirmPayArticle';
 import style from './analysisItem.module.scss';
 import IconWin from './img/win.png';
 import IconDraw from './img/draw.png';
@@ -56,6 +55,7 @@ function AnalysisItem({
 
     const isVip = useUserStore.use.memberSubscribeStatus();
     const userInfo = useUserStore.use.userInfo();
+    const isLogin = useUserStore.use.isLogin();
     const setUserInfo = useUserStore.use.setUserInfo();
 
     const fetchData = async () => {
@@ -92,8 +92,7 @@ function AnalysisItem({
     };
 
     const isOpenDialog = (item: RecommendPost) => {
-        const isCookieExist = Cookies.get('access');
-        if (!isCookieExist) {
+        if (!isLogin) {
             setIsOpenPaid(false);
             router.push(`/master/masterAvatar/${params.masterId}?status=analysis&auth=login`);
             return;

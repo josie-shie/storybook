@@ -11,7 +11,6 @@ import {
 } from 'data-center';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import Cookies from 'js-cookie';
 import Avatar from '@/components/avatar/avatar';
 import Tag from '@/components/tag/tag';
 import Fire from '@/app/img/fire.png';
@@ -27,6 +26,7 @@ function MasterItem({ params }: { params: { memberId: string } }) {
     const router = useRouter();
 
     const userInfo = useUserStore.use.userInfo();
+    const isLogin = useUserStore.use.isLogin();
 
     const fetchData = async () => {
         try {
@@ -44,8 +44,7 @@ function MasterItem({ params }: { params: { memberId: string } }) {
     };
 
     const onIsFocused = async (id: number, follow: boolean) => {
-        const isCookieExist = Cookies.get('access');
-        if (!isCookieExist) {
+        if (!isLogin) {
             router.push(`/master/memberAvatar/${params.memberId}?status=focus&auth=login`);
             return;
         }

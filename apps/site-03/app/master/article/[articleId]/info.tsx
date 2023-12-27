@@ -4,7 +4,6 @@ import { type GetPostDetailResponse } from 'data-center';
 import type { Dispatch, SetStateAction } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import Cookies from 'js-cookie';
 import Avatar from '@/components/avatar/avatar';
 import Tag from '@/components/tag/tag';
 import Fire from '@/app/img/fire.png';
@@ -18,12 +17,12 @@ interface InfoProps {
 
 function Info({ article, setArticle }: InfoProps) {
     const userInfo = useUserStore.use.userInfo();
+    const isLogin = useUserStore.use.isLogin();
 
     const router = useRouter();
 
     const onIsFocused = async (id: number, follow: boolean) => {
-        const isCookieExist = Cookies.get('access');
-        if (!isCookieExist) {
+        if (!isLogin) {
             router.push(`/master/masterAvatar/${article.id}?status=analysis&auth=login?auth=login`);
             return;
         }

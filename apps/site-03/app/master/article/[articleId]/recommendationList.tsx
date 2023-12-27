@@ -6,7 +6,6 @@ import { timestampToString, timestampToMonthDay } from 'lib';
 import { type RecommendPost } from 'data-center';
 import { useRouter } from 'next/navigation';
 import { payForPost, getMemberInfo } from 'data-center';
-import Cookies from 'js-cookie';
 import NoData from '@/components/baseNoData/noData';
 import UnlockButton from '@/components/unlockButton/unlockButton';
 import { useUserStore } from '@/app/userStore';
@@ -32,6 +31,7 @@ function RecommendationItem({
 
     const isVip = useUserStore.use.memberSubscribeStatus();
     const userInfo = useUserStore.use.userInfo();
+    const isLogin = useUserStore.use.isLogin();
     const setUserInfo = useUserStore.use.setUserInfo();
 
     const router = useRouter();
@@ -46,9 +46,7 @@ function RecommendationItem({
     };
 
     const isOpenDialog = (item: RecommendPost) => {
-        const isCookieExist = Cookies.get('access');
-
-        if (!isCookieExist) {
+        if (!isLogin) {
             router.push(`/master/article/${params.articleId}?auth=login`);
             return;
         }
