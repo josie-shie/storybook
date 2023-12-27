@@ -49,6 +49,7 @@ export interface RegisterRequest {
     parentId?: string;
     verificationCode: string;
     invitationCode?: string;
+    verifyToken: string;
 }
 
 const SendVerificationCodeResultSchema = z.object({
@@ -101,6 +102,7 @@ export interface LoginRequest {
     mobileNumber: string;
     password: string;
     verificationCode: string;
+    verifyToken: string;
 }
 
 export interface ForgetPasswordRequest {
@@ -108,12 +110,14 @@ export interface ForgetPasswordRequest {
     mobileNumber: string;
     verificationCode: string;
     newPassword: string;
+    verifyToken: string;
 }
 
 export interface UpdatePasswordRequest {
     verificationCode: string;
     password: string;
     newPassword: string;
+    verifyToken: string;
 }
 
 const MemberInfoSchema = z.object({
@@ -164,7 +168,8 @@ export const register = async ({
     password,
     parentId = '123', // TODO: 需改為選填，123 沒意義
     verificationCode,
-    invitationCode
+    invitationCode,
+    verifyToken
 }: RegisterRequest): Promise<ReturnData<string>> => {
     try {
         const { data, errors } = await fetcher<FetchResultData<RegisterResult>, unknown>({
@@ -178,7 +183,8 @@ export const register = async ({
                         password: btoa(password),
                         parentId,
                         verificationCode,
-                        invitationCode
+                        invitationCode,
+                        verifyToken
                     }
                 }
             }
@@ -204,7 +210,7 @@ export const register = async ({
 };
 
 /**
- * 發送驗證碼
+ * 發送驗證碼 (TODO: 待刪除)
  * - params : {@link SendVerificationCodeRequest}
  * - returns : string
  */
@@ -300,7 +306,8 @@ export const login = async ({
     countryCode,
     mobileNumber,
     password,
-    verificationCode
+    verificationCode,
+    verifyToken
 }: LoginRequest): Promise<ReturnData<string>> => {
     try {
         const { data, errors } = await fetcher<FetchResultData<LoginResult>, unknown>({
@@ -311,7 +318,8 @@ export const login = async ({
                         countryCode,
                         mobileNumber,
                         password: btoa(password),
-                        verificationCode
+                        verificationCode,
+                        verifyToken
                     }
                 }
             }
@@ -373,7 +381,8 @@ export const forgetPasswordReset = async ({
     countryCode,
     mobileNumber,
     verificationCode,
-    newPassword
+    newPassword,
+    verifyToken
 }: ForgetPasswordRequest): Promise<ReturnData<null>> => {
     try {
         const { data, errors } = await fetcher<FetchResultData<null>, unknown>({
@@ -384,7 +393,8 @@ export const forgetPasswordReset = async ({
                         countryCode,
                         mobileNumber,
                         verificationCode,
-                        new_password: btoa(newPassword)
+                        new_password: btoa(newPassword),
+                        verifyToken
                     }
                 }
             }
@@ -404,7 +414,8 @@ export const forgetPasswordReset = async ({
 export const updatePassword = async ({
     verificationCode,
     password,
-    newPassword
+    newPassword,
+    verifyToken
 }: UpdatePasswordRequest): Promise<ReturnData<null>> => {
     try {
         const { data, errors } = await fetcher<FetchResultData<null>, unknown>({
@@ -414,7 +425,8 @@ export const updatePassword = async ({
                     input: {
                         verificationCode,
                         password: btoa(password),
-                        new_password: btoa(newPassword)
+                        new_password: btoa(newPassword),
+                        verifyToken
                     }
                 }
             }
