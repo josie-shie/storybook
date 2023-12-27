@@ -97,7 +97,7 @@ function SystemError() {
                         setOpenNormalDialog(false);
                     }}
                 >
-                    回報錯誤
+                    回报错误
                 </div>
             </div>
         </>

@@ -1,7 +1,25 @@
 'use client';
 import { type ReactNode } from 'react';
+import { usePathname } from 'next/navigation';
+import { AnimatePresence, motion } from 'framer-motion';
 import { createAnalysisResultStore } from './analysisResultStore';
 import { creatMatchFilterStore } from './matchFilterStore';
+import style from './layout.module.scss';
+
+const pageTransitionVariants = {
+    initial: {
+        transform: 'translateX(100%)',
+        transition: { ease: [0.05, 0.7, 0.1, 1.0], duration: 0.2 }
+    },
+    animate: {
+        transform: 'translateX(0)',
+        transition: { ease: [0.05, 0.7, 0.1, 1.0], duration: 0.2 }
+    },
+    exit: {
+        transform: 'translateX(100%)',
+        transition: { ease: [0.05, 0.7, 0.1, 1.0], duration: 0.2 }
+    }
+};
 
 function CreateStore({ children }: { children: ReactNode }) {
     createAnalysisResultStore({
@@ -17,7 +35,22 @@ function CreateStore({ children }: { children: ReactNode }) {
 }
 
 function DetailLayout({ children }: { children: ReactNode }) {
-    return <CreateStore>{children}</CreateStore>;
+    const params = usePathname();
+
+    return (
+        <AnimatePresence mode="popLayout">
+            <motion.div
+                animate="animate"
+                className={style.layout}
+                exit="exit"
+                initial="initial"
+                key={params}
+                variants={pageTransitionVariants}
+            >
+                <CreateStore>{children}</CreateStore>
+            </motion.div>
+        </AnimatePresence>
+    );
 }
 
 export default DetailLayout;

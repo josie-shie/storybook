@@ -117,7 +117,7 @@ function SystemError() {
                         router.push('/bigData/analysis?status=analysis');
                     }}
                 >
-                    回報錯誤
+                    回报错误
                 </div>
             </div>
         </>
@@ -226,9 +226,11 @@ function ResultContent() {
         });
 
         if (!res.success) {
-            setOpenNormalDialog(true);
-            setLoading(false);
-            setAnalysisResultData(undefined);
+            setTimeout(() => {
+                setOpenNormalDialog(true);
+                setLoading(false);
+                setAnalysisResultData(undefined);
+            }, 500);
             return;
         }
 

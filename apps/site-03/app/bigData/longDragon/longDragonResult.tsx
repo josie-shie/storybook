@@ -6,6 +6,7 @@ import { getBigdataHint } from 'data-center';
 import { useRouter } from 'next/navigation';
 import HeaderTitleFilter from '@/components/header/headerTitleFilter';
 import Loading from '@/components/loading/loading';
+import NoData from '@/components/baseNoData/noData';
 import { useMatchFilterStore } from '../analysis/matchFilterStore';
 import { useHintsFormStore } from '../analysis/hintsFormStore';
 import { useLongDragonStore } from '../longDragonStore';
@@ -52,7 +53,7 @@ function SystemError() {
                         router.push('/bigData/analysis?status=tips');
                     }}
                 >
-                    回報錯誤
+                    回报错误
                 </div>
             </div>
         </>
@@ -97,8 +98,11 @@ function LongDragonResult() {
             progress: hintsSelectProgres as OddsHintsProgress
         });
         if (!res.success) {
-            setOpenNormalDialog(true);
-            setDialogContent(<SystemError />);
+            setTimeout(() => {
+                setOpenNormalDialog(true);
+                setIsLoading(false);
+                setDialogContent(<SystemError />);
+            }, 500);
             return;
         }
         setHandicapTips(res.data);
@@ -160,6 +164,10 @@ function LongDragonResult() {
         setFilterInit();
     }, [contestInfo, setFilterInit]);
 
+    useEffect(() => {
+        setDialogContent(null);
+    }, [setDialogContent]);
+
     return (
         <>
             <HeaderTitleFilter backHandler={backHandler} background title="今日长龙赛事" />
@@ -198,15 +206,22 @@ function LongDragonResult() {
                         {isLoading ? (
                             <Loading />
                         ) : (
-                            <HandicapTips
-                                activeFilters={isActive}
-                                hintsSelectPlay={hintsSelectPlay}
-                                hintsSelectProgres={hintsSelectProgres}
-                            />
+                            <>
+                                {handicapTips.length ? (
+                                    <HandicapTips
+                                        activeFilters={isActive}
+                                        hintsSelectPlay={hintsSelectPlay}
+                                        hintsSelectProgres={hintsSelectProgres}
+                                    />
+                                ) : (
+                                    <NoData />
+                                )}
+                            </>
                         )}
                     </div>
                 </div>
             </div>
+
             <ErrorDialog
                 content={<div className={style.dialogContent}>{dialogContent}</div>}
                 onClose={() => {
