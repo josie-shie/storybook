@@ -106,7 +106,7 @@ function ArticleContent({ params, article, fetchPostDetail }: ArticleContentProp
             return new Error();
         }
         setRecommendationList(res.data.posts);
-        setIsNoData(res.data.posts === 0);
+        setIsNoData(res.data.posts.length === 0);
     };
 
     useEffect(() => {
