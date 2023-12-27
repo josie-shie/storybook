@@ -19,9 +19,11 @@ function UserMasterRank() {
     const memberInfo = useMasterRankStore.use.member();
     const setMember = useMasterRankStore.use.setMember();
     const setMasterRankList = useMasterRankStore.use.setMasterRankList();
+    const setIsLoading = useMasterRankStore.use.setIsLoading();
 
     useEffect(() => {
         async function fetchMasterRank() {
+            setIsLoading(true);
             const masterRank = await getGuessRank({
                 memberId: isLogin ? userInfo.uid : 1,
                 rankType: 3
@@ -30,6 +32,7 @@ function UserMasterRank() {
                 const data = masterRank.data;
                 setMember(data.memberRank);
                 setMasterRankList(data.guessRank);
+                setIsLoading(false);
             }
         }
         void fetchMasterRank();
