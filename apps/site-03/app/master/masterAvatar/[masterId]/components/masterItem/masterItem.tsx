@@ -18,9 +18,11 @@ import Fire from '@/app/img/fire.png';
 import NoData from '@/components/baseNoData/noData';
 import { useUserStore } from '@/app/userStore';
 import style from './masterItem.module.scss';
+import SkeletonLayout from './components/skeleton';
 
 function MasterItem({ params }: { params: { masterId } }) {
     const [masterItem, setMasterItem] = useState<GetFollowersResponse>([]);
+    const [isNoData, setIsNoData] = useState<boolean | null>(null);
 
     const router = useRouter();
 
@@ -34,6 +36,7 @@ function MasterItem({ params }: { params: { masterId } }) {
         }
 
         setMasterItem(res.data);
+        setIsNoData(res.data.length === 0);
     };
 
     const onIsFocused = async (id: number, follow: boolean) => {
@@ -79,7 +82,11 @@ function MasterItem({ params }: { params: { masterId } }) {
 
     return (
         <>
-            {masterItem.length > 0 ? (
+            {masterItem.length === 0 && isNoData === null && <SkeletonLayout />}
+
+            {masterItem.length === 0 && isNoData ? (
+                <NoData />
+            ) : (
                 <>
                     {masterItem.map(item => {
                         return (
@@ -159,8 +166,6 @@ function MasterItem({ params }: { params: { masterId } }) {
                         );
                     })}
                 </>
-            ) : (
-                <NoData />
             )}
         </>
     );

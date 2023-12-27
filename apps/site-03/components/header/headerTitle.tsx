@@ -10,9 +10,10 @@ import Notice from './components/notice/notice';
 
 interface HeaderProps {
     title: string;
+    srcPath: string;
 }
 
-function HeaderTitle({ title }: HeaderProps) {
+function HeaderTitle({ title, srcPath }: HeaderProps) {
     const userInfoIsLoading = useUserStore.use.userInfoIsLoading();
     const router = useRouter();
     const [mounted, setMounted] = useState(false);
@@ -20,19 +21,15 @@ function HeaderTitle({ title }: HeaderProps) {
         setMounted(true);
     }, []);
 
+    const goBack = () => {
+        router.push(srcPath);
+    };
+
     return (
         <div className={style.placeholder}>
             <div className={style.header} style={{ backgroundImage: `url(${pureBackground.src})` }}>
                 <div className={style.title}>
-                    <Image
-                        alt=""
-                        height={24}
-                        onClick={() => {
-                            router.back();
-                        }}
-                        src={backLeftArrowImg}
-                        width={24}
-                    />
+                    <Image alt="" height={24} onClick={goBack} src={backLeftArrowImg} width={24} />
                     <div className={style.text}>{title}</div>
                 </div>
                 {mounted && !userInfoIsLoading ? (

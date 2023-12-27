@@ -7,7 +7,6 @@ import Footer from '@/components/footer/footer';
 import Header from '@/components/header/headerLogo';
 import Loading from '@/components/loading/loading';
 import { useUserStore } from '@/app/userStore';
-import { creatHandicapAnalysisStore } from '../formStore';
 import AnimationData from './animationData';
 import content from './img/content.png';
 import style from './layout.module.scss';
@@ -29,9 +28,6 @@ function AnalysisLayout({ children }: { children: ReactNode }) {
     creatMatchFilterStore({
         contestList: [],
         contestInfo: {}
-    });
-    creatHandicapAnalysisStore({
-        recordList: []
     });
     creatHintsFormStore({
         handicapTips: []

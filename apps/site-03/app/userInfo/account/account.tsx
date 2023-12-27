@@ -13,9 +13,7 @@ import AvatarCropperDrawer from '@/components/avatarCropperDrawer/avatarCropperD
 import { useUserStore } from '../../userStore';
 import style from './account.module.scss';
 import Avatar from './img/avatar.png';
-import Date from './img/date.png';
 import { useAccountStore } from './accountStore';
-import Datepicker from './component/datePicker/datepicker';
 
 interface UploadResponse {
     filePath: string;
@@ -48,7 +46,7 @@ function FormField({
     }
     return submitted ? (
         <div className={style.item}>
-            <span className={style.title}>{label} : </span>
+            <span className={style.title}>{label} </span>
             <span className={style.content}>{displayValue}</span>
         </div>
     ) : (
@@ -85,39 +83,11 @@ function Account() {
     const setIsSubmitted = useAccountStore.use.setIsSubmitted();
     const setIsVisible = useNotificationStore.use.setIsVisible();
 
-    const [isOpenCalendar, setIsOpenCalendar] = useState(false);
     const [isAvatarCropperOpen, setIsAvatarCropperOpen] = useState(false);
 
     const back = () => {
         router.push('/userInfo');
     };
-
-    useEffect(() => {
-        if (userInfo.avatarPath && userInfo.avatarPath !== '0') {
-            setImgSrc(userInfo.avatarPath);
-        }
-
-        setFormState({
-            nickName: userInfo.username || '',
-            birthday: userInfo.birthday || 0,
-            phoneNumber: userInfo.mobileNumber || '',
-            wechat: userInfo.wechat || '',
-            qq: userInfo.qqNumber || '',
-            email: userInfo.email || '',
-            description: userInfo.description || ''
-        });
-
-        const newSubmittedState = {
-            nickName: Boolean(userInfo.username),
-            birthday: userInfo.birthday !== 0,
-            phoneNumber: Boolean(userInfo.mobileNumber),
-            wechat: Boolean(userInfo.wechat),
-            qq: Boolean(userInfo.qqNumber),
-            email: Boolean(userInfo.email),
-            description: Boolean(userInfo.description)
-        };
-        setSubmittedState(newSubmittedState);
-    }, [userInfo, setFormState, setImgSrc, setSubmittedState]);
 
     const handleUploadImg = (arg: Blob) => {
         setIsAvatarCropperOpen(false);
@@ -212,6 +182,33 @@ function Account() {
         setIsSubmitted(false);
     };
 
+    useEffect(() => {
+        if (userInfo.avatarPath && userInfo.avatarPath !== '0') {
+            setImgSrc(userInfo.avatarPath);
+        }
+
+        setFormState({
+            nickName: userInfo.username || '',
+            birthday: userInfo.birthday || 0,
+            phoneNumber: userInfo.mobileNumber || '',
+            wechat: userInfo.wechat || '',
+            qq: userInfo.qqNumber || '',
+            email: userInfo.email || '',
+            description: userInfo.description || ''
+        });
+
+        const newSubmittedState = {
+            nickName: Boolean(userInfo.username),
+            birthday: userInfo.birthday !== 0,
+            phoneNumber: Boolean(userInfo.mobileNumber),
+            wechat: Boolean(userInfo.wechat),
+            qq: Boolean(userInfo.qqNumber),
+            email: Boolean(userInfo.email),
+            description: Boolean(userInfo.description)
+        };
+        setSubmittedState(newSubmittedState);
+    }, [userInfo, setFormState, setImgSrc, setSubmittedState]);
+
     return (
         <>
             <Header back={back} title={headerProps.title} />
@@ -239,44 +236,25 @@ function Account() {
                         label="昵称"
                         name="nickName"
                         onChange={handleInputChange}
-                        placeholder="新增"
+                        placeholder="添加昵称"
                         submitted={submittedState.nickName}
                         type="text"
                         value={formState.nickName}
                     />
-                    <div className={style.dateInput}>
-                        <FormField
-                            disabled
-                            label="生日"
-                            name="birthday"
-                            onChange={handleInputChange}
-                            placeholder="新增"
-                            submitted={submittedState.birthday}
-                            type="text"
-                            value={
-                                formState.birthday === 0
-                                    ? ''
-                                    : timestampToString(formState.birthday, 'YYYY/MM/DD')
-                            }
-                        />
-                        {!submittedState.birthday && (
-                            <Image
-                                alt="大头贴"
-                                className={style.avatar}
-                                height={24}
-                                onClick={() => {
-                                    setIsOpenCalendar(true);
-                                }}
-                                src={Date}
-                                width={24}
-                            />
-                        )}
-                    </div>
+                    <FormField
+                        label="出生日期："
+                        name="birthday"
+                        onChange={handleInputChange}
+                        placeholder="添加出生日期"
+                        submitted={submittedState.birthday}
+                        type="date"
+                        value={formState.birthday}
+                    />
                     <FormField
                         label="手机号"
                         name="phoneNumber"
                         onChange={handleInputChange}
-                        placeholder="新增"
+                        placeholder="添加手机号"
                         submitted={submittedState.phoneNumber}
                         type="text"
                         value={formState.phoneNumber}
@@ -285,7 +263,7 @@ function Account() {
                         label="微信号"
                         name="wechat"
                         onChange={handleInputChange}
-                        placeholder="新增"
+                        placeholder="添加微信号"
                         submitted={submittedState.wechat}
                         type="text"
                         value={formState.wechat}
@@ -294,7 +272,7 @@ function Account() {
                         label="QQ号"
                         name="qq"
                         onChange={handleInputChange}
-                        placeholder="新增"
+                        placeholder="添加QQ号"
                         submitted={submittedState.qq}
                         type="text"
                         value={formState.qq}
@@ -303,7 +281,7 @@ function Account() {
                         label="邮箱"
                         name="email"
                         onChange={handleInputChange}
-                        placeholder="新增"
+                        placeholder="添加邮箱"
                         submitted={submittedState.email}
                         type="email"
                         value={formState.email}
@@ -353,11 +331,6 @@ function Account() {
                     )}
                 </form>
             </div>
-            <Datepicker
-                openModal={isOpenCalendar}
-                setFormState={setFormState}
-                setOpenModal={setIsOpenCalendar}
-            />
             <AvatarCropperDrawer
                 imgSrc={imgSrc}
                 isDrawerOpen={isAvatarCropperOpen}

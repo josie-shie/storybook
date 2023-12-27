@@ -10,7 +10,7 @@ import style from './wechat.module.scss';
 function Wechat() {
     const router = useRouter();
     const back = () => {
-        router.push('/userInfo');
+        router.push('/userInfo/recharge');
     };
     const headerProps = {
         title: '微信支付充值'
@@ -51,7 +51,7 @@ function Wechat() {
                                 <span>微信支付</span>
                             </div>
                             <div className={style.pay}>
-                                <div className={style.title}>充值金額:</div>
+                                <div className={style.title}>充值金额:</div>
                                 <div className={style.amount}>
                                     <Image alt="wechat" height={32} src={WechatIcon} width={32} />
                                     <input
@@ -61,7 +61,6 @@ function Wechat() {
                                         value={amount}
                                     />
                                 </div>
-                                <div className={style.tip}>微信支付: 1 : 99999平台幣</div>
                             </div>
                             <button
                                 className={`${style.send} ${

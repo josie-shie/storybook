@@ -93,7 +93,7 @@ function Pay({ amount, chain, onClose }: PayProps) {
                             />
                         </div>
                         <div className={style.item}>
-                            充值金額：<span>{amount}平台幣</span>
+                            充值金额：<span>{amount}平台币</span>
                         </div>
                         <div className={style.item}>
                             协议：<span>{chain}</span>

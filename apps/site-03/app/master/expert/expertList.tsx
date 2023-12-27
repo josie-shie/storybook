@@ -15,6 +15,7 @@ import NoData from '@/components/baseNoData/noData';
 import WeekButton from '../components/weekButton/weekButton';
 import { useUserStore } from '../../userStore';
 import style from './expertList.module.scss';
+import SkeletonLayout from './components/skeleton/skeleton';
 
 interface ExpertItemProps {
     mentorList: GetMentorListResponse;
@@ -134,6 +135,7 @@ function ExpertItem({ mentorList, setMentorList }: ExpertItemProps) {
 function MasterList() {
     const [isActive, setIsActive] = useState<MentorFilter[]>([]);
     const [mentorList, setMentorList] = useState<GetMentorListResponse>([]);
+    const [isNoData, setIsNoData] = useState<boolean | null>(null);
 
     const userInfo = useUserStore.use.userInfo();
 
@@ -148,20 +150,17 @@ function MasterList() {
     };
 
     const fetchData = async () => {
-        try {
-            const res = await getMentorList({
-                memberId: userInfo.uid ? userInfo.uid : 1,
-                filter: isActive.length > 0 ? isActive : undefined
-            });
+        const res = await getMentorList({
+            memberId: userInfo.uid ? userInfo.uid : 1,
+            filter: isActive.length > 0 ? isActive : undefined
+        });
 
-            if (!res.success) {
-                return new Error();
-            }
-
-            setMentorList(res.data);
-        } catch (error) {
+        if (!res.success) {
             return new Error();
         }
+
+        setMentorList(res.data);
+        setIsNoData(res.data.length === 0);
     };
 
     useEffect(() => {
@@ -169,18 +168,21 @@ function MasterList() {
     }, [userInfo.uid, isActive]);
 
     return (
-        <>
-            {mentorList.length > 0 ? (
-                <div className={style.master}>
-                    <WeekButton isActive={isActive} updateActive={updateActive} />
+        <div className={style.master}>
+            <WeekButton isActive={isActive} updateActive={updateActive} />
+
+            {mentorList.length === 0 && isNoData === null && <SkeletonLayout />}
+
+            {mentorList.length === 0 && isNoData ? (
+                <NoData />
+            ) : (
+                <ul className={style.article}>
                     <div className={style.expertLayout}>
                         <ExpertItem mentorList={mentorList} setMentorList={setMentorList} />
                     </div>
-                </div>
-            ) : (
-                <NoData />
+                </ul>
             )}
-        </>
+        </div>
     );
 }
 

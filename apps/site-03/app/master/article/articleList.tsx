@@ -11,11 +11,13 @@ import WeekButton from '../components/weekButton/weekButton';
 import style from './articleList.module.scss';
 import { useArticleStore } from './articleStore';
 import ArticleCard from './components/articleCard/articleCard';
+import SkeletonLayout from './components/skeleton/skeleton';
 
 function ArticleList() {
     const [isActive, setIsActive] = useState<PostFilter[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPage, setTotalPage] = useState(1);
+    const [isNoData, setIsNoData] = useState<boolean | null>(null);
 
     const setArticleList = useArticleStore.use.setArticleList();
     const articleList = useArticleStore.use.articleList();
@@ -50,6 +52,7 @@ function ArticleList() {
         const updatedArticleList = [...articleList, ...res.data.posts];
         setArticleList({ articleList: updatedArticleList });
         setTotalPage(res.data.totalPage);
+        setIsNoData(res.data.totalArticle === 0);
     };
 
     const loadMoreList = () => {
@@ -64,26 +67,27 @@ function ArticleList() {
 
     return (
         <>
-            {articleList.length > 0 ? (
-                <>
-                    <div className={style.button}>
-                        <WeekButton isActive={isActive} updateActive={updateActive} />
-                    </div>
-                    <ul className={style.article}>
-                        {articleList.map(article => {
-                            return <ArticleCard article={article} key={article.id} />;
-                        })}
-                        {currentPage < totalPage && (
-                            <InfiniteScroll onVisible={loadMoreList}>
-                                <div className={style.loadMore}>
-                                    <CircularProgress size={24} />
-                                </div>
-                            </InfiniteScroll>
-                        )}
-                    </ul>
-                </>
-            ) : (
+            <div className={style.button}>
+                <WeekButton isActive={isActive} updateActive={updateActive} />
+            </div>
+
+            {articleList.length === 0 && isNoData === null && <SkeletonLayout />}
+
+            {articleList.length === 0 && isNoData ? (
                 <NoData />
+            ) : (
+                <ul className={style.article}>
+                    {articleList.map(article => {
+                        return <ArticleCard article={article} key={article.id} />;
+                    })}
+                    {currentPage < totalPage && (
+                        <InfiniteScroll onVisible={loadMoreList}>
+                            <div className={style.loadMore}>
+                                <CircularProgress size={24} />
+                            </div>
+                        </InfiniteScroll>
+                    )}
+                </ul>
             )}
         </>
     );

@@ -462,6 +462,7 @@ export const getPostList = async (
 
 export interface GetMemberProfileWithMemberIdRequest {
     memberId: number;
+    loginMemberId: number;
 }
 
 const GetMemberProfileWithMemberIdSchema = z.object({

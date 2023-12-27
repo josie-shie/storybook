@@ -1,7 +1,6 @@
 'use client';
 import Image from 'next/image';
 import { timestampToString } from 'lib';
-import Link from 'next/link';
 import NoData from '@/components/baseNoData/noData';
 import { useMatchFilterStore } from '../analysis/matchFilterStore';
 import { useHintsFormStore } from '../analysis/hintsFormStore';
@@ -119,53 +118,51 @@ function HandicapTips({
         <>
             {displayList.length ? (
                 displayList.map(item => (
-                    <Link
-                        href={`/recommend/guess/${item.matchId}`}
+                    <div
+                        className={style.handicapTips}
                         key={`${item.longOddsTeamId}-${item.matchId}`}
                     >
-                        <div className={style.handicapTips}>
-                            <div className={style.title}>
-                                <div className={style.league}>
-                                    <div className={style.name}>{item.leagueChsShort}</div>
-                                    <div className={style.time}>
-                                        {timestampToString(item.startTime, 'MM-DD HH:mm')}
-                                    </div>
-                                </div>
-                                <div className={style.play}>
-                                    <div className={style.tag}>
-                                        {formatProgress(hintsSelectProgres)}
-                                    </div>
-                                    <div className={style.tag}>{formatPlay(hintsSelectPlay)}</div>
-                                    {item.longOddsTimes >= 6 && (
-                                        <div className={style.hot}>
-                                            <Image alt="" className={style.image} src={iconHot} />
-                                            <span>热</span>
-                                        </div>
-                                    )}
+                        <div className={style.title}>
+                            <div className={style.league}>
+                                <div className={style.name}>{item.leagueChsShort}</div>
+                                <div className={style.time}>
+                                    {timestampToString(item.startTime, 'MM-DD HH:mm')}
                                 </div>
                             </div>
-                            <div className={style.content}>
-                                {renderTeam(
-                                    {
-                                        longOddsType: item.longOddsType,
-                                        longOddsTimes: item.longOddsTimes,
-                                        teamLogo: item.homeLogo,
-                                        teamChs: item.homeChs
-                                    },
-                                    item.longOddsTeamId === item.homeId
-                                )}
-                                {renderTeam(
-                                    {
-                                        longOddsType: item.longOddsType,
-                                        longOddsTimes: item.longOddsTimes,
-                                        teamLogo: item.awayLogo,
-                                        teamChs: item.awayChs
-                                    },
-                                    item.longOddsTeamId === item.awayId
+                            <div className={style.play}>
+                                <div className={style.tag}>
+                                    {formatProgress(hintsSelectProgres)}
+                                </div>
+                                <div className={style.tag}>{formatPlay(hintsSelectPlay)}</div>
+                                {item.longOddsTimes >= 6 && (
+                                    <div className={style.hot}>
+                                        <Image alt="" className={style.image} src={iconHot} />
+                                        <span>热</span>
+                                    </div>
                                 )}
                             </div>
                         </div>
-                    </Link>
+                        <div className={style.content}>
+                            {renderTeam(
+                                {
+                                    longOddsType: item.longOddsType,
+                                    longOddsTimes: item.longOddsTimes,
+                                    teamLogo: item.homeLogo,
+                                    teamChs: item.homeChs
+                                },
+                                item.longOddsTeamId === item.homeId
+                            )}
+                            {renderTeam(
+                                {
+                                    longOddsType: item.longOddsType,
+                                    longOddsTimes: item.longOddsTimes,
+                                    teamLogo: item.awayLogo,
+                                    teamChs: item.awayChs
+                                },
+                                item.longOddsTeamId === item.awayId
+                            )}
+                        </div>
+                    </div>
                 ))
             ) : (
                 <NoData />

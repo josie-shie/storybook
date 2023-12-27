@@ -19,6 +19,7 @@ import Lose from './img/lose.png';
 import Draw from './img/draw.png';
 import style from './articleContent.module.scss';
 import RecommendationList from './recommendationList';
+import Wallet from './img/wallet.png';
 
 interface ArticleContentProps {
     article: GetPostDetailResponse;
@@ -29,6 +30,7 @@ function ArticleContent({ params, article, fetchPostDetail }: ArticleContentProp
     const [openPaid, setOpenPaid] = useState(false);
     const [openDialog, setOpenDialog] = useState(false);
     const [recommendationList, setRecommendationList] = useState<RecommendPost[]>([]);
+    const [isNoData, setIsNoData] = useState<boolean | null>(null);
 
     const router = useRouter();
 
@@ -50,19 +52,14 @@ function ArticleContent({ params, article, fetchPostDetail }: ArticleContentProp
             setOpenDialog(true);
             return;
         }
-        try {
-            const res = await payForPost({ postId: Number(params.articleId) });
+        const res = await payForPost({ postId: Number(params.articleId) });
 
-            if (!res.success) {
-                return new Error();
-            }
-            fetchPostDetail();
-            void getUser();
-        } catch (error) {
+        if (!res.success) {
             return new Error();
-        } finally {
-            setOpenPaid(false);
         }
+        fetchPostDetail();
+        void getUser();
+        setOpenPaid(false);
     };
 
     const getUser = async () => {
@@ -109,6 +106,7 @@ function ArticleContent({ params, article, fetchPostDetail }: ArticleContentProp
             return new Error();
         }
         setRecommendationList(res.data.posts);
+        setIsNoData(res.data.posts.length === 0);
     };
 
     useEffect(() => {
@@ -158,7 +156,7 @@ function ArticleContent({ params, article, fetchPostDetail }: ArticleContentProp
                             </div>
                         </div>
 
-                        {article.predictedPlay === 'LOCK' && (
+                        {article.predictedPlay === 'LOCK' && article.price !== 0 ? (
                             <div className={style.paidButton}>
                                 <div className={style.content}>{article.shortAnalysisContent}</div>
                                 <div className={style.buttonArea}>
@@ -174,9 +172,7 @@ function ArticleContent({ params, article, fetchPostDetail }: ArticleContentProp
                                     </span>
                                 </div>
                             </div>
-                        )}
-
-                        {article.predictedPlay !== 'LOCK' ? (
+                        ) : (
                             <div className={style.paidArea}>
                                 <article className={style.content}>
                                     {article.analysisContent}
@@ -268,13 +264,16 @@ function ArticleContent({ params, article, fetchPostDetail }: ArticleContentProp
                                     </div>
                                 </div>
                             </div>
-                        ) : null}
+                        )}
                     </div>
                 </div>
 
                 <div className={style.otherList}>
                     <div className={style.title}>Ta还推荐了... ({recommendationList.length})</div>
-                    <RecommendationList recommendationList={recommendationList} />
+                    <RecommendationList
+                        isNoData={isNoData}
+                        recommendationList={recommendationList}
+                    />
                 </div>
             </div>
             <NormalDialog
@@ -288,14 +287,14 @@ function ArticleContent({ params, article, fetchPostDetail }: ArticleContentProp
                 openDialog={openPaid}
             />
             <NormalDialog
-                cancelText="取消"
-                confirmText="去订阅"
-                content={<div>余额不足，请订阅</div>}
+                confirmText="去充值"
+                content={<div>余额不足，请充值</div>}
                 onClose={() => {
                     setOpenDialog(false);
                 }}
                 onConfirm={goSubscribe}
                 openDialog={openDialog}
+                srcImage={Wallet}
             />
         </div>
     );

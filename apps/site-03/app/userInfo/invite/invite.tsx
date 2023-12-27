@@ -80,7 +80,7 @@ function Invite() {
                             <span>邀请好友领福利</span>
                             <span>多邀多得无上限</span>
                             <span>
-                                每邀请一人，最高获得<span className={style.money}>88元</span>
+                                每邀请一人，最高获得<span className={style.money}>80元</span>
                                 现金红包
                             </span>
                         </div>
@@ -123,7 +123,7 @@ function Invite() {
                         <div className={style.rule}>
                             <div className={style.title}>[ 奖励规则 ]</div>
                             <ol className={style.text}>
-                                <li>每成功邀请一位朋友注册成为本平台用户，您将获得20 金币奖励</li>
+                                <li>每成功邀请一位朋友注册成为本平台用户，您将获得80 金币奖励</li>
                                 <li>邀请奖励将于注册成功后，自动发放至您的帐户中</li>
                             </ol>
                         </div>

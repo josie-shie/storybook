@@ -1,14 +1,14 @@
 export const dateOption = [
     {
-        label: '全部時間',
+        label: '全部时间',
         value: 'ALL'
     },
     {
-        label: '一週',
+        label: '一周',
         value: 'WEEK'
     },
     {
-        label: '兩週',
+        label: '两周',
         value: 'TWOWEEKS'
     },
     {

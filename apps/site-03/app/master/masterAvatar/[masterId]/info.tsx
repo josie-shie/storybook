@@ -10,6 +10,7 @@ import Tag from '@/components/tag/tag';
 import { useUserStore } from '@/app/userStore';
 import Fire from '@/app/img/fire.png';
 import style from './info.module.scss';
+import Skeleton from './components/skeleton/skeleton';
 
 function Info({ params }: { params: { masterId: string } }) {
     const [info, setInfo] = useState({
@@ -102,67 +103,74 @@ function Info({ params }: { params: { masterId: string } }) {
         void fetchData();
     }, [userInfo.uid]);
     return (
-        <section className={style.info}>
-            <div className={style.detail}>
-                <Avatar
-                    borderColor="#fff"
-                    size={54}
-                    src={info.avatarPath === '0' ? '' : info.avatarPath}
-                />
-                <div className={style.content}>
-                    <span className={style.name}>{info.username}</span>
-                    <div className={style.top}>
-                        {info.tags.winMaxAccurateStreak > 0 && (
-                            <Tag
-                                icon={<Image alt="fire" src={Fire} />}
-                                text={`${info.tags.winMaxAccurateStreak} 連紅`}
-                            />
-                        )}
-                        {info.tags.weekRanking > 0 && (
-                            <Tag
-                                background="#fff"
-                                color="#4489ff"
-                                text={`周榜 ${info.tags.weekRanking}`}
-                            />
-                        )}
-                        {info.tags.monthRanking > 0 && (
-                            <Tag
-                                background="#fff"
-                                color="#4489ff"
-                                text={`月榜 ${info.tags.monthRanking}`}
-                            />
-                        )}
-                        {info.tags.quarterRanking > 0 && (
-                            <Tag
-                                background="#fff"
-                                color="#4489ff"
-                                text={`季榜 ${info.tags.quarterRanking}`}
-                            />
-                        )}
+        <>
+            {info.memberId !== 0 ? (
+                <section className={style.info}>
+                    <div className={style.detail}>
+                        <Avatar
+                            borderColor="#fff"
+                            size={54}
+                            src={info.avatarPath === '0' ? '' : info.avatarPath}
+                        />
+                        <div className={style.content}>
+                            <span className={style.name}>{info.username}</span>
+                            <div className={style.top}>
+                                {info.tags.winMaxAccurateStreak > 0 && (
+                                    <Tag
+                                        icon={<Image alt="fire" src={Fire} />}
+                                        text={`${info.tags.winMaxAccurateStreak} 連紅`}
+                                    />
+                                )}
+                                {info.tags.weekRanking > 0 && (
+                                    <Tag
+                                        background="#fff"
+                                        color="#4489ff"
+                                        text={`周榜 ${info.tags.weekRanking}`}
+                                    />
+                                )}
+                                {info.tags.monthRanking > 0 && (
+                                    <Tag
+                                        background="#fff"
+                                        color="#4489ff"
+                                        text={`月榜 ${info.tags.monthRanking}`}
+                                    />
+                                )}
+                                {info.tags.quarterRanking > 0 && (
+                                    <Tag
+                                        background="#fff"
+                                        color="#4489ff"
+                                        text={`季榜 ${info.tags.quarterRanking}`}
+                                    />
+                                )}
+                            </div>
+                            <div className={style.bottom}>
+                                <span>粉丝: {info.fans}</span>
+                                <span>解锁: {info.unlocked}</span>
+                                {Boolean(info.tags) && (
+                                    <span>
+                                        近一季猜球胜率: {Math.round(info.tags.quarterHitRate * 100)}
+                                        %
+                                    </span>
+                                )}
+                            </div>
+                        </div>
                     </div>
-                    <div className={style.bottom}>
-                        <span>粉丝: {info.fans}</span>
-                        <span>解锁: {info.unlocked}</span>
-                        {Boolean(info.tags) && (
-                            <span>
-                                近一季猜球胜率: {Math.round(info.tags.quarterHitRate * 100)}%
-                            </span>
-                        )}
+
+                    <div
+                        className={info.isFollowed ? style.focused : style.focus}
+                        onClick={() => {
+                            void onIsFocused(info.memberId, info.isFollowed);
+                        }}
+                    >
+                        {info.isFollowed ? '已关注' : '关注'}
                     </div>
-                </div>
-            </div>
 
-            <div
-                className={info.isFollowed ? style.focused : style.focus}
-                onClick={() => {
-                    void onIsFocused(info.memberId, info.isFollowed);
-                }}
-            >
-                {info.isFollowed ? '已关注' : '关注'}
-            </div>
-
-            <div className={style.introduction}>{info.profile}</div>
-        </section>
+                    <div className={style.introduction}>{info.profile}</div>
+                </section>
+            ) : (
+                <Skeleton />
+            )}
+        </>
     );
 }
 
