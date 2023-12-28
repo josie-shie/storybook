@@ -114,7 +114,7 @@ function Usdt() {
                                     <Image alt="usdt" height={32} src={UsdtIcon} width={32} />
                                     <input
                                         onChange={handleAmountChange}
-                                        placeholder="USDT 1~99999平台幣"
+                                        placeholder="USDT 1~99999平台币"
                                         type="number"
                                         value={amount}
                                     />

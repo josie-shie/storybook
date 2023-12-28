@@ -80,8 +80,8 @@ function Invite() {
                             <span>邀请好友领福利</span>
                             <span>多邀多得无上限</span>
                             <span>
-                                每邀请一人，最高获得<span className={style.money}>80元</span>
-                                现金红包
+                                每邀请一人，最高获得<span className={style.money}>80</span>
+                                平台币
                             </span>
                         </div>
                         <div className={style.success}>

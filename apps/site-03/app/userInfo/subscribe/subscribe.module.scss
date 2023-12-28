@@ -190,8 +190,8 @@
                 margin: 12px auto;
                 width: 58px;
                 font-size: 12px;
-                color: rgba(255, 255, 255, 0.3);
-                border: 1px solid rgba(255, 255, 255, 0.3);
+                color: rgb(255 255 255 / 30%);
+                border: 1px solid rgb(255 255 255 / 30%);
                 border-radius: 50px;
                 background: transparent;
                 transition: all 0.3s ease;
@@ -207,6 +207,10 @@
                 color: #fff;
                 background: #4489ff;
                 border-color: #4489ff;
+
+                span {
+                    white-space: nowrap;
+                }
             }
         }
     }
@@ -240,7 +244,7 @@
     }
 
     &.firstRaduis {
-        border-radius: 0 8px 8px 8px;
+        border-radius: 0 8px 8px;
     }
 
     &.lastRaduis {
@@ -316,4 +320,9 @@
     font-size: 14px;
     padding: 0 14px 14px;
     overflow: scroll;
+}
+
+.dialogTitle {
+    font-weight: 800;
+    padding: 8px 14px;
 }

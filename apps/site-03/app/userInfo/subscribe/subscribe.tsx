@@ -2,7 +2,7 @@
 import Image from 'next/image';
 import { useRef, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Dialog, DialogTitle } from '@mui/material';
+import { Dialog } from '@mui/material';
 import {
     getSubscriptionPlanList,
     subscribePlan,
@@ -350,7 +350,7 @@ function Subscribe({ backHistory }: { backHistory: boolean }) {
                 </div>
             </div>
             <Dialog onClose={handleIntroClose} open={intro}>
-                <DialogTitle>说明</DialogTitle>
+                <h2 className={style.dialogTitle}>说明</h2>
                 <div className={style.dialogContent}>
                     <p>
                         赛事高手，球赛群众风向指引
@@ -365,7 +365,7 @@ function Subscribe({ backHistory }: { backHistory: boolean }) {
             </Dialog>
 
             <Dialog onClick={handleProtocolClose} open={protocol}>
-                <DialogTitle>会员服务协议</DialogTitle>
+                <h2 className={style.dialogTitle}>会员服务协议</h2>
                 <div className={style.dialogContent}>
                     <p>
                         欢迎您使用未来体育会员服务！
