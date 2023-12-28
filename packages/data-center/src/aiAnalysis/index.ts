@@ -5,7 +5,7 @@ import type { ReturnData, FetchResultData } from '../common';
 import {
     GET_ODDS_HINT_LIST_QUERY,
     GET_FOOTBALL_STATS_RECORD_QUERY,
-    GET_FOOTBALL_STATS_RESULT_QUERY,
+    GET_FOOTBALL_STATS_QUERY,
     GET_FOOTBALL_STATS_MATCHES_QUERY
 } from './graphqlQueries';
 
@@ -90,76 +90,88 @@ const GoalsIn15MinsSchema = z.object({
 export type GoalsIn15Mins = z.infer<typeof GoalsIn15MinsSchema>;
 export type GoalsIn15MinsType = GoalsIn15Mins;
 
-const GetFootballStatsReportSchema = z.object({
+const GetFootballStatsSchema = z.object({
     memberId: z.number(),
     ticketId: z.string(),
-    handicapSide: z.string(),
-    handicapValues: z.string(),
-    overUnderValues: z.string(),
+    handicapSide: z.string().nullable(),
+    handicapValues: z.string().nullable(),
+    overUnderValues: z.string().nullable(),
     startTime: z.number(),
     endTime: z.number(),
     // 全場讓球
-    fullHandicapUpper: z.array(z.number()),
-    fullHandicapLower: z.array(z.number()),
-    fullHandicapDraw: z.array(z.number()),
-    fullHandicapUpperDaily: z.array(DailyMatchSchema),
-    fullHandicapLowerDaily: z.array(DailyMatchSchema),
-    fullHandicapDrawDaily: z.array(DailyMatchSchema),
+    fullHandicapUpper: z.array(z.number()).nullable(),
+    fullHandicapLower: z.array(z.number()).nullable(),
+    fullHandicapDraw: z.array(z.number()).nullable(),
+    fullHandicapUpperDaily: z.array(DailyMatchSchema).nullable(),
+    fullHandicapLowerDaily: z.array(DailyMatchSchema).nullable(),
+    fullHandicapDrawDaily: z.array(DailyMatchSchema).nullable(),
     // 半場讓球
-    halfHandicapUpper: z.array(z.number()),
-    halfHandicapLower: z.array(z.number()),
-    halfHandicapDraw: z.array(z.number()),
-    halfHandicapUpperDaily: z.array(DailyMatchSchema),
-    halfHandicapLowerDaily: z.array(DailyMatchSchema),
-    halfHandicapDrawDaily: z.array(DailyMatchSchema),
+    halfHandicapUpper: z.array(z.number()).nullable(),
+    halfHandicapLower: z.array(z.number()).nullable(),
+    halfHandicapDraw: z.array(z.number()).nullable(),
+    halfHandicapUpperDaily: z.array(DailyMatchSchema).nullable(),
+    halfHandicapLowerDaily: z.array(DailyMatchSchema).nullable(),
+    halfHandicapDrawDaily: z.array(DailyMatchSchema).nullable(),
     // 全場大小
-    fullOverUnderOver: z.array(z.number()),
-    fullOverUnderUnder: z.array(z.number()),
-    fullOverUnderDraw: z.array(z.number()),
-    fullOverUnderOverDaily: z.array(DailyMatchSchema),
-    fullOverUnderUnderDaily: z.array(DailyMatchSchema),
-    fullOverUnderDrawDaily: z.array(DailyMatchSchema),
+    fullOverUnderOver: z.array(z.number()).nullable(),
+    fullOverUnderUnder: z.array(z.number()).nullable(),
+    fullOverUnderDraw: z.array(z.number()).nullable(),
+    fullOverUnderOverDaily: z.array(DailyMatchSchema).nullable(),
+    fullOverUnderUnderDaily: z.array(DailyMatchSchema).nullable(),
+    fullOverUnderDrawDaily: z.array(DailyMatchSchema).nullable(),
     // 半場大小
-    halfOverUnderOver: z.array(z.number()),
-    halfOverUnderUnder: z.array(z.number()),
-    halfOverUnderDraw: z.array(z.number()),
-    halfOverUnderOverDaily: z.array(DailyMatchSchema),
-    halfOverUnderUnderDaily: z.array(DailyMatchSchema),
-    halfOverUnderDrawDaily: z.array(DailyMatchSchema),
+    halfOverUnderOver: z.array(z.number()).nullable(),
+    halfOverUnderUnder: z.array(z.number()).nullable(),
+    halfOverUnderDraw: z.array(z.number()).nullable(),
+    halfOverUnderOverDaily: z.array(DailyMatchSchema).nullable(),
+    halfOverUnderUnderDaily: z.array(DailyMatchSchema).nullable(),
+    halfOverUnderDrawDaily: z.array(DailyMatchSchema).nullable(),
     // 全場獨贏
-    fullTimeHomeWin: z.array(z.number()),
-    fullTimeDraw: z.array(z.number()),
-    fullTimeAwayWin: z.array(z.number()),
-    fullTimeHomeWinDaily: z.array(DailyMatchSchema),
-    fullTimeDrawDaily: z.array(DailyMatchSchema),
-    fullTimeAwayWinDaily: z.array(DailyMatchSchema),
+    fullTimeHomeWin: z.array(z.number()).nullable(),
+    fullTimeDraw: z.array(z.number()).nullable(),
+    fullTimeAwayWin: z.array(z.number()).nullable(),
+    fullTimeHomeWinDaily: z.array(DailyMatchSchema).nullable(),
+    fullTimeDrawDaily: z.array(DailyMatchSchema).nullable(),
+    fullTimeAwayWinDaily: z.array(DailyMatchSchema).nullable(),
     // 半場獨贏
-    halfTimeHomeWin: z.array(z.number()),
-    halfTimeDraw: z.array(z.number()),
-    halfTimeAwayWin: z.array(z.number()),
-    halfTimeHomeWinDaily: z.array(DailyMatchSchema),
-    halfTimeDrawDaily: z.array(DailyMatchSchema),
-    halfTimeAwayWinDaily: z.array(DailyMatchSchema),
+    halfTimeHomeWin: z.array(z.number()).nullable(),
+    halfTimeDraw: z.array(z.number()).nullable(),
+    halfTimeAwayWin: z.array(z.number()).nullable(),
+    halfTimeHomeWinDaily: z.array(DailyMatchSchema).nullable(),
+    halfTimeDrawDaily: z.array(DailyMatchSchema).nullable(),
+    halfTimeAwayWinDaily: z.array(DailyMatchSchema).nullable(),
 
-    goalsIn15Mins: z.array(GoalsIn15MinsSchema),
-    correctScores: z.array(CorrectScoreSchema),
-    goalsInterval0To1: z.array(z.number()),
-    goalsInterval2To3: z.array(z.number()),
-    goalsInterval4To6: z.array(z.number()),
-    goalsInterval7Plus: z.array(z.number()),
-    analyTime: z.number()
+    goalsIn15Mins: z.array(GoalsIn15MinsSchema).nullable(),
+    correctScores: z.array(CorrectScoreSchema).nullable(),
+    goalsInterval0To1: z.array(z.number()).nullable(),
+    goalsInterval2To3: z.array(z.number()).nullable(),
+    goalsInterval4To6: z.array(z.number()).nullable(),
+    goalsInterval7Plus: z.array(z.number()).nullable(),
+    analyTime: z.number(),
+    errorStatus: z.union([
+        z.literal('0'),
+        z.literal('1'),
+        z.literal('2'),
+        z.literal('3'),
+        z.literal('')
+    ])
 });
 
-const GetFootballStatsReportResultSchema = z.object({
-    getFootballStatsResult: GetFootballStatsReportSchema
+const GetFootballStatsResultSchema = z.object({
+    getFootballStats: GetFootballStatsSchema
 });
 
-type GetFootballStatsReportResult = z.infer<typeof GetFootballStatsReportResultSchema>;
-export type GetFootballStatsReportResponse = z.infer<typeof GetFootballStatsReportSchema>;
+type GetFootballStatsResult = z.infer<typeof GetFootballStatsResultSchema>;
+export type GetFootballStatsResponse = z.infer<typeof GetFootballStatsSchema>;
 
-export interface GetFootballStatsReportRequest {
+export interface GetFootballStatsRequest {
+    mission: string;
     memberId: number;
-    ticketId: string;
+    handicapSide?: string;
+    handicapValues?: string;
+    overUnderValues?: string;
+    startTime?: number;
+    endTime?: number;
 }
 
 const GetFootballStatsMatchSchema = z.object({
@@ -271,20 +283,17 @@ export const getBigdataHint = async ({
 
 /**
  * 取得分析結果
- * - params : {@link GetFootballStatsReportRequest}
- * - returns : {@link GetFootballStatsReportResponse}
+ * - params : {@link GetFootballStatsRequest}
+ * - returns : {@link GetFootballStatsResponse}
  */
-export const getFootballStatsResult = async (
-    input: GetFootballStatsReportRequest
-): Promise<ReturnData<GetFootballStatsReportResponse>> => {
+export const getFootballStats = async (
+    input: GetFootballStatsRequest
+): Promise<ReturnData<GetFootballStatsResponse>> => {
     try {
-        const { data, errors } = await fetcher<
-            FetchResultData<GetFootballStatsReportResult>,
-            unknown
-        >(
+        const { data, errors } = await fetcher<FetchResultData<GetFootballStatsResult>, unknown>(
             {
                 data: {
-                    query: GET_FOOTBALL_STATS_RESULT_QUERY,
+                    query: GET_FOOTBALL_STATS_QUERY,
                     variables: {
                         input
                     }
@@ -294,11 +303,65 @@ export const getFootballStatsResult = async (
         );
 
         throwErrorMessage(errors);
-        GetFootballStatsReportResultSchema.parse(data);
+
+        const formattedData = {
+            getFootballStats: {
+                ...data.getFootballStats,
+                fullHandicapUpper: data.getFootballStats.fullHandicapUpper || [],
+                fullHandicapLower: data.getFootballStats.fullHandicapLower || [],
+                fullHandicapDraw: data.getFootballStats.fullHandicapDraw || [],
+                fullHandicapUpperDaily: data.getFootballStats.fullHandicapUpperDaily || [],
+                fullHandicapLowerDaily: data.getFootballStats.fullHandicapLowerDaily || [],
+                fullHandicapDrawDaily: data.getFootballStats.fullHandicapDrawDaily || [],
+                // 半場讓球
+                halfHandicapUpper: data.getFootballStats.halfHandicapUpper || [],
+                halfHandicapLower: data.getFootballStats.halfHandicapLower || [],
+                halfHandicapDraw: data.getFootballStats.halfHandicapDraw || [],
+                halfHandicapUpperDaily: data.getFootballStats.halfHandicapUpperDaily || [],
+                halfHandicapLowerDaily: data.getFootballStats.halfHandicapLowerDaily || [],
+                halfHandicapDrawDaily: data.getFootballStats.halfHandicapDrawDaily || [],
+                // 全場大小
+                fullOverUnderOver: data.getFootballStats.fullOverUnderOver || [],
+                fullOverUnderUnder: data.getFootballStats.fullOverUnderUnder || [],
+                fullOverUnderDraw: data.getFootballStats.fullOverUnderDraw || [],
+                fullOverUnderOverDaily: data.getFootballStats.fullOverUnderOverDaily || [],
+                fullOverUnderUnderDaily: data.getFootballStats.fullOverUnderUnderDaily || [],
+                fullOverUnderDrawDaily: data.getFootballStats.fullOverUnderDrawDaily || [],
+                // 半場大小
+                halfOverUnderOver: data.getFootballStats.halfOverUnderOver || [],
+                halfOverUnderUnder: data.getFootballStats.halfOverUnderUnder || [],
+                halfOverUnderDraw: data.getFootballStats.halfOverUnderDraw || [],
+                halfOverUnderOverDaily: data.getFootballStats.halfOverUnderOverDaily || [],
+                halfOverUnderUnderDaily: data.getFootballStats.halfOverUnderUnderDaily || [],
+                halfOverUnderDrawDaily: data.getFootballStats.halfOverUnderDrawDaily || [],
+                // 全場獨贏
+                fullTimeHomeWin: data.getFootballStats.fullTimeHomeWin || [],
+                fullTimeDraw: data.getFootballStats.fullTimeDraw || [],
+                fullTimeAwayWin: data.getFootballStats.fullTimeAwayWin || [],
+                fullTimeHomeWinDaily: data.getFootballStats.fullTimeHomeWinDaily || [],
+                fullTimeDrawDaily: data.getFootballStats.fullTimeDrawDaily || [],
+                fullTimeAwayWinDaily: data.getFootballStats.fullTimeAwayWinDaily || [],
+                // 半場獨贏
+                halfTimeHomeWin: data.getFootballStats.halfTimeHomeWin || [],
+                halfTimeDraw: data.getFootballStats.halfTimeDraw || [],
+                halfTimeAwayWin: data.getFootballStats.halfTimeAwayWin || [],
+                halfTimeHomeWinDaily: data.getFootballStats.halfTimeHomeWinDaily || [],
+                halfTimeDrawDaily: data.getFootballStats.halfTimeDrawDaily || [],
+                halfTimeAwayWinDaily: data.getFootballStats.halfTimeAwayWinDaily || [],
+
+                goalsIn15Mins: data.getFootballStats.goalsIn15Mins || [],
+                correctScores: data.getFootballStats.correctScores || [],
+                goalsInterval0To1: data.getFootballStats.goalsInterval0To1 || [],
+                goalsInterval2To3: data.getFootballStats.goalsInterval2To3 || [],
+                goalsInterval4To6: data.getFootballStats.goalsInterval4To6 || [],
+                goalsInterval7Plus: data.getFootballStats.goalsInterval7Plus || []
+            }
+        };
+        GetFootballStatsResultSchema.parse(formattedData);
 
         return {
             success: true,
-            data: data.getFootballStatsResult
+            data: data.getFootballStats
         };
     } catch (error) {
         return handleApiError(error);

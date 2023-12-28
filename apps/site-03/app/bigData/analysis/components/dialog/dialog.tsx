@@ -1,6 +1,6 @@
 'use client';
 import { forwardRef } from 'react';
-import type { ReactElement } from 'react';
+import type { CSSProperties, ReactElement } from 'react';
 import { Dialog } from '@mui/material';
 import Slide from '@mui/material/Slide';
 import type { TransitionProps } from '@mui/material/transitions';
@@ -10,6 +10,7 @@ interface NormalDialogProps {
     content: ReactElement;
     openDialog: boolean;
     onClose: () => void;
+    customStyle?: CSSProperties;
 }
 
 const Transition = forwardRef(function Transition(
@@ -21,7 +22,7 @@ const Transition = forwardRef(function Transition(
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-function ErrorDialog({ content, openDialog, onClose }: NormalDialogProps) {
+function ErrorDialog({ content, openDialog, onClose, customStyle }: NormalDialogProps) {
     return (
         <Dialog
             PaperProps={{
@@ -36,7 +37,7 @@ function ErrorDialog({ content, openDialog, onClose }: NormalDialogProps) {
             onClose={onClose}
             open={openDialog}
         >
-            <div className={style.normalDialog}>
+            <div className={style.normalDialog} style={customStyle}>
                 <div className={style.content}>{content}</div>
             </div>
         </Dialog>

@@ -15,6 +15,17 @@
         padding: 8px 12px;
         border: 2px solid #f3f3f3;
         border-radius: 12px;
+        position: relative;
+
+        .blurCover {
+            position: absolute;
+            right: 0;
+            top: 0;
+            z-index: 2;
+            width: 100px;
+            height: 210px;
+            background: linear-gradient(273deg, #fff 13.83%, rgba(255, 255, 255, 0) 91.58%);
+        }
 
         :global {
             .switch {
@@ -51,8 +62,7 @@
         ul {
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            gap: 12px;
+            justify-content: center;
             overflow-y: scroll;
 
             li {
@@ -60,7 +70,7 @@
                 flex-direction: column;
                 justify-content: center;
                 align-items: center;
-                gap: 12px;
+                gap: 2px;
                 min-height: 170px;
                 text-align: center;
 
@@ -69,10 +79,9 @@
                     flex-direction: column;
                     align-items: center;
                     gap: 2px;
-                    width: 8px;
+                    max-width: 48px;
                     height: 141px;
                     background: #fff;
-                    border-radius: 30px;
                     transform: scaleY(0);
                     transform-origin: center;
                     animation: expandAnimation 0.3s forwards;
@@ -80,21 +89,15 @@
                     overflow: hidden;
 
                     .top {
-                        width: 100%;
-                        height: 40%;
-                        background: #00ac6e;
+                        background: #1782ff;
                     }
 
                     .middle {
-                        width: 100%;
-                        height: 20%;
                         background: #d9d9d9;
                     }
 
                     .bottom {
-                        width: 100%;
-                        height: 40%;
-                        background: #1782ff;
+                        background: #00ac6e;
                     }
                 }
 
@@ -147,10 +150,10 @@
         }
 
         .top {
-            color: #00ac6e;
+            color: #1782ff;
 
             &::before {
-                background: #00ac6e;
+                background: #1782ff;
             }
         }
         .middle {
@@ -161,10 +164,18 @@
             }
         }
         .bottom {
-            color: #1782ff;
+            color: #00ac6e;
 
             &::before {
-                background: #1782ff;
+                background: #00ac6e;
+            }
+        }
+
+        .moneyLineBottom {
+            color: #6357f0;
+
+            &::before {
+                background: #6357f0;
             }
         }
     }
