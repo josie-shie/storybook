@@ -7,6 +7,7 @@ import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import { getMailMember } from 'data-center';
 import { timestampToString } from 'lib';
 import type { GetMailMemberResponse } from 'data-center';
+import { useMessageStore } from '@/app/messageStore';
 import { useNoticeStore } from '../noticeStore';
 import style from './mailCard.module.scss';
 
@@ -15,12 +16,14 @@ function MailCard({ mailData }: { mailData: GetMailMemberResponse }) {
     const setSelectedMailData = useNoticeStore.use.setSelectedMailData();
     const selected = useNoticeStore.use.selected();
     const setSelected = useNoticeStore.use.setSelected();
+    const readMailMessage = useMessageStore.use.readMailMessage();
     const [isRead, setIsRead] = useState(mailData.isRead);
 
     const handleMailInfo = () => {
         setSelectedMailData(mailData);
         if (!mailData.isRead) {
             void readMail();
+            readMailMessage();
         }
     };
 
@@ -51,12 +54,7 @@ function MailCard({ mailData }: { mailData: GetMailMemberResponse }) {
                 icon={<RadioButtonUncheckedIcon />}
                 onChange={handleChange}
             />
-            <div
-                className={style.card}
-                onClick={() => {
-                    handleMailInfo();
-                }}
-            >
+            <div className={style.card} onClick={handleMailInfo}>
                 <div className={style.topBar}>
                     <div className={style.tag}>站內信</div>
                     <p className={style.date}>

@@ -21,6 +21,8 @@ interface MessageInfo extends InitState {
     setIsNewMessageVisible: (unreadMessageNotify: boolean) => void;
     resetNewMessageNotify: () => void;
     resetUnreadMessageNotify: () => void;
+    readMailMessage: () => void;
+    readChatMessage: () => void;
 }
 
 let isInit = true;
@@ -50,6 +52,34 @@ const initialState = (set: (updater: (state: MessageInfo) => Partial<MessageInfo
         set(() => ({
             isNewMessageVisible
         }));
+    },
+    readMailMessage: () => {
+        set(state => {
+            if (state.unreadMessageNotify.mailCount > 0) {
+                return {
+                    unreadMessageNotify: {
+                        ...state.unreadMessageNotify,
+                        mailCount: state.unreadMessageNotify.mailCount - 1,
+                        totalCount: state.unreadMessageNotify.totalCount - 1
+                    }
+                };
+            }
+            return state;
+        });
+    },
+    readChatMessage: () => {
+        set(state => {
+            if (state.unreadMessageNotify.chatCount > 0) {
+                return {
+                    unreadMessageNotify: {
+                        ...state.unreadMessageNotify,
+                        chatCount: state.unreadMessageNotify.chatCount - 1,
+                        totalCount: state.unreadMessageNotify.totalCount - 1
+                    }
+                };
+            }
+            return state;
+        });
     }
 });
 
