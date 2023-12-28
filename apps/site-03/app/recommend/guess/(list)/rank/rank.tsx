@@ -7,7 +7,7 @@ import { useUserStore } from '@/app/userStore';
 import PeriodListItem from '../components/period/periodListItem';
 import UserSwitch from '../components/userSwitch/userSwitch';
 import Rule from '../components/rule/rule';
-import { creatRankStore, useRankStore } from './rankStore';
+import { useRankStore } from './rankStore';
 import style from './rank.module.scss';
 import UserRank from './userRank';
 
@@ -28,7 +28,6 @@ function Rank() {
         month: 1,
         season: 2
     };
-    creatRankStore({ rankList: [] });
     const setMember = useRankStore.use.setMember();
     const setRankList = useRankStore.use.setRankList();
 
