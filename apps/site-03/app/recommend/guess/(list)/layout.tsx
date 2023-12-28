@@ -4,8 +4,11 @@ import { Tabs } from '@/components/tabs/tabs';
 import Header from '@/components/header/headerLogo';
 import Footer from '@/components/footer/footer';
 import style from './layout.module.scss';
+import { creatRankStore } from './rank/rankStore';
 
 function ContestLayout({ children }: { children: ReactNode }) {
+    creatRankStore({ rankList: [] });
+
     return (
         <>
             <Header />

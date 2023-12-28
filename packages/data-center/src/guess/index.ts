@@ -729,11 +729,13 @@ export interface AddGuessRequest {
 
 export interface AddGuessResponse {
     remainingGuessTimes: number;
+    guessNum: number;
 }
 
 const AddGuessResultSchema = z.object({
     addGuess: z.object({
-        remainingGuessTimes: z.number()
+        remainingGuessTimes: z.number(),
+        guessNum: z.number()
     })
 });
 

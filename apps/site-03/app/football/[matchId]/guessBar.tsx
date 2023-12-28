@@ -26,7 +26,6 @@ const guessTypeLabel = {
 };
 
 function Guess({ play, isLogin }: GuessProps) {
-    const userInfo = useUserStore.use.userInfo();
     const matchId = Number(useParams().matchId);
     const [direction, setDirection] = useState<'left' | 'right'>('left');
     const [openGuessDialog, setOpenGuessDialog] = useState(false);
@@ -67,7 +66,12 @@ function Guess({ play, isLogin }: GuessProps) {
             const guessWay = direction === 'left' ? 'HOME' : 'AWAY';
             const res = await addGuess({ matchId, predictedPlay: guessWay });
             if (res.success) {
-                void fetchGuessProportion();
+                const newProportion = {
+                    ...guessProportion,
+                    guessNum: res.data.guessNum,
+                    remainingGuessTimes: res.data.remainingGuessTimes
+                };
+                setGuessProportion(newProportion);
             } else {
                 // TODO : 競猜錯誤
             }
@@ -75,17 +79,17 @@ function Guess({ play, isLogin }: GuessProps) {
             const guessWay = direction === 'left' ? 'OVER' : 'UNDER';
             const res = await addGuess({ matchId, predictedPlay: guessWay });
             if (res.success) {
-                void fetchGuessProportion();
+                const newProportion = {
+                    ...guessProportion,
+                    guessNum: res.data.guessNum,
+                    remainingGuessTimes: res.data.remainingGuessTimes
+                };
+                setGuessProportion(newProportion);
             } else {
                 // TODO : 競猜錯誤
             }
         }
         setOpenGuessDialog(false);
-    };
-
-    const fetchGuessProportion = async () => {
-        const newGuessProportion = await getGuessProportion({ matchId, memberId: userInfo.uid });
-        if (newGuessProportion.success) setGuessProportion(newGuessProportion.data);
     };
 
     return (

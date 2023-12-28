@@ -32,11 +32,6 @@
         }
     }
 
-    .lack {
-        text-align: center;
-        margin-bottom: 24px;
-    }
-
     .balance {
         display: block;
         text-align: center;
@@ -78,5 +73,37 @@
             color: #4489ff;
             border: 1px solid #4489ff;
         }
+    }
+}
+
+.notEnoughDialog {
+    width: 188px;
+    padding: 8px 24px 24px;
+
+    .picture {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 18px;
+    }
+
+    .footer {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+
+        .confirm {
+            flex-grow: 1;
+            text-align: center;
+            color: #4489ff;
+            padding: 4px 20px;
+            border: 1px solid #4489ff;
+            border-radius: 50px;
+        }
+    }
+
+    .lack {
+        text-align: center;
+        margin-bottom: 24px;
     }
 }

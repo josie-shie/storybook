@@ -248,6 +248,7 @@ export const ADD_GUESS_MUTATION = `
     mutation addGuess($input: AddGuessInput) {
         addGuess(input: $input) {
             remainingGuessTimes
+            guessNum
         }
     }
 `;
