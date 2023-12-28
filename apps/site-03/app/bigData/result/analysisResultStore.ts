@@ -7,6 +7,7 @@ import type {
     GetFootballStatsReportResponse,
     DailyMatchType
 } from 'data-center';
+import type { ReactNode } from 'react';
 
 export interface Statistics {
     upper: number;
@@ -50,7 +51,7 @@ function groupSameWeek(dayListData: Record<string, Statistics>) {
 }
 
 interface InitState {
-    analysisResultData: GetFootballStatsReportResponse;
+    analysisResultData: GetFootballStatsReportResponse | undefined;
 }
 
 interface AnalysisResultState extends InitState {
@@ -61,8 +62,14 @@ interface AnalysisResultState extends InitState {
     selectedResult: { type: string; odds: string };
     setSelectedResult: (selectedResult: { type: string; odds: string }) => void;
     handicapEchart: HandicapEchartType;
-    setAnalysisResultData: (analysisResultData: GetFootballStatsReportResponse) => void;
-    setHandicapEchart: (analysisResultData: GetFootballStatsReportResponse) => void;
+    setAnalysisResultData: (analysisResultData: GetFootballStatsReportResponse | undefined) => void;
+    setHandicapEchart: (analysisResultData: GetFootballStatsReportResponse | undefined) => void;
+    dialogContentType: string;
+    dialogContent: ReactNode;
+    openNoramlDialog: boolean;
+    setDialogContentType: (dialogContentType: string) => void;
+    setOpenNormalDialog: (openNoramlDialog: boolean) => void;
+    setDialogContent: (dialogContent: ReactNode) => void;
 }
 
 let useAnalyticsResultStore: StoreWithSelectors<AnalysisResultState>;
@@ -70,7 +77,7 @@ let useAnalyticsResultStore: StoreWithSelectors<AnalysisResultState>;
 const initialState = (
     set: (updater: (state: AnalysisResultState) => Partial<AnalysisResultState>) => void
 ) => ({
-    analysisResultData: {} as GetFootballStatsReportResponse,
+    analysisResultData: undefined,
     contestList: [],
     setContestList: (contestList: GetFootballStatsMatchesResponse) => {
         set(state => {
@@ -106,7 +113,7 @@ const initialState = (
             }
         }
     },
-    setHandicapEchart: (analysisResultData: GetFootballStatsReportResponse) => {
+    setHandicapEchart: (analysisResultData: GetFootballStatsReportResponse | undefined) => {
         set(state => {
             const fullDayHandicap = {} as Record<string, Statistics>;
             const fullDayOverUnder = {} as Record<string, Statistics>;
@@ -115,7 +122,7 @@ const initialState = (
             const halfDayOverUnder = {} as Record<string, Statistics>;
             const halfDayMoneyLine = {} as Record<string, Statistics>;
 
-            analysisResultData.fullHandicapUpperDaily.forEach((item: DailyMatchType) => {
+            analysisResultData?.fullHandicapUpperDaily.forEach((item: DailyMatchType) => {
                 if (Object.prototype.hasOwnProperty.call(fullDayHandicap, item.date)) {
                     fullDayHandicap[item.date].upper = item.matches;
                 } else {
@@ -123,7 +130,7 @@ const initialState = (
                 }
             });
 
-            analysisResultData.fullHandicapLowerDaily.forEach((item: DailyMatchType) => {
+            analysisResultData?.fullHandicapLowerDaily.forEach((item: DailyMatchType) => {
                 if (Object.prototype.hasOwnProperty.call(fullDayHandicap, item.date)) {
                     fullDayHandicap[item.date].lower = item.matches;
                 } else {
@@ -131,7 +138,7 @@ const initialState = (
                 }
             });
 
-            analysisResultData.fullHandicapDrawDaily.forEach((item: DailyMatchType) => {
+            analysisResultData?.fullHandicapDrawDaily.forEach((item: DailyMatchType) => {
                 if (Object.prototype.hasOwnProperty.call(fullDayHandicap, item.date)) {
                     fullDayHandicap[item.date].draw = item.matches;
                 } else {
@@ -139,7 +146,7 @@ const initialState = (
                 }
             });
 
-            analysisResultData.halfHandicapUpperDaily.forEach((item: DailyMatchType) => {
+            analysisResultData?.halfHandicapUpperDaily.forEach((item: DailyMatchType) => {
                 if (Object.prototype.hasOwnProperty.call(halfDayHandicap, item.date)) {
                     halfDayHandicap[item.date].upper = item.matches;
                 } else {
@@ -148,7 +155,7 @@ const initialState = (
             });
 
             // 处理 Half Handicap Lower
-            analysisResultData.halfHandicapLowerDaily.forEach((item: DailyMatchType) => {
+            analysisResultData?.halfHandicapLowerDaily.forEach((item: DailyMatchType) => {
                 if (Object.prototype.hasOwnProperty.call(halfDayHandicap, item.date)) {
                     halfDayHandicap[item.date].lower = item.matches;
                 } else {
@@ -157,7 +164,7 @@ const initialState = (
             });
 
             // 处理 Half Handicap Draw
-            analysisResultData.halfHandicapDrawDaily.forEach((item: DailyMatchType) => {
+            analysisResultData?.halfHandicapDrawDaily.forEach((item: DailyMatchType) => {
                 if (Object.prototype.hasOwnProperty.call(halfDayHandicap, item.date)) {
                     halfDayHandicap[item.date].draw = item.matches;
                 } else {
@@ -166,7 +173,7 @@ const initialState = (
             });
 
             // 遍历并更新 fullOverUnderUpperDates
-            analysisResultData.fullOverUnderOverDaily.forEach((item: DailyMatchType) => {
+            analysisResultData?.fullOverUnderOverDaily.forEach((item: DailyMatchType) => {
                 if (Object.prototype.hasOwnProperty.call(fullDayOverUnder, item.date)) {
                     fullDayOverUnder[item.date].upper = item.matches;
                 } else {
@@ -175,7 +182,7 @@ const initialState = (
             });
 
             // 遍历并更新 fullOverUnderLowerDates
-            analysisResultData.fullOverUnderUnderDaily.forEach((item: DailyMatchType) => {
+            analysisResultData?.fullOverUnderUnderDaily.forEach((item: DailyMatchType) => {
                 if (Object.prototype.hasOwnProperty.call(fullDayOverUnder, item.date)) {
                     fullDayOverUnder[item.date].lower = item.matches;
                 } else {
@@ -184,7 +191,7 @@ const initialState = (
             });
 
             // 遍历并更新 fullOverUnderDrawDates
-            analysisResultData.fullOverUnderDrawDaily.forEach((item: DailyMatchType) => {
+            analysisResultData?.fullOverUnderDrawDaily.forEach((item: DailyMatchType) => {
                 if (Object.prototype.hasOwnProperty.call(fullDayOverUnder, item.date)) {
                     fullDayOverUnder[item.date].draw = item.matches;
                 } else {
@@ -193,7 +200,7 @@ const initialState = (
             });
 
             // 处理 Half OverUnder Upper
-            analysisResultData.halfOverUnderOverDaily.forEach((item: DailyMatchType) => {
+            analysisResultData?.halfOverUnderOverDaily.forEach((item: DailyMatchType) => {
                 if (Object.prototype.hasOwnProperty.call(halfDayOverUnder, item.date)) {
                     halfDayOverUnder[item.date].upper = item.matches;
                 } else {
@@ -202,7 +209,7 @@ const initialState = (
             });
 
             // 处理 Half OverUnder Lower
-            analysisResultData.halfOverUnderUnderDaily.forEach((item: DailyMatchType) => {
+            analysisResultData?.halfOverUnderUnderDaily.forEach((item: DailyMatchType) => {
                 if (Object.prototype.hasOwnProperty.call(halfDayOverUnder, item.date)) {
                     halfDayOverUnder[item.date].lower = item.matches;
                 } else {
@@ -211,7 +218,7 @@ const initialState = (
             });
 
             // 处理 Half OverUnder Draw
-            analysisResultData.halfOverUnderDrawDaily.forEach((item: DailyMatchType) => {
+            analysisResultData?.halfOverUnderDrawDaily.forEach((item: DailyMatchType) => {
                 if (Object.prototype.hasOwnProperty.call(halfDayOverUnder, item.date)) {
                     halfDayOverUnder[item.date].draw = item.matches;
                 } else {
@@ -220,7 +227,7 @@ const initialState = (
             });
 
             // 处理 Full MoneyLine Upper
-            analysisResultData.fullTimeHomeWinDaily.forEach((item: DailyMatchType) => {
+            analysisResultData?.fullTimeHomeWinDaily.forEach((item: DailyMatchType) => {
                 if (Object.prototype.hasOwnProperty.call(fullDayMoneyLine, item.date)) {
                     fullDayMoneyLine[item.date].upper = item.matches;
                 } else {
@@ -229,7 +236,7 @@ const initialState = (
             });
 
             // 处理 Full MoneyLine Lower
-            analysisResultData.fullTimeAwayWinDaily.forEach((item: DailyMatchType) => {
+            analysisResultData?.fullTimeAwayWinDaily.forEach((item: DailyMatchType) => {
                 if (Object.prototype.hasOwnProperty.call(fullDayMoneyLine, item.date)) {
                     fullDayMoneyLine[item.date].lower = item.matches;
                 } else {
@@ -238,7 +245,7 @@ const initialState = (
             });
 
             // 处理 Full MoneyLine Draw
-            analysisResultData.fullTimeDrawDaily.forEach((item: DailyMatchType) => {
+            analysisResultData?.fullTimeDrawDaily.forEach((item: DailyMatchType) => {
                 if (Object.prototype.hasOwnProperty.call(fullDayMoneyLine, item.date)) {
                     fullDayMoneyLine[item.date].draw = item.matches;
                 } else {
@@ -247,7 +254,7 @@ const initialState = (
             });
 
             // 处理 Half MoneyLine Upper
-            analysisResultData.halfTimeHomeWinDaily.forEach((item: DailyMatchType) => {
+            analysisResultData?.halfTimeHomeWinDaily.forEach((item: DailyMatchType) => {
                 if (Object.prototype.hasOwnProperty.call(halfDayMoneyLine, item.date)) {
                     halfDayMoneyLine[item.date].upper = item.matches;
                 } else {
@@ -256,7 +263,7 @@ const initialState = (
             });
 
             // 处理 Half MoneyLine Lower
-            analysisResultData.halfTimeAwayWinDaily.forEach((item: DailyMatchType) => {
+            analysisResultData?.halfTimeAwayWinDaily.forEach((item: DailyMatchType) => {
                 if (Object.prototype.hasOwnProperty.call(halfDayMoneyLine, item.date)) {
                     halfDayMoneyLine[item.date].lower = item.matches;
                 } else {
@@ -265,7 +272,7 @@ const initialState = (
             });
 
             // 处理 Half MoneyLine Draw
-            analysisResultData.halfTimeDrawDaily.forEach((item: DailyMatchType) => {
+            analysisResultData?.halfTimeDrawDaily.forEach((item: DailyMatchType) => {
                 if (Object.prototype.hasOwnProperty.call(halfDayMoneyLine, item.date)) {
                     halfDayMoneyLine[item.date].draw = item.matches;
                 } else {
@@ -306,7 +313,7 @@ const initialState = (
             };
         });
     },
-    setAnalysisResultData: (analysisResultData: GetFootballStatsReportResponse) => {
+    setAnalysisResultData: (analysisResultData: GetFootballStatsReportResponse | undefined) => {
         set(state => {
             return {
                 ...state,
@@ -330,6 +337,24 @@ const initialState = (
                 ...state,
                 selectedResult
             };
+        });
+    },
+    dialogContentType: 'system',
+    openNoramlDialog: false,
+    dialogContent: null,
+    setOpenNormalDialog: (openNoramlDialog: boolean) => {
+        set(state => {
+            return { ...state, openNoramlDialog };
+        });
+    },
+    setDialogContentType: (dialogContentType: string) => {
+        set(state => {
+            return { ...state, dialogContentType };
+        });
+    },
+    setDialogContent: (dialogContent: ReactNode) => {
+        set(state => {
+            return { ...state, dialogContent };
         });
     }
 });

@@ -123,8 +123,13 @@ function Handicap() {
                 </div>
                 <div className={style.eChat}>
                     <p className={style.dateRange}>
-                        {timestampToString(analysisData.startTime, 'YYYY-MM-DD')} ~{' '}
-                        {timestampToString(analysisData.endTime, 'YYYY-MM-DD')}
+                        {analysisData
+                            ? timestampToString(analysisData.startTime, 'YYYY-MM-DD')
+                            : null}{' '}
+                        ~{' '}
+                        {analysisData
+                            ? timestampToString(analysisData.endTime, 'YYYY-MM-DD')
+                            : null}
                     </p>
 
                     <ul>
@@ -222,55 +227,55 @@ function Handicap() {
                 <div className={style.header}>半场大小</div>
                 <div className={style.header}>半场獨贏</div>
                 <TableCell
-                    cellValue={analysisRecord.halfHandicapUpper}
+                    cellValue={analysisRecord?.halfHandicapUpper}
                     label="上"
                     openMatchListDrawer={openMatchListDrawer}
                     selectedType="半场让分"
                 />
                 <TableCell
-                    cellValue={analysisRecord.halfOverUnderOver}
+                    cellValue={analysisRecord?.halfOverUnderOver}
                     label="上"
                     openMatchListDrawer={openMatchListDrawer}
                     selectedType="半场大小"
                 />{' '}
                 <TableCell
-                    cellValue={analysisRecord.halfTimeHomeWin}
+                    cellValue={analysisRecord?.halfTimeHomeWin}
                     label="上"
                     openMatchListDrawer={openMatchListDrawer}
                     selectedType="半场獨贏"
                 />
                 <TableCell
-                    cellValue={analysisRecord.halfHandicapLower}
+                    cellValue={analysisRecord?.halfHandicapLower}
                     label="下"
                     openMatchListDrawer={openMatchListDrawer}
                     selectedType="半场让分"
                 />
                 <TableCell
-                    cellValue={analysisRecord.halfOverUnderUnder}
+                    cellValue={analysisRecord?.halfOverUnderUnder}
                     label="下"
                     openMatchListDrawer={openMatchListDrawer}
                     selectedType="半场大小"
                 />
                 <TableCell
-                    cellValue={analysisRecord.halfTimeAwayWin}
+                    cellValue={analysisRecord?.halfTimeAwayWin}
                     label="下"
                     openMatchListDrawer={openMatchListDrawer}
                     selectedType="半场獨贏"
                 />
                 <TableCell
-                    cellValue={analysisRecord.halfHandicapDraw}
+                    cellValue={analysisRecord?.halfHandicapDraw}
                     label="走"
                     openMatchListDrawer={openMatchListDrawer}
                     selectedType="半场让分"
                 />
                 <TableCell
-                    cellValue={analysisRecord.halfOverUnderDraw}
+                    cellValue={analysisRecord?.halfOverUnderDraw}
                     label="走"
                     openMatchListDrawer={openMatchListDrawer}
                     selectedType="半场大小"
                 />
                 <TableCell
-                    cellValue={analysisRecord.halfTimeDraw}
+                    cellValue={analysisRecord?.halfTimeDraw}
                     label="走"
                     openMatchListDrawer={openMatchListDrawer}
                     selectedType="半场獨贏"
@@ -281,55 +286,55 @@ function Handicap() {
                 <div className={style.header}>全场大小</div>
                 <div className={style.header}>全场獨贏</div>
                 <TableCell
-                    cellValue={analysisRecord.fullHandicapUpper}
+                    cellValue={analysisRecord?.fullHandicapUpper}
                     label="上"
                     openMatchListDrawer={openMatchListDrawer}
                     selectedType="全场让分"
                 />
                 <TableCell
-                    cellValue={analysisRecord.fullOverUnderOver}
+                    cellValue={analysisRecord?.fullOverUnderOver}
                     label="上"
                     openMatchListDrawer={openMatchListDrawer}
                     selectedType="全场大小"
                 />
                 <TableCell
-                    cellValue={analysisRecord.fullTimeHomeWin}
+                    cellValue={analysisRecord?.fullTimeHomeWin}
                     label="上"
                     openMatchListDrawer={openMatchListDrawer}
                     selectedType="全场獨贏"
                 />
                 <TableCell
-                    cellValue={analysisRecord.fullHandicapLower}
+                    cellValue={analysisRecord?.fullHandicapLower}
                     label="下"
                     openMatchListDrawer={openMatchListDrawer}
                     selectedType="全场让分"
                 />
                 <TableCell
-                    cellValue={analysisRecord.fullOverUnderUnder}
+                    cellValue={analysisRecord?.fullOverUnderUnder}
                     label="下"
                     openMatchListDrawer={openMatchListDrawer}
                     selectedType="全场大小"
                 />
                 <TableCell
-                    cellValue={analysisRecord.fullTimeAwayWin}
+                    cellValue={analysisRecord?.fullTimeAwayWin}
                     label="下"
                     openMatchListDrawer={openMatchListDrawer}
                     selectedType="全场獨贏"
                 />
                 <TableCell
-                    cellValue={analysisRecord.fullHandicapDraw}
+                    cellValue={analysisRecord?.fullHandicapDraw}
                     label="走"
                     openMatchListDrawer={openMatchListDrawer}
                     selectedType="全场让分"
                 />
                 <TableCell
-                    cellValue={analysisRecord.fullOverUnderDraw}
+                    cellValue={analysisRecord?.fullOverUnderDraw}
                     label="走"
                     openMatchListDrawer={openMatchListDrawer}
                     selectedType="全场大小"
                 />
                 <TableCell
-                    cellValue={analysisRecord.fullTimeDraw}
+                    cellValue={analysisRecord?.fullTimeDraw}
                     label="走"
                     openMatchListDrawer={openMatchListDrawer}
                     selectedType="全场獨贏"

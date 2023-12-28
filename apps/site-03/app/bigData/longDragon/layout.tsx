@@ -1,6 +1,6 @@
 'use client';
-import type { ReactNode } from 'react';
 import { usePathname } from 'next/navigation';
+import type { ReactNode } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { creatMatchFilterStore } from '../analysis/matchFilterStore';
 import { creatHintsFormStore } from '../analysis/hintsFormStore';
@@ -21,9 +21,7 @@ const pageTransitionVariants = {
     }
 };
 
-function LongDragonLayout({ children }: { children: ReactNode }) {
-    const params = usePathname();
-
+function CreateStore({ children }: { children: ReactNode }) {
     creatMatchFilterStore({
         contestList: [],
         contestInfo: {}
@@ -31,8 +29,15 @@ function LongDragonLayout({ children }: { children: ReactNode }) {
     creatHintsFormStore({
         handicapTips: []
     });
+
+    return <>{children}</>;
+}
+
+function LongDragonLayout({ children }: { children: ReactNode }) {
+    const params = usePathname();
+
     return (
-        <AnimatePresence>
+        <AnimatePresence mode="popLayout">
             <motion.div
                 animate="animate"
                 className={style.layout}
@@ -41,7 +46,7 @@ function LongDragonLayout({ children }: { children: ReactNode }) {
                 key={params}
                 variants={pageTransitionVariants}
             >
-                {children}
+                <CreateStore>{children}</CreateStore>
             </motion.div>
         </AnimatePresence>
     );

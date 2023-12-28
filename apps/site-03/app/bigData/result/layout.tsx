@@ -1,20 +1,29 @@
 'use client';
-import { useState, type ReactNode, useEffect } from 'react';
-import { getFootballStatsResult, type GetFootballStatsReportResponse } from 'data-center';
-import { useUserStore } from '@/app/userStore';
-import { useHandicapAnalysisFormStore } from '../formStore';
+import { type ReactNode } from 'react';
+import { usePathname } from 'next/navigation';
+import { AnimatePresence, motion } from 'framer-motion';
 import { createAnalysisResultStore } from './analysisResultStore';
 import { creatMatchFilterStore } from './matchFilterStore';
+import style from './layout.module.scss';
 
-function CreateStore({
-    resultData,
-    children
-}: {
-    resultData: GetFootballStatsReportResponse;
-    children: ReactNode;
-}) {
+const pageTransitionVariants = {
+    initial: {
+        transform: 'translateX(100%)',
+        transition: { ease: [0.05, 0.7, 0.1, 1.0], duration: 0.2 }
+    },
+    animate: {
+        transform: 'translateX(0)',
+        transition: { ease: [0.05, 0.7, 0.1, 1.0], duration: 0.2 }
+    },
+    exit: {
+        transform: 'translateX(100%)',
+        transition: { ease: [0.05, 0.7, 0.1, 1.0], duration: 0.2 }
+    }
+};
+
+function CreateStore({ children }: { children: ReactNode }) {
     createAnalysisResultStore({
-        analysisResultData: resultData
+        analysisResultData: undefined
     });
 
     creatMatchFilterStore({
@@ -26,34 +35,22 @@ function CreateStore({
 }
 
 function DetailLayout({ children }: { children: ReactNode }) {
-    const userInfo = useUserStore.use.userInfo();
-    const [resultData, setResultData] = useState<GetFootballStatsReportResponse>();
-    const setLoading = useHandicapAnalysisFormStore.use.setLoading();
-    // const endDate = useHandicapAnalysisFormStore.use.endDate();
-    // const startDate = useHandicapAnalysisFormStore.use.startDate();
-    // const teamSelected = useHandicapAnalysisFormStore.use.teamSelected();
-    // const teamHandicapOdds = useHandicapAnalysisFormStore.use.teamHandicapOdds();
-    // const handicapOddsSelected = useHandicapAnalysisFormStore.use.handicapOddsSelected();
+    const params = usePathname();
 
-    const fetchData = async () => {
-        setLoading(true);
-        const res = await getFootballStatsResult({
-            ticketId: '0fbdd0b',
-            memberId: userInfo.uid
-        });
-
-        if (res.success) {
-            setResultData(res.data);
-        }
-
-        setLoading(false);
-    };
-
-    useEffect(() => {
-        void fetchData();
-    }, [userInfo.uid]);
-
-    return resultData ? <CreateStore resultData={resultData}>{children}</CreateStore> : null;
+    return (
+        <AnimatePresence mode="popLayout">
+            <motion.div
+                animate="animate"
+                className={style.layout}
+                exit="exit"
+                initial="initial"
+                key={params}
+                variants={pageTransitionVariants}
+            >
+                <CreateStore>{children}</CreateStore>
+            </motion.div>
+        </AnimatePresence>
+    );
 }
 
 export default DetailLayout;

@@ -7,11 +7,12 @@ import style from './header.module.scss';
 
 interface HeaderProps {
     title: string;
+    background?: boolean;
     children?: ReactNode;
     backHandler?: () => void;
 }
 
-function HeaderComponent({ title, children, backHandler }: HeaderProps) {
+function HeaderComponent({ title, background = false, children, backHandler }: HeaderProps) {
     const router = useRouter();
 
     const handleBackClick = () => {
@@ -22,9 +23,17 @@ function HeaderComponent({ title, children, backHandler }: HeaderProps) {
         }
     };
 
+    const headerStyle = background
+        ? {
+              background: 'linear-gradient(to right, #194fa8 0%,#3981fa 100%)'
+          }
+        : {
+              backgroundImage: `url(${pureBackground.src})`
+          };
+
     return (
         <div className={style.placeholder}>
-            <div className={style.header} style={{ backgroundImage: `url(${pureBackground.src})` }}>
+            <div className={style.header} style={headerStyle}>
                 <div className={style.title}>
                     <Image
                         alt=""

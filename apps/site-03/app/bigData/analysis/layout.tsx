@@ -40,7 +40,7 @@ function AnalysisLayout({ children }: { children: ReactNode }) {
     };
     const tabList = [
         {
-            label: '盘路分析',
+            label: '智能盘路分析',
             to: '/bigData/analysis?status=analysis'
         },
         {
@@ -55,40 +55,46 @@ function AnalysisLayout({ children }: { children: ReactNode }) {
 
     return (
         <>
-            <Header />
-            <AnimationData analysisTime={isVipUseAnalysis} onUpdateAnalysis={handleAnalysisTimes} />
-            {isVipUseAnalysis ? (
-                <div className={style.main}>
-                    <Tabs
-                        buttonRadius={tabStyle.buttonRadius}
-                        gap={tabStyle.gap}
-                        position="center"
-                        styling="button"
-                        swiperOpen={tabStyle.swiperOpen}
-                    >
-                        {tabList.map(item => {
-                            return (
-                                <Tab key={item.label} label={item.label} to={item.to}>
-                                    <Suspense fallback={<Loading />}>{children}</Suspense>
-                                </Tab>
-                            );
-                        })}
-                    </Tabs>
-                </div>
-            ) : (
-                <div className={style.bg}>
-                    <div
-                        className={style.record}
-                        onClick={() => {
-                            setShowRecord(true);
-                        }}
-                    >
-                        <Image alt="" height={20} src={searchWhite.src} width={20} />
-                        分析纪录
+            <Header background />
+            <div className={style.bigDataWrapper}>
+                <AnimationData
+                    analysisTime={isVipUseAnalysis}
+                    onUpdateAnalysis={handleAnalysisTimes}
+                />
+                {isVipUseAnalysis ? (
+                    <div className={style.main}>
+                        <Tabs
+                            buttonRadius={tabStyle.buttonRadius}
+                            gap={tabStyle.gap}
+                            position="center"
+                            styling="button"
+                            swiperOpen={tabStyle.swiperOpen}
+                        >
+                            {tabList.map(item => {
+                                return (
+                                    <Tab key={item.label} label={item.label} to={item.to}>
+                                        <Suspense fallback={<Loading />}>{children}</Suspense>
+                                    </Tab>
+                                );
+                            })}
+                        </Tabs>
                     </div>
-                    <Image alt="content" src={content} />
-                </div>
-            )}
+                ) : (
+                    <div className={style.bg}>
+                        <div
+                            className={style.record}
+                            onClick={() => {
+                                setShowRecord(true);
+                            }}
+                        >
+                            <Image alt="" height={20} src={searchWhite.src} width={20} />
+                            分析纪录
+                        </div>
+                        <Image alt="content" src={content} />
+                    </div>
+                )}
+            </div>
+
             <Footer />
             <RecordFilter
                 isOpen={showRecord}
