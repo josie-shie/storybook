@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import CircularProgress from '@mui/material/CircularProgress';
 import Avatar from '@/components/avatar/avatar';
 import BaseNoData from '@/components/baseNoData/noData';
 import { useMasterRankStore } from '../../masterRank/masterRankStore';
@@ -11,11 +12,18 @@ import Rank from './img/rank.png';
 function HotStreakListItem() {
     const masterRankList = useMasterRankStore.use.masterRankList();
     const onlyShowToday = useMasterRankStore.use.onlyShowToday();
+    const isLoading = useMasterRankStore.use.isLoading();
 
     const rankingClass = (ranking: number) => {
         return ranking > 0 && ranking < 6 ? style[`ranking${ranking}`] : '';
     };
 
+    if (isLoading)
+        return (
+            <div className={style.loadingBlock}>
+                <CircularProgress size={24} />
+            </div>
+        );
     if (masterRankList.length === 0) return <BaseNoData />;
     return (
         <>
@@ -37,7 +45,7 @@ function HotStreakListItem() {
                             <span>{item.ranking}</span>
                         </div>
                         <div className={style.avatarContainer}>
-                            <Avatar src={item.memberAvatar} />
+                            <Avatar src={item.memberAvatar === '0' ? '' : item.memberAvatar} />
                         </div>
                         <div className={style.content}>
                             <div className={style.name}>{item.memberName}</div>

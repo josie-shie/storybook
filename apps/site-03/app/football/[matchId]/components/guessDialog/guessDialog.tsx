@@ -10,7 +10,8 @@ interface GuessDialogProps {
     id?: number;
     play?: string;
     handicap?: string;
-    teamName?: string;
+    homeTeamName?: string;
+    awayTeamName?: string;
     openPaid?: boolean;
     onClose?: () => void;
     onConfirm?: () => void;
@@ -28,7 +29,8 @@ const Transition = React.forwardRef(function Transition(
 function GuessDialog({
     play,
     handicap,
-    teamName,
+    homeTeamName,
+    awayTeamName,
     openPaid = false,
     onClose,
     onConfirm
@@ -61,19 +63,23 @@ function GuessDialog({
             ) : (
                 <div className={style.guessDialog}>
                     <div className={style.game}>
-                        <span>{play}</span>
-                        <span>{teamName}</span>
-                        <span>受{handicap}</span>
+                        {homeTeamName}
+                        <span>vs</span>
+                        {awayTeamName}
                     </div>
-                    <div className={style.useCount}>
-                        今日还可以参与 <span>{guessesLeft}</span> 次競猜
+                    <div className={style.playWay}>
+                        <span>{play}</span>
+                        <span>{handicap}</span>
+                    </div>
+                    <div className={style.countsLeft}>
+                        今日剩余 <span>{guessesLeft}</span> 次竞猜
                     </div>
                     <div className={style.footer}>
                         <div className={style.close} onClick={onClose}>
                             取消
                         </div>
                         <div className={style.confirm} onClick={onConfirm}>
-                            確認
+                            确定猜球
                         </div>
                     </div>
                 </div>

@@ -28,16 +28,16 @@ const calculatePercentage = (a: number, b: number) => {
 function BettingColumn({ detail, leftLabel, rightLabel }: BettingProps) {
     const matchId = useParams().matchId;
     const [openGuessDialog, setOpenGuessDialog] = useState(false);
-    const [direction, setDirection] = useState('left');
+    const [direction, setDirection] = useState<'right' | 'left'>('left');
 
     const leftPercent =
         leftLabel === '主'
             ? calculatePercentage(detail.home, detail.away)
             : calculatePercentage(detail.big, detail.small);
     const rightPercent = 100 - leftPercent;
+    const playWay = direction === 'left' ? leftLabel : rightLabel;
     const guessLabel = leftLabel === '主' ? detail.handicapInChinese : detail.overUnder.toString();
     const guessStatus = leftLabel === '主' ? detail.guessHomeAway : detail.guessBigSmall;
-    const guessTeam = direction === 'left' ? detail.homeTeamName : detail.awayTeamName;
 
     const isLogin = useUserStore.use.isLogin();
     const setGuessDetail = useGuessDetailStore.use.setDetail();
@@ -94,12 +94,13 @@ function BettingColumn({ detail, leftLabel, rightLabel }: BettingProps) {
     return (
         <div className={style.column}>
             <GuessDialog
-                handicap="让一球/球半"
+                awayTeamName={detail.awayTeamName}
+                handicap={guessLabel}
+                homeTeamName={detail.homeTeamName}
                 onClose={handleClickClose}
                 onConfirm={handleConfirmGuess}
                 openPaid={openGuessDialog}
-                play="让分"
-                teamName={guessTeam}
+                play={playWay}
             />
             {guessStatus === 'none' ? (
                 <>
