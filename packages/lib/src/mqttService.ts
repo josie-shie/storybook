@@ -9,7 +9,8 @@ import {
     deProtoOddRunning,
     deProtoOddRunningHalf,
     deProtoAnalysis,
-    toProtoAnalysis
+    toProtoAnalysis,
+    deProtoNotifyMessage
 } from './prtobuf';
 
 export interface AnalysisRequest {
@@ -34,6 +35,25 @@ export interface AnalysisResponse {
     overUnderValues: string;
     startTime: number;
     endTime: number;
+}
+
+export type NotifyType = 'newMessage' | 'unreadMessage';
+
+export interface NewMessageNotify {
+    sender: string;
+    roomId: string;
+}
+export interface UnreadMessageNotify {
+    totalCount: number;
+    chatCount: number;
+    mailCount: number;
+}
+
+export interface NotifyMessage {
+    uid: string;
+    notifyType: 0 | 1;
+    newMessageNotify: NewMessageNotify;
+    unreadMessageNotify: UnreadMessageNotify;
 }
 
 interface OriginalContestInfo {
@@ -149,6 +169,7 @@ const useEventQueue: ((data: EventInfoData) => void)[] = [];
 const useOddsRunningQueue: ((data: OddsRunningHashTable) => void)[] = [];
 const useOddsRunningHalfQueue: ((data: OddsRunningHashTable) => void)[] = [];
 const useAnalysisQueue: ((data: AnalysisResponse) => void)[] = [];
+const usedNotifyMessageQueue: ((data: NotifyMessage) => void)[] = [];
 
 let init = true;
 
@@ -486,6 +507,18 @@ const handleAnalysisMessage = async (message: Buffer) => {
     }
 };
 
+const handleNotifyMessage = async (message: Buffer) => {
+    const messageObject = await deProtoNotifyMessage(message);
+
+    const decodedMessage = toSerializableObject(
+        messageObject as unknown as Record<string, unknown>
+    );
+
+    for (const messageMethod of usedNotifyMessageQueue) {
+        messageMethod(decodedMessage as unknown as NotifyMessage);
+    }
+};
+
 export interface OddsRunningType {
     matchId?: number;
     isHalf: boolean;
@@ -643,6 +676,7 @@ export const mqttService = {
                 client.subscribe('updateevent');
                 client.subscribe('updatetechnic');
                 client.subscribe('analytical/analysis');
+                client.subscribe('sportim/notify');
             });
             client.on('message', (topic, message) => {
                 if (topic === 'updatematch') void handleContestMessage(message);
@@ -651,6 +685,7 @@ export const mqttService = {
                 if (topic === 'updateevent') void handleDetailEventMessage(message);
                 if (topic === 'updatetechnic') void handleDetailTechnicListMessage(message);
                 if (topic === 'analytical/analysis') void handleAnalysisMessage(message);
+                if (topic === 'sportim/notify') void handleNotifyMessage(message);
             });
             init = false;
 
@@ -704,6 +739,9 @@ export const mqttService = {
     },
     getAnalysis: (onMessage: (data: AnalysisResponse) => void) => {
         useAnalysisQueue.push(onMessage);
+    },
+    getNotifyMessage: (onMessage: (data: NotifyMessage) => void) => {
+        usedNotifyMessageQueue.push(onMessage);
     },
     publishAnalysis: async (data: AnalysisRequest) => {
         // eslint-disable-next-line no-console -- MQTT request

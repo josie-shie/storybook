@@ -11,6 +11,7 @@ import MqttService from './mqttService';
 import WebsocketService from './websocketService';
 import GoalAlert from './goalAlert';
 import ContestStoreHandler from './contestStoreHandler';
+import NewMessageAlert from './newMessageAlert';
 
 export const metadata: Metadata = {
     title: '未来体育 | FutureSport',
@@ -48,6 +49,7 @@ async function RootLayout({ children }: { children: ReactNode }) {
                         <WebsocketService>
                             <ContestStoreHandler />
                             <GoalAlert />
+                            <NewMessageAlert />
                             <Auth userInfo={userInfo} />
                             <Notification />
                             <main>{children}</main>

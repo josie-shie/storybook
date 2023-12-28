@@ -4,12 +4,15 @@ import { type ReactNode } from 'react';
 import { Tab, Tabs } from 'ui';
 import { usePathname } from 'next/navigation';
 import Footer from '@/components/footer/footer';
+import { useMessageStore } from '@/app/messageStore';
 import Header from './header';
 import style from './layout.module.scss';
 import { createNoticeStore } from './noticeStore';
 import EditBar from './editBar';
 
 function NoticeLayout({ children }: { children: ReactNode }) {
+    const unreadMessageNotify = useMessageStore.use.unreadMessageNotify();
+
     createNoticeStore({
         mailList: []
     });
@@ -23,14 +26,21 @@ function NoticeLayout({ children }: { children: ReactNode }) {
         buttonRadius: 0
     };
 
+    const mailCountString = unreadMessageNotify.mailCount
+        ? `（${unreadMessageNotify.mailCount}）`
+        : '';
+    const chatCountString = unreadMessageNotify.chatCount
+        ? `（${unreadMessageNotify.chatCount}）`
+        : '';
+
     const tabList = [
         {
-            label: '消息',
+            label: `消息${mailCountString}`,
             to: '/notice',
             status: 'notice'
         },
         {
-            label: '聊天',
+            label: `聊天${chatCountString}`,
             to: '/notice/chat',
             status: 'chat'
         }
