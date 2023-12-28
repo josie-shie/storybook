@@ -60,9 +60,11 @@ function GameCard({ plan, onOpenPaidDialog }: GameCardProps) {
                 <Avatar />
                 <div className={style.details}>
                     <span>{plan.memberName}</span>
-                    {plan.highlights.map(el => (
-                        <HighlightTag key={el.id} type={el.type} value={el.value} />
-                    ))}
+                    <div className={style.tagsContainer}>
+                        {plan.highlights.map(el => (
+                            <HighlightTag key={el.id} type={el.type} value={el.value} />
+                        ))}
+                    </div>
                     <div className={style.league}>
                         {detail.homeTeamName} vs {detail.awayTeamName}
                     </div>
