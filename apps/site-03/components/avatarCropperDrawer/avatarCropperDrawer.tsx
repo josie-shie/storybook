@@ -7,26 +7,37 @@ interface AvatarCropperDrawerProps {
     setImgSrc: (arg: Blob) => void;
     isDrawerOpen: boolean;
     setIsDrawerOpen: (arg: boolean) => void;
+    setNewAvatar: (arg: undefined) => void;
 }
 
 function AvatarCropperDrawer({
     isDrawerOpen,
     imgSrc,
     setIsDrawerOpen,
-    setImgSrc
+    setImgSrc,
+    setNewAvatar
 }: AvatarCropperDrawerProps) {
     return (
         <BottomDrawer
             isOpen={isDrawerOpen}
             onClose={() => {
                 setIsDrawerOpen(false);
+                setNewAvatar(undefined);
             }}
             onOpen={() => {
                 setIsDrawerOpen(true);
             }}
         >
             <div className={style.avatarDrawer}>
-                <BaseCropper imgSrc={imgSrc} setImgFile={setImgSrc} />
+                {imgSrc ? (
+                    <BaseCropper
+                        imgSrc={imgSrc}
+                        onConfirm={() => {
+                            setNewAvatar(undefined);
+                        }}
+                        setImgFile={setImgSrc}
+                    />
+                ) : null}
             </div>
         </BottomDrawer>
     );
