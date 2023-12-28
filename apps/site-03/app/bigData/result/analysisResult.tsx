@@ -3,7 +3,8 @@ import { Tabs, Tab } from 'ui';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
 import { timestampToString } from 'lib';
-import { getFootballStatsResult } from 'data-center';
+import type { GetFootballStatsRequest } from 'data-center';
+import { getFootballStats } from 'data-center';
 import Image from 'next/image';
 import Link from 'next/link';
 import HeaderTitleFilter from '@/components/header/headerTitleFilter';
@@ -60,11 +61,12 @@ function EmptyResponseError() {
         <>
             <div className={style.dialogMessage}>
                 <Image alt="" height={100} src={emptyDataImage.src} width={100} />
+                <p className={style.refund}>已退款</p>
                 <p>此條件查无资料！请重新修改搜寻条件</p>
             </div>
             <div className={style.footer}>
                 <div
-                    className={style.confirm}
+                    className={style.close}
                     onClick={() => {
                         setOpenNormalDialog(false);
                         router.push('/bigData/analysis?status=analysis');
@@ -146,6 +148,7 @@ function ResultContent() {
     const userInfo = useUserStore.use.userInfo();
     const setAnalysisResultData = useAnalyticsResultStore.use.setAnalysisResultData();
     const setHandicapEchart = useAnalyticsResultStore.use.setHandicapEchart();
+    const isAnalysisBySearch = useHandicapAnalysisFormStore.use.isAnalysisBySearch();
 
     const setDialogContent = useAnalyticsResultStore.use.setDialogContent();
     const dialogErrorType = useAnalyticsResultStore.use.dialogContentType();
@@ -155,13 +158,7 @@ function ResultContent() {
     const analysisRecord = useAnalyticsResultStore.use.analysisResultData();
     const checkboxState = useHandicapAnalysisFormStore.use.checkboxState();
     const { handicap, overUnder } = checkboxState;
-    // const setDialogContentType = useAnalyticsResultStore.use.setDialogContentType();
-    // 後續API好了會需要傳的參數
-    // const endDate = useHandicapAnalysisFormStore.use.endDate();
-    // const startDate = useHandicapAnalysisFormStore.use.startDate();
-    // const teamSelected = useHandicapAnalysisFormStore.use.teamSelected();
-    // const teamHandicapOdds = useHandicapAnalysisFormStore.use.teamHandicapOdds();
-    // const handicapOddsSelected = useHandicapAnalysisFormStore.use.handicapOddsSelected();
+    const setDialogContentType = useAnalyticsResultStore.use.setDialogContentType();
 
     const tabStyle = {
         gap: 4,
@@ -216,21 +213,22 @@ function ResultContent() {
 
     const fetchData = async () => {
         // API完成後需要傳的參數
-        const query = {
-            ticketId: '0fbdd0b',
-            memberId: userInfo.uid
-            // startTime: startDate,
-            // endTime: endDate,
+        const query: GetFootballStatsRequest = {
+            memberId: userInfo.uid,
+            mission: 'create',
+            startTime: 1700728328,
+            endTime: 1701334328
         };
-        // if (handicap) {
-        //     query.handicapSide =  teamSelected.length >= 2 ? 'all' : teamSelected[0];
-        //     query.handicapValues = teamHandicapOdds;
-        // }
-        // if (overUnder) {
-        //     query.overUnderValues = handicapOddsSelected;
-        // }
+        if (handicap) {
+            query.handicapSide = teamSelected.length >= 2 ? 'all' : teamSelected[0];
+            query.handicapValues = teamHandicapOdds;
+        }
+        if (overUnder) {
+            query.overUnderValues = handicapOddsSelected;
+        }
+
         setLoading(true);
-        const res = await getFootballStatsResult(query);
+        const res = await getFootballStats(query);
 
         if (!res.success) {
             setTimeout(() => {
@@ -241,31 +239,30 @@ function ResultContent() {
             return;
         }
 
-        // API完成後的錯誤處理
-        // if (res.data.mission) {
-        //     let dialogType = 'system';
-        //     switch (res.data.mission) {
-        //         case '0':
-        //             dialogType = 'system'; // 系統錯誤
-        //             break;
-        //         case '1':
-        //             dialogType = 'parameter'; // 參數錯誤
-        //             break;
-        //         case '2':
-        //             dialogType = 'empty'; //沒有資料
-        //             break;
-        //         case '3':
-        //             dialogType = 'balance'; // 餘額不足
-        //             break;
-        //         default:
-        //             break;
-        //     }
-        //     setDialogContentType(dialogType);
-        //     setOpenNormalDialog(true);
-        //     setLoading(false);
-        //     setAnalysisResultData(undefined);
-        //     return;
-        // }
+        if (res.data.errorStatus) {
+            let dialogType = 'system';
+            switch (res.data.errorStatus) {
+                case '0':
+                    dialogType = 'system'; // 系統錯誤
+                    break;
+                case '1':
+                    dialogType = 'parameter'; // 參數錯誤
+                    break;
+                case '2':
+                    dialogType = 'empty'; //沒有資料
+                    break;
+                case '3':
+                    dialogType = 'balance'; // 餘額不足
+                    break;
+                default:
+                    break;
+            }
+            setDialogContentType(dialogType);
+            setOpenNormalDialog(true);
+            setLoading(false);
+            setAnalysisResultData(undefined);
+            return;
+        }
 
         setAnalysisResultData(res.data);
         setHandicapEchart(res.data);
@@ -273,6 +270,12 @@ function ResultContent() {
     };
 
     useEffect(() => {
+        // 代表不是從搜尋導到這頁，可能是重整頁面
+        if (!isAnalysisBySearch) {
+            router.push('/bigData/analysis?status=analysis');
+            return;
+        }
+
         void fetchData();
     }, []);
 
@@ -321,7 +324,7 @@ function ResultContent() {
                                 </span>
                             </div>
                             <div className={style.row}>
-                                <span className={style.title}>時間區間</span>
+                                <span className={style.title}>时间区间</span>
                                 <span className={style.date}>
                                     {timestampToString(startDate, 'YYYY-MM-DD')} ~{' '}
                                     {timestampToString(endDate, 'YYYY-MM-DD')}
