@@ -216,8 +216,8 @@ function ResultContent() {
         const query: GetFootballStatsRequest = {
             memberId: userInfo.uid,
             mission: 'create',
-            startTime: 1700728328,
-            endTime: 1701334328
+            startTime: startDate,
+            endTime: endDate
         };
         if (handicap) {
             query.handicapSide = teamSelected.length >= 2 ? 'all' : teamSelected[0];

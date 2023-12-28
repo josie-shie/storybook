@@ -38,6 +38,43 @@ function TableCell({
     );
 }
 
+function ChartBottomText({ playTypeSwitch }: { playTypeSwitch: PlayTypeValue }) {
+    let topText: string, middleText: string, bottomText: string;
+
+    switch (playTypeSwitch) {
+        case 'handicap':
+            topText = '上盘';
+            middleText = '走盘';
+            bottomText = '下盘';
+            break;
+        case 'overUnder':
+            topText = '大球';
+            middleText = '走盘';
+            bottomText = '小球';
+            break;
+        case 'moneyLine':
+            topText = '主胜';
+            middleText = '平手';
+            bottomText = '客胜';
+            break;
+        default:
+            topText = '';
+            middleText = '';
+            bottomText = '';
+            break;
+    }
+
+    return (
+        <div className={style.dot}>
+            <span className={style.top}>{topText}</span>
+            <span className={style.middle}>{middleText}</span>
+            <span className={playTypeSwitch === 'moneyLine' ? style.moneyLineBottom : style.bottom}>
+                {bottomText}
+            </span>
+        </div>
+    );
+}
+
 function Handicap() {
     const setContestList = useMatchFilterStore.use.setContestList();
     const setContestInfo = useMatchFilterStore.use.setContestInfo();
@@ -101,16 +138,20 @@ function Handicap() {
             <div className={style.handicap}>
                 <div className={style.control}>
                     <div className={style.left}>
-                        <Switch
-                            onChange={(value: TimeValue) => {
-                                setCurrentSwitch(value);
-                            }}
-                            options={[
-                                { label: '日', value: 'day' },
-                                { label: '周', value: 'week' }
-                            ]}
-                            value={currentSwitch}
-                        />
+                        {currentSwitch === 'day' &&
+                        Object.keys(handicapEchart[handicapRadio][currentSwitch][playTypeSwitch])
+                            .length <= 4 ? null : (
+                            <Switch
+                                onChange={(value: TimeValue) => {
+                                    setCurrentSwitch(value);
+                                }}
+                                options={[
+                                    { label: '日', value: 'day' },
+                                    { label: '周', value: 'week' }
+                                ]}
+                                value={currentSwitch}
+                            />
+                        )}
                     </div>
                     <div className={style.right}>
                         <TextRadio
@@ -131,11 +172,33 @@ function Handicap() {
                             ? timestampToString(analysisData.endTime, 'YYYY-MM-DD')
                             : null}
                     </p>
-
-                    <ul>
+                    <div
+                        className={style.blurCover}
+                        style={{
+                            display:
+                                Object.keys(
+                                    handicapEchart[handicapRadio][currentSwitch][playTypeSwitch]
+                                ).length > 9
+                                    ? 'initial'
+                                    : 'none'
+                        }}
+                    />
+                    <ul
+                        style={{
+                            gap:
+                                Object.keys(
+                                    handicapEchart[handicapRadio][currentSwitch][playTypeSwitch]
+                                ).length <= 3
+                                    ? '32px'
+                                    : '12px'
+                        }}
+                    >
                         {Object.keys(handicapEchart[handicapRadio][currentSwitch][playTypeSwitch])
                             .sort((a, b) => new Date(a).getTime() - new Date(b).getTime())
                             .map((date, index) => {
+                                const totalDataLength = Object.keys(
+                                    handicapEchart[handicapRadio][currentSwitch][playTypeSwitch]
+                                ).length;
                                 const currentData =
                                     handicapEchart[handicapRadio][currentSwitch][playTypeSwitch];
                                 const heights = calculateHeight(currentData, date);
@@ -145,22 +208,35 @@ function Handicap() {
                                     currentData[date].lower +
                                     currentData[date].upper;
 
+                                let barWidth = 48;
+                                let radius = 4;
+                                if (totalDataLength >= 2 && totalDataLength <= 3) {
+                                    barWidth = 24;
+                                } else if (totalDataLength >= 4) {
+                                    barWidth = 8;
+                                    radius = 30;
+                                }
+
                                 return (
                                     <li key={date}>
-                                        <span className={style.bar}>
+                                        <span
+                                            className={style.bar}
+                                            style={{ borderRadius: `${radius}px` }}
+                                        >
                                             <span
-                                                className={style.top}
+                                                className={`${style.top}`}
                                                 style={{
                                                     height: `${heights.upperHeight}%`,
                                                     borderRadius:
                                                         heights.drawHeight === 0 &&
                                                         heights.lowerHeight === 0
                                                             ? '30px'
-                                                            : ''
+                                                            : '',
+                                                    width: `${barWidth}px`
                                                 }}
                                             />
                                             <span
-                                                className={style.middle}
+                                                className={`${style.middle}`}
                                                 style={{
                                                     height: `${heights.drawHeight}%`,
                                                     borderBottomLeftRadius:
@@ -170,18 +246,24 @@ function Handicap() {
                                                     borderTopLeftRadius:
                                                         heights.upperHeight === 0 ? '30px' : '',
                                                     borderTopRightRadius:
-                                                        heights.upperHeight === 0 ? '30px' : ''
+                                                        heights.upperHeight === 0 ? '30px' : '',
+                                                    width: `${barWidth}px`
                                                 }}
                                             />
                                             <span
-                                                className={style.bottom}
+                                                className={`${style.bottom}`}
                                                 style={{
                                                     height: `${heights.lowerHeight}%`,
                                                     borderRadius:
                                                         heights.drawHeight === 0 &&
                                                         heights.upperHeight === 0
                                                             ? '30px'
-                                                            : ''
+                                                            : '',
+                                                    width: `${barWidth}px`,
+                                                    background:
+                                                        playTypeSwitch === 'moneyLine'
+                                                            ? '#6357F0'
+                                                            : '#00ac6e'
                                                 }}
                                             />
                                         </span>
@@ -214,11 +296,7 @@ function Handicap() {
                             ]}
                             value={playTypeSwitch}
                         />
-                        <div className={style.dot}>
-                            <span className={style.top}>上盤</span>
-                            <span className={style.middle}>走盤</span>
-                            <span className={style.bottom}>下盤</span>
-                        </div>
+                        <ChartBottomText playTypeSwitch={playTypeSwitch} />
                     </div>
                 </div>
             </div>
@@ -227,55 +305,55 @@ function Handicap() {
                 <div className={style.header}>半场大小</div>
                 <div className={style.header}>半场独赢</div>
                 <TableCell
-                    cellValue={analysisRecord?.halfHandicapUpper}
+                    cellValue={analysisRecord?.halfHandicapUpper || []}
                     label="上"
                     openMatchListDrawer={openMatchListDrawer}
                     selectedType="半场让分"
                 />
                 <TableCell
-                    cellValue={analysisRecord?.halfOverUnderOver}
+                    cellValue={analysisRecord?.halfOverUnderOver || []}
                     label="上"
                     openMatchListDrawer={openMatchListDrawer}
                     selectedType="半场大小"
                 />{' '}
                 <TableCell
-                    cellValue={analysisRecord?.halfTimeHomeWin}
+                    cellValue={analysisRecord?.halfTimeHomeWin || []}
                     label="上"
                     openMatchListDrawer={openMatchListDrawer}
                     selectedType="半场独赢"
                 />
                 <TableCell
-                    cellValue={analysisRecord?.halfHandicapLower}
+                    cellValue={analysisRecord?.halfHandicapLower || []}
                     label="下"
                     openMatchListDrawer={openMatchListDrawer}
                     selectedType="半场让分"
                 />
                 <TableCell
-                    cellValue={analysisRecord?.halfOverUnderUnder}
+                    cellValue={analysisRecord?.halfOverUnderUnder || []}
                     label="下"
                     openMatchListDrawer={openMatchListDrawer}
                     selectedType="半场大小"
                 />
                 <TableCell
-                    cellValue={analysisRecord?.halfTimeAwayWin}
+                    cellValue={analysisRecord?.halfTimeAwayWin || []}
                     label="下"
                     openMatchListDrawer={openMatchListDrawer}
                     selectedType="半场独赢"
                 />
                 <TableCell
-                    cellValue={analysisRecord?.halfHandicapDraw}
+                    cellValue={analysisRecord?.halfHandicapDraw || []}
                     label="走"
                     openMatchListDrawer={openMatchListDrawer}
                     selectedType="半场让分"
                 />
                 <TableCell
-                    cellValue={analysisRecord?.halfOverUnderDraw}
+                    cellValue={analysisRecord?.halfOverUnderDraw || []}
                     label="走"
                     openMatchListDrawer={openMatchListDrawer}
                     selectedType="半场大小"
                 />
                 <TableCell
-                    cellValue={analysisRecord?.halfTimeDraw}
+                    cellValue={analysisRecord?.halfTimeDraw || []}
                     label="走"
                     openMatchListDrawer={openMatchListDrawer}
                     selectedType="半场独赢"
@@ -286,55 +364,55 @@ function Handicap() {
                 <div className={style.header}>全场大小</div>
                 <div className={style.header}>全场独赢</div>
                 <TableCell
-                    cellValue={analysisRecord?.fullHandicapUpper}
+                    cellValue={analysisRecord?.fullHandicapUpper || []}
                     label="上"
                     openMatchListDrawer={openMatchListDrawer}
                     selectedType="全场让分"
                 />
                 <TableCell
-                    cellValue={analysisRecord?.fullOverUnderOver}
+                    cellValue={analysisRecord?.fullOverUnderOver || []}
                     label="上"
                     openMatchListDrawer={openMatchListDrawer}
                     selectedType="全场大小"
                 />
                 <TableCell
-                    cellValue={analysisRecord?.fullTimeHomeWin}
+                    cellValue={analysisRecord?.fullTimeHomeWin || []}
                     label="上"
                     openMatchListDrawer={openMatchListDrawer}
                     selectedType="全场独赢"
                 />
                 <TableCell
-                    cellValue={analysisRecord?.fullHandicapLower}
+                    cellValue={analysisRecord?.fullHandicapLower || []}
                     label="下"
                     openMatchListDrawer={openMatchListDrawer}
                     selectedType="全场让分"
                 />
                 <TableCell
-                    cellValue={analysisRecord?.fullOverUnderUnder}
+                    cellValue={analysisRecord?.fullOverUnderUnder || []}
                     label="下"
                     openMatchListDrawer={openMatchListDrawer}
                     selectedType="全场大小"
                 />
                 <TableCell
-                    cellValue={analysisRecord?.fullTimeAwayWin}
+                    cellValue={analysisRecord?.fullTimeAwayWin || []}
                     label="下"
                     openMatchListDrawer={openMatchListDrawer}
                     selectedType="全场独赢"
                 />
                 <TableCell
-                    cellValue={analysisRecord?.fullHandicapDraw}
+                    cellValue={analysisRecord?.fullHandicapDraw || []}
                     label="走"
                     openMatchListDrawer={openMatchListDrawer}
                     selectedType="全场让分"
                 />
                 <TableCell
-                    cellValue={analysisRecord?.fullOverUnderDraw}
+                    cellValue={analysisRecord?.fullOverUnderDraw || []}
                     label="走"
                     openMatchListDrawer={openMatchListDrawer}
                     selectedType="全场大小"
                 />
                 <TableCell
-                    cellValue={analysisRecord?.fullTimeDraw}
+                    cellValue={analysisRecord?.fullTimeDraw || []}
                     label="走"
                     openMatchListDrawer={openMatchListDrawer}
                     selectedType="全场独赢"

@@ -93,9 +93,9 @@ export type GoalsIn15MinsType = GoalsIn15Mins;
 const GetFootballStatsSchema = z.object({
     memberId: z.number(),
     ticketId: z.string(),
-    handicapSide: z.string(),
-    handicapValues: z.string(),
-    overUnderValues: z.string(),
+    handicapSide: z.string().nullable(),
+    handicapValues: z.string().nullable(),
+    overUnderValues: z.string().nullable(),
     startTime: z.number(),
     endTime: z.number(),
     // 全場讓球
@@ -148,7 +148,13 @@ const GetFootballStatsSchema = z.object({
     goalsInterval4To6: z.array(z.number()).nullable(),
     goalsInterval7Plus: z.array(z.number()).nullable(),
     analyTime: z.number(),
-    errorStatus: z.union([z.literal('0'), z.literal('1'), z.literal('2'), z.literal('3')])
+    errorStatus: z.union([
+        z.literal('0'),
+        z.literal('1'),
+        z.literal('2'),
+        z.literal('3'),
+        z.literal('')
+    ])
 });
 
 const GetFootballStatsResultSchema = z.object({

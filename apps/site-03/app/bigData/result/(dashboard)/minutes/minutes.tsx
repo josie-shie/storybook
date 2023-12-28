@@ -99,7 +99,7 @@ function Minutes() {
     }, [contestInfo, setFilterInit]);
 
     useEffect(() => {
-        analysisRecord && setList(analysisRecord.goalsIn15Mins);
+        analysisRecord && setList(analysisRecord.goalsIn15Mins || []);
     }, [analysisRecord]);
 
     return (
