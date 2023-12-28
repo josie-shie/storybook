@@ -20,8 +20,6 @@ import lineRight from './img/lineRight.png';
 import Vip from './img/vip.png';
 import Arrow from './img/arrow.png';
 import ActiveArrow from './img/activeArrow.png';
-import checkbox from './img/checkbox.png';
-import checkedBox from './img/checkedbox.png';
 import VipIcon from './img/vipIcon.png';
 import { useSubscribeStore } from './subscribeStore';
 
@@ -38,12 +36,10 @@ function Subscribe({ backHistory }: { backHistory: boolean }) {
     const platformAmount = useSubscribeStore.use.platformAmount();
     const currencyAmount = useSubscribeStore.use.currencyAmount();
     const isVip = useSubscribeStore.use.isVip();
-    const isChecked = useSubscribeStore.use.isChecked();
     const setPlanId = useSubscribeStore.use.setPlanId();
     const setPlatformAmount = useSubscribeStore.use.setPlatformAmount();
     const setCurrencyAmount = useSubscribeStore.use.setCurrencyAmount();
     const setIsVip = useSubscribeStore.use.setIsVip();
-    const setIsChecked = useSubscribeStore.use.setIsChecked();
     const setYearPlanList = useSubscribeStore.use.setYearPlanList();
     const setPlanList = useSubscribeStore.use.setPlanList();
     const setIsVisible = useNotificationStore.use.setIsVisible();
@@ -308,44 +304,18 @@ function Subscribe({ backHistory }: { backHistory: boolean }) {
                                 </div>
                             )}
                         </div>
-
-                        <div className={style.agreement}>
-                            {isChecked ? (
-                                <Image
-                                    alt=""
-                                    height={16}
-                                    onClick={() => {
-                                        setIsChecked(false);
-                                    }}
-                                    src={checkedBox}
-                                    width={16}
-                                />
-                            ) : (
-                                <Image
-                                    alt=""
-                                    height={16}
-                                    onClick={() => {
-                                        setIsChecked(true);
-                                    }}
-                                    src={checkbox}
-                                    width={16}
-                                />
-                            )}
-                            <div>
-                                已同意
-                                <span className={style.protocol} onClick={handleProtocolOpen}>
-                                    会员服务协议
-                                </span>
-                            </div>
-                        </div>
                         <button
                             className={style.submit}
-                            disabled={!isChecked}
                             onClick={handleSubscribeButtonOnClick}
                             type="button"
                         >
                             {memberSubscribeStatus.planId === 1 ? '续约' : '立即开通'}
                         </button>
+                        <div className={style.agreement}>
+                            <span className={style.protocol} onClick={handleProtocolOpen}>
+                                会员服务协议
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>
