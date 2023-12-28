@@ -151,7 +151,7 @@ function MasterList() {
 
     const fetchData = async () => {
         const res = await getMentorList({
-            memberId: userInfo.uid ? userInfo.uid : 1,
+            memberId: userInfo.uid ? userInfo.uid : 0,
             filter: isActive.length > 0 ? isActive : undefined
         });
 

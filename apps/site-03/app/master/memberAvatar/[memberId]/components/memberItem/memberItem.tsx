@@ -64,7 +64,7 @@ function MasterItem({ params }: { params: { memberId: string } }) {
 
     const goMasterPredict = async (id: number) => {
         const res = await getMentorList({
-            memberId: userInfo.uid ? userInfo.uid : 1,
+            memberId: userInfo.uid ? userInfo.uid : 0,
             mentorId: id
         });
 

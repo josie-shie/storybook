@@ -85,7 +85,7 @@ function Info({ params }: { params: { masterId: string } }) {
 
     const fetchData = async () => {
         const res = await getMentorList({
-            memberId: userInfo.uid ? userInfo.uid : 1,
+            memberId: userInfo.uid ? userInfo.uid : 0,
             mentorId: Number(params.masterId)
         });
 
