@@ -236,7 +236,7 @@ function Account() {
                         label="昵称"
                         name="nickName"
                         onChange={handleInputChange}
-                        placeholder="新增"
+                        placeholder="添加昵称"
                         submitted={submittedState.nickName}
                         type="text"
                         value={formState.nickName}
@@ -245,7 +245,7 @@ function Account() {
                         label="出生日期："
                         name="birthday"
                         onChange={handleInputChange}
-                        placeholder="新增"
+                        placeholder="添加出生日期"
                         submitted={submittedState.birthday}
                         type="date"
                         value={formState.birthday}
@@ -254,7 +254,7 @@ function Account() {
                         label="手机号"
                         name="phoneNumber"
                         onChange={handleInputChange}
-                        placeholder="新增"
+                        placeholder="添加手机号"
                         submitted={submittedState.phoneNumber}
                         type="text"
                         value={formState.phoneNumber}
@@ -263,7 +263,7 @@ function Account() {
                         label="微信号"
                         name="wechat"
                         onChange={handleInputChange}
-                        placeholder="新增"
+                        placeholder="添加微信号"
                         submitted={submittedState.wechat}
                         type="text"
                         value={formState.wechat}
@@ -272,7 +272,7 @@ function Account() {
                         label="QQ号"
                         name="qq"
                         onChange={handleInputChange}
-                        placeholder="新增"
+                        placeholder="添加QQ号"
                         submitted={submittedState.qq}
                         type="text"
                         value={formState.qq}
@@ -281,7 +281,7 @@ function Account() {
                         label="邮箱"
                         name="email"
                         onChange={handleInputChange}
-                        placeholder="新增"
+                        placeholder="添加邮箱"
                         submitted={submittedState.email}
                         type="email"
                         value={formState.email}

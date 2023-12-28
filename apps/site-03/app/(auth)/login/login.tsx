@@ -4,7 +4,8 @@ import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, FormControl } from '@mui/material';
 import type { LoginRequest } from 'data-center';
-import { sendVerificationCode, login } from 'data-center';
+import { getVerificationCaptcha, login } from 'data-center';
+import { useEffect } from 'react';
 import {
     VertifyCodeByImage,
     Aggrement,
@@ -28,7 +29,8 @@ const schema = yup.object().shape({
         .matches(/^(?=.*\d)(?=.*[a-zA-Z])[a-zA-Z0-9]{6,16}$/)
         .required(),
     verificationCode: yup.string().required(),
-    countryCode: yup.string().required()
+    countryCode: yup.string().required(),
+    verifyToken: yup.string().required()
 });
 
 function Login() {
@@ -44,6 +46,7 @@ function Login() {
         control,
         handleSubmit,
         watch,
+        setValue,
         formState: { errors }
     } = useForm({
         resolver: yupResolver(schema),
@@ -51,11 +54,12 @@ function Login() {
             mobileNumber: '',
             password: '',
             verificationCode: '',
-            countryCode: '+86'
+            countryCode: '+86',
+            verifyToken: ''
         }
     });
 
-    const { countryCode, mobileNumber, password, verificationCode } = watch();
+    const { countryCode, mobileNumber, password, verificationCode, verifyToken } = watch();
 
     const onSubmit = async (data: LoginRequest) => {
         const res = await login(data);
@@ -73,25 +77,26 @@ function Login() {
         location.reload();
     };
 
-    const getVerificationCode = async () => {
-        const res = await sendVerificationCode({
-            countryCode,
-            mobileNumber,
-            verificationType: 1,
-            checkExistingAccount: false
-        });
+    const getCaptcha = async () => {
+        const res = await getVerificationCaptcha();
 
         if (!res.success) {
-            const errorMessage = res.error ? res.error : '取得验证码失败';
+            const errorMessage = res.error ? res.error : '取得验证图形失败';
             setIsVisible(errorMessage, 'error');
             return;
         }
 
-        setVerifyPhoto(res.data);
+        setVerifyPhoto(res.data.captcha);
+        setValue('verifyToken', res.data.verifyToken);
     };
 
+    useEffect(() => {
+        void getCaptcha();
+    }, []);
+
     const isSendVerificationCodeDisable = !countryCode || !mobileNumber || !password;
-    const isLoginDisable = isSendVerificationCodeDisable || !verificationCode || !verifyPhoto;
+    const isLoginDisable =
+        isSendVerificationCodeDisable || !verificationCode || !verifyPhoto || !verifyToken;
 
     return (
         <form className={style.login} onSubmit={handleSubmit(onSubmit)}>
@@ -135,13 +140,16 @@ function Login() {
                         <VertifyCodeByImage
                             error={errors.verificationCode}
                             field={field}
-                            getVerificationCode={getVerificationCode}
+                            getVerificationCode={getCaptcha}
                             placeholder="验证码"
                             verifyPhoto={verifyPhoto}
                             vertifyDisable={isSendVerificationCodeDisable}
                         />
                     )}
                 />
+            </FormControl>
+            <FormControl>
+                <input name="verifyToken" type="hidden" value={verifyToken} />
             </FormControl>
             <div className={style.aggrement}>
                 <Aggrement />

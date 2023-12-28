@@ -174,6 +174,34 @@ export const GET_MEMBER_INDIVIDUAL_GUESS_MATCHES_QUERY = `
         }
     }
 `;
+export const GET_MENTOR_INDIVIDUAL_GUESS_MATCHES_QUERY = `
+    query getMentorIndividualGuessMatches($input: GetMemberIndividualGuessMatchesInput!){
+        getMentorIndividualGuessMatches(input: $input) {
+            guessType
+            guessMatchList {
+                id
+                matchId
+                matchTime
+                leagueId
+                leagueName
+                homeTeamName
+                awayTeamName
+                playType
+                handicapOdds
+                handicapInChinese
+                overUnderOdds
+                predictedPlay
+                predictionResult
+                isPaidToRead
+                unlockPrice
+            }
+            pagination {
+                pageCount
+                totalCount
+            }
+        }
+    }
+`;
 
 export const GET_RRO_GUESS_QUERY = `
     query getProGuess($matchId: Int, $memberId: Int){
