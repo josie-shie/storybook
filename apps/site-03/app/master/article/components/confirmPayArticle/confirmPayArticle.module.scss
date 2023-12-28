@@ -1,29 +1,37 @@
-.payContent {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    span {
-        color: #222;
-        font-size: 14px;
-        font-weight: 400;
-    }
-
-    .price {
+.confirmPay {
+    .payContent {
         display: flex;
+        flex-direction: column;
         align-items: center;
-        gap: 6px;
+        margin-bottom: 16px;
 
-        .number {
+        span {
+            color: #222;
+            font-size: 14px;
+            font-weight: 400;
+        }
+
+        .price {
             display: flex;
             align-items: center;
-            color: #4489ff;
-            font-size: 16px;
-            font-weight: 600;
+            gap: 6px;
 
-            .image {
-                margin-right: 6px;
+            .number {
+                display: flex;
+                align-items: center;
+                color: #4489ff;
+                font-size: 16px;
+                font-weight: 600;
+
+                .image {
+                    margin: 0 6px;
+                }
             }
         }
+    }
+
+    .balance {
+        font-size: 14px;
+        color: #8d8d8d;
     }
 }

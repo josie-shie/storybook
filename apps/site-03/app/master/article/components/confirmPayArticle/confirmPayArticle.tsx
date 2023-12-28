@@ -6,7 +6,7 @@ import Star from './img/star.png';
 function ConfirmPayArticle({ price }: { price: number }) {
     const userInfo = useUserStore.use.userInfo();
     return (
-        <>
+        <div className={style.confirmPay}>
             <div className={style.payContent}>
                 <div className={style.price}>
                     <span className={style.text}>支付</span>
@@ -15,12 +15,12 @@ function ConfirmPayArticle({ price }: { price: number }) {
                         {price}
                     </span>
                 </div>
-                <span className={style.text}>解锁本场 ?</span>
+                <span className={style.text}>解锁本场?</span>
             </div>
             <div className={style.balance}>
                 我的餘額: {userInfo.balance ? userInfo.balance : 0}金幣
             </div>
-        </>
+        </div>
     );
 }
 
