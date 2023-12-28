@@ -108,7 +108,7 @@ function Info({ article, setArticle }: InfoProps) {
                     {article.followed ? '已关注' : '关注'}
                 </div>
             </section>
-            <div className={style.radius} />
+            {/* <div className={style.radius} /> */}
         </>
     );
 }
