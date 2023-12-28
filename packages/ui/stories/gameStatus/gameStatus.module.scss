@@ -17,4 +17,26 @@
     .playoff {
         color: #fbb03b;
     }
+
+    .flashing {
+        animation: flashing 1.5s linear infinite;
+    }
+}
+
+@keyframes flashing {
+    0% {
+        opacity: 0;
+    }
+
+    30% {
+        opacity: 1;
+    }
+
+    80% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
 }

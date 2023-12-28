@@ -65,6 +65,9 @@ function GameStatus({ startTime, status, ...props }: GameStatusProps) {
                 }`}
             >
                 {realTimeStatus.time || realTimeStatus.text}
+                {realTimeStatus.state === 'playing' && (
+                    <span className={style.flashing}>&apos;</span>
+                )}
             </p>
         </div>
     );

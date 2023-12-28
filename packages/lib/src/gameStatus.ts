@@ -40,8 +40,8 @@ export const handleGameTime = (
             state: 'playing',
             time:
                 handleStartTime(startTime, endTime) > 45
-                    ? `45+${handleStartTime(startTime, endTime) - 45}’`
-                    : `${handleStartTime(startTime, endTime)}’`
+                    ? `45+${handleStartTime(startTime, endTime) - 45}`
+                    : `${handleStartTime(startTime, endTime)}`
         };
     }
     if (state === 2) {
@@ -52,8 +52,8 @@ export const handleGameTime = (
             state: 'playing',
             time:
                 handleStartTime(startTime, endTime) + 45 > 90
-                    ? `90+${handleStartTime(startTime, endTime) - 45}’`
-                    : `${handleStartTime(startTime, endTime) + 45}’`
+                    ? `90+${handleStartTime(startTime, endTime) - 45}`
+                    : `${handleStartTime(startTime, endTime) + 45}`
         };
     }
     if (state === 4) {

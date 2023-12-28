@@ -199,7 +199,7 @@ function ContestList({
 
     return (
         <>
-            <Banner />
+            {status === 'all' && <Banner />}
             <div className={style.toolbar}>
                 <FootballFilter
                     statusFunc={statusTable[status]}
