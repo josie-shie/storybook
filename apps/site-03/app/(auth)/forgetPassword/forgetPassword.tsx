@@ -50,7 +50,8 @@ function ForgetPassword() {
             confirmPassword: '',
             countryCode: '+86',
             verifyToken: ''
-        }
+        },
+        mode: 'onChange'
     });
     const errors = formState.errors;
 
