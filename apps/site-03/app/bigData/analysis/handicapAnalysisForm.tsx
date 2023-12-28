@@ -1,7 +1,8 @@
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Checkbox } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import type { ReactNode } from 'react';
+import React, { useEffect } from 'react';
 import dayjs from 'dayjs';
 import { motion } from 'framer-motion';
 import { useUserStore } from '@/app/userStore';
@@ -15,6 +16,8 @@ import selectIcon from './img/select.png';
 import starIcon from './img/star.png';
 import Datepicker from './components/datepicker/datepicker';
 import Dialog from './components/dialog/dialog';
+
+type PlayTypeCheckBox = 'handicap' | 'overUnder';
 
 function PaymentAlert() {
     const router = useRouter();
@@ -70,6 +73,8 @@ function StepperProcess() {
     const endDate = useHandicapAnalysisFormStore.use.endDate();
     const checkAllTeam = useHandicapAnalysisFormStore.use.checkAllTeam();
     const setCheckAllTeam = useHandicapAnalysisFormStore.use.setCheckAllTeam();
+    const checkboxState = useHandicapAnalysisFormStore.use.checkboxState();
+    const { handicap, overUnder } = checkboxState;
 
     const updateQueryDate = (startDateSelected?: number, endDateSelected?: number) => {
         if (startDateSelected && endDateSelected) {
@@ -78,9 +83,10 @@ function StepperProcess() {
         }
     };
 
-    return (
-        <>
-            <div className={style.step}>
+    const steps: ReactNode[] = [];
+    if (handicap) {
+        steps.push(
+            <div className={style.step} key="handicapStep1">
                 <div className={style.selectTeam}>
                     <StepIndicator stepNumber="1" text="选择让方" />
                     <div className={style.checkbox}>
@@ -111,77 +117,113 @@ function StepperProcess() {
                     />
                 </div>
             </div>
-            <div className={style.step}>
+        );
+
+        steps.push(
+            <div className={style.step} key="handicapStep2">
                 <StepIndicator stepNumber="2" text="选择让分数" />
                 <div className={style.multipleOption}>
-                    {handicapNumberList.map(handicap => {
+                    {handicapNumberList.map(handicapOption => {
                         return (
                             <OptionButton
-                                active={teamHandicapOdds === handicap.value}
+                                active={teamHandicapOdds === handicapOption.value}
                                 imageSrc={selectIcon.src}
-                                key={handicap.value}
-                                label={handicap.label}
+                                key={handicapOption.value}
+                                label={handicapOption.label}
                                 onClick={() => {
-                                    setTeamHandicapOdds(handicap.value);
+                                    setTeamHandicapOdds(handicapOption.value);
                                 }}
                             />
                         );
                     })}
                 </div>
             </div>
-            <div className={style.step}>
-                <StepIndicator stepNumber="3" text="选择大小球" />
+        );
+
+        if (overUnder) {
+            steps.push(
+                <div className={style.step} key="handicapOverUnder">
+                    <StepIndicator stepNumber="3" text="选择大小球" />
+                    <div className={style.multipleOption}>
+                        {overUnderNumberList.map(overUnderOption => {
+                            return (
+                                <OptionButton
+                                    active={handicapOddsSelected === overUnderOption.value}
+                                    imageSrc={selectIcon.src}
+                                    key={overUnderOption.value}
+                                    label={overUnderOption.label}
+                                    onClick={() => {
+                                        setHandicapOddsSelected(overUnderOption.value);
+                                    }}
+                                />
+                            );
+                        })}
+                    </div>
+                </div>
+            );
+        }
+    } else if (overUnder) {
+        steps.push(
+            <div className={style.step} key="overUnderOnly">
+                <StepIndicator stepNumber="1" text="选择大小球" />
                 <div className={style.multipleOption}>
-                    {overUnderNumberList.map(overUnder => {
+                    {overUnderNumberList.map(overUnderOption => {
                         return (
                             <OptionButton
-                                active={handicapOddsSelected === overUnder.value}
+                                active={handicapOddsSelected === overUnderOption.value}
                                 imageSrc={selectIcon.src}
-                                key={overUnder.value}
-                                label={overUnder.label}
+                                key={overUnderOption.value}
+                                label={overUnderOption.label}
                                 onClick={() => {
-                                    setHandicapOddsSelected(overUnder.value);
+                                    setHandicapOddsSelected(overUnderOption.value);
                                 }}
                             />
                         );
                     })}
                 </div>
             </div>
-            <div className={style.step}>
-                <StepIndicator stepNumber="4" text="选择时间" />
-                <div className={style.timeRange}>
-                    <div className={style.range}>
-                        <span>{dayjs(startDate * 1000).format('YYYY/MM/DD')}</span>
-                        <span> - </span>
-                        <span>{dayjs(endDate * 1000).format('YYYY/MM/DD')}</span>
-                    </div>
-                    <div className={style.datepicker}>
-                        自订
-                        <Datepicker
-                            openModal={openDatePicker}
-                            setOpenModal={setOpenDatePicker}
-                            updateQueryDate={updateQueryDate}
-                        />
-                    </div>
+        );
+    }
+
+    let datepickerStep: string;
+    if (handicap) {
+        datepickerStep = overUnder ? '4' : '3';
+    } else {
+        datepickerStep = '2';
+    }
+
+    steps.push(
+        <div className={style.step} key="finalStep">
+            <StepIndicator stepNumber={datepickerStep} text="选择时间" />
+            <div className={style.timeRange}>
+                <div className={style.range}>
+                    <span>{dayjs(startDate * 1000).format('YYYY/MM/DD')}</span>
+                    <span> - </span>
+                    <span>{dayjs(endDate * 1000).format('YYYY/MM/DD')}</span>
+                </div>
+                <div className={style.datepicker}>
+                    自订
+                    <Datepicker
+                        openModal={openDatePicker}
+                        setOpenModal={setOpenDatePicker}
+                        updateQueryDate={updateQueryDate}
+                    />
                 </div>
             </div>
-        </>
+        </div>
     );
+
+    return <>{steps}</>;
 }
 
 function PlayTypeCheckbox() {
-    const [checkboxState, setCheckboxState] = useState({
-        handicap: true,
-        overUnder: false
-    });
+    const checkboxState = useHandicapAnalysisFormStore.use.checkboxState();
+    const setCheckboxState = useHandicapAnalysisFormStore.use.setCheckboxState();
 
     const { handicap, overUnder } = checkboxState;
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setCheckboxState({
-            ...checkboxState,
-            [event.target.name]: event.target.checked
-        });
+        setCheckboxState(event.target.name as PlayTypeCheckBox, event.target.checked);
     };
 
     return (
@@ -258,6 +300,11 @@ function Tips() {
 
         if (!isTipsOpened) {
             setIsTipsOpened(true);
+        }
+
+        const element = document.getElementById('bigDataAnalysis');
+        if (element) {
+            element.scrollTop = 0;
         }
     };
 

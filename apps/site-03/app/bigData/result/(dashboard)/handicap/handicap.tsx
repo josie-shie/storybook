@@ -225,7 +225,7 @@ function Handicap() {
             <div className={style.tableContainer}>
                 <div className={style.header}>半场让分</div>
                 <div className={style.header}>半场大小</div>
-                <div className={style.header}>半场獨贏</div>
+                <div className={style.header}>半场独赢</div>
                 <TableCell
                     cellValue={analysisRecord?.halfHandicapUpper}
                     label="上"
@@ -242,7 +242,7 @@ function Handicap() {
                     cellValue={analysisRecord?.halfTimeHomeWin}
                     label="上"
                     openMatchListDrawer={openMatchListDrawer}
-                    selectedType="半场獨贏"
+                    selectedType="半场独赢"
                 />
                 <TableCell
                     cellValue={analysisRecord?.halfHandicapLower}
@@ -260,7 +260,7 @@ function Handicap() {
                     cellValue={analysisRecord?.halfTimeAwayWin}
                     label="下"
                     openMatchListDrawer={openMatchListDrawer}
-                    selectedType="半场獨贏"
+                    selectedType="半场独赢"
                 />
                 <TableCell
                     cellValue={analysisRecord?.halfHandicapDraw}
@@ -278,13 +278,13 @@ function Handicap() {
                     cellValue={analysisRecord?.halfTimeDraw}
                     label="走"
                     openMatchListDrawer={openMatchListDrawer}
-                    selectedType="半场獨贏"
+                    selectedType="半场独赢"
                 />
             </div>
             <div className={style.tableContainer}>
                 <div className={style.header}>全场让分</div>
                 <div className={style.header}>全场大小</div>
-                <div className={style.header}>全场獨贏</div>
+                <div className={style.header}>全场独赢</div>
                 <TableCell
                     cellValue={analysisRecord?.fullHandicapUpper}
                     label="上"
@@ -301,7 +301,7 @@ function Handicap() {
                     cellValue={analysisRecord?.fullTimeHomeWin}
                     label="上"
                     openMatchListDrawer={openMatchListDrawer}
-                    selectedType="全场獨贏"
+                    selectedType="全场独赢"
                 />
                 <TableCell
                     cellValue={analysisRecord?.fullHandicapLower}
@@ -319,7 +319,7 @@ function Handicap() {
                     cellValue={analysisRecord?.fullTimeAwayWin}
                     label="下"
                     openMatchListDrawer={openMatchListDrawer}
-                    selectedType="全场獨贏"
+                    selectedType="全场独赢"
                 />
                 <TableCell
                     cellValue={analysisRecord?.fullHandicapDraw}
@@ -337,7 +337,7 @@ function Handicap() {
                     cellValue={analysisRecord?.fullTimeDraw}
                     label="走"
                     openMatchListDrawer={openMatchListDrawer}
-                    selectedType="全场獨贏"
+                    selectedType="全场独赢"
                 />
             </div>
         </>

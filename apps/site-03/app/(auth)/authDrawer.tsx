@@ -146,12 +146,12 @@ function AuthDrawer() {
                         <Image
                             alt=""
                             className={style.backBtn}
-                            height={16}
+                            height={12}
                             onClick={() => {
                                 setAuthQuery('login');
                             }}
                             src={backIcon.src}
-                            width={16}
+                            width={12}
                         />
                     )}
                     {authContent}

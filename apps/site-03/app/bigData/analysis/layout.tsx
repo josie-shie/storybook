@@ -62,7 +62,7 @@ function AnalysisLayout({ children }: { children: ReactNode }) {
                     onUpdateAnalysis={handleAnalysisTimes}
                 />
                 {isVipUseAnalysis ? (
-                    <div className={style.main}>
+                    <div className={style.main} id="bigDataAnalysis">
                         <Tabs
                             buttonRadius={tabStyle.buttonRadius}
                             gap={tabStyle.gap}

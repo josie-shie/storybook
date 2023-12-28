@@ -8,7 +8,7 @@ interface Option {
     value: string;
 }
 
-interface Record {
+interface AnalysisRecord {
     memberId: number;
     ticketId: string;
     handicapSide: string;
@@ -21,8 +21,10 @@ interface Record {
 }
 
 interface InitState {
-    recordList: Record[];
+    recordList: AnalysisRecord[];
 }
+
+type PlayTypeCheckBox = 'handicap' | 'overUnder';
 
 interface HandicapAnalysisFormState extends InitState {
     loading: boolean;
@@ -33,7 +35,7 @@ interface HandicapAnalysisFormState extends InitState {
     setDialogContentType: (dialogContentType: string) => void;
     setOpenNormalDialog: (openNoramlDialog: boolean) => void;
     setDialogContent: (dialogContent: ReactNode) => void;
-    setRecordList: (recordList: Record[]) => void;
+    setRecordList: (recordList: AnalysisRecord[]) => void;
     updateRecord: (recordId: string, missionType: string) => void;
     showRecord: boolean;
     setShowRecord: (showRecord: boolean) => void;
@@ -63,6 +65,8 @@ interface HandicapAnalysisFormState extends InitState {
     setIsTipsOpened: (isTipsOpened: boolean) => void;
     checkAllTeam: boolean;
     setCheckAllTeam: () => void;
+    checkboxState: Record<PlayTypeCheckBox, boolean>;
+    setCheckboxState: (keyName: PlayTypeCheckBox, checked: boolean) => void;
 }
 
 let useHandicapAnalysisFormStore: StoreWithSelectors<HandicapAnalysisFormState>;
@@ -140,7 +144,7 @@ const initialState = (
         });
     },
     recordList: [],
-    setRecordList: (recordList: Record[]) => {
+    setRecordList: (recordList: AnalysisRecord[]) => {
         set(state => {
             return { ...state, recordList };
         });
@@ -326,7 +330,7 @@ const initialState = (
             };
         });
     },
-    checkAllTeam: false,
+    checkAllTeam: true,
     setCheckAllTeam: () => {
         set(state => {
             const newCheckedState = !state.checkAllTeam;
@@ -334,6 +338,29 @@ const initialState = (
                 ...state,
                 checkAllTeam: newCheckedState,
                 teamSelected: newCheckedState ? ['home', 'away'] : ['home']
+            };
+        });
+    },
+    checkboxState: {
+        handicap: true,
+        overUnder: true
+    },
+    setCheckboxState: (keyName: PlayTypeCheckBox, checked: boolean) => {
+        set(state => {
+            const isEveryOtherUnchecked = Object.entries(state.checkboxState).every(
+                ([key, value]) => key === keyName || !value
+            );
+
+            if (!checked && isEveryOtherUnchecked) {
+                return state;
+            }
+
+            return {
+                ...state,
+                checkboxState: {
+                    ...state.checkboxState,
+                    [keyName]: checked
+                }
             };
         });
     }

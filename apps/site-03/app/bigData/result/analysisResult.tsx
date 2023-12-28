@@ -153,6 +153,8 @@ function ResultContent() {
     const setOpenNormalDialog = useAnalyticsResultStore.use.setOpenNormalDialog();
     const openNoramlDialog = useAnalyticsResultStore.use.openNoramlDialog();
     const analysisRecord = useAnalyticsResultStore.use.analysisResultData();
+    const checkboxState = useHandicapAnalysisFormStore.use.checkboxState();
+    const { handicap, overUnder } = checkboxState;
     // const setDialogContentType = useAnalyticsResultStore.use.setDialogContentType();
     // 後續API好了會需要傳的參數
     // const endDate = useHandicapAnalysisFormStore.use.endDate();
@@ -213,17 +215,22 @@ function ResultContent() {
     }, [pageType, pathname, router, tabList]);
 
     const fetchData = async () => {
-        setLoading(true);
-        const res = await getFootballStatsResult({
+        // API完成後需要傳的參數
+        const query = {
             ticketId: '0fbdd0b',
             memberId: userInfo.uid
-            // // API完成後需要傳的參數
-            // handicapSide: teamSelected.length >= 2 ? 'all' : teamSelected[0],
-            // handicapValues: teamHandicapOdds,
-            // overUnderValues: handicapOddsSelected,
             // startTime: startDate,
-            // endTime: endDate
-        });
+            // endTime: endDate,
+        };
+        // if (handicap) {
+        //     query.handicapSide =  teamSelected.length >= 2 ? 'all' : teamSelected[0];
+        //     query.handicapValues = teamHandicapOdds;
+        // }
+        // if (overUnder) {
+        //     query.overUnderValues = handicapOddsSelected;
+        // }
+        setLoading(true);
+        const res = await getFootballStatsResult(query);
 
         if (!res.success) {
             setTimeout(() => {
@@ -298,17 +305,19 @@ function ResultContent() {
                                 <span className={style.title}>全场让分</span>
                                 <span className={style.name}>
                                     让方/
-                                    {teamSelected.length >= 2
-                                        ? '全部'
+                                    {teamSelected.length >= 2 || !handicap
+                                        ? '不挑选'
                                         : handicapTeam[teamSelected[0] as HandicapSideType]}
                                     、盘口/
-                                    {teamHandicapOdds || teamHandicapOdds === '0' || '不挑选'}
+                                    {handicap
+                                        ? teamHandicapOdds || teamHandicapOdds === '0'
+                                        : '不挑选'}
                                 </span>
                             </div>
                             <div className={style.row}>
                                 <span className={style.title}>全场大小</span>
                                 <span className={style.name}>
-                                    {handicapOddsSelected || '不挑選'}
+                                    {overUnder ? handicapOddsSelected : '不挑選'}
                                 </span>
                             </div>
                             <div className={style.row}>

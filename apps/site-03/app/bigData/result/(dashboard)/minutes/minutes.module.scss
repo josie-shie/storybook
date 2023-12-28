@@ -54,7 +54,9 @@
     justify-content: flex-start;
 
     .tableContainer {
-        width: 129px;
+        width: 128px;
+        flex: 1;
+        min-width: 128px;
 
         .header {
             background-color: #d9d9d9;
@@ -86,6 +88,12 @@
             &:not(:last-child) {
                 border-bottom: none;
             }
+        }
+    }
+
+    @media (max-width: 600px) {
+        .tableContainer {
+            max-width: 50%;
         }
     }
 }
