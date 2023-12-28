@@ -9,6 +9,7 @@ import Link from 'next/link';
 import style from './newMessageAlert.module.scss';
 import MessageInfo from './img/messageInfo.png';
 import { useMessageStore } from './messageStore';
+import { useUserStore } from './userStore';
 
 function NewMessageAlert() {
     const timerRef = useRef<NodeJS.Timeout | null>(null);
@@ -20,11 +21,11 @@ function NewMessageAlert() {
         const updateNewMessageNotify = useMessageStore.getState().updateNewMessageNotify;
         const updateUnreadMessageNotify = useMessageStore.getState().updateUnreadMessageNotify;
         const setIsNewMessageVisible = useMessageStore.getState().setIsNewMessageVisible;
-
+        const userUid = useUserStore.getState().userInfo.uid;
         if (!firstTimeRef.current) return;
         firstTimeRef.current = false;
         const syncGlobalNotifyStore = (notify: NotifyMessage) => {
-            if (notify.notifyType === 'newMessage') {
+            if (notify.notifyType === 0) {
                 timerRef.current && clearTimeout(timerRef.current);
                 updateNewMessageNotify({
                     uid: notify.uid,
@@ -35,7 +36,7 @@ function NewMessageAlert() {
                     setIsNewMessageVisible(false);
                 }, 2000);
             }
-            if (notify.notifyType === 'unreadMessage') {
+            if (notify.notifyType === 1 && notify.uid === `${userUid}`) {
                 updateUnreadMessageNotify({
                     uid: notify.uid,
                     ...notify.unreadMessageNotify
