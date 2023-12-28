@@ -4,7 +4,7 @@ import type { StoreWithSelectors } from 'lib';
 import { getISOWeek, parseISO } from 'date-fns';
 import type {
     GetFootballStatsMatchesResponse,
-    GetFootballStatsReportResponse,
+    GetFootballStatsResponse,
     DailyMatchType
 } from 'data-center';
 import type { ReactNode } from 'react';
@@ -51,7 +51,7 @@ function groupSameWeek(dayListData: Record<string, Statistics>) {
 }
 
 interface InitState {
-    analysisResultData: GetFootballStatsReportResponse | undefined;
+    analysisResultData: GetFootballStatsResponse | undefined;
 }
 
 interface AnalysisResultState extends InitState {
@@ -62,8 +62,8 @@ interface AnalysisResultState extends InitState {
     selectedResult: { type: string; odds: string };
     setSelectedResult: (selectedResult: { type: string; odds: string }) => void;
     handicapEchart: HandicapEchartType;
-    setAnalysisResultData: (analysisResultData: GetFootballStatsReportResponse | undefined) => void;
-    setHandicapEchart: (analysisResultData: GetFootballStatsReportResponse | undefined) => void;
+    setAnalysisResultData: (analysisResultData: GetFootballStatsResponse | undefined) => void;
+    setHandicapEchart: (analysisResultData: GetFootballStatsResponse | undefined) => void;
     dialogContentType: string;
     dialogContent: ReactNode;
     openNoramlDialog: boolean;
@@ -113,7 +113,7 @@ const initialState = (
             }
         }
     },
-    setHandicapEchart: (analysisResultData: GetFootballStatsReportResponse | undefined) => {
+    setHandicapEchart: (analysisResultData: GetFootballStatsResponse | undefined) => {
         set(state => {
             const fullDayHandicap = {} as Record<string, Statistics>;
             const fullDayOverUnder = {} as Record<string, Statistics>;
@@ -313,7 +313,7 @@ const initialState = (
             };
         });
     },
-    setAnalysisResultData: (analysisResultData: GetFootballStatsReportResponse | undefined) => {
+    setAnalysisResultData: (analysisResultData: GetFootballStatsResponse | undefined) => {
         set(state => {
             return {
                 ...state,

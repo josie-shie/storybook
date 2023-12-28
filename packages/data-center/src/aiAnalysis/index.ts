@@ -5,7 +5,7 @@ import type { ReturnData, FetchResultData } from '../common';
 import {
     GET_ODDS_HINT_LIST_QUERY,
     GET_FOOTBALL_STATS_RECORD_QUERY,
-    GET_FOOTBALL_STATS_RESULT_QUERY,
+    GET_FOOTBALL_STATS_QUERY,
     GET_FOOTBALL_STATS_MATCHES_QUERY
 } from './graphqlQueries';
 
@@ -90,7 +90,7 @@ const GoalsIn15MinsSchema = z.object({
 export type GoalsIn15Mins = z.infer<typeof GoalsIn15MinsSchema>;
 export type GoalsIn15MinsType = GoalsIn15Mins;
 
-const GetFootballStatsReportSchema = z.object({
+const GetFootballStatsSchema = z.object({
     memberId: z.number(),
     ticketId: z.string(),
     handicapSide: z.string(),
@@ -147,19 +147,25 @@ const GetFootballStatsReportSchema = z.object({
     goalsInterval2To3: z.array(z.number()),
     goalsInterval4To6: z.array(z.number()),
     goalsInterval7Plus: z.array(z.number()),
-    analyTime: z.number()
+    analyTime: z.number(),
+    errorStatus: z.union([z.literal('0'), z.literal('1'), z.literal('2'), z.literal('3')])
 });
 
-const GetFootballStatsReportResultSchema = z.object({
-    getFootballStatsResult: GetFootballStatsReportSchema
+const GetFootballStatsResultSchema = z.object({
+    getFootballStats: GetFootballStatsSchema
 });
 
-type GetFootballStatsReportResult = z.infer<typeof GetFootballStatsReportResultSchema>;
-export type GetFootballStatsReportResponse = z.infer<typeof GetFootballStatsReportSchema>;
+type GetFootballStatsResult = z.infer<typeof GetFootballStatsResultSchema>;
+export type GetFootballStatsResponse = z.infer<typeof GetFootballStatsSchema>;
 
-export interface GetFootballStatsReportRequest {
+export interface GetFootballStatsRequest {
+    mission: string;
     memberId: number;
-    ticketId: string;
+    handicapSide?: string;
+    handicapValues?: string;
+    overUnderValues?: string;
+    startTime?: number;
+    endTime?: number;
 }
 
 const GetFootballStatsMatchSchema = z.object({
@@ -271,20 +277,17 @@ export const getBigdataHint = async ({
 
 /**
  * 取得分析結果
- * - params : {@link GetFootballStatsReportRequest}
- * - returns : {@link GetFootballStatsReportResponse}
+ * - params : {@link GetFootballStatsRequest}
+ * - returns : {@link GetFootballStatsResponse}
  */
-export const getFootballStatsResult = async (
-    input: GetFootballStatsReportRequest
-): Promise<ReturnData<GetFootballStatsReportResponse>> => {
+export const getFootballStats = async (
+    input: GetFootballStatsRequest
+): Promise<ReturnData<GetFootballStatsResponse>> => {
     try {
-        const { data, errors } = await fetcher<
-            FetchResultData<GetFootballStatsReportResult>,
-            unknown
-        >(
+        const { data, errors } = await fetcher<FetchResultData<GetFootballStatsResult>, unknown>(
             {
                 data: {
-                    query: GET_FOOTBALL_STATS_RESULT_QUERY,
+                    query: GET_FOOTBALL_STATS_QUERY,
                     variables: {
                         input
                     }
@@ -294,11 +297,11 @@ export const getFootballStatsResult = async (
         );
 
         throwErrorMessage(errors);
-        GetFootballStatsReportResultSchema.parse(data);
+        GetFootballStatsResultSchema.parse(data);
 
         return {
             success: true,
-            data: data.getFootballStatsResult
+            data: data.getFootballStats
         };
     } catch (error) {
         return handleApiError(error);

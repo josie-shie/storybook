@@ -62,9 +62,9 @@ export const GET_FOOTBALL_STATS_MATCHES_QUERY = `
     }
 `;
 
-export const GET_FOOTBALL_STATS_RESULT_QUERY = `
-    query getFootballStatsResult($input: FootballStatsResultInput!) {
-        getFootballStatsResult(input: $input) {
+export const GET_FOOTBALL_STATS_QUERY = `
+    query getFootballStats($input: SmartAnalyRequestInput!) {
+        getFootballStats(input: $input) {
             memberId
             ticketId
             handicapSide
@@ -72,109 +72,110 @@ export const GET_FOOTBALL_STATS_RESULT_QUERY = `
             overUnderValues
             startTime
             endTime
+            analyTime
+            errorStatus
             fullHandicapUpper
             fullHandicapLower
             fullHandicapDraw
             fullHandicapUpperDaily {
-                date
-                matches
+              date
+              matches
             }
             fullHandicapLowerDaily {
-                date
-                matches
+              date
+              matches
             }
             fullHandicapDrawDaily {
-                date
-                matches
+              date
+              matches
             }
             halfHandicapUpper
             halfHandicapLower
             halfHandicapDraw
             halfHandicapUpperDaily {
-                date
-                matches
+              date
+              matches
             }
             halfHandicapLowerDaily {
-                date
-                matches
+              date
+              matches
             }
             halfHandicapDrawDaily {
-                date
-                matches
+              date
+              matches
             }
             fullOverUnderOver
             fullOverUnderUnder
             fullOverUnderDraw
             fullOverUnderOverDaily {
-                date
-                matches
+              date
+              matches
             }
             fullOverUnderUnderDaily {
-                date
-                matches
+              date
+              matches
             }
             fullOverUnderDrawDaily {
-                date
-                matches
+              date
+              matches
             }
             halfOverUnderOver
             halfOverUnderUnder
             halfOverUnderDraw
             halfOverUnderOverDaily {
-                date
-                matches
+              date
+              matches
             }
             halfOverUnderUnderDaily {
-                date
-                matches
+              date
+              matches
             }
             halfOverUnderDrawDaily {
-                date
-                matches
+              date
+              matches
             }
             fullTimeHomeWin
             fullTimeDraw
             fullTimeAwayWin
             fullTimeHomeWinDaily {
-                date
-                matches
+              date
+              matches
             }
             fullTimeDrawDaily {
-                date
-                matches
+              date
+              matches
             }
             fullTimeAwayWinDaily {
-                date
-                matches
+              date
+              matches
             }
             halfTimeHomeWin
             halfTimeDraw
             halfTimeAwayWin
             halfTimeHomeWinDaily {
-                date
-                matches
+              date
+              matches
             }
             halfTimeDrawDaily {
-                date
-                matches
+              date
+              matches
             }
             halfTimeAwayWinDaily {
-                date
-                matches
+              date
+              matches
             }
             goalsIn15Mins {
-                goalsOver
-                goalsUnder
+              goalsOver
+              goalsUnder
             }
             correctScores {
-                score
-                matches
+              score
+              matches
             }
             goalsInterval0To1
             goalsInterval2To3
             goalsInterval4To6
             goalsInterval7Plus
-            analyTime
         }
     }
 `;
