@@ -117,7 +117,7 @@ function SystemError() {
                         router.push('/bigData/analysis?status=analysis');
                     }}
                 >
-                    回報錯誤
+                    回报错误
                 </div>
             </div>
         </>
@@ -233,9 +233,11 @@ function ResultContent() {
         const res = await getFootballStatsResult(query);
 
         if (!res.success) {
-            setOpenNormalDialog(true);
-            setLoading(false);
-            setAnalysisResultData(undefined);
+            setTimeout(() => {
+                setOpenNormalDialog(true);
+                setLoading(false);
+                setAnalysisResultData(undefined);
+            }, 500);
             return;
         }
 
@@ -296,7 +298,7 @@ function ResultContent() {
         <>
             <div className={style.analysisResult}>
                 <div className={style.resultPage}>
-                    <HeaderTitleFilter backHandler={backHandler} title="分析结果" />
+                    <HeaderTitleFilter backHandler={backHandler} background title="分析结果" />
                     <div className={style.bigDataGame}>
                         <div className={style.column}>
                             <div className={style.row}>
@@ -318,8 +320,6 @@ function ResultContent() {
                                     {overUnder ? handicapOddsSelected : '不挑選'}
                                 </span>
                             </div>
-                        </div>
-                        <div className={style.column}>
                             <div className={style.row}>
                                 <span className={style.title}>時間區間</span>
                                 <span className={style.date}>

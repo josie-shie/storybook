@@ -151,7 +151,7 @@ function InfoTabs({ params }: { params: { memberId: string } }) {
                             </span>
                         </div>
                     </div>
-                    <div>
+                    <div className={style.bettingPlan}>
                         <BettingPlan
                             planActiveTab={planActiveTab}
                             setGuessLength={setGuessLength}

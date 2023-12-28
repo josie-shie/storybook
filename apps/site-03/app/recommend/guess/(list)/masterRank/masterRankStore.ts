@@ -9,6 +9,8 @@ interface InitState {
 interface MasterRankState extends InitState {
     member: GuessRank;
     onlyShowToday: boolean;
+    isLoading: boolean;
+    setIsLoading: (isLoading: boolean) => void;
     setMember: (member: GuessRank) => void;
     setMasterRankList: (masterRankList: GuessRank[]) => void;
     setOnlyShowToday: (show: boolean) => void;
@@ -33,6 +35,7 @@ const initialState = (set: (data: Partial<MasterRankState>) => void) => ({
     },
     masterRankList: [],
     onlyShowToday: false,
+    isLoading: false,
     setMember: (member: GuessRank) => {
         set({ member });
     },
@@ -41,6 +44,9 @@ const initialState = (set: (data: Partial<MasterRankState>) => void) => ({
     },
     setOnlyShowToday: (show: boolean) => {
         set({ onlyShowToday: show });
+    },
+    setIsLoading: (isLoading: boolean) => {
+        set({ isLoading });
     }
 });
 

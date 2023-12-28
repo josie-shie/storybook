@@ -10,9 +10,11 @@ interface ContestDetail extends InitState {
     layoutDisplayed: boolean;
     companyNameMap: Record<number, string>;
     guessProportion: GetGuessProportionResponse;
+    showAnimate: string;
     setGuessProportion: (guessProportion: GetGuessProportionResponse) => void;
     setMatchDetailData: ({ matchDetail }: { matchDetail: GetSingleMatchResponse }) => void;
     setCoveredType: (layoutDisplayed: boolean) => void;
+    setShowAnimate: (showAnimate: string) => void;
 }
 
 let useContestDetailStore: StoreWithSelectors<ContestDetail>;
@@ -63,6 +65,7 @@ const initialState = (set: (data: Partial<ContestDetail>) => void): ContestDetai
         48: '香港马*',
         49: 'Bwi*'
     },
+    showAnimate: '',
     setGuessProportion: (guessProportion: GetGuessProportionResponse) => {
         set({ guessProportion });
     },
@@ -71,6 +74,9 @@ const initialState = (set: (data: Partial<ContestDetail>) => void): ContestDetai
     },
     setCoveredType: (layoutDisplayed: boolean) => {
         set({ layoutDisplayed });
+    },
+    setShowAnimate: (showAnimate: string) => {
+        set({ showAnimate });
     }
 });
 

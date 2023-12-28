@@ -64,7 +64,7 @@ function ArticleCard({ article }: { article: RecommendPost }) {
         router.push(`/master/article/${article.id}`);
     };
 
-    const isOpenDialog = () => {
+    const isOpenDialog = async () => {
         if (!isLogin) {
             setIsOpenPaid(false);
             router.push(`/master/article/?auth=login`);
@@ -72,6 +72,11 @@ function ArticleCard({ article }: { article: RecommendPost }) {
         }
 
         if (isVip.planId === 1) {
+            const res = await payForPost({ postId: article.id });
+
+            if (!res.success) {
+                return new Error();
+            }
             router.push(`/master/article/${article.id}`);
             return;
         }
@@ -89,7 +94,12 @@ function ArticleCard({ article }: { article: RecommendPost }) {
                         <Avatar borderColor="#4489FF" src={article.avatarPath} />
                     </Link>
                     <div className={style.userInfo}>
-                        <div className={style.userName}>{article.mentorName}</div>
+                        <Link
+                            className={style.userName}
+                            href={`/master/masterAvatar/${article.mentorId}?status=analysis`}
+                        >
+                            {article.mentorName}
+                        </Link>
                         <div className={style.tagsContainer}>
                             {article.tag.winMaxAccurateStreak > 0 && (
                                 <Tag
@@ -118,7 +128,7 @@ function ArticleCard({ article }: { article: RecommendPost }) {
                         </div>
                     </div>
                     <div className={style.unlockStatus}>
-                        {article.isUnlocked ? (
+                        {article.isUnlocked && article.price === 0 ? (
                             <span className={style.unlocked}>已解鎖</span>
                         ) : (
                             <>

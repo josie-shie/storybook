@@ -108,7 +108,13 @@ function MasterItem({ params }: { params: { memberId: string } }) {
                                         />
                                     </div>
                                     <div className={style.about}>
-                                        <span>{item.username}</span>
+                                        <span
+                                            onClick={() => {
+                                                void goMasterPredict(item.memberId);
+                                            }}
+                                        >
+                                            {item.username}
+                                        </span>
                                         <div className={style.top}>
                                             {item.tags.winMaxAccurateStreak > 0 && (
                                                 <Tag

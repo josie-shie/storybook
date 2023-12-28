@@ -8,7 +8,7 @@ import MemberAvatar from './memberAvatar';
 
 function MasterAvatarLayout({ params }: { params: { memberId: string } }) {
     const headerProps = {
-        title: '會員個人'
+        title: '会员个人'
     };
     const tabStyle = {
         gap: 0,
@@ -30,7 +30,7 @@ function MasterAvatarLayout({ params }: { params: { memberId: string } }) {
 
     return (
         <>
-            <Header title={headerProps.title} />
+            <Header srcPath="/master/article" title={headerProps.title} />
             <Info params={params} />
             <div className={style.masterAvatar}>
                 <Tabs

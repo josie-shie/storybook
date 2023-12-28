@@ -1,5 +1,4 @@
 .animationData {
-    padding-top: 12px;
     margin-top: -12px;
     background: linear-gradient(to right, #2c5eb2 0%, #3a82fb 100%);
     overflow: hidden;
@@ -29,16 +28,12 @@
 
     .banner {
         position: relative;
-        top: -12px;
         width: 100%;
+        height: 202px;
         overflow: hidden;
 
-        > img {
-            position: relative;
-            top: 15px;
-            width: 100%;
-            max-width: 100%;
-            height: 100%;
+        &.isVip {
+            height: 250px;
         }
 
         .enough {
@@ -96,7 +91,7 @@
 
         .animate {
             position: absolute;
-            top: 117px;
+            top: 54px;
             left: 0;
             right: 0;
             margin: auto;
@@ -123,7 +118,6 @@
 
         .animateLine {
             position: absolute;
-            top: 15px;
             width: 100%;
 
             img {

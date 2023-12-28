@@ -1,7 +1,7 @@
 'use client';
 // import { IconSearch } from '@tabler/icons-react';
 import { getGuessRank } from 'data-center';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useUserStore } from '@/app/userStore';
 import PeriodListItem from '../components/period/periodListItem';
@@ -18,6 +18,7 @@ interface PeriodBackgroundMap {
 }
 
 function Rank() {
+    const [isLoading, setIsLoading] = useState(false);
     const isLogin = useUserStore.use.isLogin();
     const userInfo = useUserStore.use.userInfo();
     const searchParams = useSearchParams();
@@ -33,6 +34,7 @@ function Rank() {
 
     useEffect(() => {
         async function fetchGuessRank() {
+            setIsLoading(true);
             const memberRank = await getGuessRank({
                 memberId: isLogin ? userInfo.uid : 1,
                 rankType: rankTypeMap[currentPeriod]
@@ -41,6 +43,7 @@ function Rank() {
                 const data = memberRank.data;
                 setMember(data.memberRank);
                 setRankList(data.guessRank);
+                setIsLoading(false);
             }
         }
         void fetchGuessRank();
@@ -60,7 +63,7 @@ function Rank() {
                 </div>
             </div>
             {isLogin ? <UserRank /> : null}
-            <PeriodListItem />
+            <PeriodListItem isLoading={isLoading} />
         </div>
     );
 }

@@ -1,4 +1,7 @@
 .rank {
+    overflow: auto;
+    touch-action: pan-y;
+    height: calc(100dvh - 164px);
     padding: 12px;
 
     .control {

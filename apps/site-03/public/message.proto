@@ -81,3 +81,30 @@ message MessageResponse {
   OnlineUserUpdate onlineUpdate = 11;     // for online user update notification
   BroadcastMessage broadcastMessage = 12; // only for send_broadcast action
 }
+
+// 提示類型
+enum NotifyType {
+  newMessage = 0;    // 新訊息
+  unreadMessage = 1; // 未讀訊息
+}
+
+// 新訊息提示
+message NewMessageNotify {
+  string sender = 1; // 新訊息-發送者
+  string roomId = 2; // 新訊息-房間
+}
+
+// 未讀訊息提示
+message UnreadMessageNotify {
+  int64 totalCount = 1; // 未讀訊息-未讀訊息數量(站內信+私聊房間數)
+  int64 chatCount = 2; // 未讀訊息-私聊房間數量
+  int64 mailCount = 3; // 未讀訊息-站內信數量
+}
+
+// 提示訊息
+message NotifyMessage {
+  string uid = 1;                              // 會員 Id
+  NotifyType notifyType = 2;                   // 提示類型
+  NewMessageNotify newMessageNotify = 3;       // 新訊息提示
+  UnreadMessageNotify unreadMessageNotify = 4; // 未讀訊息提示
+}

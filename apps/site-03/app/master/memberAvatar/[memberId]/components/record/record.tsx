@@ -63,17 +63,17 @@ function Record({ individualGuessInfo }: { individualGuessInfo: MemberIndividual
                 },
                 data: [
                     {
-                        value: individualGuessInfo[showTab].win,
+                        value: individualGuessInfo[showTab].draw,
                         name: 'Plan1',
                         itemStyle: { color: '#F3F3F3', borderWidth: 2, borderColor: '#fff' }
                     },
                     {
-                        value: individualGuessInfo[showTab].draw,
+                        value: individualGuessInfo[showTab].lose,
                         name: 'Plan2',
                         itemStyle: { color: '#BFBFBF', borderWidth: 2, borderColor: '#fff' }
                     },
                     {
-                        value: individualGuessInfo[showTab].lose,
+                        value: individualGuessInfo[showTab].win,
                         name: 'Plan3',
                         itemStyle: { color: '#ED3A45', borderWidth: 2, borderColor: '#fff' }
                     }

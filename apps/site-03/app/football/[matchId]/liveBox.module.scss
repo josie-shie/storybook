@@ -9,7 +9,6 @@
 }
 
 .scoreboard {
-    position: relative;
     height: calc(100% - 60px);
     display: flex;
     flex-direction: column;
@@ -35,16 +34,9 @@
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                width: 65px;
-                height: 65px;
+                width: 66px;
+                height: 66px;
                 margin-bottom: 8px;
-                background-color: #ffffff40;
-                border-radius: 50%;
-
-                img {
-                    width: 45px;
-                    height: 45px;
-                }
             }
 
             .teamName {
@@ -162,25 +154,6 @@
     .placeholder {
         width: calc(100% - 36px);
     }
-
-    .liveBtn {
-        position: absolute;
-        bottom: 14px;
-        height: 24px;
-        display: flex;
-        align-items: center;
-        background-color: #0008;
-        padding: 0 8px;
-        color: white;
-        font-size: 12px;
-        font-weight: 400;
-        border-radius: 20px;
-        min-width: 60px;
-
-        .icon {
-            margin-right: 2px;
-        }
-    }
 }
 
 .animateBox {
@@ -189,6 +162,7 @@
     top: 0;
     width: 100%;
     height: 100%;
+    z-index: 4;
 
     iframe {
         min-width: 100%;
@@ -197,8 +171,8 @@
 
     .backIcon {
         position: absolute;
-        top: 12px;
-        left: 16px;
+        top: 16px;
+        left: 12px;
         z-index: 100;
         width: 24px;
         height: 24px;

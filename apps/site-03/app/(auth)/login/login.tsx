@@ -56,7 +56,8 @@ function Login() {
             verificationCode: '',
             countryCode: '+86',
             verifyToken: ''
-        }
+        },
+        mode: 'onChange'
     });
 
     const { countryCode, mobileNumber, password, verificationCode, verifyToken } = watch();

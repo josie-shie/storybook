@@ -7,7 +7,12 @@ import { creatAuthStore } from './(auth)/authStore';
 
 function GlobalStore({ children }: { children: ReactNode }) {
     creatContestInfoStore({ contestInfo: {} });
-    createMessageStore({ forbiddenWords: [] });
+    createMessageStore({
+        forbiddenWords: [],
+        newMessageNotify: { uid: '0', sender: '', roomId: '' },
+        unreadMessageNotify: { uid: '0', totalCount: 0, chatCount: 0, mailCount: 0 },
+        isNewMessageVisible: false
+    });
 
     creatNotificationStore({
         message: '',

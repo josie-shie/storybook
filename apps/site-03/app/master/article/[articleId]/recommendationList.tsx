@@ -45,13 +45,18 @@ function RecommendationItem({
         OVERUNDER: '让分'
     };
 
-    const isOpenDialog = (item: RecommendPost) => {
+    const isOpenDialog = async (item: RecommendPost) => {
         if (!isLogin) {
             router.push(`/master/article/${params.articleId}?auth=login`);
             return;
         }
 
         if (isVip.planId === 1) {
+            const res = await payForPost({ postId: item.id });
+
+            if (!res.success) {
+                return new Error();
+            }
             router.push(`/master/article/${item.id}`);
             return;
         }
@@ -142,10 +147,10 @@ function RecommendationItem({
                                     </div>
                                 </div>
                                 <div className={style.right}>
-                                    {!item.isUnlocked ? (
+                                    {!item.isUnlocked && item.price !== 0 ? (
                                         <UnlockButton
                                             handleClick={() => {
-                                                isOpenDialog(item);
+                                                void isOpenDialog(item);
                                             }}
                                             price={item.price}
                                         />

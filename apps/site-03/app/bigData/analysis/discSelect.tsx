@@ -97,7 +97,7 @@ function SystemError() {
                         setOpenNormalDialog(false);
                     }}
                 >
-                    回報錯誤
+                    回报错误
                 </div>
             </div>
         </>
@@ -134,7 +134,7 @@ function DiscSelect() {
 
     useEffect(() => {
         if (!search) {
-            router.push('/bigData?status=analysis');
+            router.push('/bigData/analysis?status=analysis');
         }
     }, [router, search]);
 
