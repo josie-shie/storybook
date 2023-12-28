@@ -3,7 +3,6 @@
 import { type ReactNode } from 'react';
 import { Tab, Tabs } from 'ui';
 import { usePathname } from 'next/navigation';
-import Footer from '@/components/footer/footer';
 import { useMessageStore } from '@/app/messageStore';
 import Header from './header';
 import style from './layout.module.scss';
@@ -72,7 +71,6 @@ function NoticeTabs({ children }: { children: ReactNode }) {
                     })}
                 </Tabs>
             </div>
-            <Footer />
             <EditBar />
         </div>
     );
