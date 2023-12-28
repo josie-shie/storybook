@@ -16,6 +16,7 @@ function NewMessageAlert() {
     const firstTimeRef = useRef(true);
     const newMessageNotify = useMessageStore.use.newMessageNotify();
     const isNewMessageVisible = useMessageStore.use.isNewMessageVisible();
+    const unreadMessageNotify = useMessageStore.use.unreadMessageNotify();
 
     useEffect(() => {
         const updateNewMessageNotify = useMessageStore.getState().updateNewMessageNotify;
@@ -58,7 +59,7 @@ function NewMessageAlert() {
                         style={{ position: 'relative', zIndex: 1 }}
                         transition={{ ease: 'easeOut', duration: 0.3 }}
                     >
-                        <Badge badgeContent={0} color="primary">
+                        <Badge badgeContent={unreadMessageNotify.totalCount} color="primary">
                             <Image alt="football" src={MessageInfo} width={21} />
                         </Badge>
                         <p className={style.message}>
