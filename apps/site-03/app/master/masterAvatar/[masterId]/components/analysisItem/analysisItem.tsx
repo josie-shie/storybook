@@ -91,7 +91,7 @@ function AnalysisItem({
         router.push('/userInfo/subscribe');
     };
 
-    const isOpenDialog = (item: RecommendPost) => {
+    const isOpenDialog = async (item: RecommendPost) => {
         if (!isLogin) {
             setIsOpenPaid(false);
             router.push(`/master/masterAvatar/${params.masterId}?status=analysis&auth=login`);
@@ -99,6 +99,11 @@ function AnalysisItem({
         }
 
         if (isVip.planId === 1) {
+            const res = await payForPost({ postId: item.id });
+
+            if (!res.success) {
+                return new Error();
+            }
             router.push(`/master/article/${item.id}`);
             return;
         }
@@ -157,7 +162,7 @@ function AnalysisItem({
                                         ) : (
                                             <UnlockButton
                                                 handleClick={() => {
-                                                    isOpenDialog(item);
+                                                    void isOpenDialog(item);
                                                 }}
                                                 price={item.price}
                                             />

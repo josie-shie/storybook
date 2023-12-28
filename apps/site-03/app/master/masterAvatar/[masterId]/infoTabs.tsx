@@ -164,7 +164,7 @@ function InfoTabs({
                             </span>
                         </div>
                     </div>
-                    <div>
+                    <div className={style.bettingPlan}>
                         <BettingPlan
                             params={params}
                             planActiveTab={planActiveTab}
