@@ -192,7 +192,6 @@ function StepperProcess() {
         datepickerStep = '2';
     }
 
-    // 总是显示第4步
     steps.push(
         <div className={style.step} key="finalStep">
             <StepIndicator stepNumber={datepickerStep} text="选择时间" />
@@ -301,6 +300,11 @@ function Tips() {
 
         if (!isTipsOpened) {
             setIsTipsOpened(true);
+        }
+
+        const element = document.getElementById('bigDataAnalysis');
+        if (element) {
+            element.scrollTop = 0;
         }
     };
 
