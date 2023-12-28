@@ -114,8 +114,32 @@
         }
     }
 
+    .displayTitle {
+        font-size: 12px;
+        color: #757575;
+    }
+
     .dateGroup {
         position: relative;
+
+        .birthdayDisplay {
+            height: 36px;
+            width: 100%;
+            padding: 8px;
+            background: #f3f3f3;
+            border-radius: 8px;
+            border: 1px solid #f3f3f3;
+        }
+
+        .displayTitle {
+            font-size: 12px;
+            color: #757575;
+        }
+
+        .placeHolderColor {
+            font-size: 14px;
+            color: #8d8d8d;
+        }
 
         .dateInput {
             position: absolute;
@@ -127,9 +151,8 @@
 
         img {
             position: absolute;
-            top: 10px;
+            top: 5px;
             right: 10px;
-            margin-top: 18px;
         }
     }
 }

@@ -118,10 +118,9 @@ function Account() {
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        if (name === 'birthdayDisplay') return;
         const newFormState = {
             ...formState,
-            [name]: value
+            [name]: name === 'birthday' ? dayjs(value).valueOf() / 1000 : value
         };
         setFormState(newFormState);
     };
@@ -157,7 +156,7 @@ function Account() {
 
         const obj: UpdateMemberInfoRequest = {
             avatarPath: imgUpload || userInfo.avatarPath,
-            birthday: userInfo.birthday || dayjs(formState.birthday).valueOf() / 1000,
+            birthday: formState.birthday,
             wechat: formState.wechat,
             qqNumber: formState.qq,
             email: formState.email,
@@ -182,15 +181,6 @@ function Account() {
         };
         setSubmittedState(newSubmittedState);
         setIsSubmitted(false);
-    };
-
-    const formatBirthday = () => {
-        if (submittedState.birthday) {
-            return timestampToString(formState.birthday, 'YYYY/MM/DD');
-        } else if (formState.birthday === 0) {
-            return '';
-        }
-        return formState.birthday;
     };
 
     useEffect(() => {
@@ -252,16 +242,21 @@ function Account() {
                         type="text"
                         value={formState.nickName}
                     />
+                    <span className={style.displayTitle}>
+                        生日{submittedState.birthday ? null : ' :'}
+                    </span>
                     <div className={style.dateGroup}>
-                        <FormField
-                            label="生日"
-                            name="birthdayDisplay"
-                            onChange={handleInputChange}
-                            placeholder="新增"
-                            submitted={submittedState.birthday}
-                            type="text"
-                            value={formatBirthday()}
-                        />
+                        <div
+                            className={`${
+                                submittedState.birthday ? style.item : style.birthdayDisplay
+                            } ${formState.birthday === 0 && style.placeHolderColor}`}
+                        >
+                            <span className={style.content}>
+                                {submittedState.birthday || formState.birthday !== 0
+                                    ? timestampToString(formState.birthday, 'YYYY/MM/DD')
+                                    : '添加生日'}
+                            </span>
+                        </div>
                         {!submittedState.birthday && (
                             <div className={style.calender}>
                                 <input
