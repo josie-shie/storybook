@@ -11,7 +11,7 @@ function ContestLayout({ children }: { children: ReactNode }) {
 
     return (
         <>
-            <Header />
+            <Header link="/recommend/guess" title="高手榜" />
             <div className={style.guess}>
                 <div className={style.childrenTab}>
                     <Tabs

@@ -10,7 +10,15 @@ import Profile from './components/profile/profile';
 import Notice from './components/notice/notice';
 import Logo from './img/logo.png';
 
-function HeaderLogo({ background = false }: { background?: boolean }) {
+function HeaderLogo({
+    title,
+    link = '/',
+    background = false
+}: {
+    title?: string;
+    link?: string;
+    background?: boolean;
+}) {
     const userInfoIsLoading = useUserStore.use.userInfoIsLoading();
     const [mounted, setMounted] = useState(false);
     useEffect(() => {
@@ -28,10 +36,14 @@ function HeaderLogo({ background = false }: { background?: boolean }) {
     return (
         <div className={style.placeholder}>
             <div className={style.header} style={headerStyle}>
-                <Link className={style.logo} href="/">
+                <Link className={style.logo} href={link}>
                     <Image alt="" height={24} src={logoIconImg} width={24} />
                     <div className={style.icon}>
-                        <Image alt="logo" src={Logo} width={66} />
+                        {title ? (
+                            <div className={style.titleText}>{title}</div>
+                        ) : (
+                            <Image alt="logo" src={Logo} width={66} />
+                        )}
                     </div>
                 </Link>
                 {mounted && !userInfoIsLoading ? (
