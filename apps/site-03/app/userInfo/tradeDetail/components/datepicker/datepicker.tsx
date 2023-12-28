@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import DatePicker, { registerLocale } from 'react-datepicker';
 import zhCN from 'date-fns/locale/zh-CN';
+import dayjs from 'dayjs';
 import 'dayjs/locale/zh-cn';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
@@ -18,16 +19,14 @@ function Datepicker({
     setIsDateRangeOpen,
     handleChangDate,
     setActiveDate,
-    setEnd,
-    setStart
+    setDateDisplay
 }: {
     openModal: boolean;
     handleChangDate: (dateRange: number[], type: DateOption) => Promise<void>;
     setOpenModal: (openModal: boolean) => void;
-    setEnd: (date: number) => void;
-    setStart: (date: number) => void;
     setIsDateRangeOpen: (isOpen: boolean) => void;
     setActiveDate: (type: DateOption) => void;
+    setDateDisplay: (arg: string) => void;
 }) {
     const [startDate, setStartDate] = useState<Date | null>(new Date());
     const [endDate, setEndDate] = useState<Date | null>(new Date());
@@ -57,18 +56,27 @@ function Datepicker({
                     [startOfDay.getTime() / 1000, endOfDay.getTime() / 1000],
                     'RANGE'
                 );
+                setDateDisplay(
+                    `${dayjs(startDate).format('YYYY/MM/DD')} - ${dayjs(endDate).format(
+                        'YYYY/MM/DD'
+                    )}`
+                );
             } else {
                 void handleChangDate([startDateTime, endDateTime], 'RANGE');
+                setDateDisplay(
+                    `${dayjs(startDate).format('YYYY/MM/DD')} - ${dayjs(endDate).format(
+                        'YYYY/MM/DD'
+                    )}`
+                );
             }
         } else if (startDate) {
             const { startOfDay, endOfDay } = formatSelectedOneDay(startDate);
             void handleChangDate([startOfDay.getTime() / 1000, endOfDay.getTime() / 1000], 'RANGE');
+            setDateDisplay(dayjs(startDate).format('YYYY/MM/DD'));
         }
         setOpenModal(false);
         setIsDateRangeOpen(false);
         setActiveDate('RANGE');
-        setEnd(endDate ? endDate.getTime() : 0);
-        setStart(startDate ? startDate.getTime() : 0);
     };
 
     return (

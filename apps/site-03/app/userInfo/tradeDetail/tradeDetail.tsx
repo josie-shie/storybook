@@ -2,7 +2,6 @@
 import { useEffect, useState } from 'react';
 import { getMemberTransactionList } from 'data-center';
 import Image from 'next/image';
-import dayjs from 'dayjs';
 import { useRouter } from 'next/navigation';
 import Header from '@/components/header/headerTitleDetail';
 import Loading from '@/components/loading/loading';
@@ -24,6 +23,7 @@ function TradeDetail() {
     const [isDateRangeOpen, setIsDateRangeOpen] = useState(false);
     const [isTradeTypeOpen, setIsTradeTypeOpen] = useState(false);
     const [activeDate, setActiveDate] = useState<DateOption>('ALL');
+    const [dateDisplay, setDateDisplay] = useState<string>();
     const [tradeType, setTradeType] = useState<TradeTypeOption>('ALL');
     const [start, setStart] = useState<number>(0);
     const [end, setEnd] = useState<number>(0);
@@ -31,12 +31,6 @@ function TradeDetail() {
 
     const openOption = (value: 'dateRange' | 'tradeType') => {
         value === 'dateRange' ? setIsDateRangeOpen(true) : setIsTradeTypeOpen(true);
-    };
-
-    const dateDisplay = (startDate: number | undefined, endDate: number | undefined) => {
-        const startDisplay = dayjs(startDate).format('YYYY/MM/DD');
-        const endDisplay = dayjs(endDate).format('YYYY/MM/DD');
-        return end ? `${startDisplay} - ${endDisplay}` : startDisplay;
     };
 
     useEffect(() => {
@@ -77,7 +71,7 @@ function TradeDetail() {
                     >
                         <span>
                             {activeDate === 'RANGE'
-                                ? dateDisplay(start, end)
+                                ? dateDisplay
                                 : dateOption.find(option => option.value === activeDate)?.label}
                         </span>
                         <Image alt="filterIcon" src={FilterIcon} />
@@ -109,6 +103,7 @@ function TradeDetail() {
                     activeDate={activeDate}
                     isDateRangeOpen={isDateRangeOpen}
                     setActiveDate={setActiveDate}
+                    setDateDisplay={setDateDisplay}
                     setEndDate={setEnd}
                     setIsDateRangeOpen={setIsDateRangeOpen}
                     setStartDate={setStart}
