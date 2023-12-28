@@ -102,7 +102,6 @@ function BettingPlan({
                                 <div className={style.top}>
                                     {item.leagueName}
                                     <span className={style.time}>
-                                        {' '}
                                         | {timestampToString(item.matchTime, 'MM-DD HH:mm')}
                                     </span>
                                 </div>

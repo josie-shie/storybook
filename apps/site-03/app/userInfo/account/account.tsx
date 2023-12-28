@@ -7,12 +7,14 @@ import type { UpdateMemberInfoRequest } from 'data-center';
 import { timestampToString, uploadImage } from 'lib';
 import { updateMemberInfo } from 'data-center';
 import { Button } from '@mui/material';
+import dayjs from 'dayjs';
 import Header from '@/components/header/headerTitleDetail';
 import { useNotificationStore } from '@/app/notificationStore';
 import AvatarCropperDrawer from '@/components/avatarCropperDrawer/avatarCropperDrawer';
 import { useUserStore } from '../../userStore';
 import style from './account.module.scss';
 import Avatar from './img/avatar.png';
+import Date from './img/date.png';
 import { useAccountStore } from './accountStore';
 
 interface UploadResponse {
@@ -116,10 +118,9 @@ function Account() {
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-
         const newFormState = {
             ...formState,
-            [name]: value
+            [name]: name === 'birthday' ? dayjs(value).valueOf() / 1000 : value
         };
         setFormState(newFormState);
     };
@@ -155,7 +156,7 @@ function Account() {
 
         const obj: UpdateMemberInfoRequest = {
             avatarPath: imgUpload || userInfo.avatarPath,
-            birthday: userInfo.birthday || formState.birthday,
+            birthday: formState.birthday,
             wechat: formState.wechat,
             qqNumber: formState.qq,
             email: formState.email,
@@ -241,15 +242,37 @@ function Account() {
                         type="text"
                         value={formState.nickName}
                     />
-                    <FormField
-                        label="出生日期："
-                        name="birthday"
-                        onChange={handleInputChange}
-                        placeholder="添加出生日期"
-                        submitted={submittedState.birthday}
-                        type="date"
-                        value={formState.birthday}
-                    />
+                    <span className={style.displayTitle}>
+                        生日{submittedState.birthday ? null : ' :'}
+                    </span>
+                    <div className={style.dateGroup}>
+                        <div
+                            className={`${
+                                submittedState.birthday ? style.item : style.birthdayDisplay
+                            } ${formState.birthday === 0 && style.placeHolderColor}`}
+                        >
+                            <span className={style.content}>
+                                {submittedState.birthday || formState.birthday !== 0
+                                    ? timestampToString(formState.birthday, 'YYYY/MM/DD')
+                                    : '添加生日'}
+                            </span>
+                        </div>
+                        {!submittedState.birthday && (
+                            <div className={style.calender}>
+                                <input
+                                    className={style.dateInput}
+                                    id="birthday"
+                                    name="birthday"
+                                    onChange={handleInputChange}
+                                    style={{ opacity: 0 }}
+                                    type="date"
+                                    value={formState.birthday}
+                                />
+                                <Image alt="calender" height={24} src={Date} width={24} />
+                            </div>
+                        )}
+                    </div>
+
                     <FormField
                         label="手机号"
                         name="phoneNumber"
