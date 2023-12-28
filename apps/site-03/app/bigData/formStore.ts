@@ -67,6 +67,8 @@ interface HandicapAnalysisFormState extends InitState {
     setCheckAllTeam: () => void;
     checkboxState: Record<PlayTypeCheckBox, boolean>;
     setCheckboxState: (keyName: PlayTypeCheckBox, checked: boolean) => void;
+    isAnalysisBySearch: boolean;
+    setIsAnalysisBySearch: (isAnalysisBySearch: boolean) => void;
 }
 
 let useHandicapAnalysisFormStore: StoreWithSelectors<HandicapAnalysisFormState>;
@@ -361,6 +363,15 @@ const initialState = (
                     ...state.checkboxState,
                     [keyName]: checked
                 }
+            };
+        });
+    },
+    isAnalysisBySearch: false,
+    setIsAnalysisBySearch: (isAnalysisBySearch: boolean) => {
+        set(state => {
+            return {
+                ...state,
+                isAnalysisBySearch
             };
         });
     }

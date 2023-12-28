@@ -21,11 +21,13 @@ type PlayTypeCheckBox = 'handicap' | 'overUnder';
 
 function PaymentAlert() {
     const router = useRouter();
-    const setOpenDialog = useHandicapAnalysisFormStore.use.setOpenNormalDialog();
     const userInfo = useUserStore.use.userInfo();
+    const setOpenDialog = useHandicapAnalysisFormStore.use.setOpenNormalDialog();
+    const setIsAnalysisBySearch = useHandicapAnalysisFormStore.use.setIsAnalysisBySearch();
 
     const comfirm = () => {
         setOpenDialog(false);
+        setIsAnalysisBySearch(true);
         router.push('/bigData/result');
     };
 
@@ -365,6 +367,7 @@ function HandicapAnalysisForm() {
     const userInfo = useUserStore.use.userInfo();
     const setDialogContentType = useHandicapAnalysisFormStore.use.setDialogContentType();
     const setOpenNormalDialog = useHandicapAnalysisFormStore.use.setOpenNormalDialog();
+    const setIsAnalysisBySearch = useHandicapAnalysisFormStore.use.setIsAnalysisBySearch();
 
     useEffect(() => {
         switch (dialogErrorType) {
@@ -389,6 +392,7 @@ function HandicapAnalysisForm() {
             return;
         }
 
+        setIsAnalysisBySearch(true);
         router.push('/bigData/result');
     };
 
@@ -414,6 +418,9 @@ function HandicapAnalysisForm() {
             </motion.button>
             <Dialog
                 content={<div className={style.dialogContent}>{dialogContent}</div>}
+                customStyle={{
+                    width: '300px'
+                }}
                 onClose={() => {
                     setOpenDialog(false);
                 }}

@@ -44,7 +44,7 @@ function SearchRecord({ index, recordData }: PropsType) {
                         全场大小 盘口<span>{recordData.overUnderValues || '不挑選'}</span>
                     </div>
                     <div className={style.item}>
-                        時間區間 {timestampToString(recordData.startTime, 'YYYY-MM-DD')} ~{' '}
+                        时间区间 {timestampToString(recordData.startTime, 'YYYY-MM-DD')} ~{' '}
                         {timestampToString(recordData.endTime, 'YYYY-MM-DD')}
                     </div>
                 </div>
