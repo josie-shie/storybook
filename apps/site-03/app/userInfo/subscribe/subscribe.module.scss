@@ -207,6 +207,10 @@
                 color: #fff;
                 background: #4489ff;
                 border-color: #4489ff;
+
+                span {
+                    white-space: nowrap;
+                }
             }
         }
     }
