@@ -42,6 +42,15 @@
             height: 24px;
             display: flex;
             align-items: center;
+
+            .titleText {
+                color: #fff;
+                font-family: YouSheBiaoTiHei, sans-serif;
+                font-size: 22px;
+                font-weight: 400;
+                line-height: 102%;
+                letter-spacing: 1.2px;
+            }
         }
     }
 }
