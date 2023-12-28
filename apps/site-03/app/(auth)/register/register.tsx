@@ -61,7 +61,8 @@ function Register() {
             countryCode: '+86',
             username: '',
             verifyToken: ''
-        }
+        },
+        mode: 'onChange'
     });
 
     const { countryCode, mobileNumber, password, verificationCode, username, verifyToken } =

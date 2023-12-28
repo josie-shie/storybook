@@ -45,7 +45,8 @@ function ChangePassword() {
             newPassword: '',
             confirmPassword: '',
             verifyToken: ''
-        }
+        },
+        mode: 'onChange'
     });
 
     const errors = formState.errors;
