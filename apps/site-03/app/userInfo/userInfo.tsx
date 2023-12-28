@@ -11,7 +11,6 @@ import { formatNumberWithCommas } from 'lib';
 import { useNotificationStore } from '@/app/notificationStore';
 import Tag from '@/components/tag/tag';
 import Header from '@/components/header/headerTitleNoBg';
-import Footer from '@/components/footer/footer';
 import Fire from '@/app/img/fire.png';
 import { useAuthStore } from '../(auth)/authStore';
 import { useUserStore } from '../userStore';
@@ -375,7 +374,6 @@ function UserInfo() {
                     登出帐号
                 </div>
             </div>
-            <Footer />
         </div>
     );
 }
