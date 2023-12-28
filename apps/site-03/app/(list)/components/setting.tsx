@@ -78,11 +78,13 @@ function Setting({
     }, []);
 
     useEffect(() => {
-        setOpenTip(Boolean(localStorage.getItem('openTip')));
-        setOpenSound(Boolean(localStorage.getItem('openSound')));
-        setHomeSound(localStorage.getItem('homeSound') || soundDefault.homeSound);
-        setAwaySound(localStorage.getItem('awaySound') || soundDefault.awaySound);
-    }, []);
+        if (isOpen) {
+            setOpenTip(Boolean(localStorage.getItem('openTip')));
+            setOpenSound(Boolean(localStorage.getItem('openSound')));
+            setHomeSound(localStorage.getItem('homeSound') || soundDefault.homeSound);
+            setAwaySound(localStorage.getItem('awaySound') || soundDefault.awaySound);
+        }
+    }, [isOpen]);
 
     useEffect(() => {
         const table: Record<string, HTMLAudioElement> = {};
