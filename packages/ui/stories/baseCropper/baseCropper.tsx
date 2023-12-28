@@ -43,6 +43,12 @@ export interface BaseCropperProps {
      * 定義元件的寬度
      */
     containerWidth?: string;
+    /**
+     * when user click Confirm.
+     *
+     * 按確認後執行
+     */
+    onConfirm?: () => void;
 }
 
 function BaseCropper({
@@ -50,7 +56,8 @@ function BaseCropper({
     showCropper = true,
     imgSrc,
     setImgFile,
-    circleCropper = true
+    circleCropper = true,
+    onConfirm
 }: BaseCropperProps) {
     const [uploadImage, setUploadImage] = useState<File | null>(null);
     const [previewImage, setPreviewImage] = useState(imgSrc);
@@ -100,6 +107,7 @@ function BaseCropper({
                 }, 'image/jpeg');
             }
         } else if (uploadImage) setImgFile(uploadImage);
+        if (onConfirm) onConfirm();
     };
 
     return (
