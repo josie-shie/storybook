@@ -1,13 +1,17 @@
 .slideTransition__position {
     position: fixed;
-    bottom: 24px;
+    bottom: 50%;
     width: 100%;
     padding: 10px;
     margin: auto;
     z-index: 1301;
+    display: flex;
+    justify-content: center;
 
     :global {
         .MuiPaper-root {
+            width: 300px;
+
             &:global(.MuiAlert-standardSuccess) {
                 background-color: #4a4a4a;
                 color: #fff;
