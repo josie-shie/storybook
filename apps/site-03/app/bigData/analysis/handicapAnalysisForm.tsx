@@ -382,13 +382,13 @@ function HandicapAnalysisForm() {
 
     const submit = () => {
         if (!isVip) {
-            setOpenDialog(true);
-            return;
-        }
+            if (userInfo.balance < 80) {
+                setDialogContentType('balance');
+                setOpenNormalDialog(true);
+                return;
+            }
 
-        if (userInfo.balance < 80) {
-            setDialogContentType('balance');
-            setOpenNormalDialog(true);
+            setOpenDialog(true);
             return;
         }
 
