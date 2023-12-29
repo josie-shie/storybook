@@ -101,6 +101,8 @@ function Datepicker({
                     }}
                     selected={startDate}
                     selectsRange
+                    selectsStart
+                    startDate={startDate}
                 />
                 <div className={style.modalButtons}>
                     <Button
