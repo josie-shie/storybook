@@ -126,6 +126,7 @@ function AnalysisItem({
         }
         setIsOpenPaid(false);
         setPredictArticleList([]);
+        void getUser();
     };
 
     const getUser = async () => {
@@ -139,7 +140,6 @@ function AnalysisItem({
     useEffect(() => {
         if (predictArticleList.length === 0) {
             void fetchData();
-            void getUser();
         }
     }, [predictArticleList]);
 
