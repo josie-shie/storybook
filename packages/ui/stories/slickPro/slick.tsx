@@ -103,6 +103,9 @@ function SlickNav({
     );
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-function -- export function
+let ResetSwiperHight = () => {};
+
 function Slick({
     tabs,
     children,
@@ -143,6 +146,12 @@ function Slick({
         onSlickEnd(nowIndex, prevIndex);
     };
 
+    ResetSwiperHight = () => {
+        setTimeout(() => {
+            swiperRef.current?.updateAutoHeight();
+        }, 0);
+    };
+
     return (
         <div className={`ui-slick ${className}`} id="ui-slick">
             <SlickNav
@@ -154,6 +163,7 @@ function Slick({
                 tabs={tabs}
             />
             <SwiperClass
+                autoHeight
                 initialSlide={initialSlide}
                 onSlideChange={swiper => {
                     setActiveIndex(swiper.activeIndex);
@@ -179,4 +189,4 @@ function Slick({
     );
 }
 
-export { Slick };
+export { Slick, ResetSwiperHight };

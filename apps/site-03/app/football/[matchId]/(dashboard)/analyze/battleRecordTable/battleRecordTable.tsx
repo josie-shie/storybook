@@ -23,6 +23,8 @@ function BattleRecordTable() {
     const oddsDetailResult = useBattleRecordStore.use.oddsDetailResult();
     const setOddsDetailResult = useBattleRecordStore.use.setOddsDetailResult();
 
+    if (!Object.prototype.hasOwnProperty.call(tableRawData, 'bet365')) return null;
+
     return (
         <div className={style.battleRecordTable}>
             <div className="topBar">
