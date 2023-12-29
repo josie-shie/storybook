@@ -62,7 +62,7 @@ function ProgressBar(props: PropType) {
                 }}
             >
                 <span className={style.leftContent} style={{ background: fill }} />
-                <span className={style.gap} style={{ width: gapWidth }} />
+                {value !== 100 && <span className={style.gap} style={{ width: gapWidth }} />}
             </span>
             <span
                 className={style.right}
