@@ -56,12 +56,13 @@ function InsufficientBalance() {
 function EmptyResponseError() {
     const router = useRouter();
     const setOpenNormalDialog = useAnalyticsResultStore.use.setOpenNormalDialog();
+    const isVipUseAnalysis = useUserStore.use.isVipUseAnalysis();
 
     return (
         <>
             <div className={style.dialogMessage}>
                 <Image alt="" height={100} src={emptyDataImage.src} width={100} />
-                <p className={style.refund}>已退款</p>
+                {!isVipUseAnalysis && <p className={style.refund}>已退款</p>}
                 <p>此條件查无资料！请重新修改搜寻条件</p>
             </div>
             <div className={style.footer}>
@@ -275,6 +276,8 @@ function ResultContent() {
             router.push('/bigData/analysis?status=analysis');
             return;
         }
+
+        window.scroll(0, 0);
 
         void fetchData();
     }, []);

@@ -206,6 +206,8 @@ function StepperProcess() {
                 <div className={style.datepicker}>
                     自订
                     <Datepicker
+                        currentEndDate={new Date(endDate * 1000)}
+                        currentStartDate={new Date(startDate * 1000)}
                         openModal={openDatePicker}
                         setOpenModal={setOpenDatePicker}
                         updateQueryDate={updateQueryDate}
@@ -382,13 +384,13 @@ function HandicapAnalysisForm() {
 
     const submit = () => {
         if (!isVip) {
-            setOpenDialog(true);
-            return;
-        }
+            if (userInfo.balance < 80) {
+                setDialogContentType('balance');
+                setOpenNormalDialog(true);
+                return;
+            }
 
-        if (userInfo.balance < 80) {
-            setDialogContentType('balance');
-            setOpenNormalDialog(true);
+            setOpenDialog(true);
             return;
         }
 

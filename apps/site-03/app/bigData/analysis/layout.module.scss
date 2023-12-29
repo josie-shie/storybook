@@ -1,5 +1,4 @@
 .bigDataWrapper {
-    height: calc(100vh - 112px);
     background: linear-gradient(to right, #2d5fb3 0%, #3a82fa 100%);
 }
 
@@ -9,8 +8,6 @@
     border-radius: 16px 16px 0 0;
     background: #fff;
     margin-top: -20px;
-    height: calc(100vh - 294px);
-    overflow: auto;
     z-index: 5;
 
     :global .ui-tab {

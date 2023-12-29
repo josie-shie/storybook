@@ -19,14 +19,18 @@ registerLocale('zh-CN', zhCN);
 function Datepicker({
     openModal,
     setOpenModal,
-    updateQueryDate
+    updateQueryDate,
+    currentStartDate,
+    currentEndDate
 }: {
+    currentStartDate: Date;
+    currentEndDate: Date;
     openModal: boolean;
     setOpenModal: (openModal: boolean) => void;
     updateQueryDate: (startDate: number, endDate: number) => void;
 }) {
-    const [startDate, setStartDate] = useState<Date | null>(new Date());
-    const [endDate, setEndDate] = useState<Date | null>(new Date());
+    const [startDate, setStartDate] = useState<Date | null>(currentStartDate);
+    const [endDate, setEndDate] = useState<Date | null>(currentEndDate);
 
     const maxDate = dayjs().subtract(1, 'day').toDate();
     const minDate = dayjs().subtract(91, 'day').toDate();
@@ -34,8 +38,6 @@ function Datepicker({
 
     const closeModal = () => {
         setOpenModal(false);
-        setStartDate(null);
-        setEndDate(null);
     };
 
     const handleConfirmDate = () => {
