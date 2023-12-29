@@ -325,7 +325,7 @@ function Account() {
                     {submittedState.description ? (
                         <div className={style.item}>
                             <span className={style.title}>
-                                <span className={style.text}>简介：</span>
+                                <span className={style.text}>简介</span>
                                 <button
                                     className={style.button}
                                     onClick={() => {
@@ -340,7 +340,7 @@ function Account() {
                         </div>
                     ) : (
                         <div className={style.item}>
-                            <label htmlFor="description">简介：</label>
+                            <label htmlFor="description">简介 :</label>
                             <textarea
                                 className={style.textarea}
                                 id="description"
