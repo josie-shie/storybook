@@ -146,7 +146,6 @@ function ResultContent() {
     const handicapOddsSelected = useHandicapAnalysisFormStore.use.handicapOddsSelected();
     const loading = useHandicapAnalysisFormStore.use.loading();
     const setLoading = useHandicapAnalysisFormStore.use.setLoading();
-    const userInfo = useUserStore.use.userInfo();
     const setAnalysisResultData = useAnalyticsResultStore.use.setAnalysisResultData();
     const setHandicapEchart = useAnalyticsResultStore.use.setHandicapEchart();
     const isAnalysisBySearch = useHandicapAnalysisFormStore.use.isAnalysisBySearch();
@@ -215,7 +214,6 @@ function ResultContent() {
     const fetchData = async () => {
         // API完成後需要傳的參數
         const query: GetFootballStatsRequest = {
-            memberId: userInfo.uid,
             mission: 'create',
             startTime: startDate,
             endTime: endDate

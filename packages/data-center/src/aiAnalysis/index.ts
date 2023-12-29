@@ -166,7 +166,6 @@ export type GetFootballStatsResponse = z.infer<typeof GetFootballStatsSchema>;
 
 export interface GetFootballStatsRequest {
     mission: string;
-    memberId: number;
     handicapSide?: string;
     handicapValues?: string;
     overUnderValues?: string;

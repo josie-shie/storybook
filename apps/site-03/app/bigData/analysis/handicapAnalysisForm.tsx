@@ -16,6 +16,7 @@ import selectIcon from './img/select.png';
 import starIcon from './img/star.png';
 import Datepicker from './components/datepicker/datepicker';
 import Dialog from './components/dialog/dialog';
+import { useNotificationStore } from '@/app/notificationStore';
 
 type PlayTypeCheckBox = 'handicap' | 'overUnder';
 
@@ -221,12 +222,16 @@ function StepperProcess() {
 }
 
 function PlayTypeCheckbox() {
+    const setIsVisible = useNotificationStore.use.setIsVisible();
     const checkboxState = useHandicapAnalysisFormStore.use.checkboxState();
     const setCheckboxState = useHandicapAnalysisFormStore.use.setCheckboxState();
 
     const { handicap, overUnder } = checkboxState;
 
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>, oppositeOption: string) => {
+        if (!checkboxState[oppositeOption] && !event.target.checked) {
+            setIsVisible('让球与大小球至少选择一项', 'error');
+        }
         setCheckboxState(event.target.name as PlayTypeCheckBox, event.target.checked);
     };
 
@@ -241,7 +246,9 @@ function PlayTypeCheckbox() {
                     <Checkbox
                         checked={handicap}
                         name="handicap"
-                        onChange={handleChange}
+                        onChange={e => {
+                            handleChange(e, 'overUnder');
+                        }}
                         sx={{
                             '& .MuiSvgIcon-root': {
                                 color: handicap ? '#FFF' : '#bfbfbf'
@@ -264,7 +271,9 @@ function PlayTypeCheckbox() {
                     <Checkbox
                         checked={overUnder}
                         name="overUnder"
-                        onChange={handleChange}
+                        onChange={e => {
+                            handleChange(e, 'handicap');
+                        }}
                         sx={{
                             '& .MuiSvgIcon-root': {
                                 color: overUnder ? '#FFF' : '#bfbfbf'
