@@ -42,6 +42,7 @@ export interface BaseCropperProps {
      *
      * 定義元件的寬度
      */
+
     containerWidth?: string;
     /**
      * when user click Confirm.
@@ -63,7 +64,7 @@ function BaseCropper({
     const [previewImage, setPreviewImage] = useState(imgSrc);
 
     const cropperRef = useRef<ReactCropperElement>(null);
-    const [zoomValue, setZoomValue] = useState(0.3);
+    const [zoomValue, setZoomValue] = useState(0);
 
     const handleFileDrop = (e: DragEvent<HTMLDivElement>) => {
         e.preventDefault();
@@ -174,12 +175,12 @@ function BaseCropper({
                             <div className={style['controlBar--sliderBar']}>
                                 <Slider
                                     max={1}
-                                    min={0.3}
+                                    min={0}
                                     onChange={(e, newValue) => {
                                         setZoomValue(newValue as number);
                                     }}
                                     size="small"
-                                    step={0.1}
+                                    step={0.01}
                                     value={zoomValue}
                                 />
                             </div>
