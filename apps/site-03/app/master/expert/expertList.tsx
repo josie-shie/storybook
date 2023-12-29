@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import Tag from '@/components/tag/tag';
+import TagSplit from '@/components/tagSplit/tagSplit';
 import Avatar from '@/components/avatar/avatar';
 import Fire from '@/app/img/fire.png';
 import NoData from '@/components/baseNoData/noData';
@@ -77,22 +78,13 @@ function ExpertItem({ mentorList, setMentorList }: ExpertItemProps) {
                                         />
                                     )}
                                     {item.tags.quarterRanking > 0 && (
-                                        <Tag
-                                            background="#4489FF"
-                                            text={`季榜 ${item.tags.monthRanking}`}
-                                        />
+                                        <TagSplit number={item.tags.quarterRanking} text="季" />
                                     )}
                                     {item.tags.monthRanking > 0 && (
-                                        <Tag
-                                            background="#4489FF"
-                                            text={`月榜 ${item.tags.monthRanking}`}
-                                        />
+                                        <TagSplit number={item.tags.monthRanking} text="月" />
                                     )}
                                     {item.tags.weekRanking > 0 && (
-                                        <Tag
-                                            background="#4489FF"
-                                            text={`周榜 ${item.tags.weekRanking}`}
-                                        />
+                                        <TagSplit number={item.tags.weekRanking} text="周" />
                                     )}
                                 </div>
                                 <div className={style.bot}>

@@ -9,6 +9,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import Avatar from '@/components/avatar/avatar';
 import Tag from '@/components/tag/tag';
+import TagSplit from '@/components/tagSplit/tagSplit';
 import { useUserStore } from '@/app/userStore';
 import Fire from '@/app/img/fire.png';
 import style from './info.module.scss';
@@ -120,26 +121,15 @@ function Info({ params }: { params: { masterId: string } }) {
                                         text={`${info.highlights.winMaxAccurateStreak} 連紅`}
                                     />
                                 )}
-                                {info.highlights.weekRanking > 0 && (
-                                    <Tag
-                                        background="#fff"
-                                        color="#4489ff"
-                                        text={`周榜 ${info.highlights.weekRanking}`}
-                                    />
+
+                                {info.highlights.quarterRanking > 0 && (
+                                    <TagSplit number={info.highlights.quarterRanking} text="季" />
                                 )}
                                 {info.highlights.monthRanking > 0 && (
-                                    <Tag
-                                        background="#fff"
-                                        color="#4489ff"
-                                        text={`月榜 ${info.highlights.monthRanking}`}
-                                    />
+                                    <TagSplit number={info.highlights.monthRanking} text="月" />
                                 )}
-                                {info.highlights.quarterRanking > 0 && (
-                                    <Tag
-                                        background="#fff"
-                                        color="#4489ff"
-                                        text={`季榜 ${info.highlights.quarterRanking}`}
-                                    />
+                                {info.highlights.weekRanking > 0 && (
+                                    <TagSplit number={info.highlights.weekRanking} text="周" />
                                 )}
                             </div>
                             <div className={style.bottom}>

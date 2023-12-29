@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import Avatar from '@/components/avatar/avatar';
 import Tag from '@/components/tag/tag';
+import TagSplit from '@/components/tagSplit/tagSplit';
 import Fire from '@/app/img/fire.png';
 import { useUserStore } from '../../../userStore';
 import style from './info.module.scss';
@@ -67,25 +68,13 @@ function Info({ article, setArticle }: InfoProps) {
                             )}
 
                             {article.tag.quarterRanking > 0 && (
-                                <Tag
-                                    background="#fff"
-                                    color="#4489ff"
-                                    text={`季榜 ${article.tag.quarterRanking}`}
-                                />
+                                <TagSplit number={article.tag.quarterRanking} text="季" />
                             )}
                             {article.tag.monthRanking > 0 && (
-                                <Tag
-                                    background="#fff"
-                                    color="#4489ff"
-                                    text={`月榜 ${article.tag.monthRanking}`}
-                                />
+                                <TagSplit number={article.tag.monthRanking} text="月" />
                             )}
                             {article.tag.weekRanking > 0 && (
-                                <Tag
-                                    background="#fff"
-                                    color="#4489ff"
-                                    text={`周榜 ${article.tag.weekRanking}`}
-                                />
+                                <TagSplit number={article.tag.weekRanking} text="周" />
                             )}
                         </div>
                         <div className={style.bottom}>

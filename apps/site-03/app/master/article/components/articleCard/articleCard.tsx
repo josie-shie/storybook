@@ -10,6 +10,7 @@ import { useState } from 'react';
 import { payForPost, getMemberInfo } from 'data-center';
 import UnlockButton from '@/components/unlockButton/unlockButton';
 import Tag from '@/components/tag/tag';
+import TagSplit from '@/components/tagSplit/tagSplit';
 import Avatar from '@/components/avatar/avatar';
 import NormalDialog from '@/components/normalDialog/normalDialog';
 import { useUserStore } from '@/app/userStore';
@@ -108,22 +109,13 @@ function ArticleCard({ article }: { article: RecommendPost }) {
                                 />
                             )}
                             {article.tag.weekRanking > 0 && (
-                                <Tag
-                                    background="#4489FF"
-                                    text={`周榜 ${article.tag.weekRanking}`}
-                                />
+                                <TagSplit number={article.tag.weekRanking} text="周" />
                             )}
                             {article.tag.monthRanking > 0 && (
-                                <Tag
-                                    background="#4489FF"
-                                    text={`月榜 ${article.tag.monthRanking}`}
-                                />
+                                <TagSplit number={article.tag.monthRanking} text="月" />
                             )}
                             {article.tag.quarterRanking > 0 && (
-                                <Tag
-                                    background="#4489FF"
-                                    text={`季榜 ${article.tag.quarterRanking}`}
-                                />
+                                <TagSplit number={article.tag.quarterRanking} text="季" />
                             )}
                         </div>
                     </div>
