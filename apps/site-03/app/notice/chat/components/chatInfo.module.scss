@@ -93,14 +93,15 @@
             margin-left: 0;
             background-color: #f3f3f3;
             color: #222;
-            font-size: 14px;
+            font-size: 16px;
             font-weight: 400;
             line-height: normal;
             border-top-left-radius: 6px;
             border-bottom-left-radius: 6px;
 
             &::placeholder {
-                color: #222;
+                font-size: 14px;
+                color: #9b9b9b;
             }
         }
 
