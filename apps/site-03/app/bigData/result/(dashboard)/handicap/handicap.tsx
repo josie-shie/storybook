@@ -1,6 +1,6 @@
 'use client';
 import { Switch } from 'ui/stories/switch/switch';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { timestampToString } from 'lib';
 import dayjs from 'dayjs';
 import { getFootballStatsMatches } from 'data-center';
@@ -75,7 +75,34 @@ function ChartBottomText({ playTypeSwitch }: { playTypeSwitch: PlayTypeValue }) 
     );
 }
 
+function useDetectScrolledToBottom({ node }: { node: React.RefObject<HTMLElement> }) {
+    const [isBottom, setIsBottom] = useState(false);
+
+    const handleScroll = useCallback(() => {
+        if (node.current) {
+            const { scrollLeft, scrollWidth, clientWidth } = node.current;
+            const atRight = Math.abs(scrollLeft + clientWidth - scrollWidth) < 1;
+            setIsBottom(atRight);
+        }
+    }, [node]);
+
+    useEffect(() => {
+        const current = node.current;
+        if (current) {
+            current.addEventListener('scroll', handleScroll);
+            return () => {
+                current.removeEventListener('scroll', handleScroll);
+            };
+        }
+    }, [handleScroll, node]);
+
+    return isBottom;
+}
+
 function Handicap() {
+    const node = useRef<HTMLUListElement>(null);
+    // 偵測圖表是否滑動到最右邊，如果是的話會把blur的效果移除
+    const isBottom = useDetectScrolledToBottom({ node });
     const setContestList = useMatchFilterStore.use.setContestList();
     const setContestInfo = useMatchFilterStore.use.setContestInfo();
     const contestInfo = useMatchFilterStore.use.contestInfo();
@@ -178,12 +205,13 @@ function Handicap() {
                             display:
                                 Object.keys(
                                     handicapEchart[handicapRadio][currentSwitch][playTypeSwitch]
-                                ).length > 9
+                                ).length > 9 && !isBottom
                                     ? 'initial'
                                     : 'none'
                         }}
                     />
                     <ul
+                        ref={node}
                         style={{
                             gap:
                                 Object.keys(
