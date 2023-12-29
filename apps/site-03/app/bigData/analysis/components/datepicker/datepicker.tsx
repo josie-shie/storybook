@@ -9,7 +9,6 @@ import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Image from 'next/image';
-import { useNotificationStore } from '@/app/notificationStore';
 import { useHandicapAnalysisFormStore } from '../../../formStore';
 import style from './datepicker.module.scss';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -31,7 +30,6 @@ function Datepicker({
 
     const maxDate = dayjs().subtract(1, 'day').toDate();
     const minDate = dayjs().subtract(91, 'day').toDate();
-    const setNotificationVisible = useNotificationStore.use.setIsVisible();
     const setTimeRange = useHandicapAnalysisFormStore.use.setTimeRange();
 
     const closeModal = () => {
@@ -41,19 +39,13 @@ function Datepicker({
     };
 
     const handleConfirmDate = () => {
-        if (startDate && endDate) {
-            const daysDiff = dayjs(endDate).diff(dayjs(startDate), 'day');
-
-            if (daysDiff < 6) {
-                setNotificationVisible('选择的日期区间必须至少为7天', 'error');
-                return;
-            }
-
+        if (startDate) {
             updateQueryDate(
                 Math.floor(startDate.getTime() / 1000),
-                Math.floor(endDate.getTime() / 1000)
+                Math.floor(!endDate ? startDate.getTime() / 1000 : endDate.getTime() / 1000)
             );
         }
+
         setTimeRange('setRange');
         setOpenModal(false);
     };
