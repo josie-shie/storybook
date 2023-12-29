@@ -51,16 +51,13 @@ function Datepicker({
             const startDateTime = startDate.getTime() / 1000;
             const endDateTime = endDate.getTime() / 1000;
             const { startOfDay, endOfDay } = formatSelectedOneDay(startDate);
+
             if (startDateTime === endDateTime) {
                 void handleChangDate(
                     [startOfDay.getTime() / 1000, endOfDay.getTime() / 1000],
                     'RANGE'
                 );
-                setDateDisplay(
-                    `${dayjs(startDate).format('YYYY/MM/DD')} - ${dayjs(endDate).format(
-                        'YYYY/MM/DD'
-                    )}`
-                );
+                setDateDisplay(dayjs(startDate).format('YYYY/MM/DD'));
             } else {
                 void handleChangDate([startDateTime, endDateTime], 'RANGE');
                 setDateDisplay(
@@ -94,7 +91,6 @@ function Datepicker({
                 }}
             >
                 <DatePicker
-                    endDate={endDate}
                     inline
                     locale="zh-CN"
                     maxDate={maxDate}
@@ -105,8 +101,6 @@ function Datepicker({
                     }}
                     selected={startDate}
                     selectsRange
-                    selectsStart
-                    startDate={startDate}
                 />
                 <div className={style.modalButtons}>
                     <Button
