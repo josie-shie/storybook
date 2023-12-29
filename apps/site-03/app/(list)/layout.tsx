@@ -21,7 +21,7 @@ function InterceptingDetail({ modal }: { modal: ReactNode }) {
                         width: '100%',
                         position: 'fixed',
                         top: 0,
-                        zIndex: 10,
+                        zIndex: 1000,
                         height: '100vh',
                         overflowY: 'auto'
                     }}
