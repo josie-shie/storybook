@@ -61,7 +61,7 @@ function AnalysisItem({
     const fetchData = async () => {
         const res = await getPostList({
             memberId: Number(params.masterId),
-            postFilter: ['all'],
+            postFilter: ['mentor'],
             currentPage,
             pageSize: 30
         });
