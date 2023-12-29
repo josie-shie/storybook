@@ -200,6 +200,7 @@ function TabContent({
     return (
         <div className={style.tabContent}>
             <Slick
+                autoHeight
                 className={style.slick}
                 initialSlide={initialSlide}
                 onSlickEnd={onSlickEnd}
