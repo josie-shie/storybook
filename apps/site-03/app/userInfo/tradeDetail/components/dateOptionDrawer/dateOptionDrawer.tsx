@@ -18,6 +18,7 @@ interface DateRangeProps {
     setEndDate: Dispatch<SetStateAction<number>>;
     setActiveDate: Dispatch<SetStateAction<DateOption>>;
     setDateDisplay: Dispatch<SetStateAction<string>>;
+    setPage: Dispatch<SetStateAction<number>>;
 }
 
 function DateRangeOption({
@@ -28,7 +29,8 @@ function DateRangeOption({
     setIsDateRangeOpen,
     setStartDate,
     setEndDate,
-    setDateDisplay
+    setDateDisplay,
+    setPage
 }: DateRangeProps) {
     const setTradeDetailList = useTardeDetailStore.use.setTradeDetailList();
     const [isOpenDatePick, setIsOpenDatePick] = useState(false);
@@ -70,6 +72,7 @@ function DateRangeOption({
                 }
             });
         }
+        setPage(1);
         setIsDateRangeOpen(false);
     };
 

@@ -106,6 +106,7 @@ function TradeDetail() {
                     setDateDisplay={setDateDisplay}
                     setEndDate={setEnd}
                     setIsDateRangeOpen={setIsDateRangeOpen}
+                    setPage={setPage}
                     setStartDate={setStart}
                     tradeType={tradeType}
                 />
@@ -113,6 +114,7 @@ function TradeDetail() {
                     end={end}
                     isTradeTypeOpen={isTradeTypeOpen}
                     setIsTradeTypeOpen={setIsTradeTypeOpen}
+                    setPage={setPage}
                     setTradeType={setTradeType}
                     start={start}
                     tradeType={tradeType}

@@ -27,6 +27,7 @@ function TradeDetailList({ end, start, tradeType, page, setPage }: TradeDetailLi
     const setTradeDetailList = useTardeDetailStore.use.setTradeDetailList();
 
     const loadMoreList = async () => {
+        if (page === pagination.pageCount) return;
         const data = await getMemberTransactionList({
             startTime: start,
             endTime: end,
