@@ -39,9 +39,9 @@ function ChatList() {
 
     return (
         <ul className={`${style.noticeList} ${editStatus && style.isEdit}`}>
-            {chatList.map(chat => (
-                <ChatCard chatData={chat} key={chat.roomId} />
-            ))}
+            {chatList.map(chat =>
+                chat.lastMessages.length > 0 ? <ChatCard chatData={chat} key={chat.roomId} /> : null
+            )}
         </ul>
     );
 }

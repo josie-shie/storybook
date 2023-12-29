@@ -38,7 +38,7 @@ function ChatCard({ chatData }: { chatData: MessageRoomType }) {
 
     const handleLastMessage = () => {
         const lastMessages = chatData.lastMessages[0];
-        if (chatData.lastMessages[0].content) {
+        if (lastMessages.content) {
             return lastMessages.content;
         }
         return lastMessages.user.uid === roomUserId[0]
