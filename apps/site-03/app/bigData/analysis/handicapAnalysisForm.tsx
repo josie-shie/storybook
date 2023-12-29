@@ -230,7 +230,7 @@ function PlayTypeCheckbox() {
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>, oppositeOption: string) => {
         if (!checkboxState[oppositeOption] && !event.target.checked) {
-            setIsVisible('让球与大小球至少选择一项', 'error');
+            setIsVisible('让球与大小球至少选择一项', 'success');
         }
         setCheckboxState(event.target.name as PlayTypeCheckBox, event.target.checked);
     };
