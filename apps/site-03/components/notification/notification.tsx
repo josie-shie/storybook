@@ -1,5 +1,5 @@
 import { Alert } from '@mui/material';
-import SlideTransition from './slideTransition';
+import FadeTransition from './fadeTransition';
 
 interface PropsType {
     message: string;
@@ -10,9 +10,9 @@ interface PropsType {
 
 function Notification({ message, type, isVisible, handleClose }: PropsType) {
     return (
-        <SlideTransition onClose={handleClose} show={isVisible}>
+        <FadeTransition onClose={handleClose} show={isVisible}>
             <Alert severity={type}>{message}</Alert>
-        </SlideTransition>
+        </FadeTransition>
     );
 }
 
