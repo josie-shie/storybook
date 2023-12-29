@@ -56,13 +56,13 @@ function InsufficientBalance() {
 function EmptyResponseError() {
     const router = useRouter();
     const setOpenNormalDialog = useAnalyticsResultStore.use.setOpenNormalDialog();
-    const isVipUseAnalysis = useUserStore.use.isVipUseAnalysis();
+    const isVip = useUserStore.use.memberSubscribeStatus().planId;
 
     return (
         <>
             <div className={style.dialogMessage}>
                 <Image alt="" height={100} src={emptyDataImage.src} width={100} />
-                {!isVipUseAnalysis && <p className={style.refund}>已退款</p>}
+                {!isVip && <p className={style.refund}>已退款</p>}
                 <p>此條件查无资料！请重新修改搜寻条件</p>
             </div>
             <div className={style.footer}>
