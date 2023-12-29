@@ -252,6 +252,9 @@ function HandicapAnalysisForm() {
             </motion.button>
             <Dialog
                 content={<div className={style.dialogContent}>{dialogContent}</div>}
+                customStyle={{
+                    width: '300px'
+                }}
                 onClose={() => {
                     setOpenDialog(false);
                 }}
