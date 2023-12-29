@@ -340,7 +340,7 @@ function Account() {
                         </div>
                     ) : (
                         <div className={style.item}>
-                            <label htmlFor="description">简介 :</label>
+                            <label htmlFor="description">简介：</label>
                             <textarea
                                 className={style.textarea}
                                 id="description"
