@@ -136,7 +136,7 @@ function InfoTabs({
                         <Record individualGuessInfo={individualGuessInfo} />
                     </div>
                     <div className={style.title}>
-                        <span>專家猜球方案({guessLength})</span>
+                        <span>专家猜球方案({guessLength})</span>
                         <div className={style.tabText}>
                             <span
                                 className={planActiveTab === 0 ? style.active : ''}
