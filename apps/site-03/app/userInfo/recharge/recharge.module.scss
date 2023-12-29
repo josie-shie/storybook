@@ -1,51 +1,177 @@
 @import 'variables';
 
-.recharge {
-    margin-top: -14px;
+.layout {
     height: calc(100vh - 54px);
-    padding: 12px;
+    margin-top: -14px;
+    padding: 16px 20px;
     background: #f8f8f8;
 
-    ul {
+    .title {
         display: flex;
-        flex-direction: column;
-        gap: 8px;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        margin-bottom: 16px;
+        color: #222;
+        font-size: 16px;
+    }
 
-        li {
-            position: relative;
+    .planContainer {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 28px;
 
-            .recommend {
-                position: absolute;
-                top: 3px;
-                left: -6px;
-                color: #fff;
-                font-size: 12px;
-                padding: 0 4px;
-                background: #ffaa46;
-                border-radius: 2px 2px 2px 0;
+        .wrapper {
+            padding: 12px 0;
 
-                &::before {
-                    content: '';
+            .plan {
+                position: relative;
+                z-index: 10;
+                flex-grow: 1;
+                width: 82px;
+                background: #fff;
+                color: #d9d9d9;
+                padding-top: 24px;
+                border: 1px solid #fff;
+                border-radius: 8px;
+                transition: 0.3s;
+
+                .discount {
                     position: absolute;
-                    left: 0px;
-                    bottom: -4px;
-                    border-bottom: 4px solid rgba(0, 0, 0, 0);
-                    border-right: 6px solid #a4651b;
+                    top: -5px;
+                    left: -5px;
+                    padding: 1px 6px;
+                    font-size: 12px;
+                    color: #fff;
+                    background: linear-gradient(105deg, #c9b386 0.97%, #8d6b29 100%);
+                    border-radius: 2px;
+
+                    &.newGuy {
+                        background: linear-gradient(105deg, #ff5a36 0.97%, #f85640 100%);
+                    }
+                }
+
+                .text {
+                    position: relative;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    min-width: 70px;
+                    font-size: 12px;
+                    color: #4a4a4a;
+                    text-align: center;
+                    white-space: nowrap;
+
+                    .bold {
+                        font-weight: bold;
+                        font-size: 12px;
+                        padding: 0;
+                    }
+
+                    .light {
+                        font-size: 12px;
+                        font-weight: 400;
+                        padding: 0;
+                        margin-left: 2px;
+                    }
+
+                    > span {
+                        font-size: 16px;
+                        display: inline-block;
+                        margin-right: 2px;
+                    }
+                }
+
+                .intro {
+                    font-size: 10px;
+                    color: #8d8d8d;
+                    text-align: center;
+                }
+
+                .selectedFlag {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 4px;
+                    margin: 12px auto;
+                    width: 58px;
+                    font-size: 12px;
+                    color: #4489ff;
+                    border: 1px solid #4489ff;
+                    border-radius: 50px;
+                    background: transparent;
+                    transition: all 0.3s ease;
                 }
             }
 
-            a {
-                display: flex;
-                align-items: center;
-                justify-content: flex-start;
-                gap: 24px;
-                color: #222;
-                padding: 24px;
-                font-size: 14px;
-                background: #fff;
-                border-radius: 8px;
-                user-select: none;
-                cursor: none;
+            .selectedPlan {
+                background: #e6effe;
+                color: #4489ff;
+                border: 1px solid #4489ff;
+
+                .text {
+                    color: #4489ff;
+                }
+
+                .selectedFlag {
+                    color: #fff;
+                    background: #4489ff;
+                    border-color: #4489ff;
+
+                    span {
+                        white-space: nowrap;
+                    }
+                }
+            }
+        }
+    }
+
+    .recharge {
+        padding-top: 8px;
+
+        ul {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+
+            li {
+                position: relative;
+
+                .recommend {
+                    position: absolute;
+                    top: 3px;
+                    left: -6px;
+                    color: #fff;
+                    font-size: 12px;
+                    padding: 0 4px;
+                    background: #ffaa46;
+                    border-radius: 2px 2px 2px 0;
+
+                    &::before {
+                        content: '';
+                        position: absolute;
+                        left: 0px;
+                        bottom: -4px;
+                        border-bottom: 4px solid rgba(0, 0, 0, 0);
+                        border-right: 6px solid #a4651b;
+                    }
+                }
+
+                a {
+                    display: flex;
+                    align-items: center;
+                    justify-content: flex-start;
+                    gap: 24px;
+                    color: #222;
+                    padding: 24px;
+                    font-size: 14px;
+                    background: #fff;
+                    border-radius: 8px;
+                    user-select: none;
+                    cursor: none;
+                }
             }
         }
     }

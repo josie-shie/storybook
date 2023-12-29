@@ -128,10 +128,12 @@ function HandicapAnalysisForm() {
     };
 
     useEffect(() => {
-        setHintsSelectPlay('HANDICAP');
-        setHintsSelectType('OVER');
-        setHintsSelectProgres('HALF');
-        setDialogContent(<PaymentAlert />);
+        setTimeout(() => {
+            setHintsSelectPlay('HANDICAP');
+            setHintsSelectType('OVER');
+            setHintsSelectProgres('HALF');
+            setDialogContent(<PaymentAlert />);
+        }, 500);
     }, []);
 
     return (
@@ -252,6 +254,9 @@ function HandicapAnalysisForm() {
             </motion.button>
             <Dialog
                 content={<div className={style.dialogContent}>{dialogContent}</div>}
+                customStyle={{
+                    width: '300px'
+                }}
                 onClose={() => {
                     setOpenDialog(false);
                 }}

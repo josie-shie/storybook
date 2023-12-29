@@ -3,6 +3,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import Header from '@/components/header/headerTitleDetail';
+import { useRechargeStore } from '../rechargeStore';
 import UsdtIcon from '../img/usdt.png';
 import { Select } from '../components/select/select';
 import Pay from './pay/pay';
@@ -69,9 +70,9 @@ function Usdt() {
     ];
 
     const [pay, setPay] = useState(false);
-    const [amount, setAmount] = useState('');
     const [selectedChain, setSelectedChain] = useState(chainList[0].value);
-
+    const amount = useRechargeStore.use.amount();
+    const setAmount = useRechargeStore.use.setAmount();
     const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         let value = e.target.valueAsNumber;
 
@@ -93,7 +94,6 @@ function Usdt() {
 
     const handleClose = () => {
         setPay(false);
-        setAmount('');
         setSelectedChain(chainList[0].value);
     };
 

@@ -150,6 +150,10 @@
                 color: #fff;
                 background: linear-gradient(105deg, #c9b386 0.97%, #8d6b29 100%);
                 border-radius: 2px;
+
+                &.newGuy {
+                    background: linear-gradient(105deg, #ff5a36 0.97%, #f85640 100%);
+                }
             }
 
             .text {
@@ -180,6 +184,12 @@
                     display: inline-block;
                     margin-right: 2px;
                 }
+            }
+
+            .intro {
+                font-size: 10px;
+                color: #8d8d8d;
+                text-align: center;
             }
 
             .selectedFlag {
@@ -260,7 +270,7 @@
     gap: 8px;
     color: #fff;
     padding: 6px;
-    margin: 30px 0;
+    margin: 16px 0;
 
     .protocol {
         color: #fff;
