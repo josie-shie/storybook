@@ -101,6 +101,13 @@ function HandicapAnalysisForm() {
     const setHintsSelectType = useLongDragonStore.use.setHintsSelectType();
     const setHintsSelectProgres = useLongDragonStore.use.setHintsSelectProgres();
 
+    useEffect(() => {
+        setHintsSelectPlay('HANDICAP');
+        setHintsSelectType('OVER');
+        setHintsSelectProgres('HALF');
+        setDialogContent(<PaymentAlert />);
+    }, []);
+
     const selectsPlay = (name: string) => {
         setHintsSelectPlay(name);
         if (name === 'HANDICAP') {
@@ -126,15 +133,6 @@ function HandicapAnalysisForm() {
             router.push('/bigData/longDragon');
         }
     };
-
-    useEffect(() => {
-        setTimeout(() => {
-            setHintsSelectPlay('HANDICAP');
-            setHintsSelectType('OVER');
-            setHintsSelectProgres('HALF');
-            setDialogContent(<PaymentAlert />);
-        }, 500);
-    }, []);
 
     return (
         <>

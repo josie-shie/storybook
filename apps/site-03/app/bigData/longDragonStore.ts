@@ -18,6 +18,7 @@ interface LongDragonState extends InitState {
     setHintsSelectProgres: (hintsSelectProgres: string) => void;
 }
 
+let isInit = true;
 let useLongDragonStore: StoreWithSelectors<LongDragonState>;
 
 const initialState = (
@@ -55,7 +56,11 @@ const initialState = (
     }
 });
 
-const creatLongDragonStore = (init: InitState) =>
-    (useLongDragonStore = initStore<LongDragonState>(initialState, init));
+const creatLongDragonStore = (init: InitState) => {
+    if (isInit) {
+        useLongDragonStore = initStore<LongDragonState>(initialState, init);
+        isInit = false;
+    }
+};
 
 export { creatLongDragonStore, useLongDragonStore };
