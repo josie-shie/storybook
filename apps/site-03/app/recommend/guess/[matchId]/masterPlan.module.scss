@@ -5,10 +5,27 @@
     overflow: auto;
     background: #f8f8f8;
 
+    .distribLoading {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 174px;
+        margin-bottom: 8px;
+        background: #fff;
+    }
+
     .area {
         padding: 12px;
         margin-bottom: 8px;
         background: #fff;
+
+        .planLoading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 140px;
+            background: #fff;
+        }
 
         .title {
             display: flex;
