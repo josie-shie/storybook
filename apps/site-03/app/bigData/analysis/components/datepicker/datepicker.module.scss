@@ -44,6 +44,13 @@
             width: 342px;
         }
 
+        .react-datepicker__day--in-range,
+        .react-datepicker__day--selected {
+            background-color: #4489ff !important;
+            color: #fff !important;
+            border-radius: 20px !important;
+        }
+
         .react-datepicker__header {
             background-color: transparent;
             border-bottom: none;
@@ -75,10 +82,12 @@
             width: 40px;
             line-height: 40px;
             margin: 0;
+            background-color: #fff;
+            color: #000;
         }
 
-        .react-datepicker__day--selected {
-            background-color: #4489ff;
+        .react-datepicker__day--disabled {
+            color: #ccc;
         }
     }
 }

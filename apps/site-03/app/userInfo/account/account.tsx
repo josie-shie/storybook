@@ -325,7 +325,7 @@ function Account() {
                     {submittedState.description ? (
                         <div className={style.item}>
                             <span className={style.title}>
-                                <span className={style.text}>简介：</span>
+                                <span className={style.text}>简介</span>
                                 <button
                                     className={style.button}
                                     onClick={() => {
