@@ -10,7 +10,7 @@ import Notice from './components/notice/notice';
 
 interface HeaderProps {
     title: string;
-    srcPath: string;
+    srcPath?: string;
 }
 
 function HeaderTitle({ title, srcPath }: HeaderProps) {
@@ -22,7 +22,11 @@ function HeaderTitle({ title, srcPath }: HeaderProps) {
     }, []);
 
     const goBack = () => {
-        router.push(srcPath);
+        if (srcPath) {
+            router.push(srcPath);
+        } else {
+            router.back();
+        }
     };
 
     return (

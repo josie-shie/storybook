@@ -117,7 +117,7 @@ function ArticleDetail({ params }: { params: { articleId: string } }) {
 
     return (
         <>
-            <Header srcPath="/master/article" title={headerProps.title} />
+            <Header title={headerProps.title} />
             <Info article={article} setArticle={setArticle} />
             <ArticleContent article={article} fetchPostDetail={fetchPostDetail} params={params} />
         </>
