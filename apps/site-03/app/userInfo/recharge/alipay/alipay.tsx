@@ -3,6 +3,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import Header from '@/components/header/headerTitleDetail';
+import { useRechargeStore } from '../rechargeStore';
 import AlipayIcon from '../img/alipay.png';
 import Pay from './pay/pay';
 import style from './alipay.module.scss';
@@ -17,7 +18,8 @@ function Wechat() {
     };
 
     const [pay, setPay] = useState(false);
-    const [amount, setAmount] = useState('');
+    const amount = useRechargeStore.use.amount();
+    const setAmount = useRechargeStore.use.setAmount();
 
     const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         let value = e.target.valueAsNumber;
