@@ -135,12 +135,12 @@ function Record({ individualGuessInfo }: { individualGuessInfo: MemberIndividual
                     }}
                 >
                     <div className={style.top}>
-                        <div className={style.total}>讓球{individualGuessInfo.handicap.play}场</div>
+                        <div className={style.total}>让球{individualGuessInfo.handicap.play}场</div>
                         <div className={style.percentage}>
                             <div className={style.win}>胜 {individualGuessInfo.handicap.win}</div>
                             <div className={style.walk}>走 {individualGuessInfo.handicap.draw}</div>
                             <div className={style.defeat}>
-                                負 {individualGuessInfo.handicap.lose}
+                                负 {individualGuessInfo.handicap.lose}
                             </div>
                         </div>
                     </div>

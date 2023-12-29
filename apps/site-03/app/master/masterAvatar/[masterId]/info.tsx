@@ -1,6 +1,9 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { getMentorList, type GetMentor } from 'data-center';
+import {
+    getMemberProfileWithMemberId,
+    type GetMemberProfileWithMemberIdResponse
+} from 'data-center';
 import { unFollow, updateFollow } from 'data-center';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -17,10 +20,10 @@ function Info({ params }: { params: { masterId: string } }) {
         username: '',
         avatarPath: '',
         profile: '',
-        fans: 0,
-        unlocked: 0,
+        fansCount: 0,
+        unlockedCount: 0,
         isFollowed: false,
-        tags: {
+        highlights: {
             id: 0,
             tagName: '',
             note: '',
@@ -58,7 +61,7 @@ function Info({ params }: { params: { masterId: string } }) {
             winRanking: 0,
             winHistoryMaxWinStreak: 0
         }
-    } as GetMentor);
+    } as GetMemberProfileWithMemberIdResponse);
 
     const router = useRouter();
 
@@ -84,18 +87,15 @@ function Info({ params }: { params: { masterId: string } }) {
     };
 
     const fetchData = async () => {
-        const res = await getMentorList({
-            memberId: userInfo.uid ? userInfo.uid : 0,
-            mentorId: Number(params.masterId)
+        const res = await getMemberProfileWithMemberId({
+            loginMemberId: userInfo.uid ? userInfo.uid : 0,
+            memberId: Number(params.masterId)
         });
 
         if (!res.success) {
             return new Error();
         }
-        if (res.data.length === 0) {
-            return;
-        }
-        setInfo(res.data[0]);
+        setInfo(res.data);
     };
 
     useEffect(() => {
@@ -114,41 +114,41 @@ function Info({ params }: { params: { masterId: string } }) {
                         <div className={style.content}>
                             <span className={style.name}>{info.username}</span>
                             <div className={style.top}>
-                                {info.tags.winMaxAccurateStreak > 0 && (
+                                {info.highlights.winMaxAccurateStreak > 0 && (
                                     <Tag
                                         icon={<Image alt="fire" src={Fire} />}
-                                        text={`${info.tags.winMaxAccurateStreak} 連紅`}
+                                        text={`${info.highlights.winMaxAccurateStreak} 連紅`}
                                     />
                                 )}
-                                {info.tags.weekRanking > 0 && (
+                                {info.highlights.weekRanking > 0 && (
                                     <Tag
                                         background="#fff"
                                         color="#4489ff"
-                                        text={`周榜 ${info.tags.weekRanking}`}
+                                        text={`周榜 ${info.highlights.weekRanking}`}
                                     />
                                 )}
-                                {info.tags.monthRanking > 0 && (
+                                {info.highlights.monthRanking > 0 && (
                                     <Tag
                                         background="#fff"
                                         color="#4489ff"
-                                        text={`月榜 ${info.tags.monthRanking}`}
+                                        text={`月榜 ${info.highlights.monthRanking}`}
                                     />
                                 )}
-                                {info.tags.quarterRanking > 0 && (
+                                {info.highlights.quarterRanking > 0 && (
                                     <Tag
                                         background="#fff"
                                         color="#4489ff"
-                                        text={`季榜 ${info.tags.quarterRanking}`}
+                                        text={`季榜 ${info.highlights.quarterRanking}`}
                                     />
                                 )}
                             </div>
                             <div className={style.bottom}>
-                                <span>粉丝: {info.fans}</span>
-                                <span>解锁: {info.unlocked}</span>
-                                {Boolean(info.tags) && (
+                                <span>粉丝: {info.fansCount}</span>
+                                <span>解锁: {info.unlockedCount}</span>
+                                {Boolean(info.highlights) && (
                                     <span>
-                                        近一季猜球胜率: {Math.round(info.tags.quarterHitRate * 100)}
-                                        %
+                                        近一季猜球胜率:{' '}
+                                        {Math.round(info.highlights.quarterHitRate * 100)}%
                                     </span>
                                 )}
                             </div>

@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { getMentorIndividualGuessMatches, type MemberIndividualGuessMatch } from 'data-center';
+import { getMemberIndividualGuessMatches, type MemberIndividualGuessMatch } from 'data-center';
 import { useEffect, useState } from 'react';
 import { timestampToString } from 'lib';
 import { InfiniteScroll } from 'ui';
@@ -53,7 +53,7 @@ function BettingPlan({
     const [totalPage, setTotalPage] = useState(1);
 
     const fetchData = async () => {
-        const res = await getMentorIndividualGuessMatches({
+        const res = await getMemberIndividualGuessMatches({
             memberId: Number(params.masterId),
             currentPage,
             pageSize: 30,
@@ -66,7 +66,7 @@ function BettingPlan({
 
         const updatedGuessMatchesList = [...guessMatchesList, ...res.data.guessMatchList];
         setGuessMatchesList(updatedGuessMatchesList);
-        setGuessLength(res.data.guessMatchList.length);
+        setGuessLength(res.data.pagination.totalCount);
         setIsNoData(res.data.guessMatchList.length === 0);
         setTotalPage(res.data.pagination.pageCount);
     };
