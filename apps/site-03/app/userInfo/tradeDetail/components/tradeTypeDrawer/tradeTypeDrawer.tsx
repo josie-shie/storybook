@@ -13,6 +13,7 @@ interface TradeTypeProps {
     isTradeTypeOpen: boolean;
     setTradeType: Dispatch<SetStateAction<TradeTypeOption>>;
     setIsTradeTypeOpen: (arg: boolean) => void;
+    setPage: (arg: number) => void;
 }
 
 function TradeTypeDrawer({
@@ -21,7 +22,8 @@ function TradeTypeDrawer({
     isTradeTypeOpen,
     setIsTradeTypeOpen,
     tradeType,
-    setTradeType
+    setTradeType,
+    setPage
 }: TradeTypeProps) {
     const setTradeDetailList = useTardeDetailStore.use.setTradeDetailList();
     const handleChangeType = async (type: TradeTypeOption) => {
@@ -42,6 +44,7 @@ function TradeTypeDrawer({
             });
         }
         setTradeType(type);
+        setPage(1);
         setIsTradeTypeOpen(false);
     };
 
