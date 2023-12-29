@@ -3,6 +3,7 @@ import type { RecommendPost } from 'data-center';
 import { handleMatchDateTime } from 'lib';
 import { useRouter } from 'next/navigation';
 import Tag from '@/components/tag/tag';
+import TagSplit from '@/components/tagSplit/tagSplit';
 import Avatar from '@/components/avatar/avatar';
 import hotIcon from './img/hot.png';
 import style from './predict.module.scss';
@@ -40,22 +41,13 @@ function PredictCard({ predictInfo }: { predictInfo: RecommendPost }) {
                                 />
                             )}
                             {predictInfo.tag.quarterRanking > 0 && (
-                                <Tag
-                                    background="#4489FF"
-                                    text={`季榜 ${predictInfo.tag.quarterRanking}`}
-                                />
+                                <TagSplit number={predictInfo.tag.quarterRanking} text="季" />
                             )}
                             {predictInfo.tag.monthRanking > 0 && (
-                                <Tag
-                                    background="#4489FF"
-                                    text={`月榜 ${predictInfo.tag.monthRanking}`}
-                                />
+                                <TagSplit number={predictInfo.tag.monthRanking} text="月" />
                             )}
                             {predictInfo.tag.weekRanking > 0 && (
-                                <Tag
-                                    background="#4489FF"
-                                    text={`周榜 ${predictInfo.tag.weekRanking}`}
-                                />
+                                <TagSplit number={predictInfo.tag.weekRanking} text="周" />
                             )}
                         </div>
                     </div>

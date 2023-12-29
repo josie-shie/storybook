@@ -3,6 +3,7 @@ import { useRouter } from 'next/navigation';
 import { timestampToString } from 'lib';
 import Image from 'next/image';
 import Tag from '@/components/tag/tag';
+import TagSplit from '@/components/tagSplit/tagSplit';
 import Avatar from '@/components/avatar/avatar';
 import Fire from '@/app/img/fire.png';
 import style from './articleItem.module.scss';
@@ -101,26 +102,14 @@ function ArticleItem({ item }: GetUnlockPostProps) {
                             text={`${item.memberTags.winMaxAccurateStreak}连红`}
                         />
                     )}
-                    {item.memberTags.weekRanking > 3 && (
-                        <Tag
-                            background="#4489FF"
-                            color="#fff"
-                            text={`周榜 ${item.memberTags.weekRanking}`}
-                        />
+                    {item.memberTags.quarterRanking > 0 && (
+                        <TagSplit number={item.memberTags.quarterRanking} text="季" />
                     )}
-                    {item.memberTags.monthRanking > 3 && (
-                        <Tag
-                            background="#4489FF"
-                            color="#fff"
-                            text={`月榜 ${item.memberTags.monthRanking}`}
-                        />
+                    {item.memberTags.monthRanking > 0 && (
+                        <TagSplit number={item.memberTags.monthRanking} text="月" />
                     )}
-                    {item.memberTags.quarterRanking > 3 && (
-                        <Tag
-                            background="#4489FF"
-                            color="#fff"
-                            text={`季榜 ${item.memberTags.quarterRanking}`}
-                        />
+                    {item.memberTags.weekRanking > 0 && (
+                        <TagSplit number={item.memberTags.weekRanking} text="周" />
                     )}
                 </div>
                 <div className={style.unlockStatus}>
