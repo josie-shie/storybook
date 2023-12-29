@@ -2,13 +2,14 @@
     position: relative;
     width: 100%;
     padding-top: 10px;
-    height: calc(100vh - (100vw * 234 / 390) - 87px);
+    height: calc(100dvh - (100vw * 234 / 390) - 87px);
 
     :global {
         .bfRoomContent {
             height: calc(100% - 64px);
             padding: 2px 10px 8px;
             row-gap: 12px;
+            touch-action: pan-y;
 
             .bfGroupLi {
                 margin: 0;

@@ -25,6 +25,8 @@ function HomeRecordTable() {
     const oddsDetailResult = useHomeRecordStore.use.oddsDetailResult();
     const setOddsDetailResult = useHomeRecordStore.use.setOddsDetailResult();
 
+    if (!Object.prototype.hasOwnProperty.call(homeRecordData, 'bet365')) return null;
+
     return (
         <RecordTable
             contestAmount={contestAmount}

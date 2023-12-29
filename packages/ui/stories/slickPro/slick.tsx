@@ -10,6 +10,7 @@ import style from './slick.module.scss';
 type Styling = 'text' | 'underline' | 'button';
 type TabsType = { label: string; href: string; status: string | null }[];
 interface SlickProps {
+    autoHeight?: boolean;
     tabs: TabsType;
     children: ReactNode;
     styling?: Styling;
@@ -103,7 +104,11 @@ function SlickNav({
     );
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-function -- export function
+let resetSwiperHight = () => {};
+
 function Slick({
+    autoHeight = false,
     tabs,
     children,
     styling = 'button',
@@ -143,6 +148,12 @@ function Slick({
         onSlickEnd(nowIndex, prevIndex);
     };
 
+    resetSwiperHight = () => {
+        setTimeout(() => {
+            swiperRef.current?.updateAutoHeight();
+        }, 0);
+    };
+
     return (
         <div className={`ui-slick ${className}`} id="ui-slick">
             <SlickNav
@@ -154,6 +165,7 @@ function Slick({
                 tabs={tabs}
             />
             <SwiperClass
+                autoHeight={autoHeight}
                 initialSlide={initialSlide}
                 onSlideChange={swiper => {
                     setActiveIndex(swiper.activeIndex);
@@ -179,4 +191,4 @@ function Slick({
     );
 }
 
-export { Slick };
+export { Slick, resetSwiperHight };

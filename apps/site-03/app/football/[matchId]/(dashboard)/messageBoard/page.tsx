@@ -1,7 +1,7 @@
-import MessageBoard from './messageBoard';
+import TabContent from '../../tabContent';
 
 function Page({ params }: { params: { matchId: number } }) {
-    return <MessageBoard matchId={params.matchId} />;
+    return <TabContent initStatus="messageBoard" matchId={params.matchId} />;
 }
 
 export default Page;

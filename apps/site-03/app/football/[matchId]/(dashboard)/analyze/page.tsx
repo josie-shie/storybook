@@ -1,5 +1,5 @@
 import { getAnalysisOthers, getBeforeGameIndex, getLeaguePointsRank } from 'data-center';
-import Analyze from './analyze';
+import TabContent from '../../tabContent';
 
 async function Page({ params }: { params: { matchId: number } }) {
     const [analysisData, beforeGameData, leaguePointsRank] = await Promise.all([
@@ -16,10 +16,16 @@ async function Page({ params }: { params: { matchId: number } }) {
     }
 
     return (
-        <Analyze
-            analysisData={analysisData.data}
-            beforeGameData={beforeGameData.data}
-            leaguePointsRank={leaguePointsRank.data}
+        <TabContent
+            fetchInitData={{
+                analyze: {
+                    analysisData: analysisData.data,
+                    beforeGameData: beforeGameData.data,
+                    leaguePointsRank: leaguePointsRank.data
+                }
+            }}
+            initStatus="analyze"
+            matchId={params.matchId}
         />
     );
 }

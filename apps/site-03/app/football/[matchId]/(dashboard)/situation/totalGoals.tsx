@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import type { GetSingleMatchResponse, TotalGoalsInfo } from 'data-center';
 import { convertHandicap, truncateFloatingPoint } from 'lib';
+import { ResetSwiperHight } from 'ui/stories/slickPro/slick';
 import { CompareOdds } from '@/app/(list)/components/compareOdds';
 import TextRadio from '@/components/textSwitch/textSwitch';
 import ButtonSwitch from '@/components/textSwitch/buttonSwitch';
@@ -209,7 +210,12 @@ function TotalGoals() {
         setCompanyId(switchValue);
     };
 
-    const targetTotalGoals = totalGoalsData[totalGoalsRadio][totalGoalsSwitch];
+    const targetTotalGoals = Object.prototype.hasOwnProperty.call(totalGoalsData, 'full')
+        ? totalGoalsData[totalGoalsRadio][totalGoalsSwitch]
+        : {
+              inProgress: [],
+              notStarted: []
+          };
     const hasData: boolean =
         typeof targetTotalGoals === 'undefined' ||
         targetTotalGoals.inProgress.length + targetTotalGoals.notStarted.length === 0;
@@ -222,6 +228,7 @@ function TotalGoals() {
                 <ButtonSwitch
                     onChange={(switchValue: number) => {
                         handleChangeSwitch(switchValue);
+                        ResetSwiperHight();
                     }}
                     options={switchOptins}
                     value={totalGoalsSwitch}
@@ -231,6 +238,7 @@ function TotalGoals() {
                     onChange={value => {
                         setTotalGoalsRadio(value as 'half' | 'full');
                         setDrawerTabValue(handicapRadioMapping[value] as TabTpye);
+                        ResetSwiperHight();
                     }}
                     value={totalGoalsRadio}
                 />
