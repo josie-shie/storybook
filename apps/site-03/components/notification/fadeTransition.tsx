@@ -47,7 +47,7 @@ function FadeTransition({ autoCloseTime, children, show = false, onClose }: Fade
             {show ? (
                 <motion.div
                     animate="visible"
-                    className={style.slideTransFade__position}
+                    className={style.slideTransition__position}
                     exit="hidden"
                     initial="hidden"
                     transition={{ duration: 0.3 }} // 动画持续时间
