@@ -6,17 +6,12 @@ import BaseNoData from '@/components/baseNoData/noData';
 import { useMasterRankStore } from '../../masterRank/masterRankStore';
 import style from './hotStreakListItem.module.scss';
 import Streak from './img/streak.png';
-import Crown from './img/crown.png';
 import Rank from './img/rank.png';
 
 function HotStreakListItem() {
     const masterRankList = useMasterRankStore.use.masterRankList();
     const onlyShowToday = useMasterRankStore.use.onlyShowToday();
     const isLoading = useMasterRankStore.use.isLoading();
-
-    const rankingClass = (ranking: number) => {
-        return ranking > 0 && ranking < 6 ? style[`ranking${ranking}`] : '';
-    };
 
     if (isLoading)
         return (
@@ -36,12 +31,8 @@ function HotStreakListItem() {
                         href={`/master/masterAvatar/${item.memberId}?status=analysis`}
                         key={item.memberId}
                     >
-                        <div className={`${style.rankingFlag} ${rankingClass(item.ranking)}`}>
-                            {item.ranking > 3 ? (
-                                <Image alt="" height={24} src={Rank} width={24} />
-                            ) : (
-                                <Image alt="" height={24} src={Crown} width={24} />
-                            )}
+                        <div className={style.rankingFlag}>
+                            <Image alt="" height={24} src={Rank} width={24} />
                             <span>{item.ranking}</span>
                         </div>
                         <div className={style.avatarContainer}>

@@ -42,7 +42,14 @@ export interface BaseCropperProps {
      *
      * 定義元件的寬度
      */
+
     containerWidth?: string;
+    /**
+     * when user click Confirm.
+     *
+     * 按確認後執行
+     */
+    onConfirm?: () => void;
 }
 
 function BaseCropper({
@@ -50,13 +57,14 @@ function BaseCropper({
     showCropper = true,
     imgSrc,
     setImgFile,
-    circleCropper = true
+    circleCropper = true,
+    onConfirm
 }: BaseCropperProps) {
     const [uploadImage, setUploadImage] = useState<File | null>(null);
     const [previewImage, setPreviewImage] = useState(imgSrc);
 
     const cropperRef = useRef<ReactCropperElement>(null);
-    const [zoomValue, setZoomValue] = useState(0.3);
+    const [zoomValue, setZoomValue] = useState(0);
 
     const handleFileDrop = (e: DragEvent<HTMLDivElement>) => {
         e.preventDefault();
@@ -100,6 +108,7 @@ function BaseCropper({
                 }, 'image/jpeg');
             }
         } else if (uploadImage) setImgFile(uploadImage);
+        if (onConfirm) onConfirm();
     };
 
     return (
@@ -166,12 +175,12 @@ function BaseCropper({
                             <div className={style['controlBar--sliderBar']}>
                                 <Slider
                                     max={1}
-                                    min={0.3}
+                                    min={0}
                                     onChange={(e, newValue) => {
                                         setZoomValue(newValue as number);
                                     }}
                                     size="small"
-                                    step={0.1}
+                                    step={0.01}
                                     value={zoomValue}
                                 />
                             </div>

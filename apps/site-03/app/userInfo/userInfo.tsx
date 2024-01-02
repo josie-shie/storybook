@@ -10,8 +10,8 @@ import Cookies from 'js-cookie';
 import { formatNumberWithCommas } from 'lib';
 import { useNotificationStore } from '@/app/notificationStore';
 import Tag from '@/components/tag/tag';
+import TagSplit from '@/components/tagSplit/tagSplit';
 import Header from '@/components/header/headerTitleNoBg';
-import Footer from '@/components/footer/footer';
 import Fire from '@/app/img/fire.png';
 import { useAuthStore } from '../(auth)/authStore';
 import { useUserStore } from '../userStore';
@@ -138,27 +138,15 @@ function UserInfo() {
                                                     text={`${tags.winMaxAccurateStreak} 连红`}
                                                 />
                                             ) : null}
-                                            {tags.weekRanking >= 3 ? (
-                                                <Tag
-                                                    background="#fff"
-                                                    color="#4489ff"
-                                                    text={`周榜 ${tags.weekRanking}`}
-                                                />
-                                            ) : null}
-                                            {tags.monthRanking >= 3 ? (
-                                                <Tag
-                                                    background="#fff"
-                                                    color="#4489ff"
-                                                    text={`月榜 ${tags.monthRanking}`}
-                                                />
-                                            ) : null}
-                                            {tags.quarterRanking >= 3 ? (
-                                                <Tag
-                                                    background="#fff"
-                                                    color="#4489ff"
-                                                    text={`季榜 ${tags.quarterRanking}`}
-                                                />
-                                            ) : null}
+                                            {tags.quarterRanking > 0 && (
+                                                <TagSplit number={tags.quarterRanking} text="季" />
+                                            )}
+                                            {tags.monthRanking > 0 && (
+                                                <TagSplit number={tags.monthRanking} text="月" />
+                                            )}
+                                            {tags.weekRanking > 0 && (
+                                                <TagSplit number={tags.weekRanking} text="周" />
+                                            )}
                                         </div>
                                     ) : (
                                         <div className={style.tags}>
@@ -375,7 +363,6 @@ function UserInfo() {
                     登出帐号
                 </div>
             </div>
-            <Footer />
         </div>
     );
 }

@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Header from '@/components/header/headerTitleDetail';
+import { useRechargeStore } from '../rechargeStore';
 import WechatIcon from '../img/wechat.png';
 import Pay from './pay/pay';
 import style from './wechat.module.scss';
@@ -17,7 +18,8 @@ function Wechat() {
     };
 
     const [pay, setPay] = useState(false);
-    const [amount, setAmount] = useState('');
+    const amount = useRechargeStore.use.amount();
+    const setAmount = useRechargeStore.use.setAmount();
 
     const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         let value = e.target.valueAsNumber;
@@ -56,7 +58,7 @@ function Wechat() {
                                     <Image alt="wechat" height={32} src={WechatIcon} width={32} />
                                     <input
                                         onChange={handleAmountChange}
-                                        placeholder="1~99999平台幣"
+                                        placeholder="1~99999平台币"
                                         type="number"
                                         value={amount}
                                     />

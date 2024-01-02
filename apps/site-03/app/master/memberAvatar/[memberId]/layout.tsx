@@ -30,7 +30,7 @@ function MasterAvatarLayout({ params }: { params: { memberId: string } }) {
 
     return (
         <>
-            <Header srcPath="/master/article" title={headerProps.title} />
+            <Header title={headerProps.title} />
             <Info params={params} />
             <div className={style.masterAvatar}>
                 <Tabs

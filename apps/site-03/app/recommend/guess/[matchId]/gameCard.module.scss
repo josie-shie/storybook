@@ -2,12 +2,13 @@
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    margin-top: 24px;
+    gap: 8px;
     padding: 10px 0;
+    margin-top: 24px;
 
     .detail {
         display: flex;
-        gap: 12px;
+        gap: 6px;
 
         .details {
             display: block;
@@ -19,12 +20,17 @@
                 font-weight: 500;
             }
 
+            .tagsContainer {
+                display: flex;
+                flex-wrap: wrap;
+                margin-top: 4px;
+            }
+
             .league {
                 color: #4a4a4a;
                 margin-top: 4px;
                 font-size: 14px;
                 font-weight: 400;
-                line-height: 36px;
             }
 
             .ballList {

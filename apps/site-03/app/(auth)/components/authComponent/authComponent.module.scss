@@ -19,11 +19,12 @@ $border-bottom: 1px solid rgb(255 255 255 / 30%);
 .phoneInput {
     width: 100%;
     padding: 0 6px;
-    font-size: 14px;
+    font-size: 16px;
 
     ::placeholder {
         color: #e6effe;
         font-weight: 400;
+        font-size: 14px;
     }
 }
 
@@ -41,12 +42,13 @@ $border-bottom: 1px solid rgb(255 255 255 / 30%);
         align-items: center;
 
         .passwordInput {
-            font-size: 14px;
+            font-size: 16px;
             font-weight: 400;
             flex: 1;
 
             ::placeholder {
                 color: #e6effe;
+                font-size: 14px;
             }
         }
     }
@@ -70,6 +72,7 @@ $border-bottom: 1px solid rgb(255 255 255 / 30%);
 
             input {
                 width: 146px;
+                font-size: 16px;
             }
 
             ::placeholder {
@@ -116,6 +119,7 @@ $border-bottom: 1px solid rgb(255 255 255 / 30%);
 
         .nicknameInput {
             width: 246px;
+            font-size: 16px;
 
             ::placeholder {
                 color: #e6effe;
@@ -147,6 +151,7 @@ $border-bottom: 1px solid rgb(255 255 255 / 30%);
 
             input {
                 width: 146px;
+                font-size: 16px;
             }
 
             ::placeholder {

@@ -5,6 +5,7 @@ import Slide from '@mui/material/Slide';
 import type { TransitionProps } from '@mui/material/transitions';
 import Image from 'next/image';
 import Star from './img/star.png';
+import Wallet from './img/wallet.png';
 import style from './paidDialog.module.scss';
 
 interface PaidDialogProps {
@@ -61,12 +62,12 @@ function PaidDialog({
             open={openPaid}
         >
             {balance === 0 ? (
-                <div className={style.paidDialog}>
+                <div className={style.notEnoughDialog}>
+                    <div className={style.picture}>
+                        <Image alt="wallet" height={65} src={Wallet} width={65} />
+                    </div>
                     <div className={style.lack}>餘額不足，請充值</div>
                     <div className={style.footer}>
-                        <div className={style.close} onClick={onClose}>
-                            取消
-                        </div>
                         <div className={style.confirm} onClick={onConfirm}>
                             去充值
                         </div>

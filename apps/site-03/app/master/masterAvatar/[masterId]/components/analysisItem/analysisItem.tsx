@@ -60,8 +60,9 @@ function AnalysisItem({
 
     const fetchData = async () => {
         const res = await getPostList({
-            memberId: Number(params.masterId),
-            postFilter: ['all'],
+            memberId: userInfo.uid ? userInfo.uid : 0,
+            postFilter: ['mentor'],
+            filterId: [Number(params.masterId)],
             currentPage,
             pageSize: 30
         });
@@ -123,9 +124,9 @@ function AnalysisItem({
         if (!res.success) {
             return new Error();
         }
-        void fetchData();
-        void getUser();
         setIsOpenPaid(false);
+        setPredictArticleList([]);
+        void getUser();
     };
 
     const getUser = async () => {
@@ -135,6 +136,12 @@ function AnalysisItem({
         }
         setUserInfo(res.data);
     };
+
+    useEffect(() => {
+        if (predictArticleList.length === 0) {
+            void fetchData();
+        }
+    }, [predictArticleList]);
 
     useEffect(() => {
         void fetchData();

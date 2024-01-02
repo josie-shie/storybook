@@ -27,6 +27,7 @@ function TradeDetailList({ end, start, tradeType, page, setPage }: TradeDetailLi
     const setTradeDetailList = useTardeDetailStore.use.setTradeDetailList();
 
     const loadMoreList = async () => {
+        if (page === pagination.pageCount) return;
         const data = await getMemberTransactionList({
             startTime: start,
             endTime: end,
@@ -65,7 +66,7 @@ function TradeDetailList({ end, start, tradeType, page, setPage }: TradeDetailLi
                         </InfiniteScroll>
                     ) : (
                         <div className={style.listEnd}>
-                            <p>已显示全部资料</p>
+                            <p>已滑到底啰</p>
                         </div>
                     )}
                 </>

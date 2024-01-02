@@ -150,6 +150,10 @@
                 color: #fff;
                 background: linear-gradient(105deg, #c9b386 0.97%, #8d6b29 100%);
                 border-radius: 2px;
+
+                &.newGuy {
+                    background: linear-gradient(105deg, #ff5a36 0.97%, #f85640 100%);
+                }
             }
 
             .text {
@@ -182,6 +186,12 @@
                 }
             }
 
+            .intro {
+                font-size: 10px;
+                color: #8d8d8d;
+                text-align: center;
+            }
+
             .selectedFlag {
                 display: flex;
                 align-items: center;
@@ -190,8 +200,8 @@
                 margin: 12px auto;
                 width: 58px;
                 font-size: 12px;
-                color: rgba(255, 255, 255, 0.3);
-                border: 1px solid rgba(255, 255, 255, 0.3);
+                color: rgb(255 255 255 / 30%);
+                border: 1px solid rgb(255 255 255 / 30%);
                 border-radius: 50px;
                 background: transparent;
                 transition: all 0.3s ease;
@@ -207,6 +217,10 @@
                 color: #fff;
                 background: #4489ff;
                 border-color: #4489ff;
+
+                span {
+                    white-space: nowrap;
+                }
             }
         }
     }
@@ -240,7 +254,7 @@
     }
 
     &.firstRaduis {
-        border-radius: 0 8px 8px 8px;
+        border-radius: 0 8px 8px;
     }
 
     &.lastRaduis {
@@ -256,10 +270,10 @@
     gap: 8px;
     color: #fff;
     padding: 6px;
-    margin: 30px 0;
+    margin: 16px 0;
 
     .protocol {
-        color: #ffeaa7;
+        color: #fff;
         margin-left: 4px;
     }
 }
@@ -271,6 +285,7 @@
     padding: 10px 12px;
     border: 0;
     border-radius: 50px;
+    margin-top: 30px;
 }
 
 .placeholder {
@@ -316,4 +331,9 @@
     font-size: 14px;
     padding: 0 14px 14px;
     overflow: scroll;
+}
+
+.dialogTitle {
+    font-weight: 800;
+    padding: 8px 14px;
 }

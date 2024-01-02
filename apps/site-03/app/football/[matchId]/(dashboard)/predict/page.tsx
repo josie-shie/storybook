@@ -1,5 +1,5 @@
 import { getPostList } from 'data-center';
-import Predict from './predict';
+import TabContent from '../../tabContent';
 
 async function Page({ params }: { params: { matchId: number } }) {
     const predictData = await getPostList({
@@ -13,7 +13,13 @@ async function Page({ params }: { params: { matchId: number } }) {
     if (!predictData.success) {
         return new Error();
     }
-    return <Predict matchId={params.matchId} predictData={predictData.data} />;
+    return (
+        <TabContent
+            fetchInitData={{ predict: predictData.data }}
+            initStatus="predict"
+            matchId={params.matchId}
+        />
+    );
 }
 
 export default Page;

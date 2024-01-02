@@ -3,19 +3,22 @@
 import { type ReactNode } from 'react';
 import { Tab, Tabs } from 'ui';
 import { usePathname } from 'next/navigation';
-import Footer from '@/components/footer/footer';
 import { useMessageStore } from '@/app/messageStore';
 import Header from './header';
 import style from './layout.module.scss';
 import { createNoticeStore } from './noticeStore';
 import EditBar from './editBar';
 
-function NoticeLayout({ children }: { children: ReactNode }) {
-    const unreadMessageNotify = useMessageStore.use.unreadMessageNotify();
-
+function CreateNoticeStore({ children }: { children: ReactNode }) {
     createNoticeStore({
         mailList: []
     });
+
+    return <>{children}</>;
+}
+
+function NoticeTabs({ children }: { children: ReactNode }) {
+    const unreadMessageNotify = useMessageStore.use.unreadMessageNotify();
 
     const route = usePathname().split('/');
     const pathName = route[route.length - 1];
@@ -37,12 +40,14 @@ function NoticeLayout({ children }: { children: ReactNode }) {
         {
             label: `消息${mailCountString}`,
             to: '/notice',
-            status: 'notice'
+            status: 'notice',
+            id: 'notice,'
         },
         {
             label: `聊天${chatCountString}`,
             to: '/notice/chat',
-            status: 'chat'
+            status: 'chat',
+            id: 'chat'
         }
     ];
 
@@ -59,16 +64,23 @@ function NoticeLayout({ children }: { children: ReactNode }) {
                 >
                     {tabList.map(item => {
                         return (
-                            <Tab key={item.label} label={item.label} to={item.to}>
+                            <Tab key={item.id} label={item.label} to={item.to}>
                                 {item.status === pathName && children}
                             </Tab>
                         );
                     })}
                 </Tabs>
             </div>
-            <Footer />
             <EditBar />
         </div>
+    );
+}
+
+function NoticeLayout({ children }: { children: ReactNode }) {
+    return (
+        <CreateNoticeStore>
+            <NoticeTabs>{children}</NoticeTabs>
+        </CreateNoticeStore>
     );
 }
 

@@ -6,7 +6,6 @@ import Image from 'next/image';
 import type { UpdateMemberInfoRequest } from 'data-center';
 import { timestampToString, uploadImage } from 'lib';
 import { updateMemberInfo } from 'data-center';
-import { Button } from '@mui/material';
 import dayjs from 'dayjs';
 import Header from '@/components/header/headerTitleDetail';
 import { useNotificationStore } from '@/app/notificationStore';
@@ -86,9 +85,22 @@ function Account() {
     const setIsVisible = useNotificationStore.use.setIsVisible();
 
     const [isAvatarCropperOpen, setIsAvatarCropperOpen] = useState(false);
+    const [newAvatar, setNewAvatar] = useState<string>();
 
     const back = () => {
         router.push('/userInfo');
+    };
+
+    const handleAvatarChange = (event: ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = e => {
+                setNewAvatar(e.target?.result as string);
+                setIsAvatarCropperOpen(true);
+            };
+            reader.readAsDataURL(file);
+        }
     };
 
     const handleUploadImg = (arg: Blob) => {
@@ -107,7 +119,6 @@ function Account() {
             const data: UploadResponse = await uploadImage(blob);
             if (data.filePath) {
                 setImgUpload(data.filePath);
-                setIsVisible('上传成功', 'success');
             } else {
                 setIsVisible('上传失败', 'error');
             }
@@ -222,14 +233,15 @@ function Account() {
                         src={imgSrc || Avatar}
                         width={72}
                     />
-                    <Button
-                        className={style.uploadBtn}
-                        onClick={() => {
-                            setIsAvatarCropperOpen(true);
-                        }}
-                    >
+                    <label className={style.uploadBtn}>
                         编辑头像
-                    </Button>
+                        <input
+                            accept="image/*"
+                            onChange={handleAvatarChange}
+                            style={{ display: 'none' }}
+                            type="file"
+                        />
+                    </label>
                     <p>*图片规格为100*100</p>
                 </div>
                 <form onSubmit={handleSubmit}>
@@ -313,7 +325,7 @@ function Account() {
                     {submittedState.description ? (
                         <div className={style.item}>
                             <span className={style.title}>
-                                <span className={style.text}>简介：</span>
+                                <span className={style.text}>简介</span>
                                 <button
                                     className={style.button}
                                     onClick={() => {
@@ -355,10 +367,11 @@ function Account() {
                 </form>
             </div>
             <AvatarCropperDrawer
-                imgSrc={imgSrc}
+                imgSrc={newAvatar}
                 isDrawerOpen={isAvatarCropperOpen}
                 setImgSrc={handleUploadImg}
                 setIsDrawerOpen={setIsAvatarCropperOpen}
+                setNewAvatar={setNewAvatar}
             />
         </>
     );

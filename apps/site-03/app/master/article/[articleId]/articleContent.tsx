@@ -95,7 +95,7 @@ function ArticleContent({ params, article, fetchPostDetail }: ArticleContentProp
 
     const fetchData = async () => {
         const res = await getPostList({
-            memberId: userInfo.uid ? userInfo.uid : 1,
+            memberId: userInfo.uid ? userInfo.uid : 0,
             filterId: [article.mentorId],
             postFilter: ['mentor'],
             pageSize: 20

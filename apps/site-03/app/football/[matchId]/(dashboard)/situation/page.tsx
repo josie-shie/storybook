@@ -1,5 +1,5 @@
 import { getDetailStatus } from 'data-center';
-import Situation from './situation';
+import TabContent from '../../tabContent';
 
 async function Page({ params }: { params: { matchId: number } }) {
     const situationData = await getDetailStatus(params.matchId);
@@ -8,7 +8,13 @@ async function Page({ params }: { params: { matchId: number } }) {
         return new Error();
     }
 
-    return <Situation situationData={situationData.data} />;
+    return (
+        <TabContent
+            fetchInitData={{ situation: situationData.data }}
+            initStatus="situation"
+            matchId={params.matchId}
+        />
+    );
 }
 
 export default Page;

@@ -3,7 +3,6 @@ import './dataTable.scss';
 import { getMatchDetail } from 'data-center';
 import LiveBox from './liveBox';
 import GuessBar from './guessBar';
-import TabBar from './tabBar';
 import OddMqttService from './oddMqttService';
 
 async function DetailLayout({
@@ -26,7 +25,7 @@ async function DetailLayout({
                 matchId={params.matchId}
             />
             <GuessBar />
-            <TabBar matchId={params.matchId}>{children}</TabBar>
+            {children}
             <OddMqttService />
         </>
     );

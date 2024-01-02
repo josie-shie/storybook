@@ -1,8 +1,8 @@
 'use client';
 import Image from 'next/image';
-import { useRef, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Dialog, DialogTitle } from '@mui/material';
+import { Dialog } from '@mui/material';
 import {
     getSubscriptionPlanList,
     subscribePlan,
@@ -20,14 +20,11 @@ import lineRight from './img/lineRight.png';
 import Vip from './img/vip.png';
 import Arrow from './img/arrow.png';
 import ActiveArrow from './img/activeArrow.png';
-import checkbox from './img/checkbox.png';
-import checkedBox from './img/checkedbox.png';
 import VipIcon from './img/vipIcon.png';
 import { useSubscribeStore } from './subscribeStore';
 
 function Subscribe({ backHistory }: { backHistory: boolean }) {
     const router = useRouter();
-    const switchRef = useRef<HTMLDivElement | null>(null);
     const [intro, setIntro] = useState(false);
     const [protocol, setProtocol] = useState(false);
     const userInfo = useUserStore.use.userInfo();
@@ -38,12 +35,10 @@ function Subscribe({ backHistory }: { backHistory: boolean }) {
     const platformAmount = useSubscribeStore.use.platformAmount();
     const currencyAmount = useSubscribeStore.use.currencyAmount();
     const isVip = useSubscribeStore.use.isVip();
-    const isChecked = useSubscribeStore.use.isChecked();
     const setPlanId = useSubscribeStore.use.setPlanId();
     const setPlatformAmount = useSubscribeStore.use.setPlatformAmount();
     const setCurrencyAmount = useSubscribeStore.use.setCurrencyAmount();
     const setIsVip = useSubscribeStore.use.setIsVip();
-    const setIsChecked = useSubscribeStore.use.setIsChecked();
     const setYearPlanList = useSubscribeStore.use.setYearPlanList();
     const setPlanList = useSubscribeStore.use.setPlanList();
     const setIsVisible = useNotificationStore.use.setIsVisible();
@@ -62,11 +57,6 @@ function Subscribe({ backHistory }: { backHistory: boolean }) {
         const getRechargeList = async () => {
             const res = await getRechargeOptionList({ currencyCode: 'cny' });
 
-            if (res.success) {
-                setPlanList(res.data);
-                setCurrencyAmount(res.data[0].paymentAmount);
-                setPlatformAmount(res.data[0].rechargeAmount);
-            }
             if (!res.success) {
                 if ('error' in res) {
                     const errorMessage = res.error;
@@ -163,6 +153,13 @@ function Subscribe({ backHistory }: { backHistory: boolean }) {
         setProtocol(false);
     };
 
+    const planPrices = {
+        1: '48元/1次分析',
+        2: '40元/1次分析',
+        3: '36元/1次分析',
+        4: '36元/1次分析'
+    };
+
     return (
         <>
             <div className={style.subscribe} style={{ backgroundImage: `url(${background.src})` }}>
@@ -226,7 +223,7 @@ function Subscribe({ backHistory }: { backHistory: boolean }) {
                                         充值方案
                                         <Image alt="" height={4} src={lineRight} width={28} />
                                     </div>
-                                    <div className={style.planContainer} ref={switchRef}>
+                                    <div className={style.planContainer}>
                                         {planList.map(plan => (
                                             <div className={`${style.wrapper}`} key={plan.id}>
                                                 <div
@@ -241,7 +238,11 @@ function Subscribe({ backHistory }: { backHistory: boolean }) {
                                                         );
                                                     }}
                                                 >
-                                                    <div className={style.discount}>
+                                                    <div
+                                                        className={`${style.discount} ${
+                                                            plan.id === 1 ? style.newGuy : ''
+                                                        }`}
+                                                    >
                                                         {plan.titleDesc}
                                                     </div>
                                                     <div className={style.text}>
@@ -252,6 +253,9 @@ function Subscribe({ backHistory }: { backHistory: boolean }) {
                                                     </div>
                                                     <div className={style.text}>
                                                         <span>{plan.paymentAmount}</span> 元
+                                                    </div>
+                                                    <div className={style.intro}>
+                                                        {planPrices[plan.id]}
                                                     </div>
                                                     <button
                                                         className={style.selectedFlag}
@@ -308,49 +312,23 @@ function Subscribe({ backHistory }: { backHistory: boolean }) {
                                 </div>
                             )}
                         </div>
-
-                        <div className={style.agreement}>
-                            {isChecked ? (
-                                <Image
-                                    alt=""
-                                    height={16}
-                                    onClick={() => {
-                                        setIsChecked(false);
-                                    }}
-                                    src={checkedBox}
-                                    width={16}
-                                />
-                            ) : (
-                                <Image
-                                    alt=""
-                                    height={16}
-                                    onClick={() => {
-                                        setIsChecked(true);
-                                    }}
-                                    src={checkbox}
-                                    width={16}
-                                />
-                            )}
-                            <div>
-                                已同意
-                                <span className={style.protocol} onClick={handleProtocolOpen}>
-                                    会员服务协议
-                                </span>
-                            </div>
-                        </div>
                         <button
                             className={style.submit}
-                            disabled={!isChecked}
                             onClick={handleSubscribeButtonOnClick}
                             type="button"
                         >
-                            {memberSubscribeStatus.planId === 1 ? '续约' : '立即开通'}
+                            {memberSubscribeStatus.planId === 1 ? '续约' : '同意会员服务协议并开通'}
                         </button>
+                        <div className={style.agreement}>
+                            <span className={style.protocol} onClick={handleProtocolOpen}>
+                                会员服务协议
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>
             <Dialog onClose={handleIntroClose} open={intro}>
-                <DialogTitle>说明</DialogTitle>
+                <h2 className={style.dialogTitle}>说明</h2>
                 <div className={style.dialogContent}>
                     <p>
                         赛事高手，球赛群众风向指引
@@ -365,7 +343,7 @@ function Subscribe({ backHistory }: { backHistory: boolean }) {
             </Dialog>
 
             <Dialog onClick={handleProtocolClose} open={protocol}>
-                <DialogTitle>会员服务协议</DialogTitle>
+                <h2 className={style.dialogTitle}>会员服务协议</h2>
                 <div className={style.dialogContent}>
                     <p>
                         欢迎您使用未来体育会员服务！

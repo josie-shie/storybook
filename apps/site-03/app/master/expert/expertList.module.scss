@@ -3,7 +3,7 @@
     background: #fff;
 
     .expertLayout {
-        height: calc(100vh - 212px);
+        height: calc(100dvh - 212px);
         overflow-y: auto;
     }
 
@@ -28,8 +28,12 @@
     .about {
         flex-grow: 1;
 
+        .tags {
+            display: flex;
+        }
+
         .userName {
-            color: #222222;
+            color: #222;
             font-size: 14px;
             font-weight: 500;
         }

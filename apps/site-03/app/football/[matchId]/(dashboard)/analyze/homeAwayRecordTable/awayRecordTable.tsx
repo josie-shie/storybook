@@ -25,6 +25,8 @@ function AwayRecordTable() {
     const oddsDetailResult = useAwayRecordStore.use.oddsDetailResult();
     const setOddsDetailResult = useAwayRecordStore.use.setOddsDetailResult();
 
+    if (!Object.prototype.hasOwnProperty.call(awayRecordData, 'bet365')) return null;
+
     return (
         <RecordTable
             contestAmount={contestAmount}

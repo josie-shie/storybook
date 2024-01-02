@@ -72,8 +72,11 @@ function BettingColumn({ detail, leftLabel, rightLabel }: BettingProps) {
                 matchId: Number(matchId),
                 predictedPlay: betting.toUpperCase() as 'HOME' | 'AWAY'
             });
+            if (res.success) {
+                setGuessesLeft(res.data.remainingGuessTimes);
+                newDetail.participants = res.data.guessNum;
+            }
             setGuessDetail({ ...newDetail });
-            if (res.success) setGuessesLeft(res.data.remainingGuessTimes);
         } else {
             const betting = direction === 'left' ? 'over' : 'under';
             const convertKey = betting === 'over' ? 'big' : 'small';
@@ -86,8 +89,11 @@ function BettingColumn({ detail, leftLabel, rightLabel }: BettingProps) {
                 matchId: Number(matchId),
                 predictedPlay: betting.toUpperCase() as 'OVER' | 'UNDER'
             });
+            if (res.success) {
+                setGuessesLeft(res.data.remainingGuessTimes);
+                newDetail.participants = res.data.guessNum;
+            }
             setGuessDetail({ ...newDetail });
-            if (res.success) setGuessesLeft(res.data.remainingGuessTimes);
         }
     };
 

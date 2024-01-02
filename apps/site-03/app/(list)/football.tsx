@@ -7,6 +7,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Image from 'next/image';
 import { useContestInfoStore } from '@/app/contestInfoStore';
 import type { FilterList } from '@/components/contestFilter/contestFilter';
+import BaseBanner from './components/baseBanner';
 import GameCard from './components/gameCard';
 import style from './football.module.scss';
 import { creatContestListStore, useContestListStore } from './contestListStore';
@@ -14,17 +15,8 @@ import BaseDatePicker from './components/baseDatePicker/baseDatePicker';
 import SettingIcon from './img/setting.png';
 import Setting from './components/setting';
 import FootballFilter from './components/footballFilter';
-import BannerImg from './img/banner.png';
 
 type Status = 'all' | 'progress' | 'schedule' | 'result';
-
-function Banner() {
-    return (
-        <div className={style.banner}>
-            <Image alt="注册会员送 80" src={BannerImg} />
-        </div>
-    );
-}
 
 function DatePicker({
     status,
@@ -199,7 +191,7 @@ function ContestList({
 
     return (
         <>
-            <Banner />
+            {status === 'all' && <BaseBanner />}
             <div className={style.toolbar}>
                 <FootballFilter
                     statusFunc={statusTable[status]}

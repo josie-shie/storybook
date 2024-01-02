@@ -7,7 +7,7 @@ import style from './lineup.module.scss';
 function Lineup() {
     const lineList = useSituationStore.use.lineupInfo();
 
-    if (lineList.matchId === 0) {
+    if (lineList.matchId === 0 || !Object.prototype.hasOwnProperty.call(lineList, 'matchId')) {
         return null;
     }
 

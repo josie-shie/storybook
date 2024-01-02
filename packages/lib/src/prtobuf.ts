@@ -35,8 +35,8 @@ let analysisItem: Type;
 let analysisInit = true;
 
 let NotifyMessageProtobuf: Root;
-let NotifyMessage: Type;
-let NotifyMessageInit = true;
+let NotifyMessage: Type | undefined;
+let initializationPromise: Promise<void> | undefined;
 
 /**
  * toProto method
@@ -146,13 +146,20 @@ export const deProtoAnalysis = async (msg: Uint8Array) => {
     return decoded;
 };
 
-export const deProtoNotifyMessage = async (msg: Uint8Array) => {
-    if (NotifyMessageInit) {
-        NotifyMessageProtobuf = await load('/message.proto');
-        NotifyMessage = NotifyMessageProtobuf.lookupType('sportim.NotifyMessage');
-        NotifyMessageInit = false;
+const initializeNotifyMessage = async () => {
+    if (!initializationPromise) {
+        initializationPromise = load('/message.proto').then(protobuf => {
+            NotifyMessageProtobuf = protobuf;
+            NotifyMessage = NotifyMessageProtobuf.lookupType('sportim.NotifyMessage');
+        });
     }
+    await initializationPromise;
+};
 
-    const decoded = NotifyMessage.decode(msg);
+export const deProtoNotifyMessage = async (msg: Uint8Array) => {
+    if (!NotifyMessage) {
+        await initializeNotifyMessage();
+    }
+    const decoded = NotifyMessage?.decode(msg);
     return decoded;
 };

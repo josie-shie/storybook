@@ -6,16 +6,11 @@ import BaseNoData from '@/components/baseNoData/noData';
 import { useRankStore } from '../../rank/rankStore';
 import style from './periodListItem.module.scss';
 import Soccer from './img/soccer.png';
-import Crown from './img/crown.png';
 import Rank from './img/rank.png';
 
 function PeriodListItem({ isLoading }: { isLoading: boolean }) {
     const rankList = useRankStore.use.rankList();
     const onlyShowToday = useRankStore.use.onlyShowToday();
-
-    const rankingClass = (ranking: number) => {
-        return ranking > 0 && ranking < 6 ? style[`ranking${ranking}`] : '';
-    };
 
     if (isLoading)
         return (
@@ -36,12 +31,8 @@ function PeriodListItem({ isLoading }: { isLoading: boolean }) {
                         href={`/master/masterAvatar/${item.memberId}?status=analysis`}
                         key={item.memberId}
                     >
-                        <div className={`${style.rankingFlag} ${rankingClass(item.ranking)}`}>
-                            {item.ranking > 3 ? (
-                                <Image alt="" height={24} src={Rank} width={24} />
-                            ) : (
-                                <Image alt="" height={24} src={Crown} width={24} />
-                            )}
+                        <div className={style.rankingFlag}>
+                            <Image alt="" height={24} src={Rank} width={24} />
                             <span>{item.ranking}</span>
                         </div>
                         <div className={style.avatarContainer}>

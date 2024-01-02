@@ -12,12 +12,10 @@ interface SubscribeState extends InitState {
     platformAmount: number;
     currencyAmount: number;
     isVip: boolean;
-    isChecked: boolean;
     setPlanId: (planId: number) => void;
     setPlatformAmount: (platformAmount: number) => void;
     setCurrencyAmount: (currencyAmount: number) => void;
     setIsVip: (isVip: boolean) => void;
-    setIsChecked: (isChecked: boolean) => void;
     setPlanList: (planList: GetRechargeOption[]) => void;
     setYearPlanList: (yearPlanList: GetSubscriptionPlanListResponse) => void;
 }
@@ -29,7 +27,6 @@ const initialState = (set: (data: Partial<SubscribeState>) => void) => ({
     platformAmount: 0,
     currencyAmount: 0,
     isVip: false,
-    isChecked: false,
     planList: [],
     yearPlanList: [],
     setPlanId: (planId: number) => {
@@ -43,9 +40,6 @@ const initialState = (set: (data: Partial<SubscribeState>) => void) => ({
     },
     setIsVip: (isVip: boolean) => {
         set({ isVip });
-    },
-    setIsChecked: (isChecked: boolean) => {
-        set({ isChecked });
     },
     setPlanList: (planList: GetRechargeOption[]) => {
         set({ planList });

@@ -177,7 +177,7 @@ function RecentPerformanceContent({ dateActiveTab }: { dateActiveTab: string }) 
                         handleChangeFocusDetail('size');
                     }}
                 >
-                    <PerformanceBar guessDetail={myGuessData.handicap} title="讓球" />
+                    <PerformanceBar guessDetail={myGuessData.handicap} title="让分" />
                 </div>
                 <div
                     className={`${style.detailBlock} ${

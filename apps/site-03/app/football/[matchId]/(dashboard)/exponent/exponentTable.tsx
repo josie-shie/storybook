@@ -1,3 +1,4 @@
+import { resetSwiperHight } from 'ui/stories/slickPro/slick';
 import ButtonSwitch from '@/components/textSwitch/buttonSwitch';
 import TextRadio from '@/components/textSwitch/textSwitch';
 import type { ExponentType, TotalGoalsRadioType } from '@/types/exponent';
@@ -26,6 +27,7 @@ function ExponentTable() {
                 <ButtonSwitch
                     onChange={(switchValue: ExponentType) => {
                         setSelectedOption(switchValue);
+                        resetSwiperHight();
                     }}
                     options={options}
                     value={selectedOption}
@@ -33,6 +35,7 @@ function ExponentTable() {
                 <TextRadio
                     onChange={value => {
                         setTotalGoalsRadio(value as TotalGoalsRadioType);
+                        resetSwiperHight();
                     }}
                     value={totalGoalsRadio}
                 />
