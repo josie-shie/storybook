@@ -70,7 +70,7 @@ function ExpertItem({ mentorList, setMentorList }: ExpertItemProps) {
                                 >
                                     {item.username}
                                 </Link>
-                                <div>
+                                <div className={style.tags}>
                                     {item.tags.winMaxAccurateStreak > 0 && (
                                         <Tag
                                             icon={<Image alt="fire" src={Fire} />}
