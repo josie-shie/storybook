@@ -28,6 +28,10 @@
     .about {
         flex-grow: 1;
 
+        .tags {
+            display: flex;
+        }
+
         .userName {
             color: #222;
             font-size: 14px;
