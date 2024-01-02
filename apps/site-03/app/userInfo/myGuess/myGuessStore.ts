@@ -29,7 +29,8 @@ interface Pagination {
 
 type PredictionResultType = 'WIN' | 'LOSE' | 'DRAW' | 'NONE';
 type PredictedPlayType = 'OVER' | 'UNDER' | 'HOME' | 'AWAY' | 'LOCK' | 'HANDICAP' | 'OVERUNDER';
-// 競猜玩法 ( 0: 全部, 1: 讓球, 2: 大小球 )
+// 競猜玩法 ( 0: 全部, 1: 讓球, 2: 大小球 -1: 沒資料 )
+export type ApiGuessType = -1 | 0 | 1 | 2;
 export type GuessType = 0 | 1 | 2;
 
 export interface RecordItem {
@@ -69,7 +70,7 @@ export interface Plan {
 }
 
 export interface MyPlans {
-    guessType: GuessType;
+    guessType: ApiGuessType;
     guessMatchList: Plan[];
     pagination: Pagination;
 }

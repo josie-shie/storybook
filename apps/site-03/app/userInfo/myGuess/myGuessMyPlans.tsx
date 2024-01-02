@@ -8,7 +8,7 @@ import Loading from '@/components/loading/loading';
 import { useUserStore } from '@/app/userStore';
 import BettingPlan from './components/bettingPlan/bettingPlan';
 import style from './myGuess.module.scss';
-import { useMyGuessStore, type GuessType } from './myGuessStore';
+import { useMyGuessStore, type GuessType, type ApiGuessType } from './myGuessStore';
 
 function PlansList({
     planActiveTab,
@@ -34,7 +34,7 @@ function PlansList({
         if (palns.success) {
             setPage(page + 1);
             setMyPlans({
-                guessType: palns.data.guessType,
+                guessType: palns.data.guessType as ApiGuessType,
                 guessMatchList: myPlansData.concat(palns.data.guessMatchList),
                 pagination: palns.data.pagination
             });
