@@ -1,10 +1,15 @@
-.banner {
-    display: block;
-    margin: auto;
-}
+.recommendPredict {
+    height: calc(100dvh - 164px);
+    overflow: auto;
 
-.toolbar {
-    display: inline-block;
-    margin-top: 12px;
-    padding: 0 12px;
+    .banner {
+        display: block;
+        margin: auto;
+    }
+
+    .toolbar {
+        display: inline-block;
+        margin-top: 12px;
+        padding: 0 12px;
+    }
 }
