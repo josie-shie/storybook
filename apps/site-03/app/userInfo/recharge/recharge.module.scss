@@ -140,27 +140,7 @@
             li {
                 position: relative;
 
-                .recommend {
-                    position: absolute;
-                    top: 3px;
-                    left: -6px;
-                    color: #fff;
-                    font-size: 12px;
-                    padding: 0 4px;
-                    background: #ffaa46;
-                    border-radius: 2px 2px 2px 0;
-
-                    &::before {
-                        content: '';
-                        position: absolute;
-                        left: 0;
-                        bottom: -4px;
-                        border-bottom: 4px solid rgb(0 0 0 / 0%);
-                        border-right: 6px solid #a4651b;
-                    }
-                }
-
-                a {
+                .item {
                     display: flex;
                     align-items: center;
                     justify-content: flex-start;
