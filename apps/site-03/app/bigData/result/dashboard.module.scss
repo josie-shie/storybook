@@ -90,6 +90,8 @@
 }
 
 .tutorial {
+    background: rgba(0, 0, 0, 0.8);
+
     .slide {
         .images {
             display: flex;
@@ -153,6 +155,9 @@
         text-align: center;
         font-size: 14px;
         color: #8d8d8d;
+        background-color: #000;
+        opacity: 0.8;
+        padding-bottom: 40px;
     }
 
     :global {
