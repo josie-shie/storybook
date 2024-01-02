@@ -3,9 +3,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Link as ScrollLink, Element } from 'react-scroll';
 import { Tab, Tabs } from 'ui';
-import HeaderFilter from '@/components/header/headerFilter';
+import Header from '@/components/header/headerLogo';
 import style from './analytics.module.scss';
-import searchIcon from './img/search.png';
 import leagueLogo from './img/leagueLogo.png';
 import cupLogo from './img/cupLogo.png';
 
@@ -92,9 +91,7 @@ function CompetitionBox() {
 function Analytics() {
     return (
         <div className={style.data}>
-            <HeaderFilter>
-                <Image alt="search" className={style.searchIcon} src={searchIcon} width={32} />
-            </HeaderFilter>
+            <Header />
             <div className={style.main}>
                 <div className={style.hotGamesContainer}>
                     <div className={style.title}>热门赛事</div>
