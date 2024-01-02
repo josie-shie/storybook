@@ -1,5 +1,4 @@
 import { timestampToString } from 'lib';
-import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -8,6 +7,7 @@ import BottomDrawer from '@/components/drawer/bottomDrawer';
 import NoData from '@/components/baseNoData/noData';
 import MatchFilterDrawer from '../matchFilterDrawer/matchFilterDrawer';
 import { useMatchFilterStore } from '../../matchFilterStore';
+import { useAnalyticsResultStore } from '../../analysisResultStore';
 import style from './contestDrawerList.module.scss';
 import iconFilter from './img/filterIcon.png';
 
@@ -24,19 +24,18 @@ function ContestDrawerList({
     matchList: GetFootballStatsMatch[];
     selectedResult: { type: string; odds: string };
 }) {
-    const pathname = usePathname();
-    const currentPath = pathname.split('/').pop();
     const pathMatch = {
-        handicap: '让分大小',
-        minutes: '15分钟进球',
-        range: '进球数区间',
-        bodan: '波胆'
+        0: '让分大小',
+        1: '15分钟进球',
+        2: '进球数区间',
+        3: '波胆'
     };
     const contestInfo = useMatchFilterStore.use.contestInfo();
     const setFilterInit = useMatchFilterStore.use.setFilterInit();
     const filterList = useMatchFilterStore.use.filterList();
     const [isFilterOpen, setIsFilterOpen] = useState(true);
     const contestList = useMatchFilterStore.use.contestList();
+    const defaultPageIndex = useAnalyticsResultStore.use.defaultPageIndex();
 
     const closeFilter = () => {
         setIsFilterOpen(false);
@@ -75,9 +74,9 @@ function ContestDrawerList({
             <BottomDrawer isOpen={isOpen} onClose={onClose} onOpen={onOpen}>
                 <div className={style.contestDrawerList}>
                     <div className={style.header}>
-                        <h2>{`${(currentPath && pathMatch[currentPath]) || ''}/${
-                            selectedResult.type
-                        }${selectedResult.odds ? '/' : ''}${selectedResult.odds}`}</h2>
+                        <h2>{`${pathMatch[defaultPageIndex] || ''}/${selectedResult.type}${
+                            selectedResult.odds ? '/' : ''
+                        }${selectedResult.odds}`}</h2>
                         <div
                             className={style.filter}
                             onClick={() => {

@@ -133,7 +133,8 @@ function SystemError() {
 
 function ResultContent() {
     const router = useRouter();
-    const [defaultPageIndex, setDefaultPageIndex] = useState(0);
+    const defaultPageIndex = useAnalyticsResultStore.use.defaultPageIndex();
+    const setDefaultPageIndex = useAnalyticsResultStore.use.setDefaultPageIndex();
     const showContestDrawer = useAnalyticsResultStore.use.showContestDrawer();
     const setShowContestDrawer = useAnalyticsResultStore.use.setShowContestDrawer();
     const selectedResult = useAnalyticsResultStore.use.selectedResult();
