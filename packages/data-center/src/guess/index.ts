@@ -425,8 +425,8 @@ export interface GetMemberIndividualGuessMatchesRequest {
     memberId: number;
     currentPage: number;
     pageSize: number;
-    guessType: 0 | 1 | 2;
-    // 競猜玩法 ( 0: 全部, 1: 讓球, 2: 大小球 )
+    guessType: -1 | 0 | 1 | 2;
+    // 競猜玩法 ( -1: 無資料 0: 全部, 1: 讓球, 2: 大小球 )
 }
 
 const MemberIndividualGuessMatchSchema = z.object({
