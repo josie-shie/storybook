@@ -41,11 +41,20 @@ function DateRangeOption({
             case 'ALL':
                 return [0, 0];
             case 'WEEK':
-                return [Math.floor(dayjs().subtract(1, 'week').toDate().getTime() / 1000), today];
+                return [
+                    Math.floor(dayjs().subtract(1, 'week').startOf('day').valueOf() / 1000),
+                    today
+                ];
             case 'TWOWEEKS':
-                return [Math.floor(dayjs().subtract(2, 'week').toDate().getTime() / 1000), today];
+                return [
+                    Math.floor(dayjs().subtract(2, 'week').startOf('day').valueOf() / 1000),
+                    today
+                ];
             case 'MONTH':
-                return [Math.floor(dayjs().subtract(1, 'month').toDate().getTime() / 1000), today];
+                return [
+                    Math.floor(dayjs().subtract(1, 'month').startOf('day').valueOf() / 1000),
+                    today
+                ];
             default:
                 return [];
         }

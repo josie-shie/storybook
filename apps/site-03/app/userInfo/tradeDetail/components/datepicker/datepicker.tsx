@@ -43,7 +43,7 @@ function Datepicker({
         startOfDay.setHours(0, 0, 0, 0);
         const endOfDay = new Date(startOfDay);
         endOfDay.setDate(startOfDay.getDate() + 1);
-        return { startOfDay, endOfDay };
+        return { startOfDay: startOfDay.getTime() / 1000, endOfDay: endOfDay.getTime() / 1000 };
     };
 
     const handleConfirmDate = () => {
@@ -53,13 +53,10 @@ function Datepicker({
             const { startOfDay, endOfDay } = formatSelectedOneDay(startDate);
 
             if (startDateTime === endDateTime) {
-                void handleChangDate(
-                    [startOfDay.getTime() / 1000, endOfDay.getTime() / 1000],
-                    'RANGE'
-                );
+                void handleChangDate([startOfDay, endOfDay], 'RANGE');
                 setDateDisplay(dayjs(startDate).format('YYYY/MM/DD'));
             } else {
-                void handleChangDate([startDateTime, endDateTime], 'RANGE');
+                void handleChangDate([startOfDay, endDateTime], 'RANGE');
                 setDateDisplay(
                     `${dayjs(startDate).format('YYYY/MM/DD')} - ${dayjs(endDate).format(
                         'YYYY/MM/DD'
@@ -68,7 +65,7 @@ function Datepicker({
             }
         } else if (startDate) {
             const { startOfDay, endOfDay } = formatSelectedOneDay(startDate);
-            void handleChangDate([startOfDay.getTime() / 1000, endOfDay.getTime() / 1000], 'RANGE');
+            void handleChangDate([startOfDay, endOfDay], 'RANGE');
             setDateDisplay(dayjs(startDate).format('YYYY/MM/DD'));
         }
         setOpenModal(false);
