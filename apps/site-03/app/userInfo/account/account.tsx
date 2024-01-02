@@ -131,8 +131,11 @@ function Account() {
         const { name, value } = e.target;
         const newFormState = {
             ...formState,
-            [name]: name === 'birthday' ? dayjs(value).valueOf() / 1000 : value
+            [name]: value
         };
+        if (name === 'birthday') {
+            newFormState.birthdayDisplay = value;
+        }
         setFormState(newFormState);
     };
 
@@ -167,7 +170,7 @@ function Account() {
 
         const obj: UpdateMemberInfoRequest = {
             avatarPath: imgUpload || userInfo.avatarPath,
-            birthday: formState.birthday,
+            birthday: userInfo.birthday || dayjs(formState.birthday).valueOf() / 1000,
             wechat: formState.wechat,
             qqNumber: formState.qq,
             email: formState.email,
@@ -202,6 +205,10 @@ function Account() {
         setFormState({
             nickName: userInfo.username || '',
             birthday: userInfo.birthday || 0,
+            birthdayDisplay:
+                userInfo.birthday !== 0
+                    ? timestampToString(userInfo.birthday, 'YYYY-MM-DD')
+                    : '添加生日',
             phoneNumber: userInfo.mobileNumber || '',
             wechat: userInfo.wechat || '',
             qq: userInfo.qqNumber || '',
@@ -263,11 +270,7 @@ function Account() {
                                 submittedState.birthday ? style.item : style.birthdayDisplay
                             } ${formState.birthday === 0 && style.placeHolderColor}`}
                         >
-                            <span className={style.content}>
-                                {submittedState.birthday || formState.birthday !== 0
-                                    ? timestampToString(formState.birthday, 'YYYY/MM/DD')
-                                    : '添加生日'}
-                            </span>
+                            <span className={style.content}>{formState.birthdayDisplay}</span>
                         </div>
                         {!submittedState.birthday && (
                             <div className={style.calender}>
