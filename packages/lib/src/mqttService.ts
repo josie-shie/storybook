@@ -42,6 +42,7 @@ export type NotifyType = 'newMessage' | 'unreadMessage';
 export interface NewMessageNotify {
     sender: string;
     roomId: string;
+    number: number;
 }
 export interface UnreadMessageNotify {
     totalCount: number;

@@ -92,6 +92,7 @@ enum NotifyType {
 message NewMessageNotify {
   string sender = 1; // 新訊息-發送者
   string roomId = 2; // 新訊息-房間
+  int64 number = 3;  // 新訊息-未讀訊息數量
 }
 
 // 未讀訊息提示
