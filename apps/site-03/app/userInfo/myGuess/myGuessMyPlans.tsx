@@ -152,7 +152,7 @@ function MyGuessMyPlans({ setIsOpenRecord }: MyGuessMyPlansProps) {
                         return (
                             <Tab key={item.value} label={item.label} value={item.value}>
                                 {isMyPlanLoading ? (
-                                    <div className={style.loderBox}>
+                                    <div className={style.loaderBox}>
                                         <Loading />
                                     </div>
                                 ) : (
