@@ -1,14 +1,14 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { InfiniteScroll, Tab, Tabs } from 'ui';
-import { getMemberIndividualGuessMatches } from 'data-center';
+import { getMemberIndividualGuessMatches, type GuessType } from 'data-center';
 import { CircularProgress } from '@mui/material';
 import NoData from '@/components/baseNoData/noData';
 import Loading from '@/components/loading/loading';
 import { useUserStore } from '@/app/userStore';
 import BettingPlan from './components/bettingPlan/bettingPlan';
 import style from './myGuess.module.scss';
-import { useMyGuessStore, type GuessType } from './myGuessStore';
+import { useMyGuessStore } from './myGuessStore';
 
 function PlansList({
     planActiveTab,

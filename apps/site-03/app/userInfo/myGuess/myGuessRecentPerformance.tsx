@@ -2,15 +2,15 @@
 import { ProgressBar } from 'ui';
 import { useEffect, useState } from 'react';
 import ReactEcharts from 'echarts-for-react';
-import { getMemberIndividualGuess } from 'data-center';
+import {
+    getMemberIndividualGuess,
+    type GetMemberIndividualGuessResponse,
+    type MemberIndividualGuessRecord,
+    type IndividualGuessRecordDetail
+} from 'data-center';
 import Loading from '@/components/loading/loading';
 import { useUserStore } from '@/app/userStore';
-import {
-    useMyGuessStore,
-    type RecentPerformance,
-    type Performance,
-    type PerformanceDetail
-} from './myGuessStore';
+import { useMyGuessStore } from './myGuessStore';
 import style from './myGuess.module.scss';
 
 const dateActiveMap = {
@@ -26,7 +26,7 @@ function ReactEchartsComponent({
     dateActiveTab,
     focusDetail
 }: {
-    myGuessData: Performance;
+    myGuessData: MemberIndividualGuessRecord;
     dateActiveTab: string;
     focusDetail: FocusDetailType;
 }) {
@@ -104,7 +104,7 @@ function PerformanceBar({
     guessDetail,
     title
 }: {
-    guessDetail: PerformanceDetail;
+    guessDetail: IndividualGuessRecordDetail;
     title?: string;
 }) {
     const formatRate = (lose: number, win: number) => {
@@ -150,7 +150,9 @@ function RecentPerformanceContent({ dateActiveTab }: { dateActiveTab: string }) 
     };
 
     const myGuessData =
-        useMyGuessStore.use.myGuess().recentPerformance[dateActiveTab as keyof RecentPerformance];
+        useMyGuessStore.use.myGuess().recentPerformance[
+            dateActiveTab as keyof GetMemberIndividualGuessResponse
+        ];
     return (
         <>
             <ReactEchartsComponent
