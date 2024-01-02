@@ -1,6 +1,6 @@
 'use client';
 import { Tabs, Tab } from 'ui';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
 import { timestampToString } from 'lib';
 import type { GetFootballStatsRequest } from 'data-center';
@@ -63,7 +63,11 @@ function EmptyResponseError() {
             <div className={style.dialogMessage}>
                 <Image alt="" height={100} src={emptyDataImage.src} width={100} />
                 {!isVip && <p className={style.refund}>已退款</p>}
-                <p>此條件查无资料！请重新修改搜寻条件</p>
+                <p>
+                    此條件查无资料
+                    <br />
+                    请重新修改搜寻条件
+                </p>
             </div>
             <div className={style.footer}>
                 <div
@@ -129,10 +133,8 @@ function SystemError() {
 
 function ResultContent() {
     const router = useRouter();
-    const pathname = usePathname();
-    const searchParams = useSearchParams();
-    const pageType = searchParams.get('type');
-    const [defaultPageIndex, setDefaultPageIndex] = useState(0);
+    const defaultPageIndex = useAnalyticsResultStore.use.defaultPageIndex();
+    const setDefaultPageIndex = useAnalyticsResultStore.use.setDefaultPageIndex();
     const showContestDrawer = useAnalyticsResultStore.use.showContestDrawer();
     const setShowContestDrawer = useAnalyticsResultStore.use.setShowContestDrawer();
     const selectedResult = useAnalyticsResultStore.use.selectedResult();
@@ -202,14 +204,10 @@ function ResultContent() {
         router.push('/bigData/analysis?status=analysis');
     };
 
-    useEffect(() => {
-        if (pageType) {
-            const index = tabList.findIndex(item => item.params === pageType);
-            setDefaultPageIndex(index || 0);
-        } else {
-            router.push(`${pathname}?type=handicap`);
-        }
-    }, [pageType, pathname, router, tabList]);
+    const handlePlanTabClick = (tabName: string) => {
+        const index = tabList.findIndex(item => item.params === tabName);
+        setDefaultPageIndex(index || 0);
+    };
 
     const fetchData = async () => {
         // API完成後需要傳的參數
@@ -338,6 +336,9 @@ function ResultContent() {
                             buttonRadius={tabStyle.buttonRadius}
                             defaultValue={defaultPageIndex}
                             gap={tabStyle.gap}
+                            onTabChange={value => {
+                                handlePlanTabClick(value);
+                            }}
                             position="flexStart"
                             scrolling={tabStyle.scrolling}
                             styling="button"
@@ -345,7 +346,7 @@ function ResultContent() {
                         >
                             {tabList.map(item => {
                                 return (
-                                    <Tab key={item.params} label={item.label}>
+                                    <Tab key={item.params} label={item.label} value={item.params}>
                                         {loading ? (
                                             <Loading loadingText="资料产生中..." />
                                         ) : (

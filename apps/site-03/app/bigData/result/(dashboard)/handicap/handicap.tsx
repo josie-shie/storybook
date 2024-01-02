@@ -18,15 +18,17 @@ function TableCell({
     label,
     cellValue,
     selectedType,
-    openMatchListDrawer
+    openMatchListDrawer,
+    oddStyle
 }: {
     label: string;
     cellValue?: number[];
     selectedType: string;
+    oddStyle?: boolean;
     openMatchListDrawer: (matchIdsList: number[], selectedType: string, odds: string) => void;
 }) {
     return (
-        <div className={`${style.cell} ${label === '下' && style.odd}`}>
+        <div className={`${style.cell} ${oddStyle && style.odd}`}>
             <span
                 onClick={() => {
                     openMatchListDrawer(cellValue || [], selectedType, label);
@@ -218,7 +220,14 @@ function Handicap() {
                                     handicapEchart[handicapRadio][currentSwitch][playTypeSwitch]
                                 ).length <= 3
                                     ? '32px'
-                                    : '12px'
+                                    : '12px',
+
+                            justifyContent:
+                                Object.keys(
+                                    handicapEchart[handicapRadio][currentSwitch][playTypeSwitch]
+                                ).length >= 9
+                                    ? 'spaceBetween'
+                                    : 'center'
                         }}
                     >
                         {Object.keys(handicapEchart[handicapRadio][currentSwitch][playTypeSwitch])
@@ -340,31 +349,34 @@ function Handicap() {
                 />
                 <TableCell
                     cellValue={analysisRecord?.halfOverUnderOver || []}
-                    label="上"
+                    label="大"
                     openMatchListDrawer={openMatchListDrawer}
                     selectedType="半场大小"
                 />{' '}
                 <TableCell
                     cellValue={analysisRecord?.halfTimeHomeWin || []}
-                    label="上"
+                    label="主"
                     openMatchListDrawer={openMatchListDrawer}
                     selectedType="半场独赢"
                 />
                 <TableCell
                     cellValue={analysisRecord?.halfHandicapLower || []}
                     label="下"
+                    oddStyle
                     openMatchListDrawer={openMatchListDrawer}
                     selectedType="半场让分"
                 />
                 <TableCell
                     cellValue={analysisRecord?.halfOverUnderUnder || []}
-                    label="下"
+                    label="小"
+                    oddStyle
                     openMatchListDrawer={openMatchListDrawer}
                     selectedType="半场大小"
                 />
                 <TableCell
                     cellValue={analysisRecord?.halfTimeAwayWin || []}
-                    label="下"
+                    label="客"
+                    oddStyle
                     openMatchListDrawer={openMatchListDrawer}
                     selectedType="半场独赢"
                 />
@@ -382,7 +394,7 @@ function Handicap() {
                 />
                 <TableCell
                     cellValue={analysisRecord?.halfTimeDraw || []}
-                    label="走"
+                    label="和"
                     openMatchListDrawer={openMatchListDrawer}
                     selectedType="半场独赢"
                 />
@@ -399,31 +411,34 @@ function Handicap() {
                 />
                 <TableCell
                     cellValue={analysisRecord?.fullOverUnderOver || []}
-                    label="上"
+                    label="大"
                     openMatchListDrawer={openMatchListDrawer}
                     selectedType="全场大小"
                 />
                 <TableCell
                     cellValue={analysisRecord?.fullTimeHomeWin || []}
-                    label="上"
+                    label="主"
                     openMatchListDrawer={openMatchListDrawer}
                     selectedType="全场独赢"
                 />
                 <TableCell
                     cellValue={analysisRecord?.fullHandicapLower || []}
                     label="下"
+                    oddStyle
                     openMatchListDrawer={openMatchListDrawer}
                     selectedType="全场让分"
                 />
                 <TableCell
                     cellValue={analysisRecord?.fullOverUnderUnder || []}
-                    label="下"
+                    label="小"
+                    oddStyle
                     openMatchListDrawer={openMatchListDrawer}
                     selectedType="全场大小"
                 />
                 <TableCell
                     cellValue={analysisRecord?.fullTimeAwayWin || []}
-                    label="下"
+                    label="客"
+                    oddStyle
                     openMatchListDrawer={openMatchListDrawer}
                     selectedType="全场独赢"
                 />
@@ -441,7 +456,7 @@ function Handicap() {
                 />
                 <TableCell
                     cellValue={analysisRecord?.fullTimeDraw || []}
-                    label="走"
+                    label="和"
                     openMatchListDrawer={openMatchListDrawer}
                     selectedType="全场独赢"
                 />

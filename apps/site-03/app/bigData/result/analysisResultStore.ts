@@ -70,6 +70,8 @@ interface AnalysisResultState extends InitState {
     setDialogContentType: (dialogContentType: string) => void;
     setOpenNormalDialog: (openNoramlDialog: boolean) => void;
     setDialogContent: (dialogContent: ReactNode) => void;
+    defaultPageIndex: number;
+    setDefaultPageIndex: (defaultPageIndex: number) => void;
 }
 
 let useAnalyticsResultStore: StoreWithSelectors<AnalysisResultState>;
@@ -355,6 +357,12 @@ const initialState = (
     setDialogContent: (dialogContent: ReactNode) => {
         set(state => {
             return { ...state, dialogContent };
+        });
+    },
+    defaultPageIndex: 0,
+    setDefaultPageIndex: (defaultPageIndex: number) => {
+        set(state => {
+            return { ...state, defaultPageIndex };
         });
     }
 });

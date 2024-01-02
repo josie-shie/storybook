@@ -82,6 +82,11 @@ const CorrectScoreSchema = z.object({
     matches: z.array(z.number())
 });
 
+const HalfCorrectScores = z.object({
+    score: z.string(),
+    matches: z.array(z.number())
+});
+
 const GoalsIn15MinsSchema = z.object({
     goalsOver: z.array(z.number()),
     goalsUnder: z.array(z.number())
@@ -143,6 +148,7 @@ const GetFootballStatsSchema = z.object({
 
     goalsIn15Mins: z.array(GoalsIn15MinsSchema).nullable(),
     correctScores: z.array(CorrectScoreSchema).nullable(),
+    halfCorrectScores: z.array(HalfCorrectScores).nullable(),
     goalsInterval0To1: z.array(z.number()).nullable(),
     goalsInterval2To3: z.array(z.number()).nullable(),
     goalsInterval4To6: z.array(z.number()).nullable(),
@@ -350,6 +356,7 @@ export const getFootballStats = async (
 
                 goalsIn15Mins: data.getFootballStats.goalsIn15Mins || [],
                 correctScores: data.getFootballStats.correctScores || [],
+                halfCorrectScores: data.getFootballStats.halfCorrectScores || [],
                 goalsInterval0To1: data.getFootballStats.goalsInterval0To1 || [],
                 goalsInterval2To3: data.getFootballStats.goalsInterval2To3 || [],
                 goalsInterval4To6: data.getFootballStats.goalsInterval4To6 || [],

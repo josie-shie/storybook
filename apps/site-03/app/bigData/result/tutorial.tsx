@@ -7,7 +7,6 @@ import { Navigation, Pagination, Scrollbar, A11y, EffectFade } from 'swiper';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 import style from './dashboard.module.scss';
-import backgroundImage from './img/tutorial/background.png';
 import handicapTopBar from './img/tutorial/handicapTopBar.png';
 import handicapBottomTable from './img/tutorial/handicapBottomTable.png';
 import handicapTop from './img/tutorial/handicapTop.png';
@@ -248,7 +247,6 @@ function Tutorial({ setDefaultPageIndex }: { setDefaultPageIndex: (val: number) 
             className={style.tutorial}
             style={{
                 height: '100vh',
-                backgroundImage: `url(${backgroundImage.src})`,
                 display: closeTutorial ? 'none' : ''
             }}
         >
@@ -259,7 +257,7 @@ function Tutorial({ setDefaultPageIndex }: { setDefaultPageIndex: (val: number) 
                 onSlideChange={handleSlideChange}
                 pagination={{ clickable: true }}
                 slidesPerView={1}
-                style={{ height: 'calc(100vh - 100px)' }}
+                style={{ height: '100vh' }}
             >
                 <SwiperSlide>
                     {/* 需要判斷index不然預設全部渲染就沒有動畫效果 */}

@@ -39,7 +39,7 @@ function PaymentAlert() {
                     支付
                     <Image alt="" height={14} src={starIcon.src} width={14} /> 80
                 </p>
-                <p>進行單次分析？</p>
+                <p>进行单次分析？</p>
             </div>
             <div className={style.detail}>我的余额: {userInfo.balance}金币</div>
             <div className={style.footer}>

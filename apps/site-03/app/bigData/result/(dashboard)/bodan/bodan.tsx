@@ -79,7 +79,7 @@ function Bodan() {
         { score: '4-4', value: scoreListMapping['4-4'] || [] },
         { score: '3-2', value: scoreListMapping['3-2'] || [] },
         { score: '2-3', value: scoreListMapping['2-3'] || [] },
-        { score: '其他', value: scoreListMapping['其他'] || [] },
+        { score: '其他', value: scoreListMapping.else || [] },
         { score: '4-0', value: scoreListMapping['4-0'] || [] },
         { score: '0-4', value: scoreListMapping['0-4'] || [] },
         { score: '', value: [] },
