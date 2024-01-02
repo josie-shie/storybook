@@ -1,11 +1,8 @@
 .master {
-    padding: 0 12px 10px;
+    padding: 0 12px;
     background: #fff;
-
-    .expertLayout {
-        height: calc(100dvh - 212px);
-        overflow-y: auto;
-    }
+    height: calc(100dvh - 162px);
+    overflow-y: auto;
 
     .masterItem {
         border-bottom: 1px solid #f3f3f3;
