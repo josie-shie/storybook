@@ -47,7 +47,7 @@ function PlansList({
             ) : (
                 <>
                     {myPlansData.map(row => (
-                        <BettingPlan key={row.id} rowData={row} />
+                        <BettingPlan key={`${row.id}${row.matchId}}`} rowData={row} />
                     ))}
                     {myPlansData.length < pagination.totalCount ? (
                         <InfiniteScroll onVisible={loadMoreList}>
