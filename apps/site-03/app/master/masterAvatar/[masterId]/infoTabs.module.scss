@@ -1,4 +1,7 @@
 .infoTabs {
+    height: calc(100dvh - 274px);
+    overflow-y: auto;
+
     .tabContest {
         margin-top: 20px;
 
@@ -49,11 +52,6 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-        }
-
-        .bettingPlan {
-            height: calc(100dvh - 506px);
-            overflow-y: auto;
         }
     }
 }
