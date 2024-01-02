@@ -172,6 +172,10 @@ export const GET_FOOTBALL_STATS_QUERY = `
               score
               matches
             }
+            halfCorrectScores {
+              score
+              matches
+            }
             goalsInterval0To1
             goalsInterval2To3
             goalsInterval4To6
