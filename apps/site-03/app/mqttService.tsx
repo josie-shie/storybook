@@ -8,10 +8,9 @@ import { useContestInfoStore } from './contestInfoStore';
 import { useUserStore } from './userStore';
 
 function MqttService({ children }: { children: ReactNode }) {
-    const updateInfo = useContestInfoStore.use.setContestInfoContest();
-    const updateOdds = useContestInfoStore.use.setContestOdds();
-
     useEffect(() => {
+        const updateInfo = useContestInfoStore.getState().setContestInfoContest;
+        const updateOdds = useContestInfoStore.getState().setContestOdds;
         const memberId = useUserStore.getState().userInfo.uid;
         const syncGlobalStore = (message: Partial<OriginalContestInfo>) => {
             updateInfo(message);
