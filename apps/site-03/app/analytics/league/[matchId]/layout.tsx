@@ -72,9 +72,9 @@ function DetailLayout({ children }: { children: ReactNode }) {
     const [period, setPeriod] = useState(36);
 
     const selectOptions = [
-        { label: '第36輪', value: 36 },
-        { label: '第37輪', value: 37 },
-        { label: '第38輪', value: 38 }
+        { label: '第36轮', value: 36 },
+        { label: '第37轮', value: 37 },
+        { label: '第38轮', value: 38 }
     ];
 
     const handlePeriodChange = (value: number) => {
@@ -108,7 +108,7 @@ function DetailLayout({ children }: { children: ReactNode }) {
             </div>
             <div className={style.tabsContainer}>
                 <Tabs
-                    labels={['積分', '賽程', '让分', '總進球', '射手榜']}
+                    labels={['积分', '赛程', '让分', '總進球', '射手榜']}
                     paths={[
                         `/analytics/league/${matchId}`,
                         `/analytics/league/${matchId}/schedule`,
