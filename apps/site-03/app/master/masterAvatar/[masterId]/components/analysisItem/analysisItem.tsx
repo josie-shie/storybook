@@ -50,6 +50,7 @@ function AnalysisItem({
     const [isOpenPaid, setIsOpenPaid] = useState(false);
     const [isOpenRecharge, setIsOpenRecharge] = useState(false);
     const [articleInfo, setArticleInfo] = useState({} as RecommendPost);
+    const [isReset, setIsReset] = useState(false);
 
     const router = useRouter();
 
@@ -75,6 +76,7 @@ function AnalysisItem({
         setArticleLength(res.data.totalArticle);
         setTotalPage(res.data.totalPage);
         setIsNoData(res.data.totalArticle === 0);
+        setIsReset(false);
     };
 
     const goArticleDetail = (id: number) => {
@@ -126,6 +128,7 @@ function AnalysisItem({
         }
         setIsOpenPaid(false);
         setPredictArticleList([]);
+        setIsReset(true);
         void getUser();
     };
 
@@ -138,10 +141,10 @@ function AnalysisItem({
     };
 
     useEffect(() => {
-        if (predictArticleList.length === 0) {
+        if (isReset) {
             void fetchData();
         }
-    }, [predictArticleList]);
+    }, [isReset]);
 
     useEffect(() => {
         void fetchData();
