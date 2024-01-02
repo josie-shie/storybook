@@ -1,10 +1,11 @@
 @import 'variables';
 
 .layout {
-    height: calc(100vh - 54px);
+    height: calc(100dvh - 54px);
     margin-top: -14px;
     padding: 16px 20px;
     background: #f8f8f8;
+    overflow: auto;
 
     .title {
         display: flex;
@@ -139,7 +140,27 @@
             li {
                 position: relative;
 
-                .item {
+                .recommend {
+                    position: absolute;
+                    top: 3px;
+                    left: -6px;
+                    color: #fff;
+                    font-size: 12px;
+                    padding: 0 4px;
+                    background: #ffaa46;
+                    border-radius: 2px 2px 2px 0;
+
+                    &::before {
+                        content: '';
+                        position: absolute;
+                        left: 0;
+                        bottom: -4px;
+                        border-bottom: 4px solid rgb(0 0 0 / 0%);
+                        border-right: 6px solid #a4651b;
+                    }
+                }
+
+                a {
                     display: flex;
                     align-items: center;
                     justify-content: flex-start;
