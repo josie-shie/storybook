@@ -42,7 +42,9 @@ const initialState = (set: (updater: (state: MessageInfo) => Partial<MessageInfo
     },
     unreadMessageNotify: {} as UnreadMessageNotifyWithId,
     updateUnreadMessageNotify: (unreadMessageNotify: UnreadMessageNotifyWithId) => {
-        set(() => ({ unreadMessageNotify }));
+        set(state => ({
+            unreadMessageNotify: { ...state.unreadMessageNotify, ...unreadMessageNotify }
+        }));
     },
     resetUnreadMessageNotify: () => {
         set(() => ({ unreadMessageNotify: {} as UnreadMessageNotifyWithId }));
