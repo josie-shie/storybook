@@ -220,7 +220,14 @@ function Handicap() {
                                     handicapEchart[handicapRadio][currentSwitch][playTypeSwitch]
                                 ).length <= 3
                                     ? '32px'
-                                    : '12px'
+                                    : '12px',
+
+                            justifyContent:
+                                Object.keys(
+                                    handicapEchart[handicapRadio][currentSwitch][playTypeSwitch]
+                                ).length >= 9
+                                    ? 'spaceBetween'
+                                    : 'center'
                         }}
                     >
                         {Object.keys(handicapEchart[handicapRadio][currentSwitch][playTypeSwitch])
