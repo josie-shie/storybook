@@ -84,14 +84,16 @@ message MessageResponse {
 
 // 提示類型
 enum NotifyType {
-  newMessage = 0;    // 新訊息
+  noMessage = 0;
   unreadMessage = 1; // 未讀訊息
+  newMessage = 2;    // 新訊息
 }
 
 // 新訊息提示
 message NewMessageNotify {
   string sender = 1; // 新訊息-發送者
   string roomId = 2; // 新訊息-房間
+  int64 number = 3;  // 新訊息-未讀訊息數量
 }
 
 // 未讀訊息提示

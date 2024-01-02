@@ -9,7 +9,7 @@ function GlobalStore({ children }: { children: ReactNode }) {
     creatContestInfoStore({ contestInfo: {} });
     createMessageStore({
         forbiddenWords: [],
-        newMessageNotify: { uid: '0', sender: '', roomId: '' },
+        newMessageNotify: { uid: '0', sender: '', roomId: '', number: 0 },
         unreadMessageNotify: { uid: '0', totalCount: 0, chatCount: 0, mailCount: 0 },
         isNewMessageVisible: false
     });

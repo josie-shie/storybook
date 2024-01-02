@@ -37,11 +37,10 @@ export interface AnalysisResponse {
     endTime: number;
 }
 
-export type NotifyType = 'newMessage' | 'unreadMessage';
-
 export interface NewMessageNotify {
     sender: string;
     roomId: string;
+    number: number;
 }
 export interface UnreadMessageNotify {
     totalCount: number;
@@ -51,7 +50,7 @@ export interface UnreadMessageNotify {
 
 export interface NotifyMessage {
     uid: string;
-    notifyType: 0 | 1;
+    notifyType: 0 | 1 | 2;
     newMessageNotify: NewMessageNotify;
     unreadMessageNotify: UnreadMessageNotify;
 }
@@ -664,7 +663,7 @@ const handleOddRunningHalfMessage = async (message: Buffer) => {
 };
 
 export const mqttService = {
-    init: () => {
+    init: ({ memberId }: { memberId: number }) => {
         if (init) {
             client = mqtt.connect(`${process.env.NEXT_PUBLIC_MQTT_PATH}`);
             client.on('connect', () => {
@@ -676,7 +675,7 @@ export const mqttService = {
                 client.subscribe('updateevent');
                 client.subscribe('updatetechnic');
                 client.subscribe('analytical/analysis');
-                client.subscribe('sportim/notify');
+                client.subscribe(`sportim/notify/${memberId}`);
             });
             client.on('message', (topic, message) => {
                 if (topic === 'updatematch') void handleContestMessage(message);
@@ -685,7 +684,7 @@ export const mqttService = {
                 if (topic === 'updateevent') void handleDetailEventMessage(message);
                 if (topic === 'updatetechnic') void handleDetailTechnicListMessage(message);
                 if (topic === 'analytical/analysis') void handleAnalysisMessage(message);
-                if (topic === 'sportim/notify') void handleNotifyMessage(message);
+                if (topic === `sportim/notify/${memberId}`) void handleNotifyMessage(message);
             });
             init = false;
 
