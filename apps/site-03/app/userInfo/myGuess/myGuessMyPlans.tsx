@@ -34,7 +34,7 @@ function PlansList({
         if (palns.success) {
             setPage(page + 1);
             setMyPlans({
-                guessType: palns.data.guessType as GuessType,
+                guessType: palns.data.guessType,
                 guessMatchList: myPlansData.concat(palns.data.guessMatchList),
                 pagination: palns.data.pagination
             });
