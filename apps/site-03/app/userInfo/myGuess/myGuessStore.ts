@@ -1,36 +1,15 @@
 import { initStore } from 'lib';
 import type { StoreWithSelectors } from 'lib';
-import type { TagType } from 'data-center';
-
-export interface PerformanceDetail {
-    play: number;
-    win: number;
-    draw: number;
-    lose: number;
-}
-
-export interface Performance {
-    rank: number;
-    summary: PerformanceDetail;
-    handicap: PerformanceDetail;
-    size: PerformanceDetail;
-}
-
-export interface RecentPerformance {
-    byWeek: Performance;
-    byMonth: Performance;
-    byQuarter: Performance;
-}
-
-interface Pagination {
-    pageCount: number;
-    totalCount: number;
-}
+import type {
+    TagType,
+    GetMemberIndividualGuessMatchesResponse,
+    GetMemberIndividualGuessResponse,
+    GuessType,
+    Pagination
+} from 'data-center';
 
 type PredictionResultType = 'WIN' | 'LOSE' | 'DRAW' | 'NONE';
 type PredictedPlayType = 'OVER' | 'UNDER' | 'HOME' | 'AWAY' | 'LOCK' | 'HANDICAP' | 'OVERUNDER';
-// 競猜玩法 ( 0: 全部, 1: 讓球, 2: 大小球 )
-export type GuessType = 0 | 1 | 2;
 
 export interface RecordItem {
     recordMemberId: number;
@@ -50,45 +29,21 @@ export interface RecordItem {
     viewingTime: number;
     highlights: TagType;
 }
-
-export interface Plan {
-    id: number;
-    matchId: number;
-    matchTime: number;
-    leagueId: number;
-    leagueName: string;
-    homeTeamName: string;
-    awayTeamName: string;
-    playType: string;
-    handicapOdds: number;
-    overUnderOdds: number;
-    handicapInChinese: string;
-    predictedPlay: PredictedPlayType;
-    predictionResult: PredictionResultType;
-    isPaidToRead: boolean;
-}
-
-export interface MyPlans {
-    guessType: GuessType;
-    guessMatchList: Plan[];
-    pagination: Pagination;
-}
 export interface GuessRecordList {
     recordList: RecordItem[];
     pagination: Pagination;
 }
-
 interface InitState {
     myGuess: {
-        myPlans: MyPlans;
-        recentPerformance: RecentPerformance;
+        myPlans: GetMemberIndividualGuessMatchesResponse;
+        recentPerformance: GetMemberIndividualGuessResponse;
         guessRecordList: GuessRecordList;
     };
 }
 
 interface MyGuessState extends InitState {
-    setMyPlans: (myPlans: MyPlans) => void;
-    setRecentPerformance: (recentPerformance: RecentPerformance) => void;
+    setMyPlans: (myPlans: GetMemberIndividualGuessMatchesResponse) => void;
+    setRecentPerformance: (recentPerformance: GetMemberIndividualGuessResponse) => void;
     setGuessRecordList: (guessRecordList: GuessRecordList) => void;
 }
 
@@ -132,13 +87,13 @@ const initialState = (set: (updater: (state: MyGuessState) => Partial<MyGuessSta
             }
         }
     },
-    setMyPlans: (myPlans: MyPlans) => {
+    setMyPlans: (myPlans: GetMemberIndividualGuessMatchesResponse) => {
         set(state => ({
             ...state,
             myGuess: { ...state.myGuess, myPlans }
         }));
     },
-    setRecentPerformance: (recentPerformance: RecentPerformance) => {
+    setRecentPerformance: (recentPerformance: GetMemberIndividualGuessResponse) => {
         set(state => ({
             ...state,
             myGuess: { ...state.myGuess, recentPerformance }
