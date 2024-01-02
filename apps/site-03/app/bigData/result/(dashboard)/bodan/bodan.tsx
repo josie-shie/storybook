@@ -4,11 +4,13 @@ import { getFootballStatsMatches } from 'data-center';
 import { useNotificationStore } from '@/app/notificationStore';
 import { useAnalyticsResultStore } from '../../analysisResultStore';
 import { useMatchFilterStore } from '../../matchFilterStore';
+import TextRadio from '../../components/switch/textSwitch';
 import style from './bodan.module.scss';
 
 type ScoreMapping = Partial<Record<string, number[]>>;
 
 function Bodan() {
+    const [handicapRadio, setHandicapRadio] = useState<'half' | 'full'>('full');
     const setContestList = useMatchFilterStore.use.setContestList();
     const setContestInfo = useMatchFilterStore.use.setContestInfo();
     const contestInfo = useMatchFilterStore.use.contestInfo();
@@ -54,12 +56,19 @@ function Bodan() {
     }, [contestInfo, setFilterInit]);
 
     useEffect(() => {
-        const newScoreListMapping: ScoreMapping = {};
-        analysisRecord?.correctScores?.forEach(item => {
+        const newScoreListMapping = {};
+
+        const currentScore =
+            handicapRadio === 'half'
+                ? analysisRecord?.halfCorrectScores
+                : analysisRecord?.correctScores;
+
+        currentScore?.forEach(item => {
             newScoreListMapping[item.score] = item.matches;
         });
+
         setScoreListMapping(newScoreListMapping);
-    }, [analysisRecord]);
+    }, [analysisRecord, handicapRadio]);
 
     const scores = [
         { score: '1-0', value: scoreListMapping['1-0'] || [] },
@@ -96,21 +105,29 @@ function Bodan() {
 
     return (
         <div className={style.bodan}>
-            {scores.map((item, index) => (
-                <div className={style.cell} key={`score_${index.toString()}`}>
-                    <span className={`${style.score} ${!item.score ? style.nulls : ''}`}>
-                        {item.score}
-                    </span>
-                    <span
-                        className={`${style.value} ${!item.value.length ? style.nulls : ''}`}
-                        onClick={() => {
-                            openMatchListDrawer(item.value, item.score);
-                        }}
-                    >
-                        <span>{item.score ? item.value.length : ''}</span>
-                    </span>
-                </div>
-            ))}
+            <TextRadio
+                onChange={value => {
+                    setHandicapRadio(value as 'half' | 'full');
+                }}
+                value={handicapRadio}
+            />
+            <div className={style.bodanScore}>
+                {scores.map((item, index) => (
+                    <div className={style.cell} key={`score_${index.toString()}`}>
+                        <span className={`${style.score} ${!item.score ? style.nulls : ''}`}>
+                            {item.score}
+                        </span>
+                        <span
+                            className={`${style.value} ${!item.value.length ? style.nulls : ''}`}
+                            onClick={() => {
+                                openMatchListDrawer(item.value, item.score);
+                            }}
+                        >
+                            <span>{item.score ? item.value.length : ''}</span>
+                        </span>
+                    </div>
+                ))}
+            </div>
         </div>
     );
 }
