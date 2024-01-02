@@ -1,6 +1,7 @@
 'use client';
 import { useEffect } from 'react';
 import { getMailMemberList } from 'data-center';
+import NoData from '@/components/baseNoData/noData';
 import MailCard from './components/mailCard';
 import style from './notice.module.scss';
 import { useNoticeStore } from './noticeStore';
@@ -24,8 +25,12 @@ function MailList() {
         void getMailList();
     }, []);
 
+    if (mailList.length === 0) {
+        return <NoData />;
+    }
+
     return (
-        <ul className={`${style.noticeList} ${editStatus && style.isEdit}`}>
+        <ul className={`${style.noticeList} ${editStatus ? style.isEdit : ''}`}>
             {mailList.map(mail => (
                 <MailCard key={mail.mailMemberId} mailData={mail} />
             ))}
