@@ -26,7 +26,7 @@ function NewMessageAlert() {
         if (!firstTimeRef.current) return;
         firstTimeRef.current = false;
         const syncGlobalNotifyStore = (notify: NotifyMessage) => {
-            if (notify.notifyType === 0) {
+            if (notify.notifyType === 2) {
                 const pathname = window.location.pathname;
                 timerRef.current && clearTimeout(timerRef.current);
                 updateNewMessageNotify({

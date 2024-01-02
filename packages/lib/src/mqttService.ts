@@ -37,8 +37,6 @@ export interface AnalysisResponse {
     endTime: number;
 }
 
-export type NotifyType = 'newMessage' | 'unreadMessage';
-
 export interface NewMessageNotify {
     sender: string;
     roomId: string;
@@ -52,7 +50,7 @@ export interface UnreadMessageNotify {
 
 export interface NotifyMessage {
     uid: string;
-    notifyType: 0 | 1;
+    notifyType: 0 | 1 | 2;
     newMessageNotify: NewMessageNotify;
     unreadMessageNotify: UnreadMessageNotify;
 }

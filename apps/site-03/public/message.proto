@@ -84,8 +84,9 @@ message MessageResponse {
 
 // 提示類型
 enum NotifyType {
-  newMessage = 0;    // 新訊息
+  noMessage = 0;
   unreadMessage = 1; // 未讀訊息
+  newMessage = 2;    // 新訊息
 }
 
 // 新訊息提示
