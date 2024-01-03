@@ -38,36 +38,30 @@ function Datepicker({
         setEndDate(null);
     };
 
-    const formatSelectedOneDay = (start: Date) => {
-        const startOfDay = new Date(start);
-        startOfDay.setHours(0, 0, 0, 0);
-        const endOfDay = new Date(startOfDay);
-        endOfDay.setDate(startOfDay.getDate() + 1);
-        return { startOfDay: startOfDay.getTime() / 1000, endOfDay: endOfDay.getTime() / 1000 };
+    const formatSelectedOneDay = (date: Date) => {
+        const startOfDay = new Date(date).setHours(0, 0, 0, 0);
+        const endOfDay = new Date(startOfDay).setDate(new Date(startOfDay).getDate() + 1);
+        return { startOfDay: startOfDay / 1000, endOfDay: endOfDay / 1000 };
     };
 
     const handleConfirmDate = () => {
-        if (startDate && endDate) {
-            const startDateTime = startDate.getTime() / 1000;
-            const endDateTime = endDate.getTime() / 1000;
+        if (startDate) {
             const { startOfDay, endOfDay } = formatSelectedOneDay(startDate);
+            let rangeEnd = endOfDay;
 
-            if (startDateTime === endDateTime) {
-                void handleChangDate([startOfDay, endOfDay], 'RANGE');
-                setDateDisplay(dayjs(startDate).format('YYYY/MM/DD'));
-            } else {
-                void handleChangDate([startOfDay, endDateTime], 'RANGE');
+            if (endDate && startDate.getTime() !== endDate.getTime()) {
+                rangeEnd = new Date(endDate).setDate(endDate.getDate() + 1) / 1000;
                 setDateDisplay(
                     `${dayjs(startDate).format('YYYY/MM/DD')} - ${dayjs(endDate).format(
                         'YYYY/MM/DD'
                     )}`
                 );
+            } else {
+                setDateDisplay(dayjs(startDate).format('YYYY/MM/DD'));
             }
-        } else if (startDate) {
-            const { startOfDay, endOfDay } = formatSelectedOneDay(startDate);
-            void handleChangDate([startOfDay, endOfDay], 'RANGE');
-            setDateDisplay(dayjs(startDate).format('YYYY/MM/DD'));
+            void handleChangDate([startOfDay, rangeEnd], 'RANGE');
         }
+
         setOpenModal(false);
         setIsDateRangeOpen(false);
         setActiveDate('RANGE');
