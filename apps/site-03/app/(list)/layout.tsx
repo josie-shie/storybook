@@ -22,12 +22,12 @@ function InterceptingDetail({ modal }: { modal: ReactNode }) {
                         position: 'fixed',
                         top: 0,
                         zIndex: 1000,
-                        height: '100vh',
+                        height: '100dvh',
                         overflowY: 'auto'
                     }}
                     transition={{ duration: 0.2 }}
                 >
-                    <div className={style.modal}>{modal}</div>
+                    {modal}
                 </motion.div>
             ) : null}
         </AnimatePresence>
