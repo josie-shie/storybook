@@ -54,7 +54,7 @@ function RecordContent({ setPage, page }: ContentProps) {
                         </InfiniteScroll>
                     ) : (
                         <div className={style.listEnd}>
-                            <p>以顯示全部資料</p>
+                            <p>已滑到底啰</p>
                         </div>
                     )}
                 </>
@@ -104,7 +104,7 @@ function GuessRecord({ isOpenRecord, setIsOpenRecord }: GuessRecordProps) {
             }}
         >
             {isLoading ? (
-                <div className={style.loderBox}>
+                <div className={style.loaderBox}>
                     <Loading />
                 </div>
             ) : (

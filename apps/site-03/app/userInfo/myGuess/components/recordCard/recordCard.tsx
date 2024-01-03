@@ -1,11 +1,10 @@
 'use client';
 import Image from 'next/image';
-import type { TagType } from 'data-center';
+import type { TagType, MemberGuessViewingRecord } from 'data-center';
 import { convertHandicap } from 'lib';
 import Avatar from '@mui/material/Avatar';
 import Link from 'next/link';
 import Tag from '@/components/tag/tag';
-import { type RecordItem } from '../../myGuessStore';
 import Win from '../img/win.png';
 import BigWin from '../img/bigWin.png';
 import Lose from '../img/lose.png';
@@ -15,7 +14,7 @@ import Gone from '../img/gone.png';
 import Fire from '../img/fire.png';
 import style from './recordCard.module.scss';
 
-function RecordCard({ recordItem }: { recordItem: RecordItem }) {
+function RecordCard({ recordItem }: { recordItem: MemberGuessViewingRecord }) {
     const iconMap = {
         WIN: <Image alt="icon" className={style.iconWin} src={Win} width={18} />,
         LOSE: <Image alt="icon" className={style.iconDefeat} src={Lose} width={18} />,
@@ -32,7 +31,7 @@ function RecordCard({ recordItem }: { recordItem: RecordItem }) {
         UNDER: '小'
     };
 
-    const playDisplay = (item: RecordItem) => {
+    const playDisplay = (item: MemberGuessViewingRecord) => {
         if (item.predictedPlay === 'LOCK') return;
         return convertHandicap(
             recordItem.predictedPlay === 'AWAY' || recordItem.predictedPlay === 'HOME'
