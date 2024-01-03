@@ -1,13 +1,13 @@
 import Image from 'next/image';
 import { timestampToString } from 'lib';
-import { type Plan } from '../../myGuessStore';
+import { type MemberIndividualGuessMatch } from 'data-center';
 import BigGone from '../img/bigGone.png';
 import BigWin from '../img/bigWin.png';
 import BigLose from '../img/bigLose.png';
-import style from './bettingPlan.module.scss';
+import style from './bettingMemberIndividualGuessMatch.module.scss';
 
 interface PropsType {
-    rowData: Plan;
+    rowData: MemberIndividualGuessMatch;
 }
 
 const iconMap = {
@@ -17,7 +17,7 @@ const iconMap = {
     NONE: null
 };
 
-const messageFormat = (predictedPlay: string, item: Plan) => {
+const messageFormat = (predictedPlay: string, item: MemberIndividualGuessMatch) => {
     switch (predictedPlay) {
         case 'OVER':
             return `${item.overUnderOdds} 大`;
@@ -30,9 +30,9 @@ const messageFormat = (predictedPlay: string, item: Plan) => {
     }
 };
 
-function BettingPlan({ rowData }: PropsType) {
+function BettingMemberIndividualGuessMatch({ rowData }: PropsType) {
     return (
-        <div className={style.bettingPlan}>
+        <div className={style.bettingMemberIndividualGuessMatch}>
             {iconMap[rowData.predictionResult]}
             <div className={style.top}>
                 {rowData.leagueName}
@@ -41,7 +41,7 @@ function BettingPlan({ rowData }: PropsType) {
                 </span>
             </div>
             <div className={style.mid}>
-                <span className={style.plan}>{rowData.playType}</span>
+                <span className={style.MemberIndividualGuessMatch}>{rowData.playType}</span>
                 <div className={style.combination}>
                     {rowData.homeTeamName}
                     vs
@@ -61,4 +61,4 @@ function BettingPlan({ rowData }: PropsType) {
     );
 }
 
-export default BettingPlan;
+export default BettingMemberIndividualGuessMatch;
