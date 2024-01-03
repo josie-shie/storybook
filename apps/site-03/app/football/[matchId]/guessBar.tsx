@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation';
 import { ProgressBar } from 'ui';
 import { useUserStore } from '@/app/userStore';
 import { useAuthStore } from '@/app/(auth)/authStore';
+import Notification from '@/components/notification/notification';
 import style from './guessBar.module.scss';
 import { useContestDetailStore } from './contestDetailStore';
 import GuessDialog from './components/guessDialog/guessDialog';
@@ -34,6 +35,8 @@ function Guess({ play, isLogin }: GuessProps) {
     const guessProportion = useContestDetailStore.use.guessProportion();
     const matchDetail = useContestDetailStore.use.matchDetail();
 
+    const setShowNotification = useContestDetailStore.use.setShowNotification();
+    const setNotificationMessage = useContestDetailStore.use.setNotificationMessage();
     const setGuessProportion = useContestDetailStore.use.setGuessProportion();
     const setIsDrawerOpen = useAuthStore.use.setIsDrawerOpen();
     const setAuthQuery = useUserStore.use.setAuthQuery();
@@ -69,7 +72,8 @@ function Guess({ play, isLogin }: GuessProps) {
             if (res.success) {
                 void fetchGuessProportion();
             } else {
-                // TODO : 競猜錯誤
+                setNotificationMessage(res.error);
+                setShowNotification(true);
             }
         } else {
             const guessWay = direction === 'left' ? 'OVER' : 'UNDER';
@@ -77,7 +81,8 @@ function Guess({ play, isLogin }: GuessProps) {
             if (res.success) {
                 void fetchGuessProportion();
             } else {
-                // TODO : 競猜錯誤
+                setNotificationMessage(res.error);
+                setShowNotification(true);
             }
         }
         setOpenGuessDialog(false);
@@ -145,8 +150,11 @@ function GuessBar() {
     const isLogin = useUserStore.use.isLogin();
     const matchId = Number(useParams().matchId);
 
+    const showNotification = useContestDetailStore.use.showNotification();
+    const notificationMessage = useContestDetailStore.use.notificationMessage();
     const setGuessProportion = useContestDetailStore.use.setGuessProportion();
     const setCoveredType = useContestDetailStore.use.setCoveredType();
+    const setShowNotification = useContestDetailStore.use.setShowNotification();
     const liveBarRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
@@ -189,6 +197,14 @@ function GuessBar() {
 
     return (
         <div className={style.guessBar} ref={liveBarRef}>
+            <Notification
+                handleClose={() => {
+                    setShowNotification(false);
+                }}
+                isVisible={showNotification}
+                message={notificationMessage}
+                type="error"
+            />
             <Guess isLogin={isLogin} play="HANDICAP" />
             <Guess isLogin={isLogin} play="OVERUNDER" />
         </div>

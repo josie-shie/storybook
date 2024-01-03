@@ -2,6 +2,7 @@
 import { useEffect, useRef } from 'react';
 import type { MessageResponse } from 'lib';
 import { messageService, getMessageResponse, cancelMessage } from 'lib';
+import NoData from '@/components/baseNoData/noData';
 import { useNoticeStore } from '../noticeStore';
 import style from '../notice.module.scss';
 import ChatCard from './components/chatCard';
@@ -36,6 +37,10 @@ function ChatList() {
             cancelMessage(handleRes);
         };
     }, [setChatList]);
+
+    if (chatList.length === 0) {
+        return <NoData />;
+    }
 
     return (
         <ul className={`${style.noticeList} ${editStatus && style.isEdit}`}>

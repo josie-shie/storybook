@@ -70,7 +70,6 @@ function ArticleList() {
             <div className={style.button}>
                 <WeekButton isActive={isActive} updateActive={updateActive} />
             </div>
-
             {articleList.length === 0 && isNoData === null && <SkeletonLayout />}
 
             {articleList.length === 0 && isNoData ? (

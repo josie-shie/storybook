@@ -8,6 +8,7 @@ interface InitState {
 export interface FormState {
     nickName: string;
     birthday: number;
+    birthdayDisplay: string;
     phoneNumber: string;
     wechat: string;
     qq: string;
@@ -49,7 +50,8 @@ const initialState = (set: (updater: (state: AccountState) => Partial<AccountSta
         wechat: '',
         qq: '',
         email: '',
-        description: ''
+        description: '',
+        birthdayDisplay: '添加生日'
     },
     submittedState: {
         nickName: false,

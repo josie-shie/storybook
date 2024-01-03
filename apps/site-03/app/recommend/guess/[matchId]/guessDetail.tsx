@@ -26,9 +26,7 @@ function GuessDetail({ backHistory }: { backHistory: boolean }) {
         }
     };
 
-    createGuessDetailStore({
-        masterPlanList: []
-    });
+    createGuessDetailStore({ masterPlanList: [] });
 
     return (
         <>

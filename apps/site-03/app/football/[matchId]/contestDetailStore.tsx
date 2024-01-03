@@ -11,6 +11,10 @@ interface ContestDetail extends InitState {
     companyNameMap: Record<number, string>;
     guessProportion: GetGuessProportionResponse;
     showAnimate: string;
+    showNotification: boolean;
+    notificationMessage: string;
+    setNotificationMessage: (notificationMessage: string) => void;
+    setShowNotification: (showNotification: boolean) => void;
     setGuessProportion: (guessProportion: GetGuessProportionResponse) => void;
     setMatchDetailData: ({ matchDetail }: { matchDetail: GetSingleMatchResponse }) => void;
     setCoveredType: (layoutDisplayed: boolean) => void;
@@ -21,6 +25,7 @@ let useContestDetailStore: StoreWithSelectors<ContestDetail>;
 
 const initialState = (set: (data: Partial<ContestDetail>) => void): ContestDetail => ({
     matchDetail: {} as GetSingleMatchResponse,
+    showNotification: false,
     guessProportion: {
         handicap: 0,
         handicapInChinese: '-',
@@ -66,6 +71,13 @@ const initialState = (set: (data: Partial<ContestDetail>) => void): ContestDetai
         49: 'Bwi*'
     },
     showAnimate: '',
+    notificationMessage: '',
+    setNotificationMessage: (notificationMessage: string) => {
+        set({ notificationMessage });
+    },
+    setShowNotification: (showNotification: boolean) => {
+        set({ showNotification });
+    },
     setGuessProportion: (guessProportion: GetGuessProportionResponse) => {
         set({ guessProportion });
     },

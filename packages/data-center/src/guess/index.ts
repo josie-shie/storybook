@@ -279,26 +279,18 @@ const MemberIndividualGuessRecordSchema = z.object({
     overUnderLose: z.number()
 });
 
+export interface IndividualGuessRecordDetail {
+    play: number;
+    win: number;
+    draw: number;
+    lose: number;
+}
+
 export interface MemberIndividualGuessRecord {
     rank: number;
-    summary: {
-        play: number;
-        win: number;
-        draw: number;
-        lose: number;
-    };
-    handicap: {
-        play: number;
-        win: number;
-        draw: number;
-        lose: number;
-    };
-    size: {
-        play: number;
-        win: number;
-        draw: number;
-        lose: number;
-    };
+    summary: IndividualGuessRecordDetail;
+    handicap: IndividualGuessRecordDetail;
+    size: IndividualGuessRecordDetail;
 }
 export interface GetMemberIndividualGuessResponse {
     byWeek: MemberIndividualGuessRecord;
@@ -314,7 +306,7 @@ const GetMemberIndividualGuessResultSchema = z.object({
     })
 });
 
-type GetMemberIndividualGuessResult = z.infer<typeof GetMemberIndividualGuessResultSchema>;
+export type GetMemberIndividualGuessResult = z.infer<typeof GetMemberIndividualGuessResultSchema>;
 
 /**
  * 取得會員個人競猜勝、負、走統計
@@ -425,8 +417,8 @@ export interface GetMemberIndividualGuessMatchesRequest {
     memberId: number;
     currentPage: number;
     pageSize: number;
-    guessType: 0 | 1 | 2;
-    // 競猜玩法 ( 0: 全部, 1: 讓球, 2: 大小球 )
+    guessType: -1 | 0 | 1 | 2;
+    // 競猜玩法 ( -1: 無資料 0: 全部, 1: 讓球, 2: 大小球 )
 }
 
 const MemberIndividualGuessMatchSchema = z.object({

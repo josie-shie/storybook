@@ -32,11 +32,11 @@ function Article() {
 
     return (
         <>
-            <Image alt="" className={style.banner} src={Banner} />
-            <div className={style.toolbar}>
-                <FilterButton />
-            </div>
-            <div className="recommendPredict">
+            <div className={style.recommendPredict}>
+                <Image alt="" className={style.banner} src={Banner} />
+                <div className={style.toolbar}>
+                    <FilterButton />
+                </div>
                 <ArticleList />
             </div>
             <Filter />

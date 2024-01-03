@@ -26,14 +26,14 @@ function NewMessageAlert() {
         if (!firstTimeRef.current) return;
         firstTimeRef.current = false;
         const syncGlobalNotifyStore = (notify: NotifyMessage) => {
-            if (notify.notifyType === 0) {
+            if (notify.notifyType === 2) {
                 const pathname = window.location.pathname;
-                if (pathname === '/notice' || pathname === '/notice/chat') return;
                 timerRef.current && clearTimeout(timerRef.current);
                 updateNewMessageNotify({
                     uid: notify.uid,
                     ...notify.newMessageNotify
                 });
+                if (pathname === '/notice' || pathname === '/notice/chat') return;
                 setIsNewMessageVisible(true);
                 timerRef.current = setTimeout(() => {
                     setIsNewMessageVisible(false);
