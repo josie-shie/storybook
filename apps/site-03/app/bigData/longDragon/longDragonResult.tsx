@@ -105,7 +105,17 @@ function LongDragonResult() {
             }, 500);
             return;
         }
-        setHandicapTips(res.data);
+
+        const sortList = res.data.sort((a, b) => {
+            if (a.leagueLevel === 1 || b.leagueLevel === 1) {
+                return a.leagueLevel === 1 ? -1 : 1;
+            } else if (a.leagueLevel === 2 || b.leagueLevel === 2) {
+                return a.leagueLevel === 2 ? -1 : 1;
+            }
+            return a.startTime - b.startTime;
+        });
+
+        setHandicapTips(sortList);
 
         setContestList({
             contestList: res.data
@@ -179,13 +189,13 @@ function LongDragonResult() {
                             <span className={style.name}>{formatPlay(hintsSelectPlay)}</span>
                         </div>
                         <div className={style.row}>
-                            <span className={style.title}>連續方式</span>
+                            <span className={style.title}>连续方式</span>
                             <span className={style.name}>{formatType(hintsSelectType)}</span>
                         </div>
                         <div className={style.row}>
-                            <span className={style.title}>半/全場</span>
+                            <span className={style.title}>半/全场</span>
                             <span className={style.date}>
-                                {formatProgress(hintsSelectProgres)}賽事
+                                {formatProgress(hintsSelectProgres)}赛事
                             </span>
                         </div>
                     </div>

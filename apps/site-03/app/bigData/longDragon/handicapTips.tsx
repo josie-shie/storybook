@@ -1,7 +1,10 @@
 'use client';
 import Image from 'next/image';
+import { useEffect } from 'react';
 import { timestampToString } from 'lib';
+import { getMemberInfo } from 'data-center';
 import NoData from '@/components/baseNoData/noData';
+import { useUserStore } from '@/app/userStore';
 import { useMatchFilterStore } from '../analysis/matchFilterStore';
 import { useHintsFormStore } from '../analysis/hintsFormStore';
 import defaultIcon from './img/defaultIcon.png';
@@ -29,6 +32,20 @@ function HandicapTips({
     const contestList = useMatchFilterStore.use.contestList();
     const filterList = useMatchFilterStore.use.filterList();
 
+    const setUserInfo = useUserStore.use.setUserInfo();
+
+    const getUser = async () => {
+        const res = await getMemberInfo();
+        if (!res.success) {
+            return new Error();
+        }
+        setUserInfo(res.data);
+    };
+
+    useEffect(() => {
+        void getUser();
+    }, []);
+
     const filterByStatus = (list: number[]) => {
         const filterGroup = filterList.group === 'league' ? 'leagueChsShort' : 'countryCn';
         return list.filter(item => {
@@ -51,7 +68,7 @@ function HandicapTips({
                 if (filter === '3rd') return match.longOddsTimes === 3;
                 if (filter === '4rd') return match.longOddsTimes === 4;
                 if (filter === '4rdUp') return match.longOddsTimes > 4;
-                if (filter === 'hot') return match.longOddsTimes >= 6;
+                if (filter === 'hot') return match.leagueLevel === 1 || match.leagueLevel === 2;
                 return false;
             });
         });
@@ -134,12 +151,12 @@ function HandicapTips({
                                     {formatProgress(hintsSelectProgres)}
                                 </div>
                                 <div className={style.tag}>{formatPlay(hintsSelectPlay)}</div>
-                                {item.longOddsTimes >= 6 && (
+                                {item.leagueLevel === 1 || item.leagueLevel === 2 ? (
                                     <div className={style.hot}>
                                         <Image alt="" className={style.image} src={iconHot} />
                                         <span>热</span>
                                     </div>
-                                )}
+                                ) : null}
                             </div>
                         </div>
                         <div className={style.content}>
