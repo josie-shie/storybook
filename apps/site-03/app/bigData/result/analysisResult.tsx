@@ -273,8 +273,6 @@ function ResultContent() {
             return;
         }
 
-        window.scroll(0, 0);
-
         void fetchData();
     }, []);
 
