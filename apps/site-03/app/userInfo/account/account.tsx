@@ -158,7 +158,7 @@ function Account() {
         }
 
         const newSubmittedState = {
-            nickName: userInfo.username !== '',
+            username: formState.username !== '',
             birthday: formState.birthday !== 0,
             phoneNumber: formState.phoneNumber !== '',
             wechat: formState.wechat !== '',
@@ -169,7 +169,7 @@ function Account() {
         setSubmittedState(newSubmittedState);
 
         const obj: UpdateMemberInfoRequest = {
-            username: formState.nickName || userInfo.username,
+            username: formState.username,
             avatarPath: imgUpload || userInfo.avatarPath,
             birthday: userInfo.birthday || dayjs(formState.birthday).valueOf() / 1000,
             wechat: formState.wechat,
@@ -183,16 +183,7 @@ function Account() {
         if (!res.success) {
             const errorMessage = res.error ? res.error : '修改个人资讯失败，请确认资料无误';
             setIsVisible(errorMessage, 'error');
-            const initObj = {
-                nickName: false,
-                birthday: false,
-                phoneNumber: true,
-                wechat: false,
-                qq: false,
-                email: false,
-                description: false
-            };
-            setSubmittedState(initObj);
+            setSubmittedState(newSubmittedState);
             setIsSubmitted(false);
             return;
         }
@@ -209,13 +200,22 @@ function Account() {
         setIsSubmitted(false);
     };
 
+    const editUserName = () => {
+        const newSubmittedState = {
+            ...submittedState,
+            username: false
+        };
+        setSubmittedState(newSubmittedState);
+        setIsSubmitted(false);
+    };
+
     useEffect(() => {
         if (userInfo.avatarPath && userInfo.avatarPath !== '0') {
             setImgSrc(userInfo.avatarPath);
         }
 
         setFormState({
-            nickName: userInfo.username || '',
+            username: userInfo.username || '',
             birthday: userInfo.birthday || 0,
             birthdayDisplay:
                 userInfo.birthday !== 0
@@ -229,7 +229,7 @@ function Account() {
         });
 
         const newSubmittedState = {
-            nickName: Boolean(userInfo.username),
+            username: Boolean(userInfo.username),
             birthday: userInfo.birthday !== 0,
             phoneNumber: Boolean(userInfo.mobileNumber),
             wechat: Boolean(userInfo.wechat),
@@ -264,15 +264,34 @@ function Account() {
                     <p>*图片规格为100*100</p>
                 </div>
                 <form onSubmit={handleSubmit}>
-                    <FormField
-                        label="昵称"
-                        name="nickName"
-                        onChange={handleInputChange}
-                        placeholder="添加昵称"
-                        submitted={false}
-                        type="text"
-                        value={formState.nickName}
-                    />
+                    {submittedState.username ? (
+                        <div className={style.item}>
+                            <span className={style.title}>
+                                <span className={style.text}>昵称</span>
+                                <button
+                                    className={style.button}
+                                    onClick={() => {
+                                        editUserName();
+                                    }}
+                                    type="button"
+                                >
+                                    编辑
+                                </button>
+                            </span>
+                            <span className={style.content}>{formState.username}</span>
+                        </div>
+                    ) : (
+                        <FormField
+                            label="昵称"
+                            name="username"
+                            onChange={handleInputChange}
+                            placeholder="添加昵称"
+                            submitted={false}
+                            type="text"
+                            value={formState.username}
+                        />
+                    )}
+
                     <span className={style.displayTitle}>
                         生日{submittedState.birthday ? null : ' :'}
                     </span>
