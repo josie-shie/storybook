@@ -35,7 +35,7 @@ function BettingPlan({ rowData }: PropsType) {
         <div className={style.bettingPlan}>
             {iconMap[rowData.predictionResult]}
             <div className={style.top}>
-                {rowData.leagueName}
+                {rowData.leagueName}{' '}
                 <span className={style.time}>
                     | {timestampToString(rowData.matchTime, 'MM-DD HH:mm')}
                 </span>
