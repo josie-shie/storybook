@@ -246,7 +246,7 @@ function Tutorial({ setDefaultPageIndex }: { setDefaultPageIndex: (val: number) 
         <div
             className={style.tutorial}
             style={{
-                height: '100vh',
+                height: '100%',
                 display: closeTutorial ? 'none' : ''
             }}
         >
@@ -257,7 +257,7 @@ function Tutorial({ setDefaultPageIndex }: { setDefaultPageIndex: (val: number) 
                 onSlideChange={handleSlideChange}
                 pagination={{ clickable: true }}
                 slidesPerView={1}
-                style={{ height: '100vh' }}
+                style={{ height: '100%' }}
             >
                 <SwiperSlide>
                     {/* 需要判斷index不然預設全部渲染就沒有動畫效果 */}
