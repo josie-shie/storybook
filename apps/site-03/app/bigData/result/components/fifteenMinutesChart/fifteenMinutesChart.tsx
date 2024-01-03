@@ -53,7 +53,6 @@ function FifteenMinutesChart({
         legend: {
             show: false
         },
-        tooltip: {},
         dataset: {
             source: [
                 ['進球', ...headers],
@@ -62,7 +61,12 @@ function FifteenMinutesChart({
             ]
         },
         series: seriesList,
-        title: titleList
+        title: titleList,
+        tooltip: {
+            trigger: 'item',
+            triggerOn: 'click',
+            showDelay: 500
+        }
     };
 
     return (

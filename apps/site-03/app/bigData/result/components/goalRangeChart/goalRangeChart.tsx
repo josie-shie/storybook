@@ -17,7 +17,9 @@ function GoalRangeChart({ chartList = [] }: { chartList: ChartType[] }) {
 
     const options = {
         tooltip: {
-            trigger: 'item'
+            trigger: 'item',
+            triggerOn: 'click',
+            showDelay: 500
         },
         legend: {
             show: false,
