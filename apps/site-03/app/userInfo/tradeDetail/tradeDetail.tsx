@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { getMemberTransactionList } from 'data-center';
+import { getMemberTransactionList, type ChangeTypeCategory } from 'data-center';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import Header from '@/components/header/headerTitleDetail';
@@ -10,7 +10,7 @@ import FilterIcon from './img/filterIcon.png';
 import TradeDetailList from './tradeDetailList';
 import DateRangeDrawer from './components/dateOptionDrawer/dateOptionDrawer';
 import TradeTypeDrawer from './components/tradeTypeDrawer/tradeTypeDrawer';
-import { useTardeDetailStore, type DateOption, type TradeTypeOption } from './tradeDetailStore';
+import { useTardeDetailStore, type DateOption } from './tradeDetailStore';
 import { dateOption, tradeOption } from './options';
 
 function TradeDetail() {
@@ -24,7 +24,7 @@ function TradeDetail() {
     const [isTradeTypeOpen, setIsTradeTypeOpen] = useState(false);
     const [activeDate, setActiveDate] = useState<DateOption>('ALL');
     const [dateDisplay, setDateDisplay] = useState<string>();
-    const [tradeType, setTradeType] = useState<TradeTypeOption>('ALL');
+    const [tradeType, setTradeType] = useState<ChangeTypeCategory>('ALL');
     const [start, setStart] = useState<number>(0);
     const [end, setEnd] = useState<number>(0);
     const [page, setPage] = useState<number>(1);

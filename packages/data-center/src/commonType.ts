@@ -74,10 +74,10 @@ export type ChangeTypeCategory = z.infer<typeof ChangeTypeCategorySchema>;
 export const RechargeStatusSchema = z.union([
     z.literal('SUCCESS'),
     z.literal('PENDING'),
-    z.literal('FAIL'),
-    // 等有真資料要拿掉這個空字串
-    z.literal('')
+    z.literal('FAIL')
 ]);
+
+export type RechargeStatus = z.infer<typeof RechargeStatusSchema>;
 
 // 競猜玩法 ( 0: 全部, 1: 讓球, 2: 大小球 )
 export type GuessType = -1 | 0 | 1 | 2;
@@ -85,5 +85,3 @@ export interface Pagination {
     pageCount: number;
     totalCount: number;
 }
-
-export type RechargeStatus = z.infer<typeof RechargeStatusSchema>;

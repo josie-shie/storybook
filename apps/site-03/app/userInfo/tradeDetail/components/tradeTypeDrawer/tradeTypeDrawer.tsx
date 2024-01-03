@@ -1,17 +1,17 @@
 import { Button } from '@mui/material';
 import type { Dispatch, SetStateAction } from 'react';
-import { getMemberTransactionList } from 'data-center';
+import { getMemberTransactionList, type ChangeTypeCategory } from 'data-center';
 import BottomDrawer from '@/components/drawer/bottomDrawer';
-import { useTardeDetailStore, type TradeTypeOption } from '../../tradeDetailStore';
+import { useTardeDetailStore } from '../../tradeDetailStore';
 import { tradeOption } from '../../options';
 import style from './tradeTypeDrawer.module.scss';
 
 interface TradeTypeProps {
     start: number;
     end: number;
-    tradeType: TradeTypeOption;
+    tradeType: ChangeTypeCategory;
     isTradeTypeOpen: boolean;
-    setTradeType: Dispatch<SetStateAction<TradeTypeOption>>;
+    setTradeType: Dispatch<SetStateAction<ChangeTypeCategory>>;
     setIsTradeTypeOpen: (arg: boolean) => void;
     setPage: (arg: number) => void;
 }
@@ -26,7 +26,7 @@ function TradeTypeDrawer({
     setPage
 }: TradeTypeProps) {
     const setTradeDetailList = useTardeDetailStore.use.setTradeDetailList();
-    const handleChangeType = async (type: TradeTypeOption) => {
+    const handleChangeType = async (type: ChangeTypeCategory) => {
         const data = await getMemberTransactionList({
             startTime: start ? start : 0,
             endTime: end ? end : 0,
@@ -70,7 +70,7 @@ function TradeTypeDrawer({
                             }`}
                             key={option.value}
                             onClick={() => {
-                                void handleChangeType(option.value as TradeTypeOption);
+                                void handleChangeType(option.value as ChangeTypeCategory);
                             }}
                         >
                             {option.label}

@@ -1,51 +1,16 @@
 import { initStore } from 'lib';
 import type { StoreWithSelectors } from 'lib';
+import { type Pagination, type GetMemberTransaction } from 'data-center';
 
 export type DateOption = 'ALL' | 'WEEK' | 'TWOWEEKS' | 'MONTH' | 'RANGE';
-export type TradeTypeOption = 'ALL' | 'RECHARGE' | 'INCOME' | 'PAY';
-export interface RechargeData {
-    balanceLogId: number;
-    changeTypeDisplayName: string;
-    changeTypeCategory: string;
-    changeTypeCategoryDisplayName: string;
-    rechargeStatus: 'PENDING' | 'FAIL' | 'SUCCESS';
-    rechargeId: string;
-    currencyCode: string;
-    exchangeRate: number;
-    amountOfChange: number;
-    balanceAfter: number;
-    createdAt: number;
-}
-
-export interface PaymentData {
-    balanceLogId: number;
-    changeTypeDisplayName: string;
-    changeTypeCategory: string;
-    changeTypeCategoryDisplayName: string;
-    amountOfChange: number;
-    balanceAfter: number;
-    createdAt: number;
-}
-
-interface TradeDetailItem {
-    balanceId: number;
-    changeTypeCategory: Omit<TradeTypeOption, 'ALL'>;
-    data: RechargeData | PaymentData;
-}
-interface Pagination {
-    pageCount: number;
-    totalCount: number;
-}
 
 export interface TradeDetailInterface {
     pagination: Pagination;
-    detailList: TradeDetailItem[];
+    detailList: GetMemberTransaction[];
 }
-
 interface InitState {
     tradeDetailList: TradeDetailInterface;
 }
-
 interface TradeDetailState extends InitState {
     setTradeDetailList: (tradeDetailList: TradeDetailInterface) => void;
 }

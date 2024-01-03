@@ -1,29 +1,23 @@
 import Image from 'next/image';
 import { timestampToString } from 'lib';
-import { type RechargeData } from '../tradeDetailStore';
+import { type GetMemberTransactionData } from 'data-center';
 import style from './rechargeItem.module.scss';
 import recharge from './img/recharge.png';
 
 interface PropsType {
-    data: RechargeData;
+    data: GetMemberTransactionData;
 }
 
-const statusStyleMap = {
-    PENDING: style.pending,
-    SUCCESS: style.success,
-    FAIL: style.fail
-};
-
-const statusTextMap = {
-    PENDING: '处理中',
-    SUCCESS: '已完成',
-    FAIL: '交易失败'
+const statusMap = {
+    PENDING: { display: '处理中', style: style.pending },
+    SUCCESS: { display: '已完成', style: style.success },
+    FAIL: { display: '交易失败', style: style.fail }
 };
 
 function RechargeItem({ data }: PropsType) {
     const money = data.amountOfChange > 0 ? `+${data.amountOfChange}` : data.amountOfChange;
-    const statusStyle = statusStyleMap[data.rechargeStatus];
-    const statusLabel = statusTextMap[data.rechargeStatus];
+    const statusStyle = statusMap[data.rechargeStatus || 'PENDING'].style;
+    const statusLabel = statusMap[data.rechargeStatus || 'PENDING'].display;
 
     return (
         <div className={style.tradeItem}>
