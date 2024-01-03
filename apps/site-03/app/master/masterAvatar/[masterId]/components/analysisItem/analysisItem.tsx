@@ -50,7 +50,6 @@ function AnalysisItem({
     const [isOpenPaid, setIsOpenPaid] = useState(false);
     const [isOpenRecharge, setIsOpenRecharge] = useState(false);
     const [articleInfo, setArticleInfo] = useState({} as RecommendPost);
-    const [isReset, setIsReset] = useState(false);
 
     const router = useRouter();
 
@@ -76,7 +75,24 @@ function AnalysisItem({
         setArticleLength(res.data.totalArticle);
         setTotalPage(res.data.totalPage);
         setIsNoData(res.data.totalArticle === 0);
-        setIsReset(false);
+    };
+
+    const fetchResetData = async () => {
+        const res = await getPostList({
+            memberId: userInfo.uid ? userInfo.uid : 0,
+            postFilter: ['mentor'],
+            filterId: [Number(params.masterId)],
+            currentPage: 1,
+            pageSize: 30
+        });
+
+        if (!res.success) {
+            return new Error();
+        }
+        setPredictArticleList(res.data.posts);
+        setArticleLength(res.data.totalArticle);
+        setTotalPage(res.data.totalPage);
+        setIsNoData(res.data.totalArticle === 0);
     };
 
     const goArticleDetail = (id: number) => {
@@ -127,8 +143,7 @@ function AnalysisItem({
             return new Error();
         }
         setIsOpenPaid(false);
-        setPredictArticleList([]);
-        setIsReset(true);
+        void fetchResetData();
         void getUser();
     };
 
@@ -139,12 +154,6 @@ function AnalysisItem({
         }
         setUserInfo(res.data);
     };
-
-    useEffect(() => {
-        if (isReset) {
-            void fetchData();
-        }
-    }, [isReset]);
 
     useEffect(() => {
         void fetchData();
