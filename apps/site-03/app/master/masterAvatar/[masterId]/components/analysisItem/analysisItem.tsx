@@ -77,6 +77,24 @@ function AnalysisItem({
         setIsNoData(res.data.totalArticle === 0);
     };
 
+    const fetchResetData = async () => {
+        const res = await getPostList({
+            memberId: userInfo.uid ? userInfo.uid : 0,
+            postFilter: ['mentor'],
+            filterId: [Number(params.masterId)],
+            currentPage: 1,
+            pageSize: 30
+        });
+
+        if (!res.success) {
+            return new Error();
+        }
+        setPredictArticleList(res.data.posts);
+        setArticleLength(res.data.totalArticle);
+        setTotalPage(res.data.totalPage);
+        setIsNoData(res.data.totalArticle === 0);
+    };
+
     const goArticleDetail = (id: number) => {
         router.push(`/master/article/${id}`);
     };
@@ -125,7 +143,7 @@ function AnalysisItem({
             return new Error();
         }
         setIsOpenPaid(false);
-        setPredictArticleList([]);
+        void fetchResetData();
         void getUser();
     };
 
@@ -136,12 +154,6 @@ function AnalysisItem({
         }
         setUserInfo(res.data);
     };
-
-    useEffect(() => {
-        if (predictArticleList.length === 0) {
-            void fetchData();
-        }
-    }, [predictArticleList]);
 
     useEffect(() => {
         void fetchData();

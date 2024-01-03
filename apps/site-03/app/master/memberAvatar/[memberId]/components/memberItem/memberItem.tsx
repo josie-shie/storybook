@@ -31,7 +31,7 @@ function MasterItem({ params }: { params: { memberId: string } }) {
 
     const fetchData = async () => {
         try {
-            const res = await getFollowers({ memberId: 1, isFans: false });
+            const res = await getFollowers({ memberId: Number(params.memberId), isFans: false });
 
             if (!res.success) {
                 return new Error();

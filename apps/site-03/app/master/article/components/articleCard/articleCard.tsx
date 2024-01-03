@@ -120,7 +120,7 @@ function ArticleCard({ article }: { article: RecommendPost }) {
                         </div>
                     </div>
                     <div className={style.unlockStatus}>
-                        {article.isUnlocked && article.price === 0 ? (
+                        {article.isUnlocked || article.price === 0 ? (
                             <span className={style.unlocked}>已解鎖</span>
                         ) : (
                             <>
