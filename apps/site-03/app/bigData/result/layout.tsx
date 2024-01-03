@@ -1,5 +1,5 @@
 'use client';
-import { type ReactNode } from 'react';
+import { useEffect, type ReactNode } from 'react';
 import { usePathname } from 'next/navigation';
 import { AnimatePresence, motion } from 'framer-motion';
 import { createAnalysisResultStore } from './analysisResultStore';
@@ -36,6 +36,10 @@ function CreateStore({ children }: { children: ReactNode }) {
 
 function DetailLayout({ children }: { children: ReactNode }) {
     const params = usePathname();
+
+    useEffect(() => {
+        window.scroll(0, 0);
+    }, []);
 
     return (
         <AnimatePresence mode="popLayout">

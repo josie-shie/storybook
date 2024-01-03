@@ -8,7 +8,7 @@ import { useNotificationStore } from '@/app/notificationStore';
 import type { Statistics } from '../../analysisResultStore';
 import { useAnalyticsResultStore } from '../../analysisResultStore';
 import { useMatchFilterStore } from '../../matchFilterStore';
-import TextRadio from './switch/textSwitch';
+import TextRadio from '../../components/switch/textSwitch';
 import style from './handicap.module.scss';
 
 type TimeValue = 'day' | 'week';
@@ -77,14 +77,17 @@ function ChartBottomText({ playTypeSwitch }: { playTypeSwitch: PlayTypeValue }) 
     );
 }
 
-function useDetectScrolledToBottom({ node }: { node: React.RefObject<HTMLElement> }) {
-    const [isBottom, setIsBottom] = useState(false);
+function useDetectScrollEnds({ node }: { node: React.RefObject<HTMLElement> }) {
+    const [isAtTop, setIsAtTop] = useState(true);
+    const [isAtBottom, setIsAtBottom] = useState(false);
 
     const handleScroll = useCallback(() => {
         if (node.current) {
             const { scrollLeft, scrollWidth, clientWidth } = node.current;
             const atRight = Math.abs(scrollLeft + clientWidth - scrollWidth) < 1;
-            setIsBottom(atRight);
+            const atLeft = scrollLeft === 0;
+            setIsAtTop(atLeft);
+            setIsAtBottom(atRight);
         }
     }, [node]);
 
@@ -98,13 +101,13 @@ function useDetectScrolledToBottom({ node }: { node: React.RefObject<HTMLElement
         }
     }, [handleScroll, node]);
 
-    return isBottom;
+    return { isAtTop, isAtBottom };
 }
 
 function Handicap() {
     const node = useRef<HTMLUListElement>(null);
-    // 偵測圖表是否滑動到最右邊，如果是的話會把blur的效果移除
-    const isBottom = useDetectScrolledToBottom({ node });
+    // 偵測圖表是否滑動到最2边，如果是的話會把blur的效果移除/添加
+    const { isAtTop, isAtBottom } = useDetectScrollEnds({ node });
     const setContestList = useMatchFilterStore.use.setContestList();
     const setContestInfo = useMatchFilterStore.use.setContestInfo();
     const contestInfo = useMatchFilterStore.use.contestInfo();
@@ -202,12 +205,23 @@ function Handicap() {
                             : null}
                     </p>
                     <div
-                        className={style.blurCover}
+                        className={style.blurCoverTop}
                         style={{
                             display:
                                 Object.keys(
                                     handicapEchart[handicapRadio][currentSwitch][playTypeSwitch]
-                                ).length > 9 && !isBottom
+                                ).length > 9 && !isAtTop
+                                    ? 'initial'
+                                    : 'none'
+                        }}
+                    />
+                    <div
+                        className={style.blurCoverBottom}
+                        style={{
+                            display:
+                                Object.keys(
+                                    handicapEchart[handicapRadio][currentSwitch][playTypeSwitch]
+                                ).length > 9 && !isAtBottom
                                     ? 'initial'
                                     : 'none'
                         }}
