@@ -139,13 +139,25 @@ function UserInfo() {
                                                 />
                                             ) : null}
                                             {tags.quarterRanking > 0 && (
-                                                <TagSplit number={tags.quarterRanking} text="季" />
+                                                <TagSplit
+                                                    isBlueBg
+                                                    number={tags.quarterRanking}
+                                                    text="季"
+                                                />
                                             )}
                                             {tags.monthRanking > 0 && (
-                                                <TagSplit number={tags.monthRanking} text="月" />
+                                                <TagSplit
+                                                    isBlueBg
+                                                    number={tags.monthRanking}
+                                                    text="月"
+                                                />
                                             )}
                                             {tags.weekRanking > 0 && (
-                                                <TagSplit number={tags.weekRanking} text="周" />
+                                                <TagSplit
+                                                    isBlueBg
+                                                    number={tags.weekRanking}
+                                                    text="周"
+                                                />
                                             )}
                                         </div>
                                     ) : (

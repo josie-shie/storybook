@@ -103,13 +103,21 @@ function ArticleItem({ item }: GetUnlockPostProps) {
                         />
                     )}
                     {item.memberTags.quarterRanking > 0 && (
-                        <TagSplit number={item.memberTags.quarterRanking} text="季" />
+                        <TagSplit
+                            isBlueBg={false}
+                            number={item.memberTags.quarterRanking}
+                            text="季"
+                        />
                     )}
                     {item.memberTags.monthRanking > 0 && (
-                        <TagSplit number={item.memberTags.monthRanking} text="月" />
+                        <TagSplit
+                            isBlueBg={false}
+                            number={item.memberTags.monthRanking}
+                            text="月"
+                        />
                     )}
                     {item.memberTags.weekRanking > 0 && (
-                        <TagSplit number={item.memberTags.weekRanking} text="周" />
+                        <TagSplit isBlueBg={false} number={item.memberTags.weekRanking} text="周" />
                     )}
                 </div>
                 <div className={style.unlockStatus}>
