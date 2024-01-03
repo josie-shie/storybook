@@ -3,10 +3,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Link as ScrollLink, Element } from 'react-scroll';
 import { Tab, Tabs } from 'ui';
-import HeaderFilter from '@/components/header/headerFilter';
+import Header from '@/components/header/headerLogo';
 import style from './analytics.module.scss';
-import searchIcon from './img/search.png';
-import leagueLogo from './img/leagueLogo.png';
+import leagueLogo from './img/TeamLogo.png';
 import cupLogo from './img/cupLogo.png';
 
 const hotGames = [
@@ -92,12 +91,10 @@ function CompetitionBox() {
 function Analytics() {
     return (
         <div className={style.data}>
-            <HeaderFilter>
-                <Image alt="search" className={style.searchIcon} src={searchIcon} width={32} />
-            </HeaderFilter>
+            <Header />
             <div className={style.main}>
                 <div className={style.hotGamesContainer}>
-                    <div className={style.title}>热门赛事</div>
+                    <div className={style.title}>热门赛事数据</div>
                     <div className={style.leagues}>
                         {hotGames.map((el, idx) => (
                             <button className={style.league} key={idx} type="button">
@@ -109,16 +106,16 @@ function Analytics() {
                 </div>
             </div>
             <Tabs buttonRadius={0} gap={0} position="center" styling="underline" swiperOpen={false}>
-                <Tab label="國際">
+                <Tab label="国际">
                     <CompetitionBox />
                 </Tab>
-                <Tab label="歐洲">
+                <Tab label="欧洲">
                     <CompetitionBox />
                 </Tab>
                 <Tab label="美洲">
                     <CompetitionBox />
                 </Tab>
-                <Tab label="亞洲">
+                <Tab label="亚洲">
                     <CompetitionBox />
                 </Tab>
                 <Tab label="大洋洲">
