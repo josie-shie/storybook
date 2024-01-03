@@ -17,10 +17,10 @@
     .playoff {
         color: #fbb03b;
     }
+}
 
-    .flashing {
-        animation: flashing 1.5s linear infinite;
-    }
+.flashing {
+    animation: flashing 1.5s linear infinite;
 }
 
 @keyframes flashing {
