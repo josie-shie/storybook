@@ -25,6 +25,19 @@ function ChatList() {
     }, []);
 
     useEffect(() => {
+        const handleMessage = (res: MessageResponse) => {
+            if (res.action === 'new_message' && window.location.pathname === '/notice/chat') {
+                void messageService.send({
+                    action: 'get_room_list',
+                    type: 'private'
+                });
+            }
+        };
+
+        getMessageResponse(handleMessage);
+    }, []);
+
+    useEffect(() => {
         const handleRes = (res: MessageResponse) => {
             if (res.action === 'get_room_list') {
                 if (res.rooms) {
