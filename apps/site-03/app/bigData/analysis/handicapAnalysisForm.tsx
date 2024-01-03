@@ -17,6 +17,7 @@ import selectIcon from './img/select.png';
 import starIcon from './img/star.png';
 import Datepicker from './components/datepicker/datepicker';
 import Dialog from './components/dialog/dialog';
+import SinglePay from './img/singlePay.png';
 
 type PlayTypeCheckBox = 'handicap' | 'overUnder';
 
@@ -35,6 +36,7 @@ function PaymentAlert() {
     return (
         <>
             <div className={style.dialogMessage}>
+                <Image alt="" height={100} src={SinglePay} width={100} />
                 <p className={style.message}>
                     支付
                     <Image alt="" height={14} src={starIcon.src} width={14} /> 80

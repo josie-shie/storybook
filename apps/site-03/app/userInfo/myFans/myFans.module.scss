@@ -31,7 +31,7 @@
 }
 
 .myFans {
-    height: calc(100vh - 54px);
+    height: calc(100dvh - 54px);
     margin-top: -14px;
     padding: 12px;
     overflow: auto;
@@ -56,6 +56,10 @@
                 border-color: #4489ff;
                 outline: none;
             }
+        }
+
+        ::placeholder {
+            font-size: 14px;
         }
 
         > button {

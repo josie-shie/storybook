@@ -123,13 +123,25 @@ function Info({ params }: { params: { masterId: string } }) {
                                 )}
 
                                 {info.highlights.quarterRanking > 0 && (
-                                    <TagSplit number={info.highlights.quarterRanking} text="季" />
+                                    <TagSplit
+                                        isBlueBg
+                                        number={info.highlights.quarterRanking}
+                                        text="季"
+                                    />
                                 )}
                                 {info.highlights.monthRanking > 0 && (
-                                    <TagSplit number={info.highlights.monthRanking} text="月" />
+                                    <TagSplit
+                                        isBlueBg
+                                        number={info.highlights.monthRanking}
+                                        text="月"
+                                    />
                                 )}
                                 {info.highlights.weekRanking > 0 && (
-                                    <TagSplit number={info.highlights.weekRanking} text="周" />
+                                    <TagSplit
+                                        isBlueBg
+                                        number={info.highlights.weekRanking}
+                                        text="周"
+                                    />
                                 )}
                             </div>
                             <div className={style.bottom}>

@@ -66,15 +66,21 @@
         row-gap: 8px;
 
         .league {
-            flex-grow: 1;
             font-size: 12px;
+            flex-grow: 1;
+            width: calc(25% - 18px);
             display: flex;
+            justify-content: center;
             align-items: center;
-            gap: 4px;
+            gap: 2px;
             background: transparent;
             padding: 6px 12px;
             border: 1px solid #d9d9d9;
             border-radius: 30px;
+
+            .name {
+                flex-shrink: 0;
+            }
         }
     }
 }

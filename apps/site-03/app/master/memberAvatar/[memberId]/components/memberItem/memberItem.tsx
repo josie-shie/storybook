@@ -31,14 +31,14 @@ function MasterItem({ params }: { params: { memberId: string } }) {
 
     const fetchData = async () => {
         try {
-            const res = await getFollowers({ memberId: 1, isFans: false });
+            const res = await getFollowers({ memberId: Number(params.memberId), isFans: false });
 
             if (!res.success) {
                 return new Error();
             }
 
             setMasterItem(res.data);
-            setIsNoData(res.data === 0);
+            setIsNoData(res.data.length === 0);
         } catch (error) {
             return new Error();
         }
@@ -125,18 +125,21 @@ function MasterItem({ params }: { params: { memberId: string } }) {
                                             )}
                                             {item.tags.quarterRanking > 0 && (
                                                 <TagSplit
+                                                    isBlueBg={false}
                                                     number={item.tags.quarterRanking}
                                                     text="季"
                                                 />
                                             )}
                                             {item.tags.monthRanking > 0 && (
                                                 <TagSplit
+                                                    isBlueBg={false}
                                                     number={item.tags.monthRanking}
                                                     text="月"
                                                 />
                                             )}
                                             {item.tags.weekRanking > 0 && (
                                                 <TagSplit
+                                                    isBlueBg={false}
                                                     number={item.tags.weekRanking}
                                                     text="周"
                                                 />

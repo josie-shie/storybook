@@ -30,7 +30,7 @@ function MasterItem({ params }: { params: { masterId } }) {
     const isLogin = useUserStore.use.isLogin();
 
     const fetchData = async () => {
-        const res = await getFollowers({ memberId: 1, isFans: false });
+        const res = await getFollowers({ memberId: Number(params.masterId), isFans: false });
 
         if (!res.success) {
             return new Error();
@@ -121,18 +121,21 @@ function MasterItem({ params }: { params: { masterId } }) {
                                             )}
                                             {item.tags.quarterRanking > 0 && (
                                                 <TagSplit
+                                                    isBlueBg={false}
                                                     number={item.tags.quarterRanking}
                                                     text="季"
                                                 />
                                             )}
                                             {item.tags.monthRanking > 0 && (
                                                 <TagSplit
+                                                    isBlueBg={false}
                                                     number={item.tags.monthRanking}
                                                     text="月"
                                                 />
                                             )}
                                             {item.tags.weekRanking > 0 && (
                                                 <TagSplit
+                                                    isBlueBg={false}
                                                     number={item.tags.weekRanking}
                                                     text="周"
                                                 />

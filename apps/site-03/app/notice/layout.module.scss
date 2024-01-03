@@ -21,6 +21,9 @@
 
         .ui-tab-container {
             padding: 12px;
+            overflow: auto;
+            height: calc(100dvh - 105px);
+            touch-action: pan-y;
         }
     }
 
