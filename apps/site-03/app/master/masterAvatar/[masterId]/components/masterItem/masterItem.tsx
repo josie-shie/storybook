@@ -30,7 +30,7 @@ function MasterItem({ params }: { params: { masterId } }) {
     const isLogin = useUserStore.use.isLogin();
 
     const fetchData = async () => {
-        const res = await getFollowers({ memberId: 1, isFans: false });
+        const res = await getFollowers({ memberId: Number(params.masterId), isFans: false });
 
         if (!res.success) {
             return new Error();

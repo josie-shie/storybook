@@ -133,7 +133,10 @@ function InfoTabs({
                         </div>
                     </div>
                     <div className={style.recentGames}>
-                        <Record individualGuessInfo={individualGuessInfo} />
+                        <Record
+                            dateActiveTab={dateActiveTab}
+                            individualGuessInfo={individualGuessInfo}
+                        />
                     </div>
                     <div className={style.title}>
                         <span>专家猜球方案({guessLength})</span>
