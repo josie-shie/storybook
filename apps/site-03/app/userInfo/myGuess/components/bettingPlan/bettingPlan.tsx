@@ -4,7 +4,7 @@ import { type MemberIndividualGuessMatch } from 'data-center';
 import BigGone from '../img/bigGone.png';
 import BigWin from '../img/bigWin.png';
 import BigLose from '../img/bigLose.png';
-import style from './bettingMemberIndividualGuessMatch.module.scss';
+import style from './bettingPlan.module.scss';
 
 interface PropsType {
     rowData: MemberIndividualGuessMatch;
@@ -30,9 +30,9 @@ const messageFormat = (predictedPlay: string, item: MemberIndividualGuessMatch) 
     }
 };
 
-function BettingMemberIndividualGuessMatch({ rowData }: PropsType) {
+function BettingPlan({ rowData }: PropsType) {
     return (
-        <div className={style.bettingMemberIndividualGuessMatch}>
+        <div className={style.bettingPlan}>
             {iconMap[rowData.predictionResult]}
             <div className={style.top}>
                 {rowData.leagueName}
@@ -41,7 +41,7 @@ function BettingMemberIndividualGuessMatch({ rowData }: PropsType) {
                 </span>
             </div>
             <div className={style.mid}>
-                <span className={style.MemberIndividualGuessMatch}>{rowData.playType}</span>
+                <span className={style.plan}>{rowData.playType}</span>
                 <div className={style.combination}>
                     {rowData.homeTeamName}
                     vs
@@ -61,4 +61,4 @@ function BettingMemberIndividualGuessMatch({ rowData }: PropsType) {
     );
 }
 
-export default BettingMemberIndividualGuessMatch;
+export default BettingPlan;
