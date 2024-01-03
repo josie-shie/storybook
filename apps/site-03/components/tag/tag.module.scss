@@ -4,18 +4,13 @@
     align-items: center;
     font-size: 11px;
     font-weight: 500;
-    color: #fff;
-    gap: 3px;
-    border-radius: 4px;
-    background: linear-gradient(90deg, #ff844f 6.1%, #ff5a36 95.12%);
-    margin-right: 4px;
-    width: 50px;
     height: 18px;
-}
-
-.tagIcon {
-    width: auto;
-    height: auto;
+    color: #fff;
+    gap: 2px;
+    background: linear-gradient(90deg, #ff844f 6.1%, #ff5a36 95.12%);
+    padding: 0 4px;
+    border-radius: 4px;
+    margin-right: 4px;
 }
 
 .gradientBlue {

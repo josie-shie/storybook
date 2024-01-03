@@ -2,7 +2,8 @@ import Image from 'next/image';
 import type { ProGuess } from 'data-center';
 import Avatar from '@/components/avatar/avatar';
 import Tag from '@/components/tag/tag';
-import Fire from './img/fire.png';
+import TagSplit from '@/components/tagSplit/tagSplit';
+import Fire from './img/hot.png';
 import Win from './img/win.png';
 import Lose from './img/lose.png';
 import Gone from './img/gone.png';
@@ -26,8 +27,10 @@ function HighlightTag({ type, value }: TagProps) {
         2: '季'
     };
     if (type === 3)
-        return <Tag icon={<Image alt="" src={Fire} width={8} />} text={`${value}连红`} />;
-    return <Tag background="#4489ff" text={`${periodMap[type]}榜${value}`} />;
+        return (
+            <Tag icon={<Image alt="" height={10} src={Fire} width={10} />} text={`${value}连红`} />
+        );
+    return <TagSplit isBlueBg={false} number={value} text={periodMap[type]} />;
 }
 
 interface GameCardProps {
