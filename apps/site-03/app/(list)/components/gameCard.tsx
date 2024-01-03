@@ -170,14 +170,14 @@ function TeamInfo({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId:
                 </div>
                 {contestInfo.homeChs}
             </div>
-            <div className={style.score}>
+            <div className={`${style.score}`}>
                 {(syncData.state || contestInfo.state) !== 0 ? (
                     <>
                         {syncData.homeScore || contestInfo.homeScore} -{' '}
                         {syncData.awayScore || contestInfo.awayScore}
                     </>
                 ) : (
-                    '-'
+                    <p className={style.noYet}>VS</p>
                 )}
             </div>
             <div className={`${style.awayTeam} ${style.team}`}>
