@@ -127,6 +127,7 @@ function AuthDrawer() {
                 backgroundColor: '#1665df',
                 borderRadius: '16px 16px 0 0'
             }}
+            swipeAreaWidth={-100}
             topLineDisplay="none"
         >
             <div className={style.loginDrawer}>

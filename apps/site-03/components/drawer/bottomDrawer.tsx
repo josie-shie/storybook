@@ -11,7 +11,8 @@ function BottomDrawer({
         borderTopLeftRadius: '16px',
         borderTopRightRadius: '16px'
     },
-    topLineDisplay = 'initial'
+    topLineDisplay = 'initial',
+    swipeAreaWidth
 }: {
     isOpen: boolean;
     onOpen: () => void;
@@ -19,6 +20,7 @@ function BottomDrawer({
     children: ReactNode;
     propsStyle?: React.CSSProperties;
     topLineDisplay?: string;
+    swipeAreaWidth?: number; // 在屏幕边缘多少可以被滑动出來
 }) {
     return (
         <SwipeableDrawer
@@ -29,6 +31,7 @@ function BottomDrawer({
             onClose={onClose}
             onOpen={onOpen}
             open={isOpen}
+            swipeAreaWidth={swipeAreaWidth ? swipeAreaWidth : 20} // 組件預設是20
             transitionDuration={{ enter: 300, exit: 200 }}
         >
             <div className={`${style.topLine}`} style={{ display: topLineDisplay }} />
