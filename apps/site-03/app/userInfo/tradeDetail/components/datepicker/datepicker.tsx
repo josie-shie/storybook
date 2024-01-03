@@ -50,7 +50,8 @@ function Datepicker({
             let rangeEnd = endOfDay;
 
             if (endDate && startDate.getTime() !== endDate.getTime()) {
-                rangeEnd = new Date(endDate).setDate(endDate.getDate() + 1) / 1000;
+                const endOfDate = new Date(endDate).setHours(0, 0, 0, 0);
+                rangeEnd = new Date(endOfDate).setDate(new Date(endDate).getDate() + 1) / 1000;
                 setDateDisplay(
                     `${dayjs(startDate).format('YYYY/MM/DD')} - ${dayjs(endDate).format(
                         'YYYY/MM/DD'
