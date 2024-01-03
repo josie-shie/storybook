@@ -2,7 +2,7 @@
     position: relative;
     z-index: 100;
     top: 0;
-    height: calc(100vh - 56px);
+    height: calc(100dvh - 54px);
     margin-top: -12px;
     overflow: hidden;
 }
@@ -73,7 +73,7 @@
 
 .wrapper {
     width: 100%;
-    height: calc(100vh - 214px);
+    height: calc(100dvh - 214px);
     overflow: scroll;
 }
 
