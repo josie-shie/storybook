@@ -38,7 +38,7 @@ function MasterItem({ params }: { params: { memberId: string } }) {
             }
 
             setMasterItem(res.data);
-            setIsNoData(res.data === 0);
+            setIsNoData(res.data.length === 0);
         } catch (error) {
             return new Error();
         }
@@ -125,18 +125,21 @@ function MasterItem({ params }: { params: { memberId: string } }) {
                                             )}
                                             {item.tags.quarterRanking > 0 && (
                                                 <TagSplit
+                                                    isBlueBg={false}
                                                     number={item.tags.quarterRanking}
                                                     text="季"
                                                 />
                                             )}
                                             {item.tags.monthRanking > 0 && (
                                                 <TagSplit
+                                                    isBlueBg={false}
                                                     number={item.tags.monthRanking}
                                                     text="月"
                                                 />
                                             )}
                                             {item.tags.weekRanking > 0 && (
                                                 <TagSplit
+                                                    isBlueBg={false}
                                                     number={item.tags.weekRanking}
                                                     text="周"
                                                 />

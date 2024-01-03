@@ -121,18 +121,21 @@ function MasterItem({ params }: { params: { masterId } }) {
                                             )}
                                             {item.tags.quarterRanking > 0 && (
                                                 <TagSplit
+                                                    isBlueBg={false}
                                                     number={item.tags.quarterRanking}
                                                     text="季"
                                                 />
                                             )}
                                             {item.tags.monthRanking > 0 && (
                                                 <TagSplit
+                                                    isBlueBg={false}
                                                     number={item.tags.monthRanking}
                                                     text="月"
                                                 />
                                             )}
                                             {item.tags.weekRanking > 0 && (
                                                 <TagSplit
+                                                    isBlueBg={false}
                                                     number={item.tags.weekRanking}
                                                     text="周"
                                                 />

@@ -109,13 +109,25 @@ function ArticleCard({ article }: { article: RecommendPost }) {
                                 />
                             )}
                             {article.tag.weekRanking > 0 && (
-                                <TagSplit number={article.tag.weekRanking} text="周" />
+                                <TagSplit
+                                    isBlueBg={false}
+                                    number={article.tag.weekRanking}
+                                    text="周"
+                                />
                             )}
                             {article.tag.monthRanking > 0 && (
-                                <TagSplit number={article.tag.monthRanking} text="月" />
+                                <TagSplit
+                                    isBlueBg={false}
+                                    number={article.tag.monthRanking}
+                                    text="月"
+                                />
                             )}
                             {article.tag.quarterRanking > 0 && (
-                                <TagSplit number={article.tag.quarterRanking} text="季" />
+                                <TagSplit
+                                    isBlueBg={false}
+                                    number={article.tag.quarterRanking}
+                                    text="季"
+                                />
                             )}
                         </div>
                     </div>

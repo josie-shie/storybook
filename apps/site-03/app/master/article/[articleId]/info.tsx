@@ -68,13 +68,13 @@ function Info({ article, setArticle }: InfoProps) {
                             )}
 
                             {article.tag.quarterRanking > 0 && (
-                                <TagSplit number={article.tag.quarterRanking} text="季" />
+                                <TagSplit isBlueBg number={article.tag.quarterRanking} text="季" />
                             )}
                             {article.tag.monthRanking > 0 && (
-                                <TagSplit number={article.tag.monthRanking} text="月" />
+                                <TagSplit isBlueBg number={article.tag.monthRanking} text="月" />
                             )}
                             {article.tag.weekRanking > 0 && (
-                                <TagSplit number={article.tag.weekRanking} text="周" />
+                                <TagSplit isBlueBg number={article.tag.weekRanking} text="周" />
                             )}
                         </div>
                         <div className={style.bottom}>
