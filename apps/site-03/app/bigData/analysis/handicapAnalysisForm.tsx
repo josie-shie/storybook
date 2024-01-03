@@ -6,17 +6,17 @@ import React, { useEffect } from 'react';
 import dayjs from 'dayjs';
 import { motion } from 'framer-motion';
 import { useUserStore } from '@/app/userStore';
+import { useNotificationStore } from '@/app/notificationStore';
 import { useHandicapAnalysisFormStore } from '../formStore';
 import style from './disSelect.module.scss';
 import bulbIcon from './img/bulb.png';
-import contentImage from './img/content.png';
+import ruleImage from './img/ruleDemo.png';
 import StepIndicator from './components/stepIndicator/stepIndicator';
 import OptionButton from './components/optionButton/optionButton';
 import selectIcon from './img/select.png';
 import starIcon from './img/star.png';
 import Datepicker from './components/datepicker/datepicker';
 import Dialog from './components/dialog/dialog';
-import { useNotificationStore } from '@/app/notificationStore';
 
 type PlayTypeCheckBox = 'handicap' | 'overUnder';
 
@@ -343,7 +343,7 @@ function Tips() {
                             选择让分盘或大小盘，可获取指定时间内智能盘口命中分析：让分大小、进球数区间、15分钟进球、全场波胆
                         </p>
                         {openTips ? (
-                            <Image alt="" height={415} src={contentImage.src} width={342} />
+                            <Image alt="" height={415} src={ruleImage.src} width={342} />
                         ) : null}
                     </div>
                 </>
