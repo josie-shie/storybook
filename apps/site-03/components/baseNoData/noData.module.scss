@@ -8,8 +8,13 @@
         left: 50%;
         transform: translateX(-50%);
 
-        p {
-            margin-top: 10px;
+        img {
+            display: block;
+            margin: 0 auto;
+        }
+
+        > div {
+            margin-top: 4px;
             text-align: center;
             color: #9b9b9b;
             font-size: 14px;
