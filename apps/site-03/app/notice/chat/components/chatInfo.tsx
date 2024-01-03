@@ -105,10 +105,6 @@ function ChatInfo() {
                     correlationId: `c${getRandomInt(1, 10000)}`,
                     action: 'leave_room'
                 });
-                void messageService.send({
-                    action: 'get_room_list',
-                    type: 'private'
-                });
             }
         };
     }, [selectedChatData.roomId]);
