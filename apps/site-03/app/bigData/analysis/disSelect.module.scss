@@ -605,13 +605,13 @@
             display: flex;
             align-items: center;
             border-radius: 30px;
-            background: #f3f3f3;
             overflow: hidden;
 
             .option {
                 position: relative;
                 flex: 1;
                 color: #d9d9d9;
+                background: #f3f3f3;
                 padding: 10px 20px;
                 border: none;
                 transition: all 0.2s ease;
@@ -650,7 +650,7 @@
                         height: 0;
                         border-left: 24px solid transparent;
                         border-right: 0 solid transparent;
-                        border-bottom: 40px solid #efefef;
+                        border-bottom: 40px solid #f3f3f3;
                     }
                 }
 
@@ -669,7 +669,7 @@
                         height: 0;
                         border-left: 0 solid transparent;
                         border-right: 24px solid transparent;
-                        border-top: 40px solid #efefef;
+                        border-top: 40px solid #f3f3f3;
                     }
 
                     &::before {

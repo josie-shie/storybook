@@ -26,7 +26,7 @@ function PaymentAlert() {
             <div className={style.dialogMessage}>
                 <p className={style.message}>
                     支付
-                    <Image alt="" height={14} src={starIcon.src} width={14} /> 40
+                    <Image alt="" height={14} src={starIcon.src} width={14} /> 80
                 </p>
                 <p>购买今日长龙赛事？</p>
             </div>
@@ -214,7 +214,7 @@ function HandicapAnalysisForm() {
                             }}
                             type="button"
                         >
-                            半場
+                            半场
                         </button>
                         <Image
                             alt=""
@@ -232,13 +232,13 @@ function HandicapAnalysisForm() {
                             }}
                             type="button"
                         >
-                            全場
+                            全场
                         </button>
                     </div>
                 </div>
             </div>
             <div className={style.tip}>
-                数据中心会將符合您条件设定的24小時內即將開場賽事汇整列出
+                数据中心会将符合您条件设定的24小时内即将开场赛事汇整列出
             </div>
             {/* <div className={style.error}>{hintsError}</div> */}
             <motion.button
