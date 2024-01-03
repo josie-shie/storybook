@@ -169,6 +169,7 @@ function Account() {
         setSubmittedState(newSubmittedState);
 
         const obj: UpdateMemberInfoRequest = {
+            username: formState.nickName || userInfo.username,
             avatarPath: imgUpload || userInfo.avatarPath,
             birthday: userInfo.birthday || dayjs(formState.birthday).valueOf() / 1000,
             wechat: formState.wechat,
@@ -182,6 +183,17 @@ function Account() {
         if (!res.success) {
             const errorMessage = res.error ? res.error : '修改个人资讯失败，请确认资料无误';
             setIsVisible(errorMessage, 'error');
+            const initObj = {
+                nickName: false,
+                birthday: false,
+                phoneNumber: true,
+                wechat: false,
+                qq: false,
+                email: false,
+                description: false
+            };
+            setSubmittedState(initObj);
+            setIsSubmitted(false);
             return;
         }
 
@@ -257,7 +269,7 @@ function Account() {
                         name="nickName"
                         onChange={handleInputChange}
                         placeholder="添加昵称"
-                        submitted={submittedState.nickName}
+                        submitted={false}
                         type="text"
                         value={formState.nickName}
                     />

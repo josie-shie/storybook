@@ -149,6 +149,7 @@ type GetMemberInfoResult = z.infer<typeof GetMemberInfoResponseSchema>;
 export type GetMemberInfoResponse = z.infer<typeof MemberInfoSchema>;
 
 export interface UpdateMemberInfoRequest {
+    username: string;
     birthday: number;
     wechat: string;
     qqNumber: string;
