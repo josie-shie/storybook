@@ -5,7 +5,7 @@ import { Link as ScrollLink, Element } from 'react-scroll';
 import { Tab, Tabs } from 'ui';
 import Header from '@/components/header/headerLogo';
 import style from './analytics.module.scss';
-import leagueLogo from './img/leagueLogo.png';
+import leagueLogo from './img/TeamLogo.png';
 import cupLogo from './img/cupLogo.png';
 
 const hotGames = [
@@ -94,7 +94,7 @@ function Analytics() {
             <Header />
             <div className={style.main}>
                 <div className={style.hotGamesContainer}>
-                    <div className={style.title}>热门赛事</div>
+                    <div className={style.title}>热门赛事数据</div>
                     <div className={style.leagues}>
                         {hotGames.map((el, idx) => (
                             <button className={style.league} key={idx} type="button">
@@ -106,16 +106,16 @@ function Analytics() {
                 </div>
             </div>
             <Tabs buttonRadius={0} gap={0} position="center" styling="underline" swiperOpen={false}>
-                <Tab label="國際">
+                <Tab label="国际">
                     <CompetitionBox />
                 </Tab>
-                <Tab label="歐洲">
+                <Tab label="欧洲">
                     <CompetitionBox />
                 </Tab>
                 <Tab label="美洲">
                     <CompetitionBox />
                 </Tab>
-                <Tab label="亞洲">
+                <Tab label="亚洲">
                     <CompetitionBox />
                 </Tab>
                 <Tab label="大洋洲">
