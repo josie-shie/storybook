@@ -1,6 +1,7 @@
 .infoTabs {
     height: calc(100dvh - 274px);
     overflow-y: auto;
+    touch-action: pan-y;
 
     .tabContest {
         margin-top: 20px;
