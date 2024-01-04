@@ -7,6 +7,7 @@ import { usePathname } from 'next/navigation';
 import type { MessageResponse } from 'lib';
 import { messageService, getMessageResponse, cancelMessage } from 'lib';
 import { useNotificationStore } from '@/app/notificationStore';
+import { useMessageStore } from '@/app/messageStore';
 import style from './editBar.module.scss';
 import { useNoticeStore } from './noticeStore';
 
@@ -18,8 +19,8 @@ function EditBar() {
     const selected = useNoticeStore.use.selected();
     const setSelected = useNoticeStore.use.setSelected();
     const setIsVisible = useNotificationStore.use.setIsVisible();
-    const chatList = useNoticeStore.use.chatList();
     const setChatList = useNoticeStore.use.setChatList();
+    const updateUnreadMessageNotify = useMessageStore.use.updateUnreadMessageNotify();
 
     const route = usePathname().split('/');
     const pathName = route[route.length - 1];
@@ -34,6 +35,20 @@ function EditBar() {
                 setIsVisible('刪除成功！', 'success');
                 setEditStatus(false);
                 const newList = mailList.filter(notice => !selected.has(notice.mailMemberId));
+                const unreadMessageNotify = useMessageStore.getState().unreadMessageNotify;
+
+                const unReadCount = newList.reduce((previousValue, currentValue) => {
+                    if (!currentValue.isRead) {
+                        return previousValue + 1;
+                    }
+                    return previousValue;
+                }, 0);
+
+                updateUnreadMessageNotify({
+                    ...unreadMessageNotify,
+                    totalCount: unreadMessageNotify.mailCount + unReadCount,
+                    mailCount: unReadCount
+                });
                 setMailList(newList);
             }
         } else {
@@ -65,8 +80,25 @@ function EditBar() {
             if (res.action === 'delete_private_room') {
                 if (res.status === 'success') {
                     setEditStatus(false);
-                    const params = chatList.filter(chat => !selected.has(chat.roomId));
-                    setChatList(params);
+                    const currentChatList = useNoticeStore.getState().chatList;
+                    const currentSelected = useNoticeStore.getState().selected;
+                    const unreadMessageNotify = useMessageStore.getState().unreadMessageNotify;
+                    const filterChatList = currentChatList.filter(
+                        chat => !currentSelected.has(chat.roomId)
+                    );
+                    const unReadCount = filterChatList.reduce((previousValue, currentValue) => {
+                        if (currentValue.lastMessages.length > 0) {
+                            return previousValue + 1;
+                        }
+                        return previousValue;
+                    }, 0);
+
+                    updateUnreadMessageNotify({
+                        ...unreadMessageNotify,
+                        totalCount: unreadMessageNotify.chatCount + unReadCount,
+                        chatCount: unReadCount
+                    });
+                    setChatList(filterChatList);
                 }
             }
         };
@@ -76,7 +108,7 @@ function EditBar() {
         return () => {
             cancelMessage(handleRes);
         };
-    }, [chatList, selected, setChatList, setEditStatus]);
+    }, [setChatList, setEditStatus, updateUnreadMessageNotify]);
 
     return (
         <div className={`${style.editBar} ${editStatus && style.isEdit}`}>

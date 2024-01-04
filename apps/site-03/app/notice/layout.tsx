@@ -3,10 +3,11 @@
 import { type ReactNode } from 'react';
 import { Tab, Tabs } from 'ui';
 import { usePathname } from 'next/navigation';
+import { messageService } from 'lib';
 import { useMessageStore } from '@/app/messageStore';
 import Header from './header';
 import style from './layout.module.scss';
-import { createNoticeStore } from './noticeStore';
+import { createNoticeStore, useNoticeStore } from './noticeStore';
 import EditBar from './editBar';
 
 function CreateNoticeStore({ children }: { children: ReactNode }) {
@@ -19,6 +20,7 @@ function CreateNoticeStore({ children }: { children: ReactNode }) {
 
 function NoticeTabs({ children }: { children: ReactNode }) {
     const unreadMessageNotify = useMessageStore.use.unreadMessageNotify();
+    const chatList = useNoticeStore.use.chatList();
 
     const route = usePathname().split('/');
     const pathName = route[route.length - 1];
@@ -50,6 +52,13 @@ function NoticeTabs({ children }: { children: ReactNode }) {
             id: 'chat'
         }
     ];
+
+    if (unreadMessageNotify.chatCount > 0 && chatList.length === 0) {
+        void messageService.send({
+            action: 'get_room_list',
+            type: 'private'
+        });
+    }
 
     return (
         <div className={style.noticeLayout}>
