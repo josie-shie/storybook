@@ -170,34 +170,6 @@
             width: 100%;
             margin-bottom: 8px;
 
-            .selectTeam {
-                display: flex;
-
-                .checkbox {
-                    display: flex;
-                    white-space: nowrap;
-                    align-items: flex-start;
-
-                    .text {
-                        color: #8d8d8d;
-                        font-size: 14px;
-                        font-weight: 500;
-                    }
-
-                    :global {
-                        .MuiCheckbox-root {
-                            padding: 0;
-
-                            .MuiSvgIcon-root {
-                                width: 20px;
-                                height: 20px;
-                                color: #8d8d8d;
-                            }
-                        }
-                    }
-                }
-            }
-
             .timeRange {
                 display: flex;
                 justify-content: space-between;

@@ -63,8 +63,6 @@ interface HandicapAnalysisFormState extends InitState {
     setOpenTips: (openTips: boolean) => void;
     isTipsOpened: boolean;
     setIsTipsOpened: (isTipsOpened: boolean) => void;
-    checkAllTeam: boolean;
-    setCheckAllTeam: () => void;
     checkboxState: Record<PlayTypeCheckBox, boolean>;
     setCheckboxState: (keyName: PlayTypeCheckBox, checked: boolean) => void;
     isAnalysisBySearch: boolean;
@@ -127,8 +125,7 @@ const initialState = (
 
             return {
                 ...state,
-                teamSelected: newTeamSelected,
-                checkAllTeam: newTeamSelected.length >= 2
+                teamSelected: newTeamSelected
             };
         });
     },
@@ -329,17 +326,6 @@ const initialState = (
             return {
                 ...state,
                 isTipsOpened
-            };
-        });
-    },
-    checkAllTeam: true,
-    setCheckAllTeam: () => {
-        set(state => {
-            const newCheckedState = !state.checkAllTeam;
-            return {
-                ...state,
-                checkAllTeam: newCheckedState,
-                teamSelected: newCheckedState ? ['home', 'away'] : ['home']
             };
         });
     },

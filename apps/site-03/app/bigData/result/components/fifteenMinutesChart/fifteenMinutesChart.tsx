@@ -33,15 +33,32 @@ function FifteenMinutesChart({
 }) {
     const upperList = minsGoalList.map(item => item.goalsOver.length);
     const lowerList = minsGoalList.map(item => item.goalsUnder.length);
-    const seriesList = headers.map((header, index) => ({
-        type: 'pie',
-        radius: '30%',
-        center: chartPosition[index],
-        encode: { itemName: '進球', value: header },
-        label: { show: false },
-        itemStyle: { borderWidth: 2, borderColor: '#FFF' },
-        color: ['#00AC6E', '#FBB03B']
-    }));
+
+    // 判断对应的pie是否有最小angle需要显示
+    const thresholdPercentage = 1;
+    const seriesList = headers.map((header, index) => {
+        const total = upperList[index] + lowerList[index];
+        const upperPercentage = (upperList[index] / total) * 100;
+        const lowerPercentage = (lowerList[index] / total) * 100;
+
+        const minAngle =
+            (upperPercentage <= thresholdPercentage || lowerPercentage <= thresholdPercentage) &&
+            upperPercentage > 0 &&
+            lowerPercentage > 0
+                ? 10
+                : 0;
+
+        return {
+            type: 'pie',
+            radius: '30%',
+            center: chartPosition[index],
+            encode: { itemName: '進球', value: header },
+            label: { show: false },
+            itemStyle: { borderWidth: 2, borderColor: '#FFF' },
+            color: ['#00AC6E', '#FBB03B'],
+            minAngle
+        };
+    });
     const titleList = headers.map((header, index) => ({
         subtext: header,
         left: titlePosition[index].left,
