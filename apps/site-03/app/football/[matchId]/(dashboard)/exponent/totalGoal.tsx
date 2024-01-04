@@ -36,7 +36,12 @@ function TotalGoal() {
     const totalGoalsRadio = useExponentStore.use.totalGoalsRadio();
     const companyNameMap = useContestDetailStore.use.companyNameMap();
 
-    const dataList = exponentData?.totalGoalData[totalGoalsRadio];
+    const dataList = Object.prototype.hasOwnProperty.call(exponentData, 'full')
+        ? exponentData?.totalGoalData[totalGoalsRadio]
+        : {
+              list: [],
+              info: {}
+          };
 
     if (!dataList || dataList.list.length === 0) return <NoData />;
 

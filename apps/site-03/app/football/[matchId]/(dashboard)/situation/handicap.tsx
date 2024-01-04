@@ -10,12 +10,12 @@ import { useSituationStore } from '../../situationStore';
 import rightBlack from './img/right_black.png';
 import style from './situation.module.scss';
 
-const switchOptins = [
+const switchOptions = [
     { label: 'CROW*', value: 3 },
     { label: '36*', value: 8 }
 ];
 
-type TabTpye = 'HANDICAP' | 'HANDICAPHALF';
+type TabType = 'HANDICAP' | 'HANDICAPHALF';
 type RadioType = 'half' | 'full';
 const handicapRadioMapping = {
     half: 'HANDICAPHALF',
@@ -38,7 +38,7 @@ function InProgress({
 }: {
     targetHandicap: HandicapsData[];
     setIsOddsDetailDrawerOpen: (value: boolean) => void;
-    setDrawerTabValue: (value: TabTpye) => void;
+    setDrawerTabValue: (value: TabType) => void;
     handicapRadio: RadioType;
     setCompanyId: (value: number) => void;
     handicapSwitch: number;
@@ -50,7 +50,7 @@ function InProgress({
             height={14}
             onClick={() => {
                 setIsOddsDetailDrawerOpen(true);
-                setDrawerTabValue(handicapRadioMapping[handicapRadio] as TabTpye);
+                setDrawerTabValue(handicapRadioMapping[handicapRadio] as TabType);
                 setCompanyId(handicapSwitch);
             }}
             src={rightBlack.src}
@@ -70,7 +70,7 @@ function InProgress({
                                 onClick={() => {
                                     setIsOddsDetailDrawerOpen(true);
                                     setDrawerTabValue(
-                                        handicapRadioMapping[handicapRadio] as TabTpye
+                                        handicapRadioMapping[handicapRadio] as TabType
                                     );
                                     setCompanyId(handicapSwitch);
                                 }}
@@ -135,7 +135,7 @@ function NotStarted({
 }: {
     targetHandicap: HandicapsData[];
     setIsOddsDetailDrawerOpen: (value: boolean) => void;
-    setDrawerTabValue: (value: TabTpye) => void;
+    setDrawerTabValue: (value: TabType) => void;
     handicapRadio: RadioType;
     setCompanyId: (value: number) => void;
     handicapSwitch: number;
@@ -147,7 +147,7 @@ function NotStarted({
                     className="tr"
                     key={`before_${idx.toString()}`}
                     onClick={() => {
-                        setDrawerTabValue(handicapRadioMapping[handicapRadio] as TabTpye);
+                        setDrawerTabValue(handicapRadioMapping[handicapRadio] as TabType);
                         setIsOddsDetailDrawerOpen(true);
                         setCompanyId(handicapSwitch);
                     }}
@@ -220,14 +220,14 @@ function Handicap() {
                         handleChangeSwitch(switchValue);
                         resetSwiperHight();
                     }}
-                    options={switchOptins}
+                    options={switchOptions}
                     value={handicapSwitch}
                 />
 
                 <TextRadio
                     onChange={value => {
                         setHandicapRadio(value as 'half' | 'full');
-                        setDrawerTabValue(handicapRadioMapping[value] as TabTpye);
+                        setDrawerTabValue(handicapRadioMapping[value] as TabType);
                         resetSwiperHight();
                     }}
                     value={handicapRadio}

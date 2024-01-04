@@ -140,12 +140,19 @@ function TabContent({
                 getLeaguePointsRank(matchId)
             ]);
 
+            if (!analysisData.success || !beforeGameData.success || !leaguePointsRank.success) {
+                return {
+                    success: false,
+                    error: ''
+                };
+            }
+
             return {
                 success: true,
                 data: {
-                    analysisData: analysisData.success ? analysisData.data : {},
-                    beforeGameData: beforeGameData.success ? beforeGameData.data : [],
-                    leaguePointsRank: leaguePointsRank.success ? leaguePointsRank.data : {}
+                    analysisData: analysisData.data,
+                    beforeGameData: beforeGameData.data,
+                    leaguePointsRank: leaguePointsRank.data
                 }
             };
         },

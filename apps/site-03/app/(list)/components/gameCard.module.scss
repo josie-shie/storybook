@@ -46,6 +46,7 @@
                 color: $score;
                 border-radius: 4px;
                 padding: 2px 6px;
+                font-size: 12px;
                 font-weight: 500;
                 margin: 0 14px;
             }
@@ -82,13 +83,14 @@
                 display: flex;
                 justify-content: space-between;
                 color: #fff;
-                font-size: 12px;
+                font-size: 10px;
 
                 .card {
                     border-radius: 2px;
                     padding: 0 2px;
-                    min-width: 14px;
+                    min-width: 10px;
                     text-align: center;
+                    line-height: 12px;
                 }
 
                 .redCard {
@@ -145,6 +147,7 @@
         .odd {
             display: flex;
             flex: 1;
+            font-size: 14px;
         }
 
         p {
