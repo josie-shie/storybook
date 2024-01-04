@@ -6,16 +6,20 @@
     min-width: 32px;
     text-align: center;
 
+    .notYet {
+        color: #8d8d8d;
+    }
+
     .playing {
-        color: #cc141d;
+        color: #ba2830;
     }
 
     .midfielder {
-        color: #4489ff;
+        color: #ba2830;
     }
 
     .playoff {
-        color: #fbb03b;
+        color: #ffc42d;
     }
 }
 
