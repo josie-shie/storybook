@@ -158,6 +158,14 @@ export interface UpdateMemberInfoRequest {
     username: string;
 }
 
+const UpdateMemberInfoResultSchema = z.object({
+    updateMemberInfo: z.object({
+        responseCode: z.number()
+    })
+});
+
+type UpdateMemberInfoResult = z.infer<typeof UpdateMemberInfoResultSchema>;
+
 /**
  * 註冊會員
  * - params : {@link RegisterRequest}
@@ -449,9 +457,9 @@ export const updatePassword = async ({
  */
 export const updateMemberInfo = async (
     input: UpdateMemberInfoRequest
-): Promise<ReturnData<null>> => {
+): Promise<ReturnData<UpdateMemberInfoResult>> => {
     try {
-        const { data, errors } = await fetcher<FetchResultData<null>, unknown>({
+        const { data, errors } = await fetcher<FetchResultData<UpdateMemberInfoResult>, unknown>({
             data: {
                 query: UPDATE_MEMBER_INFO_MUTATION,
                 variables: {
@@ -461,6 +469,7 @@ export const updateMemberInfo = async (
         });
 
         throwErrorMessage(errors);
+        UpdateMemberInfoResultSchema.parse(data);
 
         return { success: true, data };
     } catch (error) {
