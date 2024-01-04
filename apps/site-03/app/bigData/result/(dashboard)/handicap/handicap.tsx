@@ -4,11 +4,14 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { timestampToString } from 'lib';
 import dayjs from 'dayjs';
 import { getFootballStatsMatches } from 'data-center';
+import Image from 'next/image';
 import { useNotificationStore } from '@/app/notificationStore';
 import type { Statistics } from '../../analysisResultStore';
 import { useAnalyticsResultStore } from '../../analysisResultStore';
 import { useMatchFilterStore } from '../../matchFilterStore';
 import TextRadio from '../../components/switch/textSwitch';
+import leftArrowIcon from '../../img/leftArrow.png';
+import rightArrowIcon from '../../img/rightArrow.png';
 import style from './handicap.module.scss';
 
 type TimeValue = 'day' | 'week';
@@ -211,10 +214,12 @@ function Handicap() {
                                 Object.keys(
                                     handicapEchart[handicapRadio][currentSwitch][playTypeSwitch]
                                 ).length > 9 && !isAtTop
-                                    ? 'initial'
+                                    ? 'flex'
                                     : 'none'
                         }}
-                    />
+                    >
+                        <Image alt="" height={16} src={leftArrowIcon.src} width={16} />
+                    </div>
                     <div
                         className={style.blurCoverBottom}
                         style={{
@@ -222,10 +227,12 @@ function Handicap() {
                                 Object.keys(
                                     handicapEchart[handicapRadio][currentSwitch][playTypeSwitch]
                                 ).length > 9 && !isAtBottom
-                                    ? 'initial'
+                                    ? 'flex'
                                     : 'none'
                         }}
-                    />
+                    >
+                        <Image alt="" height={16} src={rightArrowIcon.src} width={16} />
+                    </div>
                     <ul
                         ref={node}
                         style={{
