@@ -7,9 +7,9 @@
     width: 100vw;
     height: auto;
     gap: 8px;
+    padding: 0 53px;
 
     .newMessageBox {
-        position: absolute;
         left: 0;
         right: 0;
         height: 44px;
@@ -19,8 +19,7 @@
         color: #fff;
         line-height: 32px;
         display: flex;
-        width: calc(100% - 106px);
-        margin: auto;
+        width: 100%;
         align-items: center;
         font-size: 14px;
         padding: 8px 24px;
@@ -40,11 +39,20 @@
             color: #9fc2ff;
             font-size: 12px;
             font-weight: 600;
+            white-space: nowrap;
         }
 
         .message {
-            span {
-                font-weight: 600;
+            display: flex;
+            white-space: nowrap;
+            justify-content: center;
+            align-items: center;
+            font-weight: 600;
+            width: calc(100% - 80px);
+
+            .content {
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
         }
     }
