@@ -74,8 +74,6 @@ function StepperProcess() {
     const startDate = useHandicapAnalysisFormStore.use.startDate();
     const setEndDate = useHandicapAnalysisFormStore.use.setEndDate();
     const endDate = useHandicapAnalysisFormStore.use.endDate();
-    const checkAllTeam = useHandicapAnalysisFormStore.use.checkAllTeam();
-    const setCheckAllTeam = useHandicapAnalysisFormStore.use.setCheckAllTeam();
     const checkboxState = useHandicapAnalysisFormStore.use.checkboxState();
     const { handicap, overUnder } = checkboxState;
 
@@ -90,17 +88,7 @@ function StepperProcess() {
     if (handicap) {
         steps.push(
             <div className={style.step} key="handicapStep1">
-                <div className={style.selectTeam}>
-                    <StepIndicator stepNumber="1" text="选择让方" />
-                    <div className={style.checkbox}>
-                        <Checkbox
-                            checked={checkAllTeam}
-                            name="overUnder"
-                            onChange={setCheckAllTeam}
-                        />
-                        <span className={style.text}>主客相同</span>
-                    </div>
-                </div>
+                <StepIndicator stepNumber="1" subText="(复选)" text="选择让方" />
                 <div className={style.options}>
                     <OptionButton
                         active={teamSelected.includes('home')}
@@ -124,7 +112,7 @@ function StepperProcess() {
 
         steps.push(
             <div className={style.step} key="handicapStep2">
-                <StepIndicator stepNumber="2" text="选择让分数" />
+                <StepIndicator stepNumber="2" subText="(单选)" text="选择让分数" />
                 <div className={style.multipleOption}>
                     {handicapNumberList.map(handicapOption => {
                         return (
@@ -146,7 +134,7 @@ function StepperProcess() {
         if (overUnder) {
             steps.push(
                 <div className={style.step} key="handicapOverUnder">
-                    <StepIndicator stepNumber="3" text="选择大小球" />
+                    <StepIndicator stepNumber="3" subText="(单选)" text="选择大小球" />
                     <div className={style.multipleOption}>
                         {overUnderNumberList.map(overUnderOption => {
                             return (
@@ -168,7 +156,7 @@ function StepperProcess() {
     } else if (overUnder) {
         steps.push(
             <div className={style.step} key="overUnderOnly">
-                <StepIndicator stepNumber="1" text="选择大小球" />
+                <StepIndicator stepNumber="1" subText="(单选)" text="选择大小球" />
                 <div className={style.multipleOption}>
                     {overUnderNumberList.map(overUnderOption => {
                         return (
