@@ -7,7 +7,7 @@ import Fire from './img/hot.png';
 import Win from './img/win.png';
 import Lose from './img/lose.png';
 import Gone from './img/gone.png';
-import Star from './img/star.png';
+import Star from './img/coin.png';
 import BigWin from './img/bigWin.png';
 import BigLose from './img/bigLose.png';
 import BigGone from './img/bigGone.png';

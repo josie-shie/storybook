@@ -2,7 +2,6 @@
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    gap: 8px;
     padding: 10px 0;
     margin-top: 24px;
 
@@ -96,11 +95,12 @@
         }
 
         .noPaid {
+            height: 28px;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 4px;
-            padding: 4px 8px 4px 4px;
+            padding: 4px 8px;
             border: 1px solid #4489ff;
             border-radius: 30px;
             margin-bottom: 9px;
