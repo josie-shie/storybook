@@ -169,7 +169,7 @@ function Account() {
         setSubmittedState(newSubmittedState);
 
         const obj: UpdateMemberInfoRequest = {
-            username: formState.username,
+            username: formState.username === userInfo.username ? '' : formState.username,
             avatarPath: imgUpload || userInfo.avatarPath,
             birthday: userInfo.birthday || dayjs(formState.birthday).valueOf() / 1000,
             wechat: formState.wechat,
@@ -288,7 +288,7 @@ function Account() {
                             placeholder="添加昵称"
                             submitted={false}
                             type="text"
-                            value={formState.username}
+                            value={formState.username || ''}
                         />
                     )}
 
