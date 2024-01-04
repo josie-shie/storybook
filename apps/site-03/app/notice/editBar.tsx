@@ -95,9 +95,7 @@ function EditBar() {
             <div className={style.deleteBox}>
                 <Button
                     className={style.delete}
-                    onClick={() => {
-                        void handleDeleteMail();
-                    }}
+                    onClick={handleDeleteMail}
                     size="small"
                     variant="contained"
                 >
