@@ -272,9 +272,7 @@ function Account() {
                                 <span className={style.text}>昵称</span>
                                 <button
                                     className={style.button}
-                                    onClick={() => {
-                                        editUserName();
-                                    }}
+                                    onClick={editUserName}
                                     type="button"
                                 >
                                     编辑
