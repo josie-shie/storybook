@@ -12,7 +12,8 @@ import { useMessageStore } from '@/app/messageStore';
 import { useUserStore } from '@/app/userStore';
 import { useNoticeStore } from '../../noticeStore';
 import backLeftArrowImg from '../../img/backLeftArrow.png';
-import SentIcon from '../img/sent.png';
+import SentActiveIcon from '../img/sentActive.png';
+import SentDisableIcon from '../img/sentDisable.png';
 import SmileIcon from '../img/smile.png';
 import style from './chatInfo.module.scss';
 
@@ -148,9 +149,17 @@ function ChatInfo() {
                             <MessageRoom
                                 addMessage={addMessage}
                                 messagesList={messagesList}
+                                sendActiveIcon={
+                                    <Image alt="send" height={24} src={SentActiveIcon} width={24} />
+                                }
                                 sendBtn
-                                sendIcon={
-                                    <Image alt="sent" height={24} src={SentIcon} width={24} />
+                                sendDisableIcon={
+                                    <Image
+                                        alt="send"
+                                        height={24}
+                                        src={SentDisableIcon}
+                                        width={24}
+                                    />
                                 }
                                 silence={forbiddenWords}
                                 smileIcon={
