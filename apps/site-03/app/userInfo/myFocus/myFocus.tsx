@@ -21,7 +21,7 @@ function MyFocusSkeleton() {
                     <div className={style.left}>
                         <Skeleton animation="wave" height={46} variant="circular" width={46} />
                         <div className={style.center}>
-                            <Skeleton animation="wave" height={24} sx={{ mt: '8px' }} width={70} />
+                            <Skeleton animation="wave" height={24} sx={{ mt: '4px' }} width={70} />
                             <div style={{ display: 'flex', gap: '6px' }}>
                                 <p>粉丝: 0</p>
                                 <p>解锁: 0</p>
