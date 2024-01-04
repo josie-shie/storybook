@@ -50,7 +50,7 @@ export interface UnreadMessageNotify {
 
 export interface NotifyMessage {
     uid: string;
-    notifyType: 0 | 1 | 2;
+    notifyType: 0 | 1 | 2 | 3;
     newMessageNotify: NewMessageNotify;
     unreadMessageNotify: UnreadMessageNotify;
 }

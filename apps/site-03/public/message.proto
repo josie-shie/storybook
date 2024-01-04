@@ -87,6 +87,7 @@ enum NotifyType {
   noMessage = 0;
   unreadMessage = 1; // 未讀訊息
   newMessage = 2;    // 新訊息
+  newEmail = 3;    // 新訊息
 }
 
 // 新訊息提示
