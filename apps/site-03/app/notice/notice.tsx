@@ -1,5 +1,5 @@
 'use client';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { getMailMemberList } from 'data-center';
 import NoData from '@/components/baseNoData/noData';
 import MailCard from './components/mailCard';
@@ -9,10 +9,11 @@ import MailInfo from './components/mailInfo';
 
 function MailList() {
     const editStatus = useNoticeStore.use.editStatus();
-    const setMailList = useNoticeStore.use.setMailList();
     const mailList = useNoticeStore.use.mailList();
+    const fetchTimerRef = useRef<NodeJS.Timeout | null>(null);
 
     useEffect(() => {
+        const setMailList = useNoticeStore.getState().setMailList;
         const getMailList = async () => {
             const res = await getMailMemberList();
             if (!res.success) {
@@ -20,9 +21,16 @@ function MailList() {
                 return;
             }
             setMailList(res.data);
+            fetchTimerRef.current = setTimeout(getMailList, 30000);
         };
 
         void getMailList();
+
+        return () => {
+            if (fetchTimerRef.current) {
+                clearTimeout(fetchTimerRef.current);
+            }
+        };
     }, []);
 
     if (mailList.length === 0) {
