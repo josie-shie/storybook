@@ -72,6 +72,7 @@ function Account() {
     };
     const router = useRouter();
     const userInfo = useUserStore.use.userInfo();
+    const setUserInfo = useUserStore.use.setUserInfo();
     const formState = useAccountStore.use.formState();
     const submittedState = useAccountStore.use.submittedState();
     const imgSrc = useAccountStore.use.imgSrc();
@@ -184,6 +185,7 @@ function Account() {
             const errorMessage = res.error ? res.error : '修改个人资讯失败，请确认资料无误';
             setIsVisible(errorMessage, 'error');
             setSubmittedState(newSubmittedState);
+            setUserInfo({ ...userInfo, username: formState.username });
             setIsSubmitted(false);
             return;
         }
