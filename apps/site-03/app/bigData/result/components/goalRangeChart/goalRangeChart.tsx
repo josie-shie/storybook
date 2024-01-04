@@ -9,11 +9,13 @@ interface ChartType {
 }
 
 function GoalRangeChart({ chartList = [] }: { chartList: ChartType[] }) {
-    const seriesList = chartList.map(item => ({
-        value: item.value.length,
-        name: item.label,
-        itemStyle: { borderWidth: 2, borderColor: '#fff', color: item.color }
-    }));
+    const seriesList = chartList.map(item => {
+        return {
+            value: item.value.length,
+            name: item.label,
+            itemStyle: { borderWidth: 2, borderColor: '#fff', color: item.color }
+        };
+    });
 
     const options = {
         tooltip: {
@@ -36,7 +38,8 @@ function GoalRangeChart({ chartList = [] }: { chartList: ChartType[] }) {
                 },
                 labelLine: {
                     show: false
-                }
+                },
+                minAngle: 5
             }
         ]
     };

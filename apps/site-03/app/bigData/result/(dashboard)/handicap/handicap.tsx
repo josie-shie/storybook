@@ -128,10 +128,24 @@ function Handicap() {
 
     const calculateHeight = (data: Record<string, Statistics>, date: string) => {
         const total = data[date].upper + data[date].draw + data[date].lower;
+        const upperHeight = (data[date].upper / total) * 100;
+        const drawHeight = (data[date].draw / total) * 100;
+        const lowerHeight = (data[date].lower / total) * 100;
+
+        const heights = [upperHeight, drawHeight, lowerHeight];
+        const minHeightIndex = heights.findIndex(h => h < 1 && h > 0);
+        if (minHeightIndex !== -1) {
+            const adjustment = 2 - heights[minHeightIndex];
+            heights[minHeightIndex] = 2; // 将小于1%的部分调整至2%，让画面有最小高度显示
+
+            const maxIndex = heights.indexOf(Math.max(...heights));
+            heights[maxIndex] -= adjustment; // 从最大的数值中扣，维持整体100%
+        }
+
         return {
-            upperHeight: (data[date].upper / total) * 100,
-            drawHeight: (data[date].draw / total) * 100,
-            lowerHeight: (data[date].lower / total) * 100
+            upperHeight: heights[0],
+            drawHeight: heights[1],
+            lowerHeight: heights[2]
         };
     };
 
