@@ -60,7 +60,7 @@ function GameCard({ plan, onOpenPaidDialog }: GameCardProps) {
     return (
         <div className={style.gameCard}>
             <div className={style.detail}>
-                <Avatar />
+                <Avatar shadow src={plan.avatarPath === '0' ? '' : plan.avatarPath} />
                 <div className={style.details}>
                     <span>{plan.memberName}</span>
                     <div className={style.tagsContainer}>
