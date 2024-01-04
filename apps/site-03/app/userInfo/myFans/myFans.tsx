@@ -4,14 +4,42 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { getFollowers, updateFollow, unFollow } from 'data-center';
 import type { GetFollowersResponse } from 'data-center';
+import { Skeleton } from '@mui/material';
 import { useNotificationStore } from '@/app/notificationStore';
 import { useUserStore } from '@/app/userStore';
 import NoData from '@/components/baseNoData/noData';
-import Loading from '@/components/loading/loading';
 import backLeftArrowImg from '../img/backLeftArrow.png';
 import { useFansMemberStore } from './myFansStore';
 import MasterItem from './components/masterItem/masterItem';
 import style from './myFans.module.scss';
+
+function MyFocusSkeleton() {
+    return (
+        <>
+            {Array.from({ length: 7 }).map((_, idx) => (
+                <div className={style.skeletonBox} key={`${idx.toString()}`}>
+                    <div className={style.left}>
+                        <Skeleton animation="wave" height={48} variant="circular" width={46} />
+                        <div className={style.center}>
+                            <Skeleton animation="wave" height={24} sx={{ mt: '8px' }} width={70} />
+                            <div style={{ display: 'flex', gap: '6px' }}>
+                                <p>粉丝: 0</p>
+                                <p>解锁: 0</p>
+                            </div>
+                        </div>
+                    </div>
+                    <Skeleton
+                        animation="wave"
+                        height={30}
+                        sx={{ mt: '8px', borderRadius: '16px' }}
+                        variant="rounded"
+                        width={68}
+                    />
+                </div>
+            ))}
+        </>
+    );
+}
 
 function MyFocus() {
     const router = useRouter();
@@ -79,7 +107,7 @@ function MyFocus() {
 
     const renderContent = () => {
         if (isLoading) {
-            return <Loading />;
+            return <MyFocusSkeleton />;
         }
 
         if (filteredMasterItems.length > 0) {
