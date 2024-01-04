@@ -7,7 +7,6 @@ import type { RegisterRequest } from 'data-center';
 import { sendVerificationSms, register } from 'data-center';
 import { useSearchParams } from 'next/navigation';
 import {
-    NicknameInput,
     PhoneNumberInput,
     VertifyCode,
     PasswordInput,
@@ -28,10 +27,6 @@ const schema = yup.object().shape({
         .required(),
     verificationCode: yup.string().required(),
     countryCode: yup.string().required(),
-    username: yup
-        .string()
-        .matches(/^[\u4e00-\u9fa5a-zA-Z0-9]{2,10}$/)
-        .required(),
     verifyToken: yup.string().required()
 });
 
@@ -59,14 +54,12 @@ function Register() {
             password: '',
             verificationCode: '',
             countryCode: '+86',
-            username: '',
             verifyToken: ''
         },
         mode: 'onChange'
     });
 
-    const { countryCode, mobileNumber, password, verificationCode, username, verifyToken } =
-        watch();
+    const { countryCode, mobileNumber, password, verificationCode, verifyToken } = watch();
 
     const getVerificationCode = async () => {
         const res = await sendVerificationSms({
@@ -127,11 +120,7 @@ function Register() {
 
     const isSendVerificationCodeDisable = !countryCode || !mobileNumber;
     const isRegisterDisable =
-        isSendVerificationCodeDisable ||
-        !verificationCode ||
-        !username ||
-        !password ||
-        !verifyToken;
+        isSendVerificationCodeDisable || !verificationCode || !password || !verifyToken;
 
     return (
         <form className={style.register} onSubmit={handleSubmit(onSubmit)}>
@@ -168,13 +157,6 @@ function Register() {
                             vertifyDisable={isSendVerificationCodeDisable}
                         />
                     )}
-                />
-            </FormControl>
-            <FormControl fullWidth>
-                <Controller
-                    control={control}
-                    name="username"
-                    render={({ field }) => <NicknameInput error={errors.username} field={field} />}
                 />
             </FormControl>
             <FormControl fullWidth>
