@@ -43,7 +43,7 @@ function Handicap() {
               info: {}
           };
 
-    if (!dataList || dataList.list.length === 0) return <NoData />;
+    if (!dataList || dataList.list.length === 0) return <NoData text="暂无资料" />;
 
     return (
         <div className={style.handicap}>

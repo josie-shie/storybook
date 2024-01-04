@@ -54,7 +54,7 @@ function MyAnalysis() {
 
         return (
             <div className={style.main}>
-                <NoData />
+                <NoData text="暂无资料" />
             </div>
         );
     };

@@ -7,6 +7,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Image from 'next/image';
 import { useContestInfoStore } from '@/app/contestInfoStore';
 import type { FilterList } from '@/components/contestFilter/contestFilter';
+import NoData from '@/components/baseNoData/noData';
 import BaseBanner from './components/baseBanner';
 import GameCard from './components/gameCard';
 import style from './football.module.scss';
@@ -221,9 +222,7 @@ function ContestList({
                         {displayFinishList.map(matchId => {
                             return <GameCard key={matchId} matchId={matchId} />;
                         })}
-                        {status !== 'all' && displayList.length === 0 && (
-                            <li className={style.noneContest}>暂无赛事</li>
-                        )}
+                        {status !== 'all' && displayList.length === 0 && <NoData text="暂无资料" />}
                     </ul>
                     {((status === 'all' && rows.finish < finishList.length) ||
                         (status !== 'all' && rows.full < currentList.length)) &&

@@ -102,7 +102,7 @@ function RecordFilter({
                         );
                     })
                 ) : (
-                    <NoData />
+                    <NoData text="暂无资料" />
                 )}
             </div>
         </BottomDrawer>

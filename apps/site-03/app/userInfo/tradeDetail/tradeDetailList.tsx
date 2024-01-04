@@ -66,7 +66,7 @@ function TradeDetailList({ end, start, tradeType, page, setPage }: TradeDetailLi
                     )}
                 </>
             ) : (
-                <NoData />
+                <NoData text="暂无资料" />
             )}
         </>
     );
