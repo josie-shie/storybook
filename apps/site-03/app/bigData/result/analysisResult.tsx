@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
 import { timestampToString } from 'lib';
 import type { GetFootballStatsRequest } from 'data-center';
-import { getFootballStats } from 'data-center';
+import { getFootballStats, getMemberInfo } from 'data-center';
 import Image from 'next/image';
 import Link from 'next/link';
 import HeaderTitleFilter from '@/components/header/headerTitleFilter';
@@ -161,6 +161,7 @@ function ResultContent() {
     const checkboxState = useHandicapAnalysisFormStore.use.checkboxState();
     const { handicap, overUnder } = checkboxState;
     const setDialogContentType = useAnalyticsResultStore.use.setDialogContentType();
+    const setUserInfo = useUserStore.use.setUserInfo();
 
     const tabStyle = {
         gap: 4,
@@ -207,6 +208,13 @@ function ResultContent() {
     const handlePlanTabClick = (tabName: string) => {
         const index = tabList.findIndex(item => item.params === tabName);
         setDefaultPageIndex(index || 0);
+    };
+
+    const getUserInfo = async () => {
+        const res = await getMemberInfo();
+        if (res.success) {
+            setUserInfo(res.data);
+        }
     };
 
     const fetchData = async () => {
@@ -264,6 +272,7 @@ function ResultContent() {
         setAnalysisResultData(res.data);
         setHandicapEchart(res.data);
         setLoading(false);
+        void getUserInfo();
     };
 
     useEffect(() => {
