@@ -19,7 +19,7 @@ function MyFocusSkeleton() {
             {Array.from({ length: 7 }).map((_, idx) => (
                 <div className={style.skeletonBox} key={`${idx.toString()}`}>
                     <div className={style.left}>
-                        <Skeleton animation="wave" height={46} variant="circular" width={46} />
+                        <Skeleton animation="wave" height={48} variant="circular" width={46} />
                         <div className={style.center}>
                             <Skeleton animation="wave" height={24} sx={{ mt: '8px' }} width={70} />
                             <div style={{ display: 'flex', gap: '6px' }}>

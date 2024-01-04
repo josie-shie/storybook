@@ -21,7 +21,7 @@ function DetailSkeleton() {
                     <Skeleton animation="wave" height={32} variant="circular" width={32} />
                     <div className={style.center}>
                         <Skeleton animation="wave" height={24} width={70} />
-                        <Skeleton animation="wave" height={17} width={120} />
+                        <Skeleton animation="wave" height={16} width={120} />
                     </div>
                     <div className={style.right}>
                         <h1>平台币 0</h1>

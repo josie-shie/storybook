@@ -17,11 +17,11 @@ function MyAnalysisSkeleton() {
             {Array.from({ length: 4 }).map((_, idx) => (
                 <div className={style.skeletonBox} key={`${idx.toString()}`}>
                     <div className={style.user}>
-                        <Skeleton animation="wave" height={46} variant="circular" width={46} />
+                        <Skeleton animation="wave" height={48} variant="circular" width={46} />
                         <div className={style.userInfo}>
                             <Skeleton
                                 animation="wave"
-                                height={22}
+                                height={24}
                                 sx={{ mt: '4px' }}
                                 variant="rounded"
                                 width={100}
@@ -30,7 +30,7 @@ function MyAnalysisSkeleton() {
                         <div className={style.unlockStatus}>
                             <Skeleton
                                 animation="wave"
-                                height={17}
+                                height={16}
                                 sx={{ mt: '4px' }}
                                 variant="rounded"
                                 width={50}
@@ -47,7 +47,7 @@ function MyAnalysisSkeleton() {
                     <Skeleton animation="wave" height={60} variant="rounded" width={366} />
                     <Skeleton
                         animation="wave"
-                        height={20}
+                        height={16}
                         sx={{ my: '6px' }}
                         variant="rounded"
                         width={100}
