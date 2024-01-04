@@ -162,12 +162,14 @@ function ResultContent() {
     const { handicap, overUnder } = checkboxState;
     const setDialogContentType = useAnalyticsResultStore.use.setDialogContentType();
     const setUserInfo = useUserStore.use.setUserInfo();
+    const allowSlideScroll = useAnalyticsResultStore.use.tabSlideScroll();
 
     const tabStyle = {
         gap: 4,
         swiperOpen: true,
         scrolling: true,
-        buttonRadius: 30
+        buttonRadius: 30,
+        allowSlideScroll
     };
 
     const tabList = useMemo(
@@ -340,6 +342,7 @@ function ResultContent() {
                     </div>
                     <div className={style.dashboard}>
                         <Tabs
+                            allowSlideScroll={tabStyle.allowSlideScroll}
                             buttonRadius={tabStyle.buttonRadius}
                             defaultValue={defaultPageIndex}
                             gap={tabStyle.gap}

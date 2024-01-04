@@ -72,6 +72,8 @@ interface AnalysisResultState extends InitState {
     setDialogContent: (dialogContent: ReactNode) => void;
     defaultPageIndex: number;
     setDefaultPageIndex: (defaultPageIndex: number) => void;
+    tabSlideScroll: boolean;
+    setTabSlideScroll: (tabSlideScroll: boolean) => void;
 }
 
 let useAnalyticsResultStore: StoreWithSelectors<AnalysisResultState>;
@@ -363,6 +365,12 @@ const initialState = (
     setDefaultPageIndex: (defaultPageIndex: number) => {
         set(state => {
             return { ...state, defaultPageIndex };
+        });
+    },
+    tabSlideScroll: true,
+    setTabSlideScroll: (tabSlideScroll: boolean) => {
+        set(state => {
+            return { ...state, tabSlideScroll };
         });
     }
 });

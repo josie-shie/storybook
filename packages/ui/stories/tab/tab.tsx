@@ -70,6 +70,10 @@ interface TabsProps {
      * Tab change event
      */
     onTabChange?: (value: string) => void;
+    /**
+     * Control Tab Slide scrolling
+     */
+    allowSlideScroll?: boolean;
 }
 
 function Tab(props: TabProps) {
@@ -87,6 +91,7 @@ function Tabs({
     fullBlock = false,
     buttonRadius = 50,
     onTabChange,
+    allowSlideScroll = true,
     ...props
 }: TabsProps) {
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
@@ -344,6 +349,8 @@ function Tabs({
 
             {swiperOpen ? (
                 <Swiper
+                    allowSlideNext={allowSlideScroll}
+                    allowSlidePrev={allowSlideScroll}
                     autoHeight={autoHeight}
                     onSlideChange={swiper => {
                         const tabIndex = swiper.activeIndex;

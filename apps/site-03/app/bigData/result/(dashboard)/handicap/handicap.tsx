@@ -83,6 +83,7 @@ function ChartBottomText({ playTypeSwitch }: { playTypeSwitch: PlayTypeValue }) 
 function useDetectScrollEnds({ node }: { node: React.RefObject<HTMLElement> }) {
     const [isAtTop, setIsAtTop] = useState(true);
     const [isAtBottom, setIsAtBottom] = useState(false);
+    const setTabSlideScroll = useAnalyticsResultStore.use.setTabSlideScroll();
 
     const handleScroll = useCallback(() => {
         if (node.current) {
@@ -94,15 +95,35 @@ function useDetectScrollEnds({ node }: { node: React.RefObject<HTMLElement> }) {
         }
     }, [node]);
 
+    const handleTouchStart = useCallback(
+        (event: TouchEvent) => {
+            if (node.current && node.current.contains(event.target as Node)) {
+                setTabSlideScroll(false);
+            }
+        },
+        [node, setTabSlideScroll]
+    );
+
+    const handleTouchEnd = useCallback(() => {
+        if (node.current) {
+            setTabSlideScroll(true);
+        }
+    }, [node, setTabSlideScroll]);
+
     useEffect(() => {
         const current = node.current;
         if (current) {
             current.addEventListener('scroll', handleScroll);
+            current.addEventListener('touchstart', handleTouchStart);
+            current.addEventListener('touchend', handleTouchEnd);
+
             return () => {
                 current.removeEventListener('scroll', handleScroll);
+                current.removeEventListener('touchstart', handleTouchStart);
+                current.removeEventListener('touchend', handleTouchEnd);
             };
         }
-    }, [handleScroll, node]);
+    }, [handleScroll, handleTouchEnd, handleTouchStart, node]);
 
     return { isAtTop, isAtBottom };
 }
