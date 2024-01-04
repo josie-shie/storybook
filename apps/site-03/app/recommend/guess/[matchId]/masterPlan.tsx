@@ -110,7 +110,7 @@ function MasterPlanList({ isLogin, setAmount, setOpenPaid, setSelectedGameId }: 
         setOpenPaid(true);
     };
 
-    if (masterPlanList.length === 0) return <BaseNoData />;
+    if (masterPlanList.length === 0) return <BaseNoData text="暂无资料" />;
     return (
         <>
             {masterPlanList.map((el, idx) => (

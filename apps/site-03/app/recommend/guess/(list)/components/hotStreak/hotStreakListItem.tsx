@@ -19,7 +19,7 @@ function HotStreakListItem() {
                 <CircularProgress size={24} />
             </div>
         );
-    if (masterRankList.length === 0) return <BaseNoData />;
+    if (masterRankList.length === 0) return <BaseNoData text="暂无资料" />;
     return (
         <>
             {masterRankList.map(item => {
