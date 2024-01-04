@@ -6,7 +6,7 @@ interface InitState {
 }
 
 export interface FormState {
-    nickName: string;
+    username: string;
     birthday: number;
     birthdayDisplay: string;
     phoneNumber: string;
@@ -17,7 +17,7 @@ export interface FormState {
 }
 
 interface SubmittedState {
-    nickName: boolean;
+    username: boolean;
     birthday: boolean;
     phoneNumber: boolean;
     wechat: boolean;
@@ -44,7 +44,7 @@ let useAccountStore: StoreWithSelectors<AccountState>;
 const initialState = (set: (updater: (state: AccountState) => Partial<AccountState>) => void) => ({
     loading: false,
     formState: {
-        nickName: '',
+        username: '',
         birthday: 0,
         phoneNumber: '',
         wechat: '',
@@ -54,7 +54,7 @@ const initialState = (set: (updater: (state: AccountState) => Partial<AccountSta
         birthdayDisplay: '添加生日'
     },
     submittedState: {
-        nickName: false,
+        username: false,
         birthday: false,
         phoneNumber: false,
         wechat: false,

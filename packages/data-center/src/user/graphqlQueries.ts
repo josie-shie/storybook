@@ -103,7 +103,9 @@ export const UPDATE_PASSWORD_MUTATION = `
 
 export const UPDATE_MEMBER_INFO_MUTATION = `
     mutation updateMemberInfo($input: UpdateMemberInfoInput!) {
-        updateMemberInfo(input: $input) 
+        updateMemberInfo(input: $input) {
+            responseCode
+        }
     }
 `;
 
