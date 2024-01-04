@@ -1,8 +1,7 @@
 .masterPlan {
-    height: calc(100vh - 434px);
+    height: calc(100dvh - 434px);
     margin-top: -24px;
     border-radius: 16px 16px 0 0;
-    overflow: auto;
     background: #f8f8f8;
 
     .distribLoading {
@@ -10,12 +9,14 @@
         justify-content: center;
         align-items: center;
         min-height: 174px;
+        border-radius: 16px 16px 0 0;
         margin-bottom: 8px;
         background: #fff;
     }
 
     .area {
         padding: 12px;
+        border-radius: 16px 16px 0 0;
         margin-bottom: 8px;
         background: #fff;
 
@@ -74,6 +75,13 @@
                         display: inline-block;
                         vertical-align: middle;
                     }
+                }
+
+                .trendBtn {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    gap: 4px;
                 }
             }
         }

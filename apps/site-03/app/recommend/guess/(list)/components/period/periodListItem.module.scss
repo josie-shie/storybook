@@ -56,10 +56,14 @@
     color: #8d8d8d;
     display: flex;
     gap: 12px;
-}
 
-.victory {
-    color: #f85640;
+    .victory {
+        color: #f85640;
+    }
+
+    .lose {
+        color: #009a63;
+    }
 }
 
 .winRateBlock {

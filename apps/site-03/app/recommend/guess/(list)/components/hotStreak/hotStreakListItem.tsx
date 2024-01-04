@@ -36,7 +36,10 @@ function HotStreakListItem() {
                             <span>{item.ranking}</span>
                         </div>
                         <div className={style.avatarContainer}>
-                            <Avatar src={item.memberAvatar === '0' ? '' : item.memberAvatar} />
+                            <Avatar
+                                shadow
+                                src={item.memberAvatar === '0' ? '' : item.memberAvatar}
+                            />
                         </div>
                         <div className={style.content}>
                             <div className={style.name}>{item.memberName}</div>

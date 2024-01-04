@@ -14,7 +14,7 @@ import AnalyzeColumn from './analyze';
 import Title from './img/title.png';
 import style from './masterPlan.module.scss';
 import { useGuessDetailStore } from './guessDetailStore';
-import starIcon from './img/star.png';
+import starIcon from './img/coin.png';
 
 interface TrendPropsType {
     isLogin: boolean;
@@ -57,6 +57,7 @@ function Trend({ isLogin, setAmount, setOpenPaid }: TrendPropsType) {
                 ) : (
                     <div className={style.mask}>
                         <button
+                            className={style.trendBtn}
                             onClick={() => {
                                 if (!isLogin) {
                                     setAuthQuery('login');
@@ -67,10 +68,17 @@ function Trend({ isLogin, setAmount, setOpenPaid }: TrendPropsType) {
                             }}
                             type="button"
                         >
-                            <Image alt="" className={style.coin} src={starIcon} width={16} />{' '}
+                            <Image
+                                alt=""
+                                className={style.coin}
+                                height={14}
+                                src={starIcon}
+                                width={14}
+                            />{' '}
                             {highWinRateTrend.unlockPrice} 金币解锁本场
                         </button>
                         <button
+                            className={style.trendBtn}
                             onClick={() => {
                                 if (!isLogin) {
                                     setAuthQuery('login');
@@ -81,7 +89,13 @@ function Trend({ isLogin, setAmount, setOpenPaid }: TrendPropsType) {
                             }}
                             type="button"
                         >
-                            <Image alt="" className={style.coin} src={starIcon} width={16} />{' '}
+                            <Image
+                                alt=""
+                                className={style.coin}
+                                height={14}
+                                src={starIcon}
+                                width={14}
+                            />{' '}
                             365天VIP无限看专案
                         </button>
                     </div>
