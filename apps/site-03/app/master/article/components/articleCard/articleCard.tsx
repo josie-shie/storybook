@@ -108,11 +108,11 @@ function ArticleCard({ article }: { article: RecommendPost }) {
                                     text={`${article.tag.winMaxAccurateStreak} 連紅`}
                                 />
                             )}
-                            {article.tag.weekRanking > 0 && (
+                            {article.tag.quarterRanking > 0 && (
                                 <TagSplit
                                     isBlueBg={false}
-                                    number={article.tag.weekRanking}
-                                    text="周"
+                                    number={article.tag.quarterRanking}
+                                    text="季"
                                 />
                             )}
                             {article.tag.monthRanking > 0 && (
@@ -122,11 +122,11 @@ function ArticleCard({ article }: { article: RecommendPost }) {
                                     text="月"
                                 />
                             )}
-                            {article.tag.quarterRanking > 0 && (
+                            {article.tag.weekRanking > 0 && (
                                 <TagSplit
                                     isBlueBg={false}
-                                    number={article.tag.quarterRanking}
-                                    text="季"
+                                    number={article.tag.weekRanking}
+                                    text="周"
                                 />
                             )}
                         </div>
