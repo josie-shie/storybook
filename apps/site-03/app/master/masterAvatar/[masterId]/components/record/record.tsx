@@ -13,6 +13,12 @@ const formatRate = (lose: number, win: number) => {
 type TabType = 'summary' | 'handicap' | 'size';
 type DateTab = 'byWeek' | 'byMonth' | 'byQuarter';
 
+const filterDate = {
+    byWeek: '周',
+    byMonth: '月',
+    byQuarter: '季'
+};
+
 function Record({
     individualGuessInfo,
     dateActiveTab
@@ -21,12 +27,6 @@ function Record({
     dateActiveTab: DateTab;
 }) {
     const [showTab, setShowTab] = useState<TabType>('summary');
-
-    const filterDate = {
-        byWeek: '周',
-        byMonth: '月',
-        byQuarter: '季'
-    };
 
     const chartOption = {
         tooltip: {

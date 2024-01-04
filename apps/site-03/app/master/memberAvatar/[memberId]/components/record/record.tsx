@@ -11,8 +11,21 @@ const formatRate = (lose: number, win: number) => {
 };
 
 type TabType = 'summary' | 'handicap' | 'size';
+type DateTab = 'byWeek' | 'byMonth' | 'byQuarter';
 
-function Record({ individualGuessInfo }: { individualGuessInfo: MemberIndividualGuessRecord }) {
+const filterDate = {
+    byWeek: '周',
+    byMonth: '月',
+    byQuarter: '季'
+};
+
+function Record({
+    individualGuessInfo,
+    dateActiveTab
+}: {
+    individualGuessInfo: MemberIndividualGuessRecord;
+    dateActiveTab: DateTab;
+}) {
     const [showTab, setShowTab] = useState<TabType>('summary');
 
     const chartOption = {
@@ -23,7 +36,7 @@ function Record({ individualGuessInfo }: { individualGuessInfo: MemberIndividual
         title: {
             text: `{large|${
                 individualGuessInfo.rank === 0 ? '1000+' : individualGuessInfo.rank
-            }} \n周排名`,
+            }} \n${filterDate[dateActiveTab]}排名`,
             left: '46%',
             top: '47%',
             textAlign: 'center',
@@ -99,7 +112,7 @@ function Record({ individualGuessInfo }: { individualGuessInfo: MemberIndividual
                             <div className={style.win}>胜 {individualGuessInfo.summary.win}</div>
                             <div className={style.walk}>走 {individualGuessInfo.summary.draw}</div>
                             <div className={style.defeat}>
-                                負 {individualGuessInfo.summary.lose}
+                                负 {individualGuessInfo.summary.lose}
                             </div>
                         </div>
                     </div>
@@ -140,7 +153,7 @@ function Record({ individualGuessInfo }: { individualGuessInfo: MemberIndividual
                             <div className={style.win}>胜 {individualGuessInfo.handicap.win}</div>
                             <div className={style.walk}>走 {individualGuessInfo.handicap.draw}</div>
                             <div className={style.defeat}>
-                                負 {individualGuessInfo.handicap.lose}
+                                负 {individualGuessInfo.handicap.lose}
                             </div>
                         </div>
                     </div>
@@ -179,7 +192,7 @@ function Record({ individualGuessInfo }: { individualGuessInfo: MemberIndividual
                             <div className={style.win}>胜 {individualGuessInfo.handicap.win}</div>
                             <div className={style.walk}>走 {individualGuessInfo.handicap.draw}</div>
                             <div className={style.defeat}>
-                                負 {individualGuessInfo.handicap.lose}
+                                负 {individualGuessInfo.handicap.lose}
                             </div>
                         </div>
                     </div>

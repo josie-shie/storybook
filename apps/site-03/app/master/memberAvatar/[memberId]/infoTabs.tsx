@@ -120,7 +120,10 @@ function InfoTabs({ params }: { params: { memberId: string } }) {
                         </div>
                     </div>
                     <div className={style.recentGames}>
-                        <Record individualGuessInfo={individualGuessInfo} />
+                        <Record
+                            dateActiveTab={dateActiveTab}
+                            individualGuessInfo={individualGuessInfo}
+                        />
                     </div>
                     <div className={style.title}>
                         <span>猜球战绩({guessLength})</span>
