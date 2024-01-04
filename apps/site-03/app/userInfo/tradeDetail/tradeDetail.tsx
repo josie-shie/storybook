@@ -3,8 +3,8 @@ import { useEffect, useState } from 'react';
 import { getMemberTransactionList, type ChangeTypeCategory } from 'data-center';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { Skeleton } from '@mui/material';
 import Header from '@/components/header/headerTitleDetail';
-import Loading from '@/components/loading/loading';
 import style from './tradeDetail.module.scss';
 import FilterIcon from './img/filterIcon.png';
 import TradeDetailList from './tradeDetailList';
@@ -12,6 +12,26 @@ import DateRangeDrawer from './components/dateOptionDrawer/dateOptionDrawer';
 import TradeTypeDrawer from './components/tradeTypeDrawer/tradeTypeDrawer';
 import { useTardeDetailStore, type DateOption } from './tradeDetailStore';
 import { dateOption, tradeOption } from './options';
+
+function DetailSkeleton() {
+    return (
+        <>
+            {Array.from({ length: 9 }).map((_, idx) => (
+                <div className={style.skeletonBox} key={`${idx.toString()}`}>
+                    <Skeleton animation="wave" height={32} variant="circular" width={32} />
+                    <div className={style.center}>
+                        <Skeleton animation="wave" height={24} width={70} />
+                        <Skeleton animation="wave" height={17} width={120} />
+                    </div>
+                    <div className={style.right}>
+                        <h1>平台币 0</h1>
+                        <p>可用馀额：0</p>
+                    </div>
+                </div>
+            ))}
+        </>
+    );
+}
 
 function TradeDetail() {
     const router = useRouter();
@@ -87,9 +107,7 @@ function TradeDetail() {
                     </div>
                 </div>
                 {isLoading ? (
-                    <div className={style.loaderBox}>
-                        <Loading />
-                    </div>
+                    <DetailSkeleton />
                 ) : (
                     <TradeDetailList
                         end={end}
