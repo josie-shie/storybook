@@ -59,7 +59,7 @@ function RecordContent({ setPage, page }: ContentProps) {
                     )}
                 </>
             ) : (
-                <NoData />
+                <NoData text="暂无资料" />
             )}
         </div>
     );

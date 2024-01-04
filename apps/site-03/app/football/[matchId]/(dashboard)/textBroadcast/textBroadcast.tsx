@@ -28,7 +28,7 @@ function TextBroadcast({ broadcastList }: { broadcastList: GetLiveText[] }) {
                     </ul>
                 </>
             ) : (
-                <NoData />
+                <NoData text="暂无资料" />
             )}
         </>
     );

@@ -73,7 +73,7 @@ function ArticleList() {
             {articleList.length === 0 && isNoData === null && <SkeletonLayout />}
 
             {articleList.length === 0 && isNoData ? (
-                <NoData />
+                <NoData text="暂无资料" />
             ) : (
                 <ul className={style.article}>
                     {articleList.map(article => {

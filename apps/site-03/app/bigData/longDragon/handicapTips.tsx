@@ -182,7 +182,7 @@ function HandicapTips({
                     </div>
                 ))
             ) : (
-                <NoData />
+                <NoData text="暂无资料" />
             )}
         </>
     );

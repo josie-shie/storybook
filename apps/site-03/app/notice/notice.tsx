@@ -26,7 +26,7 @@ function MailList() {
     }, []);
 
     if (mailList.length === 0) {
-        return <NoData />;
+        return <NoData text="暂无资料" />;
     }
 
     return (
