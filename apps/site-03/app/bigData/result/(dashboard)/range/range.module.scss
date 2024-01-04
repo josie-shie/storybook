@@ -68,6 +68,7 @@
     width: 100%;
     max-width: 600px;
     margin: 0 auto;
+    border-bottom: 1px solid #f3f3f3;
 
     .header {
         background-color: #d9d9d9;
@@ -84,7 +85,7 @@
     .cell {
         padding: 10px;
         color: #4489ff;
-        background-color: #fdfdf8;
+        background-color: #fff;
         font-size: 12px;
         font-style: normal;
         font-weight: 600;
