@@ -15,6 +15,7 @@
             justify-content: center;
             border-radius: 32px;
             font-family: 'PingFang SC';
+            width: 128px;
 
             img {
                 margin-right: 8px;
@@ -37,10 +38,18 @@
                 justify-content: space-between;
                 font-weight: 500;
                 font-size: 12px;
+                width: 102px;
+                margin-left: auto;
 
                 > div {
                     color: #8d8d8d;
                     margin-top: 4px;
+                }
+
+                > p {
+                    text-align: right;
+                    padding-right: 8px;
+                    width: 40px;
                 }
             }
         }

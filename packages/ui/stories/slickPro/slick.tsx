@@ -8,7 +8,7 @@ import ButtonBase from '@mui/material/ButtonBase';
 import style from './slick.module.scss';
 
 type Styling = 'text' | 'underline' | 'button';
-type TabsType = { label: string; href: string; status: string | null }[];
+type TabsType = { label: string; href?: string; status: string | null }[];
 interface SlickProps {
     autoHeight?: boolean;
     tabs: TabsType;

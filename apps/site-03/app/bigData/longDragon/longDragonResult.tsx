@@ -224,7 +224,7 @@ function LongDragonResult() {
                                         hintsSelectProgres={hintsSelectProgres}
                                     />
                                 ) : (
-                                    <NoData />
+                                    <NoData text="暂无资料" />
                                 )}
                             </>
                         )}

@@ -52,7 +52,7 @@ function ContestList() {
         }
     };
 
-    if (displayList.length === 0) return <BaseNoData />;
+    if (displayList.length === 0) return <BaseNoData text="暂无资料" />;
     return (
         <>
             {displayList.map(matchId => {

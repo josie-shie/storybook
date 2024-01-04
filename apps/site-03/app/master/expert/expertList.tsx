@@ -178,7 +178,7 @@ function MasterList() {
             {mentorList.length === 0 && isNoData === null && <SkeletonLayout />}
 
             {mentorList.length === 0 && isNoData ? (
-                <NoData />
+                <NoData text="暂无资料" />
             ) : (
                 <ul className={style.article}>
                     <div className={style.expertLayout}>

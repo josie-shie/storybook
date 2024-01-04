@@ -18,7 +18,7 @@ function PeriodListItem({ isLoading }: { isLoading: boolean }) {
                 <CircularProgress size={24} />
             </div>
         );
-    if (rankList.length === 0) return <BaseNoData />;
+    if (rankList.length === 0) return <BaseNoData text="暂无资料" />;
     return (
         <>
             {rankList.map(item => {

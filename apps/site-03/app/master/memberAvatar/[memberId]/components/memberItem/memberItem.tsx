@@ -89,7 +89,7 @@ function MasterItem({ params }: { params: { memberId: string } }) {
             {masterItem.length === 0 && isNoData === null && <SkeletonLayout />}
 
             {masterItem.length === 0 && isNoData ? (
-                <NoData />
+                <NoData text="暂无资料" />
             ) : (
                 <>
                     {masterItem.map(item => {

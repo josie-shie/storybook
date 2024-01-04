@@ -1,14 +1,11 @@
 'use client';
 import { Slick } from 'ui/stories/slickPro/slick';
 import { type GetContestListResponse } from 'data-center';
-import { useSearchParams } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import Football from './football';
 import style from './list.module.scss';
 
 function List({ todayContest }: { todayContest: GetContestListResponse }) {
-    const searchParams = useSearchParams();
-    const status = searchParams.get('status');
     const allRef = useRef<HTMLDivElement>(null);
     const progressRef = useRef<HTMLDivElement>(null);
     const scheduleRef = useRef<HTMLDivElement>(null);
@@ -22,26 +19,21 @@ function List({ todayContest }: { todayContest: GetContestListResponse }) {
     const tabList = [
         {
             label: '全部',
-            href: '/',
             status: null
         },
         {
             label: '已开赛',
-            href: '/?status=progress',
             status: 'progress'
         },
         {
             label: '赛程',
-            href: '/?status=schedule',
             status: 'schedule'
         },
         {
             label: '完场',
-            href: '/?status=result',
             status: 'result'
         }
     ];
-    const initialSlide = status ? tabList.findIndex(tab => tab.status === status) : 0;
 
     const onSlickEnd = (nowIndex, prevIndex: number) => {
         const tabRef = [allRef, progressRef, scheduleRef, resultRef];
@@ -54,28 +46,26 @@ function List({ todayContest }: { todayContest: GetContestListResponse }) {
     return (
         <Slick
             className={style.slick}
-            initialSlide={initialSlide}
+            initialSlide={0}
             onSlickEnd={onSlickEnd}
             styling="button"
             tabs={tabList}
         >
             <div className={style.largeGap}>
-                {secendRender || !status ? (
-                    <Football ref={allRef} status="all" todayContest={todayContest} />
-                ) : null}
+                <Football ref={allRef} status="all" todayContest={todayContest} />
             </div>
             <div className={style.largeGap}>
-                {secendRender || status === 'progress' ? (
+                {secendRender ? (
                     <Football ref={progressRef} status="progress" todayContest={todayContest} />
                 ) : null}
             </div>
             <div className={style.largeGap}>
-                {secendRender || status === 'schedule' ? (
+                {secendRender ? (
                     <Football ref={scheduleRef} status="schedule" todayContest={todayContest} />
                 ) : null}
             </div>
             <div className={style.largeGap}>
-                {secendRender || status === 'result' ? (
+                {secendRender ? (
                     <Football ref={resultRef} status="result" todayContest={todayContest} />
                 ) : null}
             </div>
