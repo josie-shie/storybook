@@ -69,6 +69,7 @@ function ChatInfo() {
                     });
                 }
                 setMessageList(res.list);
+                return;
             }
             if (
                 res.action === 'new_message' &&
@@ -80,6 +81,13 @@ function ChatInfo() {
                         return [...prev, res.message];
                     }
                     return prev;
+                });
+                return;
+            }
+            if (res.action === 'read_msg') {
+                void messageService.send({
+                    action: 'get_room_list',
+                    type: 'private'
                 });
             }
         };

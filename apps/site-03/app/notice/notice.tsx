@@ -1,6 +1,8 @@
 'use client';
 import { useEffect } from 'react';
 import { getMailMemberList } from 'data-center';
+import { mqttService } from 'lib';
+import type { NotifyMessage } from 'lib';
 import NoData from '@/components/baseNoData/noData';
 import MailCard from './components/mailCard';
 import style from './notice.module.scss';
@@ -9,20 +11,23 @@ import MailInfo from './components/mailInfo';
 
 function MailList() {
     const editStatus = useNoticeStore.use.editStatus();
-    const setMailList = useNoticeStore.use.setMailList();
     const mailList = useNoticeStore.use.mailList();
 
     useEffect(() => {
-        const getMailList = async () => {
-            const res = await getMailMemberList();
-            if (!res.success) {
-                console.error(res.error);
-                return;
+        const setMailList = useNoticeStore.getState().setMailList;
+        const getMailList = async (notify?: NotifyMessage) => {
+            if (notify?.notifyType === 3) {
+                const res = await getMailMemberList();
+                if (!res.success) {
+                    console.error(res.error);
+                    return;
+                }
+                setMailList(res.data);
             }
-            setMailList(res.data);
         };
 
         void getMailList();
+        mqttService.getNotifyMessage(getMailList);
     }, []);
 
     if (mailList.length === 0) {
