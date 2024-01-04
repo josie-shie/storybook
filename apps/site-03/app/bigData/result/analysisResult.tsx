@@ -187,7 +187,7 @@ function ResultContent() {
                 params: 'range'
             },
             {
-                label: '全场波胆',
+                label: '波胆',
                 content: <Bodan />,
                 params: 'bodan'
             }
