@@ -38,10 +38,17 @@ interface GameCardProps {
     onOpenPaidDialog: () => void;
 }
 
+const sortHotStreakFirst = (highlights: ProGuess['highlights']) => {
+    const copyArray = [...highlights];
+    copyArray.sort((a, b) => b.type - a.type);
+    return copyArray;
+};
+
 function GameCard({ plan, onOpenPaidDialog }: GameCardProps) {
     const detail = useGuessDetailStore.use.detail();
     const unlockPrice = useGuessDetailStore.use.masterPlanPrice();
 
+    const sortTags = sortHotStreakFirst(plan.highlights);
     const iconMap = {
         WIN: <Image alt="winIcon" src={Win} width={18} />,
         LOSE: <Image alt="loseIcon" src={Lose} width={18} />,
@@ -64,7 +71,7 @@ function GameCard({ plan, onOpenPaidDialog }: GameCardProps) {
                 <div className={style.details}>
                     <span>{plan.memberName}</span>
                     <div className={style.tagsContainer}>
-                        {plan.highlights.map(el => (
+                        {sortTags.map(el => (
                             <HighlightTag key={el.id} type={el.type} value={el.value} />
                         ))}
                     </div>
