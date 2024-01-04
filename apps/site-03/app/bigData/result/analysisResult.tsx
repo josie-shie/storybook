@@ -8,7 +8,6 @@ import { getFootballStats } from 'data-center';
 import Image from 'next/image';
 import Link from 'next/link';
 import HeaderTitleFilter from '@/components/header/headerTitleFilter';
-import Loading from '@/components/loading/loading';
 import { useUserStore } from '@/app/userStore';
 import { useHandicapAnalysisFormStore } from '../formStore';
 import ErrorDialog from '../analysis/components/dialog/dialog';
@@ -22,6 +21,7 @@ import Range from './(dashboard)/range/range';
 import Tutorial from './tutorial';
 import systemErrorImage from './img/systemError.png';
 import emptyDataImage from './img/emptyData.png';
+import AnalyzeData from './img/analyzeData.png';
 
 type HandicapSideType = 'home' | 'away';
 
@@ -346,7 +346,15 @@ function ResultContent() {
                                 return (
                                     <Tab key={item.params} label={item.label} value={item.params}>
                                         {loading ? (
-                                            <Loading loadingText="资料产生中..." />
+                                            <div className={style.analyze}>
+                                                <Image
+                                                    alt=""
+                                                    height={100}
+                                                    src={AnalyzeData}
+                                                    width={100}
+                                                />
+                                                <span>资料分析中 请稍候</span>
+                                            </div>
                                         ) : (
                                             item.content
                                         )}

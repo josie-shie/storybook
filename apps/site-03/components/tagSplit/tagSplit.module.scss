@@ -1,21 +1,23 @@
 .tagLayout {
     width: 50px;
     height: 18px;
-    background: linear-gradient(90deg, #609bff 0%, #0157e9 100%);
     border-radius: 4px;
     margin-right: 4px;
+    overflow: hidden;
     display: flex;
     align-items: center;
-    justify-content: center;
-    overflow: hidden;
+    justify-content: space-between;
 
     .tagLeft {
         width: 40%;
-        margin: 1px;
+        height: 16px;
+        margin-left: 1px;
         font-size: 12px;
         font-weight: 600;
         color: #fff;
         text-align: center;
+        border-top-left-radius: 3px;
+        border-bottom-left-radius: 3px;
     }
 
     .tagRight {
@@ -28,5 +30,9 @@
         border-top-right-radius: 3px;
         border-bottom-right-radius: 3px;
         text-align: center;
+
+        .tagNumber {
+            padding-left: 2px;
+        }
     }
 }

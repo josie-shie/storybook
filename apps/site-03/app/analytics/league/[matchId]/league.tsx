@@ -19,7 +19,7 @@ function LeagueContent() {
     return (
         <div className={style.league}>
             <Tabs
-                labels={['總積分', '半場積分', '主場積分', '客場積分']}
+                labels={['总积分', '半场积分', '主场积分', '客场积分']}
                 paths={[
                     `/analytics/league/${matchId}`,
                     `/analytics/league/${matchId}?status=half`,
@@ -32,14 +32,14 @@ function LeagueContent() {
                 <div className={style.tableHead}>
                     <div className={style.row}>
                         <div className={style.td}>排名</div>
-                        <div className={style.td}>球隊</div>
-                        <div className={style.td}>賽</div>
-                        <div className={style.td}>勝</div>
+                        <div className={style.td}>球队</div>
+                        <div className={style.td}>赛</div>
+                        <div className={style.td}>胜</div>
                         <div className={style.td}>平</div>
-                        <div className={style.td}>負</div>
+                        <div className={style.td}>负</div>
                         <div className={style.td}>得</div>
                         <div className={style.td}>失</div>
-                        <div className={style.td}>積</div>
+                        <div className={style.td}>积</div>
                     </div>
                 </div>
                 <div className={style.tableBody}>

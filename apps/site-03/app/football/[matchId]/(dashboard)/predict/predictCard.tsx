@@ -41,13 +41,25 @@ function PredictCard({ predictInfo }: { predictInfo: RecommendPost }) {
                                 />
                             )}
                             {predictInfo.tag.quarterRanking > 0 && (
-                                <TagSplit number={predictInfo.tag.quarterRanking} text="季" />
+                                <TagSplit
+                                    isBlueBg={false}
+                                    number={predictInfo.tag.quarterRanking}
+                                    text="季"
+                                />
                             )}
                             {predictInfo.tag.monthRanking > 0 && (
-                                <TagSplit number={predictInfo.tag.monthRanking} text="月" />
+                                <TagSplit
+                                    isBlueBg={false}
+                                    number={predictInfo.tag.monthRanking}
+                                    text="月"
+                                />
                             )}
                             {predictInfo.tag.weekRanking > 0 && (
-                                <TagSplit number={predictInfo.tag.weekRanking} text="周" />
+                                <TagSplit
+                                    isBlueBg={false}
+                                    number={predictInfo.tag.weekRanking}
+                                    text="周"
+                                />
                             )}
                         </div>
                     </div>

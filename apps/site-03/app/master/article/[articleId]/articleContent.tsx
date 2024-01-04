@@ -131,9 +131,9 @@ function ArticleContent({ params, article, fetchPostDetail }: ArticleContentProp
                                     alt=""
                                     height={48}
                                     src={
-                                        article.homeTeam.logo === '0'
+                                        (article.homeTeam.logo === '0'
                                             ? DefaultLogo
-                                            : article.homeTeam.logo
+                                            : article.homeTeam.logo) || DefaultLogo
                                     }
                                     width={48}
                                 />
@@ -145,9 +145,9 @@ function ArticleContent({ params, article, fetchPostDetail }: ArticleContentProp
                                     alt=""
                                     height={48}
                                     src={
-                                        article.awayTeam.logo === '0'
+                                        (article.awayTeam.logo === '0'
                                             ? DefaultLogo
-                                            : article.awayTeam.logo
+                                            : article.awayTeam.logo) || DefaultLogo
                                     }
                                     width={48}
                                 />
