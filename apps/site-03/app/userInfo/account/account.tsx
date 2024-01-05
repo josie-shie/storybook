@@ -72,6 +72,7 @@ function Account() {
     };
     const router = useRouter();
     const userInfo = useUserStore.use.userInfo();
+    const setUserInfo = useUserStore.use.setUserInfo();
     const formState = useAccountStore.use.formState();
     const submittedState = useAccountStore.use.submittedState();
     const imgSrc = useAccountStore.use.imgSrc();
@@ -158,7 +159,7 @@ function Account() {
         }
 
         const newSubmittedState = {
-            nickName: userInfo.username !== '',
+            username: formState.username !== '',
             birthday: formState.birthday !== 0,
             phoneNumber: formState.phoneNumber !== '',
             wechat: formState.wechat !== '',
@@ -169,6 +170,7 @@ function Account() {
         setSubmittedState(newSubmittedState);
 
         const obj: UpdateMemberInfoRequest = {
+            username: submittedState.username ? '' : formState.username,
             avatarPath: imgUpload || userInfo.avatarPath,
             birthday: userInfo.birthday || dayjs(formState.birthday).valueOf() / 1000,
             wechat: formState.wechat,
@@ -182,6 +184,9 @@ function Account() {
         if (!res.success) {
             const errorMessage = res.error ? res.error : '修改个人资讯失败，请确认资料无误';
             setIsVisible(errorMessage, 'error');
+            setSubmittedState(newSubmittedState);
+            setUserInfo({ ...userInfo, username: formState.username });
+            setIsSubmitted(false);
             return;
         }
 
@@ -197,13 +202,22 @@ function Account() {
         setIsSubmitted(false);
     };
 
+    const editUserName = () => {
+        const newSubmittedState = {
+            ...submittedState,
+            username: false
+        };
+        setSubmittedState(newSubmittedState);
+        setIsSubmitted(false);
+    };
+
     useEffect(() => {
         if (userInfo.avatarPath && userInfo.avatarPath !== '0') {
             setImgSrc(userInfo.avatarPath);
         }
 
         setFormState({
-            nickName: userInfo.username || '',
+            username: userInfo.username || '',
             birthday: userInfo.birthday || 0,
             birthdayDisplay:
                 userInfo.birthday !== 0
@@ -217,7 +231,7 @@ function Account() {
         });
 
         const newSubmittedState = {
-            nickName: Boolean(userInfo.username),
+            username: Boolean(userInfo.username),
             birthday: userInfo.birthday !== 0,
             phoneNumber: Boolean(userInfo.mobileNumber),
             wechat: Boolean(userInfo.wechat),
@@ -252,15 +266,32 @@ function Account() {
                     <p>*图片规格为100*100</p>
                 </div>
                 <form onSubmit={handleSubmit}>
-                    <FormField
-                        label="昵称"
-                        name="nickName"
-                        onChange={handleInputChange}
-                        placeholder="添加昵称"
-                        submitted={submittedState.nickName}
-                        type="text"
-                        value={formState.nickName}
-                    />
+                    {submittedState.username ? (
+                        <div className={style.item}>
+                            <span className={style.title}>
+                                <span className={style.text}>昵称</span>
+                                <button
+                                    className={style.button}
+                                    onClick={editUserName}
+                                    type="button"
+                                >
+                                    编辑
+                                </button>
+                            </span>
+                            <span className={style.content}>{formState.username}</span>
+                        </div>
+                    ) : (
+                        <FormField
+                            label="昵称"
+                            name="username"
+                            onChange={handleInputChange}
+                            placeholder="添加昵称"
+                            submitted={false}
+                            type="text"
+                            value={formState.username || ''}
+                        />
+                    )}
+
                     <span className={style.displayTitle}>
                         生日{submittedState.birthday ? null : ' :'}
                     </span>
@@ -355,7 +386,7 @@ function Account() {
                         </div>
                     )}
                     <p className={style.tip}>
-                        ＊「头像」、「简介」可重新编辑，其馀栏位提交后无法再次修改，请谨慎填写
+                        ＊「头像」、「昵称」、「简介」可重新编辑，其馀栏位提交后无法再次修改，请谨慎填写
                     </p>
                     {!isSubmitted && (
                         <button

@@ -1,5 +1,4 @@
 .vsBox {
-    margin-top: -14px;
     padding: 16px 12px 45px;
     width: 100%;
     background: linear-gradient(to right, #2c5eb2 0%, #3a82fb 100%);
@@ -86,7 +85,7 @@
 
                 .play {
                     color: #fff;
-                    font-size: 12px;
+                    font-size: 14px;
                 }
 
                 .line {
@@ -120,8 +119,8 @@
 
                     > img {
                         position: absolute;
-                        right: 0;
-                        bottom: 0;
+                        right: -1px;
+                        bottom: -1px;
                     }
                 }
 
@@ -144,7 +143,7 @@
 
                         .ing {
                             color: rgba(255 255 255 / 80%);
-                            font-size: 12px;
+                            font-size: 14px;
                         }
 
                         .away {

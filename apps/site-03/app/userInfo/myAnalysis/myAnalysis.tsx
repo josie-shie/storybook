@@ -3,13 +3,60 @@ import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { getUnlockedPost } from 'data-center';
+import { Skeleton } from '@mui/material';
 import { useUserStore } from '@/app/userStore';
 import NoData from '@/components/baseNoData/noData';
-import Loading from '@/components/loading/loading';
 import backLeftArrowImg from '../img/backLeftArrow.png';
 import ArticleItem from './components/articleItem/articleItem';
 import style from './myAnalysis.module.scss';
 import { useArticleStore } from './myAnalysisStore';
+
+function MyAnalysisSkeleton() {
+    return (
+        <>
+            {Array.from({ length: 4 }).map((_, idx) => (
+                <div className={style.skeletonBox} key={`${idx.toString()}`}>
+                    <div className={style.user}>
+                        <Skeleton animation="wave" height={48} variant="circular" width={46} />
+                        <div className={style.userInfo}>
+                            <Skeleton
+                                animation="wave"
+                                height={24}
+                                sx={{ mt: '4px' }}
+                                variant="rounded"
+                                width={100}
+                            />
+                        </div>
+                        <div className={style.unlockStatus}>
+                            <Skeleton
+                                animation="wave"
+                                height={16}
+                                sx={{ mt: '4px' }}
+                                variant="rounded"
+                                width={50}
+                            />
+                        </div>
+                    </div>
+                    <Skeleton
+                        animation="wave"
+                        height={20}
+                        sx={{ my: '6px' }}
+                        variant="rounded"
+                        width={100}
+                    />
+                    <Skeleton animation="wave" height={60} variant="rounded" width={366} />
+                    <Skeleton
+                        animation="wave"
+                        height={16}
+                        sx={{ my: '6px' }}
+                        variant="rounded"
+                        width={100}
+                    />
+                </div>
+            ))}
+        </>
+    );
+}
 
 function MyAnalysis() {
     const router = useRouter();
@@ -37,7 +84,7 @@ function MyAnalysis() {
         if (isLoading) {
             return (
                 <div className={style.main}>
-                    <Loading />
+                    <MyAnalysisSkeleton />
                 </div>
             );
         }
@@ -54,7 +101,7 @@ function MyAnalysis() {
 
         return (
             <div className={style.main}>
-                <NoData />
+                <NoData text="暂无资料" />
             </div>
         );
     };

@@ -43,7 +43,7 @@ function PlansList({
     return (
         <>
             {myPlansData.length === 0 ? (
-                <NoData />
+                <NoData text="暂无资料" />
             ) : (
                 <>
                     {myPlansData.map(row => (

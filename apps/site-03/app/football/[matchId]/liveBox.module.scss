@@ -9,17 +9,21 @@
 }
 
 .scoreboard {
+    position: relative;
     height: calc(100% - 70px);
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
     font-weight: 500;
+    z-index: 1;
 
     .gameInfo {
         width: 100%;
         display: flex;
+        flex: 1;
         justify-content: space-between;
+        align-items: flex-start;
         padding: 18px 18px 0;
 
         .team {
@@ -84,7 +88,7 @@
             margin-top: 12px;
 
             .text {
-                font-size: 14px;
+                font-size: 12px;
                 font-weight: 500;
             }
         }
@@ -104,26 +108,8 @@
         display: flex;
         justify-content: center;
 
-        .gameTime {
-            .timePoint {
-                animation-name: timepoint;
-                animation-duration: 1s;
-                animation-iteration-count: infinite;
-            }
-
-            @keyframes timepoint {
-                0% {
-                    opacity: 0;
-                }
-
-                50% {
-                    opacity: 1;
-                }
-
-                100% {
-                    opacity: 0;
-                }
-            }
+        :global .gameTime {
+            height: 24px;
         }
 
         .homeScore {
@@ -149,10 +135,6 @@
             font-size: 46px;
             font-weight: 800;
         }
-    }
-
-    .placeholder {
-        width: calc(100% - 36px);
     }
 }
 
@@ -186,5 +168,63 @@
 
     to {
         opacity: 1;
+    }
+}
+
+.goalAnimation {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    .gradient {
+        width: 100%;
+        height: 100%;
+
+        .goalBar {
+            width: 100%;
+            height: 36px;
+            padding: 0 12px;
+            position: absolute;
+            bottom: 0;
+            display: flex;
+            align-items: center;
+            column-gap: 10px;
+        }
+    }
+
+    &.homeGoal {
+        display: block;
+
+        .gradient {
+            background: linear-gradient(
+                90deg,
+                rgb(68 137 255 / 70%) 0%,
+                rgb(255 255 255 / 0%) 103.33%
+            );
+
+            .goalBar {
+                background: linear-gradient(90deg, #0052dd 16.21%, rgb(68 137 255 / 0%) 103.72%);
+            }
+        }
+    }
+
+    &.awayGoal {
+        display: block;
+
+        .gradient {
+            background: linear-gradient(
+                270deg,
+                rgb(68 137 255 / 70%) 0%,
+                rgb(255 255 255 / 0%) 103.33%
+            );
+
+            .goalBar {
+                flex-direction: row-reverse;
+                background: linear-gradient(270deg, #0052dd 16.21%, rgb(68 137 255 / 0%) 103.72%);
+            }
+        }
     }
 }

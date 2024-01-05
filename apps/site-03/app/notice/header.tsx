@@ -29,9 +29,7 @@ function HeaderBar() {
         <HeaderOption backHandler={backHandler} title="消息中心">
             <Button
                 className={style.editBtn}
-                onClick={() => {
-                    handleClickEdit();
-                }}
+                onClick={handleClickEdit}
                 size="small"
                 variant="outlined"
             >

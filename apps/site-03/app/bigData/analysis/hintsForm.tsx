@@ -10,6 +10,40 @@ import starIcon from './img/star.png';
 import selectIcon from './img/select.png';
 import switchIcon from './img/switch.png';
 import Dialog from './components/dialog/dialog';
+import SinglePay from './img/singlePay.png';
+import RechargeIcon from './img/rechargeIcon.png';
+
+function RechargeAlert() {
+    const router = useRouter();
+    const setOpenDialog = useHandicapAnalysisFormStore.use.setOpenNormalDialog();
+
+    const recharge = () => {
+        setOpenDialog(false);
+        router.push('/userInfo/subscribe');
+    };
+
+    return (
+        <>
+            <div className={style.dialogMessage}>
+                <Image alt="" height={100} src={RechargeIcon} width={100} />
+                <p>余额不足，请充值</p>
+            </div>
+            <div className={style.footer}>
+                <div
+                    className={style.close}
+                    onClick={() => {
+                        setOpenDialog(false);
+                    }}
+                >
+                    返回
+                </div>
+                <div className={style.confirm} onClick={recharge}>
+                    前往充值
+                </div>
+            </div>
+        </>
+    );
+}
 
 function PaymentAlert() {
     const router = useRouter();
@@ -24,9 +58,10 @@ function PaymentAlert() {
     return (
         <>
             <div className={style.dialogMessage}>
+                <Image alt="" height={100} src={SinglePay} width={100} />
                 <p className={style.message}>
                     支付
-                    <Image alt="" height={14} src={starIcon.src} width={14} /> 40
+                    <Image alt="" height={14} src={starIcon.src} width={14} /> 80
                 </p>
                 <p>购买今日长龙赛事？</p>
             </div>
@@ -86,6 +121,7 @@ function OptionButton({
 
 function HandicapAnalysisForm() {
     const router = useRouter();
+    const userInfo = useUserStore.use.userInfo();
 
     const openDialog = useHandicapAnalysisFormStore.use.openNoramlDialog();
     const setOpenDialog = useHandicapAnalysisFormStore.use.setOpenNormalDialog();
@@ -95,7 +131,7 @@ function HandicapAnalysisForm() {
 
     const hintsSelectPlay = useLongDragonStore.use.hintsSelectPlay() || 'HANDICAP';
     const hintsSelectType = useLongDragonStore.use.hintsSelectType() || 'OVER';
-    const hintsSelectProgres = useLongDragonStore.use.hintsSelectProgres() || 'HALF';
+    const hintsSelectProgres = useLongDragonStore.use.hintsSelectProgres() || 'FULL';
 
     const setHintsSelectPlay = useLongDragonStore.use.setHintsSelectPlay();
     const setHintsSelectType = useLongDragonStore.use.setHintsSelectType();
@@ -104,7 +140,7 @@ function HandicapAnalysisForm() {
     useEffect(() => {
         setHintsSelectPlay('HANDICAP');
         setHintsSelectType('OVER');
-        setHintsSelectProgres('HALF');
+        setHintsSelectProgres('FULL');
         setDialogContent(<PaymentAlert />);
     }, []);
 
@@ -128,7 +164,13 @@ function HandicapAnalysisForm() {
 
     const payLong = () => {
         if (!isVip) {
-            setOpenDialog(true);
+            if (userInfo.balance < 80) {
+                setDialogContent(<RechargeAlert />);
+                setOpenDialog(true);
+            } else {
+                setDialogContent(<PaymentAlert />);
+                setOpenDialog(true);
+            }
         } else {
             router.push('/bigData/longDragon');
         }
@@ -214,7 +256,7 @@ function HandicapAnalysisForm() {
                             }}
                             type="button"
                         >
-                            半場
+                            半场
                         </button>
                         <Image
                             alt=""
@@ -232,13 +274,13 @@ function HandicapAnalysisForm() {
                             }}
                             type="button"
                         >
-                            全場
+                            全场
                         </button>
                     </div>
                 </div>
             </div>
             <div className={style.tip}>
-                数据中心会將符合您条件设定的24小時內即將開場賽事汇整列出
+                数据中心会将符合您条件设定的24小时内即将开场赛事汇整列出
             </div>
             {/* <div className={style.error}>{hintsError}</div> */}
             <motion.button
@@ -248,7 +290,7 @@ function HandicapAnalysisForm() {
                 whileTap={{ scale: 0.9 }}
             >
                 <Image alt="" height={14} src={starIcon.src} width={14} />
-                获得今日长龙赛事
+                80 获得今日长龙赛事
             </motion.button>
             <Dialog
                 content={<div className={style.dialogContent}>{dialogContent}</div>}

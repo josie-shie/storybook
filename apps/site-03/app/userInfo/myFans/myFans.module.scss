@@ -38,6 +38,31 @@
     background: #fff;
     border-radius: 16px 16px 0 0;
 
+    .skeletonBox {
+        display: flex;
+        border-bottom: 1px solid #d3d0d0;
+        margin-bottom: 16px;
+        padding-bottom: 24px;
+        justify-content: space-between;
+
+        .left {
+            display: flex;
+            gap: 8px;
+        }
+
+        .center {
+            height: 56px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        p {
+            font-size: 14px;
+            color: #757575;
+        }
+    }
+
     .search {
         display: flex;
         align-items: center;

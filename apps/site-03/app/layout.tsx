@@ -4,6 +4,7 @@ import type { ReactNode } from 'react';
 import type { Metadata } from 'next';
 import { cookies } from 'next/headers';
 import { getMemberInfo, type GetMemberInfoResponse } from 'data-center';
+import Script from 'next/script';
 import Notification from '@/app/notification';
 import Auth from '@/app/(auth)/auth';
 import GlobalStore from './globalStore';
@@ -17,6 +18,25 @@ export const metadata: Metadata = {
     title: '未来体育 | FutureSport',
     description: 'The best sport site'
 };
+
+function GoogleAnalytics() {
+    return (
+        <>
+            <Script
+                src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}`}
+            />
+            <Script id="google-analytics">
+                {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+   
+            gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}');
+          `}
+            </Script>
+        </>
+    );
+}
 
 async function RootLayout({ children }: { children: ReactNode }) {
     function printMemoryUsage() {
@@ -56,6 +76,7 @@ async function RootLayout({ children }: { children: ReactNode }) {
                         </WebsocketService>
                     </MqttService>
                 </GlobalStore>
+                <GoogleAnalytics />
             </body>
         </html>
     );

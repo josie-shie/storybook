@@ -1,12 +1,12 @@
 import Image from 'next/image';
 import { timestampToString } from 'lib';
-import { type PaymentData } from '../tradeDetailStore';
+import { type GetMemberTransactionData } from 'data-center';
 import style from './payment.module.scss';
 import incomeIcon from './img/income.png';
 import paymentIcon from './img/payment.png';
 
 interface PropsType {
-    data: PaymentData;
+    data: GetMemberTransactionData;
 }
 
 function Payment({ data }: PropsType) {

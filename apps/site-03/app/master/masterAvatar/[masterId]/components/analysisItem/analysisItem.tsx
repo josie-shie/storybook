@@ -164,7 +164,7 @@ function AnalysisItem({
             {predictArticleList.length === 0 && isNoData === null && <SkeletonLayout />}
 
             {predictArticleList.length === 0 && isNoData ? (
-                <NoData />
+                <NoData text="暂无资料" />
             ) : (
                 <ul className={style.article}>
                     {predictArticleList.map(item => {

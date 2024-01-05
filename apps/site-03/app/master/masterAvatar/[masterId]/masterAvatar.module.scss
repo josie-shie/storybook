@@ -1,4 +1,26 @@
 .masterAvatar {
-    height: calc(100dvh - 265px);
-    overflow-y: auto;
+    margin-top: -30px;
+    padding: 8px 12px 0;
+    border-radius: 16px 16px 0 0;
+    background: #fff;
+
+    .slick {
+        :global {
+            .ui-slick-tabs-container {
+                padding: 8px 0;
+                border-bottom: 1px solid #d9d9d9;
+            }
+
+            .ui-slick-button {
+                font-size: 14px;
+            }
+        }
+
+        .largeGap {
+            height: calc(100dvh - 265px);
+            overflow-y: auto;
+            margin-top: 12px;
+            touch-action: pan-y;
+        }
+    }
 }

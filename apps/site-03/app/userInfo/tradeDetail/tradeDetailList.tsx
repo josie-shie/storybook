@@ -1,22 +1,17 @@
 'use client';
 import { InfiniteScroll } from 'ui';
 import { CircularProgress } from '@mui/material';
-import { getMemberTransactionList } from 'data-center';
+import { getMemberTransactionList, type ChangeTypeCategory } from 'data-center';
 import NoData from '@/components/baseNoData/noData';
 import RechargeItem from './rechargeItem/rechargeItem';
 import Payment from './payment/payment';
-import {
-    useTardeDetailStore,
-    type RechargeData,
-    type PaymentData,
-    type TradeTypeOption
-} from './tradeDetailStore';
+import { useTardeDetailStore } from './tradeDetailStore';
 import style from './tradeDetail.module.scss';
 
 interface TradeDetailListProps {
     end: number;
     start: number;
-    tradeType: TradeTypeOption;
+    tradeType: ChangeTypeCategory;
     page: number;
     setPage: (page: number) => void;
 }
@@ -53,9 +48,9 @@ function TradeDetailList({ end, start, tradeType, page, setPage }: TradeDetailLi
                 <>
                     {tradeDetailList.map(item =>
                         item.changeTypeCategory === 'RECHARGE' ? (
-                            <RechargeItem data={item.data as RechargeData} key={item.balanceId} />
+                            <RechargeItem data={item.data} key={item.balanceId} />
                         ) : (
-                            <Payment data={item.data as PaymentData} key={item.balanceId} />
+                            <Payment data={item.data} key={item.balanceId} />
                         )
                     )}
                     {tradeDetailList.length < pagination.totalCount ? (
@@ -71,7 +66,7 @@ function TradeDetailList({ end, start, tradeType, page, setPage }: TradeDetailLi
                     )}
                 </>
             ) : (
-                <NoData />
+                <NoData text="暂无资料" />
             )}
         </>
     );

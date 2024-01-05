@@ -6,11 +6,15 @@ interface PropsType {
     src?: string;
     size?: number;
     borderColor?: string;
+    shadow?: boolean;
 }
 
-function Avatar({ src, size, borderColor }: PropsType) {
+function Avatar({ src, size, shadow, borderColor }: PropsType) {
     return (
-        <div className={style.avatarContainer} style={{ width: `${size}px`, height: `${size}px` }}>
+        <div
+            className={`${style.avatarContainer} ${shadow ? style.shadow : ''}`}
+            style={{ width: `${size}px`, height: `${size}px` }}
+        >
             <Image
                 alt="avatar"
                 className={style.avatar}

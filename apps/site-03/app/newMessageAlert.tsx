@@ -64,9 +64,11 @@ function NewMessageAlert() {
                         <Badge badgeContent={unreadMessageNotify.totalCount} color="primary">
                             <Image alt="football" src={MessageInfo} width={21} />
                         </Badge>
-                        <p className={style.message}>
-                            來自&nbsp;<span>{newMessageNotify.sender}</span>&nbsp;的新訊息
-                        </p>
+                        <div className={style.message}>
+                            <div>來自 &nbsp;</div>
+                            <div className={style.content}>{newMessageNotify.sender}</div>
+                            <div> &nbsp; 的新訊息</div>
+                        </div>
                         <Link className={style.goSingle} href="/notice/chat">
                             查看
                         </Link>

@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import { useRouter } from 'next/navigation';
 import Header from '@/components/header/headerTitleBack';
 import Footer from '@/components/footer/footer';
+import style from './guessDetail.module.scss';
 import VsBox from './vsBox';
 import MasterPlan from './masterPlan';
 import { createGuessDetailStore } from './guessDetailStore';
@@ -31,8 +32,10 @@ function GuessDetail({ backHistory }: { backHistory: boolean }) {
     return (
         <>
             <Header back={back} title={headerProps.title} />
-            <VsBox />
-            <MasterPlan />
+            <div className={style.container}>
+                <VsBox />
+                <MasterPlan />
+            </div>
             <Footer />
         </>
     );

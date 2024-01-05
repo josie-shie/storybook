@@ -1,12 +1,14 @@
 import Image from 'next/image';
 import type { ProGuess } from 'data-center';
+import Link from 'next/link';
 import Avatar from '@/components/avatar/avatar';
 import Tag from '@/components/tag/tag';
-import Fire from './img/fire.png';
+import TagSplit from '@/components/tagSplit/tagSplit';
+import Fire from './img/hot.png';
 import Win from './img/win.png';
 import Lose from './img/lose.png';
 import Gone from './img/gone.png';
-import Star from './img/star.png';
+import Star from './img/coin.png';
 import BigWin from './img/bigWin.png';
 import BigLose from './img/bigLose.png';
 import BigGone from './img/bigGone.png';
@@ -26,8 +28,10 @@ function HighlightTag({ type, value }: TagProps) {
         2: '季'
     };
     if (type === 3)
-        return <Tag icon={<Image alt="" src={Fire} width={8} />} text={`${value}连红`} />;
-    return <Tag background="#4489ff" text={`${periodMap[type]}榜${value}`} />;
+        return (
+            <Tag icon={<Image alt="" height={10} src={Fire} width={10} />} text={`${value}连红`} />
+        );
+    return <TagSplit isBlueBg={false} number={value} text={periodMap[type]} />;
 }
 
 interface GameCardProps {
@@ -35,10 +39,17 @@ interface GameCardProps {
     onOpenPaidDialog: () => void;
 }
 
+const sortHotStreakFirst = (highlights: ProGuess['highlights']) => {
+    const copyArray = [...highlights];
+    copyArray.sort((a, b) => b.type - a.type);
+    return copyArray;
+};
+
 function GameCard({ plan, onOpenPaidDialog }: GameCardProps) {
     const detail = useGuessDetailStore.use.detail();
     const unlockPrice = useGuessDetailStore.use.masterPlanPrice();
 
+    const sortTags = sortHotStreakFirst(plan.highlights);
     const iconMap = {
         WIN: <Image alt="winIcon" src={Win} width={18} />,
         LOSE: <Image alt="loseIcon" src={Lose} width={18} />,
@@ -57,11 +68,16 @@ function GameCard({ plan, onOpenPaidDialog }: GameCardProps) {
     return (
         <div className={style.gameCard}>
             <div className={style.detail}>
-                <Avatar />
+                <Link
+                    className={style.avatarLink}
+                    href={`/master/masterAvatar/${plan.memberId}?status=analysis`}
+                >
+                    <Avatar shadow src={plan.avatarPath === '0' ? '' : plan.avatarPath} />
+                </Link>
                 <div className={style.details}>
                     <span>{plan.memberName}</span>
                     <div className={style.tagsContainer}>
-                        {plan.highlights.map(el => (
+                        {sortTags.map(el => (
                             <HighlightTag key={el.id} type={el.type} value={el.value} />
                         ))}
                     </div>

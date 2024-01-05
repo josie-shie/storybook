@@ -1,6 +1,8 @@
 'use client';
 import { useEffect } from 'react';
 import { getMailMemberList } from 'data-center';
+import { mqttService } from 'lib';
+import type { NotifyMessage } from 'lib';
 import NoData from '@/components/baseNoData/noData';
 import MailCard from './components/mailCard';
 import style from './notice.module.scss';
@@ -9,10 +11,10 @@ import MailInfo from './components/mailInfo';
 
 function MailList() {
     const editStatus = useNoticeStore.use.editStatus();
-    const setMailList = useNoticeStore.use.setMailList();
     const mailList = useNoticeStore.use.mailList();
 
     useEffect(() => {
+        const setMailList = useNoticeStore.getState().setMailList;
         const getMailList = async () => {
             const res = await getMailMemberList();
             if (!res.success) {
@@ -22,11 +24,18 @@ function MailList() {
             setMailList(res.data);
         };
 
+        const refetchMailList = async (notify?: NotifyMessage) => {
+            if (notify?.notifyType === 3) {
+                await getMailList();
+            }
+        };
+
         void getMailList();
+        mqttService.getNotifyMessage(refetchMailList);
     }, []);
 
     if (mailList.length === 0) {
-        return <NoData />;
+        return <NoData text="暂无资料" />;
     }
 
     return (

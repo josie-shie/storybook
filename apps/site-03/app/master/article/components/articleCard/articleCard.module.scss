@@ -15,7 +15,7 @@
                 font-size: 14px;
                 font-weight: 500;
                 margin-bottom: 4px;
-                color: #222222;
+                color: #222;
             }
 
             .tagsContainer {
@@ -99,6 +99,9 @@
                 border: 1px solid #4489ff;
                 border-radius: 4px;
                 margin-right: 4px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
             }
         }
     }

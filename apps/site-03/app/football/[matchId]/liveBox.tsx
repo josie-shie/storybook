@@ -1,15 +1,18 @@
 'use client';
 import Image from 'next/image';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import type { GetSingleMatchResponse } from 'data-center';
 import { GameStatus } from 'ui';
+import { motion } from 'framer-motion';
 import { useContestInfoStore } from '@/app/contestInfoStore';
+import { createContestDetailStore, useContestDetailStore } from './contestDetailStore';
 import TeamLogo from './components/teamLogo';
 import Header from './header';
 import style from './liveBox.module.scss';
 import bgImage from './img/bg.jpg';
-import { createContestDetailStore, useContestDetailStore } from './contestDetailStore';
 import BackIcon from './img/back.png';
+import Football from './img/football.png';
 
 const statusStyleMap = {
     '0': 'notYet',
@@ -83,6 +86,79 @@ function Animate() {
     );
 }
 
+function GoalAnimation({
+    contestDetail,
+    matchId
+}: {
+    contestDetail: GetSingleMatchResponse;
+    matchId: number;
+}) {
+    const globalStore = useContestInfoStore.use.contestInfo();
+    const syncData = Object.hasOwnProperty.call(globalStore, matchId) ? globalStore[matchId] : {};
+    const [homeScoreKeep, setHomeScoreKeep] = useState(
+        syncData.homeScore || contestDetail.homeScore
+    );
+    const [awayScoreKeep, setAwayScoreKeep] = useState(
+        syncData.awayScore || contestDetail.awayScore
+    );
+
+    useEffect(() => {
+        if (syncData.homeScore && syncData.homeScore !== homeScoreKeep) {
+            setTimeout(() => {
+                syncData.homeScore && setHomeScoreKeep(syncData.homeScore);
+            }, 2000);
+        }
+        if (syncData.awayScore && syncData.awayScore !== awayScoreKeep) {
+            setTimeout(() => {
+                syncData.awayScore && setAwayScoreKeep(syncData.awayScore);
+            }, 2000);
+        }
+    }, [syncData.awayScore, syncData.homeScore]);
+
+    return (
+        <>
+            <motion.div
+                animate={
+                    syncData.homeScore && homeScoreKeep !== syncData.homeScore
+                        ? { x: 0 }
+                        : { opacity: 0 }
+                }
+                className={`${style.goalAnimation} ${
+                    syncData.homeScore && homeScoreKeep !== syncData.homeScore && style.homeGoal
+                }`}
+                initial={{ x: '-100%' }}
+                transition={{ duration: 0.1 }}
+            >
+                <div className={style.gradient}>
+                    <div className={style.goalBar}>
+                        <Image alt="football" height={18} src={Football} width={18} />
+                        <p>进球 !</p>
+                    </div>
+                </div>
+            </motion.div>
+            <motion.div
+                animate={
+                    syncData.awayScore && awayScoreKeep !== syncData.awayScore
+                        ? { x: 0 }
+                        : { opacity: 0 }
+                }
+                className={`${style.goalAnimation} ${
+                    syncData.homeScore && homeScoreKeep !== syncData.homeScore && style.awayGoal
+                }`}
+                initial={{ x: '100%' }}
+                transition={{ duration: 0.1 }}
+            >
+                <div className={style.gradient}>
+                    <div className={style.goalBar}>
+                        <Image alt="football" height={18} src={Football} width={18} />
+                        <p>进球 !</p>
+                    </div>
+                </div>
+            </motion.div>
+        </>
+    );
+}
+
 function LiveBox({
     contestDetail,
     backHistory,
@@ -93,7 +169,6 @@ function LiveBox({
     matchId: number;
 }) {
     createContestDetailStore({ matchDetail: contestDetail });
-
     const { homeChs, homeLogo, awayChs, awayLogo } = useContestDetailStore.use.matchDetail();
     const router = useRouter();
 
@@ -126,8 +201,9 @@ function LiveBox({
                         <p className={style.teamName}>{awayChs}</p>
                     </div>
                 </div>
-                <Animate />
             </div>
+            <Animate />
+            <GoalAnimation contestDetail={contestDetail} matchId={matchId} />
         </div>
     );
 }

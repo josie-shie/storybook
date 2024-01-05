@@ -1,13 +1,13 @@
 import Image from 'next/image';
 import { timestampToString } from 'lib';
-import { type Plan } from '../../myGuessStore';
+import { type MemberIndividualGuessMatch } from 'data-center';
 import BigGone from '../img/bigGone.png';
 import BigWin from '../img/bigWin.png';
 import BigLose from '../img/bigLose.png';
 import style from './bettingPlan.module.scss';
 
 interface PropsType {
-    rowData: Plan;
+    rowData: MemberIndividualGuessMatch;
 }
 
 const iconMap = {
@@ -17,7 +17,7 @@ const iconMap = {
     NONE: null
 };
 
-const messageFormat = (predictedPlay: string, item: Plan) => {
+const messageFormat = (predictedPlay: string, item: MemberIndividualGuessMatch) => {
     switch (predictedPlay) {
         case 'OVER':
             return `${item.overUnderOdds} 大`;
@@ -35,7 +35,7 @@ function BettingPlan({ rowData }: PropsType) {
         <div className={style.bettingPlan}>
             {iconMap[rowData.predictionResult]}
             <div className={style.top}>
-                {rowData.leagueName}
+                {rowData.leagueName}{' '}
                 <span className={style.time}>
                     | {timestampToString(rowData.matchTime, 'MM-DD HH:mm')}
                 </span>

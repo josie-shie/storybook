@@ -95,7 +95,7 @@ function PredictList({ matchId }: { matchId: number }) {
                     <LastPlaceHolder matchId={matchId} />
                 </div>
             ) : (
-                <NoData />
+                <NoData text="暂无资料" />
             )}
         </>
     );

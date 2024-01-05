@@ -109,7 +109,7 @@ function RecommendationItem({
             {recommendationList.length === 0 && isNoData === null && <SkeletonLayout />}
 
             {recommendationList.length === 0 && isNoData ? (
-                <NoData />
+                <NoData text="暂无资料" />
             ) : (
                 <>
                     {recommendationList.map(item => {

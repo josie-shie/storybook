@@ -1,17 +1,37 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { getMemberTransactionList } from 'data-center';
+import { getMemberTransactionList, type ChangeTypeCategory } from 'data-center';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { Skeleton } from '@mui/material';
 import Header from '@/components/header/headerTitleDetail';
-import Loading from '@/components/loading/loading';
 import style from './tradeDetail.module.scss';
 import FilterIcon from './img/filterIcon.png';
 import TradeDetailList from './tradeDetailList';
 import DateRangeDrawer from './components/dateOptionDrawer/dateOptionDrawer';
 import TradeTypeDrawer from './components/tradeTypeDrawer/tradeTypeDrawer';
-import { useTardeDetailStore, type DateOption, type TradeTypeOption } from './tradeDetailStore';
+import { useTardeDetailStore, type DateOption } from './tradeDetailStore';
 import { dateOption, tradeOption } from './options';
+
+function DetailSkeleton() {
+    return (
+        <>
+            {Array.from({ length: 9 }).map((_, idx) => (
+                <div className={style.skeletonBox} key={`${idx.toString()}`}>
+                    <Skeleton animation="wave" height={32} variant="circular" width={32} />
+                    <div className={style.center}>
+                        <Skeleton animation="wave" height={24} width={70} />
+                        <Skeleton animation="wave" height={16} width={120} />
+                    </div>
+                    <div className={style.right}>
+                        <h1>平台币 0</h1>
+                        <p>可用馀额：0</p>
+                    </div>
+                </div>
+            ))}
+        </>
+    );
+}
 
 function TradeDetail() {
     const router = useRouter();
@@ -24,7 +44,7 @@ function TradeDetail() {
     const [isTradeTypeOpen, setIsTradeTypeOpen] = useState(false);
     const [activeDate, setActiveDate] = useState<DateOption>('ALL');
     const [dateDisplay, setDateDisplay] = useState<string>();
-    const [tradeType, setTradeType] = useState<TradeTypeOption>('ALL');
+    const [tradeType, setTradeType] = useState<ChangeTypeCategory>('ALL');
     const [start, setStart] = useState<number>(0);
     const [end, setEnd] = useState<number>(0);
     const [page, setPage] = useState<number>(1);
@@ -87,9 +107,7 @@ function TradeDetail() {
                     </div>
                 </div>
                 {isLoading ? (
-                    <div className={style.loaderBox}>
-                        <Loading />
-                    </div>
+                    <DetailSkeleton />
                 ) : (
                     <TradeDetailList
                         end={end}

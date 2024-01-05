@@ -10,20 +10,20 @@ interface LongButtonProps {
 function LongButton({ isActive = [], updateActive }: LongButtonProps) {
     const longList = [
         {
-            label: '3连',
-            value: '3rd'
-        },
-        {
-            label: '4连',
-            value: '4rd'
+            label: '热门',
+            value: 'hot'
         },
         {
             label: '4连以上',
             value: '4rdUp'
         },
         {
-            label: '热门',
-            value: 'hot'
+            label: '4连',
+            value: '4rd'
+        },
+        {
+            label: '3连',
+            value: '3rd'
         }
     ];
 

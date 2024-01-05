@@ -18,7 +18,7 @@ function PeriodListItem({ isLoading }: { isLoading: boolean }) {
                 <CircularProgress size={24} />
             </div>
         );
-    if (rankList.length === 0) return <BaseNoData />;
+    if (rankList.length === 0) return <BaseNoData text="暂无资料" />;
     return (
         <>
             {rankList.map(item => {
@@ -36,7 +36,10 @@ function PeriodListItem({ isLoading }: { isLoading: boolean }) {
                             <span>{item.ranking}</span>
                         </div>
                         <div className={style.avatarContainer}>
-                            <Avatar src={item.memberAvatar === '0' ? '' : item.memberAvatar} />
+                            <Avatar
+                                shadow
+                                src={item.memberAvatar === '0' ? '' : item.memberAvatar}
+                            />
                         </div>
                         <div className={style.content}>
                             <div className={style.name}>{item.memberName}</div>
@@ -44,7 +47,7 @@ function PeriodListItem({ isLoading }: { isLoading: boolean }) {
                                 <div>战绩: {item.totalMatches}场</div>
                                 <div>
                                     胜负: <span className={style.victory}>{item.totalWin}</span>/
-                                    {item.totalLose}
+                                    <span className={style.lose}>{item.totalLose}</span>
                                 </div>
                             </div>
                         </div>

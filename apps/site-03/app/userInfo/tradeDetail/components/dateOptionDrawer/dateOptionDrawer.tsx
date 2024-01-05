@@ -1,17 +1,17 @@
 import { Button } from '@mui/material';
 import dayjs from 'dayjs';
 import { useState, type Dispatch, type SetStateAction } from 'react';
-import { getMemberTransactionList } from 'data-center';
+import { getMemberTransactionList, type ChangeTypeCategory } from 'data-center';
 import BottomDrawer from '@/components/drawer/bottomDrawer';
 import DatePicker from '../datepicker/datepicker';
 import { useTardeDetailStore } from '../../tradeDetailStore';
-import type { TradeTypeOption, DateOption } from '../../tradeDetailStore';
+import type { DateOption } from '../../tradeDetailStore';
 import { dateOption } from '../../options';
 import style from './dateOptionDrawer.module.scss';
 
 interface DateRangeProps {
     activeDate: DateOption;
-    tradeType: TradeTypeOption;
+    tradeType: ChangeTypeCategory;
     isDateRangeOpen: boolean;
     setIsDateRangeOpen: (arg: boolean) => void;
     setStartDate: Dispatch<SetStateAction<number>>;

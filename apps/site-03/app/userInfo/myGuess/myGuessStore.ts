@@ -1,36 +1,15 @@
 import { initStore } from 'lib';
 import type { StoreWithSelectors } from 'lib';
 import type {
-    TagType,
     GetMemberIndividualGuessMatchesResponse,
     GetMemberIndividualGuessResponse,
     GuessType,
-    Pagination
+    Pagination,
+    MemberGuessViewingRecord
 } from 'data-center';
 
-type PredictionResultType = 'WIN' | 'LOSE' | 'DRAW' | 'NONE';
-type PredictedPlayType = 'OVER' | 'UNDER' | 'HOME' | 'AWAY' | 'LOCK' | 'HANDICAP' | 'OVERUNDER';
-
-export interface RecordItem {
-    recordMemberId: number;
-    avatarPath: string;
-    memberName: string;
-    homeTeamName: string;
-    awayTeamName: string;
-    latestPredictionResult: { predictionResults: PredictionResultType[] };
-    predictedPlay: PredictedPlayType;
-    predictionResult: PredictionResultType;
-    matchId: number;
-    matchTime: number;
-    leagueId: number;
-    leagueName: string;
-    handicapOdds: number;
-    overUnderOdds: number;
-    viewingTime: number;
-    highlights: TagType;
-}
 export interface GuessRecordList {
-    recordList: RecordItem[];
+    recordList: MemberGuessViewingRecord[];
     pagination: Pagination;
 }
 interface InitState {

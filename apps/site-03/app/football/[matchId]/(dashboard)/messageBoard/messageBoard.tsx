@@ -12,7 +12,8 @@ import { useMessageStore } from '@/app/messageStore';
 import { useUserStore } from '@/app/userStore';
 import { useAuthStore } from '@/app/(auth)/authStore';
 import style from './messageBoard.module.scss';
-import SentIcon from './img/sent.png';
+import SentActiveIcon from './img/sentActive.png';
+import SentDisableIcon from './img/sentDisable.png';
 import SmileIcon from './img/smile.png';
 import NoMessageImage from './img/noMessage.png';
 
@@ -118,10 +119,15 @@ function MessageBoard({ matchId }: { matchId: number }) {
                         group
                         messagesList={messageList}
                         noMessage={<NoMessage />}
+                        sendActiveIcon={
+                            <Image alt="sent" height={24} src={SentActiveIcon} width={24} />
+                        }
                         sendBtn
-                        sendIcon={<Image alt="sent" height={24} src={SentIcon} width={24} />}
+                        sendDisableIcon={
+                            <Image alt="sent" height={24} src={SentDisableIcon} width={24} />
+                        }
                         silence={forbiddenWords}
-                        smileIcon={<Image alt="sent" height={24} src={SmileIcon} width={24} />}
+                        smileIcon={<Image alt="smile" height={24} src={SmileIcon} width={24} />}
                         uid={String(userInfo.uid) || ''}
                     />
                 </div>

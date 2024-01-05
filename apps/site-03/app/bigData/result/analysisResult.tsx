@@ -139,7 +139,7 @@ function ResultContent() {
     const setShowContestDrawer = useAnalyticsResultStore.use.setShowContestDrawer();
     const selectedResult = useAnalyticsResultStore.use.selectedResult();
     const contestList = useAnalyticsResultStore.use.contestList();
-    const showedTutorial = localStorage.getItem('showAnalysisTutorial');
+    const [showedTutorial, setShowedTutorial] = useState(false);
 
     const endDate = useHandicapAnalysisFormStore.use.endDate();
     const startDate = useHandicapAnalysisFormStore.use.startDate();
@@ -163,6 +163,10 @@ function ResultContent() {
     const setDialogContentType = useAnalyticsResultStore.use.setDialogContentType();
     const setUserInfo = useUserStore.use.setUserInfo();
     const allowSlideScroll = useAnalyticsResultStore.use.tabSlideScroll();
+
+    useEffect(() => {
+        setShowedTutorial(Boolean(localStorage.getItem('showAnalysisTutorial')));
+    }, []);
 
     const tabStyle = {
         gap: 4,
