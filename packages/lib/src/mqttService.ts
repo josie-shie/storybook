@@ -662,6 +662,8 @@ const handleOddRunningHalfMessage = async (message: Buffer) => {
     console.log('[MQTT On Odd Running Half message ContestMessage]: ', decodedMessage);
 };
 
+let isMock = true;
+
 export const mqttService = {
     init: ({ memberId }: { memberId: number }) => {
         if (init) {
@@ -761,5 +763,54 @@ export const mqttService = {
             // eslint-disable-next-line -- error console
             console.log('mqtt not init');
         }
+    },
+    mockContest: (matchIds: number[]) => {
+        // MOCK dynamic data
+        if (!isMock) {
+            return;
+        }
+        isMock = false;
+
+        function getRandomData() {
+            const scoreType = Math.random() < 0.5 ? 'homeScore' : 'awayScore';
+            return {
+                matchId: matchIds[Math.floor(Math.random() * matchIds.length)],
+                [scoreType]: Math.floor(Math.random() * 10) // 隨機分數 0-9
+            };
+        }
+
+        // 定義一個函數來執行更新操作
+        function scheduleUpdates(times: number) {
+            if (times <= 0) return;
+
+            setTimeout(
+                () => {
+                    // 獲取隨機數據並執行消息方法
+                    const updateData = getRandomData();
+                    for (const messageMethod of useMessageQueue) {
+                        messageMethod(updateData as unknown as OriginalContestInfo);
+                    }
+
+                    // 遞歸調用自己，直到次數為0
+                    scheduleUpdates(times - 1);
+                },
+                Math.random() * (10000 - 3000) + 3000
+            ); // 隨機時間 3-20 秒
+        }
+
+        // 初始調用函數，隨機 1-5 次
+        setInterval(() => {
+            scheduleUpdates(Math.floor(Math.random() * 5) + 1);
+        }, 10000);
+        scheduleUpdates(Math.floor(Math.random() * 5) + 1);
+
+        setTimeout(() => {
+            for (const messageMethod of useMessageQueue) {
+                messageMethod({
+                    matchId: matchIds[0],
+                    homeScore: 8
+                } as unknown as OriginalContestInfo);
+            }
+        }, 5000);
     }
 };

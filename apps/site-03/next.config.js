@@ -11,7 +11,8 @@ module.exports = {
             'stickershop.line-scdn.net',
             'twtest8.s3.ap-northeast-1.amazonaws.com',
             'twtest8.s3.amazonaws.com',
-            'fastly.picsum.photos'
+            'fastly.picsum.photos',
+            'cdn.sportnanoapi.com'
         ]
     },
     reactStrictMode: true,

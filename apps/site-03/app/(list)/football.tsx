@@ -5,6 +5,7 @@ import { useEffect, useState, forwardRef } from 'react';
 import { InfiniteScroll } from 'ui';
 import CircularProgress from '@mui/material/CircularProgress';
 import Image from 'next/image';
+import { mqttService } from 'lib';
 import { useContestInfoStore } from '@/app/contestInfoStore';
 import type { FilterList } from '@/components/contestFilter/contestFilter';
 import NoData from '@/components/baseNoData/noData';
@@ -189,6 +190,9 @@ function ContestList({
             }));
         }
     };
+    useEffect(() => {
+        mqttService.mockContest(displayList);
+    }, []);
 
     return (
         <>
