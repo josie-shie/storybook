@@ -9,6 +9,10 @@
         display: flex;
         gap: 6px;
 
+        .avatarLink {
+            height: 40px;
+        }
+
         .details {
             display: block;
 
