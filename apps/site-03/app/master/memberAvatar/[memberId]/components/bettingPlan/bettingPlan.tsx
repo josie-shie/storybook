@@ -119,8 +119,8 @@ function BettingPlan({
                                             item.predictionResult === 'WIN' && style.win
                                         }`}
                                     >
-                                        {filterOdds[item.handicapOdds] === 'handicap'
-                                            ? item.handicapOdds
+                                        {filterOdds[item.predictedPlay] === 'overUnder'
+                                            ? ''
                                             : item.handicapInChinese}
                                         {item.predictedPlay === 'OVER' && '小'}{' '}
                                         {item.predictedPlay === 'UNDER' && '大'}{' '}
