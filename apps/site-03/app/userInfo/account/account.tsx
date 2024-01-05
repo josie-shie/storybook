@@ -170,7 +170,7 @@ function Account() {
         setSubmittedState(newSubmittedState);
 
         const obj: UpdateMemberInfoRequest = {
-            username: submittedState.username ? '' : formState.username,
+            username: formState.username === userInfo.username ? '' : formState.username,
             avatarPath: imgUpload || userInfo.avatarPath,
             birthday: userInfo.birthday || dayjs(formState.birthday).valueOf() / 1000,
             wechat: formState.wechat,
