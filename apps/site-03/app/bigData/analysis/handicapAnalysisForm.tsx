@@ -189,7 +189,12 @@ function StepperProcess() {
         <div className={style.step} key="finalStep">
             <StepIndicator stepNumber={datepickerStep} text="选择时间" />
             <div className={style.timeRange}>
-                <div className={style.range}>
+                <div
+                    className={style.range}
+                    onClick={() => {
+                        setOpenDatePicker(true);
+                    }}
+                >
                     <span>{dayjs(startDate * 1000).format('YYYY/MM/DD')}</span>
                     <span> - </span>
                     <span>{dayjs(endDate * 1000).format('YYYY/MM/DD')}</span>

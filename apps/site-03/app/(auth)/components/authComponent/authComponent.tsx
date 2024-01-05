@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import { useState, type ReactNode } from 'react';
-import { Button, IconButton, Input } from '@mui/material';
+import { Button, FormControl, IconButton, Input } from '@mui/material';
 import { CustomSelect } from 'ui';
 import type { FieldError, FieldValues } from 'react-hook-form';
 import BottomDrawer from '@/components/drawer/bottomDrawer';
@@ -15,6 +15,14 @@ import userIcon from './img/user.png';
 import reloadIcon from './img/reloadIcon.png';
 import ShowPasswordIcon from './img/showPassword.png';
 import HidePasswordIcon from './img/hidePassword.png';
+
+export function TokenInput({ verifyToken }: { verifyToken: string }) {
+    return (
+        <FormControl className={style.hiddenForm}>
+            <input name="verifyToken" type="hidden" value={verifyToken} />
+        </FormControl>
+    );
+}
 
 export function NicknameInput({
     field,

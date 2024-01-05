@@ -1,21 +1,37 @@
 .login {
-    padding: 24px;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-
-    .phone {
+    .loginForm {
+        padding: 24px 24px 0;
         display: flex;
-        width: 100%;
-        gap: 6px;
         flex-direction: column;
+        gap: 16px;
 
-        .input {
-            min-height: 44px;
+        .phone {
+            display: flex;
+            width: 100%;
+            gap: 6px;
+            flex-direction: column;
+
+            .input {
+                // min-height: 44px;
+                width: 100%;
+                display: flex;
+                align-items: center;
+                gap: 16px;
+            }
+        }
+
+        .errorMessage {
+            color: #ffc42d;
+            font-size: 10px;
+            font-weight: 400;
             width: 100%;
             display: flex;
             align-items: center;
-            gap: 16px;
+            justify-content: center;
+        }
+
+        .aggrement {
+            padding-bottom: 102px;
         }
     }
 
@@ -24,7 +40,9 @@
         text-align: center;
         font-size: 14px;
         font-weight: 500;
-        padding: 2px 0;
+        width: 100%;
+        padding: 10px 20px;
+        margin: 8px 0 16px;
     }
 
     .footer {
@@ -33,6 +51,7 @@
         white-space: nowrap;
         justify-content: center;
         align-items: center;
+        margin-top: 16px;
 
         .delimiter {
             width: 1px;
@@ -57,19 +76,5 @@
             font-size: 12px;
             font-weight: 500;
         }
-    }
-
-    .aggrement {
-        padding-bottom: 102px;
-    }
-
-    .errorMessage {
-        color: #ffc42d;
-        font-size: 10px;
-        font-weight: 400;
-        width: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
     }
 }

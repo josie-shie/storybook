@@ -11,7 +11,8 @@ import {
     PasswordInput,
     PhoneNumberInput,
     SubmitButton,
-    VertifyCode
+    VertifyCode,
+    TokenInput
 } from '../components/authComponent/authComponent';
 import { useAuthStore } from '../authStore';
 import style from './forgetPassword.module.scss';
@@ -188,9 +189,7 @@ function ForgetPassword() {
                     )}
                 />
             </FormControl>
-            <FormControl>
-                <input name="verifyToken" type="hidden" value={verifyToken} />
-            </FormControl>
+            <TokenInput verifyToken={verifyToken} />
             <FormControl className={style.submitButton} fullWidth>
                 <SubmitButton disabled={isSubmitDisable} label="提交" />
             </FormControl>

@@ -12,7 +12,8 @@ import {
     SubmitButton,
     CountryCodeInput,
     PhoneNumberInput,
-    PasswordInput
+    PasswordInput,
+    TokenInput
 } from '@/app/(auth)/components/authComponent/authComponent';
 import { useNotificationStore } from '@/app/notificationStore';
 import { useUserStore } from '@/app/userStore';
@@ -100,64 +101,64 @@ function Login() {
         isSendVerificationCodeDisable || !verificationCode || !verifyPhoto || !verifyToken;
 
     return (
-        <form className={style.login} onSubmit={handleSubmit(onSubmit)}>
-            <div className={style.phone}>
-                <div className={style.input}>
-                    <FormControl fullWidth sx={{ width: '120px' }}>
-                        <CountryCodeInput />
-                    </FormControl>
-                    <FormControl fullWidth sx={{ width: '206px' }}>
-                        <Controller
-                            control={control}
-                            name="mobileNumber"
-                            render={({ field }) => (
-                                <PhoneNumberInput error={errors.mobileNumber} field={field} />
-                            )}
-                        />
-                    </FormControl>
+        <div className={style.login}>
+            <form className={style.loginForm} onSubmit={handleSubmit(onSubmit)}>
+                <div className={style.phone}>
+                    <div className={style.input}>
+                        <FormControl fullWidth sx={{ width: '120px' }}>
+                            <CountryCodeInput />
+                        </FormControl>
+                        <FormControl fullWidth sx={{ width: '206px' }}>
+                            <Controller
+                                control={control}
+                                name="mobileNumber"
+                                render={({ field }) => (
+                                    <PhoneNumberInput error={errors.mobileNumber} field={field} />
+                                )}
+                            />
+                        </FormControl>
+                    </div>
+                    {errors.mobileNumber ? (
+                        <div className={style.errorMessage}>请输入手机号码</div>
+                    ) : null}
                 </div>
-                {errors.mobileNumber ? (
-                    <div className={style.errorMessage}>请输入手机号码</div>
-                ) : null}
-            </div>
-            <FormControl fullWidth>
-                <Controller
-                    control={control}
-                    name="password"
-                    render={({ field }) => (
-                        <PasswordInput
-                            error={errors.password}
-                            field={field}
-                            placeholder="6-16位英文+数字密码"
-                        />
-                    )}
-                />
-            </FormControl>
-            <FormControl fullWidth>
-                <Controller
-                    control={control}
-                    name="verificationCode"
-                    render={({ field }) => (
-                        <VertifyCodeByImage
-                            error={errors.verificationCode}
-                            field={field}
-                            getVerificationCode={getCaptcha}
-                            placeholder="验证码"
-                            verifyPhoto={verifyPhoto}
-                            vertifyDisable={isSendVerificationCodeDisable}
-                        />
-                    )}
-                />
-            </FormControl>
-            <FormControl>
-                <input name="verifyToken" type="hidden" value={verifyToken} />
-            </FormControl>
-            <div className={style.aggrement}>
-                <Aggrement />
-            </div>
-            <FormControl fullWidth>
-                <SubmitButton disabled={isLoginDisable} label="登入" />
-            </FormControl>
+                <FormControl fullWidth>
+                    <Controller
+                        control={control}
+                        name="password"
+                        render={({ field }) => (
+                            <PasswordInput
+                                error={errors.password}
+                                field={field}
+                                placeholder="6-16位英文+数字密码"
+                            />
+                        )}
+                    />
+                </FormControl>
+                <FormControl fullWidth>
+                    <Controller
+                        control={control}
+                        name="verificationCode"
+                        render={({ field }) => (
+                            <VertifyCodeByImage
+                                error={errors.verificationCode}
+                                field={field}
+                                getVerificationCode={getCaptcha}
+                                placeholder="验证码"
+                                verifyPhoto={verifyPhoto}
+                                vertifyDisable={isSendVerificationCodeDisable}
+                            />
+                        )}
+                    />
+                </FormControl>
+                <TokenInput verifyToken={verifyToken} />
+                <div className={style.aggrement}>
+                    <Aggrement />
+                </div>
+                <FormControl fullWidth>
+                    <SubmitButton disabled={isLoginDisable} label="登入" />
+                </FormControl>
+            </form>
             <Button
                 className={style.register}
                 onClick={() => {
@@ -178,7 +179,7 @@ function Login() {
                 <span className={style.delimiter} />
                 <p>常見問題</p>
             </div>
-        </form>
+        </div>
     );
 }
 
