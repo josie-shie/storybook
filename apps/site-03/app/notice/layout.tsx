@@ -53,7 +53,11 @@ function NoticeTabs({ children }: { children: ReactNode }) {
         }
     ];
 
-    if (unreadMessageNotify.chatCount > 0 && chatList.length === 0) {
+    if (
+        window.location.pathname === '/notice/chat' &&
+        unreadMessageNotify.chatCount > 0 &&
+        chatList.length === 0
+    ) {
         void messageService.send({
             action: 'get_room_list',
             type: 'private'
