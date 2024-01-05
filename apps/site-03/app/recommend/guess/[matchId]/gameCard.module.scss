@@ -9,6 +9,10 @@
         display: flex;
         gap: 6px;
 
+        .avatarLink {
+            height: 40px;
+        }
+
         .details {
             display: block;
 
@@ -95,6 +99,7 @@
         }
 
         .noPaid {
+            line-height: 14px;
             height: 28px;
             display: flex;
             align-items: center;

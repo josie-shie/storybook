@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import type { ProGuess } from 'data-center';
+import Link from 'next/link';
 import Avatar from '@/components/avatar/avatar';
 import Tag from '@/components/tag/tag';
 import TagSplit from '@/components/tagSplit/tagSplit';
@@ -67,7 +68,12 @@ function GameCard({ plan, onOpenPaidDialog }: GameCardProps) {
     return (
         <div className={style.gameCard}>
             <div className={style.detail}>
-                <Avatar shadow src={plan.avatarPath === '0' ? '' : plan.avatarPath} />
+                <Link
+                    className={style.avatarLink}
+                    href={`/master/masterAvatar/${plan.memberId}?status=analysis`}
+                >
+                    <Avatar shadow src={plan.avatarPath === '0' ? '' : plan.avatarPath} />
+                </Link>
                 <div className={style.details}>
                     <span>{plan.memberName}</span>
                     <div className={style.tagsContainer}>
