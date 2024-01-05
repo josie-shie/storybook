@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { getFollowers, updateFollow, unFollow } from 'data-center';
@@ -43,6 +43,7 @@ function MyFocusSkeleton() {
 
 function MyFocus() {
     const router = useRouter();
+    const debounceTimer = useRef<ReturnType<typeof setTimeout>>();
     const [searchTerm, setSearchTerm] = useState<string>('');
     const setIsVisible = useNotificationStore.use.setIsVisible();
     const userInfo = useUserStore.use.userInfo();
@@ -71,21 +72,15 @@ function MyFocus() {
         }
     }, [userInfo]);
 
-    const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const onSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+        clearTimeout(debounceTimer.current);
         setSearchTerm(event.target.value);
-    };
-
-    const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-        if (event.key === 'Enter') {
-            handleSearch();
-        }
-    };
-
-    const handleSearch = () => {
-        const filteredItems = fansMemberItem.filter(item =>
-            item.username.toLowerCase().includes(searchTerm.toLowerCase())
-        );
-        setFilteredMasterItems(filteredItems);
+        debounceTimer.current = setTimeout(() => {
+            const filteredItems = fansMemberItem.filter(item =>
+                item.username.toLowerCase().includes(event.target.value.toLowerCase())
+            );
+            setFilteredMasterItems(filteredItems);
+        }, 500);
     };
 
     const toggleFollow = async (uid: number, memberId: number, isFollowed: boolean) => {
@@ -125,7 +120,11 @@ function MyFocus() {
             );
         }
 
-        return <NoData text="此條件查无资料" textSecond="请重新修改搜寻条件" />;
+        if (searchTerm) {
+            return <NoData text="此條件查无资料" textSecond="请重新修改搜寻条件" />;
+        }
+
+        return <NoData text="暂无资料" />;
     };
 
     return (
@@ -150,15 +149,11 @@ function MyFocus() {
             <div className={style.myFans}>
                 <div className={style.search}>
                     <input
-                        onChange={handleSearchChange}
-                        onKeyDown={handleKeyDown}
+                        onChange={onSearch}
                         placeholder="请输入用户名"
                         type="text"
                         value={searchTerm}
                     />
-                    <button onClick={handleSearch} type="button">
-                        搜索
-                    </button>
                 </div>
                 {renderContent()}
             </div>
