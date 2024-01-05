@@ -4,6 +4,7 @@ import type {
     GetLeaguePointsRankResponse,
     GetBeforeGameIndexResponse
 } from 'data-center';
+import { resetSwiperHight } from 'ui/stories/slickPro/slick';
 import PageEndText from '@/components/pageEndText/pageEndText';
 import { createAnalyzeStore } from '../../analyzeStore';
 import BeforeGameTable from './beforeGameTable';
@@ -42,6 +43,8 @@ function Analyze({ analysisData, beforeGameData, leaguePointsRank }: PropsType) 
     createAwayRecordStore({
         awayRecordData: analysisData.LastMatches.away
     });
+
+    resetSwiperHight();
 
     return (
         <>
