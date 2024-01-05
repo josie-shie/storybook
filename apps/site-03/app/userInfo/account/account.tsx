@@ -170,7 +170,7 @@ function Account() {
         setSubmittedState(newSubmittedState);
 
         const obj: UpdateMemberInfoRequest = {
-            username: formState.username === userInfo.username ? '' : formState.username,
+            username: submittedState.username ? '' : formState.username,
             avatarPath: imgUpload || userInfo.avatarPath,
             birthday: userInfo.birthday || dayjs(formState.birthday).valueOf() / 1000,
             wechat: formState.wechat,
@@ -386,7 +386,7 @@ function Account() {
                         </div>
                     )}
                     <p className={style.tip}>
-                        ＊「头像」、「简介」可重新编辑，其馀栏位提交后无法再次修改，请谨慎填写
+                        ＊「头像」、「昵称」、「简介」可重新编辑，其馀栏位提交后无法再次修改，请谨慎填写
                     </p>
                     {!isSubmitted && (
                         <button

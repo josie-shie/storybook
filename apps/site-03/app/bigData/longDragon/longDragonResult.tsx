@@ -5,11 +5,11 @@ import type { OddsHintsType, OddsHintsProgress } from 'data-center';
 import { getBigdataHint } from 'data-center';
 import { useRouter } from 'next/navigation';
 import HeaderTitleFilter from '@/components/header/headerTitleFilter';
-import Loading from '@/components/loading/loading';
 import NoData from '@/components/baseNoData/noData';
 import { useMatchFilterStore } from '../analysis/matchFilterStore';
 import { useHintsFormStore } from '../analysis/hintsFormStore';
 import { useLongDragonStore } from '../longDragonStore';
+import AnalyzeData from './img/analyzeData.png';
 import ErrorDialog from './components/dialog/dialog';
 import MatchFilterDrawer from './components/matchFilterDrawer/matchFilterDrawer';
 import LongButton from './components/longButton/longButton';
@@ -214,7 +214,10 @@ function LongDragonResult() {
                     <LongButton isActive={isActive} updateActive={updateActive} />
                     <div className={style.wrapper}>
                         {isLoading ? (
-                            <Loading />
+                            <div className={style.analyze}>
+                                <Image alt="" height={100} src={AnalyzeData} width={100} />
+                                <span>资料分析中 请稍候</span>
+                            </div>
                         ) : (
                             <>
                                 {handicapTips.length ? (
