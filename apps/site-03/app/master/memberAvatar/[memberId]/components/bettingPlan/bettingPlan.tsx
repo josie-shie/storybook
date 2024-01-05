@@ -113,7 +113,7 @@ function BettingPlan({
             setCurrentPage(prevData => prevData + 1);
         }
     };
-    const isOpenDialog = async (item: MemberIndividualGuessMatch) => {
+    const handlingDialog = async (item: MemberIndividualGuessMatch) => {
         if (!isLogin) {
             setIsOpenPaid(false);
             router.push(`/master/masterAvatar/${params.memberId}?status=analysis&auth=login`);
@@ -228,7 +228,7 @@ function BettingPlan({
                                     </div>
                                     {item.isPaidToRead ? (
                                         <UnlockButton
-                                            handleClick={() => void isOpenDialog(item)}
+                                            handleClick={() => void handlingDialog(item)}
                                             price={item.unlockPrice}
                                         />
                                     ) : null}
