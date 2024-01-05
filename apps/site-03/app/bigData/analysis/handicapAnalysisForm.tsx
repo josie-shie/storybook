@@ -18,8 +18,41 @@ import starIcon from './img/star.png';
 import Datepicker from './components/datepicker/datepicker';
 import Dialog from './components/dialog/dialog';
 import SinglePay from './img/singlePay.png';
+import RechargeIcon from './img/rechargeIcon.png';
 
 type PlayTypeCheckBox = 'handicap' | 'overUnder';
+
+function RechargeAlert() {
+    const router = useRouter();
+    const setOpenDialog = useHandicapAnalysisFormStore.use.setOpenNormalDialog();
+
+    const recharge = () => {
+        setOpenDialog(false);
+        router.push('/userInfo/subscribe');
+    };
+
+    return (
+        <>
+            <div className={style.dialogMessage}>
+                <Image alt="" height={100} src={RechargeIcon} width={100} />
+                <p>余额不足，请充值</p>
+            </div>
+            <div className={style.footer}>
+                <div
+                    className={style.close}
+                    onClick={() => {
+                        setOpenDialog(false);
+                    }}
+                >
+                    返回
+                </div>
+                <div className={style.confirm} onClick={recharge}>
+                    前往充值
+                </div>
+            </div>
+        </>
+    );
+}
 
 function PaymentAlert() {
     const router = useRouter();
@@ -379,6 +412,9 @@ function HandicapAnalysisForm() {
         switch (dialogErrorType) {
             case 'payment':
                 setDialogContent(<PaymentAlert />);
+                break;
+            case 'balance':
+                setDialogContent(<RechargeAlert />);
                 break;
             default:
                 setDialogContent(null);
