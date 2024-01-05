@@ -14,6 +14,7 @@
 
     .time {
         color: #9b9b9b;
+        padding-left: 4px;
     }
 }
 
@@ -72,4 +73,10 @@
     width: 36px;
     height: auto;
     border-radius: 50%;
+}
+
+.loadMore {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

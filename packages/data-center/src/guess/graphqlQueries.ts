@@ -166,6 +166,8 @@ export const GET_MEMBER_INDIVIDUAL_GUESS_MATCHES_QUERY = `
                 predictionResult
                 isPaidToRead
                 unlockPrice
+                homeScore
+                awayScore
             }
             pagination {
                 pageCount
