@@ -71,7 +71,12 @@ function ContestDrawerList({
 
     return (
         <>
-            <BottomDrawer isOpen={isOpen} onClose={onClose} onOpen={onOpen}>
+            <BottomDrawer
+                isOpen={isOpen}
+                onClose={onClose}
+                onOpen={onOpen}
+                propsStyle={{ height: 'calc(100dvh - 54px)' }}
+            >
                 <div className={style.contestDrawerList}>
                     <div className={style.header}>
                         <h2>{`${pathMatch[defaultPageIndex] || ''}/${selectedResult.type}${
