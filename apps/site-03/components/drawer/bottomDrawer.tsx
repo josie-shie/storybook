@@ -7,10 +7,7 @@ function BottomDrawer({
     onOpen,
     onClose,
     children,
-    propsStyle = {
-        borderTopLeftRadius: '16px',
-        borderTopRightRadius: '16px'
-    },
+    propsStyle = {},
     topLineDisplay = 'initial',
     swipeAreaWidth
 }: {
@@ -25,7 +22,11 @@ function BottomDrawer({
     return (
         <SwipeableDrawer
             PaperProps={{
-                style: propsStyle
+                style: {
+                    ...propsStyle,
+                    borderTopLeftRadius: '16px',
+                    borderTopRightRadius: '16px'
+                }
             }}
             anchor="bottom"
             onClose={onClose}
