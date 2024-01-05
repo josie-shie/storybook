@@ -7,14 +7,16 @@ import BottomDrawer from '@/components/drawer/bottomDrawer';
 import style from './authComponent.module.scss';
 import closeIcon from './img/closeIcon.png';
 import headerBg from './img/headerBg.jpeg';
-import phoneIcon from './img/phoneIcon.png';
-import lockIcon from './img/lockIcon.png';
-import shieldIcon from './img/shieldIcon.png';
+import activePhoneIcon from './img/activePhoneIcon.png';
+import activeLockIcon from './img/activeLockIcon.png';
+import activeShieldIcon from './img/activeShieldIcon.png';
 import exclamationIcon from './img/exclamation.png';
 import userIcon from './img/user.png';
 import reloadIcon from './img/reloadIcon.png';
 import ShowPasswordIcon from './img/showPassword.png';
 import HidePasswordIcon from './img/hidePassword.png';
+import lockIcon from './img/lockIcon.png';
+import shieldIcon from './img/shieldIcon.png';
 
 export function TokenInput({ verifyToken }: { verifyToken: string }) {
     return (
@@ -95,7 +97,12 @@ export function VertifyCode({
     return (
         <div className={style.vertifyCode}>
             <div className={style.vertifyCodeBlock}>
-                <Image alt="" height={24} src={shieldIcon.src} width={24} />
+                <Image
+                    alt=""
+                    height={24}
+                    src={field.value ? activeShieldIcon.src : shieldIcon.src}
+                    width={24}
+                />
                 <Input
                     {...field}
                     className={style.vertifyCodeInput}
@@ -142,7 +149,12 @@ export function VertifyCodeByImage({
     return (
         <div className={style.vertifyCodeByImage}>
             <div className={style.vertifyCodeBlock}>
-                <Image alt="" height={24} src={shieldIcon.src} width={24} />
+                <Image
+                    alt=""
+                    height={24}
+                    src={field.value ? activeShieldIcon.src : shieldIcon.src}
+                    width={24}
+                />
                 <Input
                     {...field}
                     className={style.vertifyCodeInput}
@@ -194,7 +206,12 @@ export function PasswordInput({ children, placeholder, field, error, id }: Passw
     return (
         <>
             <div className={style.password}>
-                <Image alt="" height={24} src={lockIcon.src} width={24} />
+                <Image
+                    alt=""
+                    height={24}
+                    src={field.value ? activeLockIcon.src : lockIcon.src}
+                    width={24}
+                />
                 <div className={style.passwordBlock}>
                     <Input
                         {...field}
@@ -245,7 +262,7 @@ export function CountryCodeInput() {
 
     return (
         <div className={style.codeSelect}>
-            <Image alt="" height={24} src={phoneIcon.src} width={24} />
+            <Image alt="" height={24} src={activePhoneIcon.src} width={24} />
             <CustomSelect
                 options={countryCodeList}
                 showCloseButton
