@@ -10,14 +10,6 @@ import style from './layout.module.scss';
 import { createNoticeStore, useNoticeStore } from './noticeStore';
 import EditBar from './editBar';
 
-function CreateNoticeStore({ children }: { children: ReactNode }) {
-    createNoticeStore({
-        mailList: []
-    });
-
-    return <>{children}</>;
-}
-
 function NoticeTabs({ children }: { children: ReactNode }) {
     const unreadMessageNotify = useMessageStore.use.unreadMessageNotify();
     const chatList = useNoticeStore.use.chatList();
@@ -53,7 +45,7 @@ function NoticeTabs({ children }: { children: ReactNode }) {
         }
     ];
 
-    if (unreadMessageNotify.chatCount > 0 && chatList.length === 0) {
+    if (pathName === 'chat' && unreadMessageNotify.chatCount > 0 && chatList.length === 0) {
         void messageService.send({
             action: 'get_room_list',
             type: 'private'
@@ -83,6 +75,14 @@ function NoticeTabs({ children }: { children: ReactNode }) {
             <EditBar />
         </div>
     );
+}
+
+function CreateNoticeStore({ children }: { children: ReactNode }) {
+    createNoticeStore({
+        mailList: []
+    });
+
+    return <>{children}</>;
 }
 
 function NoticeLayout({ children }: { children: ReactNode }) {
