@@ -1,5 +1,9 @@
 .bigDataWrapper {
     background: linear-gradient(to right, #2d5fb3 0%, #3a82fa 100%);
+
+    &.active {
+        height: calc(100vh - 112px);
+    }
 }
 
 .main {

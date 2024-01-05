@@ -75,6 +75,18 @@
     width: 100%;
     height: calc(100dvh - 214px);
     overflow: scroll;
+
+    .analyze {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        gap: 4px;
+        height: 100%;
+        font-size: 14px;
+        font-weight: 400;
+        color: #9b9b9b;
+    }
 }
 
 .dialogContent {

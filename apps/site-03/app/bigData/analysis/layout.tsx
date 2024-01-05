@@ -56,7 +56,7 @@ function AnalysisLayout({ children }: { children: ReactNode }) {
     return (
         <>
             <Header background />
-            <div className={style.bigDataWrapper}>
+            <div className={`${style.bigDataWrapper} ${!isVipUseAnalysis ? style.active : ''}`}>
                 <AnimationData
                     analysisTime={isVipUseAnalysis}
                     onUpdateAnalysis={handleAnalysisTimes}

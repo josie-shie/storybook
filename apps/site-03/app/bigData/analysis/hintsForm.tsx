@@ -10,6 +10,7 @@ import starIcon from './img/star.png';
 import selectIcon from './img/select.png';
 import switchIcon from './img/switch.png';
 import Dialog from './components/dialog/dialog';
+import SinglePay from './img/singlePay.png';
 
 function PaymentAlert() {
     const router = useRouter();
@@ -24,6 +25,7 @@ function PaymentAlert() {
     return (
         <>
             <div className={style.dialogMessage}>
+                <Image alt="" height={100} src={SinglePay} width={100} />
                 <p className={style.message}>
                     支付
                     <Image alt="" height={14} src={starIcon.src} width={14} /> 80
@@ -95,7 +97,7 @@ function HandicapAnalysisForm() {
 
     const hintsSelectPlay = useLongDragonStore.use.hintsSelectPlay() || 'HANDICAP';
     const hintsSelectType = useLongDragonStore.use.hintsSelectType() || 'OVER';
-    const hintsSelectProgres = useLongDragonStore.use.hintsSelectProgres() || 'HALF';
+    const hintsSelectProgres = useLongDragonStore.use.hintsSelectProgres() || 'FULL';
 
     const setHintsSelectPlay = useLongDragonStore.use.setHintsSelectPlay();
     const setHintsSelectType = useLongDragonStore.use.setHintsSelectType();
@@ -104,7 +106,7 @@ function HandicapAnalysisForm() {
     useEffect(() => {
         setHintsSelectPlay('HANDICAP');
         setHintsSelectType('OVER');
-        setHintsSelectProgres('HALF');
+        setHintsSelectProgres('FULL');
         setDialogContent(<PaymentAlert />);
     }, []);
 
@@ -248,7 +250,7 @@ function HandicapAnalysisForm() {
                 whileTap={{ scale: 0.9 }}
             >
                 <Image alt="" height={14} src={starIcon.src} width={14} />
-                获得今日长龙赛事
+                80 获得今日长龙赛事
             </motion.button>
             <Dialog
                 content={<div className={style.dialogContent}>{dialogContent}</div>}
