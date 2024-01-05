@@ -374,8 +374,12 @@ const initialState = (
         });
     }
 });
-
-const createAnalysisResultStore = (init: InitState) =>
-    (useAnalyticsResultStore = initStore<AnalysisResultState>(initialState, init));
+let isInit = true;
+const createAnalysisResultStore = (init: InitState) => {
+    if (isInit) {
+        useAnalyticsResultStore = initStore<AnalysisResultState>(initialState, init);
+        isInit = false;
+    }
+};
 
 export { createAnalysisResultStore, useAnalyticsResultStore };

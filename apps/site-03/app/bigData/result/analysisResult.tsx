@@ -283,11 +283,11 @@ function ResultContent() {
 
     useEffect(() => {
         // 代表不是從搜尋導到這頁，可能是重整頁面
-        if (!isAnalysisBySearch) {
+        if (!isAnalysisBySearch && !showContestDrawer) {
             router.push('/bigData/analysis?status=analysis');
-            return;
         }
 
+        if (!isAnalysisBySearch) return;
         void fetchData();
     }, []);
 
