@@ -1,11 +1,11 @@
 'use client';
 import type { Metadata } from 'next';
-import style from './memberAvatar.module.scss';
 import { Slick } from 'ui/stories/slickPro/slick';
-import Guess from './components/guess/guess';
-import MemberItem from './components/memberItem/memberItem';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import style from './memberAvatar.module.scss';
+import Guess from './components/guess/guess';
+import MemberItem from './components/memberItem/memberItem';
 
 export const metadata: Metadata = {
     title: '专家预测 | FutureSport'
@@ -48,7 +48,7 @@ function MasterAvatar({ params }: { params: { memberId: string } }) {
                 className={style.slick}
                 initialSlide={initialSlide}
                 onSlickEnd={onSlickEnd}
-                styling="button"
+                styling="underline"
                 tabs={tabList}
             >
                 <div className={`${style.largeGap}`}>
