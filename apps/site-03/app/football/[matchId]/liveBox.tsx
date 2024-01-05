@@ -123,7 +123,9 @@ function GoalAnimation({
                         ? { x: 0 }
                         : { opacity: 0 }
                 }
-                className={`${style.goalAnimation} ${style.homeGoal}`}
+                className={`${style.goalAnimation} ${
+                    syncData.homeScore && homeScoreKeep !== syncData.homeScore && style.homeGoal
+                }`}
                 initial={{ x: '-100%' }}
                 transition={{ duration: 0.1 }}
             >
@@ -140,7 +142,9 @@ function GoalAnimation({
                         ? { x: 0 }
                         : { opacity: 0 }
                 }
-                className={`${style.goalAnimation} ${style.awayGoal}`}
+                className={`${style.goalAnimation} ${
+                    syncData.homeScore && homeScoreKeep !== syncData.homeScore && style.awayGoal
+                }`}
                 initial={{ x: '100%' }}
                 transition={{ duration: 0.1 }}
             >

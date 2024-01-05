@@ -172,6 +172,7 @@
 }
 
 .goalAnimation {
+    display: none;
     position: absolute;
     top: 0;
     left: 0;
@@ -195,6 +196,8 @@
     }
 
     &.homeGoal {
+        display: block;
+
         .gradient {
             background: linear-gradient(
                 90deg,
@@ -209,6 +212,8 @@
     }
 
     &.awayGoal {
+        display: block;
+
         .gradient {
             background: linear-gradient(
                 270deg,
