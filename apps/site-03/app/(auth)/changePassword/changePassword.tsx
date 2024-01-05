@@ -9,7 +9,8 @@ import { useNotificationStore } from '@/app/notificationStore';
 import {
     PasswordInput,
     SubmitButton,
-    VertifyCodeByImage
+    VertifyCodeByImage,
+    TokenInput
 } from '../components/authComponent/authComponent';
 import { useAuthStore } from '../authStore';
 import style from './changePassword.module.scss';
@@ -147,9 +148,7 @@ function ChangePassword() {
                     )}
                 />
             </FormControl>
-            <FormControl>
-                <input name="verifyToken" type="hidden" value={verifyToken} />
-            </FormControl>
+            <TokenInput verifyToken={verifyToken} />
             <FormControl className={style.submitButton} fullWidth>
                 <SubmitButton disabled={isSubmitDisable} label="提交" />
             </FormControl>

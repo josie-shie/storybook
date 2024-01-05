@@ -12,7 +12,8 @@ import {
     PasswordInput,
     Aggrement,
     SubmitButton,
-    CountryCodeInput
+    CountryCodeInput,
+    TokenInput
 } from '@/app/(auth)/components/authComponent/authComponent';
 import { useUserStore } from '@/app/userStore';
 import { useNotificationStore } from '@/app/notificationStore';
@@ -172,11 +173,9 @@ function Register() {
                     )}
                 />
             </FormControl>
-            <FormControl>
-                <input name="verifyToken" type="hidden" value={verifyToken} />
-            </FormControl>
+            <TokenInput verifyToken={verifyToken} />
             <Aggrement />
-            <FormControl fullWidth>
+            <FormControl className={style.registerButton} fullWidth>
                 <SubmitButton disabled={isRegisterDisable} label="注册" />
             </FormControl>
         </form>

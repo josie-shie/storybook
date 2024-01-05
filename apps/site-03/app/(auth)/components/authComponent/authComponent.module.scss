@@ -184,8 +184,8 @@ $border-bottom: 1px solid rgb(255 255 255 / 30%);
 
 .disableButton:global(.Mui-disabled) {
     opacity: 0.5;
-    color: #fff;
-    background-color: rgb(255 255 255 / 30%);
+    color: #fff !important;
+    background-color: rgba(255, 255, 255, 0.3);
 }
 
 .ableButton {
@@ -210,4 +210,13 @@ $border-bottom: 1px solid rgb(255 255 255 / 30%);
     display: flex;
     align-items: center;
     margin-top: 6px;
+}
+
+.hiddenForm {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+    width: 0;
+    height: 0;
+    overflow: hidden;
 }
