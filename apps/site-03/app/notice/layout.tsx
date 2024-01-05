@@ -23,22 +23,24 @@ function NoticeTabs({ children }: { children: ReactNode }) {
         buttonRadius: 0
     };
 
-    const mailCountString = unreadMessageNotify.mailCount
-        ? `（${unreadMessageNotify.mailCount}）`
-        : '';
-    const chatCountString = unreadMessageNotify.chatCount
-        ? `（${unreadMessageNotify.chatCount}）`
-        : '';
+    // const mailCountString = unreadMessageNotify.mailCount
+    //     ? `（${unreadMessageNotify.mailCount}）`
+    //     : '';
+    // const chatCountString = unreadMessageNotify.chatCount
+    //     ? `（${unreadMessageNotify.chatCount}）`
+    //     : '';
 
     const tabList = [
         {
-            label: `消息${mailCountString}`,
+            label: `消息`,
+            // label: `消息${mailCountString}`
             to: '/notice',
             status: 'notice',
             id: 'notice,'
         },
         {
-            label: `聊天${chatCountString}`,
+            label: `聊天`,
+            // label: `聊天${chatCountString}`,
             to: '/notice/chat',
             status: 'chat',
             id: 'chat'
