@@ -169,7 +169,7 @@ function LiveBox({
     matchId: number;
 }) {
     createContestDetailStore({ matchDetail: contestDetail });
-    const { homeChs, homeLogo, awayChs, awayLogo } = useContestDetailStore.use.matchDetail();
+    const matchDetail = useContestDetailStore.use.matchDetail();
     const router = useRouter();
 
     const back = () => {
@@ -182,28 +182,42 @@ function LiveBox({
 
     return (
         <div className={style.liveBox} style={{ backgroundImage: `url(${bgImage.src})` }}>
-            <Header back={back} matchId={matchId} />
-            <div className={style.scoreboard}>
-                <div className={style.gameInfo}>
-                    <div className={style.team}>
-                        <div className={style.circleBg}>
-                            <TeamLogo alt={homeChs} height={46} src={homeLogo} width={46} />
+            {matchDetail.matchId ? (
+                <>
+                    <Header back={back} matchId={matchId} />
+                    <div className={style.scoreboard}>
+                        <div className={style.gameInfo}>
+                            <div className={style.team}>
+                                <div className={style.circleBg}>
+                                    <TeamLogo
+                                        alt={matchDetail.homeChs}
+                                        height={46}
+                                        src={matchDetail.homeLogo}
+                                        width={46}
+                                    />
+                                </div>
+                                <p className={style.teamName}>{matchDetail.homeChs}</p>
+                            </div>
+                            <div className={style.score}>
+                                <GameDetail matchId={matchId} />
+                            </div>
+                            <div className={style.team}>
+                                <div className={style.circleBg}>
+                                    <TeamLogo
+                                        alt={matchDetail.awayChs}
+                                        height={46}
+                                        src={matchDetail.awayLogo}
+                                        width={46}
+                                    />
+                                </div>
+                                <p className={style.teamName}>{matchDetail.awayChs}</p>
+                            </div>
                         </div>
-                        <p className={style.teamName}>{homeChs}</p>
                     </div>
-                    <div className={style.score}>
-                        <GameDetail matchId={matchId} />
-                    </div>
-                    <div className={style.team}>
-                        <div className={style.circleBg}>
-                            <TeamLogo alt={awayChs} height={46} src={awayLogo} width={46} />
-                        </div>
-                        <p className={style.teamName}>{awayChs}</p>
-                    </div>
-                </div>
-            </div>
-            <Animate />
-            <GoalAnimation contestDetail={contestDetail} matchId={matchId} />
+                    <Animate />
+                    <GoalAnimation contestDetail={contestDetail} matchId={matchId} />
+                </>
+            ) : null}
         </div>
     );
 }

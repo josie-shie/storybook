@@ -45,10 +45,11 @@ function Header({ matchId, back }: { matchId: number; back: () => void }) {
 
     const liveState = syncData.state || matchDetail.state;
 
-    const currentMatchTime = useFormattedTime({
-        timeStamp: matchDetail.matchTime,
-        formattedString: 'M/DD HH:mm'
-    });
+    const currentMatchTime =
+        useFormattedTime({
+            timeStamp: matchDetail.matchTime,
+            formattedString: 'M/DD HH:mm'
+        }) || '';
 
     const handleShare = async () => {
         if (typeof navigator.share !== 'undefined') {
