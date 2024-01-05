@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import {
     getMemberIndividualGuessMatches,
-    payForPost,
+    payForProGuess,
     getMemberInfo,
     type MemberIndividualGuessMatch
 } from 'data-center';
@@ -122,7 +122,7 @@ function BettingPlan({
         }
 
         if (isVip.planId === 1) {
-            const res = await payForPost({ postId: item.id });
+            const res = await payForProGuess({ guessId: item.id });
 
             if (!res.success) {
                 return new Error();
@@ -141,7 +141,7 @@ function BettingPlan({
             return;
         }
 
-        const res = await payForPost({ postId: Number(articleInfo.id) });
+        const res = await payForProGuess({ guessId: Number(articleInfo.id) });
 
         if (!res.success) {
             return new Error();
