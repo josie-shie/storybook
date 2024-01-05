@@ -436,7 +436,9 @@ const MemberIndividualGuessMatchSchema = z.object({
     predictedPlay: PredictedPlaySchema,
     predictionResult: PredictionResultSchema,
     isPaidToRead: z.boolean(),
-    unlockPrice: z.number()
+    unlockPrice: z.number(),
+    homeScore: z.number(),
+    awayScore: z.number()
 });
 
 export type MemberIndividualGuessMatch = z.infer<typeof MemberIndividualGuessMatchSchema>;

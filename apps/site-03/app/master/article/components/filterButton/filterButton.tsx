@@ -1,5 +1,3 @@
-import Image from 'next/image';
-import FilterIcon from '../../img/filter.png';
 import { useArticleStore } from '../../articleStore';
 import style from './filterButton.module.scss';
 
@@ -14,7 +12,6 @@ function FilterButton() {
             }}
         >
             赛事筛选
-            <Image alt="filter" className={style.mr} sizes="32" src={FilterIcon} />
         </div>
     );
 }

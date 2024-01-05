@@ -197,7 +197,19 @@ function BettingPlan({
                                         {filterPlay[item.predictedPlay]}
                                     </span>
                                     <div className={style.combination}>
-                                        {item.homeTeamName} vs {item.awayTeamName}
+                                        {item.predictionResult === 'NONE' && item.isPaidToRead ? (
+                                            <span>
+                                                {item.homeTeamName} vs {item.awayTeamName}
+                                            </span>
+                                        ) : (
+                                            <span>
+                                                {item.homeTeamName}{' '}
+                                                <span>
+                                                    {item.homeScore} - {item.awayScore}
+                                                </span>{' '}
+                                                {item.awayTeamName}
+                                            </span>
+                                        )}
                                     </div>
                                 </div>
                                 <div className={style.bot}>
@@ -208,9 +220,9 @@ function BettingPlan({
                                     >
                                         {filterOdds[item.predictedPlay] === 'overUnder'
                                             ? ''
-                                            : item.handicapInChinese}
-                                        {item.predictedPlay === 'OVER' && '小'}{' '}
-                                        {item.predictedPlay === 'UNDER' && '大'}{' '}
+                                            : item.handicapInChinese}{' '}
+                                        {item.predictedPlay === 'OVER' && '小'}
+                                        {item.predictedPlay === 'UNDER' && '大'}
                                         {item.predictedPlay === 'HOME' && item.homeTeamName}
                                         {item.predictedPlay === 'AWAY' && item.awayTeamName}
                                     </div>
