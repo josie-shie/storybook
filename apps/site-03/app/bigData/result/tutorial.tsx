@@ -11,7 +11,7 @@ import handicapTopBar from './img/tutorial/handicapTopBar.png';
 import handicapBottomTable from './img/tutorial/handicapBottomTable.png';
 import handicapTop from './img/tutorial/handicapTop.png';
 import handicapBottom from './img/tutorial/handicapBottom.png';
-import handicapTips from './img/tutorial/handicapTips.png';
+// import handicapTips from './img/tutorial/handicapTips.png';
 import minutesTop from './img/tutorial/minutesTop.png';
 import minutesChart from './img/tutorial/minutesChart.png';
 import minutesBottom from './img/tutorial/minutesBottom.png';
@@ -36,12 +36,12 @@ interface ImageType {
 function TutorialSection({
     topImages,
     bottomImages,
-    extraBottomImage,
+    // extraBottomImage,
     showAnimation
 }: {
     topImages: ImageType[];
     bottomImages?: ImageType[];
-    extraBottomImage?: ImageType;
+    // extraBottomImage?: ImageType;
     showAnimation: boolean;
 }) {
     const fadeInOut = {
@@ -77,7 +77,7 @@ function TutorialSection({
                 </div>
             ) : null}
 
-            {extraBottomImage ? (
+            {/* {extraBottomImage ? (
                 <motion.div
                     animate="visible"
                     exit="hidden"
@@ -85,9 +85,11 @@ function TutorialSection({
                     transition={{ duration: 0.5, delay: showAnimation ? 1.5 : 0 }}
                     variants={fadeInOut}
                 >
-                    <Image alt="" {...extraBottomImage} />
+                    <div className={style.tutorialBottom}>
+                        <Image alt="" {...extraBottomImage} />
+                    </div>
                 </motion.div>
-            ) : null}
+            ) : null} */}
         </div>
     );
 }
@@ -194,12 +196,12 @@ function Handicap({ isShowed }: { isShowed: Record<number, number> }) {
         },
         { height: 71, src: handicapBottom.src, width: 330 }
     ];
-    const extraBottomImage = { height: 98, src: handicapTips.src, width: 332 };
+    // const extraBottomImage = { height: 98, src: handicapTips.src, width: 332 };
 
     return (
         <TutorialSection
             bottomImages={bottomImages}
-            extraBottomImage={extraBottomImage}
+            // extraBottomImage={extraBottomImage}
             showAnimation={isShowed[0] <= 0}
             topImages={topImages}
         />
@@ -246,7 +248,7 @@ function Tutorial({ setDefaultPageIndex }: { setDefaultPageIndex: (val: number) 
         <div
             className={style.tutorial}
             style={{
-                height: '100%',
+                height: '100dvh',
                 display: closeTutorial ? 'none' : ''
             }}
         >
@@ -257,7 +259,7 @@ function Tutorial({ setDefaultPageIndex }: { setDefaultPageIndex: (val: number) 
                 onSlideChange={handleSlideChange}
                 pagination={{ clickable: true }}
                 slidesPerView={1}
-                style={{ height: '100%' }}
+                style={{ height: 'calc(100dvh - 30px)' }}
             >
                 <SwiperSlide>
                     {/* 需要判斷index不然預設全部渲染就沒有動畫效果 */}
