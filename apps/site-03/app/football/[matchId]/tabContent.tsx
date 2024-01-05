@@ -174,26 +174,31 @@ function TabContent({
 
     useEffect(() => {
         setSecondRender(true);
-        fetchSecondRenderData();
     }, []);
 
-    const fetchSecondRenderData = () => {
-        Object.entries(handleSecondFetch).forEach(async ([key, func]) => {
-            if (key !== initStatus) {
-                try {
-                    const result = await func();
-                    if (result.success) {
-                        setFetchData(prevData => ({
-                            ...prevData,
-                            [key]: result.data
-                        }));
+    useEffect(() => {
+        const fetchSecondRenderData = () => {
+            if (!secondRender) return;
+
+            Object.entries(handleSecondFetch).forEach(async ([key, func]) => {
+                if (key !== initStatus) {
+                    try {
+                        const result = await func();
+                        if (result.success) {
+                            setFetchData(prevData => ({
+                                ...prevData,
+                                [key]: result.data
+                            }));
+                        }
+                    } catch (error) {
+                        console.error('Error fetching:', key, error);
                     }
-                } catch (error) {
-                    console.error('Error fetching:', key, error);
                 }
-            }
-        });
-    };
+            });
+        };
+
+        fetchSecondRenderData();
+    }, [secondRender]);
 
     const initialSlide = status ? tabList.findIndex(tab => tab.status === status) : 0;
 
