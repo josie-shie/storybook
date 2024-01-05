@@ -15,19 +15,23 @@ function MailList() {
 
     useEffect(() => {
         const setMailList = useNoticeStore.getState().setMailList;
-        const getMailList = async (notify?: NotifyMessage) => {
+        const getMailList = async () => {
+            const res = await getMailMemberList();
+            if (!res.success) {
+                console.error(res.error);
+                return;
+            }
+            setMailList(res.data);
+        };
+
+        const refetchMailList = async (notify?: NotifyMessage) => {
             if (notify?.notifyType === 3) {
-                const res = await getMailMemberList();
-                if (!res.success) {
-                    console.error(res.error);
-                    return;
-                }
-                setMailList(res.data);
+                await getMailList();
             }
         };
 
         void getMailList();
-        mqttService.getNotifyMessage(getMailList);
+        mqttService.getNotifyMessage(refetchMailList);
     }, []);
 
     if (mailList.length === 0) {
