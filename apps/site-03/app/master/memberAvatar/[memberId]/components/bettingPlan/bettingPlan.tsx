@@ -39,10 +39,12 @@ const filterOdds = {
 
 function BettingPlan({
     planActiveTab,
-    setGuessLength
+    setGuessLength,
+    params
 }: {
     planActiveTab: Tab;
     setGuessLength: (val: number) => void;
+    params: { memberId: string };
 }) {
     const [guessMatchesList, setGuessMatchesList] = useState<MemberIndividualGuessMatch[]>([]);
     const [isNoData, setIsNoData] = useState<boolean | null>(null);
@@ -51,7 +53,7 @@ function BettingPlan({
 
     const fetchData = async () => {
         const res = await getMemberIndividualGuessMatches({
-            memberId: 1,
+            memberId: params.memberId ? Number(params.memberId) : 1,
             currentPage,
             pageSize: 30,
             guessType: planActiveTab
