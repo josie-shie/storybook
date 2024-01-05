@@ -4,6 +4,7 @@ import Link from 'next/link';
 import Avatar from '@/components/avatar/avatar';
 import Tag from '@/components/tag/tag';
 import TagSplit from '@/components/tagSplit/tagSplit';
+import { useUserStore } from '@/app/userStore';
 import Fire from './img/hot.png';
 import Win from './img/win.png';
 import Lose from './img/lose.png';
@@ -48,6 +49,7 @@ const sortHotStreakFirst = (highlights: ProGuess['highlights']) => {
 function GameCard({ plan, onOpenPaidDialog }: GameCardProps) {
     const detail = useGuessDetailStore.use.detail();
     const unlockPrice = useGuessDetailStore.use.masterPlanPrice();
+    const isVIP = useUserStore.use.memberSubscribeStatus().planId === 1;
 
     const sortTags = sortHotStreakFirst(plan.highlights);
     const iconMap = {
@@ -95,8 +97,19 @@ function GameCard({ plan, onOpenPaidDialog }: GameCardProps) {
                 {plan.predictedPlay === 'LOCK' ? (
                     <>
                         <div className={style.noPaid} onClick={onOpenPaidDialog}>
-                            <Image alt="star" className={style.image} src={Star} width={14} />
-                            <span className={style.text}>{unlockPrice}元</span>
+                            {isVIP ? (
+                                <span className={style.text}>查看</span>
+                            ) : (
+                                <>
+                                    <Image
+                                        alt="star"
+                                        className={style.image}
+                                        src={Star}
+                                        width={14}
+                                    />
+                                    <span className={style.text}>{unlockPrice}元</span>
+                                </>
+                            )}
                         </div>
                         <div className={style.play}>一球/球半</div>
                     </>

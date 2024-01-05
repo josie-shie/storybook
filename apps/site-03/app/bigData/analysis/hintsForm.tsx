@@ -11,6 +11,39 @@ import selectIcon from './img/select.png';
 import switchIcon from './img/switch.png';
 import Dialog from './components/dialog/dialog';
 import SinglePay from './img/singlePay.png';
+import RechargeIcon from './img/rechargeIcon.png';
+
+function RechargeAlert() {
+    const router = useRouter();
+    const setOpenDialog = useHandicapAnalysisFormStore.use.setOpenNormalDialog();
+
+    const recharge = () => {
+        setOpenDialog(false);
+        router.push('/userInfo/subscribe');
+    };
+
+    return (
+        <>
+            <div className={style.dialogMessage}>
+                <Image alt="" height={100} src={RechargeIcon} width={100} />
+                <p>余额不足，请充值</p>
+            </div>
+            <div className={style.footer}>
+                <div
+                    className={style.close}
+                    onClick={() => {
+                        setOpenDialog(false);
+                    }}
+                >
+                    返回
+                </div>
+                <div className={style.confirm} onClick={recharge}>
+                    前往充值
+                </div>
+            </div>
+        </>
+    );
+}
 
 function PaymentAlert() {
     const router = useRouter();
@@ -88,6 +121,7 @@ function OptionButton({
 
 function HandicapAnalysisForm() {
     const router = useRouter();
+    const userInfo = useUserStore.use.userInfo();
 
     const openDialog = useHandicapAnalysisFormStore.use.openNoramlDialog();
     const setOpenDialog = useHandicapAnalysisFormStore.use.setOpenNormalDialog();
@@ -130,7 +164,13 @@ function HandicapAnalysisForm() {
 
     const payLong = () => {
         if (!isVip) {
-            setOpenDialog(true);
+            if (userInfo.balance < 80) {
+                setDialogContent(<RechargeAlert />);
+                setOpenDialog(true);
+            } else {
+                setDialogContent(<PaymentAlert />);
+                setOpenDialog(true);
+            }
         } else {
             router.push('/bigData/longDragon');
         }

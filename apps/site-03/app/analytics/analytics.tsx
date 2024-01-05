@@ -9,14 +9,14 @@ import leagueLogo from './img/TeamLogo.png';
 import cupLogo from './img/cupLogo.png';
 
 const hotGames = [
-    { logo: null, name: '美联职' },
-    { logo: null, name: '英超' },
-    { logo: null, name: '西甲' },
-    { logo: null, name: '德甲' },
-    { logo: null, name: '韓Ｋ' },
-    { logo: null, name: '中超' },
-    { logo: null, name: '歐联职' },
-    { logo: null, name: '阿甲' }
+    { id: 1, logo: null, name: '美联职' },
+    { id: 2, logo: null, name: '英超' },
+    { id: 3, logo: null, name: '西甲' },
+    { id: 4, logo: null, name: '德甲' },
+    { id: 5, logo: null, name: '韓Ｋ' },
+    { id: 6, logo: null, name: '中超' },
+    { id: 7, logo: null, name: '歐联职' },
+    { id: 8, logo: null, name: '阿甲' }
 ];
 const nationallist = [
     '欧洲赛事',
@@ -97,10 +97,14 @@ function Analytics() {
                     <div className={style.title}>热门赛事数据</div>
                     <div className={style.leagues}>
                         {hotGames.map((el, idx) => (
-                            <button className={style.league} key={idx} type="button">
+                            <Link
+                                className={style.league}
+                                href={`/analytics/league/${el.id}`}
+                                key={idx}
+                            >
                                 <Image alt="" src={leagueLogo} width={22} />
                                 <span className={style.name}>{el.name}</span>
-                            </button>
+                            </Link>
                         ))}
                     </div>
                 </div>

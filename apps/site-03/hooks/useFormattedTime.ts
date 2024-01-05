@@ -11,7 +11,7 @@ export function useFormattedTime({ timeStamp, formattedString = 'HH:mm' }: TimeA
     const [time, setTime] = useState<string>('');
 
     useEffect(() => {
-        const currentTime = timestampToString(timeStamp, formattedString);
+        const currentTime = timeStamp ? timestampToString(timeStamp, formattedString) : '';
         setTime(currentTime);
     }, [timeStamp, formattedString]);
 

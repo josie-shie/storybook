@@ -1,6 +1,5 @@
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { Checkbox } from '@mui/material';
 import type { ReactNode } from 'react';
 import React, { useEffect } from 'react';
 import dayjs from 'dayjs';
@@ -18,8 +17,42 @@ import starIcon from './img/star.png';
 import Datepicker from './components/datepicker/datepicker';
 import Dialog from './components/dialog/dialog';
 import SinglePay from './img/singlePay.png';
+import checkedIcon from './img/check.png';
+import RechargeIcon from './img/rechargeIcon.png';
 
 type PlayTypeCheckBox = 'handicap' | 'overUnder';
+
+function RechargeAlert() {
+    const router = useRouter();
+    const setOpenDialog = useHandicapAnalysisFormStore.use.setOpenNormalDialog();
+
+    const recharge = () => {
+        setOpenDialog(false);
+        router.push('/userInfo/subscribe');
+    };
+
+    return (
+        <>
+            <div className={style.dialogMessage}>
+                <Image alt="" height={100} src={RechargeIcon} width={100} />
+                <p>余额不足，请充值</p>
+            </div>
+            <div className={style.footer}>
+                <div
+                    className={style.close}
+                    onClick={() => {
+                        setOpenDialog(false);
+                    }}
+                >
+                    返回
+                </div>
+                <div className={style.confirm} onClick={recharge}>
+                    前往充值
+                </div>
+            </div>
+        </>
+    );
+}
 
 function PaymentAlert() {
     const router = useRouter();
@@ -238,50 +271,70 @@ function PlayTypeCheckbox() {
                         handicap ? style.checkedBackground : style.uncheckedBackground
                     }`}
                 >
-                    <Checkbox
-                        checked={handicap}
-                        name="handicap"
-                        onChange={e => {
-                            handleChange(e, 'overUnder');
-                        }}
-                        sx={{
-                            '& .MuiSvgIcon-root': {
-                                color: handicap ? '#FFF' : '#bfbfbf'
-                            }
-                        }}
-                    />
-                    <span
-                        className={`${style.label} ${
-                            handicap ? style.checkedLabel : style.uncheckedLabel
-                        }`}
-                    >
-                        让分
-                    </span>
+                    <label className={style.checkboxLabel}>
+                        {handicap ? (
+                            <Image
+                                alt=""
+                                className={style.select}
+                                height={24}
+                                src={checkedIcon.src}
+                                width={24}
+                            />
+                        ) : (
+                            <div className={style.disabled} />
+                        )}
+
+                        <span
+                            className={`${style.label} ${
+                                handicap ? style.checkedLabel : style.uncheckedLabel
+                            }`}
+                        >
+                            让分
+                        </span>
+                        <input
+                            checked={handicap}
+                            name="handicap"
+                            onChange={e => {
+                                handleChange(e, 'overUnder');
+                            }}
+                            type="checkbox"
+                        />
+                    </label>
                 </div>
                 <div
                     className={`${style.checkbox} ${
                         overUnder ? style.checkedBackground : style.uncheckedBackground
                     }`}
                 >
-                    <Checkbox
-                        checked={overUnder}
-                        name="overUnder"
-                        onChange={e => {
-                            handleChange(e, 'handicap');
-                        }}
-                        sx={{
-                            '& .MuiSvgIcon-root': {
-                                color: overUnder ? '#FFF' : '#bfbfbf'
-                            }
-                        }}
-                    />
-                    <span
-                        className={`${style.label} ${
-                            overUnder ? style.checkedLabel : style.uncheckedLabel
-                        }`}
-                    >
-                        大小
-                    </span>
+                    <label className={style.checkboxLabel}>
+                        {overUnder ? (
+                            <Image
+                                alt=""
+                                className={style.select}
+                                height={24}
+                                src={checkedIcon.src}
+                                width={24}
+                            />
+                        ) : (
+                            <div className={style.disabled} />
+                        )}
+
+                        <span
+                            className={`${style.label} ${
+                                overUnder ? style.checkedLabel : style.uncheckedLabel
+                            }`}
+                        >
+                            大小
+                        </span>
+                        <input
+                            checked={overUnder}
+                            name="overUnder"
+                            onChange={e => {
+                                handleChange(e, 'handicap');
+                            }}
+                            type="checkbox"
+                        />
+                    </label>
                 </div>
             </div>
             <StepperProcess />
@@ -379,6 +432,9 @@ function HandicapAnalysisForm() {
         switch (dialogErrorType) {
             case 'payment':
                 setDialogContent(<PaymentAlert />);
+                break;
+            case 'balance':
+                setDialogContent(<RechargeAlert />);
                 break;
             default:
                 setDialogContent(null);

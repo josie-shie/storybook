@@ -101,7 +101,11 @@ function MyFocus() {
             );
         }
 
-        return <NoData text="此條件查无资料" textSecond="请重新修改搜寻条件" />;
+        if (searchTerm) {
+            return <NoData text="此條件查无资料" textSecond="请重新修改搜寻条件" />;
+        }
+
+        return <NoData text="暂无资料" />;
     };
 
     useEffect(() => {
