@@ -41,7 +41,7 @@
             font-weight: 400;
 
             .description {
-                padding-bottom: 12px;
+                padding-bottom: 4px;
             }
         }
 
@@ -87,10 +87,37 @@
             }
 
             .checkbox {
+                height: 44px;
                 width: 164px;
                 display: flex;
                 align-items: center;
                 border-radius: 8px;
+                padding: 10px 20px;
+
+                .disabled {
+                    border: 2px solid rgb(191, 191, 191);
+                    border-radius: 3px;
+                    width: 20px;
+                    height: 20px;
+                    margin-right: 8px;
+                }
+
+                .checkboxLabel {
+                    display: flex;
+                    align-items: center;
+
+                    .select {
+                        margin-right: 8px;
+                    }
+
+                    input {
+                        position: absolute;
+                        opacity: 0;
+                        cursor: pointer;
+                        height: 0;
+                        width: 0;
+                    }
+                }
 
                 .uncheckedLabel {
                     color: #bfbfbf;
@@ -140,6 +167,11 @@
                 .option {
                     width: 72px;
                     max-width: 72px;
+                    background-color: #fff;
+                    height: 38px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
                 }
             }
 
@@ -159,7 +191,7 @@
                 position: absolute;
                 top: -8px;
                 left: 8px;
-                width: 2px;
+                width: 1px;
                 height: 100%;
                 min-height: 160px;
                 background: #d9d9d9;
@@ -233,6 +265,7 @@
                     border: 1px solid #d9d9d9;
                     border-radius: 8px;
                     background: transparent;
+                    font-size: 16px;
 
                     .select {
                         position: absolute;
@@ -255,6 +288,17 @@
                     height: 100%;
                     min-height: 60px;
                     background: #d9d9d9;
+                }
+
+                :global {
+                    .option {
+                        font-size: 16px;
+                        background-color: #fff;
+                        height: 48px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                    }
                 }
             }
 
