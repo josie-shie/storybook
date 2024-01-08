@@ -1,14 +1,14 @@
 import type { Metadata } from 'next';
-import MyAnaylsis from './myAnalysis';
+import MyAnalysis from './myAnalysis';
 
 export const metadata: Metadata = {
-    title: '未来体育 | FutureSport'
+    title: '解锁纪录 | FutureSport'
 };
 
 function Page() {
     return (
         <div>
-            <MyAnaylsis />
+            <MyAnalysis />
         </div>
     );
 }
