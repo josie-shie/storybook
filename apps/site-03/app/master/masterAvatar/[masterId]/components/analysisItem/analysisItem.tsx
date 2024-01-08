@@ -11,7 +11,7 @@ import UnlockButton from '@/components/unlockButton/unlockButton';
 import NoData from '@/components/baseNoData/noData';
 import NormalDialog from '@/components/normalDialog/normalDialog';
 import { useUserStore } from '@/app/userStore';
-import ConfirmPayArticle from '@/app/master/article/components/confirmPayArticle/confirmPayArticle';
+import ConfirmPayDrawer from '@/components/confirmPayDrawer/confirmPayDrawer';
 import style from './analysisItem.module.scss';
 import IconWin from './img/win.png';
 import IconDraw from './img/draw.png';
@@ -233,15 +233,16 @@ function AnalysisItem({
                     )}
                 </ul>
             )}
-            <NormalDialog
-                cancelText="取消"
-                confirmText="確認支付"
-                content={<ConfirmPayArticle price={articleInfo.price} />}
+            <ConfirmPayDrawer
+                isOpen={isOpenPaid}
                 onClose={() => {
                     setIsOpenPaid(false);
                 }}
-                onConfirm={onSubmit}
-                openDialog={isOpenPaid}
+                onOpen={() => {
+                    setIsOpenPaid(true);
+                }}
+                onPay={onSubmit}
+                price={articleInfo.price}
             />
             <NormalDialog
                 cancelText="取消"
