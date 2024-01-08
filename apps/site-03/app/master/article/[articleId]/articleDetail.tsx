@@ -15,44 +15,44 @@ export const metadata: Metadata = {
 
 function ArticleDetail({ params }: { params: { articleId: string } }) {
     const [article, setArticle] = useState({
-        id: 281,
-        matchId: 2419673,
-        leagueId: 34,
+        id: 0,
+        matchId: 0,
+        leagueId: 0,
         state: 0,
         leagueName: '',
         homeTeam: {
-            id: 523,
+            id: 0,
             name: '',
             score: 0,
             logo: ''
         },
         awayTeam: {
-            id: 158,
+            id: 0,
             name: '',
             score: 0,
             logo: ''
         },
         odds: {
-            handicap: 0.25,
-            homeTeamOdds: 1.09,
-            awayTeamOdds: 0.79,
-            overUnder: 2.5,
-            overOdds: 1.04,
-            underOdds: 0.82
+            handicap: 0,
+            homeTeamOdds: 0,
+            awayTeamOdds: 0,
+            overUnder: 0,
+            overOdds: 0,
+            underOdds: 0
         },
-        mentorId: 41,
+        mentorId: 0,
         mentorName: '',
         mentorImage: '',
         mentorLevel: 1,
         playType: 'HOMEAWAY' as GuessTeam,
-        predictedPlay: 'LOCK' as PredictTypeWithLock,
+        predictedPlay: 'NONE' as PredictTypeWithLock,
         analysisTitle: '',
         analysisContent: '',
-        price: 50,
+        price: 0,
         predictionResult: 'NONE' as GuessType,
-        matchTime: 1706606662,
-        createdAt: 1702371957,
-        fansNumber: 1,
+        matchTime: 0,
+        createdAt: 0,
+        fansNumber: 0,
         unlockNumber: 0,
         followed: true,
         tag: {
