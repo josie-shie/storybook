@@ -7,6 +7,8 @@ import Header from '@/components/header/headerLogo';
 import style from './analytics.module.scss';
 import leagueLogo from './img/TeamLogo.png';
 import cupLogo from './img/cupLogo.png';
+import type { National } from './analyticsStore';
+import { useAnalyticsStore } from './analyticsStore';
 
 const hotGames = [
     { id: 1, logo: null, name: '美联职' },
@@ -18,24 +20,7 @@ const hotGames = [
     { id: 7, logo: null, name: '歐联职' },
     { id: 8, logo: null, name: '阿甲' }
 ];
-const nationallist = [
-    '欧洲赛事',
-    '英格兰',
-    '葡萄牙',
-    '意大利',
-    '法国',
-    '德国',
-    '西班牙',
-    '冰岛',
-    '苏格兰',
-    '俄罗斯',
-    '比利时',
-    '乌克兰',
-    '土耳其',
-    '荷兰',
-    '奥地利',
-    '瑞士'
-];
+
 const competitions = [
     { name: '世欧预', id: 1, matchType: 'league', rule: null },
     { name: '欧洲杯', id: 2, matchType: 'cup', rule: 'group' },
@@ -47,15 +32,17 @@ const competitions = [
     { name: '酋长杯', id: 8, matchType: 'cup', rule: 'round' }
 ];
 
-function CompetitionBox() {
+function CompetitionBox({ area }: { area: keyof National }) {
+    const nationallist = useAnalyticsStore.use.nationallist();
+
     return (
         <div className={style.competitionBox}>
             <div className={style.sideBar}>
-                {nationallist.map((national, idx) => (
+                {nationallist[area].map((national, idx) => (
                     <ScrollLink
                         activeClass="actived"
                         className={style.nationName}
-                        containerId="containerElement"
+                        containerId={`containerElement-${area}`}
                         duration={500}
                         key={idx}
                         offset={-16}
@@ -67,8 +54,8 @@ function CompetitionBox() {
                     </ScrollLink>
                 ))}
             </div>
-            <div className={style.teamList} id="containerElement">
-                {nationallist.map((national, idx) => (
+            <div className={style.teamList} id={`containerElement-${area}`}>
+                {nationallist[area].map((national, idx) => (
                     <Element key={idx} name={national}>
                         <h4 className={style.nationalName}>{national}</h4>
                         <ul className={style.competitionList}>
@@ -111,22 +98,22 @@ function Analytics() {
             </div>
             <Tabs buttonRadius={0} gap={0} position="center" styling="underline" swiperOpen={false}>
                 <Tab label="国际">
-                    <CompetitionBox />
+                    <CompetitionBox area="international" />
                 </Tab>
                 <Tab label="欧洲">
-                    <CompetitionBox />
+                    <CompetitionBox area="Europe" />
                 </Tab>
                 <Tab label="美洲">
-                    <CompetitionBox />
+                    <CompetitionBox area="America" />
                 </Tab>
                 <Tab label="亚洲">
-                    <CompetitionBox />
+                    <CompetitionBox area="Asia" />
                 </Tab>
                 <Tab label="大洋洲">
-                    <CompetitionBox />
+                    <CompetitionBox area="Oceania" />
                 </Tab>
                 <Tab label="非洲">
-                    <CompetitionBox />
+                    <CompetitionBox area="Africa" />
                 </Tab>
             </Tabs>
         </div>
