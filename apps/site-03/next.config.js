@@ -15,6 +15,15 @@ module.exports = {
             'cdn.sportnanoapi.com'
         ]
     },
+    webpack(config) {
+        config.module.rules.push({
+            test: /\.svg$/i,
+            issuer: /\.[jt]sx?$/,
+            use: ['@svgr/webpack']
+        });
+
+        return config;
+    },
     reactStrictMode: true,
     transpilePackages: ['ui', 'lib'],
     sassOptions: {
