@@ -139,7 +139,8 @@ function ResultContent() {
     const setShowContestDrawer = useAnalyticsResultStore.use.setShowContestDrawer();
     const selectedResult = useAnalyticsResultStore.use.selectedResult();
     const contestList = useAnalyticsResultStore.use.contestList();
-    const [showedTutorial, setShowedTutorial] = useState(false);
+    const showedTutorial = useAnalyticsResultStore.use.showedTutorial();
+    const setShowedTutorial = useAnalyticsResultStore.use.setShowedTutorial();
 
     const endDate = useHandicapAnalysisFormStore.use.endDate();
     const startDate = useHandicapAnalysisFormStore.use.startDate();

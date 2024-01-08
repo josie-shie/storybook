@@ -2,10 +2,10 @@
 import Image from 'next/image';
 import 'swiper/css/pagination';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import type { Swiper as SwiperClass } from 'swiper';
 import { Navigation, Pagination, Scrollbar, A11y, EffectFade } from 'swiper';
+import type SwiperClass from 'swiper';
 import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import style from './dashboard.module.scss';
 import handicapTopBar from './img/tutorial/handicapTopBar.png';
 import handicapBottomTable from './img/tutorial/handicapBottomTable.png';
@@ -22,6 +22,9 @@ import goalRangeBottom from './img/tutorial/goalRangeBottom.png';
 import goalRangeBottomTable from './img/tutorial/goalRangeBottomTable.png';
 import bodanTop from './img/tutorial/bodanTop.png';
 import bodanTopTable from './img/tutorial/bodanTopTable.png';
+import leftArrowIcon from './img/leftArrow.png';
+import rightArrowIcon from './img/rightArrow.png';
+import { useAnalyticsResultStore } from './analysisResultStore';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/scrollbar';
@@ -218,7 +221,9 @@ function Tutorial({ setDefaultPageIndex }: { setDefaultPageIndex: (val: number) 
         2: 0,
         3: 0
     });
-    const showAnalysisTutorial = localStorage.getItem('showAnalysisTutorial');
+
+    const showedTutorial = useAnalyticsResultStore.use.showedTutorial();
+    const setShowedTutorial = useAnalyticsResultStore.use.setShowedTutorial();
 
     const handleSlideChange = (swiper: SwiperClass) => {
         setCurrentIndex(swiper.activeIndex);
@@ -240,22 +245,32 @@ function Tutorial({ setDefaultPageIndex }: { setDefaultPageIndex: (val: number) 
 
     const handleClose = () => {
         setCloseTutorial(true);
-        showAnalysisTutorial === null && localStorage.setItem('showAnalysisTutorial', 'false');
+        !showedTutorial && localStorage.setItem('showAnalysisTutorial', 'false');
         setDefaultPageIndex(0);
+        setShowedTutorial(true);
     };
+
+    useEffect(() => {
+        setShowedTutorial(Boolean(localStorage.getItem('showAnalysisTutorial')));
+    }, []);
 
     return (
         <div
             className={style.tutorial}
             style={{
                 height: '100dvh',
-                display: closeTutorial ? 'none' : ''
+                display: closeTutorial ? 'none' : '',
+                position: 'relative'
             }}
         >
             <Swiper
                 effect="fade"
                 fadeEffect={{ crossFade: true }}
                 modules={[Navigation, Pagination, Scrollbar, A11y, EffectFade]}
+                navigation={{
+                    prevEl: '.navigation-prev',
+                    nextEl: '.navigation-next'
+                }}
                 onSlideChange={handleSlideChange}
                 pagination={{ clickable: true }}
                 slidesPerView={1}
@@ -289,6 +304,23 @@ function Tutorial({ setDefaultPageIndex }: { setDefaultPageIndex: (val: number) 
                     </div>
                 </SwiperSlide>
             </Swiper>
+            <div className={style.navigationButtons}>
+                <button
+                    className="navigation-prev"
+                    // 如果直接讓它消失的話，再出現時功能會失效
+                    style={{ visibility: currentIndex !== 0 ? 'visible' : 'hidden' }}
+                    type="button"
+                >
+                    <Image alt="" height={14} src={leftArrowIcon.src} width={14} />
+                </button>
+                <button
+                    className="navigation-next"
+                    style={{ visibility: currentIndex !== 3 ? 'visible' : 'hidden' }}
+                    type="button"
+                >
+                    <Image alt="" height={14} src={rightArrowIcon.src} width={14} />
+                </button>
+            </div>
             <div className={style.bottomButton} onClick={handleClose}>
                 {bottomText}
             </div>

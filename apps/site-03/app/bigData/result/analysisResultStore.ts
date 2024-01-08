@@ -74,6 +74,8 @@ interface AnalysisResultState extends InitState {
     setDefaultPageIndex: (defaultPageIndex: number) => void;
     tabSlideScroll: boolean;
     setTabSlideScroll: (tabSlideScroll: boolean) => void;
+    showedTutorial: boolean;
+    setShowedTutorial: (showedTutorial: boolean) => void;
 }
 
 let useAnalyticsResultStore: StoreWithSelectors<AnalysisResultState>;
@@ -371,6 +373,12 @@ const initialState = (
     setTabSlideScroll: (tabSlideScroll: boolean) => {
         set(state => {
             return { ...state, tabSlideScroll };
+        });
+    },
+    showedTutorial: false,
+    setShowedTutorial: (showedTutorial: boolean) => {
+        set(state => {
+            return { ...state, showedTutorial };
         });
     }
 });
