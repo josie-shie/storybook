@@ -10,7 +10,7 @@ import NoData from '@/components/baseNoData/noData';
 import UnlockButton from '@/components/unlockButton/unlockButton';
 import { useUserStore } from '@/app/userStore';
 import NormalDialog from '@/components/normalDialog/normalDialog';
-import ConfirmPayArticle from '../components/confirmPayArticle/confirmPayArticle';
+import ConfirmPayDrawer from '@/components/confirmPayDrawer/confirmPayDrawer';
 import style from './recommendationList.module.scss';
 import Win from './img/win.png';
 import Draw from './img/draw.png';
@@ -163,15 +163,16 @@ function RecommendationItem({
                     })}
                 </>
             )}
-            <NormalDialog
-                cancelText="取消"
-                confirmText="確認支付"
-                content={<ConfirmPayArticle price={articleInfo.price} />}
+            <ConfirmPayDrawer
+                isOpen={isOpenPaid}
                 onClose={() => {
                     setIsOpenPaid(false);
                 }}
-                onConfirm={onSubmit}
-                openDialog={isOpenPaid}
+                onOpen={() => {
+                    setIsOpenPaid(true);
+                }}
+                onPay={onSubmit}
+                price={articleInfo.price}
             />
             <NormalDialog
                 cancelText="取消"

@@ -10,7 +10,7 @@ import { useUserStore } from '@/app/userStore';
 import NormalDialog from '@/components/normalDialog/normalDialog';
 import type { GuessType } from '@/types/predict';
 import DefaultLogo from '@/app/football/[matchId]/img/defaultTeamLogo.png';
-import ConfirmPayArticle from '../components/confirmPayArticle/confirmPayArticle';
+import ConfirmPayDrawer from '@/components/confirmPayDrawer/confirmPayDrawer';
 import Star from './img/star.png';
 import Push from './img/push.png';
 import Win from './img/win.png';
@@ -276,15 +276,16 @@ function ArticleContent({ params, article, fetchPostDetail }: ArticleContentProp
                     />
                 </div>
             </div>
-            <NormalDialog
-                cancelText="取消"
-                confirmText="確認支付"
-                content={<ConfirmPayArticle price={article.price} />}
+            <ConfirmPayDrawer
+                isOpen={openPaid}
                 onClose={() => {
                     setOpenPaid(false);
                 }}
-                onConfirm={onSubmit}
-                openDialog={openPaid}
+                onOpen={() => {
+                    setOpenPaid(true);
+                }}
+                onPay={onSubmit}
+                price={article.price}
             />
             <NormalDialog
                 confirmText="去充值"

@@ -14,8 +14,8 @@ import TagSplit from '@/components/tagSplit/tagSplit';
 import Avatar from '@/components/avatar/avatar';
 import NormalDialog from '@/components/normalDialog/normalDialog';
 import { useUserStore } from '@/app/userStore';
+import ConfirmPayDrawer from '@/components/confirmPayDrawer/confirmPayDrawer';
 import Win from '../../img/win.png';
-import ConfirmPayArticle from '../confirmPayArticle/confirmPayArticle';
 import style from './articleCard.module.scss';
 import Wallet from './img/wallet.png';
 
@@ -168,15 +168,16 @@ function ArticleCard({ article }: { article: RecommendPost }) {
                     发表于今天 {timestampToMonthDay(article.createdAt)}
                 </div>
             </li>
-            <NormalDialog
-                cancelText="取消"
-                confirmText="確認支付"
-                content={<ConfirmPayArticle price={article.price} />}
+            <ConfirmPayDrawer
+                isOpen={isOpenPaid}
                 onClose={() => {
                     setIsOpenPaid(false);
                 }}
-                onConfirm={onSubmit}
-                openDialog={isOpenPaid}
+                onOpen={() => {
+                    setIsOpenPaid(true);
+                }}
+                onPay={onSubmit}
+                price={article.price}
             />
             <NormalDialog
                 confirmText="去充值"
