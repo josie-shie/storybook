@@ -120,7 +120,7 @@ function MyAnalysis() {
                             src={backLeftArrowImg}
                             width={24}
                         />
-                        <div className={style.text}>我的解锁</div>
+                        <div className={style.text}>解锁纪录</div>
                     </div>
                 </div>
             </div>
