@@ -5,7 +5,7 @@ import Avatar from '@/components/avatar/avatar';
 import BaseNoData from '@/components/baseNoData/noData';
 import { useRankStore } from '../../rank/rankStore';
 import style from './periodListItem.module.scss';
-import Soccer from './img/soccer.png';
+import Soccer from './img/soccerNew.png';
 import Rank from './img/rank.png';
 
 function PeriodListItem({ isLoading }: { isLoading: boolean }) {
