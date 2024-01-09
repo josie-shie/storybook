@@ -4,6 +4,7 @@ import { InfiniteScroll } from 'ui';
 import CircularProgress from '@mui/material/CircularProgress';
 import { getTodayGuessMatches, type GetTodayGuessMatchesResponse } from 'data-center';
 import Image from 'next/image';
+import type { Ref } from 'react';
 import BaseNoData from '@/components/baseNoData/noData';
 import NewBanner from '../img/newBanner.png';
 import { creatGuessContestListStore, useGuessContestListStore } from './contestStore';
@@ -69,15 +70,18 @@ function ContestList() {
     );
 }
 
-const Contest = forwardRef(function Contest({
-    todayGuess
-}: {
-    todayGuess: GetTodayGuessMatchesResponse;
-}) {
+const Contest = forwardRef(function Contest(
+    {
+        todayGuess
+    }: {
+        todayGuess: GetTodayGuessMatchesResponse;
+    },
+    ref: Ref<HTMLDivElement>
+) {
     creatGuessContestListStore(todayGuess);
 
     return (
-        <div className={style.contest}>
+        <div className={style.contest} ref={ref}>
             <Image alt="" className={style.banner} src={NewBanner} />
             <ContestList />
         </div>
