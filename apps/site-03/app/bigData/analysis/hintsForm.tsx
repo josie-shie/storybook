@@ -281,7 +281,7 @@ function HandicapAnalysisForm() {
                 }}
                 onPay={confirm}
                 price={80}
-                title="獲得今日長龍賽事？"
+                title="获得今日长龙赛事？"
             />
         </>
     );
