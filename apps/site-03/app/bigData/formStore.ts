@@ -2,7 +2,6 @@ import dayjs from 'dayjs';
 import { initStore } from 'lib';
 import type { StoreWithSelectors } from 'lib';
 import type { ReactNode } from 'react';
-import { boolean } from 'yup';
 
 interface Option {
     label: string;
@@ -163,7 +162,7 @@ const initialState = (
             return { ...prevState, recordList: updatedRecordList };
         });
     },
-    isOpenPayDrawer: boolean,
+    isOpenPayDrawer: false,
     setIsOpenPayDrawer: (isOpenPayDrawer: boolean) => {
         set(state => {
             return { ...state, isOpenPayDrawer };

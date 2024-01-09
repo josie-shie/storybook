@@ -102,7 +102,7 @@ function HandicapAnalysisForm() {
     const setHintsSelectProgres = useLongDragonStore.use.setHintsSelectProgres();
 
     const confirm = () => {
-        setOpenDialog(false);
+        setIsOpenPayDrawer(false);
         router.push('/bigData/longDragon');
     };
 
