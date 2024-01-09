@@ -1,5 +1,5 @@
 import { usePathname } from 'next/navigation';
-import { useRankStore } from '../../rank/rankStore';
+import { useRankStore } from '../../rankStore';
 import { useMasterRankStore } from '../../masterRank/masterRankStore';
 import style from './userSwitch.module.scss';
 

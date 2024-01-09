@@ -7,7 +7,7 @@ import { useUserStore } from '@/app/userStore';
 import PeriodListItem from '../components/period/periodListItem';
 import UserSwitch from '../components/userSwitch/userSwitch';
 import Rule from '../components/rule/rule';
-import { useRankStore } from './rankStore';
+import { useRankStore } from '../rankStore';
 import style from './rank.module.scss';
 import UserRank from './userRank';
 

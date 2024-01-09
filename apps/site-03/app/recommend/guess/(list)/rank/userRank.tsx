@@ -6,8 +6,8 @@ import Soccer from '../components/period/img/soccerWhite.png';
 import weekBackground from '../img/weekBg.png';
 import monthBackground from '../img/monthBg.png';
 import seasonBackground from '../img/seasonBg.png';
+import { useRankStore } from '../rankStore';
 import style from './userRank.module.scss';
-import { useRankStore } from './rankStore';
 
 interface PeriodBackgroundMap {
     week: string;

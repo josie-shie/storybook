@@ -3,7 +3,7 @@ import Link from 'next/link';
 import CircularProgress from '@mui/material/CircularProgress';
 import Avatar from '@/components/avatar/avatar';
 import BaseNoData from '@/components/baseNoData/noData';
-import { useRankStore } from '../../rank/rankStore';
+import { useRankStore } from '../../rankStore';
 import style from './periodListItem.module.scss';
 import Soccer from './img/soccerNew.png';
 import Rank from './img/rank.png';
