@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, forwardRef } from 'react';
 import { InfiniteScroll } from 'ui';
 import CircularProgress from '@mui/material/CircularProgress';
 import { getTodayGuessMatches, type GetTodayGuessMatchesResponse } from 'data-center';
@@ -69,7 +69,11 @@ function ContestList() {
     );
 }
 
-function Contest({ todayGuess }: { todayGuess: GetTodayGuessMatchesResponse }) {
+const Contest = forwardRef(function Contest({
+    todayGuess
+}: {
+    todayGuess: GetTodayGuessMatchesResponse;
+}) {
     creatGuessContestListStore(todayGuess);
 
     return (
@@ -78,6 +82,6 @@ function Contest({ todayGuess }: { todayGuess: GetTodayGuessMatchesResponse }) {
             <ContestList />
         </div>
     );
-}
+});
 
 export default Contest;

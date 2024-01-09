@@ -3,21 +3,30 @@ import type { StoreWithSelectors } from 'lib';
 import type { GuessRank } from 'data-center';
 
 interface InitState {
-    rankList: GuessRank[];
+    weekRankList: GuessRank[];
+    monthRankList: GuessRank[];
+    seasonRankList: GuessRank[];
 }
 
 interface RankState extends InitState {
-    member: GuessRank;
     onlyShowToday: boolean;
-    setMember: (member: GuessRank) => void;
-    setRankList: (rankList: GuessRank[]) => void;
+    weekMemberInfo: GuessRank;
+    monthMemberInfo: GuessRank;
+    seasonMemberInfo: GuessRank;
     setOnlyShowToday: (show: boolean) => void;
+    setWeekMemberInfo: (memberInfo: GuessRank) => void;
+    setMonthMemberInfo: (memberInfo: GuessRank) => void;
+    setSeasonMemberInfo: (memberInfo: GuessRank) => void;
+    setWeekRankList: (rankList: GuessRank[]) => void;
+    setMonthRankList: (rankList: GuessRank[]) => void;
+    setSeasonRankList: (rankList: GuessRank[]) => void;
 }
 
 let useRankStore: StoreWithSelectors<RankState>;
 
 const initialState = (set: (data: Partial<RankState>) => void) => ({
-    member: {
+    onlyShowToday: false,
+    weekMemberInfo: {
         memberId: 0,
         memberName: '-',
         memberLevel: 0,
@@ -31,16 +40,57 @@ const initialState = (set: (data: Partial<RankState>) => void) => ({
         currentMaxWinStreak: 0,
         historyMaxWinStreak: 0
     },
-    rankList: [],
-    onlyShowToday: false,
-    setMember: (member: GuessRank) => {
-        set({ member });
+    monthMemberInfo: {
+        memberId: 0,
+        memberName: '-',
+        memberLevel: 0,
+        memberAvatar: '',
+        ranking: 0,
+        today: false,
+        totalMatches: 0,
+        totalWin: 0,
+        totalLose: 0,
+        hitRate: 0,
+        currentMaxWinStreak: 0,
+        historyMaxWinStreak: 0
     },
-    setRankList: (rankList: GuessRank[]) => {
-        set({ rankList });
+    seasonMemberInfo: {
+        memberId: 0,
+        memberName: '-',
+        memberLevel: 0,
+        memberAvatar: '',
+        ranking: 0,
+        today: false,
+        totalMatches: 0,
+        totalWin: 0,
+        totalLose: 0,
+        hitRate: 0,
+        currentMaxWinStreak: 0,
+        historyMaxWinStreak: 0
     },
+    weekRankList: [],
+    monthRankList: [],
+    seasonRankList: [],
     setOnlyShowToday: (show: boolean) => {
         set({ onlyShowToday: show });
+    },
+    setWeekMemberInfo: (memberInfo: GuessRank) => {
+        set({ weekMemberInfo: memberInfo });
+    },
+    setMonthMemberInfo: (memberInfo: GuessRank) => {
+        set({ monthMemberInfo: memberInfo });
+    },
+    setSeasonMemberInfo: (memberInfo: GuessRank) => {
+        set({ seasonMemberInfo: memberInfo });
+    },
+    setWeekRankList: (rankList: GuessRank[]) => {
+        set({ weekRankList: rankList });
+    },
+    setMonthRankList: (rankList: GuessRank[]) => {
+        set({ monthRankList: rankList });
+    },
+    setSeasonRankList: (rankList: GuessRank[]) => {
+        set({ seasonRankList: rankList });
     }
 });
 

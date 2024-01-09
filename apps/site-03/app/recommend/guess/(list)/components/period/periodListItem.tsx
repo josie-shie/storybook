@@ -9,7 +9,8 @@ import Soccer from './img/soccerNew.png';
 import Rank from './img/rank.png';
 
 function PeriodListItem({ isLoading }: { isLoading: boolean }) {
-    const rankList = useRankStore.use.rankList();
+    // TODO : 取得相對應的週期榜單
+    const rankList = useRankStore.use.weekRankList();
     const onlyShowToday = useRankStore.use.onlyShowToday();
 
     if (isLoading)

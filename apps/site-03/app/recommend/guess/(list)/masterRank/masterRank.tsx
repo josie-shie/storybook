@@ -1,7 +1,8 @@
 'use client';
 // import { IconSearch } from '@tabler/icons-react';
 import Image from 'next/image';
-import { useEffect } from 'react';
+import type { Ref } from 'react';
+import { forwardRef, useEffect } from 'react';
 import { getGuessRank } from 'data-center';
 import Avatar from '@/components/avatar/avatar';
 import { useUserStore } from '@/app/userStore';
@@ -75,12 +76,12 @@ function UserMasterRank() {
     );
 }
 
-function RankList() {
+const RankList = forwardRef(function RankList(_, ref: Ref<HTMLDivElement>) {
     const isLogin = useUserStore.use.isLogin();
     creatMasterRankStore({ masterRankList: [] });
 
     return (
-        <div className={style.masterRank}>
+        <div className={style.masterRank} ref={ref}>
             <div className={style.control}>
                 <UserSwitch />
                 <div className={style.right}>
@@ -96,6 +97,6 @@ function RankList() {
             <HotStreakListItem />
         </div>
     );
-}
+});
 
 export default RankList;

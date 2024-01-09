@@ -1,6 +1,5 @@
 'use client';
 import Image from 'next/image';
-import { useSearchParams } from 'next/navigation';
 import Avatar from '@/components/avatar/avatar';
 import Soccer from '../components/period/img/soccerWhite.png';
 import weekBackground from '../img/weekBg.png';
@@ -9,16 +8,8 @@ import seasonBackground from '../img/seasonBg.png';
 import { useRankStore } from '../rankStore';
 import style from './userRank.module.scss';
 
-interface PeriodBackgroundMap {
-    week: string;
-    month: string;
-    season: string;
-}
-
-function UserRank() {
-    const memberInfo = useRankStore.use.member();
-    const searchParams = useSearchParams();
-    const currentPeriod = searchParams.get('status') as keyof PeriodBackgroundMap;
+function UserRank({ status }: { status: 'week' | 'month' | 'season' }) {
+    const memberInfo = useRankStore.use.weekMemberInfo();
 
     const periodBackgroundMap = {
         week: weekBackground,
@@ -35,18 +26,18 @@ function UserRank() {
         month: '#3d7f53',
         season: '#cc4d2e'
     };
-    const periodTagColor = tagMap[currentPeriod];
+    const periodTagColor = tagMap[status];
 
     return (
         <div className={style.userRank}>
             <Image
                 alt=""
                 className={style.background}
-                src={periodBackgroundMap[currentPeriod]}
+                src={periodBackgroundMap[status]}
                 width={366}
             />
             <div className={style.ranking} style={{ background: periodTagColor }}>
-                {periodMap[currentPeriod]}排名
+                {periodMap[status]}排名
                 <span>
                     {memberInfo.ranking === 0 || memberInfo.ranking > 50 ? '-' : memberInfo.ranking}
                 </span>
