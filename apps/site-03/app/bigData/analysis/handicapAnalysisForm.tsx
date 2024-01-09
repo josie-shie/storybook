@@ -1,11 +1,12 @@
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import type { ReactNode } from 'react';
-import React, { useEffect } from 'react';
+import React from 'react';
 import dayjs from 'dayjs';
 import { motion } from 'framer-motion';
 import { useUserStore } from '@/app/userStore';
 import { useNotificationStore } from '@/app/notificationStore';
+import ConfirmPayDrawer from '@/components/confirmPayDrawer/confirmPayDrawer';
 import { useHandicapAnalysisFormStore } from '../formStore';
 import style from './disSelect.module.scss';
 import bulbIcon from './img/bulb.png';
@@ -16,7 +17,6 @@ import selectIcon from './img/select.png';
 import starIcon from './img/star.png';
 import Datepicker from './components/datepicker/datepicker';
 import Dialog from './components/dialog/dialog';
-import SinglePay from './img/singlePay.png';
 import checkedIcon from './img/check.png';
 import RechargeIcon from './img/rechargeIcon.png';
 
@@ -56,41 +56,29 @@ function RechargeAlert() {
 
 function PaymentAlert() {
     const router = useRouter();
-    const userInfo = useUserStore.use.userInfo();
-    const setOpenDialog = useHandicapAnalysisFormStore.use.setOpenNormalDialog();
+    const setIsOpenPayDrawer = useHandicapAnalysisFormStore.use.setIsOpenPayDrawer();
+    const isOpenPayDrawer = useHandicapAnalysisFormStore.use.isOpenPayDrawer();
     const setIsAnalysisBySearch = useHandicapAnalysisFormStore.use.setIsAnalysisBySearch();
 
-    const comfirm = () => {
-        setOpenDialog(false);
+    const confirm = () => {
+        setIsOpenPayDrawer(false);
         setIsAnalysisBySearch(true);
         router.push('/bigData/result');
     };
 
     return (
-        <>
-            <div className={style.dialogMessage}>
-                <Image alt="" height={100} src={SinglePay} width={100} />
-                <p className={style.message}>
-                    支付
-                    <Image alt="" height={14} src={starIcon.src} width={14} /> 80
-                </p>
-                <p>进行单次分析？</p>
-            </div>
-            <div className={style.detail}>我的余额: {userInfo.balance}金币</div>
-            <div className={style.footer}>
-                <div
-                    className={style.close}
-                    onClick={() => {
-                        setOpenDialog(false);
-                    }}
-                >
-                    返回
-                </div>
-                <div className={style.confirm} onClick={comfirm}>
-                    确认支付
-                </div>
-            </div>
-        </>
+        <ConfirmPayDrawer
+            isOpen={isOpenPayDrawer}
+            onClose={() => {
+                setIsOpenPayDrawer(false);
+            }}
+            onOpen={() => {
+                setIsOpenPayDrawer(true);
+            }}
+            onPay={confirm}
+            price={80}
+            title="獲得智能盤路分析？"
+        />
     );
 }
 
@@ -417,40 +405,21 @@ function Tips() {
 
 function HandicapAnalysisForm() {
     const router = useRouter();
+    const setIsOpenPayDrawer = useHandicapAnalysisFormStore.use.setIsOpenPayDrawer();
     const setOpenDialog = useHandicapAnalysisFormStore.use.setOpenNormalDialog();
-    const dialogErrorType = useHandicapAnalysisFormStore.use.dialogContentType();
-    const dialogContent = useHandicapAnalysisFormStore.use.dialogContent();
-    const setDialogContent = useHandicapAnalysisFormStore.use.setDialogContent();
     const openDialog = useHandicapAnalysisFormStore.use.openNoramlDialog();
     const isVip = useUserStore.use.memberSubscribeStatus().planId; // 1是VIP
     const userInfo = useUserStore.use.userInfo();
-    const setDialogContentType = useHandicapAnalysisFormStore.use.setDialogContentType();
     const setOpenNormalDialog = useHandicapAnalysisFormStore.use.setOpenNormalDialog();
     const setIsAnalysisBySearch = useHandicapAnalysisFormStore.use.setIsAnalysisBySearch();
-
-    useEffect(() => {
-        switch (dialogErrorType) {
-            case 'payment':
-                setDialogContent(<PaymentAlert />);
-                break;
-            case 'balance':
-                setDialogContent(<RechargeAlert />);
-                break;
-            default:
-                setDialogContent(null);
-                break;
-        }
-    }, [dialogErrorType, setDialogContent]);
 
     const submit = () => {
         if (!isVip) {
             if (userInfo.balance < 80) {
-                setDialogContentType('balance');
                 setOpenNormalDialog(true);
                 return;
             }
-
-            setOpenDialog(true);
+            setIsOpenPayDrawer(true);
             return;
         }
 
@@ -479,7 +448,11 @@ function HandicapAnalysisForm() {
                 <span>获得趋势分析</span>
             </motion.button>
             <Dialog
-                content={<div className={style.dialogContent}>{dialogContent}</div>}
+                content={
+                    <div className={style.dialogContent}>
+                        <RechargeAlert />
+                    </div>
+                }
                 customStyle={{
                     width: '300px'
                 }}
@@ -488,6 +461,7 @@ function HandicapAnalysisForm() {
                 }}
                 openDialog={openDialog}
             />
+            <PaymentAlert />
         </>
     );
 }
