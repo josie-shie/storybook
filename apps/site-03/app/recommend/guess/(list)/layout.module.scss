@@ -1,35 +1,10 @@
 .guess {
-    padding-top: 12px;
     border-top-right-radius: 12px;
     border-top-left-radius: 12px;
     background: #fff;
-    margin-top: -14px;
+    margin-top: -12px;
 
-    .childrenTab {
-        :global(.tab) {
-            :global(.header) {
-                padding: 0 12px;
-
-                :global(.tabs) {
-                    padding: 2px;
-                    gap: 2px;
-                    border-radius: 24px;
-
-                    :global(.item) {
-                        padding: 4px 0;
-                        color: #4489ff;
-
-                        &::before {
-                            background: #4489ff;
-                            border-color: #4489ff;
-                        }
-                    }
-
-                    :global(.active) {
-                        color: #fff;
-                    }
-                }
-            }
-        }
+    :global(.ui-slick-tabs-container) {
+        padding-bottom: 10px;
     }
 }
