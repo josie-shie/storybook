@@ -16,6 +16,7 @@ import closeIcon from './components/authComponent/img/closeIcon.png';
 import style from './authDrawer.module.scss';
 import { useAuthStore } from './authStore';
 import backIcon from './components/authComponent/img/backIcon.png';
+import titleIcon from './img/title.png';
 
 function AuthDrawer() {
     const pathname = usePathname();
@@ -42,11 +43,7 @@ function AuthDrawer() {
             setTitle(<p>注册</p>);
         } else if (authQuery === 'login') {
             setAuthContent(<Login />);
-            setTitle(
-                <p className={style.futureTitle}>
-                    <span className={style.future}>未来</span>体育
-                </p>
-            );
+            setTitle(<Image alt="" height={40} src={titleIcon} width={116} />);
         } else if (authQuery === 'forgetPassword') {
             setAuthContent(<ForgetPassword />);
             setTitle(<p>忘记密码</p>);
