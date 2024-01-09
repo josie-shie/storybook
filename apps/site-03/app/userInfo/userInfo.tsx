@@ -330,7 +330,7 @@ function UserInfo() {
                             <Link className={style.text} href="/userInfo/myAnalysis?status=unlock">
                                 <ButtonBase>
                                     <Image alt="" height={32} src={MyAnalyze} width={32} />
-                                    <span>我的解锁</span>
+                                    <span>解锁纪录</span>
                                 </ButtonBase>
                             </Link>
                         </div>

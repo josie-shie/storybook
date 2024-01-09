@@ -171,9 +171,12 @@
         text-align: center;
         font-size: 14px;
         color: #8d8d8d;
-        // background-color: #000;
         opacity: 0.8;
-        // padding-bottom: 40px;
+        position: absolute;
+        bottom: 26px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 3;
     }
 
     :global {
@@ -183,6 +186,26 @@
 
         .swiper-pagination-bullet-active {
             background-color: #fff;
+        }
+
+        .swiper-pagination-horizontal {
+            bottom: 56px;
+        }
+
+        .navigation-prev {
+            all: unset;
+            z-index: 3;
+            left: 122px;
+            bottom: 84px;
+            position: absolute;
+        }
+
+        .navigation-next {
+            all: unset;
+            z-index: 3;
+            right: 122px;
+            bottom: 84px;
+            position: absolute;
         }
     }
 }

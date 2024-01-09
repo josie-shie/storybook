@@ -1,13 +1,12 @@
 .container {
     .skeletonLayout {
         margin: auto;
-        padding-bottom: 12px;
-        margin-bottom: 16px;
         width: 100%;
         border: 1px solid #dadada;
-        border-radius: 8px;
+        border-radius: 16px;
         margin-bottom: 8px;
         padding: 12px 10px;
+        margin-top: 12px;
 
         .top {
             display: flex;

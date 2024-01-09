@@ -1,40 +1,32 @@
 'use client';
-import { Footer } from 'ui';
+import Link from 'next/link';
+import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
-import Image from 'next/image';
 import style from './footer.module.scss';
-import gameIcon from './img/game.png';
-import guessIcon from './img/guess.png';
-import recommendIcon from './img/recommend.png';
-import dataIcon from './img/data.png';
-import analyzeIcon from './img/analyze.png';
-import activeAnalyze from './img/activeAnalyze.png';
-import activeGame from './img/activeGame.png';
-import activeRecommend from './img/activeRecommend.png';
-import activeData from './img/activeData.png';
-import activeGuess from './img/activeGuess.png';
+import GameIcon from './img/game.svg';
+import GuessIcon from './img/guess.svg';
+import AnalyzeIcon from './img/analyze.svg';
+import RecommendIcon from './img/recommend.svg';
+import DataIcon from './img/data.svg';
 
 const CategoryList = [
     {
         label: '赛事',
         value: '/',
         includedRouters: ['/news'],
-        icon: <Image alt="" height={24} src={gameIcon} width={24} />,
-        activedIcon: <Image alt="" height={24} src={activeGame} width={24} />
+        icon: <GameIcon className={`${style.icon} ${style.gameIcon}`} />
     },
     {
         label: '猜球',
         value: '/recommend/guess',
         includedRouters: ['/recommend/guess'],
-        icon: <Image alt="" height={24} src={guessIcon} width={24} />,
-        activedIcon: <Image alt="" height={24} src={activeGuess} width={24} />
+        icon: <GuessIcon className={`${style.icon} ${style.guessIcon}`} />
     },
     {
         label: '智能分析',
         value: '/bigData/analysis?status=analysis',
         includedRouters: ['/bigData'],
-        icon: <Image alt="" height={24} src={analyzeIcon} width={24} />,
-        activedIcon: <Image alt="" height={24} src={activeAnalyze} width={24} />
+        icon: <AnalyzeIcon className={`${style.icon} ${style.analyzeIcon}`} />
     },
     {
         label: '专家',
@@ -45,29 +37,49 @@ const CategoryList = [
             '/master/masterAvatar',
             '/master/memberAvatar'
         ],
-        icon: <Image alt="" height={24} src={recommendIcon} width={24} />,
-        activedIcon: <Image alt="" height={24} src={activeRecommend} width={24} />
+        icon: <RecommendIcon className={`${style.icon} ${style.recommendIcon}`} />
     },
     {
         label: '数据',
         value: '/analytics',
         includedRouters: ['/analytics'],
-        icon: <Image alt="" height={24} src={dataIcon} width={24} />,
-        activedIcon: <Image alt="" height={24} src={activeData} width={24} />
+        icon: <DataIcon className={`${style.icon} ${style.dataIcon}`} />
     }
 ];
 
 function FooterComponent() {
+    // const router = useRouter();
     const pathname = usePathname();
 
+    const [activeItem, setActiveItem] = useState(pathname);
+
+    useEffect(() => {
+        setActiveItem(pathname);
+    }, [pathname]);
+
     return (
-        <div className={style.footer}>
-            <Footer
-                activeColor="#276CE1"
-                activeRouter={pathname}
-                bgColor="#FFF"
-                menuList={CategoryList}
-            />
+        <div className={style.footerPlaceholder}>
+            <footer className={style.footer}>
+                {CategoryList.map(menu => {
+                    return (
+                        <Link
+                            className={`${style.listItem} ${
+                                activeItem === menu.value ||
+                                menu.includedRouters.some(str => activeItem.includes(str))
+                                    ? style.active
+                                    : ''
+                            }`}
+                            href={menu.value}
+                            key={menu.value}
+                            title={menu.label}
+                        >
+                            <div className={style.iconBox}>{menu.icon}</div>
+
+                            <div className={style.textLabel}>{menu.label}</div>
+                        </Link>
+                    );
+                })}
+            </footer>
         </div>
     );
 }
