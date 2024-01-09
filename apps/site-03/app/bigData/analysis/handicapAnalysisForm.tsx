@@ -54,34 +54,6 @@ function RechargeAlert() {
     );
 }
 
-function PaymentAlert() {
-    const router = useRouter();
-    const setIsOpenPayDrawer = useHandicapAnalysisFormStore.use.setIsOpenPayDrawer();
-    const isOpenPayDrawer = useHandicapAnalysisFormStore.use.isOpenPayDrawer();
-    const setIsAnalysisBySearch = useHandicapAnalysisFormStore.use.setIsAnalysisBySearch();
-
-    const confirm = () => {
-        setIsOpenPayDrawer(false);
-        setIsAnalysisBySearch(true);
-        router.push('/bigData/result');
-    };
-
-    return (
-        <ConfirmPayDrawer
-            isOpen={isOpenPayDrawer}
-            onClose={() => {
-                setIsOpenPayDrawer(false);
-            }}
-            onOpen={() => {
-                setIsOpenPayDrawer(true);
-            }}
-            onPay={confirm}
-            price={80}
-            title="獲得智能盤路分析？"
-        />
-    );
-}
-
 function StepperProcess() {
     const teamSelected = useHandicapAnalysisFormStore.use.teamSelected();
     const setTeamSelected = useHandicapAnalysisFormStore.use.setTeamSelected();
@@ -412,6 +384,13 @@ function HandicapAnalysisForm() {
     const userInfo = useUserStore.use.userInfo();
     const setOpenNormalDialog = useHandicapAnalysisFormStore.use.setOpenNormalDialog();
     const setIsAnalysisBySearch = useHandicapAnalysisFormStore.use.setIsAnalysisBySearch();
+    const isOpenPayDrawer = useHandicapAnalysisFormStore.use.isOpenPayDrawer();
+
+    const confirm = () => {
+        setIsOpenPayDrawer(false);
+        setIsAnalysisBySearch(true);
+        router.push('/bigData/result');
+    };
 
     const submit = () => {
         if (!isVip) {
@@ -461,7 +440,18 @@ function HandicapAnalysisForm() {
                 }}
                 openDialog={openDialog}
             />
-            <PaymentAlert />
+            <ConfirmPayDrawer
+                isOpen={isOpenPayDrawer}
+                onClose={() => {
+                    setIsOpenPayDrawer(false);
+                }}
+                onOpen={() => {
+                    setIsOpenPayDrawer(true);
+                }}
+                onPay={confirm}
+                price={80}
+                title="獲得智能盤路分析？"
+            />
         </>
     );
 }

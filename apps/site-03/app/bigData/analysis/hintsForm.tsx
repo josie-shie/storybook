@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useUserStore } from '@/app/userStore';
+import ConfirmPayDrawer from '@/components/confirmPayDrawer/confirmPayDrawer';
 import { useHandicapAnalysisFormStore } from '../formStore';
 import { useLongDragonStore } from '../longDragonStore';
 import style from './disSelect.module.scss';
@@ -10,7 +11,6 @@ import starIcon from './img/star.png';
 import selectIcon from './img/select.png';
 import switchIcon from './img/switch.png';
 import Dialog from './components/dialog/dialog';
-import SinglePay from './img/singlePay.png';
 import RechargeIcon from './img/rechargeIcon.png';
 
 function RechargeAlert() {
@@ -39,44 +39,6 @@ function RechargeAlert() {
                 </div>
                 <div className={style.confirm} onClick={recharge}>
                     前往充值
-                </div>
-            </div>
-        </>
-    );
-}
-
-function PaymentAlert() {
-    const router = useRouter();
-    const setOpenDialog = useHandicapAnalysisFormStore.use.setOpenNormalDialog();
-    const userInfo = useUserStore.use.userInfo();
-
-    const comfirm = () => {
-        setOpenDialog(false);
-        router.push('/bigData/longDragon');
-    };
-
-    return (
-        <>
-            <div className={style.dialogMessage}>
-                <Image alt="" height={100} src={SinglePay} width={100} />
-                <p className={style.message}>
-                    支付
-                    <Image alt="" height={14} src={starIcon.src} width={14} /> 80
-                </p>
-                <p>购买今日长龙赛事？</p>
-            </div>
-            <div className={style.detail}>我的余额: {userInfo.balance}金币</div>
-            <div className={style.footer}>
-                <div
-                    className={style.close}
-                    onClick={() => {
-                        setOpenDialog(false);
-                    }}
-                >
-                    返回
-                </div>
-                <div className={style.confirm} onClick={comfirm}>
-                    确认支付
                 </div>
             </div>
         </>
@@ -127,6 +89,8 @@ function HandicapAnalysisForm() {
     const setOpenDialog = useHandicapAnalysisFormStore.use.setOpenNormalDialog();
     const dialogContent = useHandicapAnalysisFormStore.use.dialogContent();
     const setDialogContent = useHandicapAnalysisFormStore.use.setDialogContent();
+    const setIsOpenPayDrawer = useHandicapAnalysisFormStore.use.setIsOpenPayDrawer();
+    const isOpenPayDrawer = useHandicapAnalysisFormStore.use.isOpenPayDrawer();
     const isVip = useUserStore.use.memberSubscribeStatus().planId; // 1是VIP
 
     const hintsSelectPlay = useLongDragonStore.use.hintsSelectPlay() || 'HANDICAP';
@@ -137,11 +101,16 @@ function HandicapAnalysisForm() {
     const setHintsSelectType = useLongDragonStore.use.setHintsSelectType();
     const setHintsSelectProgres = useLongDragonStore.use.setHintsSelectProgres();
 
+    const confirm = () => {
+        setOpenDialog(false);
+        router.push('/bigData/longDragon');
+    };
+
     useEffect(() => {
         setHintsSelectPlay('HANDICAP');
         setHintsSelectType('OVER');
         setHintsSelectProgres('FULL');
-        setDialogContent(<PaymentAlert />);
+        setDialogContent(null);
     }, []);
 
     const selectsPlay = (name: string) => {
@@ -168,8 +137,8 @@ function HandicapAnalysisForm() {
                 setDialogContent(<RechargeAlert />);
                 setOpenDialog(true);
             } else {
-                setDialogContent(<PaymentAlert />);
-                setOpenDialog(true);
+                setDialogContent(null);
+                setIsOpenPayDrawer(true);
             }
         } else {
             router.push('/bigData/longDragon');
@@ -301,6 +270,18 @@ function HandicapAnalysisForm() {
                     setOpenDialog(false);
                 }}
                 openDialog={openDialog}
+            />
+            <ConfirmPayDrawer
+                isOpen={isOpenPayDrawer}
+                onClose={() => {
+                    setIsOpenPayDrawer(false);
+                }}
+                onOpen={() => {
+                    setIsOpenPayDrawer(true);
+                }}
+                onPay={confirm}
+                price={80}
+                title="獲得智能盤路分析？"
             />
         </>
     );
