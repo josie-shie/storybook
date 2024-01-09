@@ -281,7 +281,7 @@ function HandicapAnalysisForm() {
                 }}
                 onPay={confirm}
                 price={80}
-                title="獲得智能盤路分析？"
+                title="獲得今日長龍賽事？"
             />
         </>
     );
