@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import { Button } from '@mui/material';
-import BottomDrawer from '@/components/drawer/bottomDrawer';
+import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import { useUserStore } from '@/app/userStore';
 import style from './confirmPayDrawer.module.scss';
 import Star from './img/star.png';
@@ -26,15 +26,20 @@ function ConfirmPayDrawer({
     const userInfo = useUserStore.use.userInfo();
 
     return (
-        <BottomDrawer
-            isOpen={isOpen}
+        <SwipeableDrawer
+            PaperProps={{
+                style: {
+                    overflowY: 'unset',
+                    borderTopLeftRadius: '16px',
+                    borderTopRightRadius: '16px'
+                }
+            }}
+            anchor="bottom"
             onClose={onClose}
             onOpen={onOpen}
-            propsStyle={{
-                height: '200px',
-                backgroundColor: '#fff'
-            }}
-            topLineDisplay="none"
+            open={isOpen}
+            swipeAreaWidth={20}
+            transitionDuration={{ enter: 300, exit: 200 }}
         >
             <div className={style.confirmPay}>
                 <div className={style.PayHandImg}>
@@ -64,7 +69,7 @@ function ConfirmPayDrawer({
                     <span>支付</span>
                 </Button>
             </div>
-        </BottomDrawer>
+        </SwipeableDrawer>
     );
 }
 
