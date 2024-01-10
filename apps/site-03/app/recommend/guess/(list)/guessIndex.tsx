@@ -49,9 +49,7 @@ function GuessIndex({ todayGuess }: { todayGuess: GetTodayGuessMatchesResponse }
 
     return (
         <Slick initialSlide={0} onSlickEnd={onSlickEnd} styling="button" tabs={tabList}>
-            <div>
-                <Contest ref={gameListRef} todayGuess={todayGuess} />
-            </div>
+            <Contest ref={gameListRef} todayGuess={todayGuess} />
             {secendRender ? <Rank ref={weekRankRef} status="week" /> : null}
             {secendRender ? <Rank ref={monthRankRef} status="month" /> : null}
             {secendRender ? <Rank ref={seasonRankRef} status="season" /> : null}

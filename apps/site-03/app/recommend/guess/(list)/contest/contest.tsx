@@ -76,12 +76,12 @@ const Contest = forwardRef(function Contest(
     }: {
         todayGuess: GetTodayGuessMatchesResponse;
     },
-    ref: Ref<HTMLDivElement>
+    gameListRef: Ref<HTMLDivElement>
 ) {
     creatGuessContestListStore(todayGuess);
 
     return (
-        <div className={style.contest} ref={ref}>
+        <div className={style.contest} ref={gameListRef}>
             <Image alt="" className={style.banner} src={NewBanner} />
             <ContestList />
         </div>
