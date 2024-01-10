@@ -52,10 +52,10 @@ function GuessIndex({ todayGuess }: { todayGuess: GetTodayGuessMatchesResponse }
             <div>
                 <Contest ref={gameListRef} todayGuess={todayGuess} />
             </div>
-            <div>{secendRender ? <Rank ref={weekRankRef} status="week" /> : null}</div>
-            <div>{secendRender ? <Rank ref={monthRankRef} status="month" /> : null}</div>
-            <div>{secendRender ? <Rank ref={seasonRankRef} status="season" /> : null}</div>
-            <div>{secendRender ? <MasterRank ref={masterRankRef} /> : null}</div>
+            {secendRender ? <Rank ref={weekRankRef} status="week" /> : null}
+            {secendRender ? <Rank ref={monthRankRef} status="month" /> : null}
+            {secendRender ? <Rank ref={seasonRankRef} status="season" /> : null}
+            {secendRender ? <MasterRank ref={masterRankRef} /> : null}
         </Slick>
     );
 }

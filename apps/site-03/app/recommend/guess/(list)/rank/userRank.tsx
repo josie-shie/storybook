@@ -9,7 +9,14 @@ import { useRankStore } from '../rankStore';
 import style from './userRank.module.scss';
 
 function UserRank({ status }: { status: 'week' | 'month' | 'season' }) {
-    const memberInfo = useRankStore.use.weekMemberInfo();
+    const weekMemberInfo = useRankStore.use.weekMemberInfo();
+    const monthMemberInfo = useRankStore.use.monthMemberInfo();
+    const seasonMemberInfo = useRankStore.use.seasonMemberInfo();
+    const memberInfoMap = {
+        week: weekMemberInfo,
+        month: monthMemberInfo,
+        season: seasonMemberInfo
+    };
 
     const periodBackgroundMap = {
         week: weekBackground,
@@ -27,6 +34,7 @@ function UserRank({ status }: { status: 'week' | 'month' | 'season' }) {
         season: '#cc4d2e'
     };
     const periodTagColor = tagMap[status];
+    const memberInfo = memberInfoMap[status];
 
     return (
         <div className={style.userRank}>

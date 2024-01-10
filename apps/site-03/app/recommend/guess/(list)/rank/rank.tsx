@@ -83,7 +83,7 @@ const Rank = forwardRef(function Rank(
                 </div>
             </div>
             {isLogin ? <UserRank status={status} /> : null}
-            <PeriodListItem isLoading={isLoading} />
+            <PeriodListItem isLoading={isLoading} status={status} />
         </div>
     );
 });

@@ -8,9 +8,22 @@ import style from './periodListItem.module.scss';
 import Soccer from './img/soccerNew.png';
 import Rank from './img/rank.png';
 
-function PeriodListItem({ isLoading }: { isLoading: boolean }) {
-    // TODO : 取得相對應的週期榜單
-    const rankList = useRankStore.use.weekRankList();
+function PeriodListItem({
+    isLoading,
+    status
+}: {
+    isLoading: boolean;
+    status: 'week' | 'month' | 'season';
+}) {
+    const weekRankList = useRankStore.use.weekRankList();
+    const monthRankList = useRankStore.use.monthRankList();
+    const seasonRankList = useRankStore.use.seasonRankList();
+    const rankListMap = {
+        week: weekRankList,
+        month: monthRankList,
+        season: seasonRankList
+    };
+    const rankList = rankListMap[status];
     const onlyShowToday = useRankStore.use.onlyShowToday();
 
     if (isLoading)
