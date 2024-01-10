@@ -6,6 +6,7 @@ interface InitState {
     weekRankList: GuessRank[];
     monthRankList: GuessRank[];
     seasonRankList: GuessRank[];
+    masterRankList: GuessRank[];
 }
 
 interface RankState extends InitState {
@@ -13,13 +14,16 @@ interface RankState extends InitState {
     weekMemberInfo: GuessRank;
     monthMemberInfo: GuessRank;
     seasonMemberInfo: GuessRank;
+    memberMasterRank: GuessRank;
     setOnlyShowToday: (show: boolean) => void;
     setWeekMemberInfo: (memberInfo: GuessRank) => void;
     setMonthMemberInfo: (memberInfo: GuessRank) => void;
     setSeasonMemberInfo: (memberInfo: GuessRank) => void;
+    setMemberMasterRank: (memberInfo: GuessRank) => void;
     setWeekRankList: (rankList: GuessRank[]) => void;
     setMonthRankList: (rankList: GuessRank[]) => void;
     setSeasonRankList: (rankList: GuessRank[]) => void;
+    setMasterRankList: (rankList: GuessRank[]) => void;
 }
 
 let useRankStore: StoreWithSelectors<RankState>;
@@ -68,9 +72,24 @@ const initialState = (set: (data: Partial<RankState>) => void) => ({
         currentMaxWinStreak: 0,
         historyMaxWinStreak: 0
     },
+    memberMasterRank: {
+        memberId: 0,
+        memberName: '-',
+        memberLevel: 0,
+        memberAvatar: '',
+        ranking: 0,
+        today: false,
+        totalMatches: 0,
+        totalWin: 0,
+        totalLose: 0,
+        hitRate: 0,
+        currentMaxWinStreak: 0,
+        historyMaxWinStreak: 0
+    },
     weekRankList: [],
     monthRankList: [],
     seasonRankList: [],
+    masterRankList: [],
     setOnlyShowToday: (show: boolean) => {
         set({ onlyShowToday: show });
     },
@@ -83,6 +102,9 @@ const initialState = (set: (data: Partial<RankState>) => void) => ({
     setSeasonMemberInfo: (memberInfo: GuessRank) => {
         set({ seasonMemberInfo: memberInfo });
     },
+    setMemberMasterRank: (memberInfo: GuessRank) => {
+        set({ memberMasterRank: memberInfo });
+    },
     setWeekRankList: (rankList: GuessRank[]) => {
         set({ weekRankList: rankList });
     },
@@ -91,6 +113,9 @@ const initialState = (set: (data: Partial<RankState>) => void) => ({
     },
     setSeasonRankList: (rankList: GuessRank[]) => {
         set({ seasonRankList: rankList });
+    },
+    setMasterRankList: (rankList: GuessRank[]) => {
+        set({ masterRankList: rankList });
     }
 });
 

@@ -58,15 +58,15 @@ const Rank = forwardRef(function Rank(
         }
         void fetchGuessRank();
     }, [
+        status,
         isLogin,
+        userInfo.uid,
         setMonthMemberInfo,
         setMonthRankList,
         setSeasonMemberInfo,
         setSeasonRankList,
         setWeekMemberInfo,
-        setWeekRankList,
-        status,
-        userInfo.uid
+        setWeekRankList
     ]);
 
     return (

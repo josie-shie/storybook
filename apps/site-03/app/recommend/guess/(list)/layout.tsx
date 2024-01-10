@@ -6,7 +6,7 @@ import style from './layout.module.scss';
 import { creatRankStore } from './rankStore';
 
 function ContestLayout({ children }: { children: ReactNode }) {
-    creatRankStore({ weekRankList: [], monthRankList: [], seasonRankList: [] });
+    creatRankStore({ weekRankList: [], monthRankList: [], seasonRankList: [], masterRankList: [] });
 
     return (
         <>
