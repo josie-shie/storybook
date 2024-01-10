@@ -28,64 +28,27 @@ interface RankState extends InitState {
 
 let useRankStore: StoreWithSelectors<RankState>;
 
+const defaultMemberInfo = {
+    memberId: 0,
+    memberName: '-',
+    memberLevel: 0,
+    memberAvatar: '',
+    ranking: 0,
+    today: false,
+    totalMatches: 0,
+    totalWin: 0,
+    totalLose: 0,
+    hitRate: 0,
+    currentMaxWinStreak: 0,
+    historyMaxWinStreak: 0
+};
+
 const initialState = (set: (data: Partial<RankState>) => void) => ({
     onlyShowToday: false,
-    weekMemberInfo: {
-        memberId: 0,
-        memberName: '-',
-        memberLevel: 0,
-        memberAvatar: '',
-        ranking: 0,
-        today: false,
-        totalMatches: 0,
-        totalWin: 0,
-        totalLose: 0,
-        hitRate: 0,
-        currentMaxWinStreak: 0,
-        historyMaxWinStreak: 0
-    },
-    monthMemberInfo: {
-        memberId: 0,
-        memberName: '-',
-        memberLevel: 0,
-        memberAvatar: '',
-        ranking: 0,
-        today: false,
-        totalMatches: 0,
-        totalWin: 0,
-        totalLose: 0,
-        hitRate: 0,
-        currentMaxWinStreak: 0,
-        historyMaxWinStreak: 0
-    },
-    seasonMemberInfo: {
-        memberId: 0,
-        memberName: '-',
-        memberLevel: 0,
-        memberAvatar: '',
-        ranking: 0,
-        today: false,
-        totalMatches: 0,
-        totalWin: 0,
-        totalLose: 0,
-        hitRate: 0,
-        currentMaxWinStreak: 0,
-        historyMaxWinStreak: 0
-    },
-    memberMasterRank: {
-        memberId: 0,
-        memberName: '-',
-        memberLevel: 0,
-        memberAvatar: '',
-        ranking: 0,
-        today: false,
-        totalMatches: 0,
-        totalWin: 0,
-        totalLose: 0,
-        hitRate: 0,
-        currentMaxWinStreak: 0,
-        historyMaxWinStreak: 0
-    },
+    weekMemberInfo: { ...defaultMemberInfo },
+    monthMemberInfo: { ...defaultMemberInfo },
+    seasonMemberInfo: { ...defaultMemberInfo },
+    memberMasterRank: { ...defaultMemberInfo },
     weekRankList: [],
     monthRankList: [],
     seasonRankList: [],
