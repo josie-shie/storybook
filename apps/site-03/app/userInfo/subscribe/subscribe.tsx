@@ -12,6 +12,7 @@ import {
 import { timestampToString } from 'lib';
 import { useUserStore } from '@/app/userStore';
 import { useNotificationStore } from '@/app/notificationStore';
+import Notification from '@/components/notification/notification';
 import backLeftArrowImg from '../img/backLeftArrow.png';
 import style from './subscribe.module.scss';
 import background from './img/bg.png';
@@ -21,12 +22,16 @@ import Vip from './img/vip.png';
 import Arrow from './img/arrow.png';
 import ActiveArrow from './img/activeArrow.png';
 import VipIcon from './img/vipIcon.png';
+import VipTip from './img/vipTip.png';
 import { useSubscribeStore } from './subscribeStore';
 
 function Subscribe({ backHistory }: { backHistory: boolean }) {
     const router = useRouter();
     const [intro, setIntro] = useState(false);
     const [protocol, setProtocol] = useState(false);
+    const [vipMessage, setVipMessage] = useState('');
+    const [showVipTip, setShowVipTip] = useState(false);
+
     const userInfo = useUserStore.use.userInfo();
     const memberSubscribeStatus = useUserStore.use.memberSubscribeStatus();
     const planList = useSubscribeStore.use.planList();
@@ -106,20 +111,18 @@ function Subscribe({ backHistory }: { backHistory: boolean }) {
                 setIsVisible(errorMessage, 'error');
                 return;
             }
-
-            setIsVisible(
+            setVipMessage(
                 `您的年卡订阅已开通\n生效期间: ${timestampToString(
                     res.data.planStartAt,
                     'YYYY-MM-DD'
-                )}~${timestampToString(res.data.planEndAt, 'YYYY-MM-DD')}`,
-                'success'
+                )}~${timestampToString(res.data.planEndAt, 'YYYY-MM-DD')}`
             );
+            setShowVipTip(true);
             setTimeout(() => {
                 router.push('/userInfo');
             }, 2000);
         }
-
-        if (!isVip) {
+        if (!isVip && memberSubscribeStatus.planId !== 1) {
             const res = await rechargePlatformCurrency({
                 currencyRechargeAmount: currencyAmount,
                 rechargeAmount: platformAmount
@@ -407,6 +410,16 @@ function Subscribe({ backHistory }: { backHistory: boolean }) {
                     </p>
                 </div>
             </Dialog>
+            <Notification
+                handleClose={() => {
+                    setShowVipTip(false);
+                }}
+                icon={<Image alt="" height={20} src={VipTip} width={40} />}
+                isVisible={showVipTip}
+                message={vipMessage}
+                showIcon
+                type="success"
+            />
         </>
     );
 }
