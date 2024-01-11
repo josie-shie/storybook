@@ -1,35 +1,58 @@
 'use client';
 
 import type { ReactNode } from 'react';
-import { useParams, usePathname } from 'next/navigation';
+import { useParams } from 'next/navigation';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Tabs } from '@/components/tabs/tabs';
 import Header from '@/components/header/headerLogo';
 import Footer from '@/components/footer/footer';
 import style from './layout.module.scss';
 
-function MasterLayout({ children }: { children: ReactNode }) {
+function InterceptingDetail({ list }: { list: ReactNode }) {
     const params = useParams();
-    const route = usePathname().split('/');
-    const config = ['masterAvatar', 'memberAvatar'];
-    const isNone = config.some(configItem => route.includes(configItem));
+    return (
+        <AnimatePresence>
+            {params.articleId || params.masterId ? (
+                <motion.div
+                    animate={{ transform: 'translateX(0)' }}
+                    exit={{ transform: 'translateX(100%)' }}
+                    initial={{ transform: 'translateX(100%)' }}
+                    key="modalDetail"
+                    style={{
+                        background: '#fff',
+                        width: '100%',
+                        position: 'fixed',
+                        top: 0,
+                        zIndex: 1000,
+                        height: '100dvh',
+                        overflowY: 'auto'
+                    }}
+                    transition={{ duration: 0.2 }}
+                >
+                    {list}
+                </motion.div>
+            ) : null}
+        </AnimatePresence>
+    );
+}
 
+function MasterLayout({ children, list }: { children: ReactNode; list: ReactNode }) {
     return (
         <div className={style.articleLayout}>
-            {params.articleId || isNone ? null : <Header />}
+            <Header />
             <div className={style.predict}>
-                {params.articleId || isNone ? null : (
-                    <div className={style.childrenTab}>
-                        <Tabs
-                            labels={['专家预测文章', '专家列表']}
-                            paths={['/master/article', '/master/expert']}
-                            styling="button"
-                        />
-                    </div>
-                )}
-
+                <div className={style.childrenTab}>
+                    <Tabs
+                        labels={['专家预测文章', '专家列表']}
+                        paths={['/master/article', '/master/expert']}
+                        styling="button"
+                    />
+                </div>
                 {children}
             </div>
+
             <Footer />
+            <InterceptingDetail list={list} />
         </div>
     );
 }
