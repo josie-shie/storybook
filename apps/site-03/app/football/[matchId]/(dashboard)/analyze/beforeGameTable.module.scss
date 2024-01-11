@@ -16,14 +16,33 @@
         .tableBody {
             .tr {
                 .td {
+                    &:nth-child(1) {
+                        width: 46px;
+                    }
+
                     &:nth-child(2),
                     &:nth-child(3) {
                         justify-content: space-between;
                         flex: 5;
+                        width: 162px;
 
                         .tableCell {
                             flex: 1;
                             text-align: center;
+                        }
+                    }
+                }
+            }
+
+            &:last-of-type {
+                .tr {
+                    &:last-of-type {
+                        .td:first-of-type {
+                            border-bottom-left-radius: 0;
+                        }
+
+                        .td:last-of-type {
+                            border-bottom-right-radius: 0;
                         }
                     }
                 }

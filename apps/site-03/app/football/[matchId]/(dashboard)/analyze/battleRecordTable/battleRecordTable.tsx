@@ -1,3 +1,4 @@
+import { useAnalyzeStore } from '@/app/football/[matchId]/analyzeStore';
 import RecordTable from '../components/recordTable/recordTable';
 import { useBattleRecordStore } from './battleRecordStore';
 import style from './battleRecordTable.module.scss';
@@ -22,6 +23,7 @@ function BattleRecordTable() {
     const setWinLoseResult = useBattleRecordStore.use.setWinLoseResult();
     const oddsDetailResult = useBattleRecordStore.use.oddsDetailResult();
     const setOddsDetailResult = useBattleRecordStore.use.setOddsDetailResult();
+    const loading = useAnalyzeStore.use.analysisDataLoading();
 
     if (!Object.prototype.hasOwnProperty.call(tableRawData, 'bet365')) return null;
 
@@ -38,6 +40,7 @@ function BattleRecordTable() {
                 contestType={contestType}
                 gameIsHome={gameIsHome}
                 list={list}
+                loading={loading}
                 mode="battle"
                 oddsDetailResult={oddsDetailResult}
                 setContestAmount={setContestAmount}

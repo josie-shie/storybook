@@ -4,6 +4,7 @@ import { useAwayRecordStore } from './awayRecordStore';
 
 function AwayRecordTable() {
     const teamInfo = useAnalyzeStore.use.teamInfo();
+    const loading = useAnalyzeStore.use.analysisDataLoading();
 
     const awayRecordData = useAwayRecordStore.use.awayRecordData();
     const list = useAwayRecordStore.use.list();
@@ -36,6 +37,7 @@ function AwayRecordTable() {
             contestType={contestType}
             gameIsHome={gameIsHome}
             list={list}
+            loading={loading}
             mode="one"
             oddsDetailResult={oddsDetailResult}
             setContestAmount={setContestAmount}

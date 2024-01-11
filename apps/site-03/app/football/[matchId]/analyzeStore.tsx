@@ -29,6 +29,9 @@ interface InitState {
     teamInfo: SingleMatchTeamName;
     leagueTrendData: FormatLeagueTrendDataResponse;
     winLoseCountData: FormatWinLoseCountDataResponse;
+    analysisDataLoading: boolean;
+    companyDetailAnalyzeLoading: boolean;
+    leaguePointsRankLoading: boolean;
 }
 
 let useAnalyzeStore: StoreWithSelectors<InitState>;
@@ -48,6 +51,18 @@ const initialState = (set: (data: Partial<InitState>) => void) => ({
     gameIsHome: false,
     winLoseResult: {} as WinLoseResultProps,
     oddsDetailResult: {} as OddsDetailResultProps,
+    analysisDataLoading: false,
+    companyDetailAnalyzeLoading: false,
+    leaguePointsRankLoading: false,
+    setAnalysisDataLoading: (analysisDataLoading: boolean) => {
+        set({ analysisDataLoading });
+    },
+    setCompanyDetailAnalyzeLoading: (companyDetailAnalyzeLoading: boolean) => {
+        set({ companyDetailAnalyzeLoading });
+    },
+    setLeaguePointsRankLoading: (leaguePointsRankLoading: boolean) => {
+        set({ leaguePointsRankLoading });
+    },
     setCompanyDetailAnalyze: ({ companyDetailAnalyze }: InitState) => {
         set({ companyDetailAnalyze });
     },

@@ -6,6 +6,12 @@
     .highlight {
         color: #f85640 !important;
     }
+
+    :global {
+        .tableHead {
+            min-height: 32px;
+        }
+    }
 }
 
 .leagueRankTable {

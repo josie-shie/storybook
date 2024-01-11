@@ -1,5 +1,21 @@
 import { useAnalyzeStore } from '../../analyzeStore';
+import TableSkeleton from './components/tableSkeleton/tableSkeleton';
 import style from './winLoseCountTable.module.scss';
+
+function EmptyTableDetail() {
+    const loading = useAnalyzeStore.use.analysisDataLoading();
+    return loading ? (
+        <TableSkeleton rowNumber={3} />
+    ) : (
+        <div className="tr" key="league_rank_default">
+            <div className="td">-</div>
+            <div className="td">-</div>
+            <div className="td">-</div>
+            <div className="td">-</div>
+            <div className="td">-</div>
+        </div>
+    );
+}
 
 function WinLoseCountTable() {
     const tableData = useAnalyzeStore.use.winLoseCountData();
@@ -44,13 +60,7 @@ function WinLoseCountTable() {
                             </div>
                         ))
                     ) : (
-                        <div className="tr" key="league_rank_default">
-                            <div className="td">-</div>
-                            <div className="td">-</div>
-                            <div className="td">-</div>
-                            <div className="td">-</div>
-                            <div className="td">-</div>
-                        </div>
+                        <EmptyTableDetail />
                     )}
                 </div>
             </div>

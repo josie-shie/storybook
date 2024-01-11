@@ -29,7 +29,10 @@ function Analyze({ analysisData, beforeGameData, leaguePointsRank }: PropsType) 
         leaguePointsRankData: leaguePointsRank,
         teamInfo: analysisData.teamInfo,
         leagueTrendData: analysisData.leagueTrendData,
-        winLoseCountData: analysisData.winLoseCountData
+        winLoseCountData: analysisData.winLoseCountData,
+        analysisDataLoading: false,
+        companyDetailAnalyzeLoading: false,
+        leaguePointsRankLoading: false
     });
 
     createBattleRecordStore({

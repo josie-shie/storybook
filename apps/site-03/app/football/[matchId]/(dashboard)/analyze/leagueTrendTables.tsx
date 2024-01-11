@@ -2,6 +2,7 @@
 import type { HomeTrend } from 'data-center';
 import { useAnalyzeStore } from '../../analyzeStore';
 import style from './leagueTrendTables.module.scss';
+import TableSkeleton from './components/tableSkeleton/tableSkeleton';
 
 const getStyleResult = (char: string) => {
     if (char === '输' || char === '小') {
@@ -31,6 +32,7 @@ function LeagueTrendTable({
     teamName?: string;
     teamResult: { handicap: string; overUnder: string };
 }) {
+    const loading = useAnalyzeStore.use.analysisDataLoading();
     if (!Object.keys(leagueTrendData).length) {
         return <div>無資料</div>;
     }
@@ -39,7 +41,7 @@ function LeagueTrendTable({
         <div className="dataTable">
             <div className="tableHead">
                 <div className="tr">
-                    <div className="th teamName">{teamName || '-'}</div>
+                    <div className="th teamName">{loading ? null : teamName || '-'}</div>
                 </div>
             </div>
             <div className="tableBody greyRow">
@@ -56,54 +58,66 @@ function LeagueTrendTable({
                     <div className="td">小</div>
                     <div className="td">小%</div>
                 </div>
-                {leagueTrendData.map((item, idx) => (
-                    <div className="tr" key={`league_rank_${idx.toString()}`}>
-                        <div className="td" style={{ flex: 'initial', width: '45px' }}>
-                            {teamMapping[item.label]}
+                {loading ? (
+                    <TableSkeleton rowNumber={4} />
+                ) : (
+                    <>
+                        {leagueTrendData.map((item, idx) => (
+                            <div className="tr" key={`league_rank_${idx.toString()}`}>
+                                <div className="td" style={{ flex: 'initial', width: '45px' }}>
+                                    {teamMapping[item.label]}
+                                </div>
+                                <div className="td">{item.played}</div>
+                                <div className="td">{item.handicapDraw}</div>
+                                <div className="td">{item.handicapLose}</div>
+                                <div className="td">{`${item.handicapWinRate}%`}</div>
+                                <div className="td">{item.overUnderOver}</div>
+                                <div className="td">{`${item.overUnderOverRate}%`}</div>
+                                <div className="td">{item.overUnderUnder}</div>
+                                <div className="td">{`${item.overUnderUnderRate}%`}</div>
+                            </div>
+                        ))}
+                        <div className="tr" key="league_rank_bottom">
+                            <div className="td" style={{ flex: 'initial', width: '45px' }}>
+                                近6
+                            </div>
+                            <div
+                                className="td"
+                                style={{ justifyContent: 'center', alignItems: 'center' }}
+                            >
+                                {teamResult.handicap.length > 0
+                                    ? teamResult.handicap.split('').map((char, index) => {
+                                          return (
+                                              <span
+                                                  className={getStyleResult(char)}
+                                                  key={`handicap_${index.toString()}`}
+                                              >
+                                                  {char}
+                                              </span>
+                                          );
+                                      })
+                                    : '-'}
+                            </div>
+                            <div
+                                className="td"
+                                style={{ justifyContent: 'center', alignItems: 'center' }}
+                            >
+                                {teamResult.overUnder.length > 0
+                                    ? teamResult.overUnder.split('').map((char, index) => {
+                                          return (
+                                              <span
+                                                  className={getStyleResult(char)}
+                                                  key={`overUnder_${index.toString()}`}
+                                              >
+                                                  {char}
+                                              </span>
+                                          );
+                                      })
+                                    : '-'}
+                            </div>
                         </div>
-                        <div className="td">{item.played}</div>
-                        <div className="td">{item.handicapDraw}</div>
-                        <div className="td">{item.handicapLose}</div>
-                        <div className="td">{`${item.handicapWinRate}%`}</div>
-                        <div className="td">{item.overUnderOver}</div>
-                        <div className="td">{`${item.overUnderOverRate}%`}</div>
-                        <div className="td">{item.overUnderUnder}</div>
-                        <div className="td">{`${item.overUnderUnderRate}%`}</div>
-                    </div>
-                ))}
-                <div className="tr" key="league_rank_bottom">
-                    <div className="td" style={{ flex: 'initial', width: '45px' }}>
-                        近6
-                    </div>
-                    <div className="td" style={{ justifyContent: 'center', alignItems: 'center' }}>
-                        {teamResult.handicap.length > 0
-                            ? teamResult.handicap.split('').map((char, index) => {
-                                  return (
-                                      <span
-                                          className={getStyleResult(char)}
-                                          key={`handicap_${index.toString()}`}
-                                      >
-                                          {char}
-                                      </span>
-                                  );
-                              })
-                            : '-'}
-                    </div>
-                    <div className="td" style={{ justifyContent: 'center', alignItems: 'center' }}>
-                        {teamResult.overUnder.length > 0
-                            ? teamResult.overUnder.split('').map((char, index) => {
-                                  return (
-                                      <span
-                                          className={getStyleResult(char)}
-                                          key={`overUnder_${index.toString()}`}
-                                      >
-                                          {char}
-                                      </span>
-                                  );
-                              })
-                            : '-'}
-                    </div>
-                </div>
+                    </>
+                )}
             </div>
         </div>
     );

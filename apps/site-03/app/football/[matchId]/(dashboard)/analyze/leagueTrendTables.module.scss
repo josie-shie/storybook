@@ -5,6 +5,10 @@
     gap: 10px;
 
     :global {
+        .tableHead {
+            min-height: 32px;
+        }
+
         .tableBody {
             .tr {
                 .td {

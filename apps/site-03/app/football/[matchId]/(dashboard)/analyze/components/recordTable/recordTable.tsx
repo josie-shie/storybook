@@ -32,6 +32,7 @@ interface RecordTableProps {
     gameIsHome: boolean;
     winLoseResult: WinLoseResultProps;
     oddsDetailResult: OddsDetailResultProps;
+    loading: boolean;
     setList: (list: BattleRecord[]) => void;
     setContestAmount: (contestAmount: GameAmountProps) => void;
     setContestType: (contestType: GameTypeProps) => void;
@@ -56,6 +57,7 @@ function RecordTable({
     gameIsHome,
     winLoseResult,
     oddsDetailResult,
+    loading,
     setList,
     setContestAmount,
     setContestType,
@@ -205,7 +207,7 @@ function RecordTable({
             <div className="dataTable">
                 {mode === 'one' && (
                     <div className={style.teamNameHeader}>
-                        <div className={`${style.teamName}`}>{teamName}</div>
+                        <div className={`${style.teamName}`}>{loading ? null : teamName}</div>
                         <div className={style.checkbox}>
                             <input
                                 checked={gameIsHome}
@@ -237,6 +239,7 @@ function RecordTable({
                     contestTime={contestTime}
                     handleFilterList={handleFilterList}
                     list={list}
+                    loading={loading}
                     oddsDetailResult={oddsDetailResult}
                     setContestTime={setContestTime}
                     winLoseResult={winLoseResult}
