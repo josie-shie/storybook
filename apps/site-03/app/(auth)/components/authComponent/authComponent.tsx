@@ -94,13 +94,29 @@ export function VertifyCode({
     countDownNumber: number;
     sendCodeSuccess: boolean;
 }) {
+    const [isFocused, setIsFocused] = useState(false);
+
+    const handleFocus = () => {
+        setIsFocused(true);
+    };
+    const handleBlur = () => {
+        setIsFocused(false);
+    };
+
     return (
         <div className={style.vertifyCode}>
-            <div className={style.vertifyCodeBlock}>
+            <div
+                className={style.vertifyCodeBlock}
+                style={{
+                    borderBottom: `1px solid rgba(255, 255, 255, ${
+                        field.value || isFocused ? '1' : '0.3'
+                    })`
+                }}
+            >
                 <Image
                     alt=""
                     height={24}
-                    src={field.value ? activeShieldIcon.src : shieldIcon.src}
+                    src={field.value || isFocused ? activeShieldIcon.src : shieldIcon.src}
                     width={24}
                 />
                 <Input
@@ -109,6 +125,8 @@ export function VertifyCode({
                     disableUnderline
                     error={Boolean(error)}
                     id="verificationCode"
+                    onBlur={handleBlur}
+                    onFocus={handleFocus}
                     placeholder="输入手机验证码"
                 />
                 {sendCodeSuccess ? (
@@ -146,13 +164,29 @@ export function VertifyCodeByImage({
     vertifyDisable: boolean;
     getVerificationCode: () => void;
 }) {
+    const [isFocused, setIsFocused] = useState(false);
+
+    const handleFocus = () => {
+        setIsFocused(true);
+    };
+    const handleBlur = () => {
+        setIsFocused(false);
+    };
+
     return (
-        <div className={style.vertifyCodeByImage}>
+        <div
+            className={style.vertifyCodeByImage}
+            style={{
+                borderBottom: `1px solid rgba(255, 255, 255, ${
+                    field.value || isFocused ? '1' : '0.3'
+                })`
+            }}
+        >
             <div className={style.vertifyCodeBlock}>
                 <Image
                     alt=""
                     height={24}
-                    src={field.value ? activeShieldIcon.src : shieldIcon.src}
+                    src={field.value || isFocused ? activeShieldIcon.src : shieldIcon.src}
                     width={24}
                 />
                 <Input
@@ -161,6 +195,8 @@ export function VertifyCodeByImage({
                     disableUnderline
                     error={Boolean(error)}
                     id="verificationCode"
+                    onBlur={handleBlur}
+                    onFocus={handleFocus}
                     placeholder={placeholder}
                 />
             </div>
@@ -202,14 +238,29 @@ interface PasswordPropsType {
 
 export function PasswordInput({ children, placeholder, field, error, id }: PasswordPropsType) {
     const [showPassword, setShowPassword] = useState<boolean>(false);
+    const [isFocused, setIsFocused] = useState(false);
+
+    const handleFocus = () => {
+        setIsFocused(true);
+    };
+    const handleBlur = () => {
+        setIsFocused(false);
+    };
 
     return (
         <>
-            <div className={style.password}>
+            <div
+                className={style.password}
+                style={{
+                    borderBottom: `1px solid rgba(255, 255, 255, ${
+                        field.value || isFocused ? '1' : '0.3'
+                    })`
+                }}
+            >
                 <Image
                     alt=""
                     height={24}
-                    src={field.value ? activeLockIcon.src : lockIcon.src}
+                    src={field.value || isFocused ? activeLockIcon.src : lockIcon.src}
                     width={24}
                 />
                 <div className={style.passwordBlock}>
@@ -219,6 +270,8 @@ export function PasswordInput({ children, placeholder, field, error, id }: Passw
                         disableUnderline
                         error={Boolean(error)}
                         id={id ? id : 'password'}
+                        onBlur={handleBlur}
+                        onFocus={handleFocus}
                         placeholder={placeholder}
                         type={showPassword ? 'text' : 'password'}
                     />
@@ -280,14 +333,32 @@ export function PhoneNumberInput({
     field: FieldValues;
     error: FieldError | undefined;
 }) {
+    const [isFocused, setIsFocused] = useState(false);
+
+    const handleFocus = () => {
+        setIsFocused(true);
+    };
+    const handleBlur = () => {
+        setIsFocused(false);
+    };
+
     return (
-        <div className={style.phoneNumber}>
+        <div
+            className={style.phoneNumber}
+            style={{
+                borderBottom: `1px solid rgba(255, 255, 255, ${
+                    field.value || isFocused ? '1' : '0.3'
+                })`
+            }}
+        >
             <Input
                 {...field}
                 className={style.phoneInput}
                 disableUnderline
                 error={Boolean(error)}
                 id="mobileNumber"
+                onBlur={handleBlur}
+                onFocus={handleFocus}
                 placeholder="手机号码"
                 type="number"
             />
