@@ -43,15 +43,29 @@
             }
 
             &.active {
+                .textLabel {
+                    color: #276ce1;
+                }
+            }
+
+            &:not(.active) {
                 /* stylelint-disable no-descending-specificity */
                 .gameIcon {
                     path {
                         &:nth-of-type(1) {
-                            fill: #276ce1;
+                            fill: #bfbfbf;
                         }
 
                         &:nth-of-type(2) {
-                            stroke: #9fc2ff;
+                            fill: #bfbfbf;
+                        }
+
+                        &:nth-of-type(3) {
+                            stroke: #d9d9d9;
+                        }
+
+                        &:nth-of-type(4) {
+                            stroke: #fff;
                         }
                     }
                 }
@@ -59,11 +73,11 @@
                 .guessIcon {
                     path {
                         &:nth-of-type(1) {
-                            fill: #276ce1;
+                            fill: #bfbfbf;
                         }
 
                         &:nth-of-type(2) {
-                            fill: #a3c4ff;
+                            fill: #bfbfbf;
                         }
                     }
                 }
@@ -71,24 +85,20 @@
                 .analyzeIcon {
                     path {
                         &:nth-of-type(1) {
-                            fill: #276ce1;
-                            stroke: #276ce1;
+                            fill: #bfbfbf;
+                            stroke: #bfbfbf;
                         }
 
                         &:nth-of-type(2) {
-                            fill: #9fc2ff;
+                            fill: #d9d9d9;
                         }
 
                         &:nth-of-type(3) {
-                            fill: #276ce1;
+                            fill: #bfbfbf;
                         }
 
                         &:nth-of-type(4) {
-                            fill: #9fc2ff;
-                        }
-
-                        &:nth-of-type(5) {
-                            fill: #9fc2ff;
+                            fill: #d9d9d9;
                         }
                     }
                 }
@@ -96,11 +106,23 @@
                 .recommendIcon {
                     path {
                         &:nth-of-type(1) {
-                            fill: #9fc2ff;
+                            fill: #d9d9d9;
                         }
 
                         &:nth-of-type(2) {
-                            fill: #276ce1;
+                            fill: #d9d9d9;
+                        }
+
+                        &:nth-of-type(3) {
+                            fill: #d9d9d9;
+                        }
+
+                        &:nth-of-type(4) {
+                            fill: #d9d9d9;
+                        }
+
+                        &:nth-of-type(5) {
+                            fill: #bfbfbf;
                         }
                     }
                 }
@@ -108,21 +130,17 @@
                 .dataIcon {
                     path {
                         &:nth-of-type(1) {
-                            fill: #9fc2ff;
+                            fill: #d9d9d9;
                             stroke: #d9d9d9;
                         }
 
                         &:nth-of-type(2) {
-                            fill: #276ce1;
+                            fill: #bfbfbf;
                         }
                     }
                 }
 
                 /* stylelint-enable no-descending-specificity */
-
-                .textLabel {
-                    color: #276ce1;
-                }
             }
         }
     }

@@ -1,7 +1,14 @@
 <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M21 2H3C2.44772 2 2 2.4701 2 3.05V21.95C2 22.5299 2.44772 23 3 23H21C21.5523 23 22 22.5299 22 21.95V3.05C22 2.4701 21.5523 2 21 2Z" fill="#BFBFBF"/>
-<path d="M12 4.05554L12 20.6667" stroke="#D9D9D9" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="round" stroke-dasharray="3 3"/>
-<path fill-rule="evenodd" clip-rule="evenodd" d="M15.2002 9.48608V16.1944H18.7002V9.48608H15.2002Z" stroke="white" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="round"/>
-<path d="M5.51953 9.48608H9.01953V16.1944H5.51953" stroke="white" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="round"/>
-<path d="M9.08301 12.8403H6.45801" stroke="white" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="round"/>
+<g id="Game">
+<g id="Group 513369">
+<path id="Vector" d="M21 2H3C2.44772 2 2 2.4701 2 3.05V21.95C2 22.5299 2.44772 23 3 23H21C21.5523 23 22 22.5299 22 21.95V3.05C22 2.4701 21.5523 2 21 2Z" fill="#276CE1"/>
+<rect id="Vector_2" x="10.5" y="2.00002" width="3" height="21" fill="white"/>
+<path id="Vector_3" d="M12 4.06L12 20.6711" stroke="#4A4A4A" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="round" stroke-dasharray="3 3"/>
+<path id="Vector_4" fill-rule="evenodd" clip-rule="evenodd" d="M16 9.48608V16.1944H19.5V9.48608H16Z" stroke="white" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="round"/>
+<g id="Group 513374">
+<path id="Vector_5" d="M4.5 9.48608H8V16.1944H4.5" stroke="white" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="round"/>
+<path id="Vector_6" d="M7.98823 12.8403H5.43823" stroke="white" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="round"/>
+</g>
+</g>
+</g>
 </svg>
