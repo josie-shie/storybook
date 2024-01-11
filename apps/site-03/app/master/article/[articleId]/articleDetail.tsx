@@ -4,7 +4,6 @@ import type { Metadata } from 'next';
 import { useEffect, useState } from 'react';
 import { getPostDetail } from 'data-center';
 import { type GetPostDetailResponse } from 'data-center';
-import Header from '@/components/header/headerTitle';
 import type { GuessTeam, GuessType, PredictTypeWithLock } from '@/types/predict';
 import Info from './info';
 import ArticleContent from './articleContent';
@@ -94,9 +93,6 @@ function ArticleDetail({ params }: { params: { articleId: string } }) {
             winHistoryMaxWinStreak: 0
         }
     } as GetPostDetailResponse);
-    const headerProps = {
-        title: '专家预测文章'
-    };
 
     const fetchPostDetail = async () => {
         try {
@@ -117,7 +113,6 @@ function ArticleDetail({ params }: { params: { articleId: string } }) {
 
     return (
         <>
-            <Header srcPath="/master/article" title={headerProps.title} />
             <Info article={article} setArticle={setArticle} />
             <ArticleContent article={article} fetchPostDetail={fetchPostDetail} params={params} />
         </>
