@@ -21,18 +21,28 @@ interface PropsType {
     analysisData: GetAnalysisOthersResponse;
     beforeGameData: GetBeforeGameIndexResponse;
     leaguePointsRank: GetLeaguePointsRankResponse;
+    analysisDataLoading: boolean;
+    beforeGameDataLoading: boolean;
+    leaguePointsRankLoading: boolean;
 }
 
-function Analyze({ analysisData, beforeGameData, leaguePointsRank }: PropsType) {
+function Analyze({
+    analysisData,
+    beforeGameData,
+    leaguePointsRank,
+    analysisDataLoading,
+    beforeGameDataLoading,
+    leaguePointsRankLoading
+}: PropsType) {
     createAnalyzeStore({
         companyDetailAnalyze: beforeGameData,
         leaguePointsRankData: leaguePointsRank,
         teamInfo: analysisData.teamInfo,
         leagueTrendData: analysisData.leagueTrendData,
         winLoseCountData: analysisData.winLoseCountData,
-        analysisDataLoading: false,
-        companyDetailAnalyzeLoading: false,
-        leaguePointsRankLoading: false
+        analysisDataLoading,
+        companyDetailAnalyzeLoading: beforeGameDataLoading,
+        leaguePointsRankLoading
     });
 
     createBattleRecordStore({
