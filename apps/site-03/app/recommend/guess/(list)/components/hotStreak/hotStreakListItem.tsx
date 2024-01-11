@@ -3,15 +3,14 @@ import Link from 'next/link';
 import CircularProgress from '@mui/material/CircularProgress';
 import Avatar from '@/components/avatar/avatar';
 import BaseNoData from '@/components/baseNoData/noData';
-import { useMasterRankStore } from '../../masterRank/masterRankStore';
+import { useRankStore } from '../../rankStore';
 import style from './hotStreakListItem.module.scss';
 import Streak from './img/streak.png';
 import Rank from './img/rank.png';
 
-function HotStreakListItem() {
-    const masterRankList = useMasterRankStore.use.masterRankList();
-    const onlyShowToday = useMasterRankStore.use.onlyShowToday();
-    const isLoading = useMasterRankStore.use.isLoading();
+function HotStreakListItem({ isLoading }: { isLoading: boolean }) {
+    const masterRankList = useRankStore.use.masterRankList();
+    const onlyShowToday = useRankStore.use.onlyShowToday();
 
     if (isLoading)
         return (

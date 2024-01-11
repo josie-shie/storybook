@@ -1,24 +1,22 @@
 'use client';
 import Image from 'next/image';
-import { useSearchParams } from 'next/navigation';
 import Avatar from '@/components/avatar/avatar';
 import Soccer from '../components/period/img/soccerWhite.png';
 import weekBackground from '../img/weekBg.png';
 import monthBackground from '../img/monthBg.png';
 import seasonBackground from '../img/seasonBg.png';
+import { useRankStore } from '../rankStore';
 import style from './userRank.module.scss';
-import { useRankStore } from './rankStore';
 
-interface PeriodBackgroundMap {
-    week: string;
-    month: string;
-    season: string;
-}
-
-function UserRank() {
-    const memberInfo = useRankStore.use.member();
-    const searchParams = useSearchParams();
-    const currentPeriod = searchParams.get('status') as keyof PeriodBackgroundMap;
+function UserRank({ status }: { status: 'week' | 'month' | 'season' }) {
+    const weekMemberInfo = useRankStore.use.weekMemberInfo();
+    const monthMemberInfo = useRankStore.use.monthMemberInfo();
+    const seasonMemberInfo = useRankStore.use.seasonMemberInfo();
+    const memberInfoMap = {
+        week: weekMemberInfo,
+        month: monthMemberInfo,
+        season: seasonMemberInfo
+    };
 
     const periodBackgroundMap = {
         week: weekBackground,
@@ -35,18 +33,19 @@ function UserRank() {
         month: '#3d7f53',
         season: '#cc4d2e'
     };
-    const periodTagColor = tagMap[currentPeriod];
+    const periodTagColor = tagMap[status];
+    const memberInfo = memberInfoMap[status];
 
     return (
         <div className={style.userRank}>
             <Image
                 alt=""
                 className={style.background}
-                src={periodBackgroundMap[currentPeriod]}
+                src={periodBackgroundMap[status]}
                 width={366}
             />
             <div className={style.ranking} style={{ background: periodTagColor }}>
-                {periodMap[currentPeriod]}排名
+                {periodMap[status]}排名
                 <span>
                     {memberInfo.ranking === 0 || memberInfo.ranking > 50 ? '-' : memberInfo.ranking}
                 </span>

@@ -3,13 +3,27 @@ import Link from 'next/link';
 import CircularProgress from '@mui/material/CircularProgress';
 import Avatar from '@/components/avatar/avatar';
 import BaseNoData from '@/components/baseNoData/noData';
-import { useRankStore } from '../../rank/rankStore';
+import { useRankStore } from '../../rankStore';
 import style from './periodListItem.module.scss';
 import Soccer from './img/soccerNew.png';
 import Rank from './img/rank.png';
 
-function PeriodListItem({ isLoading }: { isLoading: boolean }) {
-    const rankList = useRankStore.use.rankList();
+function PeriodListItem({
+    isLoading,
+    status
+}: {
+    isLoading: boolean;
+    status: 'week' | 'month' | 'season';
+}) {
+    const weekRankList = useRankStore.use.weekRankList();
+    const monthRankList = useRankStore.use.monthRankList();
+    const seasonRankList = useRankStore.use.seasonRankList();
+    const rankListMap = {
+        week: weekRankList,
+        month: monthRankList,
+        season: seasonRankList
+    };
+    const rankList = rankListMap[status];
     const onlyShowToday = useRankStore.use.onlyShowToday();
 
     if (isLoading)

@@ -1,5 +1,5 @@
 import { getTodayGuessMatches } from 'data-center';
-import Contest from './contest/contest';
+import GuessIndex from './guessIndex';
 
 async function Page() {
     const todayGuess = await getTodayGuessMatches();
@@ -8,11 +8,7 @@ async function Page() {
         return new Error();
     }
 
-    return (
-        <div className="recommendContest">
-            <Contest todayGuess={todayGuess.data} />
-        </div>
-    );
+    return <GuessIndex todayGuess={todayGuess.data} />;
 }
 
 export default Page;

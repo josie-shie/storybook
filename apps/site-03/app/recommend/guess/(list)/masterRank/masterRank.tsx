@@ -1,7 +1,8 @@
 'use client';
 // import { IconSearch } from '@tabler/icons-react';
 import Image from 'next/image';
-import { useEffect } from 'react';
+import type { Ref } from 'react';
+import { forwardRef, useEffect, useState } from 'react';
 import { getGuessRank } from 'data-center';
 import Avatar from '@/components/avatar/avatar';
 import { useUserStore } from '@/app/userStore';
@@ -10,16 +11,15 @@ import UserSwitch from '../components/userSwitch/userSwitch';
 import Rule from '../components/rule/rule';
 import masterRankBackground from '../img/masterRankBg.png';
 import Streak from '../components/hotStreak/img/whiteStreak.png';
-import { creatMasterRankStore, useMasterRankStore } from './masterRankStore';
+import { useRankStore } from '../rankStore';
 import style from './masterRank.module.scss';
 
-function UserMasterRank() {
+function UserMasterRank({ setIsLoading }: { setIsLoading: (status: boolean) => void }) {
     const isLogin = useUserStore.use.isLogin();
     const userInfo = useUserStore.use.userInfo();
-    const memberInfo = useMasterRankStore.use.member();
-    const setMember = useMasterRankStore.use.setMember();
-    const setMasterRankList = useMasterRankStore.use.setMasterRankList();
-    const setIsLoading = useMasterRankStore.use.setIsLoading();
+    const memberInfo = useRankStore.use.memberMasterRank();
+    const setMember = useRankStore.use.setMemberMasterRank();
+    const setMasterRankList = useRankStore.use.setMasterRankList();
 
     useEffect(() => {
         async function fetchMasterRank() {
@@ -32,11 +32,11 @@ function UserMasterRank() {
                 const data = masterRank.data;
                 setMember(data.memberRank);
                 setMasterRankList(data.guessRank);
-                setIsLoading(false);
             }
+            setIsLoading(false);
         }
         void fetchMasterRank();
-    }, [isLogin]);
+    }, [isLogin, userInfo.uid, setIsLoading, setMasterRankList, setMember]);
 
     return (
         <div className={style.userHotStreak}>
@@ -75,12 +75,12 @@ function UserMasterRank() {
     );
 }
 
-function RankList() {
+const RankList = forwardRef(function RankList(_, ref: Ref<HTMLDivElement>) {
     const isLogin = useUserStore.use.isLogin();
-    creatMasterRankStore({ masterRankList: [] });
+    const [isLoading, setIsLoading] = useState(false);
 
     return (
-        <div className={style.masterRank}>
+        <div className={style.masterRank} ref={ref}>
             <div className={style.control}>
                 <UserSwitch />
                 <div className={style.right}>
@@ -92,10 +92,10 @@ function RankList() {
                     <Rule />
                 </div>
             </div>
-            {isLogin ? <UserMasterRank /> : null}
-            <HotStreakListItem />
+            {isLogin ? <UserMasterRank setIsLoading={setIsLoading} /> : null}
+            <HotStreakListItem isLoading={isLoading} />
         </div>
     );
-}
+});
 
 export default RankList;

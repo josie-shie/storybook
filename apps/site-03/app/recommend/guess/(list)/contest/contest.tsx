@@ -1,9 +1,10 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, forwardRef } from 'react';
 import { InfiniteScroll } from 'ui';
 import CircularProgress from '@mui/material/CircularProgress';
 import { getTodayGuessMatches, type GetTodayGuessMatchesResponse } from 'data-center';
 import Image from 'next/image';
+import type { Ref } from 'react';
 import BaseNoData from '@/components/baseNoData/noData';
 import NewBanner from '../img/newBanner.png';
 import { creatGuessContestListStore, useGuessContestListStore } from './contestStore';
@@ -69,15 +70,22 @@ function ContestList() {
     );
 }
 
-function Contest({ todayGuess }: { todayGuess: GetTodayGuessMatchesResponse }) {
+const Contest = forwardRef(function Contest(
+    {
+        todayGuess
+    }: {
+        todayGuess: GetTodayGuessMatchesResponse;
+    },
+    gameListRef: Ref<HTMLDivElement>
+) {
     creatGuessContestListStore(todayGuess);
 
     return (
-        <div className={style.contest}>
+        <div className={style.contest} ref={gameListRef}>
             <Image alt="" className={style.banner} src={NewBanner} />
             <ContestList />
         </div>
     );
-}
+});
 
 export default Contest;

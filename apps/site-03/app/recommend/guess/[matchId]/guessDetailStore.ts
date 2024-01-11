@@ -45,7 +45,7 @@ const initialState = (set: (data: Partial<GuessDetailState>) => void) => ({
     guessesLeft: 0,
     detail: {
         leagueName: '',
-        dateTime: 1678880400,
+        dateTime: 1672502400,
         homeTeamLogo: defaultTeamLogo.src,
         homeTeamName: '-',
         awayTeamLogo: defaultTeamLogo.src,

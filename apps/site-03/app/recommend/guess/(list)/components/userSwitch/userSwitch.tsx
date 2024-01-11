@@ -1,18 +1,9 @@
-import { usePathname } from 'next/navigation';
-import { useRankStore } from '../../rank/rankStore';
-import { useMasterRankStore } from '../../masterRank/masterRankStore';
+import { useRankStore } from '../../rankStore';
 import style from './userSwitch.module.scss';
 
 function UserSwitch() {
-    const pathName = usePathname();
-    const isMasterRank = pathName.includes('/masterRank');
-
-    const onlyShowToday = isMasterRank
-        ? useMasterRankStore.use.onlyShowToday()
-        : useRankStore.use.onlyShowToday();
-    const setOnlyShowToday = isMasterRank
-        ? useMasterRankStore.use.setOnlyShowToday()
-        : useRankStore.use.setOnlyShowToday();
+    const onlyShowToday = useRankStore.use.onlyShowToday();
+    const setOnlyShowToday = useRankStore.use.setOnlyShowToday();
 
     return (
         <div className={style.userSwitch}>
