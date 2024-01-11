@@ -9,6 +9,16 @@
     justify-content: center;
 }
 
+.listEnd {
+    text-align: center;
+
+    p {
+        color: rgb(169 170 171);
+        font-size: 12px;
+        padding: 8px 0;
+    }
+}
+
 .top {
     display: flex;
     justify-content: space-between;
