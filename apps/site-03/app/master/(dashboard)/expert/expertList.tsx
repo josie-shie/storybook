@@ -13,8 +13,8 @@ import TagSplit from '@/components/tagSplit/tagSplit';
 import Avatar from '@/components/avatar/avatar';
 import Fire from '@/app/img/fire.png';
 import NoData from '@/components/baseNoData/noData';
-import WeekButton from '../components/weekButton/weekButton';
-import { useUserStore } from '../../userStore';
+import WeekButton from '../../components/weekButton/weekButton';
+import { useUserStore } from '@/app/userStore';
 import style from './expertList.module.scss';
 import SkeletonLayout from './components/skeleton/skeleton';
 

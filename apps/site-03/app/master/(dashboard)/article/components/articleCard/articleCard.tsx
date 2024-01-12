@@ -62,7 +62,7 @@ function ArticleCard({ article }: { article: RecommendPost }) {
 
     const goArticleDetail = () => {
         setIsOpenPaid(false);
-        router.push(`/master/article/${article.id}`);
+        router.push(`/master/articleDetail/${article.id}`);
     };
 
     const isOpenDialog = async () => {
@@ -78,7 +78,7 @@ function ArticleCard({ article }: { article: RecommendPost }) {
             if (!res.success) {
                 return new Error();
             }
-            router.push(`/master/article/${article.id}`);
+            router.push(`/master/articleDetail/${article.id}`);
             return;
         }
         setIsOpenPaid(true);
@@ -145,7 +145,7 @@ function ArticleCard({ article }: { article: RecommendPost }) {
                     </div>
                 </div>
                 <div className={style.title}>{article.analysisTitle}</div>
-                <Link href={`/master/article/${article.id}`}>
+                <Link href={`/master/articleDetail/${article.id}`}>
                     <div className={style.game}>
                         <div className={style.detail}>
                             {article.leagueName}

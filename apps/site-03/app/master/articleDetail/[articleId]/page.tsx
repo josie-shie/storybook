@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import Footer from '@/components/footer/footer';
 import ArticleDetail from './articleDetail';
 
 export const metadata: Metadata = {
@@ -10,7 +9,6 @@ function Page({ params }: { params: { articleId: string } }) {
     return (
         <>
             <ArticleDetail params={params} />
-            <Footer />
         </>
     );
 }
