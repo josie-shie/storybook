@@ -10,8 +10,8 @@ interface InitState {
 
 interface LongDragonState extends InitState {
     dialogContent: ReactNode;
-    openNoramlDialog: boolean;
-    setOpenNormalDialog: (openNoramlDialog: boolean) => void;
+    openErrorDialog: boolean;
+    setOpenErrorDialog: (openErrorDialog: boolean) => void;
     setDialogContent: (dialogContent: ReactNode) => void;
     setHintsSelectPlay: (hintsSelectPlay: string) => void;
     setHintsSelectType: (hintsSelectType: string) => void;
@@ -24,11 +24,11 @@ let useLongDragonStore: StoreWithSelectors<LongDragonState>;
 const initialState = (
     set: (updater: (state: LongDragonState) => Partial<LongDragonState>) => void
 ) => ({
-    openNoramlDialog: false,
+    openErrorDialog: false,
     dialogContent: null,
-    setOpenNormalDialog: (openNoramlDialog: boolean) => {
+    setOpenErrorDialog: (openErrorDialog: boolean) => {
         set(state => {
-            return { ...state, openNoramlDialog };
+            return { ...state, openErrorDialog };
         });
     },
     setDialogContent: (dialogContent: ReactNode) => {
