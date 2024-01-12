@@ -224,12 +224,16 @@ function AnalysisItem({
                             </div>
                         );
                     })}
-                    {currentPage < totalPage && (
+                    {currentPage < totalPage ? (
                         <InfiniteScroll onVisible={loadMoreList}>
                             <div className={style.loadMore}>
                                 <CircularProgress size={24} />
                             </div>
                         </InfiniteScroll>
+                    ) : (
+                        <div className={style.listEnd}>
+                            <p>已滑到底啰</p>
+                        </div>
                     )}
                 </ul>
             )}

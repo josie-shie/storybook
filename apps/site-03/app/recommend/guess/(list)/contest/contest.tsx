@@ -59,12 +59,16 @@ function ContestList() {
             {displayList.map(matchId => {
                 return <GameCard key={matchId} matchId={matchId} />;
             })}
-            {rows.full < contestList.length && (
+            {rows.full < contestList.length ? (
                 <InfiniteScroll onVisible={loadMoreList}>
                     <div className={style.loadMore}>
                         <CircularProgress size={24} />
                     </div>
                 </InfiniteScroll>
+            ) : (
+                <div className={style.listEnd}>
+                    <p>已滑到底啰</p>
+                </div>
             )}
         </>
     );
