@@ -1,11 +1,10 @@
 .info {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     justify-content: space-between;
-    flex-direction: column;
+    flex-direction: row;
     margin-top: -12px;
     padding: 12px 12px 45px;
-    background: linear-gradient(to right, #2c5eb2 0%, #3a82fb 100%);
 
     .detail {
         display: flex;
@@ -44,7 +43,7 @@
 
     .focused,
     .focus {
-        position: absolute;
+        margin-left: 12px;
         right: 12px;
         font-size: 14px;
         font-weight: 500;

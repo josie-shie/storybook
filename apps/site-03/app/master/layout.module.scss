@@ -1,8 +1,11 @@
 .articleLayout {
     height: calc(100dvh - 56px);
-    overflow-y: hidden;
+    overflow-y: auto;
+    background: linear-gradient(to right, #2c5eb2 0%, #3a82fb 100%);
 
     .predict {
+        height: calc(100dvh - 164px);
+
         .layoutTab {
             margin-top: -12px;
             width: 100%;
@@ -23,6 +26,9 @@
 
         .childrenTab {
             :global(.tab) {
+                margin-bottom: 0;
+                background: #fff;
+
                 :global(.header) {
                     padding: 12px 12px 0;
                     margin-top: -14px;

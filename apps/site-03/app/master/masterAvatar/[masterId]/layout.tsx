@@ -1,8 +1,9 @@
 'use client';
 
 import type { ReactNode } from 'react';
-import Header from '@/components/header/headerTitle';
+import Header from '@/components/header/headerTransparent';
 import Info from './info';
+import style from './layout.module.scss';
 
 function MasterAvatarLayout({
     params,
@@ -18,8 +19,10 @@ function MasterAvatarLayout({
     return (
         <>
             <Header title={headerProps.title} />
-            <Info params={params} />
-            {children}
+            <div className={style.masterAvatarLayout}>
+                <Info params={params} />
+                {children}
+            </div>
         </>
     );
 }

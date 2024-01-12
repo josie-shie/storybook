@@ -1,17 +1,17 @@
 .articleContent {
-    overflow: hidden;
+    overflow: visible;
     background: #f8f8f8;
-    border-radius: 16px 16px 0 0;
     margin-top: -20px;
+    border-radius: 16px 16px 0 0;
 
     .articleLayout {
         height: calc(100dvh - 209px);
-        overflow: scroll;
     }
 
     .container {
         padding: 12px;
         background: #fff;
+        border-radius: 16px 16px 0 0;
 
         .time {
             display: block;

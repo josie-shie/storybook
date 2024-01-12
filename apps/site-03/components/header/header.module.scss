@@ -55,6 +55,17 @@
     }
 }
 
+.headerTransparent {
+    position: fixed;
+    top: 0;
+    z-index: 4;
+}
+
+.showBg {
+    transition: all 0.3s ease-in-out;
+    background: linear-gradient(90deg, #2c5eb1 0%, #3b83fb 100%);
+}
+
 .headerNoBg {
     background: transparent;
 }

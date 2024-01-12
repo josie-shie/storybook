@@ -1,44 +1,48 @@
-.masterAvatar {
-    margin-top: -30px;
-    padding: 8px 0 0;
-    border-radius: 16px 16px 0 0;
-    background: #fff;
+.masterAvatarLayout {
+    height: calc(100vh - 110px);
 
-    :global(.ui-tab) {
-        padding: 0 12px;
+    .masterAvatar {
+        margin-top: -30px;
+        padding: 8px 0 0;
+        border-radius: 16px 16px 0 0;
+        background: #fff;
 
-        :global(.ui-tab-header) {
-            :global(.ui-tabs-header) {
-                padding: 8px 0 0;
-                border-bottom: 1px solid #d9d9d9;
+        :global(.ui-tab) {
+            padding: 0 12px;
 
-                :global(.ui-button) {
-                    color: #8d8d8d;
-                    font-weight: 500;
-                    flex: 1;
-                    text-align: center;
-                    font-size: 14px;
+            :global(.ui-tab-header) {
+                :global(.ui-tabs-header) {
+                    padding: 8px 0 0;
+                    border-bottom: 1px solid #d9d9d9;
+
+                    :global(.ui-button) {
+                        color: #8d8d8d;
+                        font-weight: 500;
+                        flex: 1;
+                        text-align: center;
+                        font-size: 14px;
+                    }
+
+                    :global(.ui-active) {
+                        color: #4489ff;
+                    }
                 }
 
-                :global(.ui-active) {
-                    color: #4489ff;
+                :global(.ui-tab-header-liner) {
+                    bottom: -1px;
                 }
             }
 
-            :global(.ui-tab-header-liner) {
-                bottom: -1px;
+            :global(.ui-tab-container) {
+                height: calc(100vh - 251px);
+                overflow: auto;
+                padding: 0;
             }
-        }
 
-        :global(.ui-tab-container) {
-            height: calc(100vh - 251px);
-            overflow: auto;
-            padding: 0;
-        }
-
-        :global(.swiper) {
-            :global(.swiper-slide) {
-                padding: 0 !important;
+            :global(.swiper) {
+                :global(.swiper-slide) {
+                    padding: 0 !important;
+                }
             }
         }
     }

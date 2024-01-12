@@ -1,14 +1,13 @@
 'use client';
-import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useUserStore } from '@/app/userStore';
 import dotBackground from './img/dotBackground.png';
 import style from './header.module.scss';
-import logoIconImg from './img/logoIcon.png';
+import LogoIconImg from './img/logoIcon.svg';
 import Profile from './components/profile/profile';
 import Notice from './components/notice/notice';
-import Logo from './img/logo.png';
+import Logo from './img/logo.svg';
 
 function HeaderLogo({
     title,
@@ -37,13 +36,9 @@ function HeaderLogo({
         <div className={style.placeholder}>
             <div className={style.header} style={headerStyle}>
                 <Link className={style.logo} href={link}>
-                    <Image alt="" height={24} src={logoIconImg} width={24} />
+                    <LogoIconImg />
                     <div className={style.icon}>
-                        {title ? (
-                            <div className={style.titleText}>{title}</div>
-                        ) : (
-                            <Image alt="logo" src={Logo} width={66} />
-                        )}
+                        {title ? <div className={style.titleText}>{title}</div> : <Logo />}
                     </div>
                 </Link>
                 {mounted && !userInfoIsLoading ? (
