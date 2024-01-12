@@ -35,16 +35,28 @@ function AnimateLine({ contestInfo, matchId }: { contestInfo: ContestInfo; match
     const syncData = Object.hasOwnProperty.call(globalStore, matchId) ? globalStore[matchId] : {};
     const [homeScoreKeep, setHomeScoreKeep] = useState(syncData.homeScore || contestInfo.homeScore);
     const [awayScoreKeep, setAwayScoreKeep] = useState(syncData.awayScore || contestInfo.awayScore);
+    const [showHomeContent, setShowHomeContent] = useState(false);
+    const [showAwayContent, setShowAwayContent] = useState(false);
 
     useEffect(() => {
         if (syncData.homeScore !== homeScoreKeep) {
+            setShowHomeContent(true);
             setTimeout(() => {
                 syncData.homeScore && setHomeScoreKeep(syncData.homeScore);
+
+                setTimeout(() => {
+                    setShowHomeContent(false);
+                }, 1000);
             }, 3000);
         }
         if (syncData.awayScore !== awayScoreKeep) {
+            setShowAwayContent(true);
             setTimeout(() => {
                 syncData.awayScore && setAwayScoreKeep(syncData.awayScore);
+
+                setTimeout(() => {
+                    setShowAwayContent(false);
+                }, 1000);
             }, 3000);
         }
     }, [syncData.awayScore, syncData.homeScore]);
@@ -52,12 +64,20 @@ function AnimateLine({ contestInfo, matchId }: { contestInfo: ContestInfo; match
     return (
         <div className={style.animateLine}>
             <div className={style.holder}>
-                {syncData.homeScore && homeScoreKeep !== syncData.homeScore ? (
-                    <div className={`${style.homeAnimate} ${style.bg}`}>
-                        <span className={style.goal}>进球！</span>
-                        <Image alt="soccer" height={16} src={Soccer} width={16} />
-                    </div>
-                ) : null}
+                <div
+                    className={`${style.homeAnimate} ${
+                        syncData.homeScore && homeScoreKeep !== syncData.homeScore
+                            ? style.active
+                            : ''
+                    } ${style.bg}`}
+                >
+                    {showHomeContent ? (
+                        <>
+                            <span className={style.goal}>进球！</span>
+                            <Image alt="soccer" height={16} src={Soccer} width={16} />
+                        </>
+                    ) : null}
+                </div>
             </div>
             <div className={style.corner}>
                 角{' '}
@@ -66,12 +86,20 @@ function AnimateLine({ contestInfo, matchId }: { contestInfo: ContestInfo; match
                 <span className={style.ratio}>{syncData.awayCorner || contestInfo.awayCorner}</span>
             </div>
             <div className={style.holder}>
-                {syncData.awayScore && awayScoreKeep !== syncData.awayScore ? (
-                    <div className={`${style.awayAnimate} ${style.bg}`}>
-                        <Image alt="soccer" height={16} src={Soccer} width={16} />
-                        <span className={style.goal}>进球！</span>
-                    </div>
-                ) : null}
+                <div
+                    className={`${style.awayAnimate} ${
+                        syncData.awayScore && awayScoreKeep !== syncData.awayScore
+                            ? style.active
+                            : ''
+                    } ${style.bg}`}
+                >
+                    {showAwayContent ? (
+                        <>
+                            <Image alt="soccer" height={16} src={Soccer} width={16} />
+                            <span className={style.goal}>进球！</span>
+                        </>
+                    ) : null}
+                </div>
             </div>
         </div>
     );

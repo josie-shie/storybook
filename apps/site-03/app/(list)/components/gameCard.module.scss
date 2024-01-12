@@ -164,6 +164,7 @@
         .holder {
             flex: 1;
             height: 20px;
+            overflow: hidden;
         }
 
         .corner {
@@ -193,7 +194,12 @@
             border-top-right-radius: 100px;
             border-bottom-right-radius: 100px;
             justify-content: flex-end;
-            animation: move-to-right 1s forwards;
+            transform: translateX(-110%);
+            transition: all 1s ease;
+
+            &.active {
+                transform: translateX(0);
+            }
 
             img {
                 display: inline;
@@ -205,7 +211,12 @@
             background: linear-gradient(90deg, #4489ff 50%, rgb(237 58 69 / 0%) 94.53%);
             border-top-left-radius: 100px;
             border-bottom-left-radius: 100px;
-            animation: move-to-left 1s forwards;
+            transform: translateX(110%);
+            transition: all 1s ease;
+
+            &.active {
+                transform: translateX(0);
+            }
 
             img {
                 display: inline;
@@ -234,25 +245,5 @@
 
     to {
         transform: rotate(360deg);
-    }
-}
-
-@keyframes move-to-right {
-    from {
-        transform: translateX(-100%);
-    }
-
-    to {
-        transform: translateX(0);
-    }
-}
-
-@keyframes move-to-left {
-    from {
-        transform: translateX(100%);
-    }
-
-    to {
-        transform: translateX(0);
     }
 }
