@@ -7,6 +7,7 @@ import type {
     OddsDetailResultProps,
     FilterProps
 } from '@/types/analyze';
+import TableSkeleton from '../tableSkeleton/tableSkeleton';
 import style from './record.module.scss';
 
 const contestTimeList = [
@@ -24,11 +25,26 @@ function formatFloatingPoint(target: number, num: number) {
     return Math.floor(target * Math.pow(10, num)) / Math.pow(10, num);
 }
 
+function EmptyTableDetail({ loading }: { loading: boolean }) {
+    return loading ? (
+        <TableSkeleton rowNumber={11} />
+    ) : (
+        <div className="tr" key="default">
+            <div className="td">-</div>
+            <div className="td">-</div>
+            <div className="td">-</div>
+            <div className="td">-</div>
+            <div className="td">-</div>
+        </div>
+    );
+}
+
 interface PropsType {
     list: BattleRecord[];
     winLoseResult: WinLoseResultProps;
     oddsDetailResult: OddsDetailResultProps;
     contestTime: GameTimeProps;
+    loading: boolean;
     setContestTime: (value: GameTimeProps) => void;
     handleFilterList: (value: FilterProps) => void;
 }
@@ -38,6 +54,7 @@ function TableDetail({
     winLoseResult,
     oddsDetailResult,
     contestTime,
+    loading,
     setContestTime,
     handleFilterList
 }: PropsType) {
@@ -195,13 +212,7 @@ function TableDetail({
                     </div>
                 ))
             ) : (
-                <div className="tr" key="default">
-                    <div className="td">-</div>
-                    <div className="td">-</div>
-                    <div className="td">-</div>
-                    <div className="td">-</div>
-                    <div className="td">-</div>
-                </div>
+                <EmptyTableDetail loading={loading} />
             )}
             {list.length > 0 && (
                 <div

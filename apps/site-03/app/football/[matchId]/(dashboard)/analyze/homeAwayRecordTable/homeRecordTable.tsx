@@ -4,6 +4,7 @@ import { useHomeRecordStore } from './homeRecordStore';
 
 function HomeRecordTable() {
     const teamInfo = useAnalyzeStore.use.teamInfo();
+    const loading = useAnalyzeStore.use.analysisDataLoading();
 
     const homeRecordData = useHomeRecordStore.use.homeRecordData();
     const list = useHomeRecordStore.use.list();
@@ -36,6 +37,7 @@ function HomeRecordTable() {
             contestType={contestType}
             gameIsHome={gameIsHome}
             list={list}
+            loading={loading}
             mode="one"
             oddsDetailResult={oddsDetailResult}
             setContestAmount={setContestAmount}

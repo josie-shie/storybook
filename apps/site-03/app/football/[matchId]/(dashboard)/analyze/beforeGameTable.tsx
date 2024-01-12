@@ -1,6 +1,7 @@
 'use client';
 import { useAnalyzeStore } from '../../analyzeStore';
 import style from './beforeGameTable.module.scss';
+import TableSkeleton from './components/tableSkeleton/tableSkeleton';
 
 const compareValueStyle = (a: number, b: number) => {
     if (a === b) {
@@ -16,6 +17,8 @@ const compareValueStyle = (a: number, b: number) => {
 
 function BeforeGameTable() {
     const companyDetailAnalyze = useAnalyzeStore.use.companyDetailAnalyze();
+    const loading = useAnalyzeStore.use.companyDetailAnalyzeLoading();
+
     return (
         <div className={style.beforeGameTable}>
             <div className="topBar">
@@ -30,42 +33,48 @@ function BeforeGameTable() {
                     </div>
                 </div>
                 <div className="tableBody">
-                    {companyDetailAnalyze.map((item, idx) => (
-                        <div className="tr" key={`technic_${idx.toString()}`}>
-                            <div className="td">{item.label}</div>
-                            <div className="td" style={{ display: 'flex' }}>
-                                <div className="tableCell">{item.initHome || '-'}</div>
-                                <div className="tableCell redText">{item.init || '-'}</div>
-                                <div className="tableCell">{item.initAway || '-'}</div>
+                    {loading ? (
+                        <TableSkeleton rowNumber={3} />
+                    ) : (
+                        companyDetailAnalyze.map((item, idx) => (
+                            <div className="tr" key={`technic_${idx.toString()}`}>
+                                <div className="tr" key={`technic_${idx.toString()}`}>
+                                    <div className="td">{item.label}</div>
+                                    <div className="td" style={{ display: 'flex' }}>
+                                        <div className="tableCell">{item.initHome || '-'}</div>
+                                        <div className="tableCell redText">{item.init || '-'}</div>
+                                        <div className="tableCell">{item.initAway || '-'}</div>
+                                    </div>
+                                    <div className="td">
+                                        <div
+                                            className={`tableCell ${compareValueStyle(
+                                                item.initHome,
+                                                item.currentHome
+                                            )}`}
+                                        >
+                                            {item.currentHome || '-'}
+                                        </div>
+                                        <div
+                                            className={`tableCell ${compareValueStyle(
+                                                item.init,
+                                                item.current
+                                            )}`}
+                                        >
+                                            {item.current || '-'}
+                                        </div>
+                                        <div
+                                            className={`tableCell ${compareValueStyle(
+                                                item.initAway,
+                                                item.currentAway
+                                            )}`}
+                                        >
+                                            {item.currentAway || '-'}
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div className="td">
-                                <div
-                                    className={`tableCell ${compareValueStyle(
-                                        item.initHome,
-                                        item.currentHome
-                                    )}`}
-                                >
-                                    {item.currentHome || '-'}
-                                </div>
-                                <div
-                                    className={`tableCell ${compareValueStyle(
-                                        item.init,
-                                        item.current
-                                    )}`}
-                                >
-                                    {item.current || '-'}
-                                </div>
-                                <div
-                                    className={`tableCell ${compareValueStyle(
-                                        item.initAway,
-                                        item.currentAway
-                                    )}`}
-                                >
-                                    {item.currentAway || '-'}
-                                </div>
-                            </div>
-                        </div>
-                    ))}
+                        ))
+                    )}
                 </div>
             </div>
         </div>
