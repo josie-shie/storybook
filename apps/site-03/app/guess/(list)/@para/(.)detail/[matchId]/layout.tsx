@@ -1,5 +1,5 @@
 'use client';
-import GuessDetail from '@/app/recommend/guess/detail/[matchId]/guessDetail';
+import GuessDetail from '@/app/guess/detail/[matchId]/guessDetail';
 
 function GuessDetailLayout() {
     return <GuessDetail backHistory />;

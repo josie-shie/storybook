@@ -21,7 +21,7 @@ function GameCard({ matchId }: { matchId: number }) {
 
     return (
         <section>
-            <Link href={`/recommend/guess/detail/${matchId}`}>
+            <Link href={`/guess/detail/${matchId}`}>
                 <div className={style.gameCard}>
                     <div className={style.left}>
                         <div className={style.gameTitle}>

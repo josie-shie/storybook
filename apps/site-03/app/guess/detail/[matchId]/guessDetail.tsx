@@ -23,7 +23,7 @@ function GuessDetail({ backHistory }: { backHistory: boolean }) {
         if (backHistory) {
             router.back();
         } else {
-            router.push('/recommend/guess');
+            router.push('/guess');
         }
     };
 
