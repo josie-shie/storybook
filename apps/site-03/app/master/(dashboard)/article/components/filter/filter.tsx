@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { Tab, Tabs } from 'ui';
 import { useEffect, useRef, useState } from 'react';
 import BottomDrawer from '@/components/drawer/bottomDrawer';
-import { useNotificationStore } from '@/app/notificationStore';
+import { useNotificationStore } from '@/store/notificationStore';
 import { useArticleStore } from '../../articleStore';
 import style from './filter.module.scss';
 

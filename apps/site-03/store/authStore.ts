@@ -174,8 +174,8 @@ const initialState = (set: (updater: (state: AuthState) => Partial<AuthState>) =
     }
 });
 
-const creatAuthStore = (init: InitState) => {
+const createAuthStore = (init: InitState) => {
     useAuthStore = initStore<AuthState>(initialState, init);
 };
 
-export { creatAuthStore, useAuthStore };
+export { createAuthStore, useAuthStore };

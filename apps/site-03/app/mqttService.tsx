@@ -4,13 +4,13 @@ import { useEffect } from 'react';
 import type { OddsHashTable } from 'lib';
 import { mqttService } from 'lib';
 import type { OriginalContestInfo } from 'data-center';
-import { useContestInfoStore } from './contestInfoStore';
-import { useUserStore } from './userStore';
+import { useLiveContestStore } from '@/store/liveContestStore';
+import { useUserStore } from '@/store/userStore';
 
 function MqttService({ children }: { children: ReactNode }) {
     useEffect(() => {
-        const updateInfo = useContestInfoStore.getState().setContestInfoContest;
-        const updateOdds = useContestInfoStore.getState().setContestOdds;
+        const updateInfo = useLiveContestStore.getState().setContestInfoContest;
+        const updateOdds = useLiveContestStore.getState().setContestOdds;
         const memberId = useUserStore.getState().userInfo.uid;
         const syncGlobalStore = (message: Partial<OriginalContestInfo>) => {
             updateInfo(message);

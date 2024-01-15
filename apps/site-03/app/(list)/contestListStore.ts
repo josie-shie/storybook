@@ -30,7 +30,7 @@ const initialState = (set: (updater: (state: ContestList) => Partial<ContestList
     }
 });
 
-const creatContestListStore = (init: InitState) => {
+const createContestListStore = (init: InitState) => {
     if (isInit) {
         const params = {
             contestList: init.contestList,
@@ -42,4 +42,4 @@ const creatContestListStore = (init: InitState) => {
     }
 };
 
-export { creatContestListStore, useContestListStore };
+export { createContestListStore, useContestListStore };

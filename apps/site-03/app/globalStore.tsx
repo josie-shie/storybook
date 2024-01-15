@@ -1,12 +1,17 @@
 'use client';
 import type { ReactNode } from 'react';
-import { creatContestInfoStore } from './contestInfoStore';
-import { createMessageStore } from './messageStore';
-import { creatNotificationStore } from './notificationStore';
-import { creatAuthStore } from './(auth)/authStore';
+import { useEffect } from 'react';
+import { getContestList } from 'data-center';
+import { createMessageStore } from '@/store/messageStore';
+import { createNotificationStore } from '@/store/notificationStore';
+import { createLiveContestStore } from '@/store/liveContestStore';
+import { createAuthStore } from '@/store/authStore';
+import { createContestListGlobalStore } from '@/store/contestListGlobalStore';
+import { createInterceptPassStore } from '@/store/interceptPassStore';
 
 function GlobalStore({ children }: { children: ReactNode }) {
-    creatContestInfoStore({ contestInfo: {} });
+    createLiveContestStore({ contestInfo: {} });
+    createInterceptPassStore({ interceptData: {} });
     createMessageStore({
         forbiddenWords: [],
         newMessageNotify: { uid: '0', sender: '', roomId: '', number: 0 },
@@ -14,14 +19,27 @@ function GlobalStore({ children }: { children: ReactNode }) {
         isNewMessageVisible: false
     });
 
-    creatNotificationStore({
+    createNotificationStore({
         message: '',
         type: 'success',
         isVisible: false
     });
-    creatAuthStore({
+
+    createAuthStore({
         loading: false
     });
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const timestamp = Math.floor(Date.now() / 1000);
+            const todayContest = await getContestList(timestamp);
+            if (todayContest.success) {
+                createContestListGlobalStore(todayContest.data);
+            }
+        };
+
+        void fetchData();
+    }, []);
 
     return <>{children}</>;
 }

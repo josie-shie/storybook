@@ -5,7 +5,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { useFormattedTime } from '@/hooks/useFormattedTime';
-import { useContestInfoStore } from '@/app/contestInfoStore';
+import { useLiveContestStore } from '@/store/liveContestStore';
+import { useInterceptPassStore } from '@/store/interceptPassStore';
 import { useContestListStore } from '../contestListStore';
 import style from './gameCard.module.scss';
 import { CompareOdds } from './compareOdds';
@@ -13,7 +14,7 @@ import Soccer from './img/soccer.png';
 import Video from './img/video.jpg';
 
 function ExtraInfo({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId: number }) {
-    const globalStore = useContestInfoStore.use.contestInfo();
+    const globalStore = useLiveContestStore.use.contestInfo();
     const syncData = Object.hasOwnProperty.call(globalStore, matchId) ? globalStore[matchId] : {};
 
     if (!syncData.extraExplain && !contestInfo.extraExplain) return null;
@@ -31,7 +32,7 @@ function ExtraInfo({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId
 }
 
 function AnimateLine({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId: number }) {
-    const globalStore = useContestInfoStore.use.contestInfo();
+    const globalStore = useLiveContestStore.use.contestInfo();
     const syncData = Object.hasOwnProperty.call(globalStore, matchId) ? globalStore[matchId] : {};
     const [homeScoreKeep, setHomeScoreKeep] = useState(syncData.homeScore || contestInfo.homeScore);
     const [awayScoreKeep, setAwayScoreKeep] = useState(syncData.awayScore || contestInfo.awayScore);
@@ -106,7 +107,7 @@ function AnimateLine({ contestInfo, matchId }: { contestInfo: ContestInfo; match
 }
 
 function OddsInfo({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId: number }) {
-    const globalStore = useContestInfoStore.use.contestInfo();
+    const globalStore = useLiveContestStore.use.contestInfo();
     const syncData = Object.hasOwnProperty.call(globalStore, matchId) ? globalStore[matchId] : {};
 
     return (
@@ -177,7 +178,7 @@ function OddsInfo({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId:
 }
 
 function TeamInfo({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId: number }) {
-    const globalStore = useContestInfoStore.use.contestInfo();
+    const globalStore = useLiveContestStore.use.contestInfo();
     const syncData = Object.hasOwnProperty.call(globalStore, matchId) ? globalStore[matchId] : {};
 
     return (
@@ -229,7 +230,7 @@ function TeamInfo({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId:
 }
 
 function TopArea({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId: number }) {
-    const globalStore = useContestInfoStore.use.contestInfo();
+    const globalStore = useLiveContestStore.use.contestInfo();
     const syncData = Object.hasOwnProperty.call(globalStore, matchId) ? globalStore[matchId] : {};
     const currentMatchTime = useFormattedTime({
         timeStamp: contestInfo.matchTime,
@@ -262,10 +263,16 @@ function TopArea({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId: 
 
 function GameCard({ matchId }: { matchId: number }) {
     const contestInfo = useContestListStore.use.contestInfo()[matchId];
+    const setInterceptData = useInterceptPassStore.use.setInterceptData();
 
     return (
         <li className={style.gameCard}>
-            <Link href={`/football/${matchId}`}>
+            <Link
+                href={`/football/${matchId}`}
+                onClick={() => {
+                    setInterceptData(contestInfo);
+                }}
+            >
                 <div>
                     <TopArea contestInfo={contestInfo} matchId={matchId} />
                     <TeamInfo contestInfo={contestInfo} matchId={matchId} />

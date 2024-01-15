@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation';
 import { payForPost, getMemberInfo } from 'data-center';
 import NoData from '@/components/baseNoData/noData';
 import UnlockButton from '@/components/unlockButton/unlockButton';
-import { useUserStore } from '@/app/userStore';
+import { useUserStore } from '@/store/userStore';
 import NormalDialog from '@/components/normalDialog/normalDialog';
 import ConfirmPayDrawer from '@/components/confirmPayDrawer/confirmPayDrawer';
 import style from './recommendationList.module.scss';

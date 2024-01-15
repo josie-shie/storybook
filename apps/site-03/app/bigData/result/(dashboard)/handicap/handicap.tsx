@@ -5,7 +5,7 @@ import { timestampToString } from 'lib';
 import dayjs from 'dayjs';
 import { getFootballStatsMatches } from 'data-center';
 import Image from 'next/image';
-import { useNotificationStore } from '@/app/notificationStore';
+import { useNotificationStore } from '@/store/notificationStore';
 import type { Statistics } from '../../analysisResultStore';
 import { useAnalyticsResultStore } from '../../analysisResultStore';
 import { useMatchFilterStore } from '../../matchFilterStore';

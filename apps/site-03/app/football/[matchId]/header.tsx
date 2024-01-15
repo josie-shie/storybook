@@ -3,10 +3,11 @@ import Image from 'next/image';
 import { GameStatus } from 'ui';
 import Button from '@mui/material/Button';
 import md5 from 'crypto-js/md5';
+import type { ContestInfo } from 'data-center';
 import { useSearchParams } from 'next/navigation';
-import { useContestInfoStore } from '@/app/contestInfoStore';
+import { useLiveContestStore } from '@/store/liveContestStore';
 import { useFormattedTime } from '@/hooks/useFormattedTime';
-import { useNotificationStore } from '@/app/notificationStore';
+import { useNotificationStore } from '@/store/notificationStore';
 import { useContestDetailStore } from './contestDetailStore';
 import style from './header.module.scss';
 import BackIcon from './img/back.png';
@@ -29,10 +30,35 @@ const statusStyleMap = {
     '-14': 'notYet'
 };
 
-function Header({ matchId, back }: { matchId: number; back: () => void }) {
+interface InterceptDataType {
+    awayChs: string;
+    awayHalfScore: number;
+    awayScore: number;
+    countryCn: string;
+    homeChs: string;
+    homeHalfScore: number;
+    homeScore: number;
+    isFamous: boolean;
+    leagueChsShort: string;
+    leagueId: number;
+    leagueLevel: number;
+    matchId: number;
+    startTime: number;
+    [key: string]: number | string | boolean;
+}
+
+function Header({
+    matchId,
+    interceptData,
+    back
+}: {
+    matchId: number;
+    interceptData?: InterceptDataType | ContestInfo;
+    back: () => void;
+}) {
     const matchDetail = useContestDetailStore.use.matchDetail();
     const layoutDisplayed = useContestDetailStore.use.layoutDisplayed();
-    const globalStore = useContestInfoStore.use.contestInfo();
+    const globalStore = useLiveContestStore.use.contestInfo();
     const setIsVisible = useNotificationStore.use.setIsVisible();
     const setShowAnimate = useContestDetailStore.use.setShowAnimate();
 
@@ -43,11 +69,11 @@ function Header({ matchId, back }: { matchId: number; back: () => void }) {
         ? globalStore[matchDetail.matchId]
         : {};
 
-    const liveState = syncData.state || matchDetail.state;
+    const liveState = syncData.state || matchDetail.state || (interceptData?.state as number);
 
     const currentMatchTime =
         useFormattedTime({
-            timeStamp: matchDetail.matchTime,
+            timeStamp: matchDetail.matchTime || (interceptData?.matchTime as number),
             formattedString: 'M/DD HH:mm'
         }) || '';
 
@@ -104,7 +130,7 @@ function Header({ matchId, back }: { matchId: number; back: () => void }) {
                 <div className={style.scoreboard}>
                     <p className={style.createTime}>{currentMatchTime}</p>
                     <p className={style.league}>
-                        {matchDetail.leagueChsShort}
+                        {matchDetail.leagueChsShort || interceptData?.leagueChsShort}
                         {matchDetail.kind === 1 && ` 第${matchDetail.roundCn}轮`}
                     </p>
                 </div>
@@ -144,13 +170,19 @@ function Header({ matchId, back }: { matchId: number; back: () => void }) {
                 />
                 <div className={style.scoreBar}>
                     <TeamLogo alt="" height={24} src={matchDetail.homeLogo} width={24} />
-                    <p className={style.score}>{syncData.homeScore || matchDetail.homeScore}</p>
+                    <p className={style.score}>
+                        {syncData.homeScore || matchDetail.homeScore || interceptData?.homeScore}
+                    </p>
                     <GameStatus
-                        className={`gameTime ${statusStyleMap[matchDetail.state]}`}
-                        startTime={matchDetail.startTime}
+                        className={`gameTime ${
+                            statusStyleMap[matchDetail.state] || (interceptData?.state as number)
+                        }`}
+                        startTime={matchDetail.startTime || interceptData?.startTime || 0}
                         status={liveState}
                     />
-                    <p className={style.score}>{syncData.awayScore || matchDetail.awayScore}</p>
+                    <p className={style.score}>
+                        {syncData.awayScore || matchDetail.awayScore || interceptData?.awayScore}
+                    </p>
                     <TeamLogo alt="" height={24} src={matchDetail.awayLogo} width={24} />
                 </div>
                 <div className={style.share}>

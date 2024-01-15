@@ -8,7 +8,7 @@ import { getFootballStats, getMemberInfo } from 'data-center';
 import Image from 'next/image';
 import Link from 'next/link';
 import HeaderTitleFilter from '@/components/header/headerTitleFilter';
-import { useUserStore } from '@/app/userStore';
+import { useUserStore } from '@/store/userStore';
 import { useHandicapAnalysisFormStore } from '../formStore';
 import ErrorDialog from '../analysis/components/dialog/dialog';
 import style from './dashboard.module.scss';

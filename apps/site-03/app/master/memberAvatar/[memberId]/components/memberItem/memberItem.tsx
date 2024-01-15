@@ -15,7 +15,7 @@ import Avatar from '@/components/avatar/avatar';
 import Tag from '@/components/tag/tag';
 import TagSplit from '@/components/tagSplit/tagSplit';
 import Fire from '@/app/img/fire.png';
-import { useUserStore } from '@/app/userStore';
+import { useUserStore } from '@/store/userStore';
 import NoData from '@/components/baseNoData/noData';
 import style from './memberItem.module.scss';
 import SkeletonLayout from './components/skeleton';

@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { getRechargeOptionList } from 'data-center';
 import Header from '@/components/header/headerTitleDetail';
-import { useNotificationStore } from '@/app/notificationStore';
+import { useNotificationStore } from '@/store/notificationStore';
 import { useRechargeStore } from './rechargeStore';
 import style from './recharge.module.scss';
 import Usdt from './img/usdt.png';

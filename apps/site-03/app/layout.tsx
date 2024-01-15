@@ -11,7 +11,6 @@ import GlobalStore from './globalStore';
 import MqttService from './mqttService';
 import WebsocketService from './websocketService';
 import GoalAlert from './goalAlert';
-import ContestStoreHandler from './contestStoreHandler';
 import NewMessageAlert from './newMessageAlert';
 
 export const metadata: Metadata = {
@@ -67,7 +66,6 @@ async function RootLayout({ children }: { children: ReactNode }) {
                 <GlobalStore>
                     <MqttService>
                         <WebsocketService>
-                            <ContestStoreHandler />
                             <GoalAlert />
                             <NewMessageAlert />
                             <Auth userInfo={userInfo} />

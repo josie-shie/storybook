@@ -9,7 +9,7 @@ import {
     type IndividualGuessRecordDetail
 } from 'data-center';
 import Loading from '@/components/loading/loading';
-import { useUserStore } from '@/app/userStore';
+import { useUserStore } from '@/store/userStore';
 import { useMyGuessStore } from './myGuessStore';
 import style from './myGuess.module.scss';
 

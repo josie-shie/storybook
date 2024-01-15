@@ -4,10 +4,10 @@ import { useEffect, useState, useRef } from 'react';
 import type { ContestInfo } from 'data-center';
 import { handleGameTime, soundDefault, soundSource, mqttService } from 'lib';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useLiveContestStore } from '@/store/liveContestStore';
+import { useContestListGlobalStore } from '@/store/contestListGlobalStore';
 import style from './goalAlert.module.scss';
 import Football from './img/football.png';
-import { useContestListGlobalStore } from './contestListGlobalStore';
-import { useContestInfoStore } from './contestInfoStore';
 
 function GoalAlert() {
     const [alertList, setAlertList] = useState<ContestInfo[]>([]);
@@ -29,9 +29,9 @@ function GoalAlert() {
             };
             if ((!data.awayScore && !data.homeScore) || !soundData.openTip) return;
             const globalStore = useContestListGlobalStore.getState().contestInfo;
-            const currentInfoStore = useContestInfoStore.getState().contestInfo;
+            const liveContestStore = useLiveContestStore.getState().contestInfo;
             const contestInfo = globalStore[data.matchId];
-            const currentContestInfo = currentInfoStore[data.matchId];
+            const currentContestInfo = liveContestStore[data.matchId];
             if (soundData.openSound) {
                 if (data.homeScore) void soundSourceMap[soundData.homeSound].play();
                 if (data.awayScore) void soundSourceMap[soundData.awaySound].play();

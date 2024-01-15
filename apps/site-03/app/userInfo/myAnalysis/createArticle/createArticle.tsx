@@ -3,7 +3,7 @@ import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import { type GetContestListResponse } from 'data-center';
 import { useState, useCallback } from 'react';
 import Image from 'next/image';
-import { creatContestListStore } from '@/app/(list)/contestListStore';
+import { createContestListStore } from '@/app/(list)/contestListStore';
 import Stepper from '../components/stepper/stepper';
 import BaseDatePicker from '../components/baseDatePicker/baseDatePicker';
 import { creatArticleFilterStore, useArticleFilterStore } from './createArticleStore';
@@ -42,7 +42,7 @@ function CreateArticle({ todayContest }: { todayContest: GetContestListResponse 
         setContent(event.target.value);
     };
 
-    creatContestListStore(todayContest);
+    createContestListStore(todayContest);
     creatArticleFilterStore({
         filterList: [
             {

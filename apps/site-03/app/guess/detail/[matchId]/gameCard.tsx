@@ -4,7 +4,7 @@ import Link from 'next/link';
 import Avatar from '@/components/avatar/avatar';
 import Tag from '@/components/tag/tag';
 import TagSplit from '@/components/tagSplit/tagSplit';
-import { useUserStore } from '@/app/userStore';
+import { useUserStore } from '@/store/userStore';
 import Fire from './img/hot.png';
 import Win from './img/win.png';
 import Lose from './img/lose.png';

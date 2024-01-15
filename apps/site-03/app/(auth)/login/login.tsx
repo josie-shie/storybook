@@ -15,9 +15,9 @@ import {
     PasswordInput,
     TokenInput
 } from '@/app/(auth)/components/authComponent/authComponent';
-import { useNotificationStore } from '@/app/notificationStore';
-import { useUserStore } from '@/app/userStore';
-import { useAuthStore } from '../authStore';
+import { useNotificationStore } from '@/store/notificationStore';
+import { useUserStore } from '@/store/userStore';
+import { useAuthStore } from '@/store/authStore';
 import style from './login.module.scss';
 
 const schema = yup.object().shape({

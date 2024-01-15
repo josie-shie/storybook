@@ -5,7 +5,7 @@ import type { Ref } from 'react';
 import { forwardRef, useEffect, useState } from 'react';
 import { getGuessRank } from 'data-center';
 import Avatar from '@/components/avatar/avatar';
-import { useUserStore } from '@/app/userStore';
+import { useUserStore } from '@/store/userStore';
 import HotStreakListItem from '../components/hotStreak/hotStreakListItem';
 import UserSwitch from '../components/userSwitch/userSwitch';
 import Rule from '../components/rule/rule';

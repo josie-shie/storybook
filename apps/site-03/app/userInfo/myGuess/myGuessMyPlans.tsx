@@ -5,7 +5,7 @@ import { getMemberIndividualGuessMatches, type GuessType } from 'data-center';
 import { CircularProgress } from '@mui/material';
 import NoData from '@/components/baseNoData/noData';
 import Loading from '@/components/loading/loading';
-import { useUserStore } from '@/app/userStore';
+import { useUserStore } from '@/store/userStore';
 import BettingPlan from './components/bettingPlan/bettingPlan';
 import style from './myGuess.module.scss';
 import { useMyGuessStore } from './myGuessStore';

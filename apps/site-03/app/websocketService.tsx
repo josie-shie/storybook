@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import Cookies from 'js-cookie';
 import { getForbiddenWords } from 'data-center';
 import { initWebSocket, messageService } from 'lib';
-import { useMessageStore } from './messageStore';
+import { useMessageStore } from '@/store/messageStore';
 
 function WebsocketService({ children }: { children: ReactNode }) {
     const setForbiddenWords = useMessageStore.use.setForbiddenWords();

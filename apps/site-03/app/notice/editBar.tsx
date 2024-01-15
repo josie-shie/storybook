@@ -6,8 +6,8 @@ import { deleteMailMember } from 'data-center';
 import { usePathname } from 'next/navigation';
 import type { MessageResponse } from 'lib';
 import { messageService, getMessageResponse, cancelMessage } from 'lib';
-import { useNotificationStore } from '@/app/notificationStore';
-import { useMessageStore } from '@/app/messageStore';
+import { useNotificationStore } from '@/store/notificationStore';
+import { useMessageStore } from '@/store/messageStore';
 import style from './editBar.module.scss';
 import { useNoticeStore } from './noticeStore';
 
