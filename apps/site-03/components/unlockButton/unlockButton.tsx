@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import type { MouseEvent } from 'react';
-import { useUserStore } from '@/app/userStore';
+import { useUserStore } from '@/store/userStore';
 import star from './img/starIcon.png';
 import style from './unlockButton.module.scss';
 

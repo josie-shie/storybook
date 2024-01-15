@@ -7,7 +7,7 @@ import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import { getMailMember } from 'data-center';
 import { timestampToString } from 'lib';
 import type { GetMailMemberResponse } from 'data-center';
-import { useMessageStore } from '@/app/messageStore';
+import { useMessageStore } from '@/store/messageStore';
 import { useNoticeStore } from '../noticeStore';
 import style from './mailCard.module.scss';
 

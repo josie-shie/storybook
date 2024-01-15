@@ -6,7 +6,7 @@ import Image from 'next/image';
 import Footer from '@/components/footer/footer';
 import Header from '@/components/header/headerLogo';
 import Loading from '@/components/loading/loading';
-import { useUserStore } from '@/app/userStore';
+import { useUserStore } from '@/store/userStore';
 import AnimationData from './animationData';
 import content from './img/content.png';
 import style from './layout.module.scss';

@@ -1,6 +1,6 @@
 'use client';
 import NotificationComponent from '@/components/notification/notification';
-import { useNotificationStore } from './notificationStore';
+import { useNotificationStore } from '@/store/notificationStore';
 
 function Notification() {
     const message = useNotificationStore.use.message();

@@ -2,10 +2,10 @@
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import type { GetSingleMatchResponse } from 'data-center';
+import type { GetSingleMatchResponse, ContestInfo } from 'data-center';
 import { GameStatus } from 'ui';
 import { motion } from 'framer-motion';
-import { useContestInfoStore } from '@/app/contestInfoStore';
+import { useLiveContestStore } from '@/store/liveContestStore';
 import { createContestDetailStore, useContestDetailStore } from './contestDetailStore';
 import TeamLogo from './components/teamLogo';
 import Header from './header';
@@ -29,30 +29,60 @@ const statusStyleMap = {
     '-14': 'notYet'
 };
 
-function GameDetail({ matchId }: { matchId: number }) {
+interface InterceptDataType {
+    awayChs: string;
+    awayHalfScore: number;
+    awayScore: number;
+    countryCn: string;
+    homeChs: string;
+    homeHalfScore: number;
+    homeScore: number;
+    isFamous: boolean;
+    leagueChsShort: string;
+    leagueId: number;
+    leagueLevel: number;
+    matchId: number;
+    startTime: number;
+    [key: string]: number | string | boolean;
+}
+
+function GameDetail({
+    matchId,
+    interceptData
+}: {
+    matchId: number;
+    interceptData?: InterceptDataType | ContestInfo;
+}) {
     const matchDetail = useContestDetailStore.use.matchDetail();
-    const globalStore = useContestInfoStore.use.contestInfo();
+    const globalStore = useLiveContestStore.use.contestInfo();
     const syncData = Object.hasOwnProperty.call(globalStore, matchId) ? globalStore[matchId] : {};
 
-    const liveState = syncData.state || matchDetail.state;
+    const liveState = syncData.state || matchDetail.state || (interceptData?.state as number);
 
     return (
         <div className={style.gameStatus}>
             {liveState < 1 && liveState !== -1 && <p className={style.vsText}>VS</p>}
             <div className={style.gameScore}>
                 <GameStatus
-                    className={`gameTime ${statusStyleMap[matchDetail.state]}`}
-                    startTime={matchDetail.startTime}
+                    className={`gameTime ${
+                        statusStyleMap[matchDetail.state || (interceptData?.state as number)]
+                    }`}
+                    startTime={matchDetail.startTime || interceptData?.startTime || 0}
                     status={liveState}
                 />
 
-                <div className={style.homeScore}>{syncData.homeScore || matchDetail.homeScore}</div>
-                <div className={style.awayScore}>{syncData.awayScore || matchDetail.awayScore}</div>
+                <div className={style.homeScore}>
+                    {syncData.homeScore || matchDetail.homeScore || interceptData?.homeScore}
+                </div>
+                <div className={style.awayScore}>
+                    {syncData.awayScore || matchDetail.awayScore || interceptData?.awayScore}
+                </div>
             </div>
 
             <div className={style.textHolder}>
                 <p className={style.text}>
-                    半場 {matchDetail.homeHalfScore}-{matchDetail.awayHalfScore}
+                    半場 {matchDetail.homeHalfScore || interceptData?.homeHalfScore}-
+                    {matchDetail.awayHalfScore || interceptData?.awayHalfScore}
                 </p>
             </div>
         </div>
@@ -93,7 +123,7 @@ function GoalAnimation({
     contestDetail: GetSingleMatchResponse;
     matchId: number;
 }) {
-    const globalStore = useContestInfoStore.use.contestInfo();
+    const globalStore = useLiveContestStore.use.contestInfo();
     const syncData = Object.hasOwnProperty.call(globalStore, matchId) ? globalStore[matchId] : {};
     const [homeScoreKeep, setHomeScoreKeep] = useState(
         syncData.homeScore || contestDetail.homeScore
@@ -162,11 +192,13 @@ function GoalAnimation({
 function LiveBox({
     contestDetail,
     backHistory,
-    matchId
+    matchId,
+    interceptData
 }: {
     contestDetail: GetSingleMatchResponse;
     backHistory?: boolean;
     matchId: number;
+    interceptData?: InterceptDataType | ContestInfo;
 }) {
     createContestDetailStore({ matchDetail: contestDetail });
     const matchDetail = useContestDetailStore.use.matchDetail();
@@ -182,42 +214,42 @@ function LiveBox({
 
     return (
         <div className={style.liveBox} style={{ backgroundImage: `url(${bgImage.src})` }}>
-            {matchDetail.matchId ? (
-                <>
-                    <Header back={back} matchId={matchId} />
-                    <div className={style.scoreboard}>
-                        <div className={style.gameInfo}>
-                            <div className={style.team}>
-                                <div className={style.circleBg}>
-                                    <TeamLogo
-                                        alt={matchDetail.homeChs}
-                                        height={46}
-                                        src={matchDetail.homeLogo}
-                                        width={46}
-                                    />
-                                </div>
-                                <p className={style.teamName}>{matchDetail.homeChs}</p>
-                            </div>
-                            <div className={style.score}>
-                                <GameDetail matchId={matchId} />
-                            </div>
-                            <div className={style.team}>
-                                <div className={style.circleBg}>
-                                    <TeamLogo
-                                        alt={matchDetail.awayChs}
-                                        height={46}
-                                        src={matchDetail.awayLogo}
-                                        width={46}
-                                    />
-                                </div>
-                                <p className={style.teamName}>{matchDetail.awayChs}</p>
-                            </div>
+            <Header back={back} interceptData={interceptData} matchId={matchId} />
+            <div className={style.scoreboard}>
+                <div className={style.gameInfo}>
+                    <div className={style.team}>
+                        <div className={style.circleBg}>
+                            <TeamLogo
+                                alt={matchDetail.homeChs}
+                                height={46}
+                                src={matchDetail.homeLogo}
+                                width={46}
+                            />
                         </div>
+                        <p className={style.teamName}>
+                            {matchDetail.homeChs || interceptData?.homeChs}
+                        </p>
                     </div>
-                    <Animate />
-                    <GoalAnimation contestDetail={contestDetail} matchId={matchId} />
-                </>
-            ) : null}
+                    <div className={style.score}>
+                        <GameDetail interceptData={interceptData} matchId={matchId} />
+                    </div>
+                    <div className={style.team}>
+                        <div className={style.circleBg}>
+                            <TeamLogo
+                                alt={matchDetail.awayChs}
+                                height={46}
+                                src={matchDetail.awayLogo}
+                                width={46}
+                            />
+                        </div>
+                        <p className={style.teamName}>
+                            {matchDetail.awayChs || interceptData?.awayChs}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <Animate />
+            <GoalAnimation contestDetail={contestDetail} matchId={matchId} />
         </div>
     );
 }

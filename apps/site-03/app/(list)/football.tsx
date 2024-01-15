@@ -5,14 +5,13 @@ import { useEffect, useState, forwardRef } from 'react';
 import { InfiniteScroll } from 'ui';
 import CircularProgress from '@mui/material/CircularProgress';
 import Image from 'next/image';
-import { mqttService } from 'lib';
-import { useContestInfoStore } from '@/app/contestInfoStore';
+import { useLiveContestStore } from '@/store/liveContestStore';
 import type { FilterList } from '@/components/contestFilter/contestFilter';
 import NoData from '@/components/baseNoData/noData';
 import BaseBanner from './components/baseBanner';
 import GameCard from './components/gameCard';
 import style from './football.module.scss';
-import { creatContestListStore, useContestListStore } from './contestListStore';
+import { createContestListStore, useContestListStore } from './contestListStore';
 import BaseDatePicker from './components/baseDatePicker/baseDatePicker';
 import SettingIcon from './img/setting.png';
 import Setting from './components/setting';
@@ -83,7 +82,7 @@ function ContestList({
     const [rows, setRows] = useState({ full: 20, notYet: 0, finish: 0 });
     const contestList = useContestListStore.use.contestList();
     const contestInfo = useContestListStore.use.contestInfo();
-    const globalStore = useContestInfoStore.use.contestInfo();
+    const globalStore = useLiveContestStore.use.contestInfo();
     const setContestList = useContestListStore.use.setContestList();
     const setContestInfo = useContestListStore.use.setContestInfo();
     const [isMounted, setIsMounted] = useState(false);
@@ -107,7 +106,7 @@ function ContestList({
 
     useEffect(() => {
         const dateString = scheduleDate || resultsDate || Date.now();
-        const fetchContestdata = async (timestamp: number) => {
+        const fetchContestData = async (timestamp: number) => {
             try {
                 const todayContest = await getContestList(timestamp);
                 if (!todayContest.success) {
@@ -123,7 +122,7 @@ function ContestList({
                 return new Error();
             }
         };
-        void fetchContestdata(Math.floor(Number(dateString) / 1000));
+        void fetchContestData(Math.floor(Number(dateString) / 1000));
     }, [resultsDate, scheduleDate, setContestList, setContestInfo]);
 
     const statusTable: Record<string, (state: number) => boolean> = {
@@ -190,9 +189,6 @@ function ContestList({
             }));
         }
     };
-    useEffect(() => {
-        mqttService.mockContest(displayList);
-    }, []);
 
     return (
         <>
@@ -253,7 +249,7 @@ const Football = forwardRef(function Football(
     },
     ref: Ref<HTMLDivElement>
 ) {
-    creatContestListStore(todayContest);
+    createContestListStore(todayContest);
     const [showSetting, setShowSetting] = useState(false);
 
     const switchSetting = () => {

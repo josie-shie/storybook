@@ -4,7 +4,7 @@ import { type ReactNode } from 'react';
 import { Tab, Tabs } from 'ui';
 import { usePathname } from 'next/navigation';
 import { messageService } from 'lib';
-import { useMessageStore } from '@/app/messageStore';
+import { useMessageStore } from '@/store/messageStore';
 import Header from './header';
 import style from './layout.module.scss';
 import { createNoticeStore, useNoticeStore } from './noticeStore';

@@ -7,17 +7,15 @@ type ContestTable = Record<string, Partial<ContestInfo>>;
 interface InitState {
     contestInfo: ContestTable;
 }
-interface ContestInfoContest extends InitState {
+interface LiveContest extends InitState {
     setContestInfoContest: (info: Partial<OriginalContestInfo>) => void;
     setContestOdds: (odds: OddsHashTable) => void;
 }
 
 let isInit = true;
-let useContestInfoStore: StoreWithSelectors<ContestInfoContest>;
+let useLiveContestStore: StoreWithSelectors<LiveContest>;
 
-const initialState = (
-    set: (updater: (state: ContestInfoContest) => Partial<ContestInfoContest>) => void
-) => ({
+const initialState = (set: (updater: (state: LiveContest) => Partial<LiveContest>) => void) => ({
     contestInfo: {},
     setContestInfoContest: (info: Partial<OriginalContestInfo>) => {
         const id = info.matchId?.toString();
@@ -116,11 +114,11 @@ const initialState = (
     }
 });
 
-const creatContestInfoStore = (init: InitState) => {
+const createLiveContestStore = (init: InitState) => {
     if (isInit) {
-        useContestInfoStore = initStore<ContestInfoContest>(initialState, init);
+        useLiveContestStore = initStore<LiveContest>(initialState, init);
         isInit = false;
     }
 };
 
-export { creatContestInfoStore, useContestInfoStore };
+export { createLiveContestStore, useLiveContestStore };

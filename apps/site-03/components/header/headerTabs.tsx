@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useUserStore } from '@/app/userStore';
+import { useUserStore } from '@/store/userStore';
 import Switch from './components/switch/switch';
 import dotBackground from './img/dotBackground.png';
 import style from './header.module.scss';

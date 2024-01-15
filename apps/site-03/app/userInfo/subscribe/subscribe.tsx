@@ -10,8 +10,8 @@ import {
     rechargePlatformCurrency
 } from 'data-center';
 import { timestampToString } from 'lib';
-import { useUserStore } from '@/app/userStore';
-import { useNotificationStore } from '@/app/notificationStore';
+import { useUserStore } from '@/store/userStore';
+import { useNotificationStore } from '@/store/notificationStore';
 import Notification from '@/components/notification/notification';
 import Header from '@/components/header/headerTransparent';
 import style from './subscribe.module.scss';

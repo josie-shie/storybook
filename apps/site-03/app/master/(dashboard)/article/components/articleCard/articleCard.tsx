@@ -13,7 +13,7 @@ import Tag from '@/components/tag/tag';
 import TagSplit from '@/components/tagSplit/tagSplit';
 import Avatar from '@/components/avatar/avatar';
 import NormalDialog from '@/components/normalDialog/normalDialog';
-import { useUserStore } from '@/app/userStore';
+import { useUserStore } from '@/store/userStore';
 import ConfirmPayDrawer from '@/components/confirmPayDrawer/confirmPayDrawer';
 import Win from '../../img/win.png';
 import style from './articleCard.module.scss';

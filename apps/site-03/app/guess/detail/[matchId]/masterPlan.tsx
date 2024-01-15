@@ -5,8 +5,8 @@ import { getProDistrib, getProGuess, payForProDistrib, payForProGuess } from 'da
 import { useParams, useRouter } from 'next/navigation';
 import CircularProgress from '@mui/material/CircularProgress';
 import PaidDialog from '@/components/paidDialog/paidDialog';
-import { useUserStore } from '@/app/userStore';
-import { useAuthStore } from '@/app/(auth)/authStore';
+import { useUserStore } from '@/store/userStore';
+import { useAuthStore } from '@/store/authStore';
 import BaseNoData from '@/components/baseNoData/noData';
 import Rule from './components/rule/rule';
 import GameCard from './gameCard';

@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Badge from '@mui/material/Badge';
-import { useUserStore } from '@/app/userStore';
+import { useUserStore } from '@/store/userStore';
 // import { useMessageStore } from '@/app/messageStore';
 import NoticeIcon from '../../img/notice.svg';
 import style from './notice.module.scss';

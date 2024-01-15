@@ -29,11 +29,11 @@ const initialState = (set: (data: Partial<NotificationState>) => void) => ({
     }
 });
 
-const creatNotificationStore = (init: InitState) => {
+const createNotificationStore = (init: InitState) => {
     if (isInit) {
         useNotificationStore = initStore<NotificationState>(initialState, init);
         isInit = false;
     }
 };
 
-export { creatNotificationStore, useNotificationStore };
+export { createNotificationStore, useNotificationStore };

@@ -10,7 +10,7 @@ import type { PredictArticleType } from '@/types/predict';
 import UnlockButton from '@/components/unlockButton/unlockButton';
 import NoData from '@/components/baseNoData/noData';
 import NormalDialog from '@/components/normalDialog/normalDialog';
-import { useUserStore } from '@/app/userStore';
+import { useUserStore } from '@/store/userStore';
 import ConfirmPayDrawer from '@/components/confirmPayDrawer/confirmPayDrawer';
 import style from './analysisItem.module.scss';
 import IconWin from './img/win.png';

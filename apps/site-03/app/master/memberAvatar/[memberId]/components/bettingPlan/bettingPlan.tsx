@@ -14,7 +14,7 @@ import NoData from '@/components/baseNoData/noData';
 import UnlockButton from '@/components/unlockButton/unlockButton';
 import NormalDialog from '@/components/normalDialog/normalDialog';
 import ConfirmPayDrawer from '@/components/confirmPayDrawer/confirmPayDrawer';
-import { useUserStore } from '@/app/userStore';
+import { useUserStore } from '@/store/userStore';
 import IconWin from './img/win.png';
 import IconLose from './img/lose.png';
 import IconDraw from './img/draw.png';

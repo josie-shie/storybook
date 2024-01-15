@@ -16,7 +16,7 @@ import Tag from '@/components/tag/tag';
 import TagSplit from '@/components/tagSplit/tagSplit';
 import Fire from '@/app/img/fire.png';
 import NoData from '@/components/baseNoData/noData';
-import { useUserStore } from '@/app/userStore';
+import { useUserStore } from '@/store/userStore';
 import style from './masterItem.module.scss';
 import SkeletonLayout from './components/skeleton';
 

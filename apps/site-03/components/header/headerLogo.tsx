@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { useUserStore } from '@/app/userStore';
+import { useUserStore } from '@/store/userStore';
 import dotBackground from './img/dotBackground.png';
 import style from './header.module.scss';
 import LogoIconImg from './img/logoIcon.svg';

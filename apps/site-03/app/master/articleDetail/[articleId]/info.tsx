@@ -8,7 +8,7 @@ import Avatar from '@/components/avatar/avatar';
 import Tag from '@/components/tag/tag';
 import TagSplit from '@/components/tagSplit/tagSplit';
 import Fire from '@/app/img/fire.png';
-import { useUserStore } from '../../../userStore';
+import { useUserStore } from '@/store/userStore';
 import style from './info.module.scss';
 
 interface InfoProps {

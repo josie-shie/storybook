@@ -4,8 +4,9 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { FormControl } from '@mui/material';
 import type { ForgetPasswordRequest } from 'data-center';
 import { forgetPasswordReset, sendVerificationSms } from 'data-center';
-import { useNotificationStore } from '@/app/notificationStore';
-import { useUserStore } from '@/app/userStore';
+import { useNotificationStore } from '@/store/notificationStore';
+import { useUserStore } from '@/store/userStore';
+import { useAuthStore } from '@/store/authStore';
 import {
     CountryCodeInput,
     PasswordInput,
@@ -14,7 +15,6 @@ import {
     VertifyCode,
     TokenInput
 } from '../components/authComponent/authComponent';
-import { useAuthStore } from '../authStore';
 import style from './forgetPassword.module.scss';
 
 const schema = yup.object().shape({

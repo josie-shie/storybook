@@ -3,7 +3,7 @@
 import { getGuessRank } from 'data-center';
 import type { Ref } from 'react';
 import { forwardRef, useEffect, useState } from 'react';
-import { useUserStore } from '@/app/userStore';
+import { useUserStore } from '@/store/userStore';
 import PeriodListItem from '../components/period/periodListItem';
 import UserSwitch from '../components/userSwitch/userSwitch';
 import Rule from '../components/rule/rule';
