@@ -3,7 +3,7 @@ import { getRandomInt } from 'lib';
 import { useEffect, useState, memo } from 'react';
 import Link from 'next/link';
 import Skeleton from '@mui/material/Skeleton';
-import { useUserStore } from '@/app/userStore';
+import { useUserStore } from '@/store/userStore';
 import style from './baseBanner.module.scss';
 import GuessBannerImage from './img/guessBanner.png';
 import RegisterBannerImage from './img/registerBanner.png';
@@ -12,7 +12,7 @@ import VipBannerImage from './img/vipBanner.png';
 const defaultConfig = {
     label: 'guessBanner',
     image: GuessBannerImage,
-    link: '/recommend/guess'
+    link: '/guess'
 };
 
 interface StaticImageData {
@@ -30,7 +30,7 @@ function getRandomImageConfig(isLogin: boolean) {
         1: {
             label: 'guessBanner',
             image: GuessBannerImage,
-            link: '/recommend/guess'
+            link: '/guess'
         },
         2: {
             label: 'vipBanner',

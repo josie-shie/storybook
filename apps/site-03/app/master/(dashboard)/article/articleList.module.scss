@@ -1,0 +1,33 @@
+.button {
+    padding-left: 12px;
+}
+
+.article {
+    padding: 0 12px;
+    background: #fff;
+}
+
+.loadMore {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.recommendPredict {
+    height: calc(100dvh - 164px);
+    overflow: auto;
+
+    .banner {
+        width: 100%;
+        display: block;
+        margin: auto;
+        height: 100px;
+        padding: 0 12px;
+    }
+
+    .toolbar {
+        display: inline-block;
+        margin-top: 12px;
+        padding: 0 12px;
+    }
+}

@@ -6,15 +6,15 @@ import Cookies from 'js-cookie';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import Register from '@/app/(auth)/register/register';
 import Login from '@/app/(auth)/login/login';
-import { useUserStore } from '@/app/userStore';
+import { useUserStore } from '@/store/userStore';
 import ForgetPassword from '@/app/(auth)/forgetPassword/forgetPassword';
 import BottomDrawer from '@/components/drawer/bottomDrawer';
 import ChangePassword from '@/app/(auth)/changePassword/changePassword';
-import { useNotificationStore } from '@/app/notificationStore';
+import { useNotificationStore } from '@/store/notificationStore';
+import { useAuthStore } from '@/store/authStore';
 import headerBg from './components/authComponent/img/headerBg.jpeg';
 import closeIcon from './components/authComponent/img/closeIcon.png';
 import style from './authDrawer.module.scss';
-import { useAuthStore } from './authStore';
 import backIcon from './components/authComponent/img/backIcon.png';
 import titleIcon from './img/title.png';
 

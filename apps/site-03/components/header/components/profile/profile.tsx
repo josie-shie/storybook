@@ -1,8 +1,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { formatNumberWithCommas } from 'lib';
-import { useUserStore } from '@/app/userStore';
-import { useAuthStore } from '@/app/(auth)/authStore';
+import { useUserStore } from '@/store/userStore';
+import { useAuthStore } from '@/store/authStore';
 import profileIcon from '../../img/profileIcon.png';
 import profileVipIcon from '../../img/profileVipIcon.png';
 import style from './profile.module.scss';

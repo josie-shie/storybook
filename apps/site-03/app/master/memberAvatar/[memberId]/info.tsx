@@ -10,7 +10,7 @@ import { useRouter } from 'next/navigation';
 import Avatar from '@/components/avatar/avatar';
 import Tag from '@/components/tag/tag';
 import TagSplit from '@/components/tagSplit/tagSplit';
-import { useUserStore } from '@/app/userStore';
+import { useUserStore } from '@/store/userStore';
 import Fire from '@/app/img/fire.png';
 import style from './info.module.scss';
 import SkeletonLayout from './components/skeleton/skeleton';

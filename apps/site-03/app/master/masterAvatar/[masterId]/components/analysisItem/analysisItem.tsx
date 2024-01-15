@@ -10,7 +10,7 @@ import type { PredictArticleType } from '@/types/predict';
 import UnlockButton from '@/components/unlockButton/unlockButton';
 import NoData from '@/components/baseNoData/noData';
 import NormalDialog from '@/components/normalDialog/normalDialog';
-import { useUserStore } from '@/app/userStore';
+import { useUserStore } from '@/store/userStore';
 import ConfirmPayDrawer from '@/components/confirmPayDrawer/confirmPayDrawer';
 import style from './analysisItem.module.scss';
 import IconWin from './img/win.png';
@@ -169,7 +169,13 @@ function AnalysisItem({
                 <ul className={style.article}>
                     {predictArticleList.map(item => {
                         return (
-                            <div className={style.analysisItem} key={item.id}>
+                            <div
+                                className={style.analysisItem}
+                                key={item.id}
+                                onClick={() => {
+                                    goArticleDetail(item.id);
+                                }}
+                            >
                                 <div className={style.top}>
                                     <div className={style.left}>
                                         <div className={style.decorate} />
@@ -188,12 +194,7 @@ function AnalysisItem({
                                         )}
                                     </div>
                                 </div>
-                                <div
-                                    className={style.mid}
-                                    onClick={() => {
-                                        goArticleDetail(item.id);
-                                    }}
-                                >
+                                <div className={style.mid}>
                                     <div className={style.combination}>
                                         <div className={style.detail}>
                                             {item.leagueName}

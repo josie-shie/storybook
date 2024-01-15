@@ -6,10 +6,10 @@ import { Badge } from '@mui/material';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { NotifyMessage } from 'lib';
 import Link from 'next/link';
+import { useMessageStore } from '@/store/messageStore';
+import { useUserStore } from '@/store/userStore';
 import style from './newMessageAlert.module.scss';
 import MessageInfo from './img/messageInfo.png';
-import { useMessageStore } from './messageStore';
-import { useUserStore } from './userStore';
 
 function NewMessageAlert() {
     const timerRef = useRef<NodeJS.Timeout | null>(null);

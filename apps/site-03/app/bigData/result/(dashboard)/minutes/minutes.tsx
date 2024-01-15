@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import type { GoalsIn15MinsType } from 'data-center';
 import { getFootballStatsMatches } from 'data-center';
-import { useNotificationStore } from '@/app/notificationStore';
+import { useNotificationStore } from '@/store/notificationStore';
 import FifteenMinutesChart from '../../components/fifteenMinutesChart/fifteenMinutesChart';
 import { useAnalyticsResultStore } from '../../analysisResultStore';
 import { useMatchFilterStore } from '../../matchFilterStore';

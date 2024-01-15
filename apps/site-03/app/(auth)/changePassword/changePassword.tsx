@@ -5,14 +5,14 @@ import { FormControl } from '@mui/material';
 import type { UpdatePasswordRequest } from 'data-center';
 import { getVerificationCaptcha, updatePassword } from 'data-center';
 import { useEffect } from 'react';
-import { useNotificationStore } from '@/app/notificationStore';
+import { useNotificationStore } from '@/store/notificationStore';
+import { useAuthStore } from '@/store/authStore';
 import {
     PasswordInput,
     SubmitButton,
     VertifyCodeByImage,
     TokenInput
 } from '../components/authComponent/authComponent';
-import { useAuthStore } from '../authStore';
 import style from './changePassword.module.scss';
 
 const schema = yup.object().shape({

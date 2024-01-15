@@ -108,9 +108,10 @@
         }
 
         .score {
+            width: 72px;
+            line-height: 24px;
             color: $score;
             letter-spacing: 2px;
-            width: 72px;
             font-size: 16px;
             font-weight: 700;
             text-align: center;
@@ -118,7 +119,6 @@
 
             .noYet {
                 color: #8d8d8d;
-                font-family: Vazirmatn, sans-serif;
             }
         }
     }

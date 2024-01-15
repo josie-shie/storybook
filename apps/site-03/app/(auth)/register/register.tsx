@@ -15,9 +15,9 @@ import {
     CountryCodeInput,
     TokenInput
 } from '@/app/(auth)/components/authComponent/authComponent';
-import { useUserStore } from '@/app/userStore';
-import { useNotificationStore } from '@/app/notificationStore';
-import { useAuthStore } from '../authStore';
+import { useUserStore } from '@/store/userStore';
+import { useNotificationStore } from '@/store/notificationStore';
+import { useAuthStore } from '@/store/authStore';
 import style from './register.module.scss';
 
 const schema = yup.object().shape({

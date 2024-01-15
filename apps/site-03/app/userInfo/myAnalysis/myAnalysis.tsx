@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { getUnlockedPost } from 'data-center';
 import { Skeleton } from '@mui/material';
-import { useUserStore } from '@/app/userStore';
+import { useUserStore } from '@/store/userStore';
 import NoData from '@/components/baseNoData/noData';
 import backLeftArrowImg from '../img/backLeftArrow.png';
 import ArticleItem from './components/articleItem/articleItem';

@@ -1,7 +1,7 @@
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
-import { useUserStore } from '@/app/userStore';
+import { useUserStore } from '@/store/userStore';
 import pureBackground from './img/pureBackground.png';
 import style from './header.module.scss';
 import backLeftArrowImg from './img/backLeftArrow.png';

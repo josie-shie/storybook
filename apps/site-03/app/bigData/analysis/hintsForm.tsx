@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
-import { useUserStore } from '@/app/userStore';
+import { useUserStore } from '@/store/userStore';
 import ConfirmPayDrawer from '@/components/confirmPayDrawer/confirmPayDrawer';
 import { useHandicapAnalysisFormStore } from '../formStore';
 import { useLongDragonStore } from '../longDragonStore';
