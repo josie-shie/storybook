@@ -4,11 +4,10 @@ import type { RecommendPost, GetLeagueOfPostListResponse } from 'data-center';
 
 type GroupType = 'league' | 'country';
 interface InitState {
-    articleList: RecommendPost[];
+    filterIsOpen: boolean;
 }
 
 interface ArticleState extends InitState {
-    filterIsOpen: boolean;
     filterResultIsOpen: boolean;
     filterInfo: { league: FilterMap; country: FilterMap };
     filterOriginalInfo: {
@@ -20,7 +19,6 @@ interface ArticleState extends InitState {
     filterContestList: Record<number, RecommendPost[]>;
     filterMatchList: number[];
     filterSelectedMatchList: RecommendPost[];
-    setArticleList: ({ articleList }: { articleList: RecommendPost[] }) => void;
     setFilterIsOpen: ({ status }: { status: boolean }) => void;
     setFilterResultIsOpen: ({ status }: { status: boolean }) => void;
     setFilterInit: ({
@@ -70,7 +68,6 @@ const formatCounterAndSelected = (league: FilterMap, country: FilterMap) => {
 };
 
 const initialState = (set: (updater: (state: ArticleState) => Partial<ArticleState>) => void) => ({
-    articleList: [],
     filterIsOpen: false,
     filterResultIsOpen: false,
     filterInfo: {
@@ -98,9 +95,6 @@ const initialState = (set: (updater: (state: ArticleState) => Partial<ArticleSta
     filterContestList: {},
     filterMatchList: [],
     filterSelectedMatchList: [],
-    setArticleList: ({ articleList }: { articleList: RecommendPost[] }) => {
-        set(() => ({ articleList }));
-    },
     setFilterIsOpen: ({ status }: { status: boolean }) => {
         set(() => ({
             filterIsOpen: status

@@ -1,3 +1,18 @@
+.button {
+    padding-left: 12px;
+}
+
+.article {
+    padding: 0 12px;
+    background: #fff;
+}
+
+.loadMore {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .recommendPredict {
     height: calc(100dvh - 164px);
     overflow: auto;

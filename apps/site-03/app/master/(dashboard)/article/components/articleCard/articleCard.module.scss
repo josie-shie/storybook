@@ -86,10 +86,14 @@
             font-size: 14px;
             font-weight: 600;
             color: #757575;
+            height: 20px;
+            line-height: 1;
+            padding-top: 4px;
         }
 
         .teamName {
             display: flex;
+            align-items: center;
 
             .play {
                 padding: 0 4px;
@@ -102,6 +106,7 @@
                 display: flex;
                 align-items: center;
                 justify-content: center;
+                height: 20px;
             }
         }
     }
