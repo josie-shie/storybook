@@ -1,7 +1,8 @@
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import type { ReactNode } from 'react';
 import { useEffect, useRef, useState } from 'react';
-import { useUserStore } from '@/app/userStore';
+import { useUserStore } from '@/store/userStore';
 import style from './header.module.scss';
 import backLeftArrowImg from './img/backLeftArrow.png';
 import Profile from './components/profile/profile';
@@ -11,9 +12,10 @@ interface HeaderProps {
     title: string;
     srcPath?: string;
     backHandler?: () => void;
+    children?: ReactNode;
 }
 
-function HeaderTransparent({ title, srcPath, backHandler }: HeaderProps) {
+function HeaderTransparent({ title, srcPath, backHandler, children }: HeaderProps) {
     const userInfoIsLoading = useUserStore.use.userInfoIsLoading();
     const router = useRouter();
     const [mounted, setMounted] = useState(false);
@@ -70,12 +72,14 @@ function HeaderTransparent({ title, srcPath, backHandler }: HeaderProps) {
                     />
                     <div className={style.text}>{title}</div>
                 </div>
-                {mounted && !userInfoIsLoading ? (
-                    <div className={style.userOption}>
-                        <Notice />
-                        <Profile />
-                    </div>
-                ) : null}
+                {mounted && !userInfoIsLoading
+                    ? children || (
+                          <div className={style.userOption}>
+                              <Notice />
+                              <Profile />
+                          </div>
+                      )
+                    : null}
             </div>
         </div>
     );

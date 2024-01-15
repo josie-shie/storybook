@@ -36,7 +36,7 @@ function InterceptingDetail({ modal }: { modal: ReactNode }) {
 
 function ContestListLayout({ children, modal }: { children: ReactNode; modal: ReactNode }) {
     return (
-        <div className="contestListLayout">
+        <div className={style.contestListLayout}>
             <Header />
             <div className={style.main}>{children}</div>
             <Footer />

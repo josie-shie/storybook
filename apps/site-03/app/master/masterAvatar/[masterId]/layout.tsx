@@ -17,13 +17,13 @@ function MasterAvatarLayout({
     };
 
     return (
-        <>
+        <div className={style.layout}>
             <Header title={headerProps.title} />
             <div className={style.masterAvatarLayout}>
                 <Info params={params} />
                 {children}
             </div>
-        </>
+        </div>
     );
 }
 

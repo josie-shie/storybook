@@ -1,6 +1,9 @@
 .data {
+    background-color: #1662e3;
+
     :global(.ui-tab) {
         padding: 0 12px;
+        background-color: #fff;
 
         :global(.ui-tab-header) {
             font-size: 14px;
@@ -45,7 +48,6 @@
     border-top-left-radius: 12px;
     border-top-right-radius: 12px;
     background-color: #fff;
-    margin-top: -12px;
 }
 
 .hotGamesContainer {

@@ -23,7 +23,7 @@ function HeaderLogo({
     link?: string;
     background?: boolean;
     children?: ReactNode;
-    back: boolean;
+    back?: boolean;
 }) {
     const userInfoIsLoading = useUserStore.use.userInfoIsLoading();
     const [mounted, setMounted] = useState(false);
