@@ -44,11 +44,11 @@
             width: 342px;
         }
 
-        .react-datepicker__day--in-range,
+        .react-datepicker__day--in-selecting-range,
         .react-datepicker__day--selected {
-            background-color: #4489ff !important;
-            color: #fff !important;
-            border-radius: 20px !important;
+            background-color: #4489ff;
+            color: #fff;
+            border-radius: 20px;
         }
 
         .react-datepicker__header {

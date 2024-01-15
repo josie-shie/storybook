@@ -13,7 +13,7 @@ import { useRouter } from 'next/navigation';
 import NoData from '@/components/baseNoData/noData';
 import UnlockButton from '@/components/unlockButton/unlockButton';
 import NormalDialog from '@/components/normalDialog/normalDialog';
-import ConfirmPayArticle from '@/app/master/article/components/confirmPayArticle/confirmPayArticle';
+import ConfirmPayDrawer from '@/components/confirmPayDrawer/confirmPayDrawer';
 import { useUserStore } from '@/app/userStore';
 import IconWin from './img/win.png';
 import IconLose from './img/lose.png';
@@ -236,24 +236,30 @@ function BettingPlan({
                             </div>
                         );
                     })}
-                    {currentPage < totalPage && (
+                    {currentPage < totalPage ? (
                         <InfiniteScroll onVisible={loadMoreList}>
                             <div className={style.loadMore}>
                                 <CircularProgress size={24} />
                             </div>
                         </InfiniteScroll>
+                    ) : (
+                        <div className={style.listEnd}>
+                            <p>已滑到底啰</p>
+                        </div>
                     )}
                 </>
             )}
-            <NormalDialog
-                cancelText="取消"
-                confirmText="確認支付"
-                content={<ConfirmPayArticle price={articleInfo.unlockPrice} />}
+            <ConfirmPayDrawer
+                isOpen={isOpenPaid}
                 onClose={() => {
                     setIsOpenPaid(false);
                 }}
-                onConfirm={onSubmit}
-                openDialog={isOpenPaid}
+                onOpen={() => {
+                    setIsOpenPaid(true);
+                }}
+                onPay={onSubmit}
+                price={articleInfo.unlockPrice}
+                title="查看方案 ?"
             />
             <NormalDialog
                 cancelText="取消"

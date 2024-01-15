@@ -24,7 +24,7 @@ type LongFilter = '3rd' | '4rd' | '4rdUp' | 'hot';
 function SystemError() {
     const router = useRouter();
     const [message, setMessage] = useState('');
-    const setOpenNormalDialog = useLongDragonStore.use.setOpenNormalDialog();
+    const setOpenErrorDialog = useLongDragonStore.use.setOpenErrorDialog();
 
     useEffect(() => {
         setMessage('哎呀，系统暂时出错！ 请稍候重试');
@@ -40,7 +40,7 @@ function SystemError() {
                 <div
                     className={style.close}
                     onClick={() => {
-                        setOpenNormalDialog(false);
+                        setOpenErrorDialog(false);
                         router.push('/bigData/analysis?status=tips');
                     }}
                 >
@@ -49,7 +49,7 @@ function SystemError() {
                 <div
                     className={style.confirm}
                     onClick={() => {
-                        setOpenNormalDialog(false);
+                        setOpenErrorDialog(false);
                         router.push('/bigData/analysis?status=tips');
                     }}
                 >
@@ -67,8 +67,8 @@ function LongDragonResult() {
     const hintsSelectProgres = useLongDragonStore.use.hintsSelectProgres();
     const setDialogContent = useLongDragonStore.use.setDialogContent();
     const dialogContent = useLongDragonStore.use.dialogContent();
-    const setOpenNormalDialog = useLongDragonStore.use.setOpenNormalDialog();
-    const openNoramlDialog = useLongDragonStore.use.openNoramlDialog();
+    const setOpenErrorDialog = useLongDragonStore.use.setOpenErrorDialog();
+    const openErrorDialog = useLongDragonStore.use.openErrorDialog();
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -92,14 +92,14 @@ function LongDragonResult() {
         setIsActive(newActive);
     };
 
-    const getBigdataHintList = async () => {
+    const getBigDataHintList = async () => {
         const res = await getBigdataHint({
             continuity: hintsSelectType as OddsHintsType,
             progress: hintsSelectProgres as OddsHintsProgress
         });
         if (!res.success) {
             setTimeout(() => {
-                setOpenNormalDialog(true);
+                setOpenErrorDialog(true);
                 setIsLoading(false);
                 setDialogContent(<SystemError />);
             }, 500);
@@ -167,7 +167,7 @@ function LongDragonResult() {
     const formatProgress = (name: string) => progressMappings[name];
 
     useEffect(() => {
-        void getBigdataHintList();
+        void getBigDataHintList();
     }, [hintsSelectPlay, hintsSelectType, hintsSelectProgres]);
 
     useEffect(() => {
@@ -234,13 +234,12 @@ function LongDragonResult() {
                     </div>
                 </div>
             </div>
-
             <ErrorDialog
                 content={<div className={style.dialogContent}>{dialogContent}</div>}
                 onClose={() => {
-                    setOpenNormalDialog(false);
+                    setOpenErrorDialog(false);
                 }}
-                openDialog={openNoramlDialog}
+                openDialog={openErrorDialog}
             />
             <MatchFilterDrawer isOpen={isFilterOpen} onClose={closeFilter} onOpen={openFilter} />
         </>

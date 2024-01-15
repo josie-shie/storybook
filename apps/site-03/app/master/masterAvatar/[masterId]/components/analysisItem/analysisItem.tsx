@@ -11,7 +11,7 @@ import UnlockButton from '@/components/unlockButton/unlockButton';
 import NoData from '@/components/baseNoData/noData';
 import NormalDialog from '@/components/normalDialog/normalDialog';
 import { useUserStore } from '@/app/userStore';
-import ConfirmPayArticle from '@/app/master/article/components/confirmPayArticle/confirmPayArticle';
+import ConfirmPayDrawer from '@/components/confirmPayDrawer/confirmPayDrawer';
 import style from './analysisItem.module.scss';
 import IconWin from './img/win.png';
 import IconDraw from './img/draw.png';
@@ -169,7 +169,13 @@ function AnalysisItem({
                 <ul className={style.article}>
                     {predictArticleList.map(item => {
                         return (
-                            <div className={style.analysisItem} key={item.id}>
+                            <div
+                                className={style.analysisItem}
+                                key={item.id}
+                                onClick={() => {
+                                    goArticleDetail(item.id);
+                                }}
+                            >
                                 <div className={style.top}>
                                     <div className={style.left}>
                                         <div className={style.decorate} />
@@ -188,12 +194,7 @@ function AnalysisItem({
                                         )}
                                     </div>
                                 </div>
-                                <div
-                                    className={style.mid}
-                                    onClick={() => {
-                                        goArticleDetail(item.id);
-                                    }}
-                                >
+                                <div className={style.mid}>
                                     <div className={style.combination}>
                                         <div className={style.detail}>
                                             {item.leagueName}
@@ -224,24 +225,29 @@ function AnalysisItem({
                             </div>
                         );
                     })}
-                    {currentPage < totalPage && (
+                    {currentPage < totalPage ? (
                         <InfiniteScroll onVisible={loadMoreList}>
                             <div className={style.loadMore}>
                                 <CircularProgress size={24} />
                             </div>
                         </InfiniteScroll>
+                    ) : (
+                        <div className={style.listEnd}>
+                            <p>已滑到底啰</p>
+                        </div>
                     )}
                 </ul>
             )}
-            <NormalDialog
-                cancelText="取消"
-                confirmText="確認支付"
-                content={<ConfirmPayArticle price={articleInfo.price} />}
+            <ConfirmPayDrawer
+                isOpen={isOpenPaid}
                 onClose={() => {
                     setIsOpenPaid(false);
                 }}
-                onConfirm={onSubmit}
-                openDialog={isOpenPaid}
+                onOpen={() => {
+                    setIsOpenPaid(true);
+                }}
+                onPay={onSubmit}
+                price={articleInfo.price}
             />
             <NormalDialog
                 cancelText="取消"

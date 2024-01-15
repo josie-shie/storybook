@@ -31,6 +31,8 @@ interface HandicapAnalysisFormState extends InitState {
     setLoading: (loading: boolean) => void;
     dialogContentType: string;
     dialogContent: ReactNode;
+    isOpenPayDrawer: boolean;
+    setIsOpenPayDrawer: (isOpenPayDrawer: boolean) => void;
     openNoramlDialog: boolean;
     setDialogContentType: (dialogContentType: string) => void;
     setOpenNormalDialog: (openNoramlDialog: boolean) => void;
@@ -158,6 +160,12 @@ const initialState = (
             });
 
             return { ...prevState, recordList: updatedRecordList };
+        });
+    },
+    isOpenPayDrawer: false,
+    setIsOpenPayDrawer: (isOpenPayDrawer: boolean) => {
+        set(state => {
+            return { ...state, isOpenPayDrawer };
         });
     },
     dialogContentType: 'payment',

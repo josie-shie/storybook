@@ -127,6 +127,9 @@ function TabContent({
         } as GetPostListResponse,
         exponent: {} as GetExponentResponse
     });
+    const [analysisDataLoading, setAnalysisDataLoading] = useState(false);
+    const [beforeGameDataLoading, setBeforeGameDataLoading] = useState(false);
+    const [leaguePointsRankLoading, setLeaguePointsRankLoading] = useState(false);
 
     const handleSecondFetch = {
         situation: async () => {
@@ -134,11 +137,19 @@ function TabContent({
             return situation;
         },
         analyze: async () => {
+            setAnalysisDataLoading(true);
+            setBeforeGameDataLoading(true);
+            setLeaguePointsRankLoading(true);
+
             const [analysisData, beforeGameData, leaguePointsRank] = await Promise.all([
                 getAnalysisOthers(matchId),
                 getBeforeGameIndex(matchId, 3),
                 getLeaguePointsRank(matchId)
             ]);
+
+            setAnalysisDataLoading(false);
+            setBeforeGameDataLoading(false);
+            setLeaguePointsRankLoading(false);
 
             if (!analysisData.success || !beforeGameData.success || !leaguePointsRank.success) {
                 return {
@@ -238,14 +249,17 @@ function TabContent({
                                 fetchInitData?.analyze?.analysisData ||
                                 fetchData.analyze.analysisData
                             }
+                            analysisDataLoading={analysisDataLoading}
                             beforeGameData={
                                 fetchInitData?.analyze?.beforeGameData ||
                                 fetchData.analyze.beforeGameData
                             }
+                            beforeGameDataLoading={beforeGameDataLoading}
                             leaguePointsRank={
                                 fetchInitData?.analyze?.leaguePointsRank ||
                                 fetchData.analyze.leaguePointsRank
                             }
+                            leaguePointsRankLoading={leaguePointsRankLoading}
                         />
                     ) : null}
                 </div>
