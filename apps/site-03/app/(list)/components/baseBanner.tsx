@@ -12,7 +12,7 @@ import VipBannerImage from './img/vipBanner.png';
 const defaultConfig = {
     label: 'guessBanner',
     image: GuessBannerImage,
-    link: '/recommend/guess'
+    link: '/guess'
 };
 
 interface StaticImageData {
@@ -30,7 +30,7 @@ function getRandomImageConfig(isLogin: boolean) {
         1: {
             label: 'guessBanner',
             image: GuessBannerImage,
-            link: '/recommend/guess'
+            link: '/guess'
         },
         2: {
             label: 'vipBanner',

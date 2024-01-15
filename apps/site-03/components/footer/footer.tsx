@@ -18,8 +18,8 @@ const CategoryList = [
     },
     {
         label: '猜球',
-        value: '/recommend/guess',
-        includedRouters: ['/recommend/guess'],
+        value: '/guess',
+        includedRouters: ['/guess'],
         icon: <GuessIcon className={`${style.icon} ${style.guessIcon}`} />
     },
     {
