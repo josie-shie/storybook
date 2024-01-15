@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { Button } from '@mui/material';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
-import { useUserStore } from '@/app/userStore';
+import { useUserStore } from '@/store/userStore';
 import style from './confirmPayDrawer.module.scss';
 import Star from './img/star.png';
 import PayHand from './img/payHand.png';

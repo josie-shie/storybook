@@ -6,7 +6,7 @@ import { type PostFilter, type RecommendPost } from 'data-center';
 import { InfiniteScroll } from 'ui';
 import CircularProgress from '@mui/material/CircularProgress';
 import Image from 'next/image';
-import { useUserStore } from '@/app/userStore';
+import { useUserStore } from '@/store/userStore';
 import NoData from '@/components/baseNoData/noData';
 import WeekButton from '../../components/weekButton/weekButton';
 import style from './articleList.module.scss';

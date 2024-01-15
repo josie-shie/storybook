@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { type GetPostDetailResponse, getMemberInfo, type RecommendPost } from 'data-center';
 import { getPostList, payForPost } from 'data-center';
-import { useUserStore } from '@/app/userStore';
+import { useUserStore } from '@/store/userStore';
 import NormalDialog from '@/components/normalDialog/normalDialog';
 import type { GuessType } from '@/types/predict';
 import DefaultLogo from '@/app/football/[matchId]/img/defaultTeamLogo.png';

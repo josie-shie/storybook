@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { convertHandicap } from 'lib';
 import Link from 'next/link';
-import { useContestInfoStore } from '@/app/contestInfoStore';
+import { useLiveContestStore } from '@/store/liveContestStore';
 import { useFormattedTime } from '@/hooks/useFormattedTime';
 import defaultTeamLogo from '@/app/football/[matchId]/img/defaultTeamLogo.png';
 import MasterIcon from '../img/master.png';
@@ -11,7 +11,7 @@ import style from './gameCard.module.scss';
 
 function GameCard({ matchId }: { matchId: number }) {
     const contestInfo = useGuessContestListStore.use.contestGuessInfo()[matchId];
-    const globalStore = useContestInfoStore.use.contestInfo();
+    const globalStore = useLiveContestStore.use.contestInfo();
     const syncData = Object.hasOwnProperty.call(globalStore, matchId) ? globalStore[matchId] : {};
 
     const currentMatchTime = useFormattedTime({

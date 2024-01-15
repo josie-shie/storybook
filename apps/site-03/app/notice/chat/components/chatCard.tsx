@@ -8,7 +8,7 @@ import type { MessageRoomType } from 'lib';
 import { timestampToString } from 'lib';
 import { useNoticeStore } from '@/app/notice/noticeStore';
 import Avatar from '@/components/avatar/avatar';
-import { useMessageStore } from '@/app/messageStore';
+import { useMessageStore } from '@/store/messageStore';
 import AvatarIcon from '../img/mentorIcon.jpg';
 import style from './chatCard.module.scss';
 

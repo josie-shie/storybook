@@ -5,6 +5,7 @@ import Link from 'next/link';
 import type { GetFootballStatsMatch } from 'data-center';
 import BottomDrawer from '@/components/drawer/bottomDrawer';
 import NoData from '@/components/baseNoData/noData';
+import { useInterceptPassStore } from '@/store/interceptPassStore';
 import MatchFilterDrawer from '../matchFilterDrawer/matchFilterDrawer';
 import { useMatchFilterStore } from '../../matchFilterStore';
 import { useAnalyticsResultStore } from '../../analysisResultStore';
@@ -36,6 +37,7 @@ function ContestDrawerList({
     const [isFilterOpen, setIsFilterOpen] = useState(true);
     const contestList = useMatchFilterStore.use.contestList();
     const defaultPageIndex = useAnalyticsResultStore.use.defaultPageIndex();
+    const setInterceptData = useInterceptPassStore.use.setInterceptData();
 
     const closeFilter = () => {
         setIsFilterOpen(false);
@@ -99,6 +101,9 @@ function ContestDrawerList({
                                 <Link
                                     href={`/football/${match.matchId}/analyze`}
                                     key={match.matchId}
+                                    onClick={() => {
+                                        setInterceptData({ ...match, ...{ state: -1 } });
+                                    }}
                                 >
                                     <div className={style.contesntList}>
                                         <div className={style.title}>

@@ -1,5 +1,11 @@
 @import 'variables';
-@import 'https://fonts.googleapis.com/css2?family=Vazirmatn:wght@500;700;800&display=swap';
+
+@font-face {
+    font-family: Vazirmatn;
+    src: url('./font/Vazirmatn-VariableFont_wght.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
 
 @font-face {
     font-family: YouSheBiaoTiHei;

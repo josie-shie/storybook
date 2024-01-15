@@ -2,7 +2,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { useUserStore } from '@/app/userStore';
+import { useUserStore } from '@/store/userStore';
 import dotBackground from './img/dotBackground.png';
 import style from './header.module.scss';
 import logoIconImg from './img/logoIcon.png';

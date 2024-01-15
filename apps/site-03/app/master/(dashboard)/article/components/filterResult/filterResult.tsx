@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import type { RecommendPost } from 'data-center';
 import { getPostList } from 'data-center';
 import BottomDrawer from '@/components/drawer/bottomDrawer';
-import { useUserStore } from '@/app/userStore';
+import { useUserStore } from '@/store/userStore';
 import { useArticleStore } from '../../articleStore';
 import style from './filterResult.module.scss';
 import ContestList from './contestList';

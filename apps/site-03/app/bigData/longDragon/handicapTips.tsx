@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { timestampToString } from 'lib';
 import { getMemberInfo } from 'data-center';
 import NoData from '@/components/baseNoData/noData';
-import { useUserStore } from '@/app/userStore';
+import { useUserStore } from '@/store/userStore';
 import { useMatchFilterStore } from '../analysis/matchFilterStore';
 import { useHintsFormStore } from '../analysis/hintsFormStore';
 import defaultIcon from './img/defaultIcon.png';

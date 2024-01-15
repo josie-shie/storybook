@@ -12,10 +12,11 @@ interface InitState {
     tags: TagType;
     memberSubscribeStatus: GetMemberSubscriptionStatusResponse;
     isLogin: boolean;
+    inviteCode: string;
+    authQuery: string;
 }
 
 interface UserState extends InitState {
-    authQuery: string;
     userInfoIsLoading: boolean;
     isVipUseAnalysis: boolean;
     setIsLogin: (isLogin: boolean) => void;
@@ -39,6 +40,7 @@ const initialState = (set: (updater: (state: UserState) => Partial<UserState>) =
     isVipUseAnalysis: true,
     isLogin: false,
     token: '',
+    inviteCode: '',
     setIsLogin: (isLogin: boolean) => {
         set(state => {
             return {
@@ -112,11 +114,11 @@ const initialState = (set: (updater: (state: UserState) => Partial<UserState>) =
     }
 });
 
-const creatUserStore = (init: InitState) => {
+const createUserStore = (init: InitState) => {
     if (isInit) {
         useUserStore = initStore<UserState>(initialState, init);
         isInit = false;
     }
 };
 
-export { creatUserStore, useUserStore };
+export { createUserStore, useUserStore };

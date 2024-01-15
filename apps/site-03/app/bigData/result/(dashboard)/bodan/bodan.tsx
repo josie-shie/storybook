@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { getFootballStatsMatches } from 'data-center';
-import { useNotificationStore } from '@/app/notificationStore';
+import { useNotificationStore } from '@/store/notificationStore';
 import { useAnalyticsResultStore } from '../../analysisResultStore';
 import { useMatchFilterStore } from '../../matchFilterStore';
 import TextRadio from '../../components/switch/textSwitch';

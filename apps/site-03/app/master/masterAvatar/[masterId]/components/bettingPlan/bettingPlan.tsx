@@ -12,7 +12,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { useRouter } from 'next/navigation';
 import UnlockButton from '@/components/unlockButton/unlockButton';
 import NoData from '@/components/baseNoData/noData';
-import { useUserStore } from '@/app/userStore';
+import { useUserStore } from '@/store/userStore';
 import NormalDialog from '@/components/normalDialog/normalDialog';
 import ConfirmPayDrawer from '@/components/confirmPayDrawer/confirmPayDrawer';
 import IconWin from './img/win.png';

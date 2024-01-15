@@ -6,14 +6,14 @@ import { getOddsRunning } from 'data-center';
 import { useEffect } from 'react';
 import { useSituationStore } from '@/app/football/[matchId]/situationStore';
 import { useContestDetailStore } from '@/app/football/[matchId]/contestDetailStore';
-import { useContestInfoStore } from '@/app/contestInfoStore';
+import { useLiveContestStore } from '@/store/liveContestStore';
 import leftBlackIcon from '../../img/left_black.png';
 import style from './oddsDetailDrawer.module.scss';
 import OddLiveTable from './oddLiveTable';
 
 function ScroeBar() {
     const matchDetail = useContestDetailStore.use.matchDetail();
-    const globalStore = useContestInfoStore.use.contestInfo();
+    const globalStore = useLiveContestStore.use.contestInfo();
     const homeLiveScore =
         typeof globalStore[matchDetail.matchId] !== 'undefined'
             ? globalStore[matchDetail.matchId].homeScore || matchDetail.homeScore
