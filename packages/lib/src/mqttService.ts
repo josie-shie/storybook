@@ -1,5 +1,6 @@
 import type { MqttClient } from 'mqtt';
 import * as mqtt from 'mqtt';
+import { getRandomInt } from './random';
 import {
     deProto,
     deProtoOdds,
@@ -664,8 +665,13 @@ const handleOddRunningHalfMessage = async (message: Buffer) => {
 
 export const mqttService = {
     init: ({ memberId }: { memberId: number }) => {
+        const MQTT_OPTIONS = {
+            qos: 1,
+            clean: false,
+            clientId: memberId ? `member_${memberId}` : `guest_${getRandomInt(1, 999999)}`
+        };
         if (init) {
-            client = mqtt.connect(`${process.env.NEXT_PUBLIC_MQTT_PATH}`);
+            client = mqtt.connect(`${process.env.NEXT_PUBLIC_MQTT_PATH}`, MQTT_OPTIONS);
             client.on('connect', () => {
                 // eslint-disable-next-line no-console -- Check lifecycle
                 console.log('Mqtt connected');
