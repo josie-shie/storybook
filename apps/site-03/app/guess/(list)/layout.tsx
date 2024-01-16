@@ -40,12 +40,12 @@ function ContestLayout({ children, para }: { children: ReactNode; para: ReactNod
     creatRankStore({ weekRankList: [], monthRankList: [], seasonRankList: [], masterRankList: [] });
 
     return (
-        <>
+        <div className={style.guessLayout}>
             <Header link="/guess" title="高手榜" />
             <div className={style.guess}>{children}</div>
             <Footer />
             <InterceptingDetail para={para} />
-        </>
+        </div>
     );
 }
 
