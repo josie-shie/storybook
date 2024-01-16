@@ -163,7 +163,7 @@ function Info({ params }: { params: { memberId: string } }) {
                         {info.isFollowed ? '已关注' : '关注'}
                     </div>
 
-                    <div className={style.introduction}>{info.profile}</div>
+                    {info.profile ? <div className={style.introduction}>{info.profile}</div> : null}
                 </section>
             ) : (
                 <SkeletonLayout />

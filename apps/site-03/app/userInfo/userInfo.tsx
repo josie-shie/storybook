@@ -11,7 +11,7 @@ import { formatNumberWithCommas } from 'lib';
 import { useNotificationStore } from '@/store/notificationStore';
 import Tag from '@/components/tag/tag';
 import TagSplit from '@/components/tagSplit/tagSplit';
-import Header from '@/components/header/headerTitleNoBg';
+import Header from '@/components/header/headerTransparent';
 import Fire from '@/app/img/fire.png';
 import { useAuthStore } from '@/store/authStore';
 import { useUserStore } from '@/store/userStore';
@@ -88,7 +88,7 @@ function UserInfo() {
 
     return (
         <div className={style.wrapper} style={{ backgroundImage: `url(${userInfoBg.src})` }}>
-            <Header back={back} title={headerProps.title} />
+            <Header backHandler={back} title={headerProps.title} />
             <div className={style.userInfo}>
                 <div className={style.container}>
                     <div

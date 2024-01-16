@@ -1,10 +1,10 @@
 'use client';
 import { useState, type ReactNode, useRef, useEffect } from 'react';
 import Image from 'next/image';
-import { useRouter, useParams } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import { Tabs } from '@/components/tabs/tabs';
+import Header from '@/components/header/headerTransparent';
 import headBg from './img/detailbg.png';
-import backLeftArrowImg from './img/backLeftArrow.png';
 import teamLogo from './img/teamLogo.png';
 import down from './img/down.png';
 import style from './layout.module.scss';
@@ -66,7 +66,6 @@ function Dropdown({ value, options, onChange }: DropdownProps) {
 }
 
 function DetailLayout({ children }: { children: ReactNode }) {
-    const router = useRouter();
     const params = useParams();
     const matchId = params.matchId as string;
     const [period, setPeriod] = useState(36);
@@ -82,18 +81,9 @@ function DetailLayout({ children }: { children: ReactNode }) {
     };
 
     return (
-        <div className={style.layout}>
-            <div className={style.header} style={{ backgroundImage: `url(${headBg.src})` }}>
-                <Image
-                    alt=""
-                    className={style.backIcon}
-                    height={24}
-                    onClick={() => {
-                        router.back();
-                    }}
-                    src={backLeftArrowImg}
-                    width={24}
-                />
+        <div className={style.layout} style={{ backgroundImage: `url(${headBg.src})` }}>
+            <Header title="" />
+            <div className={style.header}>
                 <div className={style.info}>
                     <section>
                         <Image alt="" src={teamLogo} width={64} />

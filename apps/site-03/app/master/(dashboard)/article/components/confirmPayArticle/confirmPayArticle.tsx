@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { useUserStore } from '@/app/userStore';
+import { useUserStore } from '@/store/userStore';
 import style from './confirmPayArticle.module.scss';
 import Star from './img/star.png';
 

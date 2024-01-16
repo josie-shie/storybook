@@ -13,7 +13,7 @@ import { timestampToString } from 'lib';
 import { useUserStore } from '@/store/userStore';
 import { useNotificationStore } from '@/store/notificationStore';
 import Notification from '@/components/notification/notification';
-import backLeftArrowImg from '../img/backLeftArrow.png';
+import Header from '@/components/header/headerTransparent';
 import style from './subscribe.module.scss';
 import background from './img/bg.png';
 import lineLeft from './img/lineLeft.png';
@@ -140,9 +140,9 @@ function Subscribe({ backHistory }: { backHistory: boolean }) {
         }
     };
 
-    const handleIntroOpen = () => {
-        setIntro(true);
-    };
+    // const handleIntroOpen = () => {
+    //     setIntro(true);
+    // };
 
     const handleIntroClose = () => {
         setIntro(false);
@@ -163,11 +163,16 @@ function Subscribe({ backHistory }: { backHistory: boolean }) {
         4: '36元/1次分析'
     };
 
+    const headerProps = {
+        title: '开通订阅'
+    };
+
     return (
         <>
             <div className={style.subscribe} style={{ backgroundImage: `url(${background.src})` }}>
                 {/* <Image alt="" className={style.background} src={background} /> */}
-                <div className={style.placeholder}>
+                <Header backHandler={back} title={headerProps.title} />
+                {/* <div className={style.placeholder}>
                     <div className={style.headerDetail}>
                         <div className={style.title}>
                             <Image
@@ -187,7 +192,7 @@ function Subscribe({ backHistory }: { backHistory: boolean }) {
                             </button>
                         </div>
                     </div>
-                </div>
+                </div> */}
                 <div className={style.container}>
                     <div className={style.vipBlock}>
                         <div className={style.title}>
