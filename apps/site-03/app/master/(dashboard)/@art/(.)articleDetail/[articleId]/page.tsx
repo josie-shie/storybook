@@ -1,6 +1,6 @@
 'use client';
 
-import ArticleDetail from '../../../../articleDetail/[articleId]/articleDetail';
+import ArticleDetail from '@/app/master/articleDetail/[articleId]/articleDetail';
 
 function Page({ params }: { params: { articleId } }) {
     return <ArticleDetail params={params} />;
