@@ -96,7 +96,7 @@ function AnalysisItem({
     };
 
     const goArticleDetail = (id: number) => {
-        router.push(`/master/article/${id}`);
+        router.push(`/master/articleDetail/${id}`);
     };
 
     const loadMoreList = () => {
