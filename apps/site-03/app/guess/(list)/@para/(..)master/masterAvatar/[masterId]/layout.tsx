@@ -1,7 +1,7 @@
 'use client';
 
 import type { ReactNode } from 'react';
-import Header from '@/components/header/headerTitle';
+import Header from '@/components/header/headerTransparent';
 import Info from '@/app/master/masterAvatar/[masterId]/info';
 import MasterAvatar from '@/app/master/masterAvatar/[masterId]/masterAvatar';
 
