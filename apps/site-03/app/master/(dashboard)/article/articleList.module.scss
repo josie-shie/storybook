@@ -14,8 +14,10 @@
 }
 
 .recommendPredict {
-    height: calc(100dvh - 164px);
+    background: #fff;
+    height: calc(100dvh - 154px);
     overflow: auto;
+    padding-top: 10px;
 
     .banner {
         width: 100%;

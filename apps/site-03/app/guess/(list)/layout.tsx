@@ -7,17 +7,17 @@ import Footer from '@/components/footer/footer';
 import style from './layout.module.scss';
 import { creatRankStore } from './rankStore';
 
-function InterceptingDetail({ para }: { para: ReactNode }) {
+function InterceptingContent({ para }: { para: ReactNode }) {
     const params = useParams();
 
     return (
         <AnimatePresence>
-            {params.matchId ? (
+            {params.matchId || params.masterId ? (
                 <motion.div
                     animate={{ transform: 'translateX(0)' }}
                     exit={{ transform: 'translateX(100%)' }}
                     initial={{ transform: 'translateX(100%)' }}
-                    key="guessDetail"
+                    key="interceptingContent"
                     style={{
                         background: '#fff',
                         width: '100%',
@@ -40,12 +40,12 @@ function ContestLayout({ children, para }: { children: ReactNode; para: ReactNod
     creatRankStore({ weekRankList: [], monthRankList: [], seasonRankList: [], masterRankList: [] });
 
     return (
-        <>
+        <div className={style.guessLayout}>
             <Header link="/guess" title="高手榜" />
             <div className={style.guess}>{children}</div>
             <Footer />
-            <InterceptingDetail para={para} />
-        </>
+            <InterceptingContent para={para} />
+        </div>
     );
 }
 

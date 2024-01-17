@@ -1,4 +1,6 @@
 .noticeLayout {
+    background-color: #1662e3;
+
     :global {
         .ui-tab-header {
             .ui-tabs-header {
@@ -25,12 +27,16 @@
             height: calc(100dvh - 105px);
             touch-action: pan-y;
         }
+
+        .tabContainer {
+            overflow-y: auto;
+            height: calc(100dvh - 98px);
+        }
     }
 
     .noticeContent {
         background-color: #fff;
         border-top-left-radius: 12px;
         border-top-right-radius: 12px;
-        margin-top: -12px;
     }
 }

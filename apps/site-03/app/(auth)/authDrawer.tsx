@@ -68,11 +68,13 @@ function AuthDrawer() {
         setIsDrawerOpen(false);
     };
     const setMemberSubscribeStatus = useUserStore.use.setMemberSubscribeStatus();
+    const setUserInfoIsLoading = useUserStore.use.setUserInfoIsLoading();
     const userId = useUserStore.use.userInfo();
 
     const isToken = Cookies.get('access');
     useEffect(() => {
         const fetchSubscription = async () => {
+            setUserInfoIsLoading(true);
             const subscriptionResponse = await getMemberSubscriptionStatus({
                 memberId: userId.uid
             });
@@ -85,6 +87,7 @@ function AuthDrawer() {
                 return;
             }
             setMemberSubscribeStatus(subscriptionResponse.data);
+            setUserInfoIsLoading(false);
 
             if (subscriptionResponse.data.planId === 1 || userId.balance >= 80) {
                 setIsVipUseAnalysis(true);

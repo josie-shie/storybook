@@ -17,9 +17,7 @@
         }
 
         .largeGap {
-            height: calc(100dvh - 265px);
-            overflow-y: auto;
-            touch-action: pan-y;
+            height: 100%;
         }
     }
 }

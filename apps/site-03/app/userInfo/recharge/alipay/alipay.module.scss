@@ -1,8 +1,7 @@
 @import 'variables';
 
 .alipay {
-    height: calc(100vh - 54px);
-    margin-top: -14px;
+    height: calc(100dvh - 54px);
     background: #f8f8f8;
 
     .payArea {

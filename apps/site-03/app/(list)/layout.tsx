@@ -42,7 +42,7 @@ function ContestListLayout({ children, modal }: { children: ReactNode; modal: Re
         handicapTips: []
     });
     return (
-        <div className="contestListLayout">
+        <div className={style.contestListLayout}>
             <Header />
             <div className={style.main}>{children}</div>
             <Footer />

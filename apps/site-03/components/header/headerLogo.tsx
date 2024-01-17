@@ -1,23 +1,29 @@
 'use client';
-import Image from 'next/image';
 import Link from 'next/link';
+import type { ReactNode } from 'react';
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 import { useUserStore } from '@/store/userStore';
 import dotBackground from './img/dotBackground.png';
 import style from './header.module.scss';
-import logoIconImg from './img/logoIcon.png';
+import LogoIconImg from './img/logoIcon.svg';
 import Profile from './components/profile/profile';
 import Notice from './components/notice/notice';
-import Logo from './img/logo.png';
+import Logo from './img/logo.svg';
+import backLeftArrowImg from './img/backLeftArrow.png';
 
 function HeaderLogo({
     title,
     link = '/',
-    background = false
+    background = false,
+    children,
+    back = false
 }: {
     title?: string;
     link?: string;
     background?: boolean;
+    children?: ReactNode;
+    back?: boolean;
 }) {
     const userInfoIsLoading = useUserStore.use.userInfoIsLoading();
     const [mounted, setMounted] = useState(false);
@@ -37,21 +43,24 @@ function HeaderLogo({
         <div className={style.placeholder}>
             <div className={style.header} style={headerStyle}>
                 <Link className={style.logo} href={link}>
-                    <Image alt="" height={24} src={logoIconImg} width={24} />
+                    {back ? (
+                        <Image alt="" height={24} src={backLeftArrowImg} width={24} />
+                    ) : (
+                        <LogoIconImg />
+                    )}
+
                     <div className={style.icon}>
-                        {title ? (
-                            <div className={style.titleText}>{title}</div>
-                        ) : (
-                            <Image alt="logo" src={Logo} width={66} />
-                        )}
+                        {title ? <div className={style.titleText}>{title}</div> : <Logo />}
                     </div>
                 </Link>
-                {mounted && !userInfoIsLoading ? (
-                    <div className={style.userOption}>
-                        <Notice />
-                        <Profile />
-                    </div>
-                ) : null}
+                {mounted && !userInfoIsLoading
+                    ? children || (
+                          <div className={style.userOption}>
+                              <Notice />
+                              <Profile />
+                          </div>
+                      )
+                    : null}
             </div>
         </div>
     );
