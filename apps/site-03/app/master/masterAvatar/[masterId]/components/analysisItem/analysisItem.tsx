@@ -123,7 +123,7 @@ function AnalysisItem({
             if (!res.success) {
                 return new Error();
             }
-            router.push(`/master/article/${item.id}`);
+            router.push(`/master/articleDetail/${item.id}`);
             return;
         }
         setIsOpenPaid(true);

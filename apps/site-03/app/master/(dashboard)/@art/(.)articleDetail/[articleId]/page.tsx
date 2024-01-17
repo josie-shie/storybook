@@ -1,9 +1,5 @@
-'use client';
-
-import ArticleDetail from '@/app/master/articleDetail/[articleId]/articleDetail';
-
-function Page({ params }: { params: { articleId } }) {
-    return <ArticleDetail params={params} />;
+function Page() {
+    return null;
 }
 
 export default Page;
