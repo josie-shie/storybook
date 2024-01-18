@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Header from '@/components/header/headerLogo';
 import Footer from '@/components/footer/footer';
 import style from './layout.module.scss';
+import { creatLongDragonStore } from './longDragonStore';
 
 function InterceptingDetail({ modal }: { modal: ReactNode }) {
     const params = useParams();
@@ -35,6 +36,11 @@ function InterceptingDetail({ modal }: { modal: ReactNode }) {
 }
 
 function ContestListLayout({ children, modal }: { children: ReactNode; modal: ReactNode }) {
+    creatLongDragonStore({
+        hintsSelectType: 'WIN',
+        hintsSelectProgres: 'FULL',
+        handicapTips: []
+    });
     return (
         <div className={style.contestListLayout}>
             <Header />
