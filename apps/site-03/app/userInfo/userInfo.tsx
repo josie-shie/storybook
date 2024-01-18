@@ -23,6 +23,9 @@ import MyFans from './img/myFans.png';
 import MyGame from './img/myGame.png';
 import VipTip from './img/vipTip.png';
 import MyAnalyze from './img/myAnalyze.png';
+import UserIcon from './img/user.svg';
+import UnlockIcon from './img/unlock.svg';
+import EditIcon from './img/edit.svg';
 import style from './userInfo.module.scss';
 import defaultAvatar from './img/avatar.png';
 
@@ -31,18 +34,12 @@ function UserInfo() {
     const userInfo = useUserStore.use.userInfo();
     const tags = useUserStore.use.tags();
     const memberSubscribeStatus = useUserStore.use.memberSubscribeStatus();
-    const userInfoIsLoading = useUserStore.use.userInfoIsLoading();
     const openChangePasswordDrawer = useAuthStore.use.setIsDrawerOpen();
     const setUserInfo = useUserStore.use.setUserInfo();
     const setAuthQuery = useUserStore.use.setAuthQuery();
     const setIsLogin = useUserStore.use.setIsLogin();
     const setIsVisible = useNotificationStore.use.setIsVisible();
     const [loading, setLoading] = useState(true);
-    const [mounted, setMounted] = useState(false);
-
-    useEffect(() => {
-        setMounted(true);
-    }, []);
 
     const headerProps = {
         title: '我的'
@@ -91,14 +88,9 @@ function UserInfo() {
             <Header backHandler={back} title={headerProps.title} />
             <div className={style.userInfo}>
                 <div className={style.container}>
-                    <div
-                        className={style.outer}
-                        onClick={() => {
-                            editAccount();
-                        }}
-                    >
+                    <div className={style.outer}>
                         <div className={style.detail}>
-                            {mounted && !userInfoIsLoading ? (
+                            {!loading ? (
                                 <Image
                                     alt="大头贴"
                                     className={style.avatar}
@@ -120,8 +112,8 @@ function UserInfo() {
                             )}
                             <div className={style.content}>
                                 <div className={style.top}>
-                                    {mounted && !userInfoIsLoading ? (
-                                        <span className={style.name}>{userInfo.username}</span>
+                                    {!loading ? (
+                                        <span className={style.name}>会员 {userInfo.username}</span>
                                     ) : (
                                         <Skeleton
                                             animation="wave"
@@ -130,49 +122,15 @@ function UserInfo() {
                                             width={74}
                                         />
                                     )}
-                                    {mounted && !userInfoIsLoading ? (
-                                        <div className={style.tags}>
-                                            {tags.winMaxAccurateStreak >= 3 ? (
-                                                <Tag
-                                                    icon={<Image alt="fire" src={Fire} />}
-                                                    text={`${tags.winMaxAccurateStreak} 连红`}
-                                                />
-                                            ) : null}
-                                            {tags.quarterRanking > 0 && (
-                                                <TagSplit
-                                                    isBlueBg
-                                                    number={tags.quarterRanking}
-                                                    text="季"
-                                                />
-                                            )}
-                                            {tags.monthRanking > 0 && (
-                                                <TagSplit
-                                                    isBlueBg
-                                                    number={tags.monthRanking}
-                                                    text="月"
-                                                />
-                                            )}
-                                            {tags.weekRanking > 0 && (
-                                                <TagSplit
-                                                    isBlueBg
-                                                    number={tags.weekRanking}
-                                                    text="周"
-                                                />
-                                            )}
-                                        </div>
-                                    ) : (
-                                        <div className={style.tags}>
-                                            <Skeleton
-                                                animation="wave"
-                                                height={20}
-                                                variant="text"
-                                                width={136}
-                                            />
-                                        </div>
-                                    )}
+                                    <div className={style.edit} onClick={editAccount}>
+                                        <EditIcon />
+                                        编辑
+                                    </div>
                                 </div>
-                                {mounted && !userInfoIsLoading ? (
-                                    <div className={style.middle}>{userInfo.mobileNumber}</div>
+                                {!loading ? (
+                                    <div className={style.middle}>
+                                        会员号 {userInfo.mobileNumber}
+                                    </div>
                                 ) : (
                                     <Skeleton
                                         animation="wave"
@@ -181,29 +139,77 @@ function UserInfo() {
                                         width={74}
                                     />
                                 )}
-                                {mounted && !userInfoIsLoading ? (
-                                    <div className={style.bottom}>
-                                        {userInfo.fans > 0 && <span>粉丝: {userInfo.fans}</span>}
-                                        {userInfo.unlocked > 0 && (
-                                            <span>解鎖: {userInfo.unlocked}</span>
-                                        )}
-                                        {tags.quarterHitRate > 0 ? (
-                                            <span>猜球胜率: {tags.quarterHitRate}%</span>
+                                {!loading ? (
+                                    <div className={style.tags}>
+                                        {tags.winMaxAccurateStreak >= 3 ? (
+                                            <Tag
+                                                icon={<Image alt="fire" src={Fire} />}
+                                                text={`${tags.winMaxAccurateStreak} 连红`}
+                                            />
                                         ) : null}
+                                        {tags.quarterRanking > 0 && (
+                                            <TagSplit
+                                                isBlueBg
+                                                number={tags.quarterRanking}
+                                                text="季"
+                                            />
+                                        )}
+                                        {tags.monthRanking > 0 && (
+                                            <TagSplit
+                                                isBlueBg
+                                                number={tags.monthRanking}
+                                                text="月"
+                                            />
+                                        )}
+                                        {tags.weekRanking > 0 && (
+                                            <TagSplit
+                                                isBlueBg
+                                                number={tags.weekRanking}
+                                                text="周"
+                                            />
+                                        )}
                                     </div>
                                 ) : (
-                                    <div className={style.bottom}>
+                                    <div className={style.tags}>
                                         <Skeleton
                                             animation="wave"
                                             height={20}
                                             variant="text"
-                                            width={162}
+                                            width={136}
                                         />
                                     </div>
                                 )}
                             </div>
                         </div>
-                        {mounted && !userInfoIsLoading ? (
+                        {!loading ? (
+                            <div className={style.bottom}>
+                                {userInfo.fans > 0 && (
+                                    <span className={style.item}>
+                                        <UserIcon className={style.icon} />
+                                        <span>粉丝</span>
+                                        <span>{userInfo.fans}</span>
+                                    </span>
+                                )}
+                                {userInfo.unlocked > 0 && (
+                                    <span className={style.item}>
+                                        <UnlockIcon className={style.icon} />
+                                        <span>解鎖</span>
+                                        <span>{userInfo.unlocked}</span>
+                                    </span>
+                                )}
+                                {tags.quarterHitRate > 0 ? (
+                                    <span className={style.item}>
+                                        <span>猜球胜率</span>
+                                        <span>{tags.quarterHitRate}%</span>
+                                    </span>
+                                ) : null}
+                            </div>
+                        ) : (
+                            <div className={style.bottom}>
+                                <Skeleton animation="wave" height={20} variant="text" width={162} />
+                            </div>
+                        )}
+                        {!loading ? (
                             <div className={style.introduction}>{userInfo.description}</div>
                         ) : (
                             <div className={style.introduction}>
@@ -226,7 +232,7 @@ function UserInfo() {
                                 <span className={style.text}>
                                     <Image alt="" height={14} src={Star} width={14} />
                                     <span>可用馀额：</span>
-                                    {mounted && !userInfoIsLoading ? (
+                                    {!loading ? (
                                         <>{formatNumberWithCommas(userInfo.balance)}</>
                                     ) : (
                                         <Skeleton
