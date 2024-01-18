@@ -25,7 +25,9 @@ function IsVipProfile() {
 
                 <div className={style.totalNumber}>
                     {typeof userInfo.balance === 'number' ? (
-                        <>{formatNumberWithCommas(userInfo.balance)}</>
+                        <span className={style.vipBalance}>
+                            {formatNumberWithCommas(userInfo.balance)}
+                        </span>
                     ) : (
                         <div
                             className={style.loginButton}

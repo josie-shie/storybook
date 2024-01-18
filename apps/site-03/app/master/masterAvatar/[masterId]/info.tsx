@@ -106,66 +106,67 @@ function Info({ params }: { params: { masterId: string } }) {
         <>
             {info.memberId !== 0 ? (
                 <section className={style.info}>
-                    <div className={style.detail}>
-                        <Avatar
-                            borderColor="#fff"
-                            size={54}
-                            src={info.avatarPath === '0' ? '' : info.avatarPath}
-                        />
-                        <div className={style.content}>
-                            <span className={style.name}>{info.username}</span>
-                            <div className={style.top}>
-                                {info.highlights.winMaxAccurateStreak > 0 && (
-                                    <Tag
-                                        icon={<Image alt="fire" src={Fire} />}
-                                        text={`${info.highlights.winMaxAccurateStreak} 連紅`}
-                                    />
-                                )}
+                    <div className={style.infoDetail}>
+                        <div className={style.detail}>
+                            <Avatar
+                                borderColor="#fff"
+                                size={54}
+                                src={info.avatarPath === '0' ? '' : info.avatarPath}
+                            />
+                            <div className={style.content}>
+                                <span className={style.name}>{info.username}</span>
+                                <div className={style.top}>
+                                    {info.highlights.winMaxAccurateStreak > 0 && (
+                                        <Tag
+                                            icon={<Image alt="fire" src={Fire} />}
+                                            text={`${info.highlights.winMaxAccurateStreak} 連紅`}
+                                        />
+                                    )}
 
-                                {info.highlights.quarterRanking > 0 && (
-                                    <TagSplit
-                                        isBlueBg
-                                        number={info.highlights.quarterRanking}
-                                        text="季"
-                                    />
-                                )}
-                                {info.highlights.monthRanking > 0 && (
-                                    <TagSplit
-                                        isBlueBg
-                                        number={info.highlights.monthRanking}
-                                        text="月"
-                                    />
-                                )}
-                                {info.highlights.weekRanking > 0 && (
-                                    <TagSplit
-                                        isBlueBg
-                                        number={info.highlights.weekRanking}
-                                        text="周"
-                                    />
-                                )}
-                            </div>
-                            <div className={style.bottom}>
-                                <span>粉丝: {info.fansCount}</span>
-                                <span>解锁: {info.unlockedCount}</span>
-                                {Boolean(info.highlights) && (
-                                    <span>
-                                        近一季猜球胜率:{' '}
-                                        {Math.round(info.highlights.quarterHitRate * 100)}%
-                                    </span>
-                                )}
+                                    {info.highlights.quarterRanking > 0 && (
+                                        <TagSplit
+                                            isBlueBg
+                                            number={info.highlights.quarterRanking}
+                                            text="季"
+                                        />
+                                    )}
+                                    {info.highlights.monthRanking > 0 && (
+                                        <TagSplit
+                                            isBlueBg
+                                            number={info.highlights.monthRanking}
+                                            text="月"
+                                        />
+                                    )}
+                                    {info.highlights.weekRanking > 0 && (
+                                        <TagSplit
+                                            isBlueBg
+                                            number={info.highlights.weekRanking}
+                                            text="周"
+                                        />
+                                    )}
+                                </div>
+                                <div className={style.bottom}>
+                                    <span>粉丝: {info.fansCount}</span>
+                                    <span>解锁: {info.unlockedCount}</span>
+                                    {Boolean(info.highlights) && (
+                                        <span>
+                                            近一季猜球胜率:{' '}
+                                            {Math.round(info.highlights.quarterHitRate * 100)}%
+                                        </span>
+                                    )}
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div
-                        className={info.isFollowed ? style.focused : style.focus}
-                        onClick={() => {
-                            void onIsFocused(info.memberId, info.isFollowed);
-                        }}
-                    >
-                        {info.isFollowed ? '已关注' : '关注'}
+                        <div
+                            className={info.isFollowed ? style.focused : style.focus}
+                            onClick={() => {
+                                void onIsFocused(info.memberId, info.isFollowed);
+                            }}
+                        >
+                            {info.isFollowed ? '已关注' : '关注'}
+                        </div>
                     </div>
-
                     <div className={style.introduction}>{info.profile}</div>
                 </section>
             ) : (
