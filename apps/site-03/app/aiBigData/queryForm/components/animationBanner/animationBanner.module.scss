@@ -1,0 +1,135 @@
+.animationBanner {
+    width: 100%;
+
+    .banner {
+        width: 100%;
+        height: 146px;
+        display: flex;
+        align-items: center;
+        position: relative;
+        justify-content: center;
+
+        .animate {
+            width: 212px;
+
+            .bottom {
+                margin-top: 12px;
+                margin-left: 46px;
+            }
+        }
+
+        .animateLine {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .scaleUpLeft {
+            opacity: 0;
+            animation: scale-up 0.6s forwards;
+            transform-origin: left;
+            animation-delay: 0.5s;
+
+            span {
+                &:nth-of-type(1) {
+                    position: absolute;
+                    top: 50px;
+                    left: 58px;
+                }
+
+                &:nth-of-type(2) {
+                    position: absolute;
+                    top: 58px;
+                    left: 12px;
+                }
+
+                &:nth-of-type(3) {
+                    top: 82px;
+                    left: 36px;
+                    position: absolute;
+                }
+
+                &:nth-of-type(4) {
+                    top: 96px;
+                    left: 74px;
+                    position: absolute;
+                }
+            }
+        }
+
+        .scaleUpRight {
+            opacity: 0;
+            animation: scale-up 0.6s forwards;
+            transform-origin: right;
+            animation-delay: 0.5s;
+
+            span {
+                &:nth-of-type(1) {
+                    top: 54px;
+                    right: 38px;
+                    position: absolute;
+                }
+
+                &:nth-of-type(2) {
+                    top: 74px;
+                    right: 8px;
+                    position: absolute;
+                }
+
+                &:nth-of-type(3) {
+                    top: 96px;
+                    right: 84px;
+                    position: absolute;
+                }
+            }
+        }
+
+        @keyframes scale-up {
+            0% {
+                transform: scaleX(0);
+                opacity: 0;
+            }
+
+            100% {
+                transform: scaleX(1);
+                opacity: 1;
+            }
+        }
+
+        .animated {
+            animation-duration: 0.5s;
+        }
+
+        .fadeInLeft {
+            animation-name: fade-in-left;
+        }
+
+        @keyframes fade-in-left {
+            0% {
+                opacity: 0;
+                transform: translate3d(-100%, 0, 0);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateZ(0);
+            }
+        }
+
+        .fadeInRight {
+            animation-name: fade-in-right;
+        }
+
+        @keyframes fade-in-right {
+            0% {
+                opacity: 0;
+                transform: translate3d(100%, 0, 0);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateZ(0);
+            }
+        }
+    }
+}
