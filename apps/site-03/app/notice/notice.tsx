@@ -1,8 +1,9 @@
 'use client';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { getMailMemberList } from 'data-center';
 import { mqttService } from 'lib';
 import type { NotifyMessage } from 'lib';
+import ButtonBase from '@mui/material/ButtonBase';
 import NoData from '@/components/baseNoData/noData';
 import MailCard from './components/mailCard';
 import style from './notice.module.scss';
@@ -34,16 +35,58 @@ function MailList() {
         mqttService.getNotifyMessage(refetchMailList);
     }, []);
 
+    const tagNames = Array.from(
+        new Set(mailList.filter(mail => mail.tag.tagName).map(mail => mail.tag.tagName))
+    );
+
+    tagNames.unshift('全部');
+
+    const [activeTagName, setActiveTagName] = useState(tagNames[0]);
+    const [filteredMailList, setFilteredMailList] = useState(mailList);
+
+    useEffect(() => {
+        if (activeTagName === '全部') {
+            setFilteredMailList(mailList);
+        } else {
+            setFilteredMailList(mailList.filter(mail => mail.tag.tagName === activeTagName));
+        }
+    }, [activeTagName, mailList]);
+
+    const handleTagClick = (tagName: string) => {
+        setActiveTagName(tagName);
+    };
+
     if (mailList.length === 0) {
         return <NoData text="暂无资料" />;
     }
 
     return (
-        <ul className={`${style.noticeList} ${editStatus ? style.isEdit : ''}`}>
-            {mailList.map(mail => (
-                <MailCard key={mail.mailMemberId} mailData={mail} />
-            ))}
-        </ul>
+        <>
+            {tagNames.length ? (
+                <div className={style.typeList}>
+                    {tagNames.map(tagName => (
+                        <ButtonBase
+                            className={`${style.tag} ${
+                                tagName === activeTagName ? style.active : ''
+                            }`}
+                            key={tagName}
+                            onClick={() => {
+                                handleTagClick(tagName);
+                            }}
+                            type="button"
+                        >
+                            {tagName}
+                        </ButtonBase>
+                    ))}
+                </div>
+            ) : null}
+
+            <ul className={`${style.noticeList} ${editStatus ? style.isEdit : ''}`}>
+                {filteredMailList.map(mail => (
+                    <MailCard key={mail.mailMemberId} mailData={mail} />
+                ))}
+            </ul>
+        </>
     );
 }
 

@@ -5,8 +5,17 @@ export const GET_MAIL_MEMBER_LIST_QUERY = `
                 mailMemberId
                 title
                 content
+                coverImage
+                contentImage
+                ctaButtonName
+                ctaLink
                 isRead
                 createdAt
+                tag {
+                    id
+                    tagName
+                    colorCode
+                }
             }
         }
     }
@@ -18,8 +27,17 @@ export const GET_MAIL_MEMBER_QUERY = `
             mailMemberId
             title
             content
+            coverImage
+            contentImage
+            ctaButtonName
+            ctaLink
             isRead
             createdAt
+            tag {
+                id
+                tagName
+                colorCode
+            }
         }
     }
 `;

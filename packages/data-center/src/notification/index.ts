@@ -8,12 +8,23 @@ import {
     DELETE_MAIL_MEMBER_MUTATION
 } from './graphqlQueries';
 
+const Tag = z.object({
+    id: z.number(),
+    tagName: z.string(),
+    colorCode: z.string()
+})
+
 const GetMailMemberSchema = z.object({
     mailMemberId: z.number(),
     title: z.string(),
     content: z.string(),
+    coverImage: z.string(),
+    contentImage: z.string(),
+    ctaButtonName: z.string(),
+    ctaLink: z.string(),
     isRead: z.boolean(),
-    createdAt: z.number()
+    createdAt: z.number(),
+    tag: Tag
 });
 
 const GetMailMemberListSchema = z.array(GetMailMemberSchema);
