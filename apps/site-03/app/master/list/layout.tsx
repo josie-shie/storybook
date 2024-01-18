@@ -86,7 +86,7 @@ function MasterLayout({
                 <div className={style.childrenTab}>
                     <Tabs
                         labels={['专家预测文章', '专家列表']}
-                        paths={['/master/article', '/master/expert']}
+                        paths={['/master/list/article', '/master/list/expert']}
                         styling="button"
                     />
                 </div>

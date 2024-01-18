@@ -3,7 +3,7 @@
 import type { ReactNode } from 'react';
 import Header from '@/components/header/headerTransparent';
 import Info from '@/app/master/masterAvatar/[masterId]/info';
-import style from '@/app/master/(dashboard)/layout.module.scss';
+import style from '@/app/master/list/layout.module.scss';
 import MasterAvatar from '@/app/master/masterAvatar/[masterId]/masterAvatar';
 
 function Layout({ children, params }: { children: ReactNode; params: { masterId: string } }) {
