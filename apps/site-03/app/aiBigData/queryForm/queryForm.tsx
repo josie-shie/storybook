@@ -2,6 +2,7 @@
 import style from './queryForm.module.scss';
 import Tips from './components/tips/tips';
 import LeagueDrawer from './components/leagueDrawer/leagueDrawer';
+import Form from './components/form/form';
 
 function FormContent() {
     return (
@@ -9,6 +10,7 @@ function FormContent() {
             <Tips />
             <div className={style.formSelect}>
                 <LeagueDrawer />
+                <Form />
             </div>
         </div>
     );
