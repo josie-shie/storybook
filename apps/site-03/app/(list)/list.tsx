@@ -19,6 +19,7 @@ function List({ todayContest }: { todayContest: GetContestListResponse }) {
     const scheduleRef = useRef<HTMLDivElement>(null);
     const resultRef = useRef<HTMLDivElement>(null);
     const [secendRender, setSecendRender] = useState(false);
+    const [showScrollTop, setShowScrollTop] = useState(false);
     const isLogin = useUserStore.use.isLogin();
     const setHandicapTips = useLongDragonStore.use.setHandicapTips();
     const setHintsSelectType = useLongDragonStore.use.setHintsSelectType();
@@ -72,6 +73,29 @@ function List({ todayContest }: { todayContest: GetContestListResponse }) {
         }
     };
 
+    const handleScroll = (ref: HTMLDivElement) => {
+        setShowScrollTop(ref.scrollTop > 600);
+    };
+
+    useEffect(() => {
+        const tabRef = [allRef, progressRef];
+        const currentRef =
+            tabRef[
+                currentStatus === null ? 0 : tabList.findIndex(tab => tab.status === currentStatus)
+            ].current;
+
+        if (currentRef) {
+            const onScroll = () => {
+                handleScroll(currentRef);
+            };
+            currentRef.addEventListener('scroll', onScroll);
+
+            return () => {
+                currentRef.removeEventListener('scroll', onScroll);
+            };
+        }
+    }, [currentStatus]);
+
     const isOpenLongDragon = () => {
         if (!isLogin) {
             router.push(`/?auth=login`);
@@ -84,7 +108,7 @@ function List({ todayContest }: { todayContest: GetContestListResponse }) {
         setShowLongDragon(false);
         setHandicapTips([]);
         setHintsSelectType('WIN');
-    }
+    };
 
     return (
         <>
@@ -115,7 +139,7 @@ function List({ todayContest }: { todayContest: GetContestListResponse }) {
                 </div>
             </Slick>
             {(currentStatus === null || currentStatus === 'progress') && (
-                <div className={style.longDragonTop}>
+                <div className={`${style.longDragonTop} ${showScrollTop ? style.active : ''}`}>
                     <div className={style.longDragon} onClick={isOpenLongDragon}>
                         <span>今日长龙</span>
                     </div>

@@ -9,6 +9,8 @@
     align-items: center;
     gap: 4px;
     z-index: 100;
+    transform: translateX(38px);
+    transition: all 0.25s ease;
 
     .goTop {
         display: flex;
@@ -16,8 +18,10 @@
         justify-content: center;
         width: 34px;
         height: 34px;
+        opacity: 0;
         border-radius: 50%;
         background: rgba(0, 0, 0, 0.2);
+        transition: all 0.25s ease;
 
         .arrow {
             width: 14px;
@@ -37,6 +41,14 @@
             padding: 5px 16px;
             border-radius: 20px;
             background: linear-gradient(16deg, #1762e3 73.62%, #0d67ff 95.46%);
+        }
+    }
+
+    &.active {
+        transform: translateX(0);
+
+        .goTop {
+            opacity: 1;
         }
     }
 }
