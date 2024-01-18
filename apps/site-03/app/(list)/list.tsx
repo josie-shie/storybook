@@ -78,7 +78,7 @@ function List({ todayContest }: { todayContest: GetContestListResponse }) {
     };
 
     useEffect(() => {
-        const tabRef = [allRef, progressRef];
+        const tabRef = [allRef, progressRef, scheduleRef, resultRef];
         const currentRef =
             tabRef[
                 currentStatus === null ? 0 : tabList.findIndex(tab => tab.status === currentStatus)
