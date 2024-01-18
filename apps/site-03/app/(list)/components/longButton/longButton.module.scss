@@ -1,0 +1,22 @@
+.longButton {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin: 12px 0;
+    padding: 4px 12px;
+
+    > div {
+        border: 1px solid #bfbfbf;
+        border-radius: 4px;
+        color: #8d8d8d;
+        font-size: 14px;
+        padding: 2px 10px;
+        margin-right: 8px;
+    }
+
+    .active {
+        color: #4489ff;
+        background-color: #e6effe;
+        border: 1px solid #4489ff;
+    }
+}

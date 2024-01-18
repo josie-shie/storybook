@@ -1,11 +1,9 @@
 'use client';
 import { type ReactNode } from 'react';
 import { useParams } from 'next/navigation';
-import { motion, AnimatePresence } from 'framer-motion';
-import Header from '@/components/header/headerLogo';
-import Footer from '@/components/footer/footer';
-import style from './layout.module.scss';
-import { creatLongDragonStore } from './longDragonStore';
+import { AnimatePresence, motion } from 'framer-motion';
+import { creatQueryFormStore } from './queryFormStore';
+import { creatLeagueStore } from './leagueStore';
 
 function InterceptingDetail({ modal }: { modal: ReactNode }) {
     const params = useParams();
@@ -35,20 +33,26 @@ function InterceptingDetail({ modal }: { modal: ReactNode }) {
     );
 }
 
-function ContestListLayout({ children, modal }: { children: ReactNode; modal: ReactNode }) {
-    creatLongDragonStore({
-        hintsSelectType: 'WIN',
-        hintsSelectProgres: 'FULL',
-        handicapTips: []
+function BigDataLayout({
+    children,
+    contestModal
+}: {
+    children: ReactNode;
+    contestModal: ReactNode;
+}) {
+    creatQueryFormStore({
+        loading: false
     });
+    creatLeagueStore({
+        loading: false
+    });
+
     return (
-        <div className={style.contestListLayout}>
-            <Header />
-            <div className={style.main}>{children}</div>
-            <Footer />
-            <InterceptingDetail modal={modal} />
-        </div>
+        <>
+            {children}
+            <InterceptingDetail modal={contestModal} />
+        </>
     );
 }
 
-export default ContestListLayout;
+export default BigDataLayout;
