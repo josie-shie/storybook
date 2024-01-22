@@ -42,6 +42,27 @@
             font-weight: 600;
         }
 
+        .editUser {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+
+            .avatar {
+                display: flex;
+                align-items: center;
+                border: 2px solid #fff;
+                border-radius: 32px;
+                box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.15);
+            }
+
+            .name {
+                color: #4a4a4a;
+                font-size: 14px;
+                font-weight: 400;
+            }
+        }
+
         .contentImage {
             display: flex;
             align-items: center;
@@ -54,6 +75,21 @@
             margin-bottom: 16px;
             font-size: 16px;
             font-weight: 400;
+        }
+
+        .detailButton {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+
+            a {
+                padding: 4px 12px;
+                font-size: 14px;
+                font-weight: 500;
+                color: #4489ff;
+                border: 1px solid #4489ff;
+                border-radius: 30px;
+            }
         }
 
         .ctaButton {

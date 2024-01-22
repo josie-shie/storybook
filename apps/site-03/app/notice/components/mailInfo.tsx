@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { timestampToString } from 'lib';
 import { useNoticeStore } from '../noticeStore';
 import backLeftArrowImg from '../img/backLeftArrow.png';
+import edit from '../img/edit.png';
 import style from './mailInfo.module.scss';
 
 function Header({ tagName }: { tagName: string }) {
@@ -69,6 +70,16 @@ function MailInfo() {
                         </div>
 
                         <h2 className={style.title}>{selectedMailData.title}</h2>
+
+                        {/* 大頭貼小編欄位等後端開出來後再做判斷顯示 */}
+                        {selectMailTag.tagName !== '交易明細' && (
+                            <div className={style.editUser}>
+                                <span className={style.avatar}>
+                                    <Image alt="edit" height={30} src={edit.src} width={30} />
+                                </span>
+                                <span className={style.name}>未來官方小編</span>
+                            </div>
+                        )}
                         {selectedMailData.contentImage ? (
                             <div className={style.contentImage}>
                                 <Image
@@ -80,6 +91,11 @@ function MailInfo() {
                             </div>
                         ) : null}
                         <p className={style.content}>{selectedMailData.content}</p>
+                        {selectMailTag.tagName === '交易明細' ? (
+                            <div className={style.detailButton}>
+                                <Link href="/userInfo/tradeDetail">查看交易明細</Link>
+                            </div>
+                        ) : null}
                         {selectedMailData.ctaButtonName ? (
                             <Link
                                 className={style.ctaButton}
