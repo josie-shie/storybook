@@ -6,11 +6,7 @@ export const metadata: Metadata = {
 };
 
 function Page({ params }: { params: { articleId: string } }) {
-    return (
-        <>
-            <ArticleDetail params={params} />
-        </>
-    );
+    return <ArticleDetail params={params} />;
 }
 
 export default Page;

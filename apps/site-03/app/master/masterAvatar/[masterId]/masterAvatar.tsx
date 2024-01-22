@@ -49,6 +49,7 @@ function MasterAvatar({ params }: { params: { masterId: string } }) {
     useEffect(() => {
         setSecondRender(true);
     }, []);
+
     return (
         <div className={style.masterAvatar}>
             <Slick
