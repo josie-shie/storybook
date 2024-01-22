@@ -1,0 +1,48 @@
+.DistributeSkeleton {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .skeleton {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 500;
+        padding: 8px 14px 0;
+        border-radius: 4px;
+        border: 1px solid #fff;
+        background: rgba(255 255 255 / 20%);
+        gap: 2px;
+
+        span {
+            font-size: 14px;
+            color: #bfbfbf;
+            font-weight: 500;
+        }
+    }
+
+    .progress {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        flex: 1;
+        gap: 6px;
+
+        .play {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+
+            .ing {
+                color: #8d8d8d;
+                font-size: 12px;
+                font-weight: 400;
+            }
+        }
+
+        :global(.ui-progressBar) {
+            width: 100%;
+        }
+    }
+}
