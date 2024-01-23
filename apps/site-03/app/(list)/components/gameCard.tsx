@@ -1,8 +1,12 @@
+'use client';
+
 import type { ContestInfo } from 'data-center';
 import { GameStatus } from 'ui';
+import { motion } from 'framer-motion';
 import { parseMatchInfo } from 'lib';
 import Link from 'next/link';
 import Image from 'next/image';
+import type { MouseEvent, ReactNode } from 'react';
 import { useEffect, useState } from 'react';
 import { useFormattedTime } from '@/hooks/useFormattedTime';
 import { useLiveContestStore } from '@/store/liveContestStore';
@@ -11,7 +15,12 @@ import { useContestListStore } from '../contestListStore';
 import style from './gameCard.module.scss';
 import { CompareOdds } from './compareOdds';
 import Soccer from './img/soccer.png';
-import Video from './img/video.jpg';
+import VideoIcon from './img/video.svg';
+import CornerIcon from './img/corner.svg';
+import LiveIcon from './img/live.svg';
+import UpIcon from './img/up.svg';
+
+type Status = 'all' | 'progress' | 'schedule' | 'result';
 
 function ExtraInfo({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId: number }) {
     const globalStore = useLiveContestStore.use.contestInfo();
@@ -80,12 +89,7 @@ function AnimateLine({ contestInfo, matchId }: { contestInfo: ContestInfo; match
                     ) : null}
                 </div>
             </div>
-            <div className={style.corner}>
-                角{' '}
-                <span className={style.ratio}>{syncData.homeCorner || contestInfo.homeCorner}</span>
-                -
-                <span className={style.ratio}>{syncData.awayCorner || contestInfo.awayCorner}</span>
-            </div>
+            <div className={style.midHolder} />
             <div className={style.holder}>
                 <div
                     className={`${style.awayAnimate} ${
@@ -106,73 +110,95 @@ function AnimateLine({ contestInfo, matchId }: { contestInfo: ContestInfo; match
     );
 }
 
-function OddsInfo({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId: number }) {
+function OddsInfo({
+    contestInfo,
+    matchId,
+    status
+}: {
+    contestInfo: ContestInfo;
+    matchId: number;
+    status: Status;
+}) {
     const globalStore = useLiveContestStore.use.contestInfo();
+    const pinnedContest = useContestListStore.use.pinnedContest();
+    const setPinnedContest = useContestListStore.use.setPinnedContest();
     const syncData = Object.hasOwnProperty.call(globalStore, matchId) ? globalStore[matchId] : {};
+
+    const handlePinToTop = (event: MouseEvent) => {
+        event.preventDefault();
+        setPinnedContest({ matchId });
+    };
 
     return (
         <div className={style.oddsInfo}>
-            <span className={`${style.odd} ${style.left}`}>
-                {syncData.handicapHomeCurrentOdds ||
-                syncData.handicapAwayCurrentOdds ||
-                contestInfo.handicapHomeCurrentOdds ||
-                contestInfo.handicapAwayCurrentOdds ? (
-                    <>
-                        <CompareOdds
-                            value={
-                                syncData.handicapHomeCurrentOdds ||
-                                contestInfo.handicapHomeCurrentOdds
-                            }
-                        />
-                        <CompareOdds
-                            defaultColor="blue"
-                            value={syncData.handicapCurrent || contestInfo.handicapCurrent}
-                        />
-                        <CompareOdds
-                            value={
-                                syncData.handicapAwayCurrentOdds ||
-                                contestInfo.handicapAwayCurrentOdds
-                            }
-                        />
-                    </>
-                ) : null}
-            </span>
-            <span className={style.mid}>
+            <div className={`${style.oddBox} ${style.left}`}>
+                <div className={style.IconHolder}>
+                    {status === 'all' && (
+                        <motion.button
+                            className={style.pinToTop}
+                            onClick={event => {
+                                handlePinToTop(event);
+                            }}
+                            type="button"
+                            whileTap={{ scale: 0.9 }}
+                        >
+                            <UpIcon
+                                className={`${style.pinIcon} ${
+                                    pinnedContest.includes(matchId) && style.active
+                                }`}
+                            />
+                        </motion.button>
+                    )}
+                </div>
+                <span className={style.odd}>
+                    <CompareOdds
+                        value={
+                            syncData.handicapHomeCurrentOdds || contestInfo.handicapHomeCurrentOdds
+                        }
+                    />
+                    <CompareOdds
+                        defaultColor="blue"
+                        value={syncData.handicapCurrent || contestInfo.handicapCurrent}
+                    />
+                    <CompareOdds
+                        value={
+                            syncData.handicapAwayCurrentOdds || contestInfo.handicapAwayCurrentOdds
+                        }
+                    />
+                </span>
+            </div>
+            <div className={style.mid}>
                 <p className={style.halfScore}>
                     {(syncData.state || contestInfo.state) < 0 ||
                     (syncData.state || contestInfo.state) > 2 ? (
                         <>
-                            {syncData.homeHalfScore || contestInfo.homeHalfScore} -{' '}
+                            {syncData.homeHalfScore || contestInfo.homeHalfScore}-
                             {syncData.awayHalfScore || contestInfo.awayHalfScore}
                         </>
                     ) : null}
                 </p>
-            </span>
-            <span className={style.odd}>
-                {syncData.overUnderUnderCurrentOdds ||
-                syncData.overUnderOverCurrentOdds ||
-                contestInfo.overUnderUnderCurrentOdds ||
-                contestInfo.overUnderOverCurrentOdds ? (
-                    <>
-                        <CompareOdds
-                            value={
-                                syncData.overUnderUnderCurrentOdds ||
-                                contestInfo.overUnderUnderCurrentOdds
-                            }
-                        />
-                        <CompareOdds
-                            defaultColor="blue"
-                            value={syncData.overUnderCurrent || contestInfo.overUnderCurrent}
-                        />
-                        <CompareOdds
-                            value={
-                                syncData.overUnderOverCurrentOdds ||
-                                contestInfo.overUnderOverCurrentOdds
-                            }
-                        />
-                    </>
-                ) : null}
-            </span>
+            </div>
+            <div className={`${style.oddBox} ${style.right}`}>
+                <span className={style.odd}>
+                    <CompareOdds
+                        value={
+                            syncData.overUnderUnderCurrentOdds ||
+                            contestInfo.overUnderUnderCurrentOdds
+                        }
+                    />
+                    <CompareOdds
+                        defaultColor="blue"
+                        value={syncData.overUnderCurrent || contestInfo.overUnderCurrent}
+                    />
+                    <CompareOdds
+                        value={
+                            syncData.overUnderOverCurrentOdds ||
+                            contestInfo.overUnderOverCurrentOdds
+                        }
+                    />
+                </span>
+                <div className={style.IconHolder} />
+            </div>
         </div>
     );
 }
@@ -197,12 +223,12 @@ function TeamInfo({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId:
                         </p>
                     ) : null}
                 </div>
-                {contestInfo.homeChs}
+                <div className={style.teamName}>{contestInfo.homeChs}</div>
             </div>
             <div className={`${style.score}`}>
                 {(syncData.state || contestInfo.state) !== 0 ? (
                     <>
-                        {syncData.homeScore || contestInfo.homeScore} -{' '}
+                        {syncData.homeScore || contestInfo.homeScore}-
                         {syncData.awayScore || contestInfo.awayScore}
                     </>
                 ) : (
@@ -210,7 +236,7 @@ function TeamInfo({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId:
                 )}
             </div>
             <div className={`${style.awayTeam} ${style.team}`}>
-                {contestInfo.awayChs}
+                <div className={style.teamName}>{contestInfo.awayChs}</div>
                 <div className={style.cards}>
                     {(syncData.awayRed && syncData.awayRed > 0) || contestInfo.awayRed > 0 ? (
                         <p className={`${style.redCard} ${style.card}`}>
@@ -229,7 +255,15 @@ function TeamInfo({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId:
     );
 }
 
-function TopArea({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId: number }) {
+function TopArea({
+    contestInfo,
+    matchId,
+    status
+}: {
+    contestInfo: ContestInfo;
+    matchId: number;
+    status: Status;
+}) {
     const globalStore = useLiveContestStore.use.contestInfo();
     const syncData = Object.hasOwnProperty.call(globalStore, matchId) ? globalStore[matchId] : {};
     const currentMatchTime = useFormattedTime({
@@ -252,37 +286,81 @@ function TopArea({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId: 
                     />
                 </div>
             </div>
-            <div className={style.video}>
-                {contestInfo.hasAnimation ? (
-                    <Image alt="animate" className={style.videoIcon} src={Video} />
-                ) : null}
+            <div className={style.right}>
+                <div className={style.corner}>
+                    <CornerIcon className={style.cornerIcon} />
+                    <span className={style.ratio}>
+                        {syncData.homeCorner || contestInfo.homeCorner}
+                    </span>
+                    -
+                    <span className={style.ratio}>
+                        {syncData.awayCorner || contestInfo.awayCorner}
+                    </span>
+                </div>
+
+                {status === 'result' ? (
+                    <div
+                        className={`${style.resultBar} ${
+                            contestInfo.homeScore > contestInfo.awayScore && style.win
+                        }`}
+                    >
+                        <p className={style.handicap}>{contestInfo.handicapCurrent}</p>
+                        <p className={style.result}>
+                            {contestInfo.homeScore > contestInfo.awayScore ? '赢' : '输'}
+                        </p>
+                    </div>
+                ) : (
+                    <>
+                        {contestInfo.hasAnimation ? (
+                            <div className={style.live}>
+                                <div className={style.liveAnimate} />
+                                <LiveIcon />
+                            </div>
+                        ) : null}
+                        {contestInfo.hasAnimation ? (
+                            <VideoIcon className={style.videoIcon} />
+                        ) : null}
+                    </>
+                )}
             </div>
         </div>
     );
 }
 
-function GameCard({ matchId }: { matchId: number }) {
+function GameCard({
+    matchId,
+    status,
+    children
+}: {
+    matchId: number;
+    status: Status;
+    children?: ReactNode;
+}) {
     const contestInfo = useContestListStore.use.contestInfo()[matchId];
     const setInterceptData = useInterceptPassStore.use.setInterceptData();
 
     return (
-        <li className={style.gameCard}>
+        <li className={`${style.gameCard} `}>
             <Link
+                className={style.gameCardLink}
                 href={`/football/${matchId}`}
                 onClick={() => {
                     setInterceptData(contestInfo);
                 }}
             >
-                <div>
-                    <TopArea contestInfo={contestInfo} matchId={matchId} />
-                    <TeamInfo contestInfo={contestInfo} matchId={matchId} />
-                    <OddsInfo contestInfo={contestInfo} matchId={matchId} />
-                    {contestInfo.state !== 0 && (
-                        <AnimateLine contestInfo={contestInfo} matchId={matchId} />
-                    )}
-                    <ExtraInfo contestInfo={contestInfo} matchId={matchId} />
-                </div>
+                <TopArea contestInfo={contestInfo} matchId={matchId} status={status} />
+                <TeamInfo contestInfo={contestInfo} matchId={matchId} />
+                {status !== 'result' && (
+                    <>
+                        <OddsInfo contestInfo={contestInfo} matchId={matchId} status={status} />
+                        {contestInfo.state !== 0 && (
+                            <AnimateLine contestInfo={contestInfo} matchId={matchId} />
+                        )}
+                        <ExtraInfo contestInfo={contestInfo} matchId={matchId} />
+                    </>
+                )}
             </Link>
+            {children}
         </li>
     );
 }

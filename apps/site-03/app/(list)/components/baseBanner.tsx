@@ -50,7 +50,7 @@ function getRandomImageConfig(isLogin: boolean) {
     return config;
 }
 
-function BaseBanner() {
+function BaseBanner({ className }: { className: string }) {
     const [isMounted, setIsMounted] = useState(false);
     const isLogin = useUserStore.use.isLogin();
 
@@ -65,11 +65,12 @@ function BaseBanner() {
     const randomMap = randomImage[randomNumberInit];
 
     return (
-        <div className={style.baseBanner}>
+        <div className={`${style.baseBanner} ${className}`}>
             {isMounted ? (
-                <Link href={randomMap?.link || defaultConfig.link}>
+                <Link className={style.banner} href={randomMap?.link || defaultConfig.link}>
                     <Image
                         alt={randomMap?.label || defaultConfig.label}
+                        priority
                         src={randomMap?.image || defaultConfig.image}
                     />
                 </Link>

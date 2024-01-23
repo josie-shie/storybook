@@ -60,12 +60,14 @@ function SlickNav({
                             {isMounted ? (
                                 <ButtonBase
                                     className={`ui-slick-button ${style.tabButton} ${
-                                        activeStatus === index ? style.selected : ''
+                                        activeStatus === index
+                                            ? `${style.selected} ui-slick-button-selected`
+                                            : ''
                                     } ${
                                         (activeIndex < 0 && index === 0) ||
                                         (activeIndex >= tabs.length - 1 &&
                                             index === tabs.length - 1)
-                                            ? style.selected
+                                            ? `${style.selected} ui-slick-button-selected`
                                             : ''
                                     }`}
                                     key={item.label}
@@ -79,12 +81,14 @@ function SlickNav({
                             ) : (
                                 <button
                                     className={`ui-slick-button ${style.tabButton} ${
-                                        activeStatus === index ? style.selected : ''
+                                        activeStatus === index
+                                            ? `${style.selected} ui-slick-button-selected`
+                                            : ''
                                     } ${
                                         (activeIndex < 0 && index === 0) ||
                                         (activeIndex >= tabs.length - 1 &&
                                             index === tabs.length - 1)
-                                            ? style.selected
+                                            ? `${style.selected} ui-slick-button-selected`
                                             : ''
                                     }`}
                                     key={item.label}
@@ -178,6 +182,7 @@ function Slick({
                 }}
                 onSwiper={swiper => {
                     swiperRef.current = swiper;
+                    resetSwiperHight();
                 }}
                 onTouchEnd={handleTouchEnd}
                 slidesPerView={1}
