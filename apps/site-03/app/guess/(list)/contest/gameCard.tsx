@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useLiveContestStore } from '@/store/liveContestStore';
 import { useFormattedTime } from '@/hooks/useFormattedTime';
 import defaultTeamLogo from '@/app/football/[matchId]/img/defaultTeamLogo.png';
-import MasterIcon from '../img/master.png';
+import MasterIcon from '../img/master.svg';
 import { CompareOdds } from './compareOdds';
 import { useGuessContestListStore } from './contestStore';
 import style from './gameCard.module.scss';
@@ -58,33 +58,33 @@ function GameCard({ matchId }: { matchId: number }) {
                         </div>
                     </div>
                     <div className={style.right}>
-                        <div className={style.masterPredict}>
-                            <Image alt="" src={MasterIcon} />
-                            <span>{contestInfo.totalNum}</span> 玩家预测
+                        <div className={style.dataInfo}>
+                            <div className={style.odds}>
+                                <div>初盤让分</div>
+                                <CompareOdds
+                                    defaultColor="#4A4A4A"
+                                    value={
+                                        syncData.handicapCurrent ||
+                                        convertHandicap(contestInfo.handicap)
+                                    }
+                                />
+                            </div>
+                            <div className={style.odds}>
+                                <div>初盤大小</div>
+                                <CompareOdds
+                                    defaultColor="#4A4A4A"
+                                    value={
+                                        syncData.overUnderCurrent ||
+                                        convertHandicap(contestInfo.overUnder)
+                                    }
+                                />
+                            </div>
                         </div>
-                        <div>
-                            <div className={style.dataInfo}>
-                                <div className={style.odds}>
-                                    <div>初盤让分</div>
-                                    <CompareOdds
-                                        defaultColor="blue"
-                                        value={
-                                            syncData.handicapCurrent ||
-                                            convertHandicap(contestInfo.handicap)
-                                        }
-                                    />
-                                </div>
-
-                                <div className={style.odds}>
-                                    <div>初盤大小</div>
-                                    <CompareOdds
-                                        defaultColor="blue"
-                                        value={
-                                            syncData.overUnderCurrent ||
-                                            convertHandicap(contestInfo.overUnder)
-                                        }
-                                    />
-                                </div>
+                        <div className={style.playerPredict}>
+                            <div className={style.text}>玩家预测</div>
+                            <div className={style.people}>
+                                <MasterIcon />
+                                {contestInfo.totalNum}
                             </div>
                         </div>
                     </div>
