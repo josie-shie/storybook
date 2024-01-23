@@ -1,13 +1,13 @@
 import { ProgressBar } from 'ui/stories/progressBar/progressBar';
+import { useGuessDetailStore } from '../../guessDetailStore';
 import style from './analyze.module.scss';
-import { useGuessDetailStore } from './guessDetailStore';
 
 interface AnalyzeProps {
     homeType: string;
     awayType: string;
 }
 
-function AnalyzeColumn({ homeType, awayType }: AnalyzeProps) {
+function AnalyzeRow({ homeType, awayType }: AnalyzeProps) {
     const highWinRateTrend = useGuessDetailStore.use.highWinRateTrend();
 
     const calculatePercentage = (a: number, b: number) => {
@@ -26,7 +26,7 @@ function AnalyzeColumn({ homeType, awayType }: AnalyzeProps) {
     const rightPercent = 100 - leftPercent;
 
     return (
-        <div className={style.column}>
+        <div className={style.row}>
             <div className={style.button}>
                 <span className={style.team}>{homeType}</span>
                 <span className={style.user}>{leftPercent}%</span>
@@ -53,4 +53,4 @@ function AnalyzeColumn({ homeType, awayType }: AnalyzeProps) {
     );
 }
 
-export default AnalyzeColumn;
+export default AnalyzeRow;

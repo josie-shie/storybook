@@ -10,7 +10,7 @@ import { useAuthStore } from '@/store/authStore';
 import BaseNoData from '@/components/baseNoData/noData';
 import Rule from './components/rule/rule';
 import GameCard from './gameCard';
-import AnalyzeColumn from './analyze';
+import AnalyzeRow from './components/analyzeRow/analyze';
 import Title from './img/title.png';
 import style from './masterPlan.module.scss';
 import { useGuessDetailStore } from './guessDetailStore';
@@ -37,8 +37,8 @@ function Trend() {
             <div className={style.analyze}>
                 {showdistributed ? (
                     <>
-                        <AnalyzeColumn awayType="客" homeType="主" />
-                        <AnalyzeColumn awayType="小" homeType="大" />
+                        <AnalyzeRow awayType="客" homeType="主" />
+                        <AnalyzeRow awayType="小" homeType="大" />
                     </>
                 ) : (
                     <div className={style.mask}>
