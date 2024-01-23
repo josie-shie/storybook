@@ -12,7 +12,13 @@ import Football from './football';
 import ArrowIcon from './img/arrow.png';
 import style from './list.module.scss';
 
-function List({ todayContest }: { todayContest: GetContestListResponse }) {
+function List({
+    todayContest,
+    pinnedContest
+}: {
+    todayContest: GetContestListResponse;
+    pinnedContest: number[];
+}) {
     const router = useRouter();
     const allRef = useRef<HTMLDivElement>(null);
     const progressRef = useRef<HTMLDivElement>(null);
@@ -120,21 +126,41 @@ function List({ todayContest }: { todayContest: GetContestListResponse }) {
                 tabs={tabList}
             >
                 <div className={style.largeGap}>
-                    <Football ref={allRef} status="all" todayContest={todayContest} />
+                    <Football
+                        pinnedContest={pinnedContest}
+                        ref={allRef}
+                        status="all"
+                        todayContest={todayContest}
+                    />
                 </div>
                 <div className={style.largeGap}>
                     {secendRender ? (
-                        <Football ref={progressRef} status="progress" todayContest={todayContest} />
+                        <Football
+                            pinnedContest={pinnedContest}
+                            ref={progressRef}
+                            status="progress"
+                            todayContest={todayContest}
+                        />
                     ) : null}
                 </div>
                 <div className={style.largeGap}>
                     {secendRender ? (
-                        <Football ref={scheduleRef} status="schedule" todayContest={todayContest} />
+                        <Football
+                            pinnedContest={pinnedContest}
+                            ref={scheduleRef}
+                            status="schedule"
+                            todayContest={todayContest}
+                        />
                     ) : null}
                 </div>
                 <div className={style.largeGap}>
                     {secendRender ? (
-                        <Football ref={resultRef} status="result" todayContest={todayContest} />
+                        <Football
+                            pinnedContest={pinnedContest}
+                            ref={resultRef}
+                            status="result"
+                            todayContest={todayContest}
+                        />
                     ) : null}
                 </div>
             </Slick>
