@@ -1,6 +1,5 @@
 'use client';
 import { useEffect, useState } from 'react';
-import Image from 'next/image';
 import { getProDistrib, getProGuess, payForProDistrib, payForProGuess } from 'data-center';
 import { useParams, useRouter } from 'next/navigation';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -11,7 +10,8 @@ import BaseNoData from '@/components/baseNoData/noData';
 import Rule from './components/rule/rule';
 import GameCard from './gameCard';
 import AnalyzeRow from './components/analyzeRow/analyze';
-import Title from './img/title.png';
+import TitleIcon from './img/title.svg';
+import GeryTitleIcon from './img/greyTitle.svg';
 import style from './masterPlan.module.scss';
 import { useGuessDetailStore } from './guessDetailStore';
 import DistributeSkeleton from './components/distributeSkeleton/distributeSkeleton';
@@ -23,30 +23,33 @@ function Trend() {
     if (!highWinRateTrend.enoughProData) return null;
     return (
         <div className={style.area}>
-            <div className={style.title}>
-                <div className={style.name}>
-                    <Image alt="titleIcon" src={Title} width={16} />
-                    {showdistributed ? (
-                        <span>近20场高胜率玩家风向</span>
-                    ) : (
-                        <span className={style.locked}>猜球后即可解锁近20场高胜率玩家风向</span>
-                    )}
-                </div>
-                {showdistributed ? <Rule /> : null}
-            </div>
-            <div className={style.analyze}>
-                {showdistributed ? (
-                    <>
+            {showdistributed ? (
+                <>
+                    <div className={style.title}>
+                        <div className={style.name}>
+                            <TitleIcon />
+                            <span>近20场高胜率玩家风向</span>
+                        </div>
+                        <Rule />
+                    </div>
+                    <div className={style.analyze}>
                         <AnalyzeRow awayType="客" homeType="主" />
                         <AnalyzeRow awayType="小" homeType="大" />
-                    </>
-                ) : (
-                    <div className={style.mask}>
+                    </div>
+                </>
+            ) : (
+                <>
+                    <div className={style.midTitle}>
+                        <GeryTitleIcon />
+                        <span className={style.locked}>猜球后即可解锁近20场高胜率玩家风向</span>
+                    </div>
+                    <div className={style.lockedAnalyze}>
                         <DistributeSkeleton />
                         <DistributeSkeleton />
                     </div>
-                )}
-            </div>
+                    <div className={style.masterGuess}>{18}位高手猜過</div>
+                </>
+            )}
         </div>
     );
 }
