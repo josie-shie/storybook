@@ -8,6 +8,8 @@ import Avatar from '@/components/avatar/avatar';
 import Tag from '@/components/tag/tag';
 import TagSplit from '@/components/tagSplit/tagSplit';
 import Fire from '@/app/img/fire.png';
+import User from './img/user.svg';
+import LockOpen from './img/lockOpen.svg';
 import { useUserStore } from '@/store/userStore';
 import style from './info.module.scss';
 
@@ -60,31 +62,69 @@ function Info({ article, setArticle }: InfoProps) {
                             <span className={style.name}>{article.mentorName}</span>
                         </div>
                         <div>
+                            {/* <Tag
+                                background="rgba(255, 255, 255, 0.30)"
+                                borderColor="#6e94d4"
+                                text={`总进球 ${article.tag.winMaxAccurateStreak}场`}
+                            />
+                            <Tag
+                                background="rgba(255, 255, 255, 0.30)"
+                                borderColor="#6e94d4"
+                                text={`勝負 ${article.tag.winMaxAccurateStreak}场`}
+                            /> */}
                             {article.tag.winMaxAccurateStreak > 0 && (
                                 <Tag
                                     icon={<Image alt="fire" src={Fire} />}
                                     text={`${article.tag.winMaxAccurateStreak} 連紅`}
                                 />
                             )}
-
                             {article.tag.quarterRanking > 0 && (
-                                <TagSplit isBlueBg number={article.tag.quarterRanking} text="季" />
+                                <TagSplit
+                                    isBlueBg
+                                    border={false}
+                                    number={article.tag.quarterRanking}
+                                    textBackground="rgba(255, 255, 255, 0.30)"
+                                    textColor="#fff"
+                                    text="季"
+                                />
                             )}
                             {article.tag.monthRanking > 0 && (
-                                <TagSplit isBlueBg number={article.tag.monthRanking} text="月" />
+                                <TagSplit
+                                    isBlueBg
+                                    border={false}
+                                    number={article.tag.monthRanking}
+                                    textBackground="rgba(255, 255, 255, 0.30)"
+                                    textColor="#fff"
+                                    text="月"
+                                />
                             )}
                             {article.tag.weekRanking > 0 && (
-                                <TagSplit isBlueBg number={article.tag.weekRanking} text="周" />
+                                <TagSplit
+                                    isBlueBg
+                                    border={false}
+                                    number={article.tag.weekRanking}
+                                    textBackground="rgba(255, 255, 255, 0.30)"
+                                    textColor="#fff"
+                                    text="周"
+                                />
                             )}
                         </div>
                         <div className={style.bottom}>
-                            {article.fansNumber > 0 && <span>粉絲: {article.fansNumber} </span>}
-                            {article.unlockNumber > 0 && <span>解鎖: {article.unlockNumber} </span>}
-                            {article.tag.quarterHitRate > 0 && (
+                            {article.fansNumber > 0 && (
                                 <span>
-                                    近一季猜球胜率: {Math.round(article.tag.quarterHitRate * 100)}%
+                                    <User />
+                                    <span>粉丝</span>
+                                    {article.fansNumber}{' '}
                                 </span>
                             )}
+                            {article.unlockNumber > 0 && (
+                                <span>
+                                    <LockOpen />
+                                    <span>解锁</span>
+                                    {article.unlockNumber}{' '}
+                                </span>
+                            )}
+                            {/* <span><span>猜球胜率</span>48%</span> */}
                         </div>
                     </div>
                 </div>

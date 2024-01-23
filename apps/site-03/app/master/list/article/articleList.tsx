@@ -73,13 +73,13 @@ function ArticleList() {
     return (
         <>
             <div className={style.recommendPredict}>
-                <Image alt="" className={style.banner} src={Banner} />
-                <div className={style.toolbar}>
+                {/* <Image alt="" className={style.banner} src={Banner} /> */}
+                {/* <div className={style.toolbar}>
                     <FilterButton />
                 </div>
                 <div className={style.button}>
                     <WeekButton isActive={isActive} updateActive={updateActive} />
-                </div>
+                </div> */}
                 {articleList.length === 0 && isNoData === null && <SkeletonLayout />}
 
                 {articleList.length === 0 && isNoData ? (
@@ -104,8 +104,8 @@ function ArticleList() {
                 )}
             </div>
 
-            <Filter />
-            <FilterResult />
+            {/* <Filter />
+            <FilterResult /> */}
         </>
     );
 }

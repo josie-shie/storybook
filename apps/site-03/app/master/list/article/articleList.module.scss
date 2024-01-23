@@ -3,7 +3,7 @@
 }
 
 .article {
-    padding: 0 12px;
+    padding-bottom: 12px;
     background: #fff;
 }
 
@@ -15,9 +15,10 @@
 
 .recommendPredict {
     background: #fff;
-    height: calc(100dvh - 154px);
+    height: calc(100dvh - 108px);
     overflow: auto;
-    padding-top: 10px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
 
     .banner {
         width: 100%;
@@ -31,5 +32,15 @@
         display: inline-block;
         margin-top: 12px;
         padding: 0 12px;
+    }
+}
+
+.listEnd {
+    text-align: center;
+
+    p {
+        color: #bfbfbf;
+        font-size: 12px;
+        padding: 8px 0 18px 0;
     }
 }

@@ -1,7 +1,6 @@
 .articleContent {
     overflow: visible;
     background: #f8f8f8;
-    margin-top: -20px;
     border-radius: 16px 16px 0 0;
 
     .articleLayout {
@@ -9,24 +8,49 @@
     }
 
     .container {
-        padding: 12px;
+        padding: 16px 12px;
         background: #fff;
         border-radius: 16px 16px 0 0;
 
-        .time {
-            display: block;
-            padding-bottom: 8px;
-            color: #979797;
-            font-size: 12px;
-            font-weight: 400;
-            text-align: left;
+        .topTitle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 30px;
+
+            .leagueTeam {
+                display: flex;
+                align-items: center;
+                gap: 4px;
+
+                span {
+                    color: #8d8d8d;
+                    font-size: 12px;
+                    font-weight: 500;
+
+                    &:first-child {
+                        color: #276ce1;
+                    }
+                }
+
+                .line {
+                    color: #d9d9d9;
+                }
+            }
+
+            .time {
+                color: #979797;
+                font-size: 12px;
+                font-weight: 400;
+                text-align: left;
+            }
         }
 
         .title {
             position: relative;
             display: block;
             padding-left: 10px;
-            padding-bottom: 32px;
+            padding-bottom: 18px;
             font-size: 18px;
             font-weight: 600;
             color: #222;
@@ -123,7 +147,8 @@
                 position: relative;
 
                 .content {
-                    margin-top: 24px;
+                    margin-top: 5px;
+                    margin-bottom: 10px;
                     color: #4a4a4a;
                     font-size: 14px;
                     font-weight: 400;
@@ -131,18 +156,19 @@
 
                 .button {
                     position: absolute;
-                    bottom: 27px;
+                    bottom: 20px;
                     display: flex;
                     align-items: center;
                     justify-content: center;
                     width: 100%;
                     gap: 4px;
                     padding: 6px;
-                    background: #4489ff;
+                    border: 1px solid #4489ff;
+                    background: transparent;
                     border-radius: 30px;
 
                     .text {
-                        color: #fff;
+                        color: #4489ff;
                         font-size: 14px;
                         font-weight: 500;
                     }
@@ -151,7 +177,7 @@
                 .buttonArea {
                     position: relative;
                     width: 100%;
-                    height: 131px;
+                    height: 116px;
 
                     .backDrop {
                         position: absolute;
@@ -171,7 +197,7 @@
 
             .paidArea {
                 .content {
-                    margin: 24px 0 32px;
+                    margin: 10px 0 32px;
                     color: #4a4a4a;
                     font-size: 14px;
                     font-weight: 400;

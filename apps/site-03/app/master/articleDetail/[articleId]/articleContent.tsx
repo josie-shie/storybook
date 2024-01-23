@@ -116,15 +116,20 @@ function ArticleContent({ params, article, fetchPostDetail }: ArticleContentProp
         <div className={style.articleContent}>
             <div className={style.articleLayout}>
                 <div className={style.container}>
-                    <div className={style.time}>
-                        发表于今天 {timestampToMonthDay(article.createdAt)}
+                    <div className={style.topTitle}>
+                        <div className={style.leagueTeam}>
+                            <span>{article.leagueName}</span>
+                            <span className={style.line}>|</span>
+                            <span>
+                                {article.homeTeam.name}VS{article.awayTeam.name}
+                            </span>
+                        </div>
+                        <div className={style.time}>
+                            发表于今天 {timestampToMonthDay(article.createdAt)}
+                        </div>
                     </div>
                     <div className={style.title}>{article.analysisTitle}</div>
                     <div className={style.article}>
-                        <div className={style.leagueName}>
-                            {article.leagueName}
-                            {timestampToString(article.matchTime, 'MM-DD HH:mm')}
-                        </div>
                         <div className={style.clubInfo}>
                             <div className={style.team}>
                                 <Image

@@ -8,7 +8,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 import { payForPost, getMemberInfo } from 'data-center';
-import UnlockButton from '@/components/unlockButton/unlockButton';
+// import UnlockButton from '@/components/unlockButton/unlockButton';
 import Tag from '@/components/tag/tag';
 import TagSplit from '@/components/tagSplit/tagSplit';
 import Avatar from '@/components/avatar/avatar';
@@ -16,6 +16,11 @@ import NormalDialog from '@/components/normalDialog/normalDialog';
 import { useUserStore } from '@/store/userStore';
 import ConfirmPayDrawer from '@/components/confirmPayDrawer/confirmPayDrawer';
 import Win from '../../img/win.png';
+import Lose from '../../img/lose.png';
+import Draw from '../../img/draw.png';
+import Eye from './img/eye.svg';
+import LockOpen from './img/lockOpen.svg';
+import LockOpenBlue from './img/lockOpenBlue.svg';
 import style from './articleCard.module.scss';
 import Wallet from './img/wallet.png';
 
@@ -87,6 +92,30 @@ function ArticleCard({ article }: { article: RecommendPost }) {
     return (
         <>
             <li className={style.articleCard}>
+                {article.predictionResult === 'WIN' && (
+                    <div className={style.result}>
+                        <Image alt="" height={27} src={Win} width={27} />
+                    </div>
+                )}
+                {article.predictionResult === 'LOSE' && (
+                    <div className={style.result}>
+                        <Image alt="" height={27} src={Lose} width={27} />
+                    </div>
+                )}
+                {article.predictionResult === 'DRAW' && (
+                    <div className={style.result}>
+                        <Image alt="" height={27} src={Draw} width={27} />
+                    </div>
+                )}
+
+                {(article.isUnlocked || article.price === 0) && (
+                    <div className={style.unlockStatus}>
+                        <span className={style.unlocked}>
+                            <LockOpenBlue width={16} height={16} />
+                        </span>
+                    </div>
+                )}
+
                 <div className={style.user}>
                     <Link
                         className={style.avatarContainer}
@@ -102,6 +131,18 @@ function ArticleCard({ article }: { article: RecommendPost }) {
                             {article.mentorName}
                         </Link>
                         <div className={style.tagsContainer}>
+                            {/* <Tag
+                                background="#f3f3f3"
+                                borderColor="#bfbfbf"
+                                color="#8d8d8d"
+                                text={`總進球 ${article.tag.winMaxAccurateStreak}場`}
+                            />
+                            <Tag
+                                background="#f3f3f3"
+                                borderColor="#bfbfbf"
+                                color="#8d8d8d"
+                                text={`勝負 ${article.tag.winMaxAccurateStreak}場`}
+                            /> */}
                             {article.tag.winMaxAccurateStreak > 0 && (
                                 <Tag
                                     icon={<IconFlame size={10} />}
@@ -131,41 +172,44 @@ function ArticleCard({ article }: { article: RecommendPost }) {
                             )}
                         </div>
                     </div>
-                    <div className={style.unlockStatus}>
-                        {article.isUnlocked || article.price === 0 ? (
-                            <span className={style.unlocked}>已解鎖</span>
-                        ) : (
-                            <>
-                                <UnlockButton handleClick={isOpenDialog} price={article.price} />
-                                <span className={style.unlockNumber}>
-                                    已有{article.unlockCounts}人解鎖
-                                </span>
-                            </>
+                    <div className={style.rate}>
+                        <span className={style.hit}>
+                            {article.weekHitRate}
+                            <i>%</i>
+                        </span>
+                        {article.lastTenAnalysisWinCountStr && (
+                            <span className={style.hitName}>
+                                {article.lastTenAnalysisWinCountStr}
+                            </span>
                         )}
                     </div>
                 </div>
-                <div className={style.title}>{article.analysisTitle}</div>
+
                 <Link href={`/master/articleDetail/${article.id}`}>
                     <div className={style.game}>
-                        <div className={style.detail}>
-                            {article.leagueName}
-                            <span className={style.time}>
-                                | {timestampToString(article.matchTime, 'MM-DD HH:mm')}
+                        <div className={style.leagueTeam}>
+                            <span>{article.leagueName}</span>
+                            <span className={style.line}>|</span>
+                            <span>
+                                {article.homeTeamName}VS{article.awayTeamName}
                             </span>
                         </div>
-                        <div className={style.teamName}>
-                            <span className={style.play}>大小</span>
-                            <div className={style.combination}>
-                                {article.homeTeamName} vs {article.awayTeamName}
-                            </div>
-                        </div>
-                        {article.predictionResult === 'WIN' && (
-                            <Image alt="" height={36} src={Win} width={36} />
-                        )}
+                        <div className={style.title}>{article.analysisTitle}</div>
                     </div>
                 </Link>
                 <div className={style.postTime}>
-                    发表于今天 {timestampToMonthDay(article.createdAt)}
+                    <span>发表于今天 {timestampToMonthDay(article.createdAt)}</span>
+                    <div className={style.seen}>
+                        <span>
+                            <Eye />
+                            9999
+                        </span>
+                        <span className={style.line}>|</span>
+                        <span>
+                            <LockOpen />
+                            {article.unlockCounts}
+                        </span>
+                    </div>
                 </div>
             </li>
             <ConfirmPayDrawer
