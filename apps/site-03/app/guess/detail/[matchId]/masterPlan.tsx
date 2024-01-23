@@ -1,9 +1,9 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { getProDistrib, getProGuess, payForProDistrib, payForProGuess } from 'data-center';
+import { getProDistrib, getProGuess, payForProGuess } from 'data-center';
 import { useParams, useRouter } from 'next/navigation';
 import CircularProgress from '@mui/material/CircularProgress';
-import PaidDialog from '@/components/paidDialog/paidDialog';
+import ConfirmPayDrawer from '@/components/confirmPayDrawer/confirmPayDrawer';
 import { useUserStore } from '@/store/userStore';
 import { useAuthStore } from '@/store/authStore';
 import BaseNoData from '@/components/baseNoData/noData';
@@ -19,6 +19,8 @@ import DistributeSkeleton from './components/distributeSkeleton/distributeSkelet
 function Trend() {
     const highWinRateTrend = useGuessDetailStore.use.highWinRateTrend();
     const showdistributed = highWinRateTrend.memberPermission;
+
+    const proGuessNumber = highWinRateTrend.home ? 18 : 0; // TODO: API 新增高手人數欄位
 
     if (!highWinRateTrend.enoughProData) return null;
     return (
@@ -36,6 +38,7 @@ function Trend() {
                         <AnalyzeRow awayType="客" homeType="主" />
                         <AnalyzeRow awayType="小" homeType="大" />
                     </div>
+                    <div className={style.masterGuess}>{proGuessNumber}位高手猜過</div>
                 </>
             ) : (
                 <>
@@ -47,7 +50,7 @@ function Trend() {
                         <DistributeSkeleton />
                         <DistributeSkeleton />
                     </div>
-                    <div className={style.masterGuess}>{18}位高手猜過</div>
+                    <div className={style.masterGuess}>{proGuessNumber}位高手猜過</div>
                 </>
             )}
         </div>
@@ -76,9 +79,9 @@ function MasterPlanList({ isLogin, setAmount, setOpenPaid, setSelectedGameId }: 
     if (masterPlanList.length === 0) return <BaseNoData text="暂无资料" />;
     return (
         <>
-            {masterPlanList.map((el, idx) => (
+            {masterPlanList.map(el => (
                 <GameCard
-                    key={idx}
+                    key={el.guessId}
                     onOpenPaidDialog={() => {
                         if (!isLogin) {
                             setAuthQuery('login');
@@ -106,17 +109,12 @@ function MasterPlan() {
     const isLogin = useUserStore.use.isLogin();
     const userInfo = useUserStore.use.userInfo();
     const userBalance = userInfo.balance;
-    const highWinRateTrend = useGuessDetailStore.use.highWinRateTrend();
     const masterPlanList = useGuessDetailStore.use.masterPlanList();
 
     const setUserInfo = useUserStore.use.setUserInfo();
     const setHighWinRateTrend = useGuessDetailStore.use.setHighWinRateTrend();
     const setMasterPlanPrice = useGuessDetailStore.use.setMasterPlanPrice();
     const setMasterPlanList = useGuessDetailStore.use.setMasterPlanList();
-
-    const handleClickClose = () => {
-        setOpenPaid(false);
-    };
 
     const handleConfirm = async () => {
         if (userBalance <= 0) {
@@ -135,23 +133,6 @@ function MasterPlan() {
                 newList[idx].predictedPlay = data.predictedPlay;
                 setMasterPlanList(newList);
                 setUserInfo({ ...userInfo, balance: data.currentBalance });
-            }
-        } else {
-            // 解鎖高手風向
-            const res = await payForProDistrib({ matchId: Number(matchId) });
-            if (res.success) {
-                const data = res.data;
-                const newProDistrib = {
-                    ...highWinRateTrend,
-                    home: data.home,
-                    away: data.away,
-                    over: data.over,
-                    under: data.under,
-                    memberPermission: true
-                };
-                setHighWinRateTrend(newProDistrib);
-                const newUserInfo = { ...userInfo, balance: data.currentBalance };
-                setUserInfo(newUserInfo);
             }
         }
         setSelectedGameId(null);
@@ -215,12 +196,16 @@ function MasterPlan() {
                     )}
                 </div>
             </div>
-            <PaidDialog
-                amount={amount}
-                balance={userBalance}
-                onClose={handleClickClose}
-                onConfirm={handleConfirm}
-                openPaid={openPaid}
+            <ConfirmPayDrawer
+                isOpen={openPaid}
+                onClose={() => {
+                    setOpenPaid(false);
+                }}
+                onOpen={() => {
+                    setOpenPaid(true);
+                }}
+                onPay={handleConfirm}
+                price={amount}
             />
         </div>
     );
