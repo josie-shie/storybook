@@ -7,7 +7,6 @@ function UserSwitch() {
 
     return (
         <div className={style.userSwitch}>
-            <span className={style.text}>仅显示当天参与用户</span>
             <div className={style.switch}>
                 <input
                     checked={onlyShowToday}
@@ -19,6 +18,7 @@ function UserSwitch() {
                 />
                 <label htmlFor="switch">switch</label>
             </div>
+            <span className={style.text}>仅显示当天参与用户</span>
         </div>
     );
 }

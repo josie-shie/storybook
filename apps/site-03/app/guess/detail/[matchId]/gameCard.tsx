@@ -107,7 +107,7 @@ function GameCard({ plan, onOpenPaidDialog }: GameCardProps) {
                                         src={Star}
                                         width={14}
                                     />
-                                    <span className={style.text}>{unlockPrice}元</span>
+                                    <span className={style.text}>{unlockPrice}</span>
                                 </>
                             )}
                         </div>

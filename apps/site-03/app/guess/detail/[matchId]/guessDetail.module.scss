@@ -2,7 +2,7 @@
     background: linear-gradient(to right, #2c5eb2 0%, #3a82fb 100%);
 
     .container {
-        height: calc(100dvh - 110px);
-        margin-top: -14px;
+        height: calc(100dvh - 108px);
+        overflow: auto;
     }
 }
