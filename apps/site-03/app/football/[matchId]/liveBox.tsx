@@ -11,7 +11,7 @@ import TeamLogo from './components/teamLogo';
 import Header from './header';
 import style from './liveBox.module.scss';
 import bgImage from './img/bg.jpg';
-import BackIcon from './img/back.png';
+import BackIcon from './img/back.svg';
 import Football from './img/football.png';
 
 const statusStyleMap = {
@@ -102,14 +102,7 @@ function Animate() {
             {showAnimate ? (
                 <div className={style.animateBox}>
                     <iframe src={showAnimate} title="sport animate" />
-                    <Image
-                        alt="back_icon"
-                        className={style.backIcon}
-                        height={24}
-                        onClick={back}
-                        src={BackIcon}
-                        width={24}
-                    />
+                    <BackIcon className={style.backIcon} onClick={back} />
                 </div>
             ) : null}
         </>
