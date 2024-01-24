@@ -1,5 +1,5 @@
 'use client';
-import { type ReactNode } from 'react';
+import { useEffect, type ReactNode } from 'react';
 import { useParams } from 'next/navigation';
 import { AnimatePresence, motion } from 'framer-motion';
 import Footer from '@/components/footer/footer';
@@ -50,9 +50,13 @@ function BigDataLayout({
         contestInfo: {}
     });
 
+    useEffect(() => {
+        window.scroll(0, 0);
+    }, []);
+
     return (
         <>
-            {children}
+            <>{children}</>
             <Footer />
             <InterceptingDetail modal={contestModal} />
         </>

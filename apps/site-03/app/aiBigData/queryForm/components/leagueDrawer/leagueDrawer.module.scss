@@ -5,17 +5,39 @@
         background: #fff;
         display: flex;
         align-items: center;
-        gap: 8px;
         color: #4489ff;
         font-size: 14px;
         font-weight: 500;
         padding: 10px;
+        justify-content: space-between;
+
+        .selectLabel {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+    }
+
+    .reselect {
+        color: #8d8d8d;
+        font-size: 12px;
+        font-weight: 400;
     }
 }
 
 .matchFilter {
     padding: 12px;
     position: relative;
+
+    .title {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    :global(.ui-tab-header) {
+        display: none;
+    }
 
     :global(.ui-tabs-header) {
         padding: 0 !important;
@@ -30,6 +52,11 @@
     :global(.ui-tabs-header-label) {
         font-size: 14px;
         font-weight: 500;
+    }
+
+    .remark {
+        color: #222;
+        font-size: 12px;
     }
 
     h2 {
@@ -67,6 +94,7 @@
                 font-size: 14px;
                 color: #8d8d8d;
                 font-weight: 500;
+                background: #f3f3f3;
             }
 
             .selected {
@@ -117,7 +145,9 @@
             line-height: 34px;
             border-radius: 30px;
             text-align: center;
-            width: 100%;
+            max-width: 128px;
+            font-size: 14px;
+            font-weight: 500;
         }
     }
 }

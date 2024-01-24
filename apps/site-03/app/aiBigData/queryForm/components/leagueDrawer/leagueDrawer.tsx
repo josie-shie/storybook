@@ -3,53 +3,118 @@ import { Tab, Tabs } from 'ui';
 import { motion } from 'framer-motion';
 import { useMatchFilterStore } from '@/app/aiBigData/matchFilterStore';
 import BottomDrawer from '@/components/drawer/bottomDrawer';
+import { useNotificationStore } from '@/store/notificationStore';
 import FootballIcon from './img/football.svg';
 import style from './leagueDrawer.module.scss';
 
+type GroupType = 'league' | 'country';
+
 interface PropsType {
-    group: 'league' | 'country';
+    group: GroupType;
     onClose: () => void;
+}
+
+function RenderFilterList({
+    data,
+    group
+}: {
+    data?: Record<string, string[]>;
+    group: PropsType['group'];
+}) {
+    const filterPick = useMatchFilterStore.use.setFilterSelected();
+    const filterSelected = useMatchFilterStore.use.filterSelected();
+    const setIsNotificationVisible = useNotificationStore.use.setIsVisible();
+    const filterCounter = useMatchFilterStore.use.filterCounter();
+
+    const handleUpdateFilter = (item: string, currentGroup: GroupType) => {
+        if (
+            filterCounter[currentGroup] >= 5 &&
+            !Object.prototype.hasOwnProperty.call(filterSelected[currentGroup], item)
+        ) {
+            setIsNotificationVisible('最多可选择5联赛', 'error');
+            return;
+        }
+
+        filterPick(item, currentGroup);
+    };
+
+    const renderListItem = (item: string) => (
+        <motion.li
+            className={`${style.item} ${filterSelected[group][item] ? style.selected : ''}`}
+            key={item}
+            onClick={() => {
+                handleUpdateFilter(item, group);
+            }}
+            whileTap={{ scale: 0.9 }}
+        >
+            {item}
+        </motion.li>
+    );
+
+    const hotContent = data?.hot ? (
+        <div key="hot">
+            <h3>热门</h3>
+            <ul>{data.hot.map(item => renderListItem(item))}</ul>
+        </div>
+    ) : null;
+
+    const firstClassContent = data?.firstClass ? (
+        <div key="firstClass">
+            <h3>一级赛事</h3>
+            <ul>{data.firstClass.map(item => renderListItem(item))}</ul>
+        </div>
+    ) : null;
+
+    const otherContent = Object.entries(data || {})
+        .sort((a, b) => a[0].localeCompare(b[0]))
+        .map(([key, value]) => {
+            if (key === 'hot' || key === 'firstClass') return null;
+            return (
+                <div key={key}>
+                    <h3>{key}</h3>
+                    <ul>{value.map(item => renderListItem(item))}</ul>
+                </div>
+            );
+        });
+    return (
+        <>
+            {hotContent}
+            {firstClassContent}
+            {otherContent}
+        </>
+    );
 }
 
 function FilterSection({ group, onClose }: PropsType) {
     const filterInfo = useMatchFilterStore.use.filterInfo();
-    const filterSelected = useMatchFilterStore.use.filterSelected();
     const filterCounter = useMatchFilterStore.use.filterCounter();
-    const filterPick = useMatchFilterStore.use.setFilterSelected();
     const filterSubmit = useMatchFilterStore.use.setFilterList();
-    const revertFilter = useMatchFilterStore.use.revertFilterList();
-    const selectAll = useMatchFilterStore.use.selectAll();
+    const resetFilter = useMatchFilterStore.use.resetFilter();
 
     const submit = () => {
         filterSubmit(group);
         onClose();
     };
 
-    const filterList = Object.entries(filterInfo[group].infoObj)
-        .sort((a, b) => a[0].localeCompare(b[0]))
-        .map(([key, value]) => {
-            return (
-                <div key={key}>
-                    <h3>{key}</h3>
-                    <ul>
-                        {value.map(item => (
-                            <motion.li
-                                className={`${style.item} ${
-                                    filterSelected[group][item] ? style.selected : ''
-                                }`}
-                                key={item}
-                                onClick={() => {
-                                    filterPick(item, group);
-                                }}
-                                whileTap={{ scale: 0.9 }}
-                            >
-                                {item}
-                            </motion.li>
-                        ))}
-                    </ul>
-                </div>
-            );
-        });
+    const filterListExtraMap = (
+        <RenderFilterList
+            data={
+                filterInfo[group].extraMap || {
+                    hot: [],
+                    firstClass: []
+                }
+            }
+            group={group}
+        />
+    );
+    const filterListInfoObj = <RenderFilterList data={filterInfo[group].infoObj} group={group} />;
+
+    const filterList = (
+        <>
+            {filterListExtraMap}
+            {filterListInfoObj}
+        </>
+    );
 
     return (
         <>
@@ -59,30 +124,16 @@ function FilterSection({ group, onClose }: PropsType) {
                     <motion.button
                         className={style.button}
                         onClick={() => {
-                            selectAll(group);
+                            resetFilter(group);
                         }}
                         type="button"
                         whileTap={{ scale: 0.9 }}
                     >
-                        全选
-                    </motion.button>
-                    <motion.button
-                        className={style.button}
-                        onClick={() => {
-                            revertFilter(group);
-                        }}
-                        type="button"
-                        whileTap={{ scale: 0.9 }}
-                    >
-                        反选
+                        重选
                     </motion.button>
                 </div>
-                <div className={style.counter}>
-                    已选 <span className={style.blue}>{filterCounter[group]}</span> 场
-                </div>
-
                 <motion.div className={style.confirm} onClick={submit} whileTap={{ scale: 0.9 }}>
-                    确定
+                    已选择{filterCounter[group]}联赛
                 </motion.div>
             </div>
         </>
@@ -121,7 +172,10 @@ function MatchFilterDrawer({
             {onMounted ? (
                 <BottomDrawer isOpen={isOpen} onClose={onClose} onOpen={onOpen}>
                     <div className={style.matchFilter}>
-                        <h2>赛事筛选</h2>
+                        <div className={style.title}>
+                            <h2>赛事筛选</h2>
+                            <p className={style.remark}>最多可选择5联赛</p>
+                        </div>
                         <div className={style.tab}>
                             <Tabs
                                 buttonRadius={tabStyle.buttonRadius}
@@ -149,6 +203,8 @@ function MatchFilterDrawer({
 
 function LeagueDrawer() {
     const [isOpenDrawer, setIsOpenDrawer] = useState(false);
+    const contestInfo = useMatchFilterStore.use.contestInfo();
+    const selectedleagueIdList = useMatchFilterStore.use.selectedleagueIdList();
 
     return (
         <div className={style.leagueDrawer}>
@@ -158,8 +214,23 @@ function LeagueDrawer() {
                     setIsOpenDrawer(true);
                 }}
             >
-                <FootballIcon />
-                选择联赛
+                <div className={style.selectLabel}>
+                    <FootballIcon />
+                    <p>
+                        {selectedleagueIdList.length
+                            ? selectedleagueIdList.map((id, index) => {
+                                  return (
+                                      <span key={id}>
+                                          {contestInfo[id].leagueChsShort}
+                                          {index !== selectedleagueIdList.length - 1 && '、'}
+                                      </span>
+                                  );
+                              })
+                            : '选择联赛'}
+                    </p>
+                </div>
+
+                {selectedleagueIdList.length ? <p className={style.reselect}>重选</p> : null}
             </div>
             <MatchFilterDrawer
                 isOpen={isOpenDrawer}
