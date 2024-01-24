@@ -1,7 +1,7 @@
 .rank {
     overflow: auto;
     touch-action: pan-y;
-    height: calc(100dvh - 164px);
+    height: calc(100dvh - 162px);
     padding: 12px;
 
     .control {
@@ -19,7 +19,6 @@
                 display: flex;
                 align-items: center;
                 gap: 4px;
-                font-family: PingFang SC;
                 font-size: 14px;
                 font-weight: 500;
                 color: #4489ff;

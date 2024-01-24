@@ -56,7 +56,15 @@ function ContestList() {
     if (displayList.length === 0) return <BaseNoData text="暂无资料" />;
     return (
         <>
-            {displayList.map(matchId => {
+            {displayList.map((matchId, idx) => {
+                if (idx === 5) {
+                    return (
+                        <>
+                            <Image alt="" className={style.banner} src={NewBanner} />
+                            <GameCard key={matchId} matchId={matchId} />
+                        </>
+                    );
+                }
                 return <GameCard key={matchId} matchId={matchId} />;
             })}
             {rows.full < contestList.length ? (
@@ -86,7 +94,6 @@ const Contest = forwardRef(function Contest(
 
     return (
         <div className={style.contest} ref={gameListRef}>
-            <Image alt="" className={style.banner} src={NewBanner} />
             <ContestList />
         </div>
     );

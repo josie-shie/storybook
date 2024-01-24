@@ -41,7 +41,7 @@ function ContestLayout({ children, para }: { children: ReactNode; para: ReactNod
 
     return (
         <div className={style.guessLayout}>
-            <Header link="/guess" title="高手榜" />
+            <Header link="/guess" title="猜球" />
             <div className={style.guess}>{children}</div>
             <Footer />
             <InterceptingContent para={para} />
