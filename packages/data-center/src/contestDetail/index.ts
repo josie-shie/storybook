@@ -263,6 +263,31 @@ const TechnicalInfoSchema = z.object({
 
 export type TechnicalInfo = z.infer<typeof TechnicalInfoSchema>;
 
+const InformationInfoSchema = z.object({
+    content: z.string(),
+    importance: z.number()
+});
+
+const InformationListSchema = z.object({
+    good: z.object({
+        home: z.array(InformationInfoSchema),
+        away: z.array(InformationInfoSchema)
+    }),
+    bad: z.object({
+        home: z.array(InformationInfoSchema),
+        away: z.array(InformationInfoSchema)
+    }),
+    neutral: z.array(InformationInfoSchema)
+});
+
+export type GetInformationResponse = z.infer<typeof InformationListSchema>;
+
+const GetInformationListResultSchema = z.object({
+    getInformation: InformationListSchema
+});
+
+type GetInformationListResult = z.infer<typeof GetInformationListResultSchema>;
+
 const HandicapsListSchema = z.array(
     z.object({
         company: z.array(
@@ -715,6 +740,40 @@ export const getOddsRunning = async (
         return {
             success: true,
             data: oddsList
+        };
+    } catch (error) {
+        return handleApiError(error);
+    }
+};
+
+/**
+ * 取得指定賽事情報
+ * - params : (matchId: number)
+ * - returns : {@link GetInformationResponse}
+ */
+export const getInformation = async (
+    matchId: number
+): Promise<ReturnData<GetInformationResponse>> => {
+    try {
+        const { data, errors } = await fetcher<FetchResultData<GetInformationListResult>, unknown>(
+            {
+                data: {
+                    query: GET_ODDS_RUNNING_QUERY,
+                    variables: {
+                        input: {
+                            matchId
+                        }
+                    }
+                }
+            },
+            { cache: 'no-store' }
+        );
+
+        throwErrorMessage(errors);
+
+        return {
+            success: true,
+            data: data.getInformation
         };
     } catch (error) {
         return handleApiError(error);
