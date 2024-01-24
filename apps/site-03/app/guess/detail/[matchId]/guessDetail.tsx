@@ -16,7 +16,7 @@ function GuessDetail({ backHistory }: { backHistory: boolean }) {
     const router = useRouter();
 
     const headerProps = {
-        title: '猜风向'
+        title: '猜球风向'
     };
 
     const back = () => {
