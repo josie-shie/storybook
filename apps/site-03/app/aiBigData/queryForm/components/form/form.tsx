@@ -1,9 +1,8 @@
 import type { ReactNode } from 'react';
-import dayjs from 'dayjs';
 import type { PlayTypeCheckBox } from '@/app/aiBigData/queryFormStore';
 import { useQueryFormStore } from '@/app/aiBigData/queryFormStore';
 import { useNotificationStore } from '@/store/notificationStore';
-import Datepicker from '../datepicker/datepicker';
+import DateRangePicker from '@/components/dateRangePicker/dateRangePicker';
 import StepIndicator from '../stepIndicator/stepIndicator';
 import OptionButton from '../optionButton/optionButton';
 import style from './form.module.scss';
@@ -16,8 +15,6 @@ function DateRangePickerInput() {
     const setEndDate = useQueryFormStore.use.setEndDate();
     const checkboxState = useQueryFormStore.use.checkboxState();
     const { handicap, overUnder } = checkboxState;
-    const openDatePicker = useQueryFormStore.use.openDatePicker();
-    const setOpenDatePicker = useQueryFormStore.use.setOpenDatePicker();
 
     let datepickerStep: string;
     if (handicap) {
@@ -26,37 +23,16 @@ function DateRangePickerInput() {
         datepickerStep = '2';
     }
 
-    const updateQueryDate = (startDateSelected?: number, endDateSelected?: number) => {
-        if (startDateSelected && endDateSelected) {
-            setStartDate(startDateSelected);
-            setEndDate(endDateSelected);
-        }
-    };
-
     return (
         <div className={`${style.step} ${style.space}`} key="finalStep">
             <StepIndicator stepNumber={datepickerStep} text="选择时间" />
             <div className={style.timeRange}>
-                <div
-                    className={style.range}
-                    onClick={() => {
-                        setOpenDatePicker(true);
-                    }}
-                >
-                    <span>{dayjs(startDate * 1000).format('YYYY/MM/DD')}</span>
-                    <span> - </span>
-                    <span>{dayjs(endDate * 1000).format('YYYY/MM/DD')}</span>
-                </div>
-                <div className={style.datepicker}>
-                    自选
-                    <Datepicker
-                        currentEndDate={new Date(endDate * 1000)}
-                        currentStartDate={new Date(startDate * 1000)}
-                        openModal={openDatePicker}
-                        setOpenModal={setOpenDatePicker}
-                        updateQueryDate={updateQueryDate}
-                    />
-                </div>
+                <DateRangePicker
+                    endDate={endDate}
+                    setEndDate={setEndDate}
+                    setStartDate={setStartDate}
+                    startDate={startDate}
+                />
             </div>
         </div>
     );

@@ -23,16 +23,14 @@ interface QueryFormState extends InitState {
     setDialogContentType: (dialogContentType: string) => void;
     setOpenNormalDialog: (openNoramlDialog: boolean) => void;
     setDialogContent: (dialogContent: ReactNode) => void;
-    openDatePicker: boolean;
-    setOpenDatePicker: (openDatePicker: boolean) => void;
     timeRange: string;
     setTimeRange: (timeRange: string) => void;
     analysisError: string;
     setAnalysisError: (analysisError: string) => void;
-    startDate: number;
-    setStartDate: (startDate: number) => void;
-    endDate: number;
-    setEndDate: (endDate: number) => void;
+    startDate: string;
+    setStartDate: (startDate: string) => void;
+    endDate: string;
+    setEndDate: (endDate: string) => void;
     teamSelected: string[];
     setTeamSelected: (teamSelected: string) => void;
     teamHandicapOdds: string;
@@ -64,12 +62,6 @@ const initialState = (
             return { ...state, showRecord };
         });
     },
-    openDatePicker: false,
-    setOpenDatePicker: (openDatePicker: boolean) => {
-        set(state => {
-            return { ...state, openDatePicker };
-        });
-    },
     timeRange: '',
     setTimeRange: (timeRange: string) => {
         set(state => {
@@ -82,14 +74,14 @@ const initialState = (
             return { ...state, analysisError };
         });
     },
-    startDate: Math.floor(dayjs().subtract(7, 'day').toDate().getTime() / 1000),
-    setStartDate: (startDate: number) => {
+    startDate: dayjs().subtract(7, 'day').format('YYYY-M-D'),
+    setStartDate: (startDate: string) => {
         set(state => {
             return { ...state, startDate };
         });
     },
-    endDate: Math.floor(dayjs().subtract(1, 'day').toDate().getTime() / 1000),
-    setEndDate: (endDate: number) => {
+    endDate: dayjs().subtract(1, 'day').format('YYYY-M-D'),
+    setEndDate: (endDate: string) => {
         set(state => {
             return { ...state, endDate };
         });
