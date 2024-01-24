@@ -119,9 +119,12 @@ function List({
     return (
         <>
             <Slick
+                autoHeight
                 className={style.slick}
+                fixedTabs
                 initialSlide={0}
                 onSlickEnd={onSlickEnd}
+                resetHeightKey="contestList"
                 styling="button"
                 tabs={tabList}
             >

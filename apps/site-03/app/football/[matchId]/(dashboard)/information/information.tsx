@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { GetInformationResponse } from 'data-center';
-import { resetSwiperHight } from 'ui/stories/slickPro/slick';
+import { slickOption } from 'ui/stories/slickPro/slick';
 import { useContestDetailStore } from '../../contestDetailStore';
 import style from './information.module.scss';
 
@@ -19,6 +19,13 @@ function Information({ information }: { information: GetInformationResponse }) {
         color: '#8d8d8d'
     };
     const [team, setTeam] = useState<TeamType>('home');
+
+    const handleResetHeight = () => {
+        if (typeof slickOption.contestInfoResetHeight !== 'undefined') {
+            slickOption.contestInfoResetHeight();
+        }
+    };
+
     return (
         <div className={style.information}>
             <div className={style.tabBar}>
@@ -26,7 +33,7 @@ function Information({ information }: { information: GetInformationResponse }) {
                     animate={team === 'home' ? tabActive : tabDefault}
                     className={style.tab}
                     onAnimationComplete={() => {
-                        resetSwiperHight();
+                        handleResetHeight();
                     }}
                     onClick={() => {
                         setTeam('home');
@@ -38,7 +45,7 @@ function Information({ information }: { information: GetInformationResponse }) {
                     animate={team === 'neutral' ? tabActive : tabDefault}
                     className={style.tab}
                     onAnimationComplete={() => {
-                        resetSwiperHight();
+                        handleResetHeight();
                     }}
                     onClick={() => {
                         setTeam('neutral');
@@ -50,7 +57,7 @@ function Information({ information }: { information: GetInformationResponse }) {
                     animate={team === 'away' ? tabActive : tabDefault}
                     className={style.tab}
                     onAnimationComplete={() => {
-                        resetSwiperHight();
+                        handleResetHeight();
                     }}
                     onClick={() => {
                         setTeam('away');

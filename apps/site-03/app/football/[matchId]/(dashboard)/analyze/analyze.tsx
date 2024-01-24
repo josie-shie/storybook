@@ -4,7 +4,7 @@ import type {
     GetLeaguePointsRankResponse,
     GetBeforeGameIndexResponse
 } from 'data-center';
-import { resetSwiperHight } from 'ui/stories/slickPro/slick';
+import { slickOption } from 'ui/stories/slickPro/slick';
 import PageEndText from '@/components/pageEndText/pageEndText';
 import { createAnalyzeStore } from '../../analyzeStore';
 import BeforeGameTable from './beforeGameTable';
@@ -57,7 +57,9 @@ function Analyze({
         awayRecordData: analysisData.LastMatches.away
     });
 
-    resetSwiperHight();
+    if (typeof slickOption.contestInfoResetHeight !== 'undefined') {
+        slickOption.contestInfoResetHeight();
+    }
 
     return (
         <>

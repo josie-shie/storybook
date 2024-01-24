@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import type { GetSingleMatchResponse, HandicapsInfo } from 'data-center';
-import { resetSwiperHight } from 'ui/stories/slickPro/slick';
+import { slickOption } from 'ui/stories/slickPro/slick';
 import { CompareOdds } from '@/app/(list)/components/compareOdds';
 import TextRadio from '@/components/textSwitch/textSwitch';
 import ButtonSwitch from '@/components/textSwitch/buttonSwitch';
@@ -210,6 +210,12 @@ function Handicap() {
         typeof targetHandicap === 'undefined' ||
         targetHandicap.inProgress.length + targetHandicap.notStarted.length === 0;
 
+    const handleResetHeight = () => {
+        if (typeof slickOption.contestInfoResetHeight !== 'undefined') {
+            slickOption.contestInfoResetHeight();
+        }
+    };
+
     return (
         <div className={style.handicap}>
             <div className="topBar">
@@ -218,7 +224,7 @@ function Handicap() {
                 <ButtonSwitch
                     onChange={(switchValue: number) => {
                         handleChangeSwitch(switchValue);
-                        resetSwiperHight();
+                        handleResetHeight();
                     }}
                     options={switchOptions}
                     value={handicapSwitch}
@@ -228,7 +234,7 @@ function Handicap() {
                     onChange={value => {
                         setHandicapRadio(value as 'half' | 'full');
                         setDrawerTabValue(handicapRadioMapping[value] as TabType);
-                        resetSwiperHight();
+                        handleResetHeight();
                     }}
                     value={handicapRadio}
                 />
