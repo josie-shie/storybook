@@ -1,23 +1,8 @@
 import { initStore, formatFilterMap } from 'lib';
 import type { StoreWithSelectors, FilterMap } from 'lib';
+import type { GetFootballLeague } from 'data-center';
 
-type ContestInfoType = Record<number, Contest>;
-
-interface Contest {
-    startTime: number;
-    matchId: number;
-    countryCn: string;
-    leagueId: number;
-    leagueChsShort: string;
-    homeChs: string;
-    awayChs: string;
-    homeScore: number;
-    awayScore: number;
-    homeHalfScore: number;
-    awayHalfScore: number;
-    isFamous: boolean;
-    leagueLevel: number;
-}
+type ContestInfoType = Record<number, GetFootballLeague>;
 
 type GroupType = 'league' | 'country';
 interface InitState {
@@ -34,24 +19,26 @@ interface ContestList extends InitState {
             country: number;
         };
     };
-    filterInfo: { league: FilterMap; country: FilterMap };
+    filterInfo: { league: FilterMap; country: FilterMap; leagueIdMap: Record<string, number> };
     filterCounter: { league: number; country: number };
     filterSelected: { league: Record<string, boolean>; country: Record<string, boolean> };
     filterList: { group: GroupType; selectedTable: Record<string, boolean> };
-    setContestList: ({ contestList }: { contestList: Contest[] }) => void;
-    setContestInfo: ({ contestList }: { contestList: Contest[] }) => void;
+    selectedleagueIdList: number[];
+    setContestList: ({ contestList }: { contestList: GetFootballLeague[] }) => void;
+    setContestInfo: ({ contestList }: { contestList: GetFootballLeague[] }) => void;
     setFilterInit: () => void;
     setFilterSelected: (name: string, group: GroupType) => void;
     setFilterList: (group: GroupType) => void;
     selectAll: (group: GroupType) => void;
     revertFilterList: (group: GroupType) => void;
+    resetFilter: (group: GroupType) => void;
     reset: () => void;
 }
 
 let isInit = true;
 let useMatchFilterStore: StoreWithSelectors<ContestList>;
 
-const formatCounterAndSelected = (league: FilterMap, country: FilterMap) => {
+const formatCounterAndSelected = () => {
     const filterSelected = {
         league: {},
         country: {}
@@ -61,27 +48,27 @@ const formatCounterAndSelected = (league: FilterMap, country: FilterMap) => {
         country: 0
     };
 
-    Object.values(league.infoObj).forEach((value: string[]) => {
-        value.forEach(leagueName => {
-            filterSelected.league[leagueName] = true;
-            filterCounter.league += league.countMap[leagueName] || 0;
-        });
-    });
-    Object.values(country.infoObj).forEach((value: string[]) => {
-        value.forEach(countryName => {
-            filterSelected.country[countryName] = true;
-            filterCounter.country += country.countMap[countryName] || 0;
-        });
-    });
-
     return { filterSelected, filterCounter };
+};
+
+const formatLeagueIdMap = (contestInfo: ContestInfoType) => {
+    const mapping = {};
+
+    for (const leagueId in contestInfo) {
+        const item = contestInfo[leagueId];
+        mapping[item.leagueChsShort] = item.leagueId;
+    }
+
+    return mapping;
 };
 
 const initFilter = (contestInfo: ContestInfoType) => {
     const league = formatFilterMap(contestInfo, 'leagueChsShort');
     const country = formatFilterMap(contestInfo, 'countryCn');
-    const { filterSelected, filterCounter } = formatCounterAndSelected(league, country);
-    return { filterSelected, filterCounter, league, country };
+    const leagueIdMap = formatLeagueIdMap(contestInfo);
+
+    const { filterSelected, filterCounter } = formatCounterAndSelected();
+    return { filterSelected, filterCounter, league, country, leagueIdMap };
 };
 
 const initialState = (set: (updater: (state: ContestList) => Partial<ContestList>) => void) => ({
@@ -107,7 +94,8 @@ const initialState = (set: (updater: (state: ContestList) => Partial<ContestList
         country: {
             countMap: {},
             infoObj: {}
-        }
+        },
+        leagueIdMap: {}
     },
     filterSelected: {
         league: {},
@@ -117,11 +105,12 @@ const initialState = (set: (updater: (state: ContestList) => Partial<ContestList
         group: 'league' as GroupType,
         selectedTable: {}
     },
-    setContestList: ({ contestList }: { contestList: Contest[] }) => {
+    selectedleagueIdList: [],
+    setContestList: ({ contestList }: { contestList: GetFootballLeague[] }) => {
         set(state => {
             const newContestList: number[] = [];
-            contestList.forEach((match: Contest) => {
-                newContestList.push(match.matchId);
+            contestList.forEach((match: GetFootballLeague) => {
+                newContestList.push(match.leagueId);
             });
             return {
                 ...state,
@@ -129,11 +118,11 @@ const initialState = (set: (updater: (state: ContestList) => Partial<ContestList
             };
         });
     },
-    setContestInfo: ({ contestList }: { contestList: Contest[] }) => {
+    setContestInfo: ({ contestList }: { contestList: GetFootballLeague[] }) => {
         set(state => {
             const newContestInfo: ContestInfoType = {};
-            contestList.forEach((match: Contest) => {
-                newContestInfo[match.matchId] = {
+            contestList.forEach((match: GetFootballLeague) => {
+                newContestInfo[match.leagueId] = {
                     ...match
                 };
             });
@@ -150,12 +139,14 @@ const initialState = (set: (updater: (state: ContestList) => Partial<ContestList
                 newInfo[item] = state.contestInfo[item];
             }
 
-            const { filterSelected, filterCounter, league, country } = initFilter(newInfo);
+            const { filterSelected, filterCounter, league, country, leagueIdMap } =
+                initFilter(newInfo);
 
             const params = {
                 filterInfo: {
                     league,
-                    country
+                    country,
+                    leagueIdMap
                 },
                 filterSelected,
                 filterCounter,
@@ -181,6 +172,7 @@ const initialState = (set: (updater: (state: ContestList) => Partial<ContestList
     setFilterSelected: (name: string, group: GroupType) => {
         set(state => {
             const groupState = state.filterSelected[group] as Record<string, boolean> | undefined;
+            const currentSelectedState = !groupState?.[name];
 
             const newFilterSelected = {
                 ...state.filterSelected,
@@ -201,7 +193,23 @@ const initialState = (set: (updater: (state: ContestList) => Partial<ContestList
             };
             filterCounter[group] = counter;
 
-            return { filterSelected: newFilterSelected, filterCounter };
+            let newSelectedIds: number[];
+            if (currentSelectedState) {
+                newSelectedIds = [
+                    ...state.selectedleagueIdList,
+                    state.filterInfo.leagueIdMap[name]
+                ];
+            } else {
+                newSelectedIds = state.selectedleagueIdList.filter(
+                    id => id !== state.filterInfo.leagueIdMap[name]
+                );
+            }
+
+            return {
+                filterSelected: newFilterSelected,
+                filterCounter,
+                selectedleagueIdList: newSelectedIds
+            };
         });
     },
     setFilterList: (group: GroupType) => {
@@ -261,6 +269,22 @@ const initialState = (set: (updater: (state: ContestList) => Partial<ContestList
             };
         });
     },
+    resetFilter: (group: GroupType) => {
+        set(state => {
+            const filterCounter = 0;
+            const filterSelected = {};
+
+            Object.entries(state.filterSelected[group]).forEach(([key]) => {
+                filterSelected[key] = false;
+            });
+
+            return {
+                filterSelected: { ...state.filterSelected, [group]: filterSelected },
+                filterCounter: { ...state.filterCounter, [group]: filterCounter },
+                selectedleagueIdList: []
+            };
+        });
+    },
     reset: () => {
         set(() => ({ contestList: [], contestInfo: {} }));
     }
@@ -268,14 +292,17 @@ const initialState = (set: (updater: (state: ContestList) => Partial<ContestList
 
 const creatMatchFilterStore = (init: InitState) => {
     if (isInit) {
-        const { filterSelected, filterCounter, league, country } = initFilter(init.contestInfo);
+        const { filterSelected, filterCounter, league, country, leagueIdMap } = initFilter(
+            init.contestInfo
+        );
 
         const params = {
             contestList: init.contestList,
             contestInfo: init.contestInfo,
             filterInfo: {
                 league,
-                country
+                country,
+                leagueIdMap
             },
             filterSelected,
             filterCounter,

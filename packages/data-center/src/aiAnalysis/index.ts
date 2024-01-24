@@ -6,8 +6,73 @@ import {
     GET_ODDS_HINT_LIST_QUERY,
     GET_FOOTBALL_STATS_RECORD_QUERY,
     GET_FOOTBALL_STATS_QUERY,
-    GET_FOOTBALL_STATS_MATCHES_QUERY
+    GET_FOOTBALL_STATS_MATCHES_QUERY,
+    GET_FOOTBALL_LEAGUE_QUERY,
+    CHECK_MATCHES_COUNT_QUERY
 } from './graphqlQueries';
+
+export interface CheckMatchesCountRequest {
+    leagues: number[];
+    startTime: number;
+    endTime: number;
+}
+
+const CheckMatchesCountSchema = z.object({
+    leagueId: z.number(),
+    count: z.number()
+});
+
+const CheckMatchesCountResultSchema = z.object({
+    checkMatchesCount: z.object({
+        list: z.array(CheckMatchesCountSchema)
+    })
+});
+
+type CheckMatchesCountResult = z.infer<typeof CheckMatchesCountResultSchema>;
+
+export type CheckMatchesCount = z.infer<typeof CheckMatchesCountSchema>;
+export type CheckMatchesCountResponse = CheckMatchesCount[];
+
+export type FootballLeagueType = 'areaId' | 'contryId' | 'leagueId' | 'cupType' | 'rating' | 'all';
+export interface GetFootballLeagueRequest {
+    filter: FootballLeagueType;
+    value?: string;
+}
+
+const GetFootballLeagueSchema = z.object({
+    leagueId: z.number(),
+    color: z.string(),
+    nameEn: z.string(),
+    nameEnShort: z.string(),
+    nameChs: z.string(),
+    leagueChsShort: z.string(),
+    nameCht: z.string(),
+    nameChtShort: z.string(),
+    type: z.number(),
+    subSclassEn: z.string(),
+    subSclassCn: z.string(),
+    sumRound: z.number(),
+    currRound: z.number(),
+    currSeason: z.string(),
+    countryId: z.number(),
+    countryEn: z.string(),
+    countryCn: z.string(),
+    leagueLogo: z.string(),
+    countryLogo: z.string(),
+    areaId: z.number(),
+    rating: z.number()
+});
+
+const GetFootballLeagueResultSchema = z.object({
+    getLeague: z.object({
+        list: z.array(GetFootballLeagueSchema)
+    })
+});
+
+type GetFootballLeagueResult = z.infer<typeof GetFootballLeagueResultSchema>;
+
+export type GetFootballLeague = z.infer<typeof GetFootballLeagueSchema>;
+export type GetFootballLeagueResponse = GetFootballLeague[];
 
 export interface GetFootballStatsRecordRequest {
     memberId: number;
@@ -82,11 +147,6 @@ const CorrectScoreSchema = z.object({
     matches: z.array(z.number())
 });
 
-const HalfCorrectScores = z.object({
-    score: z.string(),
-    matches: z.array(z.number())
-});
-
 const GoalsIn15MinsSchema = z.object({
     goalsOver: z.array(z.number()),
     goalsUnder: z.array(z.number())
@@ -110,13 +170,7 @@ const GetFootballStatsSchema = z.object({
     fullHandicapUpperDaily: z.array(DailyMatchSchema).nullable(),
     fullHandicapLowerDaily: z.array(DailyMatchSchema).nullable(),
     fullHandicapDrawDaily: z.array(DailyMatchSchema).nullable(),
-    // 半場讓球
-    halfHandicapUpper: z.array(z.number()).nullable(),
-    halfHandicapLower: z.array(z.number()).nullable(),
-    halfHandicapDraw: z.array(z.number()).nullable(),
-    halfHandicapUpperDaily: z.array(DailyMatchSchema).nullable(),
-    halfHandicapLowerDaily: z.array(DailyMatchSchema).nullable(),
-    halfHandicapDrawDaily: z.array(DailyMatchSchema).nullable(),
+
     // 全場大小
     fullOverUnderOver: z.array(z.number()).nullable(),
     fullOverUnderUnder: z.array(z.number()).nullable(),
@@ -124,13 +178,7 @@ const GetFootballStatsSchema = z.object({
     fullOverUnderOverDaily: z.array(DailyMatchSchema).nullable(),
     fullOverUnderUnderDaily: z.array(DailyMatchSchema).nullable(),
     fullOverUnderDrawDaily: z.array(DailyMatchSchema).nullable(),
-    // 半場大小
-    halfOverUnderOver: z.array(z.number()).nullable(),
-    halfOverUnderUnder: z.array(z.number()).nullable(),
-    halfOverUnderDraw: z.array(z.number()).nullable(),
-    halfOverUnderOverDaily: z.array(DailyMatchSchema).nullable(),
-    halfOverUnderUnderDaily: z.array(DailyMatchSchema).nullable(),
-    halfOverUnderDrawDaily: z.array(DailyMatchSchema).nullable(),
+
     // 全場獨贏
     fullTimeHomeWin: z.array(z.number()).nullable(),
     fullTimeDraw: z.array(z.number()).nullable(),
@@ -138,17 +186,9 @@ const GetFootballStatsSchema = z.object({
     fullTimeHomeWinDaily: z.array(DailyMatchSchema).nullable(),
     fullTimeDrawDaily: z.array(DailyMatchSchema).nullable(),
     fullTimeAwayWinDaily: z.array(DailyMatchSchema).nullable(),
-    // 半場獨贏
-    halfTimeHomeWin: z.array(z.number()).nullable(),
-    halfTimeDraw: z.array(z.number()).nullable(),
-    halfTimeAwayWin: z.array(z.number()).nullable(),
-    halfTimeHomeWinDaily: z.array(DailyMatchSchema).nullable(),
-    halfTimeDrawDaily: z.array(DailyMatchSchema).nullable(),
-    halfTimeAwayWinDaily: z.array(DailyMatchSchema).nullable(),
 
     goalsIn15Mins: z.array(GoalsIn15MinsSchema).nullable(),
     correctScores: z.array(CorrectScoreSchema).nullable(),
-    halfCorrectScores: z.array(HalfCorrectScores).nullable(),
     goalsInterval0To1: z.array(z.number()).nullable(),
     goalsInterval2To3: z.array(z.number()).nullable(),
     goalsInterval4To6: z.array(z.number()).nullable(),
@@ -172,11 +212,12 @@ export type GetFootballStatsResponse = z.infer<typeof GetFootballStatsSchema>;
 
 export interface GetFootballStatsRequest {
     mission: string;
+    leagues: number[];
     handicapSide?: string;
     handicapValues?: string;
     overUnderValues?: string;
-    startTime?: number;
-    endTime?: number;
+    startTime: number;
+    endTime: number;
 }
 
 const GetFootballStatsMatchSchema = z.object({
@@ -318,13 +359,6 @@ export const getFootballStats = async (
                 fullHandicapUpperDaily: data.getFootballStats.fullHandicapUpperDaily || [],
                 fullHandicapLowerDaily: data.getFootballStats.fullHandicapLowerDaily || [],
                 fullHandicapDrawDaily: data.getFootballStats.fullHandicapDrawDaily || [],
-                // 半場讓球
-                halfHandicapUpper: data.getFootballStats.halfHandicapUpper || [],
-                halfHandicapLower: data.getFootballStats.halfHandicapLower || [],
-                halfHandicapDraw: data.getFootballStats.halfHandicapDraw || [],
-                halfHandicapUpperDaily: data.getFootballStats.halfHandicapUpperDaily || [],
-                halfHandicapLowerDaily: data.getFootballStats.halfHandicapLowerDaily || [],
-                halfHandicapDrawDaily: data.getFootballStats.halfHandicapDrawDaily || [],
                 // 全場大小
                 fullOverUnderOver: data.getFootballStats.fullOverUnderOver || [],
                 fullOverUnderUnder: data.getFootballStats.fullOverUnderUnder || [],
@@ -332,13 +366,6 @@ export const getFootballStats = async (
                 fullOverUnderOverDaily: data.getFootballStats.fullOverUnderOverDaily || [],
                 fullOverUnderUnderDaily: data.getFootballStats.fullOverUnderUnderDaily || [],
                 fullOverUnderDrawDaily: data.getFootballStats.fullOverUnderDrawDaily || [],
-                // 半場大小
-                halfOverUnderOver: data.getFootballStats.halfOverUnderOver || [],
-                halfOverUnderUnder: data.getFootballStats.halfOverUnderUnder || [],
-                halfOverUnderDraw: data.getFootballStats.halfOverUnderDraw || [],
-                halfOverUnderOverDaily: data.getFootballStats.halfOverUnderOverDaily || [],
-                halfOverUnderUnderDaily: data.getFootballStats.halfOverUnderUnderDaily || [],
-                halfOverUnderDrawDaily: data.getFootballStats.halfOverUnderDrawDaily || [],
                 // 全場獨贏
                 fullTimeHomeWin: data.getFootballStats.fullTimeHomeWin || [],
                 fullTimeDraw: data.getFootballStats.fullTimeDraw || [],
@@ -346,17 +373,9 @@ export const getFootballStats = async (
                 fullTimeHomeWinDaily: data.getFootballStats.fullTimeHomeWinDaily || [],
                 fullTimeDrawDaily: data.getFootballStats.fullTimeDrawDaily || [],
                 fullTimeAwayWinDaily: data.getFootballStats.fullTimeAwayWinDaily || [],
-                // 半場獨贏
-                halfTimeHomeWin: data.getFootballStats.halfTimeHomeWin || [],
-                halfTimeDraw: data.getFootballStats.halfTimeDraw || [],
-                halfTimeAwayWin: data.getFootballStats.halfTimeAwayWin || [],
-                halfTimeHomeWinDaily: data.getFootballStats.halfTimeHomeWinDaily || [],
-                halfTimeDrawDaily: data.getFootballStats.halfTimeDrawDaily || [],
-                halfTimeAwayWinDaily: data.getFootballStats.halfTimeAwayWinDaily || [],
 
                 goalsIn15Mins: data.getFootballStats.goalsIn15Mins || [],
                 correctScores: data.getFootballStats.correctScores || [],
-                halfCorrectScores: data.getFootballStats.halfCorrectScores || [],
                 goalsInterval0To1: data.getFootballStats.goalsInterval0To1 || [],
                 goalsInterval2To3: data.getFootballStats.goalsInterval2To3 || [],
                 goalsInterval4To6: data.getFootballStats.goalsInterval4To6 || [],
@@ -405,6 +424,74 @@ export const getFootballStatsMatches = async (
         return {
             success: true,
             data: data.getFootballStatsMatches.matches
+        };
+    } catch (error) {
+        return handleApiError(error);
+    }
+};
+
+/**
+ * 取得联赛列表
+ * - params : {@link GetFootballLeagueRequest}
+ * - returns : {@link GetFootballLeagueResponse}
+ * - {@link GetFootballLeague}
+ */
+export const getFootballLeague = async (
+    input: GetFootballLeagueRequest
+): Promise<ReturnData<GetFootballLeagueResponse>> => {
+    try {
+        const { data, errors } = await fetcher<FetchResultData<GetFootballLeagueResult>, unknown>(
+            {
+                data: {
+                    query: GET_FOOTBALL_LEAGUE_QUERY,
+                    variables: {
+                        input
+                    }
+                }
+            },
+            { cache: 'no-store' }
+        );
+
+        throwErrorMessage(errors);
+        GetFootballLeagueResultSchema.parse(data);
+
+        return {
+            success: true,
+            data: data.getLeague.list
+        };
+    } catch (error) {
+        return handleApiError(error);
+    }
+};
+
+/**
+ * 检查联赛是否有赛事
+ * - params : {@link CheckMatchesCountRequest}
+ * - returns : {@link CheckMatchesCountResponse}
+ * - {@link CheckMatchesCount}
+ */
+export const checkMatchesCount = async (
+    input: CheckMatchesCountRequest
+): Promise<ReturnData<CheckMatchesCountResponse>> => {
+    try {
+        const { data, errors } = await fetcher<FetchResultData<CheckMatchesCountResult>, unknown>(
+            {
+                data: {
+                    query: CHECK_MATCHES_COUNT_QUERY,
+                    variables: {
+                        input
+                    }
+                }
+            },
+            { cache: 'no-store' }
+        );
+
+        throwErrorMessage(errors);
+        CheckMatchesCountResultSchema.parse(data);
+
+        return {
+            success: true,
+            data: data.checkMatchesCount.list
         };
     } catch (error) {
         return handleApiError(error);
