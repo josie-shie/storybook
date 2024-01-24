@@ -1,0 +1,15 @@
+.normalDialog {
+    width: 188px;
+    padding: 16px;
+
+    .content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        span {
+            font-size: 14px;
+            font-weight: 400;
+        }
+    }
+}
