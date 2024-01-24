@@ -3,10 +3,6 @@
     background: #f8f8f8;
     border-radius: 16px 16px 0 0;
 
-    .articleLayout {
-        height: calc(100dvh - 209px);
-    }
-
     .container {
         padding: 16px 12px;
         background: #fff;
@@ -283,7 +279,7 @@
     .otherList {
         margin-top: 8px;
         background: #fff;
-        padding: 16px 12px;
+        padding: 16px 12px 62px 12px;
 
         .title {
             color: #222;

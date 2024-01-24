@@ -1,7 +1,7 @@
 'use client';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
-import type { OddsHintsType, OddsHintsProgress } from 'data-center';
+import type { OddsHintsType } from 'data-center';
 import { getBigdataHint } from 'data-center';
 import { useRouter } from 'next/navigation';
 import HeaderTitleFilter from '@/components/header/headerTitleFilter';
@@ -94,8 +94,7 @@ function LongDragonResult() {
 
     const getBigDataHintList = async () => {
         const res = await getBigdataHint({
-            continuity: hintsSelectType as OddsHintsType,
-            progress: hintsSelectProgres as OddsHintsProgress
+            continuity: hintsSelectType as OddsHintsType
         });
         if (!res.success) {
             setTimeout(() => {

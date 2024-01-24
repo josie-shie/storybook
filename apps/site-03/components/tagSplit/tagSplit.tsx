@@ -28,7 +28,7 @@ function TagSplit({ text, number, isBlueBg, border = true, textBackground, textC
     };
 
     return (
-        <div className={style.tagLayout} style={{ background: borderColor() }}>
+        <div className={`tagLayout ${style.tagLayout}`} style={{ background: borderColor() }}>
             <div className={style.tagLeft} style={{ background: leftColor() }}>
                 {text}
             </div>

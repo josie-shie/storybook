@@ -2,13 +2,12 @@
 
 import { IconFlame } from '@tabler/icons-react';
 import { useRouter } from 'next/navigation';
-import { timestampToMonthDay, timestampToString } from 'lib';
+import { timestampToTodayTime } from 'lib';
 import type { RecommendPost } from 'data-center';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 import { payForPost, getMemberInfo } from 'data-center';
-// import UnlockButton from '@/components/unlockButton/unlockButton';
 import Tag from '@/components/tag/tag';
 import TagSplit from '@/components/tagSplit/tagSplit';
 import Avatar from '@/components/avatar/avatar';
@@ -89,6 +88,24 @@ function ArticleCard({ article }: { article: RecommendPost }) {
         setIsOpenPaid(true);
     };
 
+    const getText = predictedPlay => {
+        switch (predictedPlay) {
+            case 'HANDICAP':
+                return '胜负';
+            case 'OVERUNDER':
+                return '总进球';
+            default:
+                return '';
+        }
+    };
+
+    const showHandicap =
+        article.mentorArticleCount.predictedPlay === 'HANDICAP' &&
+        article.mentorArticleCount.counts >= 10;
+    const showOverUnder =
+        article.mentorArticleCount.predictedPlay === 'OVERUNDER' &&
+        article.mentorArticleCount.counts >= 10;
+
     return (
         <>
             <li className={style.articleCard}>
@@ -131,18 +148,26 @@ function ArticleCard({ article }: { article: RecommendPost }) {
                             {article.mentorName}
                         </Link>
                         <div className={style.tagsContainer}>
-                            {/* <Tag
-                                background="#f3f3f3"
-                                borderColor="#bfbfbf"
-                                color="#8d8d8d"
-                                text={`總進球 ${article.tag.winMaxAccurateStreak}場`}
-                            />
-                            <Tag
-                                background="#f3f3f3"
-                                borderColor="#bfbfbf"
-                                color="#8d8d8d"
-                                text={`勝負 ${article.tag.winMaxAccurateStreak}場`}
-                            /> */}
+                            {showHandicap && (
+                                <Tag
+                                    background="#f3f3f3"
+                                    borderColor="#bfbfbf"
+                                    color="#8d8d8d"
+                                    text={`${getText(article.mentorArticleCount.predictedPlay)} ${
+                                        article.mentorArticleCount.counts
+                                    }場`}
+                                />
+                            )}
+                            {showOverUnder && (
+                                <Tag
+                                    background="#f3f3f3"
+                                    borderColor="#bfbfbf"
+                                    color="#8d8d8d"
+                                    text={`${getText(article.mentorArticleCount.predictedPlay)} ${
+                                        article.mentorArticleCount.counts
+                                    }場`}
+                                />
+                            )}
                             {article.tag.winMaxAccurateStreak > 0 && (
                                 <Tag
                                     icon={<IconFlame size={10} />}
@@ -198,18 +223,26 @@ function ArticleCard({ article }: { article: RecommendPost }) {
                     </div>
                 </Link>
                 <div className={style.postTime}>
-                    <span>发表于今天 {timestampToMonthDay(article.createdAt)}</span>
-                    <div className={style.seen}>
-                        <span>
-                            <Eye />
-                            9999
-                        </span>
-                        <span className={style.line}>|</span>
-                        <span>
-                            <LockOpen />
-                            {article.unlockCounts}
-                        </span>
-                    </div>
+                    <span>{timestampToTodayTime(article.createdAt)}</span>
+                    {article.seenCounts && article.unlockCounts ? (
+                        <div className={style.seen}>
+                            {article.seenCounts && (
+                                <>
+                                    <span>
+                                        <Eye />
+                                        {article.seenCounts}
+                                    </span>
+                                    <span className={style.line}>|</span>
+                                </>
+                            )}
+                            {article.unlockCounts && (
+                                <span>
+                                    <LockOpen />
+                                    {article.unlockCounts}
+                                </span>
+                            )}
+                        </div>
+                    ) : null}
                 </div>
             </li>
             <ConfirmPayDrawer

@@ -1,5 +1,6 @@
 .footerPlaceholder {
-    position: relative;
+    position: fixed;
+    bottom: 0;
     z-index: 1000;
     height: 54px;
     width: 100%;

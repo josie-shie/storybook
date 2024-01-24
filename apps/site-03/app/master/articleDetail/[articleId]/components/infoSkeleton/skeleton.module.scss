@@ -1,0 +1,23 @@
+.container {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-direction: column;
+    padding: 16px 12px;
+    background: linear-gradient(to right, #2c5eb2 0%, #3a82fb 100%);
+
+    .skeletonLayout {
+        width: 100%;
+        display: flex;
+
+        .top {
+            display: flex;
+            width: 100%;
+        }
+
+        .title {
+            width: 100%;
+            margin-left: 10px;
+        }
+    }
+}

@@ -49,15 +49,12 @@ const OddsHintSchema = z.object({
     longOddsTeamId: z.number(),
     longOddsType: z.string(),
     longOddsTimes: z.number(),
-    isFamous: z.boolean(),
     leagueLevel: z.number()
 });
 
 export type OddsHintsType = 'WIN' | 'LOSE' | 'OVER' | 'UNDER';
-export type OddsHintsProgress = 'FULL' | 'HALF';
 export interface OddsHintRequest {
     continuity: OddsHintsType;
-    progress: OddsHintsProgress;
 }
 export type BigDataHint = z.infer<typeof OddsHintSchema>;
 
@@ -255,8 +252,7 @@ export const getFootballStatsRecord = async ({
  * - {@link BigDataHint}
  */
 export const getBigdataHint = async ({
-    continuity,
-    progress
+    continuity
 }: OddsHintRequest): Promise<ReturnData<BigDataHintListResponse>> => {
     try {
         const { data, errors } = await fetcher<FetchResultData<BigDataHintListResult>, unknown>(
@@ -265,8 +261,7 @@ export const getBigdataHint = async ({
                     query: GET_ODDS_HINT_LIST_QUERY,
                     variables: {
                         input: {
-                            continuity,
-                            progress
+                            continuity
                         }
                     }
                 }

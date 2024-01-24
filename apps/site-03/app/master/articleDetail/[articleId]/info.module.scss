@@ -13,7 +13,7 @@
         .content {
             display: flex;
             flex-direction: column;
-            gap: 2px;
+            gap: 4px;
 
             .top {
                 display: flex;
@@ -26,6 +26,20 @@
                     font-size: 14px;
                     font-weight: 500;
                     margin-right: 2px;
+                }
+            }
+
+            .tagsContainer {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 4px;
+
+                :global(.baseTag) {
+                    margin-right: 0;
+                }
+
+                :global(.tagLayout) {
+                    margin-right: 0;
                 }
             }
 

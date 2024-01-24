@@ -18,6 +18,11 @@ export interface GetIndexPostsRequest {
     pageSize: number;
 }
 
+const MentorArticleCountSchema = z.object({
+    predictedPlay: z.string(),
+    counts: z.number()
+});
+
 const RecommendPostSchema = z.object({
     id: z.number(),
     matchId: z.number(),
@@ -57,9 +62,11 @@ const RecommendPostSchema = z.object({
     countryName: z.string(),
     analysisContent: z.string(),
     unlockCounts: z.number(),
+    seenCounts: z.number(),
     articleCount: z.number(),
     isUnlocked: z.boolean(),
-    tag: TagSchema
+    tag: TagSchema,
+    mentorArticleCount: MentorArticleCountSchema
 });
 
 const GetIndexPostsResultSchema = z.object({
@@ -472,6 +479,8 @@ const GetMemberProfileWithMemberIdSchema = z.object({
     profile: z.string(),
     fansCount: z.number(),
     unlockedCount: z.number(),
+    mentorArticleCount: MentorArticleCountSchema,
+    hitRate: z.number(),
     isFollowed: z.boolean(),
     highlights: TagSchema
 });

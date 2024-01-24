@@ -1,11 +1,10 @@
 .layout {
-    background: linear-gradient(91deg, #144ca8 0.72%, #2575fc 98.56%);
+    background: linear-gradient(to right, #2c5eb2 0%, #3a82fb 100%);
 
     .masterAvatarLayout {
         height: calc(100vh - 110px);
 
         .masterAvatar {
-            margin-top: -30px;
             padding: 8px 0 0;
             border-radius: 16px 16px 0 0;
             background: #fff;

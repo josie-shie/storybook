@@ -44,6 +44,15 @@
             .tagsContainer {
                 display: flex;
                 flex-wrap: wrap;
+                gap: 4px;
+
+                :global(.baseTag) {
+                    margin-right: 0;
+                }
+
+                :global(.tagLayout) {
+                    margin-right: 0;
+                }
             }
         }
 
