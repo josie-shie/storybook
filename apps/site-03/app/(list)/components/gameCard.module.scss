@@ -1,37 +1,39 @@
 @import 'variables';
 
 .gameCard {
-    padding: 12px;
     border-bottom: 1px solid #f3f3f3;
 
-    &:nth-last-child(1) {
-        border-bottom: none;
+    .gameCardLink {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        row-gap: 8px;
+        padding: 16px 12px;
     }
 
     .topArea {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 6px;
 
         .left {
             display: flex;
             line-height: 16px;
-            width: 112px;
             align-items: center;
+            flex: 1;
 
             .league {
+                min-width: 60px;
                 color: #f85640;
                 font-size: 12px;
                 font-weight: 600;
-                margin-right: 12px;
                 word-break: keep-all;
-                width: 100%;
                 overflow: hidden;
                 text-overflow: ellipsis;
             }
 
             .time {
+                flex: 1;
                 color: #8d8d8d;
                 font-size: 12px;
                 font-weight: 500;
@@ -39,26 +41,63 @@
         }
 
         .mid {
+            width: 56px;
             display: flex;
+            justify-content: center;
             align-items: center;
 
             .status {
+                flex: 1;
                 color: $score;
                 border-radius: 4px;
-                padding: 2px 6px;
                 font-size: 12px;
                 font-weight: 500;
-                margin: 0 14px;
             }
         }
 
-        .video {
-            width: 112px;
+        .right {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            flex: 1;
+            column-gap: 8px;
 
-            .videoIcon {
-                width: 18px;
-                height: auto;
-                float: right;
+            .corner {
+                display: flex;
+                align-items: center;
+                flex: 1;
+                column-gap: 2px;
+                color: #8d8d8d;
+                font-size: 12px;
+                font-weight: 500;
+            }
+
+            .live {
+                display: flex;
+                align-items: center;
+                column-gap: 4px;
+
+                .liveAnimate {
+                    width: 4px;
+                    height: 4px;
+                    background-color: #e2ebff;
+                    border-radius: 50%;
+                    animation: flashing 1.5s linear infinite;
+                }
+            }
+        }
+
+        .resultBar {
+            display: flex;
+            justify-items: flex-end;
+            align-items: center;
+            column-gap: 8px;
+            color: #00b976;
+            font-size: 12px;
+            font-weight: 500;
+
+            &.win {
+                color: #e95e6b;
             }
         }
     }
@@ -71,30 +110,41 @@
         align-items: center;
         font-size: 14px;
         font-weight: 500;
-        margin-bottom: 6px;
 
         .team {
+            max-width: calc(100% / 2 - 28px);
             flex: 1;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            column-gap: 4px;
+
+            .teamName {
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                overflow: hidden;
+            }
 
             .cards {
                 display: flex;
-                justify-content: space-between;
+                justify-content: flex-end;
+                align-items: center;
                 color: #fff;
                 font-size: 12px;
+                column-gap: 2px;
+                flex: 1;
 
                 .card {
+                    min-width: 10px;
+                    height: 12px;
                     border-radius: 2px;
-                    padding: 0 2px;
-                    min-width: 14px;
                     text-align: center;
+                    font-size: 11px;
+                    font-family: Staatliches, sans-serif;
                 }
 
                 .redCard {
                     background-color: $score;
-                    margin-right: 6px;
                 }
 
                 .yellowCard {
@@ -107,12 +157,17 @@
             text-align: right;
         }
 
+        .awayTeam {
+            .cards {
+                flex-direction: row-reverse;
+            }
+        }
+
         .score {
-            width: 72px;
-            line-height: 24px;
-            color: $score;
-            letter-spacing: 2px;
-            font-size: 16px;
+            width: 56px;
+            height: 20px;
+            color: #e95e6b;
+            font-size: 14px;
             font-weight: 700;
             text-align: center;
             font-family: Vazirmatn, sans-serif;
@@ -125,41 +180,82 @@
 
     .oddsInfo {
         display: flex;
-        margin-bottom: 6px;
         font-weight: 500;
         color: $text-secondary;
         justify-content: center;
         align-items: center;
 
-        .left {
-            justify-content: end;
+        .oddBox {
+            width: calc(100% / 2 - 28px);
+            display: flex;
+            align-items: center;
+
+            .odd {
+                display: flex;
+                align-items: center;
+                flex: 1;
+                column-gap: 8px;
+                font-size: 14px;
+                font-weight: 500;
+            }
+
+            &.left {
+                .odd {
+                    justify-content: flex-end;
+                }
+            }
         }
 
         .mid {
             text-align: center;
             justify-content: center;
-            width: 64px;
+            width: 56px;
 
             .halfScore {
+                color: #bfbfbf;
                 font-size: 12px;
+                font-weight: 500;
             }
         }
 
-        .odd {
-            display: flex;
-            flex: 1;
-            font-size: 14px;
-        }
+        .IconHolder {
+            width: 20px;
+            height: 20px;
 
-        p {
-            margin: 0 2px;
+            .pinToTop {
+                position: relative;
+                width: 20px;
+                height: 20px;
+                background-color: initial;
+                border: none;
+                padding: 0;
+                z-index: 1;
+
+                .pinIcon {
+                    transition: fill 0.3s ease;
+
+                    &.active {
+                        path {
+                            fill: #8d8d8d;
+                        }
+                    }
+                }
+            }
         }
     }
 
     .animateLine {
+        width: 100%;
+        position: absolute;
+        left: 0;
+        bottom: 0;
         display: flex;
         align-items: center;
         justify-content: space-between;
+
+        .midHolder {
+            width: 56px;
+        }
 
         .holder {
             flex: 1;
@@ -167,20 +263,14 @@
             overflow: hidden;
         }
 
-        .corner {
-            color: #8d8d8d;
-            text-align: center;
-            font-size: 12px;
-            font-weight: 500;
-            padding: 0 8px;
-        }
-
         .bg {
+            position: relative;
             height: 20px;
             padding: 2px;
             font-size: 0;
             display: flex;
             align-items: center;
+            z-index: 2;
 
             .goal {
                 font-size: 12px;
@@ -245,5 +335,22 @@
 
     to {
         transform: rotate(360deg);
+    }
+}
+
+@keyframes flashing {
+    0% {
+        box-shadow: initial;
+        background-color: #e2ebff;
+    }
+
+    50% {
+        box-shadow: 0 0 1px 1px #4489ff;
+        background-color: #4489ff;
+    }
+
+    100% {
+        box-shadow: initial;
+        background-color: #e2ebff;
     }
 }

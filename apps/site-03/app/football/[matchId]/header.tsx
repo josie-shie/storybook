@@ -1,7 +1,5 @@
 import { useEffect } from 'react';
-import Image from 'next/image';
 import { GameStatus } from 'ui';
-import Button from '@mui/material/Button';
 import md5 from 'crypto-js/md5';
 import type { ContestInfo } from 'data-center';
 import { useSearchParams } from 'next/navigation';
@@ -10,10 +8,11 @@ import { useFormattedTime } from '@/hooks/useFormattedTime';
 import { useNotificationStore } from '@/store/notificationStore';
 import { useContestDetailStore } from './contestDetailStore';
 import style from './header.module.scss';
-import BackIcon from './img/back.png';
-import ShareIcon from './img/share.png';
+import BackIcon from './img/back.svg';
 import TeamLogo from './components/teamLogo';
-import VideoIcon from './img/video.png';
+import ShareIcon from './img/share.svg';
+import VideoIcon from './img/video.svg';
+import LiveIcon from './img/live.svg';
 
 const statusStyleMap = {
     '0': 'notYet',
@@ -117,16 +116,8 @@ function Header({
         <>
             <header className={style.header}>
                 <div className={style.back}>
-                    <Image
-                        alt="back_icon"
-                        className={style.backIcon}
-                        height={24}
-                        onClick={back}
-                        src={BackIcon}
-                        width={24}
-                    />
+                    <BackIcon onClick={back} />
                 </div>
-
                 <div className={style.scoreboard}>
                     <p className={style.createTime}>{currentMatchTime}</p>
                     <p className={style.league}>
@@ -134,25 +125,20 @@ function Header({
                         {matchDetail.kind === 1 && ` 第${matchDetail.roundCn}轮`}
                     </p>
                 </div>
-                <div className={style.option}>
-                    <Button className={style.liveBtn} onClick={handleAnimate}>
-                        <Image
-                            alt="video_icon"
-                            className={style.icon}
-                            height={17}
-                            src={VideoIcon}
-                            width={17}
-                        />
-                        <span>动画</span>
-                    </Button>
-                    <div className={style.share}>
-                        <Image
-                            alt="share_icon"
-                            height={18}
-                            onClick={handleShare}
-                            src={ShareIcon}
-                            width={18}
-                        />
+                <div className={style.optionHolder}>
+                    <div className={style.option}>
+                        <div className={style.live} onClick={handleAnimate}>
+                            <div className={style.liveAnimate} />
+                            <LiveIcon className={style.liveIcon} />
+                        </div>
+                        <div className={style.video} onClick={handleAnimate}>
+                            <VideoIcon />
+                            <p className={style.videoText}>动画</p>
+                        </div>
+                        <div className={style.line} />
+                        <div className={style.share}>
+                            <ShareIcon onClick={handleShare} />
+                        </div>
                     </div>
                 </div>
             </header>
@@ -160,14 +146,7 @@ function Header({
             <header
                 className={`${style.header} ${style.headerFixed} ${!layoutDisplayed && style.show}`}
             >
-                <Image
-                    alt="back_icon"
-                    className={style.backIcon}
-                    height={24}
-                    onClick={back}
-                    src={BackIcon}
-                    width={24}
-                />
+                <BackIcon onClick={back} />
                 <div className={style.scoreBar}>
                     <TeamLogo alt="" height={24} src={matchDetail.homeLogo} width={24} />
                     <p className={style.score}>
@@ -186,13 +165,7 @@ function Header({
                     <TeamLogo alt="" height={24} src={matchDetail.awayLogo} width={24} />
                 </div>
                 <div className={style.share}>
-                    <Image
-                        alt="share_icon"
-                        height={18}
-                        onClick={handleShare}
-                        src={ShareIcon}
-                        width={18}
-                    />
+                    <ShareIcon onClick={handleShare} />
                 </div>
             </header>
         </>

@@ -113,9 +113,16 @@
 
 .filterButton {
     color: #4489ff;
-    font-size: 12px;
+    font-size: 14px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    column-gap: 4px;
     font-weight: 600;
+    line-height: normal;
+
+    .filterIcon {
+        width: 20px;
+        height: 20px;
+    }
 }

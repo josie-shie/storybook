@@ -1,6 +1,5 @@
 'use client';
 import { useEffect, useState } from 'react';
-import Image from 'next/image';
 import { getProDistrib, getProGuess, payForProDistrib, payForProGuess } from 'data-center';
 import { useParams, useRouter } from 'next/navigation';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -10,97 +9,47 @@ import { useAuthStore } from '@/store/authStore';
 import BaseNoData from '@/components/baseNoData/noData';
 import Rule from './components/rule/rule';
 import GameCard from './gameCard';
-import AnalyzeColumn from './analyze';
-import Title from './img/title.png';
+import AnalyzeRow from './components/analyzeRow/analyze';
+import TitleIcon from './img/title.svg';
+import GeryTitleIcon from './img/greyTitle.svg';
 import style from './masterPlan.module.scss';
 import { useGuessDetailStore } from './guessDetailStore';
-import starIcon from './img/coin.png';
+import DistributeSkeleton from './components/distributeSkeleton/distributeSkeleton';
 
-interface TrendPropsType {
-    isLogin: boolean;
-    setAmount: (number: number) => void;
-    setOpenPaid: (open: boolean) => void;
-}
-
-function Trend({ isLogin, setAmount, setOpenPaid }: TrendPropsType) {
-    const router = useRouter();
+function Trend() {
     const highWinRateTrend = useGuessDetailStore.use.highWinRateTrend();
-
-    const setIsDrawerOpen = useAuthStore.use.setIsDrawerOpen();
-    const setAuthQuery = useUserStore.use.setAuthQuery();
-
-    const handleUnlockTrendDialogOpen = (newAmount: number) => {
-        setAmount(newAmount);
-        setOpenPaid(true);
-    };
-
-    const goRechargePage = () => {
-        router.push('/userInfo/subscribe');
-    };
+    const showdistributed = highWinRateTrend.memberPermission;
 
     if (!highWinRateTrend.enoughProData) return null;
     return (
         <div className={style.area}>
-            <div className={style.title}>
-                <div className={style.name}>
-                    <Image alt="titleIcon" src={Title} width={16} />
-                    <span>近20场高胜率玩家风向</span>
-                </div>
-                <Rule />
-            </div>
-            <div className={style.analyze}>
-                {highWinRateTrend.memberPermission ? (
-                    <>
-                        <AnalyzeColumn awayType="客" homeType="主" />
-                        <AnalyzeColumn awayType="小" homeType="大" />
-                    </>
-                ) : (
-                    <div className={style.mask}>
-                        <button
-                            className={style.trendBtn}
-                            onClick={() => {
-                                if (!isLogin) {
-                                    setAuthQuery('login');
-                                    setIsDrawerOpen(true);
-                                    return;
-                                }
-                                handleUnlockTrendDialogOpen(highWinRateTrend.unlockPrice);
-                            }}
-                            type="button"
-                        >
-                            <Image
-                                alt=""
-                                className={style.coin}
-                                height={14}
-                                src={starIcon}
-                                width={14}
-                            />{' '}
-                            {highWinRateTrend.unlockPrice} 金币解锁本场
-                        </button>
-                        <button
-                            className={style.trendBtn}
-                            onClick={() => {
-                                if (!isLogin) {
-                                    setAuthQuery('login');
-                                    setIsDrawerOpen(true);
-                                    return;
-                                }
-                                goRechargePage();
-                            }}
-                            type="button"
-                        >
-                            <Image
-                                alt=""
-                                className={style.coin}
-                                height={14}
-                                src={starIcon}
-                                width={14}
-                            />{' '}
-                            365天VIP无限看专案
-                        </button>
+            {showdistributed ? (
+                <>
+                    <div className={style.title}>
+                        <div className={style.name}>
+                            <TitleIcon />
+                            <span>近20场高胜率玩家风向</span>
+                        </div>
+                        <Rule />
                     </div>
-                )}
-            </div>
+                    <div className={style.analyze}>
+                        <AnalyzeRow awayType="客" homeType="主" />
+                        <AnalyzeRow awayType="小" homeType="大" />
+                    </div>
+                </>
+            ) : (
+                <>
+                    <div className={style.midTitle}>
+                        <GeryTitleIcon />
+                        <span className={style.locked}>猜球后即可解锁近20场高胜率玩家风向</span>
+                    </div>
+                    <div className={style.lockedAnalyze}>
+                        <DistributeSkeleton />
+                        <DistributeSkeleton />
+                    </div>
+                    <div className={style.masterGuess}>{18}位高手猜過</div>
+                </>
+            )}
         </div>
     );
 }
@@ -245,7 +194,7 @@ function MasterPlan() {
                     <CircularProgress size={24} />
                 </div>
             ) : (
-                <Trend isLogin={isLogin} setAmount={setAmount} setOpenPaid={setOpenPaid} />
+                <Trend />
             )}
             <div className={style.area}>
                 <div className={style.planList}>
