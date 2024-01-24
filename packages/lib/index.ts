@@ -7,7 +7,7 @@ export { truncateFloatingPoint, formatNumberWithCommas } from './src/formatNumbe
 export { getRandomInt } from './src/random';
 export { handicapToString, convertHandicap, convertOdds } from './src/formatHandicap';
 export type { StoreWithSelectors } from './src/store';
-export { timestampToString, timestampToMonthDay } from './src/timeFormat';
+export { timestampToString, timestampToMonthDay, timestampToTodayTime } from './src/timeFormat';
 export { handleStartTime, handleGameTime, handleMatchDateTime } from './src/gameStatus';
 export * from './src/mqttService';
 export * from './src/messageWs';

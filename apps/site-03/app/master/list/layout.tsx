@@ -82,16 +82,7 @@ function MasterLayout({
     return (
         <div className={style.articleLayout}>
             <Header />
-            <div className={style.predict}>
-                <div className={style.childrenTab}>
-                    <Tabs
-                        labels={['专家预测文章', '专家列表']}
-                        paths={['/master/list/article', '/master/list/expert']}
-                        styling="button"
-                    />
-                </div>
-                {children}
-            </div>
+            <div className={style.predict}>{children}</div>
             <Footer />
             <InterceptingArticle art={art} />
             <InterceptingExpert personal={personal} />

@@ -12,8 +12,11 @@ import Tag from '@/components/tag/tag';
 import TagSplit from '@/components/tagSplit/tagSplit';
 import { useUserStore } from '@/store/userStore';
 import Fire from '@/app/img/fire.png';
+import User from './img/user.svg';
+import LockOpen from './img/lockOpen.svg';
 import style from './info.module.scss';
 import Skeleton from './components/skeleton/skeleton';
+import { truncateFloatingPoint } from 'lib';
 
 function Info({ params }: { params: { masterId: string } }) {
     const [info, setInfo] = useState({
@@ -23,6 +26,11 @@ function Info({ params }: { params: { masterId: string } }) {
         profile: '',
         fansCount: 0,
         unlockedCount: 0,
+        mentorArticleCount: {
+            predictedPlay: '',
+            counts: 0
+        },
+        hitRate: 0,
         isFollowed: false,
         highlights: {
             id: 0,
@@ -99,6 +107,24 @@ function Info({ params }: { params: { masterId: string } }) {
         setInfo(res.data);
     };
 
+    const getText = predictedPlay => {
+        switch (predictedPlay) {
+            case 'HANDICAP':
+                return '胜负';
+            case 'OVERUNDER':
+                return '總進球';
+            default:
+                return '';
+        }
+    };
+
+    const showHandicap =
+        info.mentorArticleCount.predictedPlay === 'HANDICAP' &&
+        info.mentorArticleCount.counts >= 10;
+    const showOverUnder =
+        info.mentorArticleCount.predictedPlay === 'OVERUNDER' &&
+        info.mentorArticleCount.counts >= 10;
+
     useEffect(() => {
         void fetchData();
     }, [userInfo.uid]);
@@ -115,7 +141,25 @@ function Info({ params }: { params: { masterId: string } }) {
                             />
                             <div className={style.content}>
                                 <span className={style.name}>{info.username}</span>
-                                <div className={style.top}>
+                                <div className={style.tagsContainer}>
+                                    {showHandicap && (
+                                        <Tag
+                                            background="rgba(255, 255, 255, 0.30)"
+                                            borderColor="#6e94d4"
+                                            text={`${getText(
+                                                info.mentorArticleCount.predictedPlay
+                                            )} ${info.mentorArticleCount.counts}場`}
+                                        />
+                                    )}
+                                    {showOverUnder && (
+                                        <Tag
+                                            background="rgba(255, 255, 255, 0.30)"
+                                            borderColor="#6e94d4"
+                                            text={`${getText(
+                                                info.mentorArticleCount.predictedPlay
+                                            )} ${info.mentorArticleCount.counts}場`}
+                                        />
+                                    )}
                                     {info.highlights.winMaxAccurateStreak > 0 && (
                                         <Tag
                                             icon={<Image alt="fire" src={Fire} />}
@@ -146,12 +190,24 @@ function Info({ params }: { params: { masterId: string } }) {
                                     )}
                                 </div>
                                 <div className={style.bottom}>
-                                    <span>粉丝: {info.fansCount}</span>
-                                    <span>解锁: {info.unlockedCount}</span>
-                                    {Boolean(info.highlights) && (
+                                    {info.fansCount > 0 && (
                                         <span>
-                                            近一季猜球胜率:{' '}
-                                            {Math.round(info.highlights.quarterHitRate * 100)}%
+                                            <User />
+                                            <span>粉丝</span>
+                                            {info.fansCount}{' '}
+                                        </span>
+                                    )}
+                                    {info.unlockedCount > 0 && (
+                                        <span>
+                                            <LockOpen />
+                                            <span>解锁</span>
+                                            {info.unlockedCount}{' '}
+                                        </span>
+                                    )}
+                                    {info.hitRate > 1 && (
+                                        <span>
+                                            <span>猜球胜率</span>
+                                            {truncateFloatingPoint(info.hitRate, 0)}%
                                         </span>
                                     )}
                                 </div>

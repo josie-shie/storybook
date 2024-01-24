@@ -69,7 +69,7 @@ function FilterResult() {
     return (
         <>
             {onMounted ? (
-                <BottomDrawer isOpen={filterResultIsOpen} onClose={onClose} onOpen={onOpen}>
+                <BottomDrawer isOpen onClose={onClose} onOpen={onOpen}>
                     <div className={style.filterResults}>
                         <ContestList />
                         <ArticleList />

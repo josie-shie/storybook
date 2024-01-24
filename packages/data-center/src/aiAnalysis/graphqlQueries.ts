@@ -33,7 +33,6 @@ export const GET_ODDS_HINT_LIST_QUERY = `
                 longOddsTeamId
                 longOddsType
                 longOddsTimes
-                isFamous
                 leagueLevel
             }
         }

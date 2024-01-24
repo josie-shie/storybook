@@ -6,6 +6,7 @@ import { timestampToString, timestampToMonthDay } from 'lib';
 import { type RecommendPost } from 'data-center';
 import { useRouter } from 'next/navigation';
 import { payForPost, getMemberInfo } from 'data-center';
+import Tag from '@/components/tag/tag';
 import NoData from '@/components/baseNoData/noData';
 import UnlockButton from '@/components/unlockButton/unlockButton';
 import { useUserStore } from '@/store/userStore';
@@ -14,6 +15,8 @@ import ConfirmPayDrawer from '@/components/confirmPayDrawer/confirmPayDrawer';
 import style from './recommendationList.module.scss';
 import Win from './img/win.png';
 import Draw from './img/draw.png';
+import Eye from './img/eye.svg';
+import LockOpenBlue from './img/lockOpenBlue.svg';
 import SkeletonLayout from './components/skeleton';
 
 function RecommendationItem({
@@ -104,6 +107,17 @@ function RecommendationItem({
         router.push(`/master/article/${id}`);
     };
 
+    const getText = predictedPlay => {
+        switch (predictedPlay) {
+            case 'HANDICAP':
+                return '胜负';
+            case 'OVERUNDER':
+                return '总进球';
+            default:
+                return '';
+        }
+    };
+
     return (
         <>
             {recommendationList.length === 0 && isNoData === null && <SkeletonLayout />}
@@ -121,10 +135,86 @@ function RecommendationItem({
                                     goArticle(item.id);
                                 }}
                             >
+                                {item.predictionResult === 'WIN' && (
+                                    <Image
+                                        alt=""
+                                        className={style.icon}
+                                        height={27}
+                                        src={Win}
+                                        width={27}
+                                    />
+                                )}
+                                {item.predictionResult === 'DRAW' && (
+                                    <Image
+                                        alt=""
+                                        className={style.icon}
+                                        height={27}
+                                        src={Draw}
+                                        width={27}
+                                    />
+                                )}
                                 <div className={style.left}>
-                                    <div className={style.time}>
-                                        发表于今天 {timestampToMonthDay(item.createdAt)}
+                                    <div className={style.name}>
+                                        {item.mentorArticleCount.predictedPlay === 'HANDICAP' &&
+                                            item.mentorArticleCount.counts >= 10 && (
+                                                <Tag
+                                                    background="#f3f3f3"
+                                                    borderColor="#bfbfbf"
+                                                    color="#8d8d8d"
+                                                    text={`${getText(
+                                                        item.mentorArticleCount.predictedPlay
+                                                    )}`}
+                                                />
+                                            )}
+                                        {item.mentorArticleCount.predictedPlay === 'OVERUNDER' &&
+                                            item.mentorArticleCount.counts >= 10 && (
+                                                <Tag
+                                                    background="#f3f3f3"
+                                                    borderColor="#bfbfbf"
+                                                    color="#8d8d8d"
+                                                    text={`${getText(
+                                                        item.mentorArticleCount.predictedPlay
+                                                    )}`}
+                                                />
+                                            )}
+                                        <span>{item.mentorName}</span>
                                     </div>
+
+                                    <div className={style.leagueName}>
+                                        <span className={style.name}>{item.leagueName}</span>
+                                        <span>|</span>
+                                        <span className={style.teamName}>
+                                            {item.homeTeamName}VS{item.awayTeamName}
+                                        </span>
+                                    </div>
+
+                                    <div className={style.content}>{item.analysisTitle}</div>
+
+                                    <div className={style.seeDetail}>
+                                        <div className={style.time}>
+                                            发表于今天 {timestampToMonthDay(item.createdAt)}
+                                        </div>
+                                        {item.seenCounts && item.unlockCounts ? (
+                                            <div className={style.seen}>
+                                                {item.seenCounts && (
+                                                    <>
+                                                        <span>
+                                                            <Eye />
+                                                            {item.seenCounts}
+                                                        </span>
+                                                        <span className={style.line}>|</span>
+                                                    </>
+                                                )}
+                                                {item.unlockCounts && (
+                                                    <span>
+                                                        <LockOpenBlue />
+                                                        {item.unlockCounts}
+                                                    </span>
+                                                )}
+                                            </div>
+                                        ) : null}
+                                    </div>
+
                                     <div className={style.leagueName}>
                                         <span className={style.name}>{item.leagueName}</span>
                                         <span className={style.time}>
@@ -138,12 +228,6 @@ function RecommendationItem({
                                         <span className={style.name}>
                                             {item.homeTeamName} vs {item.awayTeamName}
                                         </span>
-                                        {item.predictionResult === 'WIN' && (
-                                            <Image alt="" height={36} src={Win} width={36} />
-                                        )}
-                                        {item.predictionResult === 'DRAW' && (
-                                            <Image alt="" height={36} src={Draw} width={36} />
-                                        )}
                                     </div>
                                 </div>
                                 <div className={style.right}>

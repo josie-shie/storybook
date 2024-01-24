@@ -7,3 +7,14 @@ export const timestampToString = (unixTimestamp: number, dateFormat = 'YYYY-MM-D
 export const timestampToMonthDay = (unixTimestamp: number) => {
     return dayjs.unix(unixTimestamp).format('HH:mm');
 };
+
+export const timestampToTodayTime = (unixTimestamp: number) => {
+    const date = dayjs.unix(unixTimestamp);
+    const today = dayjs();
+
+    if (date.isSame(today, 'day')) {
+        return `今天 ${date.format('HH:mm')}截止`;
+    } else {
+        return date.format('MM-DD HH:mm');
+    }
+};

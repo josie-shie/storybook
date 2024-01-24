@@ -2,7 +2,7 @@
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    padding: 12px 12px 45px;
+    padding: 16px 12px;
 
     .detail {
         display: flex;
@@ -13,7 +13,7 @@
         .content {
             display: flex;
             flex-direction: column;
-            gap: 2px;
+            gap: 4px;
 
             .top {
                 display: flex;
@@ -29,11 +29,36 @@
                 }
             }
 
+            .tagsContainer {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 4px;
+
+                :global(.baseTag) {
+                    margin-right: 0;
+                }
+
+                :global(.tagLayout) {
+                    margin-right: 0;
+                }
+            }
+
             .bottom {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+
                 span {
+                    display: flex;
+                    align-items: center;
+                    gap: 2px;
                     color: #fff;
                     font-size: 12px;
-                    font-weight: 400;
+                    font-weight: 500;
+
+                    span {
+                        color: rgba(255, 255, 255, 0.7);
+                    }
                 }
             }
         }
