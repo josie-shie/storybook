@@ -15,7 +15,7 @@ export interface Statistics {
     draw: number;
 }
 
-interface StatisticsCategories {
+export interface StatisticsCategories {
     handicap: Record<string, Statistics>;
     overUnder: Record<string, Statistics>;
     moneyLine: Record<string, Statistics>;
