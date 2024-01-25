@@ -169,7 +169,7 @@ function Slick({
             history.replaceState({}, '', tabs[nowIndex].href);
         }
         onSlickEnd(nowIndex, prevIndex);
-        swiperRef.current?.updateAutoHeight();
+        slickOption[`${resetHeightKey}ResetHeight`];
     };
 
     return (
