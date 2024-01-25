@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState, forwardRef } from 'react';
+import React, { useEffect, useState, forwardRef } from 'react';
 import { InfiniteScroll } from 'ui';
 import CircularProgress from '@mui/material/CircularProgress';
 import { getTodayGuessMatches, type GetTodayGuessMatchesResponse } from 'data-center';
@@ -59,10 +59,10 @@ function ContestList() {
             {displayList.map((matchId, idx) => {
                 if (idx === 5) {
                     return (
-                        <>
+                        <React.Fragment key={matchId}>
                             <Image alt="" className={style.banner} src={NewBanner} />
-                            <GameCard key={matchId} matchId={matchId} />
-                        </>
+                            <GameCard matchId={matchId} />
+                        </React.Fragment>
                     );
                 }
                 return <GameCard key={matchId} matchId={matchId} />;
