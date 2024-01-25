@@ -14,7 +14,6 @@ function InterceptingDetail({ modal }: { modal: ReactNode }) {
             {params.matchId ? (
                 <motion.div
                     animate={{ transform: 'translateX(0)' }}
-                    exit={{ transform: 'translateX(100%)' }}
                     initial={{ transform: 'translateX(100%)' }}
                     key="modalDetail"
                     style={{

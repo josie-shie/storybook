@@ -317,6 +317,7 @@ function TabContent({
                 className={style.slick}
                 initialSlide={initialSlide}
                 onSlickEnd={onSlickEnd}
+                resetHeightKey="contestInfo"
                 styling="underline"
                 tabs={tabList}
             >

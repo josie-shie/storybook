@@ -41,7 +41,7 @@ function HeaderLogo({
 
     return (
         <div className={style.placeholder}>
-            <div className={style.header} style={headerStyle}>
+            <div className={`${style.header} ${style.headerTransparent}`} style={headerStyle}>
                 <Link className={style.logo} href={link}>
                     {back ? (
                         <Image alt="" height={24} src={backLeftArrowImg} width={24} />

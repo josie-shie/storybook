@@ -4,6 +4,7 @@ import type { Ref } from 'react';
 import { useEffect, useState, forwardRef } from 'react';
 import { InfiniteScroll } from 'ui';
 import CircularProgress from '@mui/material/CircularProgress';
+import { slickOption } from 'ui/stories/slickPro/slick';
 import { useLiveContestStore } from '@/store/liveContestStore';
 import type { FilterList } from '@/components/contestFilter/contestFilter';
 import NoData from '@/components/baseNoData/noData';
@@ -108,6 +109,12 @@ function ContestList({
     useEffect(() => {
         setSecondRender(true);
     }, []);
+
+    useEffect(() => {
+        if (typeof slickOption.contestListResetHeight !== 'undefined') {
+            slickOption.contestListResetHeight();
+        }
+    }, [rows]);
 
     useEffect(() => {
         const dateString = scheduleDate || resultsDate || Date.now();

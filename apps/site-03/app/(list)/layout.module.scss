@@ -7,14 +7,7 @@
 }
 
 .contestListLayout {
-    background-color: #1662e3;
-
     .main {
-        border-top-left-radius: 12px;
-        border-top-right-radius: 12px;
-        background-color: #fff;
-        min-height: 180px;
-
         :global(.swiper-slide) {
             padding: 0 !important;
         }
