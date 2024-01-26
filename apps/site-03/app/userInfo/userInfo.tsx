@@ -16,7 +16,6 @@ import Fire from '@/app/img/fire.png';
 import { useAuthStore } from '@/store/authStore';
 import { useUserStore } from '@/store/userStore';
 import userInfoBg from './img/userInfoBg.png';
-import Star from './img/star.png';
 import BuyBag from './img/buyBag.png';
 import MyFocus from './img/myFocus.png';
 import MyFans from './img/myFans.png';
@@ -26,6 +25,10 @@ import MyAnalyze from './img/myAnalyze.png';
 import UserIcon from './img/user.svg';
 import UnlockIcon from './img/unlock.svg';
 import EditIcon from './img/edit.svg';
+import StarIcon from './img/star.svg';
+import GiftIcon from './img/gift.png';
+import LockIcon from './img/lock.svg';
+import QuestionIcon from './img/question.svg';
 import style from './userInfo.module.scss';
 import defaultAvatar from './img/avatar.png';
 
@@ -65,13 +68,16 @@ function UserInfo() {
         router.push('/userInfo/account');
     };
 
-    const goRecharge = () => {
-        router.push('/userInfo/recharge');
-    };
+    {
+        /* 保留等充值開放時再開啟 */
+    }
+    // const goRecharge = () => {
+    //     router.push('/userInfo/recharge');
+    // };
 
-    const goSubscribe = () => {
-        router.push('/userInfo/subscribe');
-    };
+    // const goSubscribe = () => {
+    //     router.push('/userInfo/subscribe');
+    // };
 
     const logout = () => {
         Cookies.remove('access');
@@ -228,11 +234,11 @@ function UserInfo() {
                             <Link href="/userInfo/tradeDetail">我的交易明细</Link>
                         </button>
                         <div className={style.list}>
-                            {/* 保留等充值開放時再開啟 */}
-                            {/* <div className={style.item}>
+                            <div className={style.item}>
                                 <span className={style.text}>
-                                    <Image alt="" height={14} src={Star} width={14} />
-                                    <span>可用馀额：</span>
+                                    <StarIcon className={style.icon} />
+                                    {/* <Image alt="" height={14} src={Star} width={14} /> */}
+                                    <span>平台幣馀额：</span>
                                     {!loading ? (
                                         <>{formatNumberWithCommas(userInfo.balance)}</>
                                     ) : (
@@ -244,16 +250,10 @@ function UserInfo() {
                                         />
                                     )}
                                 </span>
-                                <span
-                                    className={style.button}
-                                    onClick={() => {
-                                        goRecharge();
-                                    }}
-                                >
-                                    充值
-                                </span>
-                            </div> */}
-                            <div className={`${style.item} ${style.second}`}>
+                                <span className={style.button}>获得更多</span>
+                            </div>
+                            {/* 保留等充值開放時再開啟 */}
+                            {/* <div className={`${style.item} ${style.second}`}>
                                 <span className={style.text}>
                                     <Image alt="" height={16} src={BuyBag} width={16} />
                                     <span>您的订阅状态：</span>
@@ -302,7 +302,7 @@ function UserInfo() {
                                         續約
                                     </span>
                                 )}
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 </div>
@@ -350,18 +350,20 @@ function UserInfo() {
                                 </ButtonBase>
                             </li> */}
                             <li>
+                                <ButtonBase>
+                                    <Image alt="" height={20} src={GiftIcon} width={20} />
+                                    <Link href="/userInfo/invite">推荐给朋友</Link>
+                                </ButtonBase>
+                            </li>
+                            <li>
                                 <ButtonBase
                                     onClick={() => {
                                         setAuthQuery('changePassword');
                                         openChangePasswordDrawer(true);
                                     }}
                                 >
+                                    <LockIcon />
                                     <div className={style.changePassword}>修改密码</div>
-                                </ButtonBase>
-                            </li>
-                            <li>
-                                <ButtonBase>
-                                    <Link href="/userInfo/invite">推荐给朋友</Link>
                                 </ButtonBase>
                             </li>
                             {/* <li>
@@ -371,6 +373,7 @@ function UserInfo() {
                             </li> */}
                             <li>
                                 <ButtonBase>
+                                    <QuestionIcon />
                                     <Link href="">常见问题</Link>
                                 </ButtonBase>
                             </li>

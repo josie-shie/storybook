@@ -7,9 +7,14 @@ import TagSplit from '@/components/tagSplit/tagSplit';
 import Avatar from '@/components/avatar/avatar';
 import Fire from '@/app/img/fire.png';
 import style from './articleItem.module.scss';
+import Link from 'next/link';
 import Win from './img/win.png';
 import Lose from './img/lose.png';
 import Draw from './img/draw.png';
+import Eye from './img/eye.svg';
+import LockOpen from './img/lockOpen.svg';
+import LockOpenBlue from './img/lockOpenBlue.svg';
+import { truncateFloatingPoint, timestampToTodayTime } from 'lib';
 
 interface Tags {
     id: number;
@@ -75,85 +80,129 @@ interface GetUnlockPostProps {
 function ArticleItem({ item }: GetUnlockPostProps) {
     const router = useRouter();
 
-    const goDetail = (id: number) => {
-        router.push(`/master/article/${id}`);
-    };
-
     const goInfo = (mentorId: number) => {
         router.push(`/master/masterAvatar/${mentorId}?status=analysis`);
     };
 
     return (
         <div className={style.articleItem}>
+            {item.predictionResult === 'WIN' && (
+                <div className={style.result}>
+                    <Image alt="" height={27} src={Win} width={27} />
+                </div>
+            )}
+            {item.predictionResult === 'LOSE' && (
+                <div className={style.result}>
+                    <Image alt="" height={27} src={Lose} width={27} />
+                </div>
+            )}
+            {item.predictionResult === 'DRAW' && (
+                <div className={style.result}>
+                    <Image alt="" height={27} src={Draw} width={27} />
+                </div>
+            )}
+
+            <div className={style.unlockStatus}>
+                <span className={style.unlocked}>
+                    <LockOpenBlue width={16} height={16} />
+                </span>
+            </div>
             <div className={style.user}>
-                <div
+                <Link
                     className={style.avatarContainer}
-                    onClick={() => {
-                        goInfo(item.mentorId);
-                    }}
+                    href={`/master/masterAvatar/${item.mentorId}?status=analysis`}
                 >
-                    <Avatar borderColor="#4489FF" />
-                </div>
+                    <Avatar borderColor="#4489FF" src={item.avatarPath} />
+                </Link>
                 <div className={style.userInfo}>
-                    <div className={style.userName}>{item.mentorName}</div>
-                    {item.memberTags.winMaxAccurateStreak > 3 && (
-                        <Tag
-                            icon={<Image alt="fire" src={Fire} />}
-                            text={`${item.memberTags.winMaxAccurateStreak}连红`}
-                        />
-                    )}
-                    {item.memberTags.quarterRanking > 0 && (
-                        <TagSplit
-                            isBlueBg={false}
-                            number={item.memberTags.quarterRanking}
-                            text="季"
-                        />
-                    )}
-                    {item.memberTags.monthRanking > 0 && (
-                        <TagSplit
-                            isBlueBg={false}
-                            number={item.memberTags.monthRanking}
-                            text="月"
-                        />
-                    )}
-                    {item.memberTags.weekRanking > 0 && (
-                        <TagSplit isBlueBg={false} number={item.memberTags.weekRanking} text="周" />
-                    )}
+                    <Link
+                        className={style.userName}
+                        href={`/master/masterAvatar/${item.mentorId}?status=analysis`}
+                    >
+                        {item.mentorName}
+                    </Link>
+                    <div className={style.tagsContainer}>
+                        {item.memberTags.winMaxAccurateStreak > 3 && (
+                            <Tag
+                                icon={<Image alt="fire" src={Fire} />}
+                                text={`${item.memberTags.winMaxAccurateStreak}连红`}
+                            />
+                        )}
+                        {item.memberTags.quarterRanking > 0 && (
+                            <TagSplit
+                                isBlueBg={false}
+                                number={item.memberTags.quarterRanking}
+                                text="季"
+                            />
+                        )}
+                        {item.memberTags.monthRanking > 0 && (
+                            <TagSplit
+                                isBlueBg={false}
+                                number={item.memberTags.monthRanking}
+                                text="月"
+                            />
+                        )}
+                        {item.memberTags.weekRanking > 0 && (
+                            <TagSplit
+                                isBlueBg={false}
+                                number={item.memberTags.weekRanking}
+                                text="周"
+                            />
+                        )}
+                    </div>
                 </div>
-                <div className={style.unlockStatus}>
-                    <span className={style.unlocked}>已解鎖</span>
+                <div className={style.rate}>
+                    <span className={style.hit}>
+                        {truncateFloatingPoint(item.memberTags.weekHitRate, 2)}
+                        <i>%</i>
+                    </span>
+                    <span className={style.hitName}>近十命中</span>
                 </div>
             </div>
-            <div className={style.title}>{item.analysisTitle}</div>
-            <div
-                className={style.game}
-                onClick={() => {
-                    goDetail(item.postId);
-                }}
-            >
-                <div className={style.rows}>
-                    <div className={style.detail}>
-                        {item.leagueName}
-                        <span className={style.time}>
-                            | {timestampToString(item.matchTime, 'MM-DD HH:mm')}
+            <Link href={`/master/articleDetail/${item.postId}`}>
+                <div className={style.game}>
+                    <div className={style.leagueTeam}>
+                        <span>{item.leagueName}</span>
+                        <span className={style.line}>|</span>
+                        <span>
+                            {item.homeTeamName}VS{item.awayTeamName}
                         </span>
                     </div>
-                    <div className={style.combination}>
-                        {item.homeTeamName} vs {item.awayTeamName}
-                    </div>
+                    <div className={style.title}>{item.analysisTitle}</div>
                 </div>
-                {item.predictionResult === 'WIN' && (
-                    <Image alt="" height={36} src={Win} width={36} />
-                )}
-                {item.predictionResult === 'LOSE' && (
-                    <Image alt="" height={36} src={Lose} width={36} />
-                )}
-                {item.predictionResult === 'DRAW' && (
-                    <Image alt="" height={36} src={Draw} width={36} />
-                )}
-            </div>
+            </Link>
             <div className={style.postTime}>
-                发表于今天 {timestampToString(item.createdAt, 'YYYY-M-DD')}
+                <span>{timestampToTodayTime(item.createdAt)}</span>
+                <div className={style.seen}>
+                    <span>
+                        <Eye />
+                        9999
+                    </span>
+                    <span className={style.line}>|</span>
+                    <span>
+                        <LockOpen />
+                        344
+                    </span>
+                </div>
+                {/* {item.seenCounts && item.unlockCounts ? (
+                    <div className={style.seen}>
+                        {item.seenCounts && (
+                            <>
+                                <span>
+                                    <Eye />
+                                    {item.seenCounts}
+                                </span>
+                                <span className={style.line}>|</span>
+                            </>
+                        )}
+                        {item.unlockCounts && (
+                            <span>
+                                <LockOpen />
+                                {item.unlockCounts}
+                            </span>
+                        )}
+                    </div>
+                ) : null} */}
             </div>
         </div>
     );

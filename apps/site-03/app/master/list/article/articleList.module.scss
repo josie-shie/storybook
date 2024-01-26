@@ -1,6 +1,8 @@
 .article {
     padding: 12px 0;
     background: #fff;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
 }
 
 .loadMore {
@@ -12,7 +14,6 @@
 .recommendPredict {
     background: #fff;
     height: calc(100dvh - 108px);
-    overflow: auto;
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
 }

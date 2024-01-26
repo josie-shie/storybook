@@ -3,64 +3,21 @@ import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { getUnlockedPost } from 'data-center';
-import { Skeleton } from '@mui/material';
+import { InfiniteScroll } from 'ui';
+import CircularProgress from '@mui/material/CircularProgress';
 import { useUserStore } from '@/store/userStore';
 import NoData from '@/components/baseNoData/noData';
 import backLeftArrowImg from '../img/backLeftArrow.png';
 import ArticleItem from './components/articleItem/articleItem';
 import style from './myAnalysis.module.scss';
 import { useArticleStore } from './myAnalysisStore';
-
-function MyAnalysisSkeleton() {
-    return (
-        <>
-            {Array.from({ length: 4 }).map((_, idx) => (
-                <div className={style.skeletonBox} key={`${idx.toString()}`}>
-                    <div className={style.user}>
-                        <Skeleton animation="wave" height={48} variant="circular" width={46} />
-                        <div className={style.userInfo}>
-                            <Skeleton
-                                animation="wave"
-                                height={24}
-                                sx={{ mt: '4px' }}
-                                variant="rounded"
-                                width={100}
-                            />
-                        </div>
-                        <div className={style.unlockStatus}>
-                            <Skeleton
-                                animation="wave"
-                                height={16}
-                                sx={{ mt: '4px' }}
-                                variant="rounded"
-                                width={50}
-                            />
-                        </div>
-                    </div>
-                    <Skeleton
-                        animation="wave"
-                        height={20}
-                        sx={{ my: '6px' }}
-                        variant="rounded"
-                        width={100}
-                    />
-                    <Skeleton animation="wave" height={60} variant="rounded" width={366} />
-                    <Skeleton
-                        animation="wave"
-                        height={16}
-                        sx={{ my: '6px' }}
-                        variant="rounded"
-                        width={100}
-                    />
-                </div>
-            ))}
-        </>
-    );
-}
+import SkeletonLayout from './components/skeleton/skeleton';
 
 function MyAnalysis() {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(true);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPage, setTotalPage] = useState(1);
     const userInfo = useUserStore.use.userInfo();
     const articleList = useArticleStore.use.articleList();
     const setArticleList = useArticleStore.use.setArticleList();
@@ -80,11 +37,17 @@ function MyAnalysis() {
         }
     }, [userInfo]);
 
+    const loadMoreList = () => {
+        if (currentPage <= Math.round(articleList.length / 30) && currentPage < totalPage) {
+            setCurrentPage(prevData => prevData + 1);
+        }
+    };
+
     const renderContent = () => {
         if (isLoading) {
             return (
                 <div className={style.main}>
-                    <MyAnalysisSkeleton />
+                    <SkeletonLayout />
                 </div>
             );
         }
@@ -95,6 +58,17 @@ function MyAnalysis() {
                     {articleList.map(item => (
                         <ArticleItem item={item} key={item.postId} />
                     ))}
+                    {currentPage < totalPage ? (
+                        <InfiniteScroll onVisible={loadMoreList}>
+                            <div className={style.loadMore}>
+                                <CircularProgress size={24} />
+                            </div>
+                        </InfiniteScroll>
+                    ) : (
+                        <div className={style.listEnd}>
+                            <p>已滑到底啰</p>
+                        </div>
+                    )}
                 </div>
             );
         }
