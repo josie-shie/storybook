@@ -68,39 +68,23 @@ function List({
     };
 
     const scrollTop = () => {
-        const tabRef = [allRef, progressRef, scheduleRef, resultRef];
-        const currentRef =
-            tabRef[
-                currentStatus === null ? 0 : tabList.findIndex(tab => tab.status === currentStatus)
-            ].current;
-
-        if (currentRef) {
-            currentRef.scrollTop = 0;
-        }
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
-    const handleScroll = (ref: HTMLDivElement) => {
-        setShowScrollTop(ref.scrollTop > 600);
+    const handleScroll = () => {
+        setShowScrollTop(window.scrollY > 600);
     };
 
     useEffect(() => {
-        const tabRef = [allRef, progressRef, scheduleRef, resultRef];
-        const currentRef =
-            tabRef[
-                currentStatus === null ? 0 : tabList.findIndex(tab => tab.status === currentStatus)
-            ].current;
+        const onScroll = () => {
+            handleScroll();
+        };
+        window.addEventListener('scroll', onScroll);
 
-        if (currentRef) {
-            const onScroll = () => {
-                handleScroll(currentRef);
-            };
-            currentRef.addEventListener('scroll', onScroll);
-
-            return () => {
-                currentRef.removeEventListener('scroll', onScroll);
-            };
-        }
-    }, [currentStatus]);
+        return () => {
+            window.removeEventListener('scroll', onScroll);
+        };
+    }, []);
 
     const isOpenLongDragon = () => {
         if (!isLogin) {
