@@ -228,7 +228,8 @@ function UserInfo() {
                             <Link href="/userInfo/tradeDetail">我的交易明细</Link>
                         </button>
                         <div className={style.list}>
-                            <div className={style.item}>
+                            {/* 保留等充值開放時再開啟 */}
+                            {/* <div className={style.item}>
                                 <span className={style.text}>
                                     <Image alt="" height={14} src={Star} width={14} />
                                     <span>可用馀额：</span>
@@ -251,7 +252,7 @@ function UserInfo() {
                                 >
                                     充值
                                 </span>
-                            </div>
+                            </div> */}
                             <div className={`${style.item} ${style.second}`}>
                                 <span className={style.text}>
                                     <Image alt="" height={16} src={BuyBag} width={16} />
