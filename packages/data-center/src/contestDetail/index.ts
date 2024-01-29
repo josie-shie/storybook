@@ -166,7 +166,7 @@ const WinDrawLoseTypeSchema = z.object({
 export type WinDrawLoseType = z.infer<typeof WinDrawLoseTypeSchema>;
 
 const EventInfoSchema = z.object({
-    id: z.number(),
+    matchId: z.number(),
     isHome: z.boolean(),
     kind: z.number(),
     time: z.string(),
@@ -175,9 +175,9 @@ const EventInfoSchema = z.object({
     nameCht: z.string(),
     playerId: z.string(),
     playerId2: z.string(),
-    playerOffOrAssistEn: z.string(),
-    playerOffOrAssistChs: z.string(),
-    playerOffOrAssistCht: z.string(),
+    nameEn2: z.string(),
+    nameChs2: z.string(),
+    nameCht2: z.string(),
     overtime: z.string()
 });
 

@@ -231,9 +231,9 @@ export const GET_DETAIL_STATUS_QUERY = `
                 nameChs
                 nameCht
                 playerId
-                playerOffOrAssistEn
-                playerOffOrAssistChs
-                playerOffOrAssistCht
+                nameEn2
+                nameChs2
+                nameCht2
                 playerId2
                 overtime
             }

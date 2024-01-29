@@ -22,7 +22,7 @@ import {
     getExponent
 } from 'data-center';
 import style from './tabContent.module.scss';
-// import LiveBox from './(dashboard)/liveEvent/liveEvent';
+import LiveBox from './(dashboard)/liveEvent/liveEvent';
 import MessageBoard from './(dashboard)/messageBoard/messageBoard';
 import Predict from './(dashboard)/predict/predict';
 import Situation from './(dashboard)/situation/situation';
@@ -137,11 +137,11 @@ function TabContent({
     const route = usePathname().split('/');
     const status = route[route.length - 1] === matchId.toString() ? null : route[route.length - 1];
     const tabList = [
-        // {
-        //     label: '直播',
-        //     href: `/football/${matchId}/liveEvent`,
-        //     status: 'liveEvent'
-        // },
+        {
+            label: '直播',
+            href: `/football/${matchId}/liveEvent`,
+            status: 'liveEvent'
+        },
         {
             label: '聊天',
             href: `/football/${matchId}/messageBoard`,
@@ -321,9 +321,9 @@ function TabContent({
                 styling="underline"
                 tabs={tabList}
             >
-                {/* <div className={style.largeGap}>
+                <div className={style.largeGap}>
                     {secondRender || status === 'liveEvent' ? <LiveBox broadcastList={[]} /> : null}
-                </div> */}
+                </div>
                 <div className={`${style.largeGap} ${style.rimless}`}>
                     {secondRender || !status || status === 'messageBoard' ? (
                         <MessageBoard matchId={matchId} />

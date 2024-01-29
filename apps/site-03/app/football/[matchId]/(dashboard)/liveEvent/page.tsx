@@ -1,5 +1,5 @@
 import { getLiveText } from 'data-center';
-import TextBroadcast from './textBroadcast';
+import LiveEvent from './liveEvent';
 
 async function Page({ params }: { params: { matchId: number } }) {
     const broadcastList = await getLiveText(params.matchId);
@@ -8,7 +8,7 @@ async function Page({ params }: { params: { matchId: number } }) {
         return new Error();
     }
 
-    return <TextBroadcast broadcastList={broadcastList.data} />;
+    return <LiveEvent broadcastList={broadcastList.data} />;
 }
 
 export default Page;

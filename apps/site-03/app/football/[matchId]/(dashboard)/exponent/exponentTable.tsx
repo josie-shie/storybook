@@ -22,7 +22,7 @@ function ExponentTable() {
     };
 
     const handleResetHeight = () => {
-        if (typeof slickOption.contestInfoResetHeight !== 'undefined') {
+        if ('contestInfoResetHeight' in slickOption) {
             slickOption.contestInfoResetHeight();
         }
     };

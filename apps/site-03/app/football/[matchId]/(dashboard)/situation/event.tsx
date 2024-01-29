@@ -100,14 +100,14 @@ function GameEvent() {
                             {eventList.length > 0 ? (
                                 <div className="timeLine">
                                     {eventList.map(event => (
-                                        <div className="timeEvent" key={event.id}>
+                                        <div className="timeEvent" key={event.matchId}>
                                             <div className="left">
                                                 {event.isHome ? (
                                                     <>
                                                         {event.kind === 11
                                                             ? swapEvent(
                                                                   event.nameChs,
-                                                                  event.playerOffOrAssistChs
+                                                                  event.nameChs2
                                                               )
                                                             : event.nameChs}
                                                         {kindIconMap[event.kind]}
@@ -123,7 +123,7 @@ function GameEvent() {
                                                         {event.kind === 11
                                                             ? swapEvent(
                                                                   event.nameChs,
-                                                                  event.playerOffOrAssistChs
+                                                                  event.nameChs2
                                                               )
                                                             : event.nameChs}
                                                         {kindIconMap[event.kind]}

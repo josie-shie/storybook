@@ -135,6 +135,8 @@ function Slick({
 }: SlickProps) {
     const [activeIndex, setActiveIndex] = useState(initialSlide);
     const [direction, setDirection] = useState('prev');
+    const [swiperInit, setSwiperInit] = useState(false);
+
     const swiperRef = useRef<Swiper | null>(null);
     const tabWidth = 100 / tabs.length;
 
@@ -159,6 +161,7 @@ function Slick({
     };
 
     slickOption[`${resetHeightKey}ResetHeight`] = () => {
+        if (!swiperInit) return;
         setTimeout(() => {
             swiperRef.current?.updateAutoHeight();
         }, 0);
@@ -197,6 +200,7 @@ function Slick({
                 }}
                 onSwiper={swiper => {
                     swiperRef.current = swiper;
+                    setSwiperInit(true);
                 }}
                 onTouchEnd={handleTouchEnd}
                 slidesPerView={1}
