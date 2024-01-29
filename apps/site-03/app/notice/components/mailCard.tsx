@@ -1,5 +1,5 @@
 'use client';
-
+import Image from 'next/image';
 import { useState } from 'react';
 import Checkbox from '@mui/material/Checkbox';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
@@ -14,6 +14,7 @@ import style from './mailCard.module.scss';
 function MailCard({ mailData }: { mailData: GetMailMemberResponse }) {
     const editStatus = useNoticeStore.use.editStatus();
     const setSelectedMailData = useNoticeStore.use.setSelectedMailData();
+    const setSelectMailTag = useNoticeStore.use.setSelectMailTag();
     const selected = useNoticeStore.use.selected();
     const setSelected = useNoticeStore.use.setSelected();
     const readMailMessage = useMessageStore.use.readMailMessage();
@@ -21,6 +22,7 @@ function MailCard({ mailData }: { mailData: GetMailMemberResponse }) {
 
     const handleMailInfo = () => {
         setSelectedMailData(mailData);
+        setSelectMailTag(mailData.tag);
         if (!mailData.isRead) {
             void readMail();
             readMailMessage();
@@ -56,7 +58,9 @@ function MailCard({ mailData }: { mailData: GetMailMemberResponse }) {
             />
             <div className={style.card} onClick={handleMailInfo}>
                 <div className={style.topBar}>
-                    <div className={style.tag}>站內信</div>
+                    <div className={style.tag} style={{ background: mailData.tag.colorCode }}>
+                        {mailData.tag.tagName || '站內信'}
+                    </div>
                     <p className={style.date}>
                         {timestampToString(mailData.createdAt, 'YYYY-M-DD HH:mm')}
                     </p>
@@ -65,6 +69,11 @@ function MailCard({ mailData }: { mailData: GetMailMemberResponse }) {
                 <div className={style.bottomBar}>
                     <p className={style.content}>{mailData.content}</p>
                 </div>
+                {mailData.coverImage ? (
+                    <div className={style.coverImage}>
+                        <Image alt="cover" height={180} src={mailData.coverImage} width={342} />
+                    </div>
+                ) : null}
             </div>
         </li>
     );
