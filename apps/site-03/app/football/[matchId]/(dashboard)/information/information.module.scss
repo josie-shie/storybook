@@ -5,28 +5,8 @@
     border-radius: 12px;
     padding: 8px;
 
-    .tabBar {
-        display: flex;
-        align-items: center;
-        column-gap: 8px;
-        margin-bottom: 8px;
-
-        .tab {
-            width: calc((100% - 16px) / 3);
-            height: 36px;
-            line-height: 36px;
-            text-align: center;
-            padding: 0 12px;
-            flex: 1;
-            background-color: #f3f3f3;
-            color: #8d8d8d;
-            font-size: 14px;
-            font-weight: 500;
-            border-radius: 8px 8px 0 0;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
+    .content {
+        margin-top: 8px;
     }
 
     .list {

@@ -211,7 +211,7 @@ function Handicap() {
         targetHandicap.inProgress.length + targetHandicap.notStarted.length === 0;
 
     const handleResetHeight = () => {
-        if (typeof slickOption.contestInfoResetHeight !== 'undefined') {
+        if ('contestInfoResetHeight' in slickOption) {
             slickOption.contestInfoResetHeight();
         }
     };

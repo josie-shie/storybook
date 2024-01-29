@@ -4,7 +4,6 @@ import { getRandomInt } from './random';
 import {
     deProtoOdds,
     deProtoOddsChange,
-    deProtoDetailTechnicList,
     deProtoOddRunning,
     deProtoOddRunningHalf,
     deProtoAnalysis,
@@ -139,9 +138,9 @@ interface TechnicalInfoData {
 }
 
 interface EventInfo {
-    id: number;
+    matchId: number;
     isHome: boolean;
-    kind: 2 | 1 | 3 | 7 | 8 | 9 | 11 | 13 | 14;
+    kind: number;
     nameChs: string;
     nameCht: string;
     nameEn: string;
@@ -151,9 +150,22 @@ interface EventInfo {
     time: string;
 }
 
-interface EventInfoData {
+interface TextLive {
+    main?: number;
+    type?: number;
+    position: number;
+    time: string;
+    data: string;
+}
+
+interface TextLiveRequest {
     matchId: number;
-    event: EventInfo[];
+    textLiveData: string;
+}
+
+interface TextLiveResponse extends TextLive {
+    matchId: number;
+    textLiveData: TextLive[];
 }
 
 let client: MqttClient;
@@ -162,10 +174,12 @@ let isConnect = false;
 const textDecoder = new TextDecoder();
 
 const useMessageQueue: ((data: OriginalContestInfo) => void)[] = [];
+const useEventQueue: ((data: EventInfo) => void)[] = [];
+const useTextLiveQueue: ((data: TextLiveResponse) => void)[] = [];
+
 const useOddsQueue: ((data: OddsType) => void)[] = [];
 const useOddsChangeQueue: ((data: OddChangeType) => void)[] = [];
 const useTechnicalQueue: ((data: TechnicalInfoData) => void)[] = [];
-const useEventQueue: ((data: EventInfoData) => void)[] = [];
 const useOddsRunningQueue: ((data: OddsRunningHashTable) => void)[] = [];
 const useOddsRunningHalfQueue: ((data: OddsRunningHashTable) => void)[] = [];
 const useAnalysisQueue: ((data: AnalysisResponse) => void)[] = [];
@@ -468,22 +482,31 @@ const handleOddsChangeMessage = async (message: Buffer) => {
 };
 
 const handleDetailEventMessage = (message: Buffer) => {
-    const messageObject = JSON.parse(textDecoder.decode(message)) as EventInfoData;
+    const messageObject = JSON.parse(textDecoder.decode(message)) as EventInfo;
 
     for (const messageMethod of useEventQueue) {
-        messageMethod(messageObject as unknown as EventInfoData);
+        messageMethod(messageObject as unknown as EventInfo);
     }
 };
 
-const handleDetailTechnicListMessage = async (message: Buffer) => {
-    const messageObject = await deProtoDetailTechnicList(message);
+const handleDetailTextLiveMessage = (message: Buffer) => {
+    const messageObject = JSON.parse(textDecoder.decode(message)) as TextLiveRequest;
 
-    const decodedMessage = toSerializableObject(
-        messageObject as unknown as Record<string, unknown>
-    );
+    const formatTextLive = {
+        matchId: messageObject.matchId,
+        textLiveData: JSON.parse(messageObject.textLiveData) as TextLive[]
+    };
+
+    for (const messageMethod of useTextLiveQueue) {
+        messageMethod(formatTextLive as unknown as TextLiveResponse);
+    }
+};
+
+const handleDetailTechnicListMessage = (message: Buffer) => {
+    const messageObject = JSON.parse(textDecoder.decode(message)) as TechnicalInfoData;
 
     for (const messageMethod of useTechnicalQueue) {
-        messageMethod(decodedMessage as unknown as TechnicalInfoData);
+        messageMethod(messageObject as unknown as TechnicalInfoData);
     }
 };
 
@@ -668,19 +691,23 @@ export const mqttService = {
                 // eslint-disable-next-line no-console -- Check lifecycle
                 console.log('Mqtt connected');
                 client.subscribe('updatematch');
-                client.subscribe('updateasia_odds');
-                client.subscribe('updateasia_odds_change');
                 client.subscribe('updateevent');
-                client.subscribe('updatetechnic');
+                client.subscribe('updatetext_live');
+
+                // client.subscribe('updateasia_odds');
+                // client.subscribe('updateasia_odds_change');
+                // client.subscribe('updatetechnic');
                 client.subscribe('analytical/analysis');
                 client.subscribe(`sportim/notify/${memberId}`);
             });
             client.on('message', (topic, message) => {
                 if (topic === 'updatematch') handleContestMessage(message);
+                if (topic === 'updateevent') handleDetailEventMessage(message);
+                if (topic === 'updatetext_live') handleDetailTextLiveMessage(message);
+
                 if (topic === 'updateasia_odds') void handleOddsMessage(message);
                 if (topic === 'updateasia_odds_change') void handleOddsChangeMessage(message);
-                if (topic === 'updateevent') handleDetailEventMessage(message);
-                if (topic === 'updatetechnic') void handleDetailTechnicListMessage(message);
+                if (topic === 'updatetechnic') handleDetailTechnicListMessage(message);
                 if (topic === 'analytical/analysis') void handleAnalysisMessage(message);
                 if (topic === `sportim/notify/${memberId}`) void handleNotifyMessage(message);
             });
@@ -716,6 +743,12 @@ export const mqttService = {
     getMessage: (onMessage: (data: OriginalContestInfo) => void) => {
         useMessageQueue.push(onMessage);
     },
+    getEventList: (onMessage: (data: EventInfo) => void) => {
+        useEventQueue.push(onMessage);
+    },
+    getTextLiveList: (onMessage: (data: TextLiveResponse) => void) => {
+        useTextLiveQueue.push(onMessage);
+    },
     getOdds: (onMessage: (data: OddsType) => void) => {
         useOddsQueue.push(onMessage);
     },
@@ -724,9 +757,6 @@ export const mqttService = {
     },
     getTechnicList: (onMessage: (data: TechnicalInfoData) => void) => {
         useTechnicalQueue.push(onMessage);
-    },
-    getEventList: (onMessage: (data: EventInfoData) => void) => {
-        useEventQueue.push(onMessage);
     },
     getOddsRunning: (onMessage: (data: OddsRunningHashTable) => void) => {
         useOddsRunningQueue.push(onMessage);
