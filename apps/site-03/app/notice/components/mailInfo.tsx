@@ -3,12 +3,14 @@
 import { useState, useEffect } from 'react';
 import Drawer from '@mui/material/Drawer';
 import Image from 'next/image';
+import Link from 'next/link';
 import { timestampToString } from 'lib';
 import { useNoticeStore } from '../noticeStore';
 import backLeftArrowImg from '../img/backLeftArrow.png';
+import edit from '../img/edit.png';
 import style from './mailInfo.module.scss';
 
-function Header() {
+function Header({ tagName }: { tagName: string }) {
     const resetSelectedMailData = useNoticeStore.use.resetSelectedMailData();
 
     return (
@@ -24,7 +26,7 @@ function Header() {
                     src={backLeftArrowImg}
                     width={24}
                 />
-                <div className={style.text}>消息內容</div>
+                <div className={style.text}>{tagName || '消息内容'}</div>
             </div>
         </div>
     );
@@ -33,6 +35,7 @@ function Header() {
 function MailInfo() {
     const [infoStatus, setInfoStatus] = useState(false);
     const selectedMailData = useNoticeStore.use.selectedMailData();
+    const selectMailTag = useNoticeStore.use.selectMailTag();
 
     useEffect(() => {
         if (selectedMailData.mailMemberId) {
@@ -51,14 +54,66 @@ function MailInfo() {
                 }}
                 open={infoStatus}
             >
-                <Header />
+                <Header tagName={selectMailTag.tagName} />
                 <div className={style.outer}>
                     <div className={style.box}>
-                        <div className={style.date}>
-                            {timestampToString(selectedMailData.createdAt, 'YYYY-M-DD')}
+                        <div className={style.rows}>
+                            <div className={style.date}>
+                                {timestampToString(selectedMailData.createdAt, 'YYYY-MM-DD HH:MM')}
+                            </div>
+                            <div
+                                className={style.tag}
+                                style={{ background: selectMailTag.colorCode }}
+                            >
+                                {selectMailTag.tagName || '站內信'}
+                            </div>
                         </div>
+
                         <h2 className={style.title}>{selectedMailData.title}</h2>
+
+                        {selectMailTag.tagName !== '交易明細' && (
+                            <>
+                                {selectedMailData.senderAvatar && selectedMailData.senderName ? (
+                                    <div className={style.editUser}>
+                                        <span className={style.avatar}>
+                                            <Image
+                                                alt="edit"
+                                                height={30}
+                                                src={selectedMailData.senderAvatar || edit.src}
+                                                width={30}
+                                            />
+                                        </span>
+                                        <span className={style.name}>
+                                            {selectedMailData.senderName}
+                                        </span>
+                                    </div>
+                                ) : null}
+                            </>
+                        )}
+                        {selectedMailData.contentImage ? (
+                            <div className={style.contentImage}>
+                                <Image
+                                    alt="cover"
+                                    height={180}
+                                    src={selectedMailData.contentImage}
+                                    width={342}
+                                />
+                            </div>
+                        ) : null}
                         <p className={style.content}>{selectedMailData.content}</p>
+                        {selectMailTag.tagName === '交易明細' ? (
+                            <div className={style.detailButton}>
+                                <Link href="/userInfo/tradeDetail">查看交易明細</Link>
+                            </div>
+                        ) : null}
+                        {selectedMailData.ctaButtonName ? (
+                            <Link
+                                className={style.ctaButton}
+                                href={`https://${selectedMailData.ctaLink}`}
+                            >
+                                {selectedMailData.ctaButtonName}
+                            </Link>
+                        ) : null}
                     </div>
                 </div>
             </Drawer>

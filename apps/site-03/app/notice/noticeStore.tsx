@@ -2,6 +2,12 @@ import { initStore } from 'lib';
 import type { StoreWithSelectors, MessageRoomType } from 'lib';
 import type { GetMailMemberListResponse, GetMailMemberResponse } from 'data-center';
 
+interface Tags {
+    id: number;
+    tagName: string;
+    colorCode: string;
+}
+
 interface InitState {
     mailList: GetMailMemberListResponse;
 }
@@ -11,12 +17,14 @@ interface NoticeInfo extends InitState {
     editStatus: boolean;
     selected: Set<number | string>;
     selectedMailData: GetMailMemberResponse;
+    selectMailTag: Tags;
     selectedChatData: MessageRoomType;
     setMailList: (data: GetMailMemberListResponse) => void;
     setChatList: (data: MessageRoomType[]) => void;
     setEditStatus: (editStatus: boolean) => void;
     setSelected: (selectId: number | string, action: string) => void;
     setSelectedMailData: (selectedMailData: GetMailMemberResponse) => void;
+    setSelectMailTag: (selectedMailData: Tags) => void;
     setSelectedChatData: (selectedChatData: MessageRoomType) => void;
     resetSelectedMailData: () => void;
     resetSelectedChatData: () => void;
@@ -32,6 +40,7 @@ const initialState = (
     editStatus: false,
     selected: new Set<number | string>(),
     selectedMailData: {} as GetMailMemberResponse,
+    selectMailTag: {} as Tags,
     selectedChatData: {} as MessageRoomType,
     setMailList: (mailList: GetMailMemberListResponse) => {
         set(() => ({ mailList }));
@@ -87,6 +96,9 @@ const initialState = (
     },
     setSelectedMailData: (selectedMailData: GetMailMemberResponse) => {
         set(() => ({ selectedMailData }));
+    },
+    setSelectMailTag: (selectMailTag: Tags) => {
+        set(() => ({ selectMailTag }));
     },
     setSelectedChatData: (selectedChatData: MessageRoomType) => {
         set(() => ({ selectedChatData }));
