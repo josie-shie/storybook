@@ -20,8 +20,6 @@ function Trend() {
     const highWinRateTrend = useGuessDetailStore.use.highWinRateTrend();
     const showdistributed = highWinRateTrend.memberPermission;
 
-    const proGuessNumber = highWinRateTrend.home ? 18 : 0; // TODO: API 新增高手人數欄位
-
     if (!highWinRateTrend.enoughProData) return null;
     return (
         <div className={style.area}>
@@ -38,7 +36,9 @@ function Trend() {
                         <AnalyzeRow awayType="客" homeType="主" />
                         <AnalyzeRow awayType="小" homeType="大" />
                     </div>
-                    <div className={style.masterGuess}>{proGuessNumber}位高手猜過</div>
+                    <div className={style.masterGuess}>
+                        {highWinRateTrend.proMemberNum}位高手猜過
+                    </div>
                 </>
             ) : (
                 <>
@@ -50,7 +50,9 @@ function Trend() {
                         <DistributeSkeleton />
                         <DistributeSkeleton />
                     </div>
-                    <div className={style.masterGuess}>{proGuessNumber}位高手猜過</div>
+                    <div className={style.masterGuess}>
+                        {highWinRateTrend.proMemberNum}位高手猜過
+                    </div>
                 </>
             )}
         </div>

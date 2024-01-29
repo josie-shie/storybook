@@ -68,7 +68,8 @@ const initialState = (set: (data: Partial<GuessDetailState>) => void) => ({
         under: 0,
         enoughProData: true,
         memberPermission: false,
-        unlockPrice: 0
+        unlockPrice: 0,
+        proMemberNum: 0
     },
     masterPlanPrice: 0,
     masterPlanList: [],
