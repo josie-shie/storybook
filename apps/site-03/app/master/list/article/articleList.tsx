@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { getPostList } from 'data-center';
+import Image from 'next/image';
 import { type PostFilter, type RecommendPost } from 'data-center';
 import { InfiniteScroll } from 'ui';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -11,6 +12,7 @@ import style from './articleList.module.scss';
 import { creatArticleStore } from './articleStore';
 import ArticleCard from './components/articleCard/articleCard';
 import SkeletonLayout from './components/skeleton/skeleton';
+import banner from './img/banner.png';
 
 function ArticleList() {
     const [isActive, setIsActive] = useState<PostFilter[]>([]);
@@ -66,6 +68,7 @@ function ArticleList() {
 
     return (
         <>
+            <Image alt="banner" src={banner} className={style.banner} width={390} height={60} />
             <div className={style.recommendPredict}>
                 {articleList.length === 0 && isNoData === null && <SkeletonLayout />}
 
