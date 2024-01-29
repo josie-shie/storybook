@@ -19,6 +19,7 @@ import { useAnalyticsResultStore } from './analysisResultStore';
 import SystemErrorImage from './img/systemError.svg';
 import EmptyDataImage from './img/emptyData.svg';
 import AnalyzeDataImage from './img/analyzeData.svg';
+import Minutes from './(dashboard)/minutes/minutes';
 
 function InsufficientBalance() {
     const router = useRouter();
@@ -182,7 +183,7 @@ function AnalysisResult() {
             },
             {
                 label: '15分钟进球',
-                content: <>15分钟</>,
+                content: <Minutes />,
                 params: 'minutes'
             },
             {
