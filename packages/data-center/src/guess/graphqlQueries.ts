@@ -242,6 +242,7 @@ export const GET_RRO_DISTRIB_QUERY = `
             enoughProData
             memberPermission
             unlockPrice
+            proMemberNum
         }
     }
 `;
@@ -251,6 +252,12 @@ export const ADD_GUESS_MUTATION = `
         addGuess(input: $input) {
             remainingGuessTimes
             guessNum
+            home
+            away
+            over
+            under
+            enoughProData
+            proMemberNum
         }
     }
 `;

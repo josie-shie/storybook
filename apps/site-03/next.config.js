@@ -12,7 +12,8 @@ module.exports = {
             'twtest8.s3.ap-northeast-1.amazonaws.com',
             'twtest8.s3.amazonaws.com',
             'fastly.picsum.photos',
-            'cdn.sportnanoapi.com'
+            'cdn.sportnanoapi.com',
+            'cdn.pixabay.com'
         ]
     },
     webpack(config) {

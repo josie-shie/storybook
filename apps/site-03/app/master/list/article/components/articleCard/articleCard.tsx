@@ -22,6 +22,7 @@ import LockOpen from './img/lockOpen.svg';
 import LockOpenBlue from './img/lockOpenBlue.svg';
 import style from './articleCard.module.scss';
 import Wallet from './img/wallet.png';
+import { truncateFloatingPoint } from 'lib';
 
 function ArticleCard({ article }: { article: RecommendPost }) {
     const [isOpenPaid, setIsOpenPaid] = useState(false);

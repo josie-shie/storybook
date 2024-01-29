@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { Skeleton } from '@mui/material';
 import Header from '@/components/header/headerTitleDetail';
 import style from './tradeDetail.module.scss';
-import FilterIcon from './img/filterIcon.png';
+import FilterIcon from './img/filterIcon.svg';
 import TradeDetailList from './tradeDetailList';
 import DateRangeDrawer from './components/dateOptionDrawer/dateOptionDrawer';
 import TradeTypeDrawer from './components/tradeTypeDrawer/tradeTypeDrawer';
@@ -94,7 +94,7 @@ function TradeDetail() {
                                 ? dateDisplay
                                 : dateOption.find(option => option.value === activeDate)?.label}
                         </span>
-                        <Image alt="filterIcon" src={FilterIcon} />
+                        <FilterIcon />
                     </div>
                     <div
                         className={style.filterButton}
@@ -103,7 +103,7 @@ function TradeDetail() {
                         }}
                     >
                         <span>{tradeOption.find(option => option.value === tradeType)?.label}</span>
-                        <Image alt="filterIcon" src={FilterIcon} />
+                        <FilterIcon />
                     </div>
                 </div>
                 {isLoading ? (

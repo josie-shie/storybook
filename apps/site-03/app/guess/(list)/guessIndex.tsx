@@ -5,6 +5,7 @@ import type { GetTodayGuessMatchesResponse } from 'data-center';
 import Contest from './contest/contest';
 import Rank from './rank/rank';
 import MasterRank from './masterRank/masterRank';
+import style from './layout.module.scss';
 
 function GuessIndex({ todayGuess }: { todayGuess: GetTodayGuessMatchesResponse }) {
     const [secendRender, setSecendRender] = useState(false);
@@ -48,7 +49,16 @@ function GuessIndex({ todayGuess }: { todayGuess: GetTodayGuessMatchesResponse }
     };
 
     return (
-        <Slick initialSlide={0} onSlickEnd={onSlickEnd} styling="button" tabs={tabList}>
+        <Slick
+            autoHeight
+            className={style.guessIndex}
+            fixedTabs
+            initialSlide={0}
+            onSlickEnd={onSlickEnd}
+            resetHeightKey="guessIndex"
+            styling="button"
+            tabs={tabList}
+        >
             <Contest ref={gameListRef} todayGuess={todayGuess} />
             {secendRender ? <Rank ref={weekRankRef} status="week" /> : null}
             {secendRender ? <Rank ref={monthRankRef} status="month" /> : null}
