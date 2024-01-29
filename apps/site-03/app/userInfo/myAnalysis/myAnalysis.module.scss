@@ -43,56 +43,18 @@
 .main {
     height: calc(100dvh - 54px);
     margin-top: -14px;
-    padding: 12px;
+    padding-top: 24px;
     overflow: auto;
     background: #fff;
     border-radius: 16px 16px 0 0;
+}
 
-    .skeletonBox {
-        border-bottom: 1px solid #f3f3f3;
-        margin-bottom: 16px;
+.listEnd {
+    text-align: center;
 
-        .user {
-            display: flex;
-            justify-content: space-between;
-
-            .userInfo {
-                margin: 0 12px 0 10px;
-                flex-grow: 1;
-            }
-        }
-    }
-
-    :global .ui-tab {
-        .ui-tab-header {
-            .ui-tabs-header {
-                padding: 8px 0 0;
-                border-bottom: 1px solid #d9d9d9;
-
-                .ui-button {
-                    flex: 1;
-                    padding: 6px 24px;
-                    text-align: center;
-
-                    .ui-tabs-header-label {
-                        font-size: 14px;
-                        font-weight: 500;
-                    }
-                }
-            }
-
-            .ui-tab-header-liner {
-                bottom: -1px;
-                border-radius: 10px;
-            }
-        }
-
-        .swiper {
-            .swiper-wrapper {
-                .swiper-slide {
-                    padding: 10px 0;
-                }
-            }
-        }
+    p {
+        color: #bfbfbf;
+        font-size: 12px;
+        padding: 8px 0 18px 0;
     }
 }

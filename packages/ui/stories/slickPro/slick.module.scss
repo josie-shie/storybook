@@ -27,19 +27,21 @@
 
     .tabButton {
         position: relative;
-        text-align: center;
         width: 100%;
-        height: 28px;
+        height: 32px;
         padding: 0;
         display: block;
         line-height: 28px;
         border-radius: 30px;
-        font-weight: 500;
         outline: none;
         box-shadow: none;
         border: none;
         background: none;
+        text-align: center;
         color: #4489ff;
+        font-size: 14px;
+        font-weight: 500;
+        font-family: 'PingFang SC', sans-serif;
     }
 
     .selected {
@@ -106,4 +108,17 @@
     .selected {
         color: #4489ff;
     }
+}
+
+.fixed {
+    width: 100%;
+    position: fixed;
+    top: 54px;
+    left: 0;
+    z-index: 4;
+}
+
+.placeholder {
+    width: 100%;
+    height: 56px;
 }

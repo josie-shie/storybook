@@ -11,12 +11,14 @@ type Styling = 'text' | 'underline' | 'button';
 type TabsType = { label: string; href?: string; status: string | null }[];
 interface SlickProps {
     autoHeight?: boolean;
+    fixedTabs?: boolean;
     tabs: TabsType;
     children: ReactNode;
     styling?: Styling;
     initialSlide?: number;
     className?: string;
     onSlickEnd: (nowIndex: number, prevIndex: number) => void;
+    resetHeightKey?: string;
 }
 interface SwiperExpansion extends Swiper {
     maxTranslate: () => number;
@@ -28,7 +30,8 @@ function SlickNav({
     styling,
     tabs,
     swipeTo,
-    direction
+    direction,
+    fixedTabs
 }: {
     tabWidth: number;
     activeIndex: number;
@@ -36,6 +39,7 @@ function SlickNav({
     tabs: TabsType;
     swipeTo: (index: number) => void;
     direction: string;
+    fixedTabs: boolean;
 }) {
     const [isMounted, setIsMounted] = useState(false);
     useEffect(() => {
@@ -45,76 +49,89 @@ function SlickNav({
         direction === 'next' ? Math.floor(activeIndex) + 1 : Math.floor(activeIndex);
 
     return (
-        <div className={`ui-slick-tabs-container ${style.tabsContainer} ${style[styling]}`}>
-            <div
-                className={style.slick}
-                style={{
-                    width: `${tabWidth}%`,
-                    transform: `translateX(${activeIndex * 100}%)`
-                }}
-            />
-            <ul className={`ui-slick-tabs ${style.tabs}`}>
-                {tabs.map((item, index) => {
-                    return (
-                        <li className="ui-slick-li" key={item.label}>
-                            {isMounted ? (
-                                <ButtonBase
-                                    className={`ui-slick-button ${style.tabButton} ${
-                                        activeStatus === index ? style.selected : ''
-                                    } ${
-                                        (activeIndex < 0 && index === 0) ||
-                                        (activeIndex >= tabs.length - 1 &&
-                                            index === tabs.length - 1)
-                                            ? style.selected
-                                            : ''
-                                    }`}
-                                    key={item.label}
-                                    onClick={() => {
-                                        swipeTo(index);
-                                    }}
-                                    type="button"
-                                >
-                                    {item.label}
-                                </ButtonBase>
-                            ) : (
-                                <button
-                                    className={`ui-slick-button ${style.tabButton} ${
-                                        activeStatus === index ? style.selected : ''
-                                    } ${
-                                        (activeIndex < 0 && index === 0) ||
-                                        (activeIndex >= tabs.length - 1 &&
-                                            index === tabs.length - 1)
-                                            ? style.selected
-                                            : ''
-                                    }`}
-                                    key={item.label}
-                                    onClick={() => {
-                                        swipeTo(index);
-                                    }}
-                                    type="button"
-                                >
-                                    {item.label}
-                                </button>
-                            )}
-                        </li>
-                    );
-                })}
-            </ul>
-        </div>
+        <>
+            {fixedTabs ? (
+                <div className={`ui-slick-tabs-placeholder ${style.placeholder}`} />
+            ) : null}
+
+            <div className={`ui-slick-nav ${fixedTabs && style.fixed}`}>
+                <div className={`ui-slick-tabs-container ${style.tabsContainer} ${style[styling]}`}>
+                    <div
+                        className={style.slick}
+                        style={{
+                            width: `${tabWidth}%`,
+                            transform: `translateX(${activeIndex * 100}%)`
+                        }}
+                    />
+                    <ul className={`ui-slick-tabs ${style.tabs}`}>
+                        {tabs.map((item, index) => {
+                            return (
+                                <li className="ui-slick-li" key={item.label}>
+                                    {isMounted ? (
+                                        <ButtonBase
+                                            className={`ui-slick-button ${style.tabButton} ${
+                                                activeStatus === index
+                                                    ? `${style.selected} ui-slick-button-selected`
+                                                    : ''
+                                            } ${
+                                                (activeIndex < 0 && index === 0) ||
+                                                (activeIndex >= tabs.length - 1 &&
+                                                    index === tabs.length - 1)
+                                                    ? `${style.selected} ui-slick-button-selected`
+                                                    : ''
+                                            }`}
+                                            key={item.label}
+                                            onClick={() => {
+                                                swipeTo(index);
+                                            }}
+                                            type="button"
+                                        >
+                                            {item.label}
+                                        </ButtonBase>
+                                    ) : (
+                                        <button
+                                            className={`ui-slick-button ${style.tabButton} ${
+                                                activeStatus === index
+                                                    ? `${style.selected} ui-slick-button-selected`
+                                                    : ''
+                                            } ${
+                                                (activeIndex < 0 && index === 0) ||
+                                                (activeIndex >= tabs.length - 1 &&
+                                                    index === tabs.length - 1)
+                                                    ? `${style.selected} ui-slick-button-selected`
+                                                    : ''
+                                            }`}
+                                            key={item.label}
+                                            onClick={() => {
+                                                swipeTo(index);
+                                            }}
+                                            type="button"
+                                        >
+                                            {item.label}
+                                        </button>
+                                    )}
+                                </li>
+                            );
+                        })}
+                    </ul>
+                </div>
+            </div>
+        </>
     );
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-function -- export function
-let resetSwiperHight = () => {};
+const slickOption: Record<string, () => void> = {};
 
 function Slick({
     autoHeight = false,
+    fixedTabs = false,
     tabs,
     children,
     styling = 'button',
     initialSlide = 0,
     className,
-    onSlickEnd
+    onSlickEnd,
+    resetHeightKey = 'slickDefault'
 }: SlickProps) {
     const [activeIndex, setActiveIndex] = useState(initialSlide);
     const [direction, setDirection] = useState('prev');
@@ -141,17 +158,18 @@ function Slick({
         swiperRef.current && swiperRef.current.slideTo(index);
     };
 
+    slickOption[`${resetHeightKey}ResetHeight`] = () => {
+        setTimeout(() => {
+            swiperRef.current?.updateAutoHeight();
+        }, 0);
+    };
+
     const transitionEnd = (nowIndex: number, prevIndex: number) => {
         if (tabs[nowIndex].href) {
             history.replaceState({}, '', tabs[nowIndex].href);
         }
         onSlickEnd(nowIndex, prevIndex);
-    };
-
-    resetSwiperHight = () => {
-        setTimeout(() => {
-            swiperRef.current?.updateAutoHeight();
-        }, 0);
+        slickOption[`${resetHeightKey}ResetHeight`];
     };
 
     return (
@@ -159,6 +177,7 @@ function Slick({
             <SlickNav
                 activeIndex={activeIndex}
                 direction={direction}
+                fixedTabs={fixedTabs}
                 styling={styling}
                 swipeTo={swipeTo}
                 tabWidth={tabWidth}
@@ -191,4 +210,4 @@ function Slick({
     );
 }
 
-export { Slick, resetSwiperHight };
+export { Slick, slickOption };

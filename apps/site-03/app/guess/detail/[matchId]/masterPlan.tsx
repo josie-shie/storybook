@@ -1,106 +1,60 @@
 'use client';
 import { useEffect, useState } from 'react';
-import Image from 'next/image';
-import { getProDistrib, getProGuess, payForProDistrib, payForProGuess } from 'data-center';
+import { getProDistrib, getProGuess, payForProGuess } from 'data-center';
 import { useParams, useRouter } from 'next/navigation';
 import CircularProgress from '@mui/material/CircularProgress';
-import PaidDialog from '@/components/paidDialog/paidDialog';
+import ConfirmPayDrawer from '@/components/confirmPayDrawer/confirmPayDrawer';
 import { useUserStore } from '@/store/userStore';
 import { useAuthStore } from '@/store/authStore';
 import BaseNoData from '@/components/baseNoData/noData';
 import Rule from './components/rule/rule';
 import GameCard from './gameCard';
-import AnalyzeColumn from './analyze';
-import Title from './img/title.png';
+import AnalyzeRow from './components/analyzeRow/analyze';
+import TitleIcon from './img/title.svg';
+import GeryTitleIcon from './img/greyTitle.svg';
 import style from './masterPlan.module.scss';
 import { useGuessDetailStore } from './guessDetailStore';
-import starIcon from './img/coin.png';
+import DistributeSkeleton from './components/distributeSkeleton/distributeSkeleton';
 
-interface TrendPropsType {
-    isLogin: boolean;
-    setAmount: (number: number) => void;
-    setOpenPaid: (open: boolean) => void;
-}
-
-function Trend({ isLogin, setAmount, setOpenPaid }: TrendPropsType) {
-    const router = useRouter();
+function Trend() {
     const highWinRateTrend = useGuessDetailStore.use.highWinRateTrend();
-
-    const setIsDrawerOpen = useAuthStore.use.setIsDrawerOpen();
-    const setAuthQuery = useUserStore.use.setAuthQuery();
-
-    const handleUnlockTrendDialogOpen = (newAmount: number) => {
-        setAmount(newAmount);
-        setOpenPaid(true);
-    };
-
-    const goRechargePage = () => {
-        router.push('/userInfo/subscribe');
-    };
+    const showdistributed = highWinRateTrend.memberPermission;
 
     if (!highWinRateTrend.enoughProData) return null;
     return (
         <div className={style.area}>
-            <div className={style.title}>
-                <div className={style.name}>
-                    <Image alt="titleIcon" src={Title} width={16} />
-                    <span>近20场高胜率玩家风向</span>
-                </div>
-                <Rule />
-            </div>
-            <div className={style.analyze}>
-                {highWinRateTrend.memberPermission ? (
-                    <>
-                        <AnalyzeColumn awayType="客" homeType="主" />
-                        <AnalyzeColumn awayType="小" homeType="大" />
-                    </>
-                ) : (
-                    <div className={style.mask}>
-                        <button
-                            className={style.trendBtn}
-                            onClick={() => {
-                                if (!isLogin) {
-                                    setAuthQuery('login');
-                                    setIsDrawerOpen(true);
-                                    return;
-                                }
-                                handleUnlockTrendDialogOpen(highWinRateTrend.unlockPrice);
-                            }}
-                            type="button"
-                        >
-                            <Image
-                                alt=""
-                                className={style.coin}
-                                height={14}
-                                src={starIcon}
-                                width={14}
-                            />{' '}
-                            {highWinRateTrend.unlockPrice} 金币解锁本场
-                        </button>
-                        <button
-                            className={style.trendBtn}
-                            onClick={() => {
-                                if (!isLogin) {
-                                    setAuthQuery('login');
-                                    setIsDrawerOpen(true);
-                                    return;
-                                }
-                                goRechargePage();
-                            }}
-                            type="button"
-                        >
-                            <Image
-                                alt=""
-                                className={style.coin}
-                                height={14}
-                                src={starIcon}
-                                width={14}
-                            />{' '}
-                            365天VIP无限看专案
-                        </button>
+            {showdistributed ? (
+                <>
+                    <div className={style.title}>
+                        <div className={style.name}>
+                            <TitleIcon />
+                            <span>近20场高胜率玩家风向</span>
+                        </div>
+                        <Rule />
                     </div>
-                )}
-            </div>
+                    <div className={style.analyze}>
+                        <AnalyzeRow awayType="客" homeType="主" />
+                        <AnalyzeRow awayType="小" homeType="大" />
+                    </div>
+                    <div className={style.masterGuess}>
+                        {highWinRateTrend.proMemberNum}位高手猜過
+                    </div>
+                </>
+            ) : (
+                <>
+                    <div className={style.midTitle}>
+                        <GeryTitleIcon />
+                        <span className={style.locked}>猜球后即可解锁近20场高胜率玩家风向</span>
+                    </div>
+                    <div className={style.lockedAnalyze}>
+                        <DistributeSkeleton />
+                        <DistributeSkeleton />
+                    </div>
+                    <div className={style.masterGuess}>
+                        {highWinRateTrend.proMemberNum}位高手猜過
+                    </div>
+                </>
+            )}
         </div>
     );
 }
@@ -127,9 +81,9 @@ function MasterPlanList({ isLogin, setAmount, setOpenPaid, setSelectedGameId }: 
     if (masterPlanList.length === 0) return <BaseNoData text="暂无资料" />;
     return (
         <>
-            {masterPlanList.map((el, idx) => (
+            {masterPlanList.map(el => (
                 <GameCard
-                    key={idx}
+                    key={el.guessId}
                     onOpenPaidDialog={() => {
                         if (!isLogin) {
                             setAuthQuery('login');
@@ -157,17 +111,12 @@ function MasterPlan() {
     const isLogin = useUserStore.use.isLogin();
     const userInfo = useUserStore.use.userInfo();
     const userBalance = userInfo.balance;
-    const highWinRateTrend = useGuessDetailStore.use.highWinRateTrend();
     const masterPlanList = useGuessDetailStore.use.masterPlanList();
 
     const setUserInfo = useUserStore.use.setUserInfo();
     const setHighWinRateTrend = useGuessDetailStore.use.setHighWinRateTrend();
     const setMasterPlanPrice = useGuessDetailStore.use.setMasterPlanPrice();
     const setMasterPlanList = useGuessDetailStore.use.setMasterPlanList();
-
-    const handleClickClose = () => {
-        setOpenPaid(false);
-    };
 
     const handleConfirm = async () => {
         if (userBalance <= 0) {
@@ -186,23 +135,6 @@ function MasterPlan() {
                 newList[idx].predictedPlay = data.predictedPlay;
                 setMasterPlanList(newList);
                 setUserInfo({ ...userInfo, balance: data.currentBalance });
-            }
-        } else {
-            // 解鎖高手風向
-            const res = await payForProDistrib({ matchId: Number(matchId) });
-            if (res.success) {
-                const data = res.data;
-                const newProDistrib = {
-                    ...highWinRateTrend,
-                    home: data.home,
-                    away: data.away,
-                    over: data.over,
-                    under: data.under,
-                    memberPermission: true
-                };
-                setHighWinRateTrend(newProDistrib);
-                const newUserInfo = { ...userInfo, balance: data.currentBalance };
-                setUserInfo(newUserInfo);
             }
         }
         setSelectedGameId(null);
@@ -245,7 +177,7 @@ function MasterPlan() {
                     <CircularProgress size={24} />
                 </div>
             ) : (
-                <Trend isLogin={isLogin} setAmount={setAmount} setOpenPaid={setOpenPaid} />
+                <Trend />
             )}
             <div className={style.area}>
                 <div className={style.planList}>
@@ -266,12 +198,16 @@ function MasterPlan() {
                     )}
                 </div>
             </div>
-            <PaidDialog
-                amount={amount}
-                balance={userBalance}
-                onClose={handleClickClose}
-                onConfirm={handleConfirm}
-                openPaid={openPaid}
+            <ConfirmPayDrawer
+                isOpen={openPaid}
+                onClose={() => {
+                    setOpenPaid(false);
+                }}
+                onOpen={() => {
+                    setOpenPaid(true);
+                }}
+                onPay={handleConfirm}
+                price={amount}
             />
         </div>
     );

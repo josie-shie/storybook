@@ -312,6 +312,7 @@ export const GET_POST_LIST_QUERY = `
                 lastTenAnalysisWinCount
                 lastTenAnalysisWinCountStr
                 unlockCounts
+                seenCounts
                 articleCount
                 tag {
                     id
@@ -352,6 +353,10 @@ export const GET_POST_LIST_QUERY = `
                     winHistoryMaxWinStreak
                 } 
                 isUnlocked
+                mentorArticleCount {
+                    predictedPlay
+                    counts
+                }
             }
             totalPage
             totalArticle
@@ -368,6 +373,11 @@ export const GET_MEMBER_PROFILE_WITH_MEMBER_ID_QUERY = `
             profile
             fansCount
             unlockedCount
+            mentorArticleCount {
+                predictedPlay
+                counts
+            }
+            hitRate
             isFollowed
             highlights {
                 id

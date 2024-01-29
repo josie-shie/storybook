@@ -40,8 +40,10 @@ function BettingColumn({ detail, leftLabel, rightLabel }: BettingProps) {
     const guessStatus = leftLabel === '主' ? detail.guessHomeAway : detail.guessBigSmall;
 
     const isLogin = useUserStore.use.isLogin();
+    const highWinRateTrend = useGuessDetailStore.use.highWinRateTrend();
     const setGuessDetail = useGuessDetailStore.use.setDetail();
     const setGuessesLeft = useGuessDetailStore.use.setGuessesLeft();
+    const setHighWinRateTrend = useGuessDetailStore.use.setHighWinRateTrend();
     const setIsDrawerOpen = useAuthStore.use.setIsDrawerOpen();
     const setAuthQuery = useUserStore.use.setAuthQuery();
 
@@ -70,11 +72,23 @@ function BettingColumn({ detail, leftLabel, rightLabel }: BettingProps) {
             };
             const res = await addGuess({
                 matchId: Number(matchId),
-                predictedPlay: betting.toUpperCase() as 'HOME' | 'AWAY'
+                predictedPlay: betting.toUpperCase() as 'HOME' | 'AWAY',
+                needProDistrib: true
             });
             if (res.success) {
                 setGuessesLeft(res.data.remainingGuessTimes);
                 newDetail.participants = res.data.guessNum;
+                if (res.data.enoughProData) {
+                    const newProDistrib = {
+                        ...highWinRateTrend,
+                        home: res.data.home || 0,
+                        away: res.data.away || 0,
+                        over: res.data.over || 0,
+                        under: res.data.under || 0,
+                        memberPermission: true
+                    };
+                    setHighWinRateTrend(newProDistrib);
+                }
             }
             setGuessDetail({ ...newDetail });
         } else {

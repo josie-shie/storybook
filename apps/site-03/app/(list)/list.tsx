@@ -12,7 +12,13 @@ import Football from './football';
 import ArrowIcon from './img/arrow.png';
 import style from './list.module.scss';
 
-function List({ todayContest }: { todayContest: GetContestListResponse }) {
+function List({
+    todayContest,
+    pinnedContest
+}: {
+    todayContest: GetContestListResponse;
+    pinnedContest: number[];
+}) {
     const router = useRouter();
     const allRef = useRef<HTMLDivElement>(null);
     const progressRef = useRef<HTMLDivElement>(null);
@@ -62,39 +68,23 @@ function List({ todayContest }: { todayContest: GetContestListResponse }) {
     };
 
     const scrollTop = () => {
-        const tabRef = [allRef, progressRef, scheduleRef, resultRef];
-        const currentRef =
-            tabRef[
-                currentStatus === null ? 0 : tabList.findIndex(tab => tab.status === currentStatus)
-            ].current;
-
-        if (currentRef) {
-            currentRef.scrollTop = 0;
-        }
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
-    const handleScroll = (ref: HTMLDivElement) => {
-        setShowScrollTop(ref.scrollTop > 600);
+    const handleScroll = () => {
+        setShowScrollTop(window.scrollY > 600);
     };
 
     useEffect(() => {
-        const tabRef = [allRef, progressRef, scheduleRef, resultRef];
-        const currentRef =
-            tabRef[
-                currentStatus === null ? 0 : tabList.findIndex(tab => tab.status === currentStatus)
-            ].current;
+        const onScroll = () => {
+            handleScroll();
+        };
+        window.addEventListener('scroll', onScroll);
 
-        if (currentRef) {
-            const onScroll = () => {
-                handleScroll(currentRef);
-            };
-            currentRef.addEventListener('scroll', onScroll);
-
-            return () => {
-                currentRef.removeEventListener('scroll', onScroll);
-            };
-        }
-    }, [currentStatus]);
+        return () => {
+            window.removeEventListener('scroll', onScroll);
+        };
+    }, []);
 
     const isOpenLongDragon = () => {
         if (!isLogin) {
@@ -113,28 +103,51 @@ function List({ todayContest }: { todayContest: GetContestListResponse }) {
     return (
         <>
             <Slick
+                autoHeight
                 className={style.slick}
+                fixedTabs
                 initialSlide={0}
                 onSlickEnd={onSlickEnd}
+                resetHeightKey="contestList"
                 styling="button"
                 tabs={tabList}
             >
                 <div className={style.largeGap}>
-                    <Football ref={allRef} status="all" todayContest={todayContest} />
+                    <Football
+                        pinnedContest={pinnedContest}
+                        ref={allRef}
+                        status="all"
+                        todayContest={todayContest}
+                    />
                 </div>
                 <div className={style.largeGap}>
                     {secendRender ? (
-                        <Football ref={progressRef} status="progress" todayContest={todayContest} />
+                        <Football
+                            pinnedContest={pinnedContest}
+                            ref={progressRef}
+                            status="progress"
+                            todayContest={todayContest}
+                        />
                     ) : null}
                 </div>
                 <div className={style.largeGap}>
                     {secendRender ? (
-                        <Football ref={scheduleRef} status="schedule" todayContest={todayContest} />
+                        <Football
+                            pinnedContest={pinnedContest}
+                            ref={scheduleRef}
+                            status="schedule"
+                            todayContest={todayContest}
+                        />
                     ) : null}
                 </div>
                 <div className={style.largeGap}>
                     {secendRender ? (
-                        <Football ref={resultRef} status="result" todayContest={todayContest} />
+                        <Football
+                            pinnedContest={pinnedContest}
+                            ref={resultRef}
+                            status="result"
+                            todayContest={todayContest}
+                        />
                     ) : null}
                 </div>
             </Slick>

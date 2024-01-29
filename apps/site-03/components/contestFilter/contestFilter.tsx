@@ -6,6 +6,7 @@ import type { ContestInfoType } from 'data-center';
 import { formatFilterMap, type FilterMap } from 'lib';
 import BottomDrawer from '@/components/drawer/bottomDrawer';
 import style from './contestFilter.module.scss';
+import FilterIcon from './img/filter.svg';
 
 type GroupType = 'league' | 'country';
 
@@ -353,6 +354,7 @@ function ContestFilter({
     return (
         <>
             <div className={style.filterButton} onClick={onOpen}>
+                <FilterIcon className={style.filterIcon} />
                 赛事筛选
             </div>
             <Filter

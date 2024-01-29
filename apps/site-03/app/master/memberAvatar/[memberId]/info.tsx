@@ -14,6 +14,7 @@ import { useUserStore } from '@/store/userStore';
 import Fire from '@/app/img/fire.png';
 import style from './info.module.scss';
 import SkeletonLayout from './components/skeleton/skeleton';
+import { truncateFloatingPoint } from 'lib';
 
 function Info({ params }: { params: { memberId: string } }) {
     const [info, setInfo] = useState({
@@ -24,6 +25,11 @@ function Info({ params }: { params: { memberId: string } }) {
         fansCount: 0,
         unlockedCount: 0,
         isFollowed: false,
+        mentorArticleCount: {
+            predictedPlay: '',
+            counts: 0
+        },
+        hitRate: 0,
         highlights: {
             id: 0,
             tagName: '',
@@ -99,6 +105,24 @@ function Info({ params }: { params: { memberId: string } }) {
         setInfo(res.data);
     };
 
+    const getText = predictedPlay => {
+        switch (predictedPlay) {
+            case 'HANDICAP':
+                return '胜负';
+            case 'OVERUNDER':
+                return '总进球';
+            default:
+                return '';
+        }
+    };
+
+    const showHandicap =
+        info.mentorArticleCount.predictedPlay === 'HANDICAP' &&
+        info.mentorArticleCount.counts >= 10;
+    const showOverUnder =
+        info.mentorArticleCount.predictedPlay === 'OVERUNDER' &&
+        info.mentorArticleCount.counts >= 10;
+
     useEffect(() => {
         void fetchData();
     }, [userInfo.uid]);
@@ -114,7 +138,25 @@ function Info({ params }: { params: { memberId: string } }) {
                         />
                         <div className={style.content}>
                             <span className={style.name}>{info.username}</span>
-                            <div className={style.top}>
+                            <div className={style.tagsContainer}>
+                                {showHandicap && (
+                                    <Tag
+                                        background="rgba(255, 255, 255, 0.30)"
+                                        borderColor="#6e94d4"
+                                        text={`${getText(info.mentorArticleCount.predictedPlay)} ${
+                                            info.mentorArticleCount.counts
+                                        }場`}
+                                    />
+                                )}
+                                {showOverUnder && (
+                                    <Tag
+                                        background="rgba(255, 255, 255, 0.30)"
+                                        borderColor="#6e94d4"
+                                        text={`${getText(info.mentorArticleCount.predictedPlay)} ${
+                                            info.mentorArticleCount.counts
+                                        }場`}
+                                    />
+                                )}
                                 {info.highlights.winMaxAccurateStreak > 0 && (
                                     <Tag
                                         icon={<Image alt="fire" src={Fire} />}
@@ -144,12 +186,14 @@ function Info({ params }: { params: { memberId: string } }) {
                                 )}
                             </div>
                             <div className={style.bottom}>
-                                {Boolean(info.highlights) && (
-                                    <span>
-                                        近一季猜球胜率:{' '}
-                                        {Math.round(info.highlights.quarterHitRate * 100)}%
-                                    </span>
-                                )}
+                                <div className={style.bottom}>
+                                    {info.hitRate > 1 && (
+                                        <span>
+                                            <span>猜球胜率</span>
+                                            {truncateFloatingPoint(info.hitRate, 0)}%
+                                        </span>
+                                    )}
+                                </div>
                             </div>
                         </div>
                     </div>

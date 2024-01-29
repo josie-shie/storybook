@@ -30,7 +30,7 @@ const CategoryList = [
     },
     {
         label: '专家',
-        value: '/master/article',
+        value: '/master/list/article',
         includedRouters: [
             '/master/article',
             '/master/expert',

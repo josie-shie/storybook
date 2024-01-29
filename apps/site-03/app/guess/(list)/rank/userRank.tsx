@@ -72,7 +72,7 @@ function UserRank({ status }: { status: 'week' | 'month' | 'season' }) {
                 <div className={style.winRateBlock}>
                     <Image alt="icon" className={style.icon} src={Soccer} />
                     <span className={style.winRate}>
-                        <span>{memberInfo.hitRate}</span>
+                        <span>{Math.floor(memberInfo.hitRate)}</span>
                         <span className={style.percent}>%</span>
                     </span>
                 </div>

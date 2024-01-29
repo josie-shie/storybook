@@ -4,18 +4,18 @@ import type { Ref } from 'react';
 import { useEffect, useState, forwardRef } from 'react';
 import { InfiniteScroll } from 'ui';
 import CircularProgress from '@mui/material/CircularProgress';
-import Image from 'next/image';
+import { slickOption } from 'ui/stories/slickPro/slick';
 import { useLiveContestStore } from '@/store/liveContestStore';
 import type { FilterList } from '@/components/contestFilter/contestFilter';
 import NoData from '@/components/baseNoData/noData';
-import BaseBanner from './components/baseBanner';
 import GameCard from './components/gameCard';
 import style from './football.module.scss';
 import { createContestListStore, useContestListStore } from './contestListStore';
 import BaseDatePicker from './components/baseDatePicker/baseDatePicker';
-import SettingIcon from './img/setting.png';
+import SettingIcon from './img/setting.svg';
 import Setting from './components/setting';
 import FootballFilter from './components/footballFilter';
+import BaseBanner from './components/baseBanner';
 
 type Status = 'all' | 'progress' | 'schedule' | 'result';
 
@@ -79,12 +79,14 @@ function ContestList({
     isLoading: boolean;
     closeLoading: () => void;
 }) {
+    const [secondRender, setSecondRender] = useState(false);
     const [rows, setRows] = useState({ full: 20, notYet: 0, finish: 0 });
     const contestList = useContestListStore.use.contestList();
     const contestInfo = useContestListStore.use.contestInfo();
     const globalStore = useLiveContestStore.use.contestInfo();
     const setContestList = useContestListStore.use.setContestList();
     const setContestInfo = useContestListStore.use.setContestInfo();
+    const pinnedContest = useContestListStore.use.pinnedContest();
     const [isMounted, setIsMounted] = useState(false);
 
     const [filterList, setFilterList] = useState<FilterList>({
@@ -105,8 +107,19 @@ function ContestList({
     };
 
     useEffect(() => {
+        setSecondRender(true);
+    }, []);
+
+    useEffect(() => {
+        if (typeof slickOption.contestListResetHeight !== 'undefined') {
+            slickOption.contestListResetHeight();
+        }
+    }, [rows]);
+
+    useEffect(() => {
         const dateString = scheduleDate || resultsDate || Date.now();
         const fetchContestData = async (timestamp: number) => {
+            if (!secondRender) return;
             try {
                 const todayContest = await getContestList(timestamp);
                 if (!todayContest.success) {
@@ -126,9 +139,9 @@ function ContestList({
     }, [resultsDate, scheduleDate, setContestList, setContestInfo]);
 
     const statusTable: Record<string, (state: number) => boolean> = {
-        all: state => state >= 1 && state < 5,
+        all: state => state >= -1 && state <= 5,
         progress: state => state >= 1 && state <= 5,
-        notyet: state => state === 0,
+        notyet: state => state === 0, // 未開賽
         schedule: state => state === 0,
         result: state => state === -1
     };
@@ -151,14 +164,19 @@ function ContestList({
         });
     };
 
-    const currentList = filterByStatus(contestList, statusTable[status]);
+    const sortByPinned = (list: number[], pinned: number[]): number[] => {
+        const pinnedItems = pinned.filter(pinnedId => list.includes(pinnedId));
+        const remainingItems = list.filter(item => !pinned.includes(item));
+        return [...pinnedItems, ...remainingItems];
+    };
+
+    const currentList =
+        status === 'all'
+            ? sortByPinned(filterByStatus(contestList, statusTable[status]), pinnedContest)
+            : filterByStatus(contestList, statusTable[status]);
     const displayList = currentList.slice(0, rows.full);
 
-    const notYetPlayList = status === 'all' ? filterByStatus(contestList, statusTable.notyet) : [];
-    const displayNotYetList = notYetPlayList.slice(0, rows.notYet);
-
-    const finishList = status === 'all' ? filterByStatus(contestList, state => state < 0) : [];
-    const displayFinishList = finishList.slice(0, rows.finish);
+    const finishList = status === 'all' ? currentList : [];
 
     if (status === 'all' && currentList.length < 20 && rows.notYet < 10) {
         setRows(prevRows => ({
@@ -175,13 +193,6 @@ function ContestList({
             }));
             return;
         }
-        if (rows.notYet < notYetPlayList.length) {
-            setRows(prevRows => ({
-                ...prevRows,
-                notYet: prevRows.notYet + 20
-            }));
-            return;
-        }
         if (rows.finish < finishList.length) {
             setRows(prevRows => ({
                 ...prevRows,
@@ -192,13 +203,15 @@ function ContestList({
 
     return (
         <>
-            {status === 'all' && <BaseBanner />}
             <div className={style.toolbar}>
                 <FootballFilter
                     statusFunc={statusTable[status]}
                     updateFilterList={updateFilterList}
                 />
-                <Image alt="setting" onClick={switchSetting} sizes="32" src={SettingIcon} />
+                <div className={style.setting} onClick={switchSetting}>
+                    <SettingIcon className={style.settingIcon} />
+                    设置
+                </div>
             </div>
             {isLoading ? (
                 <div className={style.loading}>
@@ -206,21 +219,15 @@ function ContestList({
                 </div>
             ) : (
                 <>
-                    <ul>
-                        {displayList.map(matchId => {
-                            return <GameCard key={matchId} matchId={matchId} />;
-                        })}
-                        {status === 'all' && displayNotYetList.length > 0 && (
-                            <li className={style.line}>尚未开赛</li>
-                        )}
-                        {displayNotYetList.map(matchId => {
-                            return <GameCard key={matchId} matchId={matchId} />;
-                        })}
-                        {status === 'all' && displayFinishList.length > 0 && (
-                            <li className={style.line}>完赛</li>
-                        )}
-                        {displayFinishList.map(matchId => {
-                            return <GameCard key={matchId} matchId={matchId} />;
+                    <ul className={style.contestList}>
+                        {displayList.map((matchId, index) => {
+                            return (
+                                <GameCard key={matchId} matchId={matchId} status={status}>
+                                    {status === 'all' && index === 3 && (
+                                        <BaseBanner className={style.banner} />
+                                    )}
+                                </GameCard>
+                            );
                         })}
                         {status !== 'all' && displayList.length === 0 && <NoData text="暂无资料" />}
                     </ul>
@@ -232,7 +239,9 @@ function ContestList({
                                 <CircularProgress size={24} />
                             </div>
                         </InfiniteScroll>
-                    ) : null}
+                    ) : (
+                        <div className={style.scrollEnd}>已滑到底啰</div>
+                    )}
                 </>
             )}
         </>
@@ -242,14 +251,19 @@ function ContestList({
 const Football = forwardRef(function Football(
     {
         todayContest,
-        status
+        status,
+        pinnedContest
     }: {
         todayContest: GetContestListResponse;
         status: Status;
+        pinnedContest: number[];
     },
     ref: Ref<HTMLDivElement>
 ) {
-    createContestListStore(todayContest);
+    createContestListStore({
+        ...todayContest,
+        ...{ pinnedContest }
+    });
     const [showSetting, setShowSetting] = useState(false);
 
     const switchSetting = () => {

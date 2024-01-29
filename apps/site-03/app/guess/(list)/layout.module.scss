@@ -2,12 +2,25 @@
     background-color: #1662e3;
 
     .guess {
-        border-top-right-radius: 12px;
-        border-top-left-radius: 12px;
         background: #fff;
+    }
+}
 
-        :global(.ui-slick-tabs-container) {
-            padding-bottom: 10px;
+.guessIndex {
+    :global {
+        .ui-slick-nav {
+            background-color: #1662e3;
+        }
+
+        .ui-slick-tabs-placeholder {
+            height: 64px;
+        }
+
+        .ui-slick-tabs-container {
+            padding: 16px 12px;
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+            background-color: #fff;
         }
     }
 }

@@ -3,7 +3,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
-import type { OddsHintsType, OddsHintsProgress } from 'data-center';
+import type { OddsHintsType } from 'data-center';
 import { getBigdataHint } from 'data-center';
 import NoData from '@/components/baseNoData/noData';
 import { useLongDragonStore } from './longDragonStore';
@@ -77,8 +77,7 @@ function LongDragonResult({ showLongDragon }: { showLongDragon: boolean }) {
 
     const getBigDataHintList = async () => {
         const res = await getBigdataHint({
-            continuity: hintsSelectType as OddsHintsType,
-            progress: hintsSelectProgres as OddsHintsProgress
+            continuity: hintsSelectType as OddsHintsType
         });
         if (!res.success) {
             setTimeout(() => {

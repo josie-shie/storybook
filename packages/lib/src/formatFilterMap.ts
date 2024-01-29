@@ -3,11 +3,16 @@ import { pinyin } from 'pinyin-pro';
 export interface ContestInfoType {
     leagueChsShort: string;
     countryCn: string;
+    rating: number;
 }
 
 export interface FilterMap {
     infoObj: Record<string, string[]>;
     countMap: Record<string, number>;
+    extraMap?: {
+        hot: string[];
+        firstClass: string[];
+    };
 }
 
 export type FilterInfo = Record<string, ContestInfoType>;
@@ -18,10 +23,14 @@ export const formatFilterMap = (currentInfo: FilterInfo, filterKey: keyof Contes
     const infoObj: FilterMap['infoObj'] = {};
     const countMap: FilterMap['countMap'] = {};
     const doubleTable: Record<string, boolean> = {};
+    const extraMap: FilterMap['extraMap'] = {
+        hot: [],
+        firstClass: []
+    };
 
     for (const key in currentInfo) {
         const value = currentInfo[key];
-        const filterValue = value[filterKey];
+        const filterValue = value[filterKey].toString();
 
         if (!filterValue) continue;
 
@@ -48,9 +57,21 @@ export const formatFilterMap = (currentInfo: FilterInfo, filterKey: keyof Contes
         } else {
             infoObj[words] = [newObj];
         }
+
+        if (value.rating <= 2) {
+            if (Object.hasOwnProperty.call(extraMap, 'hot')) {
+                extraMap.hot.push(newObj);
+            } else {
+                extraMap.hot = [newObj];
+            }
+
+            if (value.rating <= 1) {
+                extraMap.firstClass.push(newObj);
+            }
+        }
     }
 
-    return { infoObj, countMap };
+    return { infoObj, countMap, extraMap };
 };
 
 export const formatContestMap = (currentInfo: FilterInfo, filterKey: keyof ContestInfoType) => {

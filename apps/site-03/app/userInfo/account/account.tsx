@@ -68,7 +68,7 @@ function FormField({
 
 function Account() {
     const headerProps = {
-        title: '个人资料'
+        title: '个人资料编辑'
     };
     const router = useRouter();
     const userInfo = useUserStore.use.userInfo();
@@ -263,142 +263,145 @@ function Account() {
                             type="file"
                         />
                     </label>
-                    <p>*图片规格为100*100</p>
                 </div>
-                <form onSubmit={handleSubmit}>
-                    {submittedState.username ? (
-                        <div className={style.item}>
-                            <span className={style.title}>
-                                <span className={style.text}>昵称</span>
-                                <button
-                                    className={style.button}
-                                    onClick={editUserName}
-                                    type="button"
-                                >
-                                    编辑
-                                </button>
-                            </span>
-                            <span className={style.content}>{formState.username}</span>
-                        </div>
-                    ) : (
-                        <FormField
-                            label="昵称"
-                            name="username"
-                            onChange={handleInputChange}
-                            placeholder="添加昵称"
-                            submitted={false}
-                            type="text"
-                            value={formState.username || ''}
-                        />
-                    )}
+                <div className={style.formOuter}>
+                    <form onSubmit={handleSubmit}>
+                        {submittedState.username ? (
+                            <div className={style.item}>
+                                <span className={style.title}>
+                                    <span className={style.text}>昵称</span>
+                                    <button
+                                        className={style.button}
+                                        onClick={editUserName}
+                                        type="button"
+                                    >
+                                        编辑
+                                    </button>
+                                </span>
+                                <span className={style.content}>{formState.username}</span>
+                            </div>
+                        ) : (
+                            <FormField
+                                label="昵称"
+                                name="username"
+                                onChange={handleInputChange}
+                                placeholder="添加昵称"
+                                submitted={false}
+                                type="text"
+                                value={formState.username || ''}
+                            />
+                        )}
 
-                    <span className={style.displayTitle}>
-                        生日{submittedState.birthday ? null : ' :'}
-                    </span>
-                    <div className={style.dateGroup}>
-                        <div
-                            className={`${
-                                submittedState.birthday ? style.item : style.birthdayDisplay
-                            } ${formState.birthday === 0 && style.placeHolderColor}`}
-                        >
-                            <span className={style.content}>{formState.birthdayDisplay}</span>
+                        <span className={style.displayTitle}>
+                            生日{submittedState.birthday ? null : ' :'}
+                        </span>
+                        <div className={style.dateGroup}>
+                            <div
+                                className={`${
+                                    submittedState.birthday ? style.item : style.birthdayDisplay
+                                } ${formState.birthday === 0 && style.placeHolderColor}`}
+                            >
+                                <span className={style.content}>{formState.birthdayDisplay}</span>
+                            </div>
+                            {!submittedState.birthday && (
+                                <div className={style.calender}>
+                                    <input
+                                        className={style.dateInput}
+                                        id="birthday"
+                                        name="birthday"
+                                        onChange={handleInputChange}
+                                        style={{ opacity: 0 }}
+                                        type="date"
+                                        value={formState.birthday}
+                                    />
+                                    <Image alt="calender" height={24} src={Date} width={24} />
+                                </div>
+                            )}
                         </div>
-                        {!submittedState.birthday && (
-                            <div className={style.calender}>
-                                <input
-                                    className={style.dateInput}
-                                    id="birthday"
-                                    name="birthday"
-                                    onChange={handleInputChange}
-                                    style={{ opacity: 0 }}
-                                    type="date"
-                                    value={formState.birthday}
+
+                        <FormField
+                            label="手机号"
+                            name="phoneNumber"
+                            onChange={handleInputChange}
+                            placeholder="添加手机号"
+                            submitted={submittedState.phoneNumber}
+                            type="text"
+                            value={formState.phoneNumber}
+                        />
+                        <FormField
+                            label="微信号"
+                            name="wechat"
+                            onChange={handleInputChange}
+                            placeholder="添加微信号"
+                            submitted={submittedState.wechat}
+                            type="text"
+                            value={formState.wechat}
+                        />
+                        <FormField
+                            label="QQ号"
+                            name="qq"
+                            onChange={handleInputChange}
+                            placeholder="添加QQ号"
+                            submitted={submittedState.qq}
+                            type="text"
+                            value={formState.qq}
+                        />
+                        <FormField
+                            label="邮箱"
+                            name="email"
+                            onChange={handleInputChange}
+                            placeholder="添加邮箱"
+                            submitted={submittedState.email}
+                            type="email"
+                            value={formState.email}
+                        />
+
+                        {submittedState.description ? (
+                            <div className={style.item}>
+                                <span className={style.title}>
+                                    <span className={style.text}>简介</span>
+                                    <button
+                                        className={style.button}
+                                        onClick={() => {
+                                            editIntro();
+                                        }}
+                                        type="button"
+                                    >
+                                        编辑
+                                    </button>
+                                </span>
+                                <span className={style.content}>{formState.description}</span>
+                            </div>
+                        ) : (
+                            <div className={style.item}>
+                                <label htmlFor="description">简介：</label>
+                                <textarea
+                                    className={style.textarea}
+                                    id="description"
+                                    name="description"
+                                    onChange={handleTextareaChange}
+                                    placeholder="介绍一下自己吧"
+                                    value={formState.description}
                                 />
-                                <Image alt="calender" height={24} src={Date} width={24} />
                             </div>
                         )}
-                    </div>
-
-                    <FormField
-                        label="手机号"
-                        name="phoneNumber"
-                        onChange={handleInputChange}
-                        placeholder="添加手机号"
-                        submitted={submittedState.phoneNumber}
-                        type="text"
-                        value={formState.phoneNumber}
-                    />
-                    <FormField
-                        label="微信号"
-                        name="wechat"
-                        onChange={handleInputChange}
-                        placeholder="添加微信号"
-                        submitted={submittedState.wechat}
-                        type="text"
-                        value={formState.wechat}
-                    />
-                    <FormField
-                        label="QQ号"
-                        name="qq"
-                        onChange={handleInputChange}
-                        placeholder="添加QQ号"
-                        submitted={submittedState.qq}
-                        type="text"
-                        value={formState.qq}
-                    />
-                    <FormField
-                        label="邮箱"
-                        name="email"
-                        onChange={handleInputChange}
-                        placeholder="添加邮箱"
-                        submitted={submittedState.email}
-                        type="email"
-                        value={formState.email}
-                    />
-
-                    {submittedState.description ? (
-                        <div className={style.item}>
-                            <span className={style.title}>
-                                <span className={style.text}>简介</span>
-                                <button
-                                    className={style.button}
-                                    onClick={() => {
-                                        editIntro();
-                                    }}
-                                    type="button"
-                                >
-                                    编辑
-                                </button>
-                            </span>
-                            <span className={style.content}>{formState.description}</span>
-                        </div>
-                    ) : (
-                        <div className={style.item}>
-                            <label htmlFor="description">简介：</label>
-                            <textarea
-                                className={style.textarea}
-                                id="description"
-                                name="description"
-                                onChange={handleTextareaChange}
-                                placeholder="介绍一下自己吧"
-                                value={formState.description}
-                            />
-                        </div>
-                    )}
-                    <p className={style.tip}>
-                        ＊「头像」、「昵称」、「简介」可重新编辑，其馀栏位提交后无法再次修改，请谨慎填写
-                    </p>
-                    {!isSubmitted && (
-                        <button
-                            className={`${style.submit} ${
-                                Object.values(formState).some(value => value) ? style.active : ''
-                            }`}
-                            type="submit"
-                        >
-                            修改
-                        </button>
-                    )}
-                </form>
+                        <p className={style.tip}>
+                            ＊「头像」、「昵称」、「简介」可重新编辑，其馀栏位提交后无法再次修改，请谨慎填写
+                        </p>
+                        {!isSubmitted && (
+                            <button
+                                className={`${style.submit} ${
+                                    Object.values(formState).some(value => value)
+                                        ? style.active
+                                        : ''
+                                }`}
+                                type="submit"
+                            >
+                                修改
+                            </button>
+                        )}
+                    </form>
+                </div>
             </div>
             <AvatarCropperDrawer
                 imgSrc={newAvatar}

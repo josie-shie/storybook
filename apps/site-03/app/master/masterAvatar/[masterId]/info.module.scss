@@ -2,11 +2,11 @@
     display: flex;
     justify-content: space-between;
     flex-direction: column;
-    padding: 12px 12px 45px;
+    padding: 16px 12px;
 
     .infoDetail {
         display: flex;
-        align-items: center;
+        align-items: flex-start;
         width: 100%;
         justify-content: space-between;
 
@@ -25,21 +25,41 @@
                     font-size: 14px;
                     font-weight: 500;
                     margin-right: 2px;
+                    min-height: 20px;
                 }
 
-                .top {
+                .tagsContainer {
                     display: flex;
+                    flex-wrap: wrap;
                     gap: 4px;
+                    min-height: 18px;
+
+                    :global(.baseTag) {
+                        margin-right: 0;
+                    }
+
+                    :global(.tagLayout) {
+                        margin-right: 0;
+                    }
                 }
 
                 .bottom {
                     display: flex;
-                    gap: 4px;
+                    align-items: center;
+                    gap: 12px;
+                    min-height: 18px;
 
                     span {
+                        display: flex;
+                        align-items: center;
+                        gap: 2px;
                         color: #fff;
                         font-size: 12px;
-                        font-weight: 400;
+                        font-weight: 500;
+
+                        span {
+                            color: rgba(255, 255, 255, 0.7);
+                        }
                     }
                 }
             }

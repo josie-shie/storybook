@@ -1,0 +1,103 @@
+.queryForm {
+    background-color: #fff;
+    border-radius: 16px 16px 0 0;
+    padding: 12px 12px 0;
+
+    .formContent {
+        .formSelect {
+            padding: 12px;
+            border-radius: 8px;
+            background: #f6f6f6;
+        }
+    }
+
+    .submit {
+        padding: 12px 14px;
+
+        .search {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            margin: auto;
+            min-width: 240px;
+            height: 44px;
+            font-size: 14px;
+            border-radius: 50px;
+            border: none;
+            color: #fff;
+            background: #4489ff;
+
+            svg {
+                margin-top: 3px;
+            }
+        }
+    }
+}
+
+.dialogContent {
+    width: 100%;
+    font-size: 14px;
+    line-height: normal;
+
+    .text {
+        text-align: center;
+    }
+
+    .dialogMessage {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        white-space: nowrap;
+
+        p {
+            width: 140px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+    }
+
+    .highLightText {
+        color: #4489ff;
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+    .detail {
+        text-align: center;
+        margin-top: 16px;
+        color: #8d8d8d;
+    }
+
+    .footer {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 24px;
+
+        > div {
+            flex: 1;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 5px 20px;
+            border-radius: 50px;
+            text-align: center;
+
+            a {
+                color: #4489ff;
+            }
+        }
+
+        .close {
+            color: #8d8d8d;
+            border: 1px solid #bfbfbf;
+        }
+
+        .confirm {
+            color: #4489ff;
+            border: 1px solid #4489ff;
+        }
+    }
+}

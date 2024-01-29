@@ -6,9 +6,9 @@ import Tag from '@/components/tag/tag';
 import TagSplit from '@/components/tagSplit/tagSplit';
 import { useUserStore } from '@/store/userStore';
 import Fire from './img/hot.png';
-import Win from './img/win.png';
-import Lose from './img/lose.png';
-import Gone from './img/gone.png';
+import Win from './img/win.svg';
+import Lose from './img/lose.svg';
+import Gone from './img/gone.svg';
 import Star from './img/coin.png';
 import BigWin from './img/bigWin.png';
 import BigLose from './img/bigLose.png';
@@ -53,9 +53,9 @@ function GameCard({ plan, onOpenPaidDialog }: GameCardProps) {
 
     const sortTags = sortHotStreakFirst(plan.highlights);
     const iconMap = {
-        WIN: <Image alt="winIcon" src={Win} width={18} />,
-        LOSE: <Image alt="loseIcon" src={Lose} width={18} />,
-        DRAW: <Image alt="goneIcon" src={Gone} width={18} />
+        WIN: <Win />,
+        LOSE: <Lose />,
+        DRAW: <Gone />
     };
     const resultIconMap = {
         WIN: <Image alt="" height={36} src={BigWin} width={36} />,
@@ -107,7 +107,7 @@ function GameCard({ plan, onOpenPaidDialog }: GameCardProps) {
                                         src={Star}
                                         width={14}
                                     />
-                                    <span className={style.text}>{unlockPrice}元</span>
+                                    <span className={style.text}>{unlockPrice}</span>
                                 </>
                             )}
                         </div>

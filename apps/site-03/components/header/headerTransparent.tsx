@@ -7,20 +7,22 @@ import style from './header.module.scss';
 import backLeftArrowImg from './img/backLeftArrow.png';
 import Profile from './components/profile/profile';
 import Notice from './components/notice/notice';
+import UserIcon from './img/user.svg';
 
 interface HeaderProps {
     title: string;
     srcPath?: string;
     backHandler?: () => void;
     children?: ReactNode;
+    back?: boolean;
 }
 
-function HeaderTransparent({ title, srcPath, backHandler, children }: HeaderProps) {
+function HeaderTransparent({ title, srcPath, backHandler, children, back = true }: HeaderProps) {
     const userInfoIsLoading = useUserStore.use.userInfoIsLoading();
     const router = useRouter();
     const [mounted, setMounted] = useState(false);
     const headerRef = useRef<HTMLDivElement | null>(null);
-    const [noBg, setNoBg] = useState(false);
+    const [noBg, setNoBg] = useState(true);
     useEffect(() => {
         setMounted(true);
     }, []);
@@ -59,17 +61,22 @@ function HeaderTransparent({ title, srcPath, backHandler, children }: HeaderProp
         <div className={style.placeholder} ref={headerRef}>
             <div
                 className={`${style.header} ${style.headerTransparent} ${
-                    !noBg ? style.showBg : style.headerNoBg
+                    noBg ? style.headerNoBg : style.showBg
                 }`}
             >
                 <div className={style.title}>
-                    <Image
-                        alt=""
-                        height={24}
-                        onClick={backHandler || goBack}
-                        src={backLeftArrowImg}
-                        width={24}
-                    />
+                    {back ? (
+                        <Image
+                            alt=""
+                            height={24}
+                            onClick={backHandler || goBack}
+                            src={backLeftArrowImg}
+                            width={24}
+                        />
+                    ) : (
+                        <UserIcon />
+                    )}
+
                     <div className={style.text}>{title}</div>
                 </div>
                 {mounted && !userInfoIsLoading

@@ -1,0 +1,117 @@
+.baseDatePicker {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+
+    :global(.MuiTabs-root) {
+        flex: 1;
+        display: flex;
+        gap: 4px;
+    }
+
+    :global(.MuiTab-root) {
+        color: #4a4a4a99;
+
+        .tabDate {
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .tabTitle {
+            font-size: 12px;
+            font-weight: 400;
+        }
+
+        min-width: fit-content;
+        padding: 0;
+        margin: 8px;
+    }
+
+    :global(.MuiTab-root.Mui-selected) {
+        color: #4489ff;
+    }
+
+    :global(.MuiTabs-indicator) {
+        bottom: 8px;
+        background-color: #4489ff;
+    }
+}
+
+.datePickerModal {
+    :global {
+        .react-datepicker {
+            border: none;
+            width: 342px;
+        }
+
+        .react-datepicker__day--in-selecting-range,
+        .react-datepicker__day--selected {
+            background-color: #4489ff;
+            color: #fff;
+            border-radius: 20px;
+        }
+
+        .react-datepicker__header {
+            background-color: transparent;
+            border-bottom: none;
+            padding: 0;
+
+            .react-datepicker__day-names {
+                width: 342px;
+                padding: 16px 0;
+
+                .react-datepicker__day-name {
+                    color: #4489ff;
+                    text-align: center;
+                    font-size: 12px;
+                    font-weight: 600;
+                    width: 40px;
+                    line-height: 40px;
+                    margin: 0;
+                }
+            }
+        }
+
+        .react-datepicker__current-month {
+            font-size: 16px;
+            font-weight: 600;
+            padding: 8px 0;
+        }
+
+        .react-datepicker__day {
+            width: 40px;
+            line-height: 40px;
+            margin: 0;
+            background-color: #fff;
+            color: #000;
+        }
+
+        .react-datepicker__day--disabled {
+            color: #ccc;
+        }
+    }
+}
+
+.modalButtons {
+    display: flex;
+    font-family: 'PingFang SC', sans-serif;
+    padding: 0 16px;
+    gap: 8px;
+
+    .modalButton {
+        width: 100%;
+        font-size: 12px;
+        font-weight: 500;
+        border-radius: 16px;
+    }
+
+    .confirmButton {
+        color: #fff;
+        background-color: #065ff5;
+    }
+
+    .cancelButton {
+        color: #9b9b9b;
+        border-color: #9b9b9b;
+    }
+}

@@ -1,9 +1,5 @@
 .football {
     background-color: #fff;
-    overflow: auto;
-    height: calc(100dvh - 164px);
-    touch-action: pan-y;
-    scroll-behavior: smooth;
 }
 
 .line {
@@ -26,16 +22,30 @@
 }
 
 .toolbar {
+    height: 44px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 0 12px;
-    margin: 12px 0 8px;
 
-    img {
-        width: 16px;
-        height: 16px;
+    .setting {
+        display: flex;
+        align-items: center;
+        font-size: 14px;
+        column-gap: 4px;
+        font-weight: 600;
+        line-height: normal;
+        color: #4489ff;
     }
+}
+
+.banner {
+    border-top: 1px solid #f3f3f3;
+}
+
+.contestList {
+    display: flex;
+    flex-direction: column;
 }
 
 .dateHolder {
@@ -47,4 +57,11 @@
     width: 100%;
     text-align: center;
     margin-top: 32px;
+}
+
+.scrollEnd {
+    padding: 24px 0;
+    text-align: center;
+    color: #8d8d8d;
+    font-size: 12px;
 }

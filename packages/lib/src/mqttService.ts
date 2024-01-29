@@ -2,10 +2,8 @@ import type { MqttClient } from 'mqtt';
 import * as mqtt from 'mqtt';
 import { getRandomInt } from './random';
 import {
-    deProto,
     deProtoOdds,
     deProtoOddsChange,
-    deProtoDetailEvent,
     deProtoDetailTechnicList,
     deProtoOddRunning,
     deProtoOddRunningHalf,
@@ -161,6 +159,8 @@ interface EventInfoData {
 let client: MqttClient;
 let isConnect = false;
 
+const textDecoder = new TextDecoder();
+
 const useMessageQueue: ((data: OriginalContestInfo) => void)[] = [];
 const useOddsQueue: ((data: OddsType) => void)[] = [];
 const useOddsChangeQueue: ((data: OddChangeType) => void)[] = [];
@@ -184,15 +184,11 @@ const toSerializableObject = <T extends Record<string, unknown>>(protoObj: T): T
     return result as T;
 };
 
-const handleContestMessage = async (message: Buffer) => {
-    const messageObject = await deProto(message);
-
-    const decodedMessage = toSerializableObject(
-        messageObject as unknown as Record<string, unknown>
-    );
+const handleContestMessage = (message: Buffer) => {
+    const messageObject = JSON.parse(textDecoder.decode(message)) as OriginalContestInfo;
 
     for (const messageMethod of useMessageQueue) {
-        messageMethod(decodedMessage as unknown as OriginalContestInfo);
+        messageMethod(messageObject as unknown as OriginalContestInfo);
     }
 };
 
@@ -471,15 +467,11 @@ const handleOddsChangeMessage = async (message: Buffer) => {
     }
 };
 
-const handleDetailEventMessage = async (message: Buffer) => {
-    const messageObject = await deProtoDetailEvent(message);
-
-    const decodedMessage = toSerializableObject(
-        messageObject as unknown as Record<string, unknown>
-    );
+const handleDetailEventMessage = (message: Buffer) => {
+    const messageObject = JSON.parse(textDecoder.decode(message)) as EventInfoData;
 
     for (const messageMethod of useEventQueue) {
-        messageMethod(decodedMessage as unknown as EventInfoData);
+        messageMethod(messageObject as unknown as EventInfoData);
     }
 };
 
@@ -684,10 +676,10 @@ export const mqttService = {
                 client.subscribe(`sportim/notify/${memberId}`);
             });
             client.on('message', (topic, message) => {
-                if (topic === 'updatematch') void handleContestMessage(message);
+                if (topic === 'updatematch') handleContestMessage(message);
                 if (topic === 'updateasia_odds') void handleOddsMessage(message);
                 if (topic === 'updateasia_odds_change') void handleOddsChangeMessage(message);
-                if (topic === 'updateevent') void handleDetailEventMessage(message);
+                if (topic === 'updateevent') handleDetailEventMessage(message);
                 if (topic === 'updatetechnic') void handleDetailTechnicListMessage(message);
                 if (topic === 'analytical/analysis') void handleAnalysisMessage(message);
                 if (topic === `sportim/notify/${memberId}`) void handleNotifyMessage(message);
@@ -695,7 +687,7 @@ export const mqttService = {
             init = false;
 
             if (isConnect) {
-                mqttService.oddRunningInit();
+                // mqttService.oddRunningInit();
             }
         }
         return client;

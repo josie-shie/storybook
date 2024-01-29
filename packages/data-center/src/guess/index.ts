@@ -670,7 +670,8 @@ const GetProDistribSchema = z.object({
     under: z.number(),
     enoughProData: z.boolean(),
     memberPermission: z.boolean(),
-    unlockPrice: z.number()
+    unlockPrice: z.number(),
+    proMemberNum: z.number()
 });
 
 export type GetProDistribResponse = z.infer<typeof GetProDistribSchema>;
@@ -719,18 +720,24 @@ export const getProDistrib = async ({
 export interface AddGuessRequest {
     matchId: number;
     predictedPlay: PredictedPlay;
+    needProDistrib?: boolean;
 }
 
-export interface AddGuessResponse {
-    remainingGuessTimes: number;
-    guessNum: number;
-}
+const AddGuessSchema = z.object({
+    remainingGuessTimes: z.number(),
+    guessNum: z.number(),
+    home: z.number().optional(),
+    away: z.number().optional(),
+    over: z.number().optional(),
+    under: z.number().optional(),
+    enoughProData: z.boolean().optional(),
+    proMemberNum: z.number().optional()
+});
+
+export type AddGuessResponse = z.infer<typeof AddGuessSchema>;
 
 const AddGuessResultSchema = z.object({
-    addGuess: z.object({
-        remainingGuessTimes: z.number(),
-        guessNum: z.number()
-    })
+    addGuess: AddGuessSchema
 });
 
 type AddGuessResult = z.infer<typeof AddGuessResultSchema>;
@@ -742,7 +749,8 @@ type AddGuessResult = z.infer<typeof AddGuessResultSchema>;
  */
 export const addGuess = async ({
     matchId,
-    predictedPlay
+    predictedPlay,
+    needProDistrib
 }: AddGuessRequest): Promise<ReturnData<AddGuessResponse>> => {
     try {
         const { data, errors } = await fetcher<FetchResultData<AddGuessResult>, unknown>(
@@ -752,7 +760,8 @@ export const addGuess = async ({
                     variables: {
                         input: {
                             matchId,
-                            predictedPlay
+                            predictedPlay,
+                            needProDistrib
                         }
                     }
                 }

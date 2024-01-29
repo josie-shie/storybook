@@ -1,0 +1,47 @@
+.tips {
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: 100%;
+
+    .tipsShort {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+
+        .showTips {
+            color: #4489ff;
+            font-size: 14px;
+            font-weight: 500;
+        }
+    }
+
+    .content {
+        color: #4a4a4a;
+        font-size: 14px;
+        font-weight: 400;
+
+        .description {
+            padding-bottom: 4px;
+        }
+    }
+
+    .bottom {
+        display: flex;
+        padding: 4px 0;
+        justify-content: space-between;
+
+        .hideTips {
+            color: #8d8d8d;
+            font-size: 12px;
+            font-weight: 400;
+        }
+    }
+
+    .showTips {
+        color: #4489ff;
+        font-size: 12px;
+        font-weight: 500;
+    }
+}

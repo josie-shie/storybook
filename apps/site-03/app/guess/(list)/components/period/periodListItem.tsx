@@ -26,6 +26,15 @@ function PeriodListItem({
     const rankList = rankListMap[status];
     const onlyShowToday = useRankStore.use.onlyShowToday();
 
+    const winRateStyleHandler = (winRate: number) => {
+        if (winRate >= 90) {
+            return style.redFill;
+        } else if (winRate >= 80 && winRate < 90) {
+            return style.deepGrey;
+        }
+        return '';
+    };
+
     if (isLoading)
         return (
             <div className={style.loadingBlock}>
@@ -36,8 +45,9 @@ function PeriodListItem({
     return (
         <>
             {rankList.map(item => {
-                const hasHighWinRate = item.hitRate >= 90;
                 if (onlyShowToday && !item.today) return null;
+                const hasHighWinRate = item.hitRate >= 90;
+                const decorate = winRateStyleHandler(item.hitRate);
 
                 return (
                     <Link
@@ -69,11 +79,7 @@ function PeriodListItem({
                             {hasHighWinRate ? (
                                 <Image alt="icon" className={style.icon} src={Soccer} />
                             ) : null}
-                            <span
-                                className={`${style.winRate} ${
-                                    hasHighWinRate ? style.redFill : ''
-                                }`}
-                            >
+                            <span className={`${style.winRate} ${decorate}`}>
                                 <span>{Math.floor(item.hitRate)}</span>
                                 <span className={style.percent}>%</span>
                             </span>

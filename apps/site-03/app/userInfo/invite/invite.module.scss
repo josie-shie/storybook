@@ -64,7 +64,7 @@
                 }
 
                 .money {
-                    color: #ffc42d;
+                    color: #f2d122;
                 }
             }
         }
@@ -159,4 +159,10 @@
             }
         }
     }
+}
+
+.friend {
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }

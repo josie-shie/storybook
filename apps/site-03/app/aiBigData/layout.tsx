@@ -1,9 +1,10 @@
 'use client';
-import { type ReactNode } from 'react';
+import { useEffect, type ReactNode } from 'react';
 import { useParams } from 'next/navigation';
 import { AnimatePresence, motion } from 'framer-motion';
+import Footer from '@/components/footer/footer';
 import { creatQueryFormStore } from './queryFormStore';
-import { creatLeagueStore } from './leagueStore';
+import { creatMatchFilterStore } from './matchFilterStore';
 
 function InterceptingDetail({ modal }: { modal: ReactNode }) {
     const params = useParams();
@@ -43,13 +44,20 @@ function BigDataLayout({
     creatQueryFormStore({
         loading: false
     });
-    creatLeagueStore({
-        loading: false
+
+    creatMatchFilterStore({
+        contestList: [],
+        contestInfo: {}
     });
+
+    useEffect(() => {
+        window.scroll(0, 0);
+    }, []);
 
     return (
         <>
-            {children}
+            <>{children}</>
+            <Footer />
             <InterceptingDetail modal={contestModal} />
         </>
     );

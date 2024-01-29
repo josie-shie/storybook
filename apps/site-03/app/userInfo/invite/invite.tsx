@@ -6,6 +6,8 @@ import { getInvitationCode, getInvitationActivityRewardInfo } from 'data-center'
 import { useUserStore } from '@/store/userStore';
 import { useNotificationStore } from '@/store/notificationStore';
 import FullBg from '../img/fullbg.png';
+import RightLine from '../img/rightLine.png';
+import LeftLine from '../img/leftLine.png';
 import backLeftArrowImg from '../img/backLeftArrow.png';
 import Friend from '../img/friend.png';
 import { useInviteStore } from './inviteStore';
@@ -77,10 +79,14 @@ function Invite() {
                     <div className={style.bonusArea}>
                         <Image alt="friend" height={104} src={Friend} width={260} />
                         <div className={style.title}>
-                            <span>邀请好友领福利</span>
+                            <span className={style.friend}>
+                                <Image alt="line" src={LeftLine} width={28} height={4} />
+                                <span>邀请好友领福利</span>
+                                <Image alt="line" src={RightLine} width={28} height={4} />
+                            </span>
                             <span>多邀多得无上限</span>
                             <span>
-                                每邀请一人，最高获得<span className={style.money}>80</span>
+                                每邀请一人，最高获得<span className={style.money}>200</span>
                                 平台币
                             </span>
                         </div>
@@ -106,7 +112,7 @@ function Invite() {
                                 const host = window.location.host;
                                 const baseUrl = `${protocol}//${host}`;
                                 void copyLink(
-                                    `${userInfo.username}邀请您一起获得<未来体育平台(站名)>88元红包,点击网址后注册加入即可获得最新赛事预测、赛事智能分析服务: ${baseUrl}/?auth=register&inviteCode=${inviteCode}`
+                                    `${userInfo.username}邀请您一起获得<未来体育平台(站名)>200元红包,点击网址后注册加入即可获得最新赛事预测、赛事智能分析服务: ${baseUrl}/?auth=register&inviteCode=${inviteCode}`
                                 );
                             }}
                         >
@@ -123,7 +129,9 @@ function Invite() {
                         <div className={style.rule}>
                             <div className={style.title}>[ 奖励规则 ]</div>
                             <ol className={style.text}>
-                                <li>每成功邀请一位朋友注册成为本平台用户，您将获得80 金币奖励</li>
+                                <li>
+                                    每成功邀请一位朋友注册成为本平台用户，您将获得200平台币奖励，上不封顶
+                                </li>
                                 <li>邀请奖励将于注册成功后，自动发放至您的帐户中</li>
                             </ol>
                         </div>
