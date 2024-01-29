@@ -4,7 +4,12 @@ import Image from 'next/image';
 import { timestampToTodayTime, convertHandicap } from 'lib';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { type GetPostDetailResponse, getMemberInfo, type RecommendPost } from 'data-center';
+import {
+    type GetPostDetailResponse,
+    GetMemberProfileWithMemberIdResponse,
+    getMemberInfo,
+    type RecommendPost
+} from 'data-center';
 import { getPostList, payForPost } from 'data-center';
 import { useUserStore } from '@/store/userStore';
 import NormalDialog from '@/components/normalDialog/normalDialog';
@@ -23,6 +28,7 @@ import Skeleton from '@mui/material/Skeleton';
 
 interface ArticleContentProps {
     article: GetPostDetailResponse;
+    info: GetMemberProfileWithMemberIdResponse;
     isNoArticleData: boolean;
     params: { articleId: string };
     fetchPostDetail: () => void;
@@ -30,6 +36,7 @@ interface ArticleContentProps {
 function ArticleContent({
     params,
     article,
+    info,
     isNoArticleData,
     fetchPostDetail
 }: ArticleContentProps) {
@@ -118,6 +125,17 @@ function ArticleContent({
     useEffect(() => {
         void fetchData();
     }, [userInfo.uid]);
+
+    const getText = predictedPlay => {
+        switch (predictedPlay) {
+            case 'HANDICAP':
+                return '胜负';
+            case 'OVERUNDER':
+                return '总进球';
+            default:
+                return '';
+        }
+    };
 
     return (
         <div className={style.articleContent}>
@@ -228,92 +246,101 @@ function ArticleContent({
                                     {article.analysisContent}
                                 </article>
                                 {!isNoArticleData ? (
-                                    <div className={style.team}>
-                                        <div
-                                            className={`${style.table} ${
-                                                article.playType === 'HOMEAWAY' ? style.active : ''
-                                            }`}
-                                        >
-                                            {article.playType === 'HOMEAWAY' && (
-                                                <Image
-                                                    alt=""
-                                                    height={32}
-                                                    src={filterImage(article.predictionResult)}
-                                                    width={32}
-                                                />
-                                            )}
+                                    <>
+                                        <div className={style.play}>
+                                            {getText(info.mentorArticleCount.predictedPlay)}
+                                        </div>
+                                        <div className={style.team}>
                                             <div
-                                                className={`${style.header} ${
+                                                className={`${style.table} ${
                                                     article.playType === 'HOMEAWAY'
-                                                        ? style[
-                                                              article.predictionResult.toLocaleLowerCase()
-                                                          ]
-                                                        : style.normal
+                                                        ? style.active
+                                                        : ''
                                                 }`}
                                             >
-                                                {article.playType === 'HOMEAWAY'
-                                                    ? article.homeTeam.name
-                                                    : '大於'}
-                                            </div>
-                                            <div className={style.score}>
-                                                <span>
-                                                    {adjustHandicap(
+                                                {article.playType === 'HOMEAWAY' && (
+                                                    <Image
+                                                        alt=""
+                                                        height={32}
+                                                        src={filterImage(article.predictionResult)}
+                                                        width={32}
+                                                    />
+                                                )}
+                                                <div
+                                                    className={`${style.header} ${
                                                         article.playType === 'HOMEAWAY'
-                                                            ? article.odds.handicap
-                                                            : article.odds.overUnder,
-                                                        'home'
-                                                    )}
-                                                    {convertHandicap(
-                                                        article.playType === 'HOMEAWAY'
-                                                            ? Math.abs(article.odds.handicap)
-                                                            : Math.abs(article.odds.overUnder)
-                                                    )}
-                                                </span>
+                                                            ? style[
+                                                                  article.predictionResult.toLocaleLowerCase()
+                                                              ]
+                                                            : style.normal
+                                                    }`}
+                                                >
+                                                    {article.playType === 'HOMEAWAY'
+                                                        ? article.homeTeam.name
+                                                        : '大於'}
+                                                </div>
+                                                <div className={style.score}>
+                                                    <span>
+                                                        {adjustHandicap(
+                                                            article.playType === 'HOMEAWAY'
+                                                                ? article.odds.handicap
+                                                                : article.odds.overUnder,
+                                                            'home'
+                                                        )}
+                                                        {convertHandicap(
+                                                            article.playType === 'HOMEAWAY'
+                                                                ? Math.abs(article.odds.handicap)
+                                                                : Math.abs(article.odds.overUnder)
+                                                        )}
+                                                    </span>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div
-                                            className={`${style.table} ${
-                                                article.playType === 'OVERUNDER' ? style.active : ''
-                                            }`}
-                                        >
-                                            {article.playType === 'OVERUNDER' && (
-                                                <Image
-                                                    alt=""
-                                                    height={32}
-                                                    src={filterImage(article.predictionResult)}
-                                                    width={32}
-                                                />
-                                            )}
                                             <div
-                                                className={`${style.header} ${
+                                                className={`${style.table} ${
                                                     article.playType === 'OVERUNDER'
-                                                        ? style[
-                                                              article.predictionResult.toLocaleLowerCase()
-                                                          ]
-                                                        : style.normal
+                                                        ? style.active
+                                                        : ''
                                                 }`}
                                             >
-                                                {article.playType === 'HOMEAWAY'
-                                                    ? article.awayTeam.name
-                                                    : '小於'}
-                                            </div>
-                                            <div className={style.score}>
-                                                <span>
-                                                    {adjustHandicap(
-                                                        article.playType === 'HOMEAWAY'
-                                                            ? article.odds.handicap
-                                                            : article.odds.overUnder,
-                                                        'away'
-                                                    )}
-                                                    {convertHandicap(
-                                                        article.playType === 'HOMEAWAY'
-                                                            ? Math.abs(article.odds.handicap)
-                                                            : Math.abs(article.odds.overUnder)
-                                                    )}
-                                                </span>
+                                                {article.playType === 'OVERUNDER' && (
+                                                    <Image
+                                                        alt=""
+                                                        height={32}
+                                                        src={filterImage(article.predictionResult)}
+                                                        width={32}
+                                                    />
+                                                )}
+                                                <div
+                                                    className={`${style.header} ${
+                                                        article.playType === 'OVERUNDER'
+                                                            ? style[
+                                                                  article.predictionResult.toLocaleLowerCase()
+                                                              ]
+                                                            : style.normal
+                                                    }`}
+                                                >
+                                                    {article.playType === 'HOMEAWAY'
+                                                        ? article.awayTeam.name
+                                                        : '小於'}
+                                                </div>
+                                                <div className={style.score}>
+                                                    <span>
+                                                        {adjustHandicap(
+                                                            article.playType === 'HOMEAWAY'
+                                                                ? article.odds.handicap
+                                                                : article.odds.overUnder,
+                                                            'away'
+                                                        )}
+                                                        {convertHandicap(
+                                                            article.playType === 'HOMEAWAY'
+                                                                ? Math.abs(article.odds.handicap)
+                                                                : Math.abs(article.odds.overUnder)
+                                                        )}
+                                                    </span>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </>
                                 ) : null}
                             </div>
                         )}
