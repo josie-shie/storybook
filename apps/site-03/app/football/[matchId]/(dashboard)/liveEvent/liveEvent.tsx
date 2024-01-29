@@ -1,10 +1,9 @@
 'use client';
-import type { EventInfo, GetLiveText } from 'data-center';
+import type { EventInfo, GetLiveTextResponse } from 'data-center';
 import { slickOption } from 'ui/stories/slickPro/slick';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
 import { mqttService } from 'lib';
-import { useContestDetailStore } from '../../contestDetailStore';
 import style from './liveEvent.module.scss';
 import TextLive from './textLive';
 import Event from './event';
@@ -238,28 +237,63 @@ const eventListMock = [
     }
 ];
 
-interface LiveEventType extends EventInfo {
+interface TextLiveMqttResponse {
     matchId: number;
+    textLiveData: GetLiveTextResponse;
 }
 
-function EventContainer({ initEvent }: { initEvent: EventInfo[] }) {
-    const matchDetail = useContestDetailStore.use.matchDetail();
+function EventContainer({
+    initEvent,
+    tabKey,
+    matchId
+}: {
+    initEvent: EventInfo[];
+    tabKey: string;
+    matchId: number;
+}) {
     const [eventList, setEventList] = useState(initEvent);
-    const syncEventGlobalStore = (message: Partial<LiveEventType>) => {
-        if (message.matchId === matchDetail.matchId) {
-            const liveEvent = JSON.parse(JSON.stringify(message)) as LiveEventType;
+    const syncEvent = (message: Partial<EventInfo>) => {
+        if (message.matchId === matchId) {
+            const liveEvent = JSON.parse(JSON.stringify(message)) as EventInfo;
 
             setEventList([...eventList, liveEvent]);
         }
     };
 
-    mqttService.getEventList(syncEventGlobalStore);
+    mqttService.getEventList(syncEvent);
+
+    if (tabKey !== 'event') return null;
 
     return <Event eventList={eventList} />;
 }
 
-function LiveEvent({ broadcastList }: { broadcastList: GetLiveText[] }) {
-    const [tabKey, setTabKey] = useState('event');
+function LiveContainer({
+    initLive,
+    tabKey,
+    matchId
+}: {
+    initLive: GetLiveTextResponse;
+    tabKey: string;
+    matchId: number;
+}) {
+    const [liveList, setLiveList] = useState<GetLiveTextResponse>(initLive);
+    const syncLiveText = (message: TextLiveMqttResponse) => {
+        if (message.matchId === Number(matchId)) {
+            if (liveList.length === message.textLiveData.length) {
+                return;
+            }
+            setLiveList(message.textLiveData);
+        }
+    };
+    mqttService.getTextLiveList(syncLiveText);
+
+    if (tabKey !== 'live') return null;
+
+    return <TextLive liveList={liveList} />;
+}
+
+function LiveEvent({ textLive, matchId }: { textLive: GetLiveTextResponse; matchId: number }) {
+    const [tabKey, setTabKey] = useState('live');
     const tabActive = {
         backgroundColor: '#4489FF',
         color: '#fff'
@@ -308,9 +342,13 @@ function LiveEvent({ broadcastList }: { broadcastList: GetLiveText[] }) {
                     transition={{ duration: 0.16 }}
                 >
                     {tabKey === 'live' ? (
-                        <TextLive broadcastList={broadcastList} />
+                        <LiveContainer initLive={textLive} matchId={matchId} tabKey={tabKey} />
                     ) : (
-                        <EventContainer initEvent={eventListMock} />
+                        <EventContainer
+                            initEvent={eventListMock}
+                            matchId={matchId}
+                            tabKey={tabKey}
+                        />
                     )}
                 </motion.div>
             </AnimatePresence>

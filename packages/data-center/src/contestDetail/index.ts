@@ -1,11 +1,10 @@
-import { fetcher, handicapToString, truncateFloatingPoint, timestampToString } from 'lib';
+import { fetcher, handicapToString, truncateFloatingPoint } from 'lib';
 import { z } from 'zod';
 import { handleApiError, throwErrorMessage } from '../common';
 import type { ReturnData, FetchResultData } from '../common';
 import {
     GET_SINGLE_MATCH_QUERY,
     GET_DETAIL_STATUS_QUERY,
-    GET_LIVE_TEXT_QUERY,
     GET_ODDS_RUNNING_QUERY
 } from './graphqlQueries';
 
@@ -322,8 +321,6 @@ const LiveTextInfoSchema = z.object({
     time: z.number()
 });
 
-type LiveTextInfo = z.infer<typeof LiveTextInfoSchema>;
-
 const DetailStatusSchema = z.object({
     handicapsFull: HandicapsListSchema,
     handicapsHalf: HandicapsListSchema,
@@ -383,25 +380,6 @@ export interface GetDetailStatusResponse {
     lineupInfo: LineupList;
 }
 
-export interface GetLiveText {
-    dateTime: string;
-    time: string;
-    id: number;
-    content: string;
-    homeName: string;
-    score: string;
-    awayName: string;
-}
-
-const GetLiveTextResultSchema = z.object({
-    getDetailStatus: z.object({
-        liveText: z.array(LiveTextInfoSchema)
-    })
-});
-
-export type GetLiveTextResponse = GetLiveText[];
-type GetLiveTextResult = z.infer<typeof GetLiveTextResultSchema>;
-
 const OddsRunningSchema = z.object({
     matchId: z.number(),
     runningTime: z.string(),
@@ -436,6 +414,21 @@ export type RequestPlayType =
     | 'HANDICAPHALF'
     | 'OVERUNDERHALF'
     | 'EUROPEHALF';
+
+const TextLiveSchema = z.object({
+    main: z.number().optional(),
+    type: z.number().optional(),
+    position: z.number(),
+    time: z.string(),
+    data: z.string()
+});
+
+const GetLiveTextResultSchema = z.object({
+    getLiveText: z.array(TextLiveSchema)
+});
+
+export type GetLiveTextResult = z.infer<typeof GetLiveTextResultSchema>;
+export type GetLiveTextResponse = z.infer<typeof TextLiveSchema>[];
 
 /**
  * 取得指定賽事
@@ -647,65 +640,6 @@ export const getDetailStatus = async (
 };
 
 /**
- * 取得現場賽況
- * - params : number (matchId)
- * - returns : {@link GetLiveTextResponse} {@link GetLiveText}
- */
-export const getLiveText = async (matchId: number): Promise<ReturnData<GetLiveTextResponse>> => {
-    function formatArray(arr: LiveTextInfo[]) {
-        return arr.map(item => {
-            const timeMatch = /^(?<time>\d{1,3})'/.exec(item.content);
-            const contentMatch = /'(?<content>.+?)\[/.exec(item.content);
-            const teamsAndScoreMatch = /\[(?<team1>.+?)(?<score>\d+:\d+)(?<team2>.+?)\]$/.exec(
-                item.content
-            );
-
-            if (!timeMatch || !contentMatch || !teamsAndScoreMatch) {
-                throw new Error(`Pattern does not match for item with id: ${item.id}`);
-            }
-
-            return {
-                dateTime: timestampToString(item.time),
-                time: timeMatch[1],
-                id: item.id,
-                content: contentMatch[1],
-                homeName: teamsAndScoreMatch[1],
-                score: teamsAndScoreMatch[2],
-                awayName: teamsAndScoreMatch[3]
-            };
-        });
-    }
-
-    try {
-        const { data, errors } = await fetcher<FetchResultData<GetLiveTextResult>, unknown>(
-            {
-                data: {
-                    query: GET_LIVE_TEXT_QUERY,
-                    variables: {
-                        input: {
-                            matchId
-                        }
-                    }
-                }
-            },
-            { cache: 'no-store' }
-        );
-
-        throwErrorMessage(errors);
-        GetLiveTextResultSchema.parse(data);
-
-        const liveTextList = formatArray(data.getDetailStatus.liveText);
-
-        return {
-            success: true,
-            data: liveTextList
-        };
-    } catch (error) {
-        return handleApiError(error);
-    }
-};
-
-/**
  * 取得公司賠率現場數據
  * - params : (matchId: number, companyId: number)
  * - returns : {@link OddsRunningResponse}
@@ -774,6 +708,38 @@ export const getInformation = async (
         return {
             success: true,
             data: data.getInformation
+        };
+    } catch (error) {
+        return handleApiError(error);
+    }
+};
+
+/**
+ * 取得指定賽事文字直播
+ * - params : (matchId: number)
+ * - returns : {@link GetLiveTextResponse}
+ */
+export const getLiveText = async (matchId: number): Promise<ReturnData<GetLiveTextResponse>> => {
+    try {
+        const { data, errors } = await fetcher<FetchResultData<GetLiveTextResult>, unknown>(
+            {
+                data: {
+                    query: GET_ODDS_RUNNING_QUERY,
+                    variables: {
+                        input: {
+                            matchId
+                        }
+                    }
+                }
+            },
+            { cache: 'no-store' }
+        );
+
+        throwErrorMessage(errors);
+
+        return {
+            success: true,
+            data: data.getLiveText
         };
     } catch (error) {
         return handleApiError(error);
