@@ -4,7 +4,7 @@ import Stack from '@mui/material/Stack';
 import style from './skeleton.module.scss';
 
 function SkeletonLayout() {
-    const data = [1, 2, 3, 4, 5];
+    const data = [1, 2, 3];
 
     return (
         <div className={style.container}>
@@ -38,16 +38,15 @@ function SkeletonLayout() {
                                 />
                             </div>
                         </div>
-                        <div>
-                            <Skeleton
-                                animation="wave"
-                                height={18}
-                                sx={{ marginLeft: '50px' }}
-                                variant="rounded"
-                                width="40%"
-                            />
-                        </div>
-                        <Skeleton animation="wave" height={36} variant="rounded" width="100%" />
+                        <Skeleton
+                            animation="wave"
+                            height={18}
+                            sx={{ marginBottom: '1rem' }}
+                            variant="rounded"
+                            width="100%"
+                        />
+                        <Skeleton animation="wave" height={64} variant="rounded" width="100%" />
+                        <Skeleton animation="wave" height={16} variant="rounded" width={100} />
                     </Stack>
                 );
             })}

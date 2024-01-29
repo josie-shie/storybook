@@ -2,21 +2,17 @@
 
 import { useEffect, useState } from 'react';
 import { getPostList } from 'data-center';
+import Image from 'next/image';
 import { type PostFilter, type RecommendPost } from 'data-center';
 import { InfiniteScroll } from 'ui';
 import CircularProgress from '@mui/material/CircularProgress';
-import Image from 'next/image';
 import { useUserStore } from '@/store/userStore';
 import NoData from '@/components/baseNoData/noData';
-import WeekButton from '../../components/weekButton/weekButton';
 import style from './articleList.module.scss';
 import { creatArticleStore } from './articleStore';
 import ArticleCard from './components/articleCard/articleCard';
 import SkeletonLayout from './components/skeleton/skeleton';
-import Banner from './img/banner.png';
-import FilterButton from './components/filterButton/filterButton';
-import Filter from './components/filter/filter';
-import FilterResult from './components/filterResult/filterResult';
+import banner from './img/banner.png';
 
 function ArticleList() {
     const [isActive, setIsActive] = useState<PostFilter[]>([]);
@@ -72,14 +68,8 @@ function ArticleList() {
 
     return (
         <>
+            <Image alt="banner" src={banner} className={style.banner} width={390} height={60} />
             <div className={style.recommendPredict}>
-                {/* <Image alt="" className={style.banner} src={Banner} /> */}
-                {/* <div className={style.toolbar}>
-                    <FilterButton />
-                </div>
-                <div className={style.button}>
-                    <WeekButton isActive={isActive} updateActive={updateActive} />
-                </div> */}
                 {articleList.length === 0 && isNoData === null && <SkeletonLayout />}
 
                 {articleList.length === 0 && isNoData ? (
@@ -103,9 +93,6 @@ function ArticleList() {
                     </ul>
                 )}
             </div>
-
-            {/* <Filter />
-            <FilterResult /> */}
         </>
     );
 }

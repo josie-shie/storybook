@@ -1,38 +1,28 @@
-.button {
-    padding-left: 12px;
-}
-
 .article {
-    padding-bottom: 12px;
+    padding: 12px 0;
     background: #fff;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
 }
 
 .loadMore {
     display: flex;
     align-items: center;
     justify-content: center;
+    padding-top: 12px;
 }
 
 .recommendPredict {
     background: #fff;
     height: calc(100dvh - 108px);
-    overflow: auto;
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
+    margin-top: -6px;
+}
 
-    .banner {
-        width: 100%;
-        display: block;
-        margin: auto;
-        height: 100px;
-        padding: 0 12px;
-    }
-
-    .toolbar {
-        display: inline-block;
-        margin-top: 12px;
-        padding: 0 12px;
-    }
+.banner {
+    width: 100%;
+    height: 60px;
 }
 
 .listEnd {

@@ -16,7 +16,7 @@ function SkeletonLayout() {
                     <div className={style.title}>
                         <Skeleton
                             animation="wave"
-                            height={18}
+                            height={20}
                             sx={{ marginBottom: '6px' }}
                             variant="rounded"
                             width="100%"
@@ -31,13 +31,6 @@ function SkeletonLayout() {
                         <Skeleton animation="wave" height={18} variant="rounded" width="100%" />
                     </div>
                 </div>
-                <Skeleton
-                    animation="wave"
-                    height={50}
-                    sx={{ marginBottom: '1rem' }}
-                    variant="rounded"
-                    width="100%"
-                />
             </Stack>
         </div>
     );

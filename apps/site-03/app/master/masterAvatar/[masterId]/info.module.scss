@@ -25,12 +25,14 @@
                     font-size: 14px;
                     font-weight: 500;
                     margin-right: 2px;
+                    min-height: 20px;
                 }
 
                 .tagsContainer {
                     display: flex;
                     flex-wrap: wrap;
                     gap: 4px;
+                    min-height: 18px;
 
                     :global(.baseTag) {
                         margin-right: 0;
@@ -45,6 +47,7 @@
                     display: flex;
                     align-items: center;
                     gap: 12px;
+                    min-height: 18px;
 
                     span {
                         display: flex;
