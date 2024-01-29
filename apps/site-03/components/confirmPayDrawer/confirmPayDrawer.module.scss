@@ -4,7 +4,7 @@
 
     .PayHandImg {
         position: absolute;
-        top: -82px;
+        top: -72px;
         right: 50%;
         transform: translateX(50%);
     }
@@ -34,8 +34,8 @@
                 font-size: 16px;
                 font-weight: 600;
 
-                .image {
-                    margin: 0 6px;
+                .star {
+                    margin: 0 6px 0 4px;
                 }
             }
         }
@@ -48,10 +48,16 @@
         margin-bottom: 16px;
     }
 
-    .payBtn:global(.MuiButtonBase-root) {
-        border-radius: 30px;
-        background-color: #4489ff;
-        color: #fff;
-        height: 36px;
+    .payBtn {
+        .star {
+            margin-right: 4px;
+        }
+
+        &:global(.MuiButtonBase-root) {
+            border-radius: 30px;
+            background-color: #4489ff;
+            color: #fff;
+            height: 36px;
+        }
     }
 }
