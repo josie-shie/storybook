@@ -24,6 +24,7 @@ import {
 import style from './tabContent.module.scss';
 // import LiveBox from './(dashboard)/liveEvent/liveEvent';
 import MessageBoard from './(dashboard)/messageBoard/messageBoard';
+import LineUp from './(dashboard)/lineUp/lineUp';
 import Predict from './(dashboard)/predict/predict';
 import Situation from './(dashboard)/situation/situation';
 import Analyze from './(dashboard)/analyze/analyze';
@@ -151,6 +152,11 @@ function TabContent({
             label: '预测',
             href: `/football/${matchId}/predict`,
             status: 'predict'
+        },
+        {
+            label: '阵容',
+            href: `/football/${matchId}/lineUp`,
+            status: 'lineUp'
         },
         {
             label: '赛况',
@@ -336,6 +342,9 @@ function TabContent({
                             predictData={fetchInitData?.predict || fetchData.predict}
                         />
                     ) : null}
+                </div>
+                <div className={`${style.largeGap} ${style.rimless}`}>
+                    {secondRender || status === 'lineUp' ? <LineUp matchId={matchId} /> : null}
                 </div>
                 <div className={style.largeGap}>
                     {secondRender || status === 'situation' ? (
