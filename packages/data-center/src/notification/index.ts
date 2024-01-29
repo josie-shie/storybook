@@ -24,7 +24,9 @@ const GetMailMemberSchema = z.object({
     ctaLink: z.string(),
     isRead: z.boolean(),
     createdAt: z.number(),
-    tag: Tag
+    tag: Tag,
+    senderName: z.string(),
+    senderAvatar: z.string()
 });
 
 const GetMailMemberListSchema = z.array(GetMailMemberSchema);

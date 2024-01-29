@@ -71,14 +71,24 @@ function MailInfo() {
 
                         <h2 className={style.title}>{selectedMailData.title}</h2>
 
-                        {/* 大頭貼小編欄位等後端開出來後再做判斷顯示 */}
                         {selectMailTag.tagName !== '交易明細' && (
-                            <div className={style.editUser}>
-                                <span className={style.avatar}>
-                                    <Image alt="edit" height={30} src={edit.src} width={30} />
-                                </span>
-                                <span className={style.name}>未來官方小編</span>
-                            </div>
+                            <>
+                                {selectedMailData.senderAvatar && selectedMailData.senderName ? (
+                                    <div className={style.editUser}>
+                                        <span className={style.avatar}>
+                                            <Image
+                                                alt="edit"
+                                                height={30}
+                                                src={selectedMailData.senderAvatar || edit.src}
+                                                width={30}
+                                            />
+                                        </span>
+                                        <span className={style.name}>
+                                            {selectedMailData.senderName}
+                                        </span>
+                                    </div>
+                                ) : null}
+                            </>
                         )}
                         {selectedMailData.contentImage ? (
                             <div className={style.contentImage}>

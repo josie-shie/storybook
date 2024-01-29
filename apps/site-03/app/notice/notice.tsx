@@ -22,57 +22,6 @@ function MailList() {
                 console.error(res.error);
                 return;
             }
-            //假資料先保留等api整後刪除
-            // const list = [
-            //     {
-            //       "mailMemberId": 5636,
-            //       "title": "TEstesetest",
-            //       "content": "tetsetsetsetestsetsetsetset",
-            //       "coverImage": "https://twtest8.s3.ap-northeast-1.amazonaws.com/4f8ce81a7331ade7dfb814df7ee7138b87581f2b881418fda7042ef777c33114.jpg",
-            //       "contentImage": "https://twtest8.s3.ap-northeast-1.amazonaws.com/4f8ce81a7331ade7dfb814df7ee7138b87581f2b881418fda7042ef777c33114.jpg",
-            //       "ctaButtonName": "現在去看",
-            //       "ctaLink": "www.google.com",
-            //       "isRead": true,
-            //       "createdAt": 0,
-            //       "tag": {
-            //         "id": 0,
-            //         "tagName": "系統通知",
-            //         "colorCode": "#4489ff"
-            //       }
-            //     },
-            //     {
-            //       "mailMemberId": 6597,
-            //       "title": "TEstesetest",
-            //       "content": "tetsetsetsetestsetsetsetset",
-            //       "coverImage": "",
-            //       "contentImage": "",
-            //       "ctaButtonName": "",
-            //       "ctaLink": "",
-            //       "isRead": true,
-            //       "createdAt": 0,
-            //       "tag": {
-            //         "id": 1,
-            //         "tagName": "交易明細",
-            //         "colorCode": "#00b976"
-            //       }
-            //     },
-            //     {
-            //       "mailMemberId": 6907,
-            //       "title": "TEstesetest",
-            //       "content": "tetsetsetsetestsetsetsetset",
-            //       "coverImage": "https://twtest8.s3.ap-northeast-1.amazonaws.com/4f8ce81a7331ade7dfb814df7ee7138b87581f2b881418fda7042ef777c33114.jpg",
-            //       "contentImage": "https://twtest8.s3.ap-northeast-1.amazonaws.com/4f8ce81a7331ade7dfb814df7ee7138b87581f2b881418fda7042ef777c33114.jpg",
-            //       "ctaButtonName": "現在去看",
-            //       "ctaLink": "www.google.com",
-            //       "isRead": true,
-            //       "createdAt": 0,
-            //       "tag": {
-            //         "id": 2,
-            //         "tagName": "最新活動",
-            //         "colorCode": "#f2d122"
-            //       }
-            //     }
-            // ]
             setMailList(res.data);
         };
 

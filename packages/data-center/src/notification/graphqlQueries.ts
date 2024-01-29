@@ -16,6 +16,8 @@ export const GET_MAIL_MEMBER_LIST_QUERY = `
                     tagName
                     colorCode
                 }
+                senderName
+                senderAvatar
             }
         }
     }
@@ -38,6 +40,8 @@ export const GET_MAIL_MEMBER_QUERY = `
                 tagName
                 colorCode
             }
+            senderName
+            senderAvatar
         }
     }
 `;
