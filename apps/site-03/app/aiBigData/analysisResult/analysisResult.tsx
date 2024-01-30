@@ -1,6 +1,6 @@
 'use client';
 import Link from 'next/link';
-import Bodan from '../components/bodan/bodan';
+import Bodan from './(dashboard)/bodan/bodan';
 import { Tabs, Tab } from 'ui';
 import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
@@ -12,9 +12,9 @@ import { useQueryFormStore } from '../queryFormStore';
 import { useMatchFilterStore } from '../matchFilterStore';
 import ErrorDialog from '../components/dialog/dialog';
 import style from './analysisResult.module.scss';
-// import Handicap from './(dashboard)/handicap/handicap';
+import Handicap from './(dashboard)/handicap/handicap';
 import { useAnalyticsResultStore } from './analysisResultStore';
-// import ContestDrawerList from './components/contestDrawerList/contestDrawerList';
+import ContestDrawerList from './components/contestDrawerList/contestDrawerList';
 // import Tutorial from './tutorial';
 import SystemErrorImage from './img/systemError.svg';
 import EmptyDataImage from './img/emptyData.svg';
@@ -132,9 +132,9 @@ function AnalysisResult() {
     const defaultPageIndex = useAnalyticsResultStore.use.defaultPageIndex();
     const setDefaultPageIndex = useAnalyticsResultStore.use.setDefaultPageIndex();
     const showContestDrawer = useAnalyticsResultStore.use.showContestDrawer();
-    // const setShowContestDrawer = useAnalyticsResultStore.use.setShowContestDrawer();
-    // const selectedResult = useAnalyticsResultStore.use.selectedResult();
-    // const contestList = useAnalyticsResultStore.use.contestList();
+    const setShowContestDrawer = useAnalyticsResultStore.use.setShowContestDrawer();
+    const selectedResult = useAnalyticsResultStore.use.selectedResult();
+    const contestList = useAnalyticsResultStore.use.contestList();
     const showedTutorial = useAnalyticsResultStore.use.showedTutorial();
     const setShowedTutorial = useAnalyticsResultStore.use.setShowedTutorial();
 
@@ -178,7 +178,7 @@ function AnalysisResult() {
         () => [
             {
                 label: '让分/大小趨勢',
-                // content: <Handicap />,
+                content: <Handicap />,
                 params: 'handicap'
             },
             {
@@ -339,7 +339,7 @@ function AnalysisResult() {
                 openDialog={openNoramlDialog}
             />
 
-            {/* <ContestDrawerList
+            <ContestDrawerList
                 isOpen={showContestDrawer}
                 matchList={contestList}
                 onClose={() => {
@@ -349,7 +349,7 @@ function AnalysisResult() {
                     setShowContestDrawer(true);
                 }}
                 selectedResult={selectedResult}
-            /> */}
+            />
         </>
     );
 }
