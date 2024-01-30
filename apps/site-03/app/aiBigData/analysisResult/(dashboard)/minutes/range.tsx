@@ -16,14 +16,18 @@ interface HeaderType {
 function TableCell({
     cellValue,
     selectedType,
-    openMatchListDrawer
+    openMatchListDrawer,
+    cellIndex,
+    maxIndex
 }: {
     cellValue: number[];
     selectedType: string;
     openMatchListDrawer: (matchIdsList: number[], selectedType: string) => void;
+    cellIndex: number;
+    maxIndex: number;
 }) {
     return (
-        <div className={`${style.cell}`}>
+        <div className={`${style.cell} ${cellIndex === maxIndex ? style.hightlightCell : ''}`}>
             <span
                 onClick={() => {
                     openMatchListDrawer(cellValue, selectedType);
@@ -46,6 +50,7 @@ function Range() {
     const setIsNotificationVisible = useNotificationStore.use.setIsVisible();
     const analysisRecord = useAnalyticsResultStore.use.analysisResultData();
     const [headers, setHeaders] = useState<HeaderType[]>([]);
+    const [maxIndex, setMaxIndex] = useState(0);
 
     const fetchMatchList = async (matchIdList: number[]) => {
         const res = await getFootballStatsMatches({ matchIds: matchIdList });
@@ -117,7 +122,7 @@ function Range() {
         ];
 
         // 最大值要hightlight
-        const maxIndex = items.reduce(
+        const maxIndexInList = items.reduce(
             (maxIdx, current, idx, array) =>
                 current.value.length > array[maxIdx].value.length ? idx : maxIdx,
             0
@@ -126,9 +131,11 @@ function Range() {
         const updatedHeaders = items.map((item, index) => ({
             ...item,
             label: `${item.label}${getPercentage(item.value.length)}%`,
-            color: index === maxIndex ? highlightColor : colorList[index % colorList.length] // 为最大值设置高亮颜色，其他按顺序使用 colorList
+            // 为最大值设置高亮颜色，其他按顺序使用 colorList
+            color: index === maxIndexInList ? highlightColor : colorList[index % colorList.length]
         }));
 
+        setMaxIndex(maxIndexInList);
         setHeaders(updatedHeaders);
     }, [analysisRecord]);
 
@@ -146,17 +153,24 @@ function Range() {
                 </div>
             </div>
             <div className={style.tableContainer}>
-                {headers.map(header => (
-                    <div className={style.header} key={header.legend}>
+                {headers.map((header, index) => (
+                    <div
+                        className={`${style.header} ${
+                            index === maxIndex ? style.highlightHeader : ''
+                        }`}
+                        key={header.legend}
+                    >
                         {header.legend}
                     </div>
                 ))}
-                {headers.map(header => (
+                {headers.map((header, index) => (
                     <TableCell
                         cellValue={header.value}
                         key={header.label}
                         openMatchListDrawer={openMatchListDrawer}
                         selectedType={header.label}
+                        cellIndex={index}
+                        maxIndex={maxIndex}
                     />
                 ))}
             </div>

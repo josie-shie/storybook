@@ -34,7 +34,6 @@ interface OptionType {
         padding: number;
         formatter: (params: TooltipParams) => string;
     };
-
     legend: {
         show: boolean;
         left: string;
@@ -74,13 +73,15 @@ function GoalRangeChart({ chartList }: { chartList: ChartType[] }) {
     const [options, setOptions] = useState<OptionType>({} as OptionType);
 
     useEffect(() => {
-        const seriesList = chartList.map(item => {
-            return {
-                value: item.value.length,
-                name: item.label,
-                itemStyle: { borderWidth: 2, borderColor: '#fff', color: item.color }
-            };
-        });
+        const seriesList = chartList
+            .filter(item => item.value.length > 0)
+            .map(item => {
+                return {
+                    value: item.value.length,
+                    name: item.label,
+                    itemStyle: { borderWidth: 2, borderColor: '#fff', color: item.color }
+                };
+            });
 
         const newOption: OptionType = {
             tooltip: {

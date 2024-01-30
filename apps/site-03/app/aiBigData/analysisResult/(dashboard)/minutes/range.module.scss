@@ -82,4 +82,18 @@
             border-bottom-right-radius: 8px;
         }
     }
+
+    .highlightHeader {
+        background: #ff4343;
+        color: #fff;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+    }
+
+    .hightlightCell {
+        border-radius: 0 0 8px 8px;
+        border-right: 1px solid #ff4343;
+        border-bottom: 1px solid #ff4343;
+        border-left: 1px solid #ff4343;
+    }
 }
