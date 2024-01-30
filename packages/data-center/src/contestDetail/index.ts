@@ -437,6 +437,48 @@ export type RequestPlayType =
     | 'OVERUNDERHALF'
     | 'EUROPEHALF';
 
+const PlayerListSchema = z.object({
+    player_id: z.number(),
+    name_en: z.string(),
+    name_chs: z.string(),
+    name_cht: z.string(),
+    number: z.number(),
+    position: z.number(),
+    player_status: z.string(),
+    position_y: z.number(),
+    position_x: z.number(),
+});
+
+export type PlayerList = z.infer<typeof PlayerListSchema>;
+
+const TeamsDetailSchema = z.object({
+    team_id: z.number(),
+    array_format: z.string(),
+    team_color: z.string(),
+    coach_id: z.number(),
+    coach_name_en: z.string(),
+    coach_name_zh: z.string(),
+    coach_name_zht: z.string(),
+    coach_logo: z.string(),
+    players: z.array(PlayerListSchema),
+});
+
+export type TeamsDetail = z.infer<typeof TeamsDetailSchema>;
+
+const TeamsSchema = z.object({
+    HOME: TeamsDetailSchema,
+    AWAY: TeamsDetailSchema,
+});
+
+export type Teams = z.infer<typeof TeamsSchema>;
+
+const LineUpInfoSchema = z.object({
+    match_id: z.number(),
+    teams: TeamsSchema
+});
+
+export type GetLineUpInfoResponse = z.infer<typeof LineUpInfoSchema>;
+
 /**
  * 取得指定賽事
  * - params : (matchId: number)

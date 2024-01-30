@@ -7,16 +7,47 @@ import YellowCard from './img/yellowCard.svg';
 import Support from './img/support.svg';
 import Winner from './img/winner.svg';
 import style from './playerList.module.scss';
+import type { PlayerList } from 'data-center';
+
+interface PlayerListProps {
+    homeBackUp: PlayerList[];
+    awayBackUp: PlayerList[];
+    homeColor: string;
+    awayColor: string;
+    homeFormation: string;
+    awayFormation: string;
+}
 
 interface PlayerItemProps {
-    name: string;
-    score: string;
-    scoreColor: string;
+    playerList: PlayerList;
     teamColor: string;
+    formation: string;
     isLeft?: boolean;
 }
 
-function PlayerItem({ name, score, scoreColor, teamColor, isLeft }: PlayerItemProps) {
+function PlayerItem({ playerList, teamColor, formation, isLeft = false }: PlayerItemProps) {
+    const firstCharOfFormation = formation[0];
+
+    const getPositionName = (formation: string, position: number): string => {
+        let positionsMap: string[];
+
+        switch (formation) {
+            case '3':
+                positionsMap = ['守门员', '后卫', '中场', '前锋'];
+                break;
+            case '4':
+                positionsMap = ['守门员', '后卫', '后腰', '前腰', '前锋'];
+                break;
+            case '5':
+                positionsMap = ['守门员', '后卫', '后腰', '中场', '前腰', '前锋'];
+                break;
+            default:
+                positionsMap = [''];
+        }
+
+        return positionsMap[position] || '';
+    };
+
     return (
         <div className={`${style.playerItem} ${isLeft ? style.rightLine : ''}`}>
             <div className={style.detail}>
@@ -27,174 +58,60 @@ function PlayerItem({ name, score, scoreColor, teamColor, isLeft }: PlayerItemPr
                 </div>
                 <div className={style.substitute}>
                     <div className={style.nameScore}>
-                        <p className={style.name}>{name}</p>
+                        <p className={style.name}>
+                            {playerList.name_chs && playerList.name_chs !== '0'
+                                ? playerList.name_chs
+                                : playerList.name_en}
+                        </p>
                         <div className={style.score}>
-                            <p className={style.position}>中場</p>
-                            <div className={style.tag} style={{ backgroundColor: scoreColor }}>
+                            <p className={style.position}>
+                                {getPositionName(firstCharOfFormation, playerList.position)}
+                            </p>
+                            {/* <div className={style.tag} style={{ backgroundColor: teamColor }}>
                                 {score}
-                            </div>
-                            <YellowCard />
+                            </div> */}
+                            {/* <YellowCard /> */}
                         </div>
                     </div>
-                    <div className={style.time}>
+                    {/* <div className={style.time}>
                         <ChangeUp width={20} height={20} />
                         <span>69'</span>
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </div>
     );
 }
 
-function PlayerList() {
-    const playerData = [
-        {
-            name: '尤爾曼',
-            score: '6.37',
-            scoreColor: 'rgb(118, 207, 131)',
-            teamColor: 'rgb(196, 0, 16)'
-        },
-        {
-            name: '尤爾曼',
-            score: '6.37',
-            scoreColor: 'rgb(118, 207, 131)',
-            teamColor: 'rgb(196, 0, 16)'
-        },
-        {
-            name: '尤爾曼',
-            score: '6.37',
-            scoreColor: 'rgb(118, 207, 131)',
-            teamColor: 'rgb(196, 0, 16)'
-        },
-        {
-            name: '尤爾曼',
-            score: '6.37',
-            scoreColor: 'rgb(118, 207, 131)',
-            teamColor: 'rgb(196, 0, 16)'
-        },
-        {
-            name: '尤爾曼',
-            score: '6.37',
-            scoreColor: 'rgb(118, 207, 131)',
-            teamColor: 'rgb(196, 0, 16)'
-        },
-        {
-            name: '尤爾曼',
-            score: '6.37',
-            scoreColor: 'rgb(118, 207, 131)',
-            teamColor: 'rgb(196, 0, 16)'
-        },
-        {
-            name: '尤爾曼',
-            score: '6.37',
-            scoreColor: 'rgb(14, 134, 4)',
-            teamColor: 'rgb(196, 0, 16)'
-        },
-        {
-            name: '尤爾曼',
-            score: '6.37',
-            scoreColor: 'rgb(14, 134, 4)',
-            teamColor: 'rgb(196, 0, 16)'
-        },
-        {
-            name: '尤爾曼',
-            score: '6.37',
-            scoreColor: 'rgb(14, 134, 4)',
-            teamColor: 'rgb(196, 0, 16)'
-        },
-        {
-            name: '尤爾曼',
-            score: '6.37',
-            scoreColor: 'rgb(14, 134, 4)',
-            teamColor: 'rgb(196, 0, 16)'
-        },
-        {
-            name: '尤爾曼',
-            score: '6.37',
-            scoreColor: 'rgb(14, 134, 4)',
-            teamColor: 'rgb(196, 0, 16)'
-        }
-    ];
-
-    const playerDataBottom = [
-        {
-            name: '尤爾曼',
-            score: '6.37',
-            scoreColor: 'rgb(118, 207, 131)',
-            teamColor: 'rgb(142, 186, 219)'
-        },
-        {
-            name: '尤爾曼',
-            score: '6.37',
-            scoreColor: 'rgb(118, 207, 131)',
-            teamColor: 'rgb(142, 186, 219)'
-        },
-        {
-            name: '尤爾曼',
-            score: '6.37',
-            scoreColor: 'rgb(118, 207, 131)',
-            teamColor: 'rgb(142, 186, 219)'
-        },
-        {
-            name: '尤爾曼',
-            score: '6.37',
-            scoreColor: 'rgb(118, 207, 131)',
-            teamColor: 'rgb(142, 186, 219)'
-        },
-        {
-            name: '尤爾曼',
-            score: '6.37',
-            scoreColor: 'rgb(118, 207, 131)',
-            teamColor: 'rgb(142, 186, 219)'
-        },
-        {
-            name: '尤爾曼',
-            score: '6.37',
-            scoreColor: 'rgb(14, 134, 4)',
-            teamColor: 'rgb(142, 186, 219)'
-        },
-        {
-            name: '尤爾曼',
-            score: '6.37',
-            scoreColor: 'rgb(14, 134, 4)',
-            teamColor: 'rgb(142, 186, 219)'
-        },
-        {
-            name: '尤爾曼',
-            score: '6.37',
-            scoreColor: 'rgb(14, 134, 4)',
-            teamColor: 'rgb(142, 186, 219)'
-        },
-        {
-            name: '尤爾曼',
-            score: '6.37',
-            scoreColor: 'rgb(14, 134, 4)',
-            teamColor: 'rgb(142, 186, 219)'
-        },
-        {
-            name: '尤爾曼',
-            score: '6.37',
-            scoreColor: 'rgb(14, 134, 4)',
-            teamColor: 'rgb(142, 186, 219)'
-        },
-        {
-            name: '尤爾曼',
-            score: '6.37',
-            scoreColor: 'rgb(14, 134, 4)',
-            teamColor: 'rgb(142, 186, 219)'
-        }
-    ];
-
+function PlayerList({
+    homeBackUp,
+    awayBackUp,
+    homeColor,
+    awayColor,
+    homeFormation,
+    awayFormation
+}: PlayerListProps) {
     return (
         <div className={style.playerList}>
             <div className={style.container}>
-                {playerData.map((item, index) => (
-                    <PlayerItem key={index} {...item} isLeft={true} />
+                {homeBackUp.map(item => (
+                    <PlayerItem
+                        key={item.player_id}
+                        playerList={item}
+                        teamColor={homeColor}
+                        formation={homeFormation}
+                        isLeft={true}
+                    />
                 ))}
             </div>
             <div className={style.container}>
-                {playerDataBottom.map((item, index) => (
-                    <PlayerItem key={index} {...item} />
+                {awayBackUp.map(item => (
+                    <PlayerItem
+                        key={item.player_id}
+                        playerList={item}
+                        teamColor={awayColor}
+                        formation={awayFormation}
+                    />
                 ))}
             </div>
         </div>
