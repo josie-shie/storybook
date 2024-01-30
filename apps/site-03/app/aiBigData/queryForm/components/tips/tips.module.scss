@@ -28,20 +28,10 @@
     }
 
     .bottom {
-        display: flex;
-        padding: 4px 0;
-        justify-content: space-between;
-
-        .hideTips {
-            color: #8d8d8d;
-            font-size: 12px;
-            font-weight: 400;
-        }
-    }
-
-    .showTips {
         color: #4489ff;
         font-size: 12px;
         font-weight: 500;
+        padding: 4px 0;
+        text-align: right;
     }
 }

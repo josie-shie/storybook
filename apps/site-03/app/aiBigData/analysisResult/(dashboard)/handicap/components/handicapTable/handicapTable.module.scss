@@ -1,0 +1,28 @@
+.handicapTable {
+    padding-top: 6px;
+
+    .table {
+        border-collapse: collapse;
+        width: 100%;
+        border: #f3f3f3;
+
+        td {
+            border: 1px solid #dddddd;
+            text-align: center;
+            padding: 8px;
+            vertical-align: middle;
+            font-size: 12px;
+            font-weight: 500;
+
+            .label {
+                padding-right: 2px;
+                color: #4a4a4a;
+                text-align: center;
+            }
+
+            .matchLength {
+                color: #4489ff;
+            }
+        }
+    }
+}

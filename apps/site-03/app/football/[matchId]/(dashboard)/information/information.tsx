@@ -18,53 +18,37 @@ function Information({ information }: { information: GetInformationResponse }) {
         backgroundColor: '#f3f3f3',
         color: '#8d8d8d'
     };
+
+    const tabList = [
+        { title: matchDetail.homeChs, value: 'home' },
+        { title: '中立', value: 'neutral' },
+        { title: matchDetail.awayChs, value: 'away' }
+    ];
+
     const [team, setTeam] = useState<TeamType>('home');
 
     const handleResetHeight = () => {
-        if (typeof slickOption.contestInfoResetHeight !== 'undefined') {
-            slickOption.contestInfoResetHeight();
-        }
+        slickOption.contestInfoResetHeight();
     };
 
     return (
         <div className={style.information}>
-            <div className={style.tabBar}>
-                <motion.div
-                    animate={team === 'home' ? tabActive : tabDefault}
-                    className={style.tab}
-                    onAnimationComplete={() => {
-                        handleResetHeight();
-                    }}
-                    onClick={() => {
-                        setTeam('home');
-                    }}
-                >
-                    {matchDetail.homeChs}
-                </motion.div>
-                <motion.div
-                    animate={team === 'neutral' ? tabActive : tabDefault}
-                    className={style.tab}
-                    onAnimationComplete={() => {
-                        handleResetHeight();
-                    }}
-                    onClick={() => {
-                        setTeam('neutral');
-                    }}
-                >
-                    中立
-                </motion.div>
-                <motion.div
-                    animate={team === 'away' ? tabActive : tabDefault}
-                    className={style.tab}
-                    onAnimationComplete={() => {
-                        handleResetHeight();
-                    }}
-                    onClick={() => {
-                        setTeam('away');
-                    }}
-                >
-                    {matchDetail.awayChs}
-                </motion.div>
+            <div className="minTabBar">
+                {tabList.map(tab => (
+                    <motion.div
+                        animate={team === tab.value ? tabActive : tabDefault}
+                        className="tab"
+                        key={tab.value}
+                        onAnimationComplete={() => {
+                            handleResetHeight();
+                        }}
+                        onClick={() => {
+                            setTeam(tab.value as TeamType);
+                        }}
+                    >
+                        {tab.title}
+                    </motion.div>
+                ))}
             </div>
             <AnimatePresence mode="wait">
                 <motion.div
