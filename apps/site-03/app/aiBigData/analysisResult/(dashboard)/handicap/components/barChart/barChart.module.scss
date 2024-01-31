@@ -28,9 +28,7 @@
 
             .bar {
                 height: 140px;
-                display: flex;
-                flex-direction: column;
-                gap: 2px;
+                text-align: center;
 
                 .block {
                     width: 54px;
@@ -52,6 +50,7 @@
                 }
 
                 .bottom {
+                    display: flex;
                     align-items: self-end;
                     padding-bottom: 8px;
                     background: #29c4bb;

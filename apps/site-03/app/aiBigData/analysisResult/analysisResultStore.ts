@@ -1,27 +1,34 @@
 import 'dayjs/locale/zh-cn';
 import { initStore } from 'lib';
 import type { StoreWithSelectors } from 'lib';
-import { getISOWeek, parseISO } from 'date-fns';
 import type {
     GetFootballStatsMatchesResponse,
     GetFootballStatsResponse,
     DailyMatchType
 } from 'data-center';
 import type { ReactNode } from 'react';
+import dayjs from 'dayjs';
+import isoWeek from 'dayjs/plugin/isoWeek';
+
+dayjs.extend(isoWeek);
 
 export interface Statistics {
     upper: number;
     lower: number;
     draw: number;
+    upperPercentage: number;
+    lowerPercentage: number;
+    drawPercentage: number;
+    matchIds?: number[];
 }
 
 export interface StatisticsCategories {
-    handicap: Record<string, Statistics>;
-    overUnder: Record<string, Statistics>;
-    moneyLine: Record<string, Statistics>;
+    handicap: Record<number, Statistics>;
+    overUnder: Record<number, Statistics>;
+    moneyLine: Record<number, Statistics>;
 }
 
-interface TimePeriod {
+export interface TimePeriod {
     day: StatisticsCategories;
     week: StatisticsCategories;
 }
@@ -30,15 +37,37 @@ export interface HandicapEchartType {
     full: TimePeriod;
 }
 
+function calculatePercentages(data: Record<string, Statistics>) {
+    for (const date in data) {
+        if (Object.prototype.hasOwnProperty.call(data, date)) {
+            const dateValue = data[date];
+            const total = dateValue.draw + dateValue.lower + dateValue.upper;
+            data[date].drawPercentage = Math.floor((dateValue.draw / total) * 100);
+            data[date].lowerPercentage = Math.floor((dateValue.lower / total) * 100);
+            data[date].upperPercentage = Math.floor((dateValue.upper / total) * 100);
+        }
+    }
+}
+
 function groupSameWeek(dayListData: Record<string, Statistics>) {
     const weeklyData = {} as Record<string, Statistics>;
 
     Object.keys(dayListData).forEach(dateStr => {
-        const date = parseISO(dateStr);
-        const weekNumber = getISOWeek(date);
+        const timestampInSeconds = parseInt(dateStr);
+        const date = dayjs(timestampInSeconds * 1000);
+
+        const weekNumber = date.isoWeek();
 
         if (!Object.prototype.hasOwnProperty.call(weeklyData, weekNumber)) {
-            weeklyData[weekNumber] = { upper: 0, lower: 0, draw: 0 };
+            weeklyData[weekNumber] = {
+                upper: 0,
+                lower: 0,
+                draw: 0,
+                upperPercentage: 0,
+                drawPercentage: 0,
+                lowerPercentage: 0,
+                matchIds: dayListData[dateStr].matchIds || []
+            };
         }
 
         weeklyData[weekNumber].upper += dayListData[dateStr].upper;
@@ -113,82 +142,178 @@ const initialState = (
             const fullDayMoneyLine = {} as Record<string, Statistics>;
 
             analysisResultData?.fullHandicapUpperDaily?.forEach((item: DailyMatchType) => {
-                if (Object.prototype.hasOwnProperty.call(fullDayHandicap, item.date)) {
-                    fullDayHandicap[item.date].upper = item.matches;
+                if (
+                    Object.prototype.hasOwnProperty.call(fullDayHandicap, dayjs(item.date).unix())
+                ) {
+                    fullDayHandicap[dayjs(item.date).unix()].upper = item.matches;
                 } else {
-                    fullDayHandicap[item.date] = { upper: item.matches, lower: 0, draw: 0 };
+                    fullDayHandicap[dayjs(item.date).unix()] = {
+                        upper: item.matches,
+                        lower: 0,
+                        draw: 0,
+                        upperPercentage: 0,
+                        drawPercentage: 0,
+                        lowerPercentage: 0,
+                        matchIds: analysisResultData.fullHandicapUpper?.map(match => match.matchId)
+                    };
                 }
             });
 
             analysisResultData?.fullHandicapLowerDaily?.forEach((item: DailyMatchType) => {
-                if (Object.prototype.hasOwnProperty.call(fullDayHandicap, item.date)) {
-                    fullDayHandicap[item.date].lower = item.matches;
+                if (
+                    Object.prototype.hasOwnProperty.call(fullDayHandicap, dayjs(item.date).unix())
+                ) {
+                    fullDayHandicap[dayjs(item.date).unix()].lower = item.matches;
                 } else {
-                    fullDayHandicap[item.date] = { upper: 0, lower: item.matches, draw: 0 };
+                    fullDayHandicap[dayjs(item.date).unix()] = {
+                        upper: 0,
+                        lower: item.matches,
+                        draw: 0,
+                        upperPercentage: 0,
+                        drawPercentage: 0,
+                        lowerPercentage: 0,
+                        matchIds: analysisResultData.fullHandicapLower?.map(match => match.matchId)
+                    };
                 }
             });
 
             analysisResultData?.fullHandicapDrawDaily?.forEach((item: DailyMatchType) => {
-                if (Object.prototype.hasOwnProperty.call(fullDayHandicap, item.date)) {
-                    fullDayHandicap[item.date].draw = item.matches;
+                if (
+                    Object.prototype.hasOwnProperty.call(fullDayHandicap, dayjs(item.date).unix())
+                ) {
+                    fullDayHandicap[dayjs(item.date).unix()].draw = item.matches;
                 } else {
-                    fullDayHandicap[item.date] = { upper: 0, lower: 0, draw: item.matches };
+                    fullDayHandicap[dayjs(item.date).unix()] = {
+                        upper: 0,
+                        lower: 0,
+                        draw: item.matches,
+                        upperPercentage: 0,
+                        drawPercentage: 0,
+                        lowerPercentage: 0
+                    };
                 }
             });
 
             // 遍历并更新 fullOverUnderUpperDates
             analysisResultData?.fullOverUnderOverDaily?.forEach((item: DailyMatchType) => {
-                if (Object.prototype.hasOwnProperty.call(fullDayOverUnder, item.date)) {
-                    fullDayOverUnder[item.date].upper = item.matches;
+                if (
+                    Object.prototype.hasOwnProperty.call(fullDayOverUnder, dayjs(item.date).unix())
+                ) {
+                    fullDayOverUnder[dayjs(item.date).unix()].upper = item.matches;
                 } else {
-                    fullDayOverUnder[item.date] = { upper: item.matches, lower: 0, draw: 0 };
+                    fullDayOverUnder[dayjs(item.date).unix()] = {
+                        upper: item.matches,
+                        lower: 0,
+                        draw: 0,
+                        upperPercentage: 0,
+                        drawPercentage: 0,
+                        lowerPercentage: 0,
+                        matchIds: analysisResultData.fullOverUnderOver?.map(match => match.matchId)
+                    };
                 }
             });
 
             // 遍历并更新 fullOverUnderLowerDates
             analysisResultData?.fullOverUnderUnderDaily?.forEach((item: DailyMatchType) => {
-                if (Object.prototype.hasOwnProperty.call(fullDayOverUnder, item.date)) {
-                    fullDayOverUnder[item.date].lower = item.matches;
+                if (
+                    Object.prototype.hasOwnProperty.call(fullDayOverUnder, dayjs(item.date).unix())
+                ) {
+                    fullDayOverUnder[dayjs(item.date).unix()].lower = item.matches;
                 } else {
-                    fullDayOverUnder[item.date] = { upper: 0, lower: item.matches, draw: 0 };
+                    fullDayOverUnder[dayjs(item.date).unix()] = {
+                        upper: 0,
+                        lower: item.matches,
+                        draw: 0,
+                        upperPercentage: 0,
+                        drawPercentage: 0,
+                        lowerPercentage: 0,
+                        matchIds: analysisResultData.fullOverUnderUnder?.map(match => match.matchId)
+                    };
                 }
             });
 
             // 遍历并更新 fullOverUnderDrawDates
             analysisResultData?.fullOverUnderDrawDaily?.forEach((item: DailyMatchType) => {
-                if (Object.prototype.hasOwnProperty.call(fullDayOverUnder, item.date)) {
-                    fullDayOverUnder[item.date].draw = item.matches;
+                if (
+                    Object.prototype.hasOwnProperty.call(fullDayOverUnder, dayjs(item.date).unix())
+                ) {
+                    fullDayOverUnder[dayjs(item.date).unix()].draw = item.matches;
                 } else {
-                    fullDayOverUnder[item.date] = { upper: 0, lower: 0, draw: item.matches };
+                    fullDayOverUnder[dayjs(item.date).unix()] = {
+                        upper: 0,
+                        lower: 0,
+                        draw: item.matches,
+                        upperPercentage: 0,
+                        drawPercentage: 0,
+                        lowerPercentage: 0
+                    };
                 }
             });
 
             // 处理 Full MoneyLine Upper
             analysisResultData?.fullTimeHomeWinDaily?.forEach((item: DailyMatchType) => {
-                if (Object.prototype.hasOwnProperty.call(fullDayMoneyLine, item.date)) {
-                    fullDayMoneyLine[item.date].upper = item.matches;
+                if (
+                    Object.prototype.hasOwnProperty.call(fullDayMoneyLine, dayjs(item.date).unix())
+                ) {
+                    fullDayMoneyLine[dayjs(item.date).unix()].upper = item.matches;
                 } else {
-                    fullDayMoneyLine[item.date] = { upper: item.matches, lower: 0, draw: 0 };
+                    fullDayMoneyLine[dayjs(item.date).unix()] = {
+                        upper: item.matches,
+                        lower: 0,
+                        draw: 0,
+                        upperPercentage: 0,
+                        drawPercentage: 0,
+                        lowerPercentage: 0
+                    };
                 }
             });
 
             // 处理 Full MoneyLine Lower
             analysisResultData?.fullTimeAwayWinDaily?.forEach((item: DailyMatchType) => {
-                if (Object.prototype.hasOwnProperty.call(fullDayMoneyLine, item.date)) {
-                    fullDayMoneyLine[item.date].lower = item.matches;
+                if (
+                    Object.prototype.hasOwnProperty.call(fullDayMoneyLine, dayjs(item.date).unix())
+                ) {
+                    fullDayMoneyLine[dayjs(item.date).unix()].lower = item.matches;
                 } else {
-                    fullDayMoneyLine[item.date] = { upper: 0, lower: item.matches, draw: 0 };
+                    fullDayMoneyLine[dayjs(item.date).unix()] = {
+                        upper: 0,
+                        lower: item.matches,
+                        draw: 0,
+                        upperPercentage: 0,
+                        drawPercentage: 0,
+                        lowerPercentage: 0
+                    };
                 }
             });
 
             // 处理 Full MoneyLine Draw
             analysisResultData?.fullTimeDrawDaily?.forEach((item: DailyMatchType) => {
-                if (Object.prototype.hasOwnProperty.call(fullDayMoneyLine, item.date)) {
-                    fullDayMoneyLine[item.date].draw = item.matches;
+                if (
+                    Object.prototype.hasOwnProperty.call(fullDayMoneyLine, dayjs(item.date).unix())
+                ) {
+                    fullDayMoneyLine[dayjs(item.date).unix()].draw = item.matches;
                 } else {
-                    fullDayMoneyLine[item.date] = { upper: 0, lower: 0, draw: item.matches };
+                    fullDayMoneyLine[dayjs(item.date).unix()] = {
+                        upper: 0,
+                        lower: 0,
+                        draw: item.matches,
+                        upperPercentage: 0,
+                        drawPercentage: 0,
+                        lowerPercentage: 0
+                    };
                 }
             });
+
+            const weekHandicap: Record<string, Statistics> = groupSameWeek(fullDayHandicap);
+            const weekOverUnder: Record<string, Statistics> = groupSameWeek(fullDayOverUnder);
+            const weekMoneyLine: Record<string, Statistics> = groupSameWeek(fullDayMoneyLine);
+
+            calculatePercentages(fullDayHandicap);
+            calculatePercentages(fullDayOverUnder);
+            calculatePercentages(fullDayMoneyLine);
+            calculatePercentages(weekHandicap);
+            calculatePercentages(weekOverUnder);
+            calculatePercentages(weekMoneyLine);
 
             const chartData = {
                 full: {
@@ -198,9 +323,9 @@ const initialState = (
                         moneyLine: fullDayMoneyLine
                     },
                     week: {
-                        handicap: groupSameWeek(fullDayHandicap),
-                        overUnder: groupSameWeek(fullDayOverUnder),
-                        moneyLine: groupSameWeek(fullDayMoneyLine)
+                        handicap: weekHandicap,
+                        overUnder: weekOverUnder,
+                        moneyLine: weekMoneyLine
                     }
                 }
             };
