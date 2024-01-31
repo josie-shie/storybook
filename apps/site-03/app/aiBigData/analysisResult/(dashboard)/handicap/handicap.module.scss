@@ -1,3 +1,56 @@
 .handicap {
     padding: 0 12px 12px;
+
+    .matchesTrend {
+        .title {
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 16px 0;
+        }
+
+        .tabContainer {
+            padding: 8px;
+            border-radius: 12px;
+            border: 1px solid #f3f3f3;
+            overflow-x: hidden;
+
+            .matchList {
+                a {
+                    :global {
+                        .contestList {
+                            border-bottom: 0;
+                            border-top: 1px solid #f3f3f3;
+                        }
+                    }
+                }
+            }
+
+            :global {
+                .ui-button {
+                    border-radius: 8px 8px 0px 0px;
+                    background: #f3f3f3;
+                    color: #9b9b9b;
+                    font-size: 12px;
+                    font-weight: 500;
+                }
+
+                .ui-active {
+                    color: #fff;
+                    background-color: #4489ff;
+                    border-radius: 8px 8px 0px 0px !important;
+                    border: 1px solid #4489ff;
+                }
+
+                .ui-tabs-header {
+                    padding: 0 !important;
+                }
+
+                .ui-tab-container {
+                    padding: 0;
+                }
+            }
+        }
+    }
 }
