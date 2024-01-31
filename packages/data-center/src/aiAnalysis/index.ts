@@ -149,6 +149,11 @@ const GoalsIn15MinsSchema = z.object({
     goalsUnder: z.array(z.number())
 });
 
+const MatchDateMatchListSchema = z.object({
+    matchId: z.number(),
+    matchDate: z.string()
+});
+
 export type GoalsIn15Mins = z.infer<typeof GoalsIn15MinsSchema>;
 export type GoalsIn15MinsType = GoalsIn15Mins;
 
@@ -161,25 +166,25 @@ const GetFootballStatsSchema = z.object({
     startTime: z.number(),
     endTime: z.number(),
     // 全場讓球
-    fullHandicapUpper: z.array(z.number()).nullable(),
-    fullHandicapLower: z.array(z.number()).nullable(),
-    fullHandicapDraw: z.array(z.number()).nullable(),
+    fullHandicapUpper: z.array(MatchDateMatchListSchema).nullable(),
+    fullHandicapLower: z.array(MatchDateMatchListSchema).nullable(),
+    fullHandicapDraw: z.array(MatchDateMatchListSchema).nullable(),
     fullHandicapUpperDaily: z.array(DailyMatchSchema).nullable(),
     fullHandicapLowerDaily: z.array(DailyMatchSchema).nullable(),
     fullHandicapDrawDaily: z.array(DailyMatchSchema).nullable(),
 
     // 全場大小
-    fullOverUnderOver: z.array(z.number()).nullable(),
-    fullOverUnderUnder: z.array(z.number()).nullable(),
-    fullOverUnderDraw: z.array(z.number()).nullable(),
+    fullOverUnderOver: z.array(MatchDateMatchListSchema).nullable(),
+    fullOverUnderUnder: z.array(MatchDateMatchListSchema).nullable(),
+    fullOverUnderDraw: z.array(MatchDateMatchListSchema).nullable(),
     fullOverUnderOverDaily: z.array(DailyMatchSchema).nullable(),
     fullOverUnderUnderDaily: z.array(DailyMatchSchema).nullable(),
     fullOverUnderDrawDaily: z.array(DailyMatchSchema).nullable(),
 
     // 全場獨贏
-    fullTimeHomeWin: z.array(z.number()).nullable(),
-    fullTimeDraw: z.array(z.number()).nullable(),
-    fullTimeAwayWin: z.array(z.number()).nullable(),
+    fullTimeHomeWin: z.array(MatchDateMatchListSchema).nullable(),
+    fullTimeDraw: z.array(MatchDateMatchListSchema).nullable(),
+    fullTimeAwayWin: z.array(MatchDateMatchListSchema).nullable(),
     fullTimeHomeWinDaily: z.array(DailyMatchSchema).nullable(),
     fullTimeDrawDaily: z.array(DailyMatchSchema).nullable(),
     fullTimeAwayWinDaily: z.array(DailyMatchSchema).nullable(),
@@ -218,25 +223,79 @@ export interface GetFootballStatsRequest {
 }
 
 const GetFootballStatsMatchSchema = z.object({
-    startTime: z.number(),
-    matchId: z.number(),
-    countryCn: z.string(),
+    kind: z.number(),
     leagueId: z.number(),
+    leagueEn: z.string(),
+    leagueEnShort: z.string(),
+    leagueChtShort: z.string(),
+    subLeagueId: z.string(),
+    subLeagueEn: z.string(),
+    subLeagueChs: z.string(),
+    subLeagueCht: z.string(),
+    homeEn: z.string(),
+    homeCht: z.string(),
+    awayEn: z.string(),
+    awayCht: z.string(),
+    homeId: z.number(),
+    awayId: z.number(),
+    homeRankEn: z.string(),
+    homeRankCn: z.string(),
+    awayRankEn: z.string(),
+    awayRankCn: z.string(),
+    isNeutral: z.boolean(),
+    season: z.string(),
+    groupId: z.number(),
+    roundEn: z.string(),
+    roundCn: z.string(),
+    grouping: z.string(),
+    locationEn: z.string(),
+    locationCn: z.string(),
+    weatherEn: z.string(),
+    weatherCn: z.string(),
+    temp: z.string(),
+    isHidden: z.boolean(),
+    updateTime: z.string(),
+    status: z.number(),
+    leagueLevel: z.number(),
     leagueChsShort: z.string(),
-    homeChs: z.string(),
     awayChs: z.string(),
-    homeScore: z.number(),
-    awayScore: z.number(),
-    homeHalfScore: z.number(),
+    awayCorner: z.number(),
     awayHalfScore: z.number(),
-    isFamous: z.boolean(),
-    leagueLevel: z.number()
+    awayRed: z.number(),
+    awayScore: z.number(),
+    awayYellow: z.number(),
+    homeChs: z.string(),
+    homeCorner: z.number(),
+    homeHalfScore: z.number(),
+    homeRed: z.number(),
+    homeScore: z.number(),
+    homeYellow: z.number(),
+    hasAnimation: z.boolean(),
+    explainEn: z.string(),
+    explainCn: z.string(),
+    extraExplain: z.string(),
+    hasLineup: z.string(),
+    injuryTime: z.string(),
+    matchId: z.number(),
+    matchTime: z.number(),
+    startTime: z.number(),
+    state: z.number(),
+    color: z.string(),
+    countryCn: z.string(),
+    handicapCurrent: z.number(),
+    handicapHomeCurrentOdds: z.number(),
+    handicapAwayCurrentOdds: z.number(),
+    overUnderCurrent: z.number(),
+    overUnderOverCurrentOdds: z.number(),
+    overUnderUnderCurrentOdds: z.number(),
+    homeLogo: z.string(),
+    awayLogo: z.string()
 });
 
 export type GetFootballStatsMatch = z.infer<typeof GetFootballStatsMatchSchema>;
 export type GetFootballStatsMatchesResponse = GetFootballStatsMatch[];
 const GetFootballStatsMatchesResultSchema = z.object({
-    getFootballStatsMatches: z.object({
+    getMatchList: z.object({
         matches: z.array(GetFootballStatsMatchSchema)
     })
 });
@@ -418,7 +477,7 @@ export const getFootballStatsMatches = async (
 
         return {
             success: true,
-            data: data.getFootballStatsMatches.matches
+            data: data.getMatchList.matches
         };
     } catch (error) {
         return handleApiError(error);

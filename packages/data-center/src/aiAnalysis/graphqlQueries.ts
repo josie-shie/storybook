@@ -40,22 +40,76 @@ export const GET_ODDS_HINT_LIST_QUERY = `
 `;
 
 export const GET_FOOTBALL_STATS_MATCHES_QUERY = `
-    query getFootballStatsMatches($input: FootballStatsMatchInput!){
-        getFootballStatsMatches(input: $input) {
+    query getMatchList($input: FootballStatsMatchInput!){
+        getMatchList(input: $input) {
             matches {
-                matchId
-                leagueId
-                leagueChsShort: leagueChs
-                countryCn
-                startTime
-                homeChs
-                awayChs
-                homeScore
-                homeHalfScore
-                awayScore
-                awayHalfScore
-                isFamous
-                leagueLevel
+              matchId
+              color
+              kind
+              leagueId
+              leagueEn
+              leagueEnShort
+              leagueChsShort
+              leagueChtShort
+              subLeagueId
+              subLeagueEn
+              subLeagueChs
+              subLeagueCht
+              matchTime
+              startTime
+              homeEn
+              homeChs
+              homeCht
+              awayEn
+              awayChs
+              awayCht
+              homeId
+              awayId
+              state
+              homeScore
+              awayScore
+              homeHalfScore
+              awayHalfScore
+              homeRed
+              awayRed
+              homeYellow
+              awayYellow
+              homeCorner
+              awayCorner
+              homeRankEn
+              homeRankCn
+              awayRankEn
+              awayRankCn
+              isNeutral
+              hasLineup
+              season
+              groupId
+              roundEn
+              roundCn
+              grouping
+              locationEn
+              locationCn
+              weatherEn
+              weatherCn
+              temp
+              explainEn
+              explainCn
+              extraExplain
+              isHidden
+              injuryTime
+              updateTime
+              homeLogo
+              awayLogo
+              countryCn
+              handicapCurrent
+              handicapHomeCurrentOdds
+              handicapAwayCurrentOdds
+              overUnderCurrent
+              overUnderOverCurrentOdds
+              overUnderUnderCurrentOdds
+              status
+              hasAnimation
+              leagueLevel
             }
         }
     }
@@ -73,9 +127,18 @@ export const GET_FOOTBALL_STATS_QUERY = `
           endTime
           analyTime
           errorStatus
-          fullHandicapUpper
-          fullHandicapLower
-          fullHandicapDraw
+          fullHandicapUpper {
+            matchId
+            matchDate
+          }
+          fullHandicapLower {
+            matchId
+            matchDate
+          }
+          fullHandicapDraw {
+            matchId
+            matchDate
+          }
           fullHandicapUpperDaily {
             date
             matches
@@ -88,9 +151,18 @@ export const GET_FOOTBALL_STATS_QUERY = `
             date
             matches
           }
-          fullOverUnderOver
-          fullOverUnderUnder
-          fullOverUnderDraw
+          fullOverUnderOver {
+            matchId
+            matchDate
+          }
+          fullOverUnderUnder {
+            matchId
+            matchDate
+          }
+          fullOverUnderDraw {
+            matchId
+            matchDate
+          }
           fullOverUnderOverDaily {
             date
             matches
@@ -103,9 +175,18 @@ export const GET_FOOTBALL_STATS_QUERY = `
             date
             matches
           }
-          fullTimeHomeWin
-          fullTimeDraw
-          fullTimeAwayWin
+          fullTimeHomeWin {
+            matchId
+            matchDate
+          }
+          fullTimeDraw {
+            matchId
+            matchDate
+          }
+          fullTimeAwayWin {
+            matchId
+            matchDate
+          }
           fullTimeHomeWinDaily {
             date
             matches
