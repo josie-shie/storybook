@@ -5,53 +5,23 @@ import { useAnalyticsResultStore } from '../../analysisResultStore';
 import { useNotificationStore } from '@/store/notificationStore';
 import { GoalsIn15MinsType, getFootballStatsMatches } from 'data-center';
 import FifteenMinutesChart from './components/fifteenMinutesChart/fifteenMinutesChart';
+import MinutesTable from './components/minutesTable/minutesTable';
+import Range from './range';
 
-function TimeRangeTable({
-    label,
-    upper,
-    lower,
-    openMatchListDrawer,
-    currentIndex,
-    maxIndexList
+function MinutesContent({
+    list,
+    maxOverValueIndex
 }: {
-    label: string;
-    upper: number[];
-    lower: number[];
-    openMatchListDrawer: (matchIdsList: number[], selectedType: string, odds: string) => void;
-    currentIndex: number;
-    maxIndexList: number[];
+    list: GoalsIn15MinsType[];
+    maxOverValueIndex: number[];
 }) {
-    return (
-        <div
-            className={`${style.tableContainer} ${
-                maxIndexList.includes(currentIndex) ? style.highlightTable : ''
-            }`}
-        >
-            <div className={style.header}>{label}</div>
-
-            <div className={`${style.cell} ${style.over}`}>
-                <span
-                    onClick={() => {
-                        openMatchListDrawer(upper, label, '大');
-                    }}
-                >
-                    大<span className={style.total}>{upper.length}</span>
-                </span>
-            </div>
-            <div className={`${style.cell} ${style.odd}`}>
-                <span
-                    onClick={() => {
-                        openMatchListDrawer(lower, label, '小');
-                    }}
-                >
-                    小 <span className={style.total}>{lower.length}</span>
-                </span>
-            </div>
-        </div>
-    );
-}
-
-function Minutes() {
+    const setSelectedResult = useAnalyticsResultStore.use.setSelectedResult();
+    const analysisRecord = useAnalyticsResultStore.use.analysisResultData();
+    const setIsNotificationVisible = useNotificationStore.use.setIsVisible();
+    const setShowContestDrawer = useAnalyticsResultStore.use.setShowContestDrawer();
+    const setMatchList = useAnalyticsResultStore.use.setContestList();
+    const setContestList = useMatchFilterStore.use.setContestList();
+    const setContestInfo = useMatchFilterStore.use.setContestInfo();
     const headers = [
         '开场-14:59',
         '15:00-29:59',
@@ -60,17 +30,15 @@ function Minutes() {
         '60:00-74:59',
         '75:00-全场'
     ];
-    const setContestList = useMatchFilterStore.use.setContestList();
-    const setContestInfo = useMatchFilterStore.use.setContestInfo();
-    const contestInfo = useMatchFilterStore.use.contestInfo();
-    const setFilterInit = useMatchFilterStore.use.setFilterInit();
-    const analysisRecord = useAnalyticsResultStore.use.analysisResultData();
-    const setIsNotificationVisible = useNotificationStore.use.setIsVisible();
-    const setShowContestDrawer = useAnalyticsResultStore.use.setShowContestDrawer();
-    const setSelectedResult = useAnalyticsResultStore.use.setSelectedResult();
-    const setMatchList = useAnalyticsResultStore.use.setContestList();
-    const [list, setList] = useState<GoalsIn15MinsType[]>([]);
-    const [maxOverValueIndex, setMaxOverValueIndex] = useState<number[]>([]);
+
+    const openMatchListDrawer = (matchIdsList: number[], selectedType: string, odds: string) => {
+        setSelectedResult({
+            type: selectedType,
+            odds
+        });
+
+        void fetchMatchList(matchIdsList);
+    };
 
     const fetchMatchList = async (matchIdList: number[]) => {
         const res = await getFootballStatsMatches({ matchIds: matchIdList });
@@ -92,14 +60,35 @@ function Minutes() {
         setShowContestDrawer(true);
     };
 
-    const openMatchListDrawer = (matchIdsList: number[], selectedType: string, odds: string) => {
-        setSelectedResult({
-            type: selectedType,
-            odds
-        });
+    return (
+        <>
+            <FifteenMinutesChart
+                headers={headers}
+                minsGoalList={analysisRecord?.goalsIn15Mins || []}
+            />
+            <div className={style.contaniner}>
+                {list.map((item, index) => (
+                    <MinutesTable
+                        key={headers[index]}
+                        label={headers[index]}
+                        lower={item.goalsUnder}
+                        openMatchListDrawer={openMatchListDrawer}
+                        upper={item.goalsOver}
+                        currentIndex={index}
+                        maxIndexList={maxOverValueIndex}
+                    />
+                ))}
+            </div>
+        </>
+    );
+}
 
-        void fetchMatchList(matchIdsList);
-    };
+function Minutes() {
+    const contestInfo = useMatchFilterStore.use.contestInfo();
+    const setFilterInit = useMatchFilterStore.use.setFilterInit();
+    const analysisRecord = useAnalyticsResultStore.use.analysisResultData();
+    const [list, setList] = useState<GoalsIn15MinsType[]>([]);
+    const [maxOverValueIndex, setMaxOverValueIndex] = useState<number[]>([]);
 
     useEffect(() => {
         setFilterInit();
@@ -126,23 +115,8 @@ function Minutes() {
     return (
         <>
             <div className={style.minutes}>
-                <FifteenMinutesChart
-                    headers={headers}
-                    minsGoalList={analysisRecord?.goalsIn15Mins || []}
-                />
-                <div className={style.contaniner}>
-                    {list.map((item, index) => (
-                        <TimeRangeTable
-                            key={headers[index]}
-                            label={headers[index]}
-                            lower={item.goalsUnder}
-                            openMatchListDrawer={openMatchListDrawer}
-                            upper={item.goalsOver}
-                            currentIndex={index}
-                            maxIndexList={maxOverValueIndex}
-                        />
-                    ))}
-                </div>
+                <MinutesContent list={list} maxOverValueIndex={maxOverValueIndex} />
+                <Range />
             </div>
         </>
     );
