@@ -60,7 +60,10 @@ function RecordCard({ recordItem }: { recordItem: MemberGuessViewingRecord }) {
     return (
         <div className={style.recordCard}>
             <div className={style.detail}>
-                <Link href={`/master/masterAvatar/${recordItem.recordMemberId}?status=analysis`}>
+                <Link
+                    className={style.avatar}
+                    href={`/master/masterAvatar/${recordItem.recordMemberId}?status=analysis`}
+                >
                     <Avatar />
                 </Link>
                 <div className={style.details}>
