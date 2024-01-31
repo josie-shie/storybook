@@ -154,6 +154,7 @@ const MatchDateMatchListSchema = z.object({
     matchDate: z.string()
 });
 
+export type MatchDateMatchListType = z.infer<typeof MatchDateMatchListSchema>;
 export type GoalsIn15Mins = z.infer<typeof GoalsIn15MinsSchema>;
 export type GoalsIn15MinsType = GoalsIn15Mins;
 
