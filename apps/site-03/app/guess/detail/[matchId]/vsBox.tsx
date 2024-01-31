@@ -134,7 +134,13 @@ function BettingColumn({ detail, leftLabel, rightLabel }: BettingProps) {
                     </div>
                     <div className={style.progress}>
                         <div className={style.play}>{guessLabel}</div>
-                        <div className={style.line} />
+                        <ProgressBar
+                            background="#9FC2FF"
+                            fill="#9FC2FF"
+                            height={8}
+                            radius
+                            value={50}
+                        />
                     </div>
                     <div
                         className={style.button}

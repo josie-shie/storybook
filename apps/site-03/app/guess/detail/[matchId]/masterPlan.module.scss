@@ -14,11 +14,52 @@
         background: #fff;
     }
 
+    .fade {
+        overflow: hidden;
+
+        .analyze,
+        .title,
+        .masterGuess {
+            opacity: 0.6;
+        }
+    }
+
     .area {
+        position: relative;
         padding: 12px;
         border-radius: 16px 16px 0 0;
         margin-bottom: 8px;
         background: #fff;
+
+        .ruleContainer {
+            position: absolute;
+            right: 12px;
+            top: 12px;
+        }
+
+        .blurCover {
+            font-weight: 500;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            backdrop-filter: blur(6px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
+            color: #4a4a4a;
+
+            > span:first-of-type {
+                font-size: 18px;
+            }
+
+            > span:last-of-type {
+                font-size: 14px;
+            }
+        }
 
         .planLoading {
             display: flex;
@@ -44,33 +85,11 @@
             }
         }
 
-        .midTitle {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 6px;
-            margin-top: 12px;
-
-            > span {
-                font-weight: 400;
-                font-size: 14px;
-                color: #8d8d8d;
-            }
-        }
-
         .analyze {
             display: flex;
             flex-direction: column;
             margin-top: 19px;
             background: #fff;
-        }
-
-        .lockedAnalyze {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            margin: 16px auto;
         }
 
         .masterGuess {
