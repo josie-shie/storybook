@@ -30,6 +30,23 @@ const messageFormat = (predictedPlay: string, item: MemberIndividualGuessMatch) 
     }
 };
 
+const getPredictedPlayName = (predictedPlay: string) => {
+    switch (predictedPlay) {
+        case 'HOME':
+            return '胜负';
+        case 'AWAY':
+            return '胜负';
+        case 'HANDICAP':
+            return '胜负';
+        case 'OVER':
+            return '总进球';
+        case 'UNDER':
+            return '总进球';
+        case 'OVERUNDER':
+            return '总进球';
+    }
+};
+
 function BettingPlan({ rowData }: PropsType) {
     return (
         <div className={style.bettingPlan}>
@@ -41,7 +58,7 @@ function BettingPlan({ rowData }: PropsType) {
                 </span>
             </div>
             <div className={style.mid}>
-                <span className={style.plan}>{rowData.playType}</span>
+                <span className={style.plan}>{getPredictedPlayName(rowData.predictedPlay)}</span>
                 <div className={style.combination}>
                     {rowData.homeTeamName}
                     vs
