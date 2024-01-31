@@ -3,7 +3,6 @@
 import type { ReactNode } from 'react';
 import { useParams, usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Tabs } from '@/components/tabs/tabs';
 import Header from '@/components/header/headerLogo';
 import Footer from '@/components/footer/footer';
 import style from './layout.module.scss';
@@ -26,7 +25,7 @@ function InterceptingArticle({ art }: { art: ReactNode }) {
                         width: '100%',
                         position: 'fixed',
                         top: 0,
-                        zIndex: 1000,
+                        zIndex: 999,
                         height: '100dvh',
                         overflowY: 'auto'
                     }}
@@ -57,7 +56,7 @@ function InterceptingExpert({ personal }: { personal: ReactNode }) {
                         width: '100%',
                         position: 'fixed',
                         top: 0,
-                        zIndex: 1000,
+                        zIndex: 999,
                         height: '100dvh',
                         overflowY: 'auto'
                     }}

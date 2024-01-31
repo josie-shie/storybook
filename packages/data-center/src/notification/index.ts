@@ -12,7 +12,7 @@ const Tag = z.object({
     id: z.number(),
     tagName: z.string(),
     colorCode: z.string()
-})
+});
 
 const GetMailMemberSchema = z.object({
     mailMemberId: z.number(),
