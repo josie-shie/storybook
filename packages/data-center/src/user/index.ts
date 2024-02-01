@@ -633,6 +633,11 @@ const MemberTagsSchema = z.object({
 
 export type MemberTag = z.infer<typeof MemberTagsSchema>;
 
+const MentorArticleCountSchema = z.object({
+    predictedPlay: z.string(),
+    counts: z.number()
+});
+
 const GetUnlockedPostDataSchema = z.object({
     postId: z.number(),
     analysisTitle: z.string(),
@@ -650,7 +655,10 @@ const GetUnlockedPostDataSchema = z.object({
     awayTeamName: z.string(),
     matchTime: z.number(),
     createdAt: z.number(),
-    memberTags: TagSchema
+    memberTags: TagSchema,
+    unlockCounts: z.number(),
+    seenCounts: z.number(),
+    mentorArticleCount: MentorArticleCountSchema
 });
 
 export type GetUnlockedPostData = z.infer<typeof GetUnlockedPostDataSchema>;

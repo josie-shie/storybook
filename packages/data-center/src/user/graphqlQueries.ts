@@ -203,7 +203,13 @@ export const GET_UNLOCKED_QUERY = `
                     winHitRateDisplay
                     winRanking
                     winHistoryMaxWinStreak
-                }  
+                }
+                unlockCounts
+                seenCounts
+                mentorArticleCount {
+                    predictedPlay
+                    counts
+                }
             }
             pagination {
                 pageCount
