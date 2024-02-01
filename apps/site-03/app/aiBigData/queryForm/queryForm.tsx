@@ -167,6 +167,7 @@ function QueryForm() {
     const contestInfo = useMatchFilterStore.use.contestInfo();
     const setContestInfo = useMatchFilterStore.use.setContestInfo();
     const setContestList = useMatchFilterStore.use.setContestList();
+    const contestList = useMatchFilterStore.use.contestList();
     const setFilterInit = useMatchFilterStore.use.setFilterInit();
     const dialogContent = useQueryFormStore.use.dialogContent();
     const setOpenNormalDialog = useQueryFormStore.use.setOpenNormalDialog();
@@ -188,7 +189,9 @@ function QueryForm() {
     }, [setContestInfo, setContestList]);
 
     useEffect(() => {
-        void fetchLeagueData();
+        if (!contestList.length) {
+            void fetchLeagueData();
+        }
     }, [fetchLeagueData]);
 
     useEffect(() => {

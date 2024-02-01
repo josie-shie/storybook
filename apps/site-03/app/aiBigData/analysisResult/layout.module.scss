@@ -1,5 +1,6 @@
 .resultLayout {
-    height: calc(100dvh - 54px);
+    overflow-y: auto;
+    height: 100%;
     background: linear-gradient(91deg, #003c9f 0.72%, #2575fc 98.56%);
 
     .bigDataGame {
@@ -24,6 +25,7 @@
                     font-size: 12px;
                     color: #fff;
                     font-weight: 400;
+                    white-space: nowrap;
                 }
 
                 .name,
@@ -36,6 +38,7 @@
                 .name {
                     display: flex;
                     gap: 6px;
+                    flex-wrap: wrap;
 
                     .tag {
                         color: #fff;

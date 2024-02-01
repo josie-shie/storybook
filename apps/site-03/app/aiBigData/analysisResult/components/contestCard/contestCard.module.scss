@@ -1,0 +1,147 @@
+.contestList {
+    display: flex;
+    flex-direction: column;
+    padding: 12px 0;
+    border-bottom: 1px solid #f3f3f3;
+    -webkit-tap-highlight-color: rgb(255 255 255 / 0%) !important;
+
+    .gameDetail {
+        display: flex;
+        align-items: center;
+
+        .state {
+            width: 56px;
+            text-align: center;
+        }
+
+        .leftInfo {
+            width: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            .leagueShort {
+                color: #f85640;
+                font-size: 12px;
+                font-weight: 600;
+            }
+
+            .timeDetail {
+                display: flex;
+
+                .time {
+                    width: 72px;
+                }
+            }
+        }
+
+        .rightInfo {
+            width: 150px;
+
+            .corner {
+                display: flex;
+                align-items: center;
+                gap: 2px;
+            }
+        }
+
+        .time,
+        .halfScore,
+        .state,
+        .corner {
+            white-space: nowrap;
+            font-size: 12px;
+            font-weight: 500;
+            color: #8d8d8d;
+        }
+    }
+
+    .teamDetail {
+        display: flex;
+        justify-content: center;
+
+        .contest {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+
+            .number {
+                color: #8d8d8d;
+                font-size: 14px;
+            }
+
+            .status {
+                width: 56px;
+                text-align: center;
+                font-size: 14px;
+                font-style: normal;
+                font-weight: 700;
+
+                &.ing {
+                    color: #8d8d8d;
+                }
+            }
+        }
+
+        .team {
+            display: flex;
+            gap: 2px;
+            align-items: center;
+            width: 150px;
+
+            .card {
+                color: #fff;
+                border-radius: 2px;
+                width: 10px;
+                height: 14px;
+                padding: 0px 2px;
+                text-shadow: 0px 0px 1px rgba(0, 0, 0, 0.25);
+                font-family: Staatliches;
+                font-size: 11px;
+                font-weight: 400;
+                text-align: center;
+            }
+
+            .yellowCard {
+                background: #f2d122;
+            }
+
+            .redCard {
+                background: linear-gradient(0deg, #df5960 0%, #df5960 100%),
+                    linear-gradient(0deg, #fff 0%, #fff 100%), #ba2830;
+            }
+
+            .name {
+                color: #222;
+                font-size: 14px;
+                font-weight: 500;
+            }
+
+            &.home {
+                justify-content: right;
+
+                .name {
+                    text-align: right;
+                    padding-left: 2px;
+                }
+
+                .odds {
+                    justify-content: flex-end;
+                }
+            }
+
+            &.away {
+                justify-content: left;
+
+                .odds {
+                    justify-content: flex-start;
+                }
+
+                .name {
+                    padding-right: 2px;
+                }
+            }
+        }
+    }
+}

@@ -2,7 +2,6 @@
 import { useEffect, type ReactNode } from 'react';
 import { useParams } from 'next/navigation';
 import { AnimatePresence, motion } from 'framer-motion';
-import Footer from '@/components/footer/footer';
 import { creatQueryFormStore } from './queryFormStore';
 import { creatMatchFilterStore } from './matchFilterStore';
 
@@ -57,7 +56,6 @@ function BigDataLayout({
     return (
         <>
             <>{children}</>
-            <Footer />
             <InterceptingDetail modal={contestModal} />
         </>
     );

@@ -1,13 +1,13 @@
-import { getFootballStatsMatches } from 'data-center';
+import { MatchDateMatchListType, getFootballStatsMatches } from 'data-center';
 import style from './handicapTable.module.scss';
 import { useNotificationStore } from '@/store/notificationStore';
 import { useAnalyticsResultStore } from '@/app/aiBigData/analysisResult/analysisResultStore';
 import { useMatchFilterStore } from '@/app/aiBigData/analysisResult/matchFilterStore';
 
 interface TableDataType {
-    topValue?: number[];
-    middleValue?: number[];
-    bottomValue: number[];
+    topValue?: MatchDateMatchListType[];
+    middleValue?: MatchDateMatchListType[];
+    bottomValue: MatchDateMatchListType[];
     topLabel?: string;
     middleLabel?: string;
     bottomLabel: string;
@@ -41,72 +41,81 @@ function HandicapTable({ tableData }: { tableData: TableDataType[] }) {
         setShowContestDrawer(true);
     };
 
-    const openMatchListDrawer = (matchIdsList: number[], selectedType: string, odds: string) => {
+    const openMatchListDrawer = (
+        matchList: MatchDateMatchListType[],
+        selectedType: string,
+        odds: string
+    ) => {
         setSelectedResult({
             type: selectedType,
             odds
         });
 
-        void fetchMatchList(matchIdsList);
+        const matchIdList = matchList.map(match => match.matchId);
+        void fetchMatchList(matchIdList);
     };
 
     return (
         <div className={style.handicapTable}>
             <table className={style.table}>
-                {tableData.map((cell, index) => (
-                    <tr key={`handicapTable_${index.toString()}`}>
-                        {cell.topValue ? (
-                            <td rowSpan={index === 1 ? 2 : 1}>
+                <tbody>
+                    {tableData.map((cell, index) => (
+                        <tr key={`handicapTable_${index.toString()}`}>
+                            {cell.topValue ? (
+                                <td rowSpan={index === 1 ? 2 : 1}>
+                                    <div
+                                        onClick={() => {
+                                            openMatchListDrawer(
+                                                cell.topValue || [],
+                                                '全场让分',
+                                                cell.topLabel || ''
+                                            );
+                                        }}
+                                    >
+                                        <span className={style.label}>{cell.topLabel}</span>
+                                        <span className={style.matchLength}>
+                                            {cell.topValue.length}
+                                        </span>
+                                    </div>
+                                </td>
+                            ) : null}
+                            {cell.middleValue ? (
+                                <td rowSpan={index === 1 ? 2 : 1}>
+                                    <div
+                                        onClick={() => {
+                                            openMatchListDrawer(
+                                                cell.middleValue || [],
+                                                '全场大小',
+                                                cell.middleLabel || ''
+                                            );
+                                        }}
+                                    >
+                                        <span className={style.label}>{cell.middleLabel}</span>
+                                        <span className={style.matchLength}>
+                                            {cell.middleValue.length}
+                                        </span>
+                                    </div>
+                                </td>
+                            ) : null}
+                            <td>
                                 <div
                                     onClick={() => {
                                         openMatchListDrawer(
-                                            cell.topValue || [],
-                                            '全场让分',
-                                            cell.topLabel || ''
+                                            cell.bottomValue,
+                                            '全场独赢',
+                                            cell.bottomLabel
                                         );
                                     }}
                                 >
-                                    <span className={style.label}>{cell.topLabel}</span>
+                                    <span className={style.label}>{cell.bottomLabel}</span>
                                     <span className={style.matchLength}>
-                                        {cell.topValue.length}
+                                        {cell.bottomValue.length}
                                     </span>
                                 </div>
                             </td>
-                        ) : null}
-                        {cell.middleValue ? (
-                            <td rowSpan={index === 1 ? 2 : 1}>
-                                <div
-                                    onClick={() => {
-                                        openMatchListDrawer(
-                                            cell.middleValue || [],
-                                            '全场大小',
-                                            cell.middleLabel || ''
-                                        );
-                                    }}
-                                >
-                                    <span className={style.label}>{cell.middleLabel}</span>
-                                    <span className={style.matchLength}>
-                                        {cell.middleValue.length}
-                                    </span>
-                                </div>
-                            </td>
-                        ) : null}
-                        <td>
-                            <div
-                                onClick={() => {
-                                    openMatchListDrawer(
-                                        cell.bottomValue,
-                                        '全场独赢',
-                                        cell.bottomLabel
-                                    );
-                                }}
-                            >
-                                <span className={style.label}>{cell.bottomLabel}</span>
-                                <span className={style.matchLength}>{cell.bottomValue.length}</span>
-                            </div>
-                        </td>
-                    </tr>
-                ))}
+                        </tr>
+                    ))}
+                </tbody>
             </table>
         </div>
     );

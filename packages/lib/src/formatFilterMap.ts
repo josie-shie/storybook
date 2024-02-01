@@ -3,7 +3,7 @@ import { pinyin } from 'pinyin-pro';
 export interface ContestInfoType {
     leagueChsShort: string;
     countryCn: string;
-    rating: number;
+    rating?: number;
 }
 
 export interface FilterMap {
@@ -30,7 +30,7 @@ export const formatFilterMap = (currentInfo: FilterInfo, filterKey: keyof Contes
 
     for (const key in currentInfo) {
         const value = currentInfo[key];
-        const filterValue = value[filterKey].toString();
+        const filterValue = value[filterKey]?.toString();
 
         if (!filterValue) continue;
 
@@ -44,10 +44,15 @@ export const formatFilterMap = (currentInfo: FilterInfo, filterKey: keyof Contes
             countMap[filterValue] = 1;
         }
 
-        if (doubleTable[value[filterKey]]) {
-            continue;
-        } else {
-            doubleTable[value[filterKey]] = true;
+        if (filterKey in value) {
+            const newKey = value[filterKey];
+            if (typeof newKey === 'string' || typeof newKey === 'number') {
+                if (doubleTable[newKey]) {
+                    continue;
+                } else {
+                    doubleTable[newKey] = true;
+                }
+            }
         }
 
         const newObj = filterValue;
@@ -58,7 +63,7 @@ export const formatFilterMap = (currentInfo: FilterInfo, filterKey: keyof Contes
             infoObj[words] = [newObj];
         }
 
-        if (value.rating <= 2) {
+        if (value.rating !== undefined && value.rating <= 2) {
             if (Object.hasOwnProperty.call(extraMap, 'hot')) {
                 extraMap.hot.push(newObj);
             } else {

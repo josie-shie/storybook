@@ -1,23 +1,8 @@
+import { GetFootballStatsMatch } from 'data-center';
 import { initStore, formatFilterMap } from 'lib';
 import type { StoreWithSelectors, FilterMap } from 'lib';
 
-type ContestInfoType = Record<number, Contest>;
-
-interface Contest {
-    startTime: number;
-    matchId: number;
-    countryCn: string;
-    leagueId: number;
-    leagueChsShort: string;
-    homeChs: string;
-    awayChs: string;
-    homeScore: number;
-    awayScore: number;
-    homeHalfScore: number;
-    awayHalfScore: number;
-    isFamous: boolean;
-    leagueLevel: number;
-}
+type ContestInfoType = Record<number, GetFootballStatsMatch>;
 
 type GroupType = 'league' | 'country';
 interface InitState {
@@ -38,8 +23,8 @@ interface ContestList extends InitState {
     filterCounter: { league: number; country: number };
     filterSelected: { league: Record<string, boolean>; country: Record<string, boolean> };
     filterList: { group: GroupType; selectedTable: Record<string, boolean> };
-    setContestList: ({ contestList }: { contestList: Contest[] }) => void;
-    setContestInfo: ({ contestList }: { contestList: Contest[] }) => void;
+    setContestList: ({ contestList }: { contestList: GetFootballStatsMatch[] }) => void;
+    setContestInfo: ({ contestList }: { contestList: GetFootballStatsMatch[] }) => void;
     setFilterInit: () => void;
     setFilterSelected: (name: string, group: GroupType) => void;
     setFilterList: (group: GroupType) => void;
@@ -117,10 +102,10 @@ const initialState = (set: (updater: (state: ContestList) => Partial<ContestList
         group: 'league' as GroupType,
         selectedTable: {}
     },
-    setContestList: ({ contestList }: { contestList: Contest[] }) => {
+    setContestList: ({ contestList }: { contestList: GetFootballStatsMatch[] }) => {
         set(state => {
             const newContestList: number[] = [];
-            contestList.forEach((match: Contest) => {
+            contestList.forEach((match: GetFootballStatsMatch) => {
                 newContestList.push(match.matchId);
             });
             return {
@@ -129,10 +114,10 @@ const initialState = (set: (updater: (state: ContestList) => Partial<ContestList
             };
         });
     },
-    setContestInfo: ({ contestList }: { contestList: Contest[] }) => {
+    setContestInfo: ({ contestList }: { contestList: GetFootballStatsMatch[] }) => {
         set(state => {
             const newContestInfo: ContestInfoType = {};
-            contestList.forEach((match: Contest) => {
+            contestList.forEach((match: GetFootballStatsMatch) => {
                 newContestInfo[match.matchId] = {
                     ...match
                 };

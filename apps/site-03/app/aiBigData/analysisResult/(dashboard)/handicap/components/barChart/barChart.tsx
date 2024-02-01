@@ -36,15 +36,26 @@ const calculateHeight = (data: Record<string, Statistics>) => {
     const totalHeight = upperHeight + drawHeight + lowerHeight;
     const error = 100 - totalHeight;
 
-    // 分配剩余的百分比，可以优先分配给最小值，或者平均分配
+    // 分配剩余的百分比，优先分配给大于 0 的最小值
     if (error > 0) {
-        const minIndex = [upperHeight, drawHeight, lowerHeight].indexOf(
-            Math.min(upperHeight, drawHeight, lowerHeight)
+        const checkHeights = [upperHeight, drawHeight, lowerHeight];
+        const minIndex = checkHeights.reduce(
+            (minIdx, current, idx, arr) => {
+                return current > 0 && current < arr[minIdx] ? idx : minIdx;
+            },
+            checkHeights.findIndex(h => h > 0)
         );
+
+        // 根据找到的索引分配 error
         if (minIndex === 0) upperHeight += error;
         else if (minIndex === 1) drawHeight += error;
         else if (minIndex === 2) lowerHeight += error;
     }
+
+    // 确保没有一个值是负数
+    upperHeight = Math.max(0, upperHeight);
+    drawHeight = Math.max(0, drawHeight);
+    lowerHeight = Math.max(0, lowerHeight);
 
     return { upperHeight, drawHeight, lowerHeight };
 };
@@ -77,7 +88,8 @@ function BarChart({ chartData }: { chartData: StatisticsCategories }) {
                         <div
                             className={`${style.block} ${style.top}`}
                             style={{
-                                height: `${handicap.upper}%`
+                                height: `${handicap.upper}%`,
+                                display: !handicap.upper ? 'none' : 'inherit'
                             }}
                         >
                             {handicap.upper}%
@@ -85,7 +97,8 @@ function BarChart({ chartData }: { chartData: StatisticsCategories }) {
                         <div
                             className={`${style.block} ${style.bottom}`}
                             style={{
-                                height: `${handicap.lower}%`
+                                height: `${handicap.lower}%`,
+                                display: !handicap.lower ? 'none' : 'flex'
                             }}
                         >
                             {handicap.lower}%
@@ -98,7 +111,8 @@ function BarChart({ chartData }: { chartData: StatisticsCategories }) {
                         <div
                             className={`${style.block} ${style.top}`}
                             style={{
-                                height: `${overUnder.over}%`
+                                height: `${overUnder.over}%`,
+                                display: !overUnder.over ? 'none' : 'inherit'
                             }}
                         >
                             {overUnder.over}%
@@ -106,7 +120,8 @@ function BarChart({ chartData }: { chartData: StatisticsCategories }) {
                         <div
                             className={`${style.block} ${style.bottom}`}
                             style={{
-                                height: `${overUnder.under}%`
+                                height: `${overUnder.under}%`,
+                                display: !overUnder.under ? 'none' : 'flex'
                             }}
                         >
                             {overUnder.under}%
@@ -119,7 +134,8 @@ function BarChart({ chartData }: { chartData: StatisticsCategories }) {
                         <div
                             className={`${style.block} ${style.top}`}
                             style={{
-                                height: `${moneyLine.home}%`
+                                height: `${moneyLine.home}%`,
+                                display: !moneyLine.home ? 'none' : 'inherit'
                             }}
                         >
                             {moneyLine.home}%
@@ -127,7 +143,8 @@ function BarChart({ chartData }: { chartData: StatisticsCategories }) {
                         <div
                             className={`${style.block} ${style.middle}`}
                             style={{
-                                height: `${moneyLine.away}%`
+                                height: `${moneyLine.away}%`,
+                                display: !moneyLine.away ? 'none' : 'flex'
                             }}
                         >
                             {moneyLine.away}%
@@ -135,7 +152,8 @@ function BarChart({ chartData }: { chartData: StatisticsCategories }) {
                         <div
                             className={`${style.block} ${style.bottom}`}
                             style={{
-                                height: `${moneyLine.draw}%`
+                                height: `${moneyLine.draw}%`,
+                                display: !moneyLine.draw ? 'none' : 'flex'
                             }}
                         >
                             {moneyLine.draw}%

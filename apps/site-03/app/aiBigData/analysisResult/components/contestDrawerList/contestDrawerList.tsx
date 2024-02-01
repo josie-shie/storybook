@@ -1,16 +1,14 @@
-import { timestampToString } from 'lib';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
 import type { GetFootballStatsMatch } from 'data-center';
 import BottomDrawer from '@/components/drawer/bottomDrawer';
 import NoData from '@/components/baseNoData/noData';
-import { useInterceptPassStore } from '@/store/interceptPassStore';
 import MatchFilterDrawer from '../matchFilterDrawer/matchFilterDrawer';
 import { useMatchFilterStore } from '../../matchFilterStore';
 import { useAnalyticsResultStore } from '../../analysisResultStore';
 import style from './contestDrawerList.module.scss';
 import iconFilter from './img/filterIcon.png';
+import ContestCard from '../contestCard/contestCard';
 
 function ContestDrawerList({
     isOpen,
@@ -37,7 +35,6 @@ function ContestDrawerList({
     const [isFilterOpen, setIsFilterOpen] = useState(true);
     const contestList = useMatchFilterStore.use.contestList();
     const defaultPageIndex = useAnalyticsResultStore.use.defaultPageIndex();
-    const setInterceptData = useInterceptPassStore.use.setInterceptData();
 
     const closeFilter = () => {
         setIsFilterOpen(false);
@@ -81,9 +78,15 @@ function ContestDrawerList({
             >
                 <div className={style.contestDrawerList}>
                     <div className={style.header}>
-                        <h2>{`${pathMatch[defaultPageIndex] || ''}/${selectedResult.type}${
-                            selectedResult.odds ? '/' : ''
-                        }${selectedResult.odds}`}</h2>
+                        <h2>
+                            <span>{pathMatch[defaultPageIndex] || ''} </span>
+                            <span className={style.detail}>
+                                {selectedResult.type} {selectedResult.odds},{' '}
+                            </span>
+                            <span>
+                                总共<span className={style.contestNum}>{contestList.length}</span>场
+                            </span>
+                        </h2>
                         <div
                             className={style.filter}
                             onClick={() => {
@@ -98,43 +101,7 @@ function ContestDrawerList({
                     <div className={style.cardList}>
                         {displayList.length ? (
                             displayList.map(match => (
-                                <Link
-                                    href={`/football/${match.matchId}/analyze`}
-                                    key={match.matchId}
-                                    onClick={() => {
-                                        setInterceptData({ ...match, ...{ state: -1 } });
-                                    }}
-                                >
-                                    <div className={style.contesntList}>
-                                        <div className={style.title}>
-                                            <span className={style.sport}>
-                                                {match.leagueChsShort}
-                                            </span>
-                                            <span className={style.time}>
-                                                {timestampToString(
-                                                    match.startTime,
-                                                    'YYYY-MM-DD HH:mm'
-                                                )}
-                                            </span>
-                                        </div>
-                                        <div className={style.game}>
-                                            <div className={`${style.team} ${style.home}`}>
-                                                <div className={style.name}>{match.homeChs}</div>
-                                            </div>
-                                            <div className={style.contest}>
-                                                <span className={`${style.status} ${style.ing}`}>
-                                                    {match.homeScore}-{match.awayScore}
-                                                </span>
-                                                <span className={style.number}>
-                                                    ({match.homeHalfScore}-{match.awayHalfScore})
-                                                </span>
-                                            </div>
-                                            <div className={`${style.team} ${style.away}`}>
-                                                <div className={style.name}>{match.awayChs}</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </Link>
+                                <ContestCard key={match.matchId} match={match} />
                             ))
                         ) : (
                             <NoData text="暂无资料" />
