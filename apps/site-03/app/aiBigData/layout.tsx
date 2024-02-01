@@ -12,7 +12,6 @@ function InterceptingDetail({ modal }: { modal: ReactNode }) {
             {params.matchId ? (
                 <motion.div
                     animate={{ transform: 'translateX(0)' }}
-                    exit={{ transform: 'translateX(100%)' }}
                     initial={{ transform: 'translateX(100%)' }}
                     key="modalDetail"
                     style={{
@@ -20,7 +19,7 @@ function InterceptingDetail({ modal }: { modal: ReactNode }) {
                         width: '100%',
                         position: 'fixed',
                         top: 0,
-                        zIndex: 1000,
+                        zIndex: 10000,
                         height: '100dvh',
                         overflowY: 'auto'
                     }}
