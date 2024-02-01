@@ -65,9 +65,7 @@ function IsVipProfile() {
 }
 
 function Profile() {
-    const loading = useUserStore.use.userInfoIsLoading();
-
-    return <>{loading ? null : <IsVipProfile />}</>;
+    return <IsVipProfile />;
 }
 
 export default Profile;
