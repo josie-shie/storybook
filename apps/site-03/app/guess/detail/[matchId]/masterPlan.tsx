@@ -11,10 +11,8 @@ import Rule from './components/rule/rule';
 import GameCard from './gameCard';
 import AnalyzeRow from './components/analyzeRow/analyze';
 import TitleIcon from './img/title.svg';
-import GeryTitleIcon from './img/greyTitle.svg';
 import style from './masterPlan.module.scss';
 import { useGuessDetailStore } from './guessDetailStore';
-import DistributeSkeleton from './components/distributeSkeleton/distributeSkeleton';
 
 function Trend() {
     const highWinRateTrend = useGuessDetailStore.use.highWinRateTrend();
@@ -22,39 +20,28 @@ function Trend() {
 
     if (!highWinRateTrend.enoughProData) return null;
     return (
-        <div className={style.area}>
-            {showdistributed ? (
-                <>
-                    <div className={style.title}>
-                        <div className={style.name}>
-                            <TitleIcon />
-                            <span>近20场高胜率玩家风向</span>
-                        </div>
-                        <Rule />
-                    </div>
-                    <div className={style.analyze}>
-                        <AnalyzeRow awayType="客" homeType="主" />
-                        <AnalyzeRow awayType="小" homeType="大" />
-                    </div>
-                    <div className={style.masterGuess}>
-                        {highWinRateTrend.proMemberNum}位高手猜過
-                    </div>
-                </>
-            ) : (
-                <>
-                    <div className={style.midTitle}>
-                        <GeryTitleIcon />
-                        <span className={style.locked}>猜球后即可解锁近20场高胜率玩家风向</span>
-                    </div>
-                    <div className={style.lockedAnalyze}>
-                        <DistributeSkeleton />
-                        <DistributeSkeleton />
-                    </div>
-                    <div className={style.masterGuess}>
-                        {highWinRateTrend.proMemberNum}位高手猜過
-                    </div>
-                </>
+        <div className={`${style.area} ${!showdistributed ? style.fade : ''}`}>
+            <div className={style.title}>
+                <div className={style.name}>
+                    <TitleIcon />
+                    <span>高胜率玩家风向</span>
+                </div>
+            </div>
+            <div className={style.analyze}>
+                <AnalyzeRow awayType="客" homeType="主" />
+                <AnalyzeRow awayType="小" homeType="大" />
+            </div>
+            <div className={style.masterGuess}>{highWinRateTrend.proMemberNum}位高手猜過</div>
+            {showdistributed ? null : (
+                <div className={style.blurCover}>
+                    <TitleIcon />
+                    <span>猜球后即可解锁</span>
+                    <span>高胜率玩家风向</span>
+                </div>
             )}
+            <div className={style.ruleContainer}>
+                <Rule />
+            </div>
         </div>
     );
 }
