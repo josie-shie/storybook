@@ -80,7 +80,7 @@ function ContestList({
     closeLoading: () => void;
 }) {
     const [secondRender, setSecondRender] = useState(false);
-    const [rows, setRows] = useState({ full: 20, notYet: 0, finish: 0 });
+    const [rows, setRows] = useState({ full: 10, notYet: 0, finish: 0 });
     const contestList = useContestListStore.use.contestList();
     const contestInfo = useContestListStore.use.contestInfo();
     const globalStore = useLiveContestStore.use.contestInfo();
