@@ -5,6 +5,7 @@ import BodanTable from './img/bodanTable.png';
 import bodanDescription1 from './img/bodanDescription1.png';
 import BodanDescription2 from './img/bodanDescription2.png';
 import HighLightHand from './img/highlightHand.svg';
+import { motion } from 'framer-motion';
 
 function Bodan({ isShowed }: { isShowed: Record<number, number> }) {
     return (
@@ -38,11 +39,17 @@ function Bodan({ isShowed }: { isShowed: Record<number, number> }) {
                         width={130}
                         src={BodanTable.src}
                         style={{ objectFit: 'contain' }}
-                        className={`${style.highlightImage} ${
-                            isShowed[2] <= 0 && style.bodanAnimation
-                        }`}
+                        className={`${isShowed[2] <= 1 && style.animation}`}
                     />
-                    <HighLightHand style={{ position: 'absolute', left: '85px', top: '168px' }} />
+                    <motion.div
+                        initial={isShowed[2] <= 1 ? { opacity: 0 } : false}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 1, duration: 1 }}
+                    >
+                        <HighLightHand
+                            style={{ position: 'absolute', left: '85px', top: '168px' }}
+                        />
+                    </motion.div>
                 </div>
                 <div
                     style={{
@@ -52,13 +59,19 @@ function Bodan({ isShowed }: { isShowed: Record<number, number> }) {
                         marginRight: '32px'
                     }}
                 >
-                    <Image
-                        alt=""
-                        height={56}
-                        width={122}
-                        src={BodanDescription2.src}
-                        style={{ objectFit: 'contain' }}
-                    />
+                    <motion.div
+                        initial={isShowed[2] <= 1 ? { opacity: 0 } : false}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 1, duration: 1 }}
+                    >
+                        <Image
+                            alt=""
+                            height={56}
+                            width={122}
+                            src={BodanDescription2.src}
+                            style={{ objectFit: 'contain' }}
+                        />
+                    </motion.div>
                 </div>
             </div>
         </div>
