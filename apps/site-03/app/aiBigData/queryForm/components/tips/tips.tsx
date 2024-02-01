@@ -1,7 +1,18 @@
 import style from './tips.module.scss';
 import MagnifyingGlass from './img/magnifyingGlass.svg';
 
-function Tips() {
+function Tips({
+    setShowedTutorial,
+    setPlayTutorial
+}: {
+    setShowedTutorial: (showedTutorial: boolean) => void;
+    setPlayTutorial: (playTutorial: boolean) => void;
+}) {
+    const showTutorial = () => {
+        setPlayTutorial(true);
+        setShowedTutorial(true);
+    };
+
     return (
         <div className={style.tips}>
             <div className={style.tipsShort}>
@@ -13,7 +24,9 @@ function Tips() {
                     选择让分或大小盘，获取指定时间内所有賽事智能盘口分析包括：让球大小、进球数区间、15分钟进球、波胆
                 </p>
             </div>
-            <div className={style.bottom}>教学</div>
+            <div className={style.bottom} onClick={showTutorial}>
+                教学
+            </div>
         </div>
     );
 }

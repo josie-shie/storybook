@@ -15,6 +15,7 @@ import LeagueDrawer from './components/leagueDrawer/leagueDrawer';
 import Form from './components/form/form';
 import CoinIcon from './img/coin.svg';
 import dayjs from 'dayjs';
+import Tutorial from '../components/tutorial/tutorial';
 
 function CheckLeague({ leagueIdList }: { leagueIdList: number[] }) {
     const router = useRouter();
@@ -150,9 +151,12 @@ function SubmitButton({ setZeroMatchList }: { setZeroMatchList: (list: number[])
 }
 
 function FormContent({ setZeroMatchList }: { setZeroMatchList: (list: number[]) => void }) {
+    const setShowedTutorial = useQueryFormStore.use.setShowedTutorial();
+    const setPlayTutorial = useQueryFormStore.use.setPlayTutoral();
+
     return (
         <div className={style.formContent}>
-            <Tips />
+            <Tips setShowedTutorial={setShowedTutorial} setPlayTutorial={setPlayTutorial} />
             <div className={style.formSelect}>
                 <LeagueDrawer />
                 <Form />
@@ -175,6 +179,9 @@ function QueryForm() {
     const setDialogContent = useQueryFormStore.use.setDialogContent();
     const dialogContentType = useQueryFormStore.use.dialogContentType();
     const resetQuery = useQueryFormStore.use.resetQuery();
+    const setDefaultPageIndex = useQueryFormStore.use.setDefaultPageIndex();
+    const playTutorial = useQueryFormStore.use.playTutorial();
+    const setPlayTutorial = useQueryFormStore.use.setPlayTutoral();
 
     const fetchLeagueData = useCallback(async () => {
         const query: GetFootballLeagueRequest = {
@@ -215,8 +222,17 @@ function QueryForm() {
     }, [dialogContentType, setDialogContent, zeroMatchList]);
 
     return (
-        <div className={style.queryForm}>
+        <div className={`${style.queryForm} ${playTutorial ? style.playTutorial : ''}`}>
             <FormContent setZeroMatchList={setZeroMatchList} />
+            {playTutorial ? (
+                <div className={style.tutorialBlock}>
+                    <Tutorial
+                        setDefaultPageIndex={setDefaultPageIndex}
+                        playTutorial={playTutorial}
+                        setPlayTutorial={setPlayTutorial}
+                    />
+                </div>
+            ) : null}
             <Dialog
                 content={<div className={style.dialogContent}>{dialogContent}</div>}
                 customStyle={{

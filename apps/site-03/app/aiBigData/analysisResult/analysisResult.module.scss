@@ -20,7 +20,7 @@
         :global(.ui-tab-header) {
             :global(.ui-tabs-header) {
                 padding: 8px 12px 0;
-                justify-content: center;
+                justify-content: center !important;
 
                 :global(.ui-button) {
                     display: flex;

@@ -1,11 +1,7 @@
 import QueryForm from './queryForm';
 
 function Page() {
-    return (
-        <div className="bigData">
-            <QueryForm />
-        </div>
-    );
+    return <QueryForm />;
 }
 
 export default Page;
