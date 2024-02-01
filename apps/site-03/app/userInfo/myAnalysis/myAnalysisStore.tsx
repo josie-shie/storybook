@@ -1,21 +1,32 @@
 import { initStore } from 'lib';
 import type { StoreWithSelectors } from 'lib';
-import type { GetUnlockedPostResponse } from 'data-center';
+import { type Pagination, type GetUnlockedPostData } from 'data-center';
+
+export interface UnLockPostInterface {
+    pagination: Pagination;
+    articleList: GetUnlockedPostData[];
+}
 
 interface InitState {
-    articleList: GetUnlockedPostResponse;
+    unLockPostList: UnLockPostInterface;
 }
 
 interface ArticleState extends InitState {
-    setArticleList: (articleList: GetUnlockedPostResponse) => void;
+    setUnLockPostList: (unLockPostList: UnLockPostInterface) => void;
 }
 
 let useArticleStore: StoreWithSelectors<ArticleState>;
 
 const initialState = (set: (data: Partial<ArticleState>) => void) => ({
-    articleList: [],
-    setArticleList: (articleList: GetUnlockedPostResponse) => {
-        set({ articleList });
+    unLockPostList: {
+        articleList: [],
+        pagination: {
+            pageCount: 0,
+            totalCount: 0
+        }
+    },
+    setUnLockPostList: (unLockPostList: UnLockPostInterface) => {
+        set({ unLockPostList });
     }
 });
 

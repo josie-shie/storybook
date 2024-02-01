@@ -54,48 +54,7 @@ function ArticleDetail({ params }: { params: { articleId: string } }) {
         price: 0,
         predictionResult: 'NONE' as GuessType,
         matchTime: 0,
-        createdAt: 0,
-        fansNumber: 0,
-        unlockNumber: 0,
-        followed: true,
-        tag: {
-            id: 0,
-            tagName: '',
-            note: '',
-            colorCode: '',
-            weekHitRecentTen: 0,
-            weekMaxAccurateStreak: 0,
-            weekHitMatches: 0,
-            weekTotalMatches: 0,
-            weekHitRate: 0,
-            weekHitRateDisplay: '',
-            weekRanking: 0,
-            weekHistoryMaxWinStreak: 0,
-            monthHitRecentTen: 0,
-            monthMaxAccurateStreak: 0,
-            monthHitMatches: 0,
-            monthTotalMatches: 0,
-            monthHitRate: 0,
-            monthHitRateDisplay: '',
-            monthRanking: 0,
-            monthHistoryMaxWinStreak: 0,
-            quarterHitRecentTen: 0,
-            quarterMaxAccurateStreak: 0,
-            quarterHitMatches: 0,
-            quarterTotalMatches: 0,
-            quarterHitRate: 0,
-            quarterHitRateDisplay: '',
-            quarterRanking: 0,
-            quarterHistoryMaxWinStreak: 0,
-            winHitRecentTen: 0,
-            winMaxAccurateStreak: 0,
-            winHitMatches: 0,
-            winTotalMatches: 0,
-            winHitRate: 0,
-            winHitRateDisplay: '',
-            winRanking: 0,
-            winHistoryMaxWinStreak: 0
-        }
+        createdAt: 0
     } as GetPostDetailResponse);
 
     const [info, setInfo] = useState({
@@ -183,12 +142,7 @@ function ArticleDetail({ params }: { params: { articleId: string } }) {
 
     return (
         <>
-            <Info
-                article={article}
-                info={info}
-                isNoInfoData={isNoInfoData}
-                setArticle={setArticle}
-            />
+            <Info article={article} info={info} isNoInfoData={isNoInfoData} setInfo={setInfo} />
             <ArticleContent
                 article={article}
                 info={info}

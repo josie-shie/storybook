@@ -139,24 +139,24 @@ export const GET_POST_DETAIL_QUERY = `
             state
             leagueName
             homeTeam {
-              id
-              name
-              score
-              logo
+                id
+                name
+                score
+                logo
             }
             awayTeam {
-              id
-              name
-              score
-              logo
+                id
+                name
+                score
+                logo
             }
             odds {
-              handicap
-              homeTeamOdds
-              awayTeamOdds
-              overUnder
-              overOdds
-              underOdds
+                handicap
+                homeTeamOdds
+                awayTeamOdds
+                overUnder
+                overOdds
+                underOdds
             }
             mentorId
             mentorName
@@ -171,47 +171,6 @@ export const GET_POST_DETAIL_QUERY = `
             predictionResult
             matchTime
             createdAt
-            fansNumber
-            unlockNumber
-            followed
-            tag {
-              id
-              tagName
-              note
-              colorCode
-              weekHitRecentTen
-              weekMaxAccurateStreak
-              weekHitMatches
-              weekTotalMatches
-              weekHitRate
-              weekHitRateDisplay
-              weekRanking
-              weekHistoryMaxWinStreak
-              monthHitRecentTen
-              monthMaxAccurateStreak
-              monthHitMatches
-              monthTotalMatches
-              monthHitRate
-              monthHitRateDisplay
-              monthRanking
-              monthHistoryMaxWinStreak
-              quarterHitRecentTen
-              quarterMaxAccurateStreak
-              quarterHitMatches
-              quarterTotalMatches
-              quarterHitRate
-              quarterHitRateDisplay
-              quarterRanking
-              quarterHistoryMaxWinStreak
-              winHitRecentTen
-              winMaxAccurateStreak
-              winHitMatches
-              winTotalMatches
-              winHitRate
-              winHitRateDisplay
-              winRanking
-              winHistoryMaxWinStreak
-            }
         }
     }
 `;
@@ -315,51 +274,53 @@ export const GET_POST_LIST_QUERY = `
                 seenCounts
                 articleCount
                 tag {
-                    id
-                    tagName
-                    note
-                    colorCode
-                    weekHitRecentTen
-                    weekMaxAccurateStreak
-                    weekHitMatches
-                    weekTotalMatches
-                    weekHitRate
-                    weekHitRateDisplay
-                    weekRanking
-                    weekHistoryMaxWinStreak
-                    monthHitRecentTen
-                    monthMaxAccurateStreak
-                    monthHitMatches
-                    monthTotalMatches
-                    monthHitRate
-                    monthHitRateDisplay
-                    monthRanking
-                    monthHistoryMaxWinStreak
-                    quarterHitRecentTen
-                    quarterMaxAccurateStreak
-                    quarterHitMatches
-                    quarterTotalMatches
-                    quarterHitRate
-                    quarterHitRateDisplay
-                    quarterRanking
-                    quarterHistoryMaxWinStreak
-                    winHitRecentTen
-                    winMaxAccurateStreak
-                    winHitMatches
-                    winTotalMatches
-                    winHitRate
-                    winHitRateDisplay
-                    winRanking
-                    winHistoryMaxWinStreak
+                  id
+                  tagName
+                  note
+                  colorCode
+                  weekHitRecentTen
+                  weekMaxAccurateStreak
+                  weekHitMatches
+                  weekTotalMatches
+                  weekHitRate
+                  weekHitRateDisplay
+                  weekRanking
+                  weekHistoryMaxWinStreak
+                  monthHitRecentTen
+                  monthMaxAccurateStreak
+                  monthHitMatches
+                  monthTotalMatches
+                  monthHitRate
+                  monthHitRateDisplay
+                  monthRanking
+                  monthHistoryMaxWinStreak
+                  quarterHitRecentTen
+                  quarterMaxAccurateStreak
+                  quarterHitMatches
+                  quarterTotalMatches
+                  quarterHitRate
+                  quarterHitRateDisplay
+                  quarterRanking
+                  quarterHistoryMaxWinStreak
+                  winHitRecentTen
+                  winMaxAccurateStreak
+                  winHitMatches
+                  winTotalMatches
+                  winHitRate
+                  winHitRateDisplay
+                  winRanking
+                  winHistoryMaxWinStreak
                 } 
                 isUnlocked
                 mentorArticleCount {
-                    predictedPlay
-                    counts
-                }
+                  predictedPlay
+                  counts
+                } 
             }
-            totalPage
-            totalArticle
+            pagination {
+                pageCount
+                totalCount
+            }
         }
     }
 `;

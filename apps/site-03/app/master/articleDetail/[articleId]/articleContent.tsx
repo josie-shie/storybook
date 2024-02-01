@@ -112,7 +112,10 @@ function ArticleContent({
             memberId: userInfo.uid ? userInfo.uid : 0,
             filterId: [article.mentorId],
             postFilter: ['mentor'],
-            pageSize: 20
+            pagination: {
+                currentPage: 1,
+                perPage: 20
+            }
         });
 
         if (!res.success) {

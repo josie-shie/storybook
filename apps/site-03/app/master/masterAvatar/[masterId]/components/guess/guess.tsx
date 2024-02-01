@@ -5,7 +5,6 @@ import {
     type GetMemberIndividualGuessResponse,
     type MemberIndividualGuessRecord
 } from 'data-center';
-import { motion } from 'framer-motion';
 import Record from '../record/record';
 import BettingPlan from '../bettingPlan/bettingPlan';
 import style from './guess.module.scss';
@@ -74,51 +73,41 @@ function InfoTabs({ params }: { params: { masterId: string } }) {
         <div className={style.infoTabs}>
             <div className={style.tabContest}>
                 <div className={style.title}>
-                    <span>近期战绩</span>
                     <div className={style.tab}>
-                        <motion.button
+                        <span
                             className={`${style.defaultButton} ${
                                 dateActiveTab === 'byWeek' ? style.active : ''
                             }`}
                             onClick={() => {
                                 handleTabClick('byWeek');
                             }}
-                            type="button"
-                            whileTap={{ scale: 0.9 }}
                         >
                             周榜
-                        </motion.button>
-                        <motion.button
+                        </span>
+                        <span
                             className={`${style.defaultButton} ${
                                 dateActiveTab === 'byMonth' ? style.active : ''
                             }`}
                             onClick={() => {
                                 handleTabClick('byMonth');
                             }}
-                            type="button"
-                            whileTap={{ scale: 0.9 }}
                         >
                             月榜
-                        </motion.button>
-                        <motion.button
+                        </span>
+                        <span
                             className={`${style.defaultButton} ${
                                 dateActiveTab === 'byQuarter' ? style.active : ''
                             }`}
                             onClick={() => {
                                 handleTabClick('byQuarter');
                             }}
-                            type="button"
-                            whileTap={{ scale: 0.9 }}
                         >
                             季榜
-                        </motion.button>
+                        </span>
                     </div>
                 </div>
                 <div className={style.recentGames}>
-                    <Record
-                        dateActiveTab={dateActiveTab}
-                        individualGuessInfo={individualGuessInfo}
-                    />
+                    <Record individualGuessInfo={individualGuessInfo} />
                 </div>
                 <div className={style.title}>
                     <span>专家猜球方案({guessLength})</span>
@@ -137,7 +126,7 @@ function InfoTabs({ params }: { params: { masterId: string } }) {
                                 handlePlanTabClick(1);
                             }}
                         >
-                            让分
+                            总胜负
                         </span>
                         <span
                             className={planActiveTab === 2 ? style.active : ''}
@@ -145,7 +134,7 @@ function InfoTabs({ params }: { params: { masterId: string } }) {
                                 handlePlanTabClick(2);
                             }}
                         >
-                            大小
+                            总进球
                         </span>
                     </div>
                 </div>

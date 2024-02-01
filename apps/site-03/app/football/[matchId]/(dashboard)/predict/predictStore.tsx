@@ -4,8 +4,8 @@ import type { RecommendPost } from 'data-center';
 
 interface InitState {
     predictList: RecommendPost[];
-    totalPage: number;
-    totalArticle: number;
+    pageCount: number;
+    totalCount: number;
 }
 
 interface PredictState extends InitState {
@@ -17,8 +17,8 @@ let usePredictStore: StoreWithSelectors<PredictState>;
 
 const initialState = (set: (updater: (state: PredictState) => Partial<PredictState>) => void) => ({
     predictList: [],
-    totalPage: 0,
-    totalArticle: 0,
+    pageCount: 0,
+    totalCount: 0,
     loading: false,
     setPredictList: (predictList: RecommendPost[]) => {
         set(state => {

@@ -8,25 +8,58 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
 
             .tab {
                 display: flex;
                 align-items: center;
+                justify-content: space-between;
                 gap: 8px;
+                flex: 1;
+                padding: 4px;
+                background: #f3f3f3;
+                border-radius: 30px;
 
                 .defaultButton {
-                    padding: 6px 13px;
-                    color: #9b9b9b;
+                    flex: 1;
+                    position: relative;
+                    text-align: center;
+                    color: #9fc2ff;
+                    width: 100%;
+                    height: 36px;
+                    display: block;
                     font-size: 12px;
+                    line-height: 36px;
                     border-radius: 30px;
-                    border: 1px solid #9b9b9b;
-                    background-color: #fff;
+                    border: none;
+                    background: transparent;
+
+                    &::before {
+                        content: '';
+                        position: absolute;
+                        top: 50%;
+                        left: 50%;
+                        width: 100%;
+                        height: 100%;
+                        transform: translate(-50%, -50%) scaleX(0.32);
+                        transition-duration: 0.2s;
+                        transition-property: all;
+                        transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
+                        background: #4489ff;
+                        opacity: 0;
+                        z-index: -1;
+                        border-radius: 30px;
+                    }
 
                     &.active {
-                        color: #4489ff;
-                        border-color: #4489ff;
-                        background: #edf3ff;
+                        position: relative;
+                        color: #fff;
+                        z-index: 1;
+
+                        &::before {
+                            transform: translate(-50%, -50%) scaleX(1);
+                            opacity: 1;
+                        }
                     }
                 }
             }
@@ -51,6 +84,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding-bottom: 20px;
         }
     }
 }

@@ -666,8 +666,10 @@ function TabContent({
         },
         predict: {
             posts: [],
-            totalArticle: 0,
-            totalPage: 1
+            pagination: {
+                pageCount: 1,
+                totalCount: 0
+            }
         } as GetPostListResponse,
         exponent: {} as GetExponentResponse,
         lineUpData: {} as GetLineUpInfoResponse
@@ -717,8 +719,10 @@ function TabContent({
                 memberId: 1,
                 filterId: [matchId],
                 postFilter: ['match'],
-                currentPage: 1,
-                pageSize: 10
+                pagination: {
+                    currentPage: 1,
+                    perPage: 10
+                }
             });
             return predictData;
         },

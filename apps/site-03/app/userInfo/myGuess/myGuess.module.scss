@@ -2,11 +2,8 @@
 
 .myGuess {
     height: calc(100vh - 54px);
-    margin-top: -14px;
-    padding: 8px 12px 12px;
     overflow: auto;
     background: #fff;
-    border-radius: 16px 16px 0 0;
 
     .loaderBox {
         height: 30vh;
@@ -14,22 +11,40 @@
         justify-content: center;
     }
 
+    .echart {
+        padding: 12px 12px 20px 12px;
+        background: linear-gradient(to right, #2c5eb2 0%, #3a82fb 100%);
+    }
+
     .title {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        margin: 10px auto;
+    }
+
+    .recordList {
+        background: linear-gradient(to right, #2c5eb2 0%, #3a82fb 100%);
+    }
+
+    .guessTitle {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 12px 0 12px;
+        background: #fff;
+        border-top-right-radius: 8px;
+        border-top-left-radius: 8px;
 
         span {
             font-size: 18px;
-            font-weight: 600;
             color: #222;
+            font-weight: 500;
         }
 
         .record {
             font-size: 14px;
             font-weight: 400;
-            padding: 2px 12px;
+            padding: 2px 0;
             color: #4489ff;
         }
     }
@@ -37,19 +52,51 @@
     .tab {
         display: flex;
         align-items: center;
+        justify-content: space-between;
         gap: 8px;
+        flex: 1;
+        padding: 4px;
+        background: rgba(255, 255, 255, 0.15);
+        border-radius: 30px;
 
         span {
-            padding: 6px 13px;
-            color: #9b9b9b;
+            flex: 1;
+            position: relative;
+            text-align: center;
+            color: #9fc2ff;
+            width: 100%;
+            height: 36px;
+            display: block;
             font-size: 12px;
+            line-height: 36px;
             border-radius: 30px;
-            border: 1px solid #9b9b9b;
+
+            &::before {
+                content: '';
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                width: 100%;
+                height: 100%;
+                transform: translate(-50%, -50%) scaleX(0.32);
+                transition-duration: 0.2s;
+                transition-property: all;
+                transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
+                background: #e6effe;
+                opacity: 0;
+                z-index: -1;
+                border-radius: 30px;
+            }
 
             &.active {
+                position: relative;
                 color: #4489ff;
-                border-color: #4489ff;
-                background: #edf3ff;
+                z-index: 1;
+
+                &::before {
+                    transform: translate(-50%, -50%) scaleX(1);
+                    opacity: 1;
+                }
             }
         }
 
@@ -61,6 +108,7 @@
     }
 
     .btnTab {
+        background: #fff;
         :global(.ui-tab) {
             :global(.ui-tab-header) {
                 :global(.ui-tabs-header) {
@@ -74,8 +122,8 @@
                         border-radius: 30px;
                         border: 1px solid #9b9b9b;
                         padding: 6px 13px;
-                        max-width: 48px !important;
-                        height: 31px;
+                        max-width: 54px !important;
+                        height: 30px;
                         font-weight: 600;
 
                         :global(.ui-tabs-header-label) {
@@ -88,6 +136,7 @@
 
                         &:global(.ui-active) {
                             border: 1px solid #4489ff;
+                            background: #edf3ff;
 
                             &::before {
                                 transform: none;
@@ -96,6 +145,10 @@
                         }
                     }
                 }
+            }
+
+            :global(.swiper-slide) {
+                padding: 12px !important;
             }
         }
     }
@@ -108,7 +161,11 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 12px;
+        min-height: 136px;
+        margin-top: 12px;
+        padding: 8px;
+        background: rgba(255, 255, 255, 0.15);
+        border-radius: 12px;
     }
 
     .detailContainer {
@@ -117,11 +174,11 @@
     }
 
     .detailBlock {
-        font-size: 12px;
+        font-size: 14px;
         font-weight: 500;
         box-sizing: border-box;
-        color: #4a4a4a;
-        padding: 4px 8px;
+        color: #fff;
+        padding: 4px 0;
         border-radius: 8px;
         margin-bottom: 4px;
 
@@ -138,29 +195,51 @@
 
         .bot {
             gap: 4px;
-
-            :global(.ui-progressBar) {
-                flex-grow: 1;
-            }
         }
     }
 
     .percentage {
         display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex: 1;
         gap: 4px;
+        font-size: 12px;
+        color: #fff;
+        padding: 2px 8px;
+        background: rgba(255, 255, 255, 0.15);
+        border-radius: 4px;
+
+        > div {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+
+            i {
+                width: 10px;
+                height: 10px;
+                border-radius: 2px;
+                border: 1px solid #fff;
+            }
+        }
 
         .win {
-            color: #ed3a45;
+            i {
+                background: #ff4343;
+            }
         }
 
         .walk {
-            color: #8d8d8d;
+            i {
+                background: #9fc2ff;
+            }
         }
-    }
 
-    .focusDetail {
-        background: #f3f3f3;
-        border: 1px solid #4489ff;
+        .defeat {
+            i {
+                background: #d9d9d9;
+            }
+        }
     }
 
     .loadMore {
@@ -181,7 +260,7 @@
 
 .placeholder {
     width: 100%;
-    height: 68px;
+    height: 54px;
     background: linear-gradient(to right, #2c5eb2 0%, #3a82fb 100%);
 
     .headerDetail {

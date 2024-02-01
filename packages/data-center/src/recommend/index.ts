@@ -286,11 +286,7 @@ const GetPostDetailSchema = z.object({
     price: z.number(),
     predictionResult: PredictionResultSchema,
     matchTime: z.number(),
-    createdAt: z.number(),
-    fansNumber: z.number(),
-    unlockNumber: z.number(),
-    followed: z.boolean(),
-    tag: TagSchema
+    createdAt: z.number()
 });
 
 export type GetPostDetailResponse = z.infer<typeof GetPostDetailSchema>;
@@ -415,14 +411,18 @@ export interface GetPostListRequest {
     memberId: number;
     postFilter: PostFilter[];
     filterId?: number[];
-    currentPage?: number;
-    pageSize?: number;
+    pagination: {
+        currentPage: number;
+        perPage: number;
+    };
 }
 
 const GetPostListSchema = z.object({
     posts: z.array(RecommendPostSchema),
-    totalPage: z.number(),
-    totalArticle: z.number()
+    pagination: z.object({
+        pageCount: z.number(),
+        totalCount: z.number()
+    })
 });
 
 const GetPostListResultSchema = z.object({
