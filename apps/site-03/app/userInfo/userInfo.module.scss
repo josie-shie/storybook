@@ -7,16 +7,13 @@
 }
 
 .userInfo {
-    height: calc(100vh - 42px);
-    margin-top: -12px;
-    padding-top: 12px;
+    height: calc(100dvh - 54px);
 
     .container {
         display: flex;
         align-items: flex-start;
         justify-content: space-between;
         flex-direction: column;
-        margin-top: -12px;
         padding: 12px 12px 48px 12px;
 
         .outer {
