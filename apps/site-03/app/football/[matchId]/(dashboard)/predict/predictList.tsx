@@ -7,7 +7,7 @@ import { usePredictStore } from './predictStore';
 import style from './predict.module.scss';
 
 function LastPlaceHolder({ matchId }: { matchId: number }) {
-    const totalPage = usePredictStore.use.totalPage();
+    const pageCount = usePredictStore.use.pageCount();
     const pushPredictList = usePredictStore.use.pushPredictList();
     const [lastCoveredType, setLastCoveredType] = useState<boolean>(false);
 
@@ -43,7 +43,7 @@ function LastPlaceHolder({ matchId }: { matchId: number }) {
     const handlePagination = async () => {
         if (isLoading || !lastCoveredType) {
             return;
-        } else if (totalPage <= nowPage) {
+        } else if (pageCount <= nowPage) {
             setIsLast(true);
             return;
         }
@@ -55,13 +55,15 @@ function LastPlaceHolder({ matchId }: { matchId: number }) {
             memberId: 1,
             filterId: [matchId],
             postFilter: ['match'],
-            currentPage: nowPage + 1,
-            pageSize: 10
+            pagination: {
+                currentPage: nowPage + 1,
+                perPage: 10
+            }
         });
 
         if (predictData.success) {
             pushPredictList(predictData.data.posts);
-            if (totalPage <= nowPage) {
+            if (pageCount <= nowPage) {
                 setIsLast(true);
             }
         }

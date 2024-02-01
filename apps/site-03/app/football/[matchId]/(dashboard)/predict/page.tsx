@@ -6,8 +6,10 @@ async function Page({ params }: { params: { matchId: number } }) {
         memberId: 1,
         filterId: [params.matchId],
         postFilter: ['match'],
-        currentPage: 1,
-        pageSize: 10
+        pagination: {
+            currentPage: 1,
+            perPage: 10
+        }
     });
 
     if (!predictData.success) {

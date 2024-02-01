@@ -195,10 +195,6 @@
 
         .bot {
             gap: 4px;
-
-            :global(.ui-progressBar) {
-                flex-grow: 1;
-            }
         }
     }
 

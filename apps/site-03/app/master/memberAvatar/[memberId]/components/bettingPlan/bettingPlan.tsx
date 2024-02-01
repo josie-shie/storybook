@@ -10,11 +10,11 @@ import { timestampToString } from 'lib';
 import { InfiniteScroll } from 'ui';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useRouter } from 'next/navigation';
-import NoData from '@/components/baseNoData/noData';
 import UnlockButton from '@/components/unlockButton/unlockButton';
+import NoData from '@/components/baseNoData/noData';
+import { useUserStore } from '@/store/userStore';
 import NormalDialog from '@/components/normalDialog/normalDialog';
 import ConfirmPayDrawer from '@/components/confirmPayDrawer/confirmPayDrawer';
-import { useUserStore } from '@/store/userStore';
 import IconWin from './img/win.png';
 import IconLose from './img/lose.png';
 import IconDraw from './img/draw.png';
@@ -30,12 +30,12 @@ const filterIcon = {
 };
 
 const filterPlay = {
-    HOME: '让球',
-    AWAY: '让球',
-    OVER: '大小',
-    UNDER: '大小',
-    HANDICAP: '让球',
-    OVERUNDER: '大小'
+    HOME: '胜负',
+    AWAY: '胜负',
+    OVER: '总进球',
+    UNDER: '总进球',
+    HANDICAP: '胜负',
+    OVERUNDER: '总进球'
 };
 
 const filterOdds = {
@@ -73,7 +73,7 @@ function BettingPlan({
 
     const fetchData = async () => {
         const res = await getMemberIndividualGuessMatches({
-            memberId: params.memberId ? Number(params.memberId) : 1,
+            memberId: Number(params.masterId),
             currentPage,
             pageSize: 30,
             guessType: planActiveTab
@@ -83,16 +83,16 @@ function BettingPlan({
             return new Error();
         }
 
-        const updatedGuessMatchesList = [...guessMatchesList, ...res.data.guessMatchList];
+        const updatedGuessMatchesList = guessMatchesList.concat(res.data.guessMatchList);
         setGuessMatchesList(updatedGuessMatchesList);
-        setGuessLength(res.data.guessMatchList.length);
+        setGuessLength(res.data.pagination.totalCount);
         setIsNoData(res.data.guessMatchList.length === 0);
         setTotalPage(res.data.pagination.pageCount);
     };
 
     const fetchResetData = async () => {
         const res = await getMemberIndividualGuessMatches({
-            memberId: params.memberId ? Number(params.memberId) : 1,
+            memberId: Number(params.masterId),
             currentPage,
             pageSize: 30,
             guessType: planActiveTab
@@ -103,7 +103,7 @@ function BettingPlan({
         }
 
         setGuessMatchesList(res.data.guessMatchList);
-        setGuessLength(res.data.guessMatchList.length);
+        setGuessLength(res.data.pagination.totalCount);
         setIsNoData(res.data.guessMatchList.length === 0);
         setTotalPage(res.data.pagination.pageCount);
     };
@@ -113,10 +113,11 @@ function BettingPlan({
             setCurrentPage(prevData => prevData + 1);
         }
     };
+
     const handlingDialog = async (item: MemberIndividualGuessMatch) => {
         if (!isLogin) {
             setIsOpenPaid(false);
-            router.push(`/master/masterAvatar/${params.memberId}?status=analysis&auth=login`);
+            router.push(`/master/masterAvatar/${params.masterId}?status=analysis&auth=login`);
             return;
         }
 
@@ -188,7 +189,6 @@ function BettingPlan({
                                 <div className={style.top}>
                                     {item.leagueName}
                                     <span className={style.time}>
-                                        {' '}
                                         | {timestampToString(item.matchTime, 'MM-DD HH:mm')}
                                     </span>
                                 </div>
@@ -213,19 +213,28 @@ function BettingPlan({
                                     </div>
                                 </div>
                                 <div className={style.bot}>
-                                    <div
-                                        className={`${style.message} ${
-                                            item.predictionResult === 'WIN' && style.win
-                                        }`}
-                                    >
-                                        {filterOdds[item.predictedPlay] === 'overUnder'
-                                            ? ''
-                                            : item.handicapInChinese}{' '}
-                                        {item.predictedPlay === 'OVER' && '小'}
-                                        {item.predictedPlay === 'UNDER' && '大'}
-                                        {item.predictedPlay === 'HOME' && item.homeTeamName}
-                                        {item.predictedPlay === 'AWAY' && item.awayTeamName}
-                                    </div>
+                                    {!item.isPaidToRead ? (
+                                        <div
+                                            className={`${style.message} ${
+                                                item.predictionResult === 'WIN' && style.win
+                                            }`}
+                                        >
+                                            {filterOdds[item.predictedPlay] === 'overUnder'
+                                                ? ''
+                                                : `${item.handicapOdds > 0 ? '让球' : '受让'}${
+                                                      item.handicapInChinese
+                                                  }`}{' '}
+                                            {item.predictedPlay === 'OVER' &&
+                                                `${item.overUnderOdds} 小`}
+                                            {item.predictedPlay === 'UNDER' &&
+                                                `${item.overUnderOdds} 大`}
+                                            {item.predictedPlay === 'HOME' && item.homeTeamName}
+                                            {item.predictedPlay === 'AWAY' && item.awayTeamName}
+                                        </div>
+                                    ) : (
+                                        <div />
+                                    )}
+
                                     {item.isPaidToRead ? (
                                         <UnlockButton
                                             handleClick={() => void handlingDialog(item)}

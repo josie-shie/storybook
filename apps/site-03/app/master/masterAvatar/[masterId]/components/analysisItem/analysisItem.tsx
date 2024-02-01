@@ -1,40 +1,20 @@
 import Image from 'next/image';
-import { timestampToString, timestampToMonthDay } from 'lib';
-import { useRouter } from 'next/navigation';
+import { timestampToTodayTime } from 'lib';
 import { type RecommendPost } from 'data-center';
 import { useEffect, useState } from 'react';
-import { getPostList, payForPost, getMemberInfo } from 'data-center';
+import Link from 'next/link';
+import { getPostList } from 'data-center';
 import { InfiniteScroll } from 'ui';
 import CircularProgress from '@mui/material/CircularProgress';
-import type { PredictArticleType } from '@/types/predict';
-import UnlockButton from '@/components/unlockButton/unlockButton';
 import NoData from '@/components/baseNoData/noData';
-import NormalDialog from '@/components/normalDialog/normalDialog';
 import { useUserStore } from '@/store/userStore';
-import ConfirmPayDrawer from '@/components/confirmPayDrawer/confirmPayDrawer';
 import style from './analysisItem.module.scss';
 import IconWin from './img/win.png';
 import IconDraw from './img/draw.png';
 import IconLose from './img/lose.png';
+import Eye from './img/eye.svg';
+import LockOpenBlue from './img/lockOpenBlue.svg';
 import SkeletonLayout from './components/skeleton';
-
-const filterImage = (value: PredictArticleType): string => {
-    const result = {
-        WIN: IconWin.src,
-        DRAW: IconDraw.src,
-        LOSE: IconLose.src
-    };
-    return result[value];
-};
-
-const formatHandicapName = {
-    HOME: '大小',
-    AWAY: '大小',
-    OVER: '让分',
-    UNDER: '让分',
-    HANDICAP: '大小',
-    OVERUNDER: '让分'
-};
 
 function AnalysisItem({
     params,
@@ -47,24 +27,17 @@ function AnalysisItem({
     const [totalPage, setTotalPage] = useState<number>(1);
     const [isNoData, setIsNoData] = useState<boolean | null>(null);
     const [predictArticleList, setPredictArticleList] = useState<RecommendPost[]>([]);
-    const [isOpenPaid, setIsOpenPaid] = useState(false);
-    const [isOpenRecharge, setIsOpenRecharge] = useState(false);
-    const [articleInfo, setArticleInfo] = useState({} as RecommendPost);
-
-    const router = useRouter();
-
-    const isVip = useUserStore.use.memberSubscribeStatus();
     const userInfo = useUserStore.use.userInfo();
-    const isLogin = useUserStore.use.isLogin();
-    const setUserInfo = useUserStore.use.setUserInfo();
 
     const fetchData = async () => {
         const res = await getPostList({
             memberId: userInfo.uid ? userInfo.uid : 0,
             postFilter: ['mentor'],
             filterId: [Number(params.masterId)],
-            currentPage,
-            pageSize: 30
+            pagination: {
+                currentPage: 1,
+                perPage: 30
+            }
         });
 
         if (!res.success) {
@@ -72,31 +45,9 @@ function AnalysisItem({
         }
         const updatedArticleList = [...predictArticleList, ...res.data.posts];
         setPredictArticleList(updatedArticleList);
-        setArticleLength(res.data.totalArticle);
-        setTotalPage(res.data.totalPage);
-        setIsNoData(res.data.totalArticle === 0);
-    };
-
-    const fetchResetData = async () => {
-        const res = await getPostList({
-            memberId: userInfo.uid ? userInfo.uid : 0,
-            postFilter: ['mentor'],
-            filterId: [Number(params.masterId)],
-            currentPage: 1,
-            pageSize: 30
-        });
-
-        if (!res.success) {
-            return new Error();
-        }
-        setPredictArticleList(res.data.posts);
-        setArticleLength(res.data.totalArticle);
-        setTotalPage(res.data.totalPage);
-        setIsNoData(res.data.totalArticle === 0);
-    };
-
-    const goArticleDetail = (id: number) => {
-        router.push(`/master/articleDetail/${id}`);
+        setArticleLength(res.data.pagination.totalCount);
+        setTotalPage(res.data.pagination.pageCount);
+        setIsNoData(res.data.pagination.totalCount === 0);
     };
 
     const loadMoreList = () => {
@@ -105,59 +56,20 @@ function AnalysisItem({
         }
     };
 
-    const goPayment = () => {
-        setIsOpenRecharge(false);
-        router.push('/userInfo/subscribe');
-    };
-
-    const isOpenDialog = async (item: RecommendPost) => {
-        if (!isLogin) {
-            setIsOpenPaid(false);
-            router.push(`/master/masterAvatar/${params.masterId}?status=analysis&auth=login`);
-            return;
-        }
-
-        if (isVip.planId === 1) {
-            const res = await payForPost({ postId: item.id });
-
-            if (!res.success) {
-                return new Error();
-            }
-            router.push(`/master/articleDetail/${item.id}`);
-            return;
-        }
-        setIsOpenPaid(true);
-        setArticleInfo(item);
-    };
-
-    const onSubmit = async () => {
-        if (userInfo.balance < articleInfo.price) {
-            setIsOpenPaid(false);
-            setIsOpenRecharge(true);
-            return;
-        }
-
-        const res = await payForPost({ postId: Number(articleInfo.id) });
-
-        if (!res.success) {
-            return new Error();
-        }
-        setIsOpenPaid(false);
-        void fetchResetData();
-        void getUser();
-    };
-
-    const getUser = async () => {
-        const res = await getMemberInfo();
-        if (!res.success) {
-            return new Error();
-        }
-        setUserInfo(res.data);
-    };
-
     useEffect(() => {
         void fetchData();
     }, [currentPage]);
+
+    const getText = predictedPlay => {
+        switch (predictedPlay) {
+            case 'HANDICAP':
+                return '胜负';
+            case 'OVERUNDER':
+                return '总进球';
+            default:
+                return '';
+        }
+    };
 
     return (
         <>
@@ -169,60 +81,69 @@ function AnalysisItem({
                 <ul className={style.article}>
                     {predictArticleList.map(item => {
                         return (
-                            <div
-                                className={style.analysisItem}
-                                key={item.id}
-                                onClick={() => {
-                                    goArticleDetail(item.id);
-                                }}
-                            >
-                                <div className={style.top}>
-                                    <div className={style.left}>
-                                        <div className={style.decorate} />
+                            <li className={style.articleCard}>
+                                {item.predictionResult === 'WIN' && (
+                                    <div className={style.result}>
+                                        <Image alt="" height={27} src={IconWin} width={27} />
+                                    </div>
+                                )}
+                                {item.predictionResult === 'LOSE' && (
+                                    <div className={style.result}>
+                                        <Image alt="" height={27} src={IconLose} width={27} />
+                                    </div>
+                                )}
+                                {item.predictionResult === 'DRAW' && (
+                                    <div className={style.result}>
+                                        <Image alt="" height={27} src={IconDraw} width={27} />
+                                    </div>
+                                )}
+
+                                <div className={style.user}>
+                                    <div className={style.userInfo}>
+                                        <div className={style.userName}>
+                                            <div className={style.plan}>
+                                                {getText(item.mentorArticleCount.predictedPlay)}
+                                            </div>
+                                            {item.mentorName}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <Link href={`/master/articleDetail/${item.id}`}>
+                                    <div className={style.game}>
+                                        <div className={style.leagueTeam}>
+                                            <span>{item.leagueName}</span>
+                                            <span className={style.line}>|</span>
+                                            <span>
+                                                {item.homeTeamName}VS{item.awayTeamName}
+                                            </span>
+                                        </div>
                                         <div className={style.title}>{item.analysisTitle}</div>
                                     </div>
-                                    <div className={style.unlockStatus}>
-                                        {item.isUnlocked ? (
-                                            <span className={style.unlocked}>已解鎖</span>
-                                        ) : (
-                                            <UnlockButton
-                                                handleClick={() => {
-                                                    void isOpenDialog(item);
-                                                }}
-                                                price={item.price}
-                                            />
-                                        )}
-                                    </div>
-                                </div>
-                                <div className={style.mid}>
-                                    <div className={style.combination}>
-                                        <div className={style.detail}>
-                                            {item.leagueName}
-                                            <span className={style.time}>
-                                                | {timestampToString(item.matchTime, 'MM-DD HH:mm')}
-                                            </span>
-                                        </div>
-                                        <div className={style.team}>
-                                            <span className={style.tag}>
-                                                {formatHandicapName[item.predictedPlay]}
-                                            </span>
-                                            {item.homeTeamName} vs {item.awayTeamName}
-                                        </div>
-                                        {item.predictionResult === 'NONE' ? null : (
-                                            <Image
-                                                alt=""
-                                                className={style.icon}
-                                                height={46}
-                                                src={filterImage(item.predictionResult)}
-                                                width={46}
-                                            />
-                                        )}
-                                    </div>
-                                </div>
+                                </Link>
                                 <div className={style.postTime}>
-                                    发表于今天 {timestampToMonthDay(item.createdAt)}
+                                    <span>{timestampToTodayTime(item.createdAt)}</span>
+                                    {item.seenCounts && item.unlockCounts ? (
+                                        <div className={style.seen}>
+                                            {item.seenCounts && (
+                                                <>
+                                                    <span>
+                                                        <Eye />
+                                                        {item.seenCounts}
+                                                    </span>
+                                                    <span className={style.line}>|</span>
+                                                </>
+                                            )}
+                                            {item.unlockCounts && (
+                                                <span>
+                                                    <LockOpenBlue />
+                                                    {item.unlockCounts}
+                                                </span>
+                                            )}
+                                        </div>
+                                    ) : null}
                                 </div>
-                            </div>
+                            </li>
                         );
                     })}
                     {currentPage < totalPage ? (
@@ -238,27 +159,6 @@ function AnalysisItem({
                     )}
                 </ul>
             )}
-            <ConfirmPayDrawer
-                isOpen={isOpenPaid}
-                onClose={() => {
-                    setIsOpenPaid(false);
-                }}
-                onOpen={() => {
-                    setIsOpenPaid(true);
-                }}
-                onPay={onSubmit}
-                price={articleInfo.price}
-            />
-            <NormalDialog
-                cancelText="取消"
-                confirmText="去充值"
-                content={<div>余额不足，请充值</div>}
-                onClose={() => {
-                    setIsOpenRecharge(false);
-                }}
-                onConfirm={goPayment}
-                openDialog={isOpenRecharge}
-            />
         </>
     );
 }

@@ -17,31 +17,62 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+
+        .total {
+            font-size: 14px;
+        }
     }
 
     .top {
-        margin-bottom: 2px;
+        margin-bottom: 6px;
     }
 
     .bot {
         gap: 4px;
-
-        :global(.ui-progressBar) {
-            flex-grow: 1;
-        }
     }
 }
 
 .percentage {
     display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex: 1;
     gap: 4px;
+    font-size: 12px;
+    color: #4a4a4a;
+    padding: 2px 8px;
+    background: #f3f3f3;
+    border-radius: 4px;
+
+    > div {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+
+        i {
+            width: 10px;
+            height: 10px;
+            border-radius: 2px;
+            border: 1px solid #f3f3f3;
+        }
+    }
 
     .win {
-        color: #ed3a45;
+        i {
+            background: #ff4343;
+        }
     }
 
     .walk {
-        color: #8d8d8d;
+        i {
+            background: #9fc2ff;
+        }
+    }
+
+    .defeat {
+        i {
+            background: #d9d9d9;
+        }
     }
 }
 

@@ -41,10 +41,11 @@ function ArticleList() {
     const fetchData = async () => {
         const res = await getPostList({
             memberId: userInfo.uid ? userInfo.uid : 0,
-            filterId: [],
             postFilter: isActive.length === 0 ? ['all'] : isActive,
-            currentPage,
-            pageSize: 30
+            pagination: {
+                currentPage: 1,
+                perPage: 30
+            }
         });
 
         if (!res.success) {
@@ -52,8 +53,8 @@ function ArticleList() {
         }
         const updatedArticleList = [...articleList, ...res.data.posts];
         setArticleList(updatedArticleList);
-        setTotalPage(res.data.totalPage);
-        setIsNoData(res.data.totalArticle === 0);
+        setTotalPage(res.data.pagination.pageCount);
+        setIsNoData(res.data.pagination.totalCount === 0);
     };
 
     const loadMoreList = () => {
