@@ -9,11 +9,7 @@ import HandicapTable from './components/handicapTable/handicapTable';
 import MagnifyingGlass from '@/app/aiBigData/analysisResult/img/magnifyingGlass.svg';
 import { Tab, Tabs } from 'ui';
 import MixedLineChart from './components/mixedLineChart/mixedLineChart';
-import {
-    GetFootballStatsMatchesResponse,
-    MatchDateMatchListType,
-    getFootballStatsMatches
-} from 'data-center';
+import { GetFootballStatsMatchesResponse, getFootballStatsMatches } from 'data-center';
 import { useNotificationStore } from '@/store/notificationStore';
 import ContestCard from '../../components/contestCard/contestCard';
 
@@ -138,9 +134,9 @@ function MatchesTrend() {
 }
 
 interface TableDataType {
-    topValue?: MatchDateMatchListType[];
-    middleValue?: MatchDateMatchListType[];
-    bottomValue: MatchDateMatchListType[];
+    topValue?: number[];
+    middleValue?: number[];
+    bottomValue: number[];
     topLabel?: string;
     middleLabel?: string;
     bottomLabel: string;
@@ -159,37 +155,66 @@ function Handicap() {
     }, [contestInfo, setFilterInit]);
 
     useEffect(() => {
+        const handicapUpperMatchList: number[] = [];
+        const handicapLowerMatchList: number[] = [];
+        const overUnderOverMatchList: number[] = [];
+        const overUnderUnderMatchList: number[] = [];
+        const moneylineHomeMatchList: number[] = [];
+        const moneylineAwayMatchList: number[] = [];
+        const moneylineDrawMatchList: number[] = [];
+        analysisRecord?.fullHandicapUpperDaily?.forEach(item => {
+            handicapUpperMatchList.push(...item.matchIds);
+        });
+        analysisRecord?.fullHandicapLowerDaily?.forEach(item => {
+            handicapLowerMatchList.push(...item.matchIds);
+        });
+        analysisRecord?.fullOverUnderOverDaily?.forEach(item => {
+            overUnderOverMatchList.push(...item.matchIds);
+        });
+        analysisRecord?.fullOverUnderUnderDaily?.forEach(item => {
+            overUnderUnderMatchList.push(...item.matchIds);
+        });
+        analysisRecord?.fullTimeHomeWinDaily?.forEach(item => {
+            moneylineHomeMatchList.push(...item.matchIds);
+        });
+        analysisRecord?.fullTimeAwayWinDaily?.forEach(item => {
+            moneylineAwayMatchList.push(...item.matchIds);
+        });
+        analysisRecord?.fullTimeDrawDaily?.forEach(item => {
+            moneylineDrawMatchList.push(...item.matchIds);
+        });
+
         const newTableData = [
             {
-                topValue: analysisRecord?.fullHandicapUpper || [],
-                middleValue: analysisRecord?.fullOverUnderOver || [],
-                bottomValue: analysisRecord?.fullTimeHomeWin || [],
+                topValue: handicapUpperMatchList,
+                middleValue: overUnderOverMatchList,
+                bottomValue: moneylineHomeMatchList,
                 topLabel: '上',
                 middleLabel: '大',
                 bottomLabel: '主'
             },
             {
-                topValue: analysisRecord?.fullHandicapLower || [],
-                middleValue: analysisRecord?.fullOverUnderUnder || [],
-                bottomValue: analysisRecord?.fullTimeAwayWin || [],
+                topValue: handicapLowerMatchList,
+                middleValue: overUnderUnderMatchList,
+                bottomValue: moneylineAwayMatchList,
                 topLabel: '下',
                 middleLabel: '小',
                 bottomLabel: '客'
             },
             {
-                bottomValue: analysisRecord?.fullTimeDraw || [],
+                bottomValue: moneylineDrawMatchList,
                 bottomLabel: '和'
             }
         ];
         setTableData(newTableData);
     }, [
-        analysisRecord?.fullHandicapLower,
-        analysisRecord?.fullHandicapUpper,
-        analysisRecord?.fullOverUnderOver,
-        analysisRecord?.fullOverUnderUnder,
-        analysisRecord?.fullTimeAwayWin,
-        analysisRecord?.fullTimeDraw,
-        analysisRecord?.fullTimeHomeWin,
+        analysisRecord?.fullHandicapLowerDaily,
+        analysisRecord?.fullHandicapUpperDaily,
+        analysisRecord?.fullOverUnderOverDaily,
+        analysisRecord?.fullOverUnderUnderDaily,
+        analysisRecord?.fullTimeAwayWinDaily,
+        analysisRecord?.fullTimeDrawDaily,
+        analysisRecord?.fullTimeHomeWinDaily,
         handicapEchart
     ]);
 

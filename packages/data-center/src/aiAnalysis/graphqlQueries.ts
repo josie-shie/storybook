@@ -127,77 +127,41 @@ export const GET_FOOTBALL_STATS_QUERY = `
           endTime
           analyTime
           errorStatus
-          fullHandicapUpper {
-            matchId
-            matchDate
-          }
-          fullHandicapLower {
-            matchId
-            matchDate
-          }
-          fullHandicapDraw {
-            matchId
-            matchDate
-          }
           fullHandicapUpperDaily {
             date
-            matches
+            matchIds
           }
           fullHandicapLowerDaily {
             date
-            matches
+            matchIds
           }
           fullHandicapDrawDaily {
             date
-            matches
-          }
-          fullOverUnderOver {
-            matchId
-            matchDate
-          }
-          fullOverUnderUnder {
-            matchId
-            matchDate
-          }
-          fullOverUnderDraw {
-            matchId
-            matchDate
+            matchIds
           }
           fullOverUnderOverDaily {
             date
-            matches
+            matchIds
           }
           fullOverUnderUnderDaily {
             date
-            matches
+            matchIds
           }
           fullOverUnderDrawDaily {
             date
-            matches
-          }
-          fullTimeHomeWin {
-            matchId
-            matchDate
-          }
-          fullTimeDraw {
-            matchId
-            matchDate
-          }
-          fullTimeAwayWin {
-            matchId
-            matchDate
+            matchIds
           }
           fullTimeHomeWinDaily {
             date
-            matches
+            matchIds
           }
           fullTimeDrawDaily {
             date
-            matches
+            matchIds
           }
           fullTimeAwayWinDaily {
             date
-            matches
+            matchIds
           }
           goalsIn15Mins {
             goalsOver
