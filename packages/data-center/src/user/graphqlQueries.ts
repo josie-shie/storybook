@@ -205,6 +205,10 @@ export const GET_UNLOCKED_QUERY = `
                     winHistoryMaxWinStreak
                 }  
             }
+            pagination {
+                pageCount
+                totalCount
+            }
         }
     }
 `;

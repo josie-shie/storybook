@@ -17,17 +17,29 @@ function MyAnalysis() {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
-    const [totalPage, setTotalPage] = useState(1);
     const userInfo = useUserStore.use.userInfo();
-    const articleList = useArticleStore.use.articleList();
-    const setArticleList = useArticleStore.use.setArticleList();
+    const articleList = useArticleStore.use.unLockPostList().articleList;
+    const pagination = useArticleStore.use.unLockPostList().pagination;
+    const setUnLockPostList = useArticleStore.use.setUnLockPostList();
 
     useEffect(() => {
         const getUnlockedPostList = async () => {
             setIsLoading(true);
-            const res = await getUnlockedPost({ memberId: userInfo.uid });
+            const res = await getUnlockedPost({
+                memberId: userInfo.uid,
+                pagination: {
+                    currentPage: 1,
+                    perPage: 20
+                }
+            });
             if (res.success) {
-                setArticleList(res.data);
+                setUnLockPostList({
+                    articleList: articleList.concat(res.data.list),
+                    pagination: {
+                        pageCount: res.data.pagination.pageCount,
+                        totalCount: res.data.pagination.totalCount
+                    }
+                });
             }
             setIsLoading(false);
         };
@@ -38,7 +50,10 @@ function MyAnalysis() {
     }, [userInfo]);
 
     const loadMoreList = () => {
-        if (currentPage <= Math.round(articleList.length / 30) && currentPage < totalPage) {
+        if (
+            currentPage <= Math.round(articleList.length / 30) &&
+            currentPage < pagination.totalCount
+        ) {
             setCurrentPage(prevData => prevData + 1);
         }
     };
@@ -58,7 +73,7 @@ function MyAnalysis() {
                     {articleList.map(item => (
                         <ArticleItem item={item} key={item.postId} />
                     ))}
-                    {currentPage < totalPage ? (
+                    {articleList.length < pagination.totalCount ? (
                         <InfiniteScroll onVisible={loadMoreList}>
                             <div className={style.loadMore}>
                                 <CircularProgress size={24} />

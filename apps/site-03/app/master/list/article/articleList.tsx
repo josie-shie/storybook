@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { getPostList } from 'data-center';
 import Image from 'next/image';
-import { type PostFilter, type RecommendPost } from 'data-center';
+import { type RecommendPost } from 'data-center';
 import { InfiniteScroll } from 'ui';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useUserStore } from '@/store/userStore';
@@ -15,7 +15,6 @@ import SkeletonLayout from './components/skeleton/skeleton';
 import banner from './img/banner.png';
 
 function ArticleList() {
-    const [isActive, setIsActive] = useState<PostFilter[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPage, setTotalPage] = useState(1);
     const [isNoData, setIsNoData] = useState<boolean | null>(null);
@@ -25,23 +24,10 @@ function ArticleList() {
 
     creatArticleStore({ filterIsOpen: false });
 
-    const updateActive = (value: PostFilter) => {
-        setIsActive(current => {
-            const isExist = current.includes(value);
-            if (isExist) {
-                return current.filter(item => item !== value);
-            }
-            return [...current, value];
-        });
-
-        setArticleList([]);
-        setCurrentPage(1);
-    };
-
     const fetchData = async () => {
         const res = await getPostList({
             memberId: userInfo.uid ? userInfo.uid : 0,
-            postFilter: isActive.length === 0 ? ['all'] : isActive,
+            postFilter: ['all'],
             pagination: {
                 currentPage: 1,
                 perPage: 30
@@ -51,7 +37,7 @@ function ArticleList() {
         if (!res.success) {
             return new Error();
         }
-        const updatedArticleList = [...articleList, ...res.data.posts];
+        const updatedArticleList = articleList.concat(res.data.posts);
         setArticleList(updatedArticleList);
         setTotalPage(res.data.pagination.pageCount);
         setIsNoData(res.data.pagination.totalCount === 0);
@@ -65,7 +51,7 @@ function ArticleList() {
 
     useEffect(() => {
         void fetchData();
-    }, [userInfo.uid, currentPage, isActive]);
+    }, [userInfo.uid, currentPage]);
 
     return (
         <>

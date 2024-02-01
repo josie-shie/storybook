@@ -286,7 +286,7 @@ const GetPostDetailSchema = z.object({
     price: z.number(),
     predictionResult: PredictionResultSchema,
     matchTime: z.number(),
-    createdAt: z.number(),
+    createdAt: z.number()
 });
 
 export type GetPostDetailResponse = z.infer<typeof GetPostDetailSchema>;
@@ -396,13 +396,6 @@ export const getMentorList = async (
     }
 };
 
-const PaginationRequestSchema = z.object({
-    currentPage: z.number(),
-    perPage: z.number()
-});
-
-export type PaginationRequest = z.infer<typeof PaginationRequestSchema>;
-
 export type PostFilter =
     | 'league'
     | 'country'
@@ -418,7 +411,10 @@ export interface GetPostListRequest {
     memberId: number;
     postFilter: PostFilter[];
     filterId?: number[];
-    pagination: PaginationRequest;
+    pagination: {
+        currentPage: number;
+        perPage: number;
+    };
 }
 
 const GetPostListSchema = z.object({
