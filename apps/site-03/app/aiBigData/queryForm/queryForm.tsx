@@ -174,6 +174,7 @@ function QueryForm() {
     const openNoramlDialog = useQueryFormStore.use.openNoramlDialog();
     const setDialogContent = useQueryFormStore.use.setDialogContent();
     const dialogContentType = useQueryFormStore.use.dialogContentType();
+    const resetQuery = useQueryFormStore.use.resetQuery();
 
     const fetchLeagueData = useCallback(async () => {
         const query: GetFootballLeagueRequest = {
@@ -187,6 +188,10 @@ function QueryForm() {
         setContestInfo({ contestList: res.data });
         setContestList({ contestList: res.data });
     }, [setContestInfo, setContestList]);
+
+    useEffect(() => {
+        resetQuery();
+    }, []);
 
     useEffect(() => {
         if (!contestList.length) {

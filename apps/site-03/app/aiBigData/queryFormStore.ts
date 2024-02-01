@@ -49,6 +49,7 @@ interface QueryFormState extends InitState {
     setCheckboxState: (keyName: PlayTypeCheckBox, checked: boolean) => void;
     isAnalysisBySearch: boolean;
     setIsAnalysisBySearch: (isAnalysisBySearch: boolean) => void;
+    resetQuery: () => void;
 }
 
 let useQueryFormStore: StoreWithSelectors<QueryFormState>;
@@ -105,7 +106,6 @@ const initialState = (
             };
         });
     },
-
     teamHandicapOdds: '0.5',
     setTeamHandicapOdds: (teamHandicapOdds: string) => {
         set(state => {
@@ -324,6 +324,19 @@ const initialState = (
                 isAnalysisBySearch
             };
         });
+    },
+    resetQuery: () => {
+        set(() => ({
+            startDate: dayjs().subtract(7, 'day').format('YYYY-M-D'),
+            endDate: dayjs().subtract(1, 'day').format('YYYY-M-D'),
+            teamSelected: ['home'],
+            teamHandicapOdds: '0.5',
+            handicapOddsSelected: '2.5',
+            checkboxState: {
+                handicap: true,
+                overUnder: true
+            }
+        }));
     }
 });
 
