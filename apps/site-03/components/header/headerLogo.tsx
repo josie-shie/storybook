@@ -3,7 +3,6 @@ import Link from 'next/link';
 import type { ReactNode } from 'react';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { useUserStore } from '@/store/userStore';
 import dotBackground from './img/dotBackground.png';
 import style from './header.module.scss';
 import LogoIconImg from './img/logoIcon.svg';
@@ -25,7 +24,6 @@ function HeaderLogo({
     children?: ReactNode;
     back?: boolean;
 }) {
-    const userInfoIsLoading = useUserStore.use.userInfoIsLoading();
     const [mounted, setMounted] = useState(false);
     useEffect(() => {
         setMounted(true);
@@ -53,7 +51,7 @@ function HeaderLogo({
                         {title ? <div className={style.titleText}>{title}</div> : <Logo />}
                     </div>
                 </Link>
-                {mounted && !userInfoIsLoading
+                {mounted
                     ? children || (
                           <div className={style.userOption}>
                               <Notice />
