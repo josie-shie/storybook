@@ -5,10 +5,10 @@ import BottomDrawer from '@/components/drawer/bottomDrawer';
 import NoData from '@/components/baseNoData/noData';
 import MatchFilterDrawer from '../matchFilterDrawer/matchFilterDrawer';
 import { useMatchFilterStore } from '../../matchFilterStore';
-import { useAnalyticsResultStore } from '../../analysisResultStore';
 import style from './contestDrawerList.module.scss';
 import iconFilter from './img/filterIcon.png';
 import ContestCard from '../contestCard/contestCard';
+import { useQueryFormStore } from '@/app/aiBigData/queryFormStore';
 
 function ContestDrawerList({
     isOpen,
@@ -34,7 +34,7 @@ function ContestDrawerList({
     const filterList = useMatchFilterStore.use.filterList();
     const [isFilterOpen, setIsFilterOpen] = useState(true);
     const contestList = useMatchFilterStore.use.contestList();
-    const defaultPageIndex = useAnalyticsResultStore.use.defaultPageIndex();
+    const defaultPageIndex = useQueryFormStore.use.defaultPageIndex();
 
     const closeFilter = () => {
         setIsFilterOpen(false);

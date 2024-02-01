@@ -129,14 +129,14 @@ function SystemError() {
 
 function AnalysisResult() {
     const router = useRouter();
-    const defaultPageIndex = useAnalyticsResultStore.use.defaultPageIndex();
-    const setDefaultPageIndex = useAnalyticsResultStore.use.setDefaultPageIndex();
+    const defaultPageIndex = useQueryFormStore.use.defaultPageIndex();
+    // const setDefaultPageIndex = useAnalyticsResultStore.use.setDefaultPageIndex();
     const showContestDrawer = useAnalyticsResultStore.use.showContestDrawer();
     const setShowContestDrawer = useAnalyticsResultStore.use.setShowContestDrawer();
     const selectedResult = useAnalyticsResultStore.use.selectedResult();
     const contestList = useAnalyticsResultStore.use.contestList();
-    const showedTutorial = useAnalyticsResultStore.use.showedTutorial();
-    const setShowedTutorial = useAnalyticsResultStore.use.setShowedTutorial();
+    // const showedTutorial = useAnalyticsResultStore.use.showedTutorial();
+    // const setShowedTutorial = useAnalyticsResultStore.use.setShowedTutorial();
 
     const endDate = useQueryFormStore.use.endDate();
     const startDate = useQueryFormStore.use.startDate();
@@ -155,16 +155,16 @@ function AnalysisResult() {
     const dialogContent = useAnalyticsResultStore.use.dialogContent();
     const setOpenNormalDialog = useAnalyticsResultStore.use.setOpenNormalDialog();
     const openNoramlDialog = useAnalyticsResultStore.use.openNoramlDialog();
-    const analysisRecord = useAnalyticsResultStore.use.analysisResultData();
+    // const analysisRecord = useAnalyticsResultStore.use.analysisResultData();
     const checkboxState = useQueryFormStore.use.checkboxState();
     const { handicap, overUnder } = checkboxState;
     const setDialogContentType = useAnalyticsResultStore.use.setDialogContentType();
     const setUserInfo = useUserStore.use.setUserInfo();
     const allowSlideScroll = useAnalyticsResultStore.use.tabSlideScroll();
 
-    useEffect(() => {
-        setShowedTutorial(Boolean(localStorage.getItem('showAnalysisTutorial')));
-    }, []);
+    // useEffect(() => {
+    //     setShowedTutorial(Boolean(localStorage.getItem('showAnalysisTutorial')));
+    // }, []);
 
     const tabStyle = {
         gap: 4,
@@ -197,7 +197,8 @@ function AnalysisResult() {
 
     const handlePlanTabClick = (tabName: string) => {
         const index = tabList.findIndex(item => item.params === tabName);
-        setDefaultPageIndex(index || 0);
+        index;
+        // setDefaultPageIndex(index || 0);
     };
 
     const getUserInfo = async () => {
@@ -326,11 +327,11 @@ function AnalysisResult() {
                     })}
                 </Tabs>
             </div>
-            {!showedTutorial && analysisRecord ? (
+            {/* {!showedTutorial && analysisRecord ? (
                 <div className={style.tutorialBlock}>
-                    {/* <Tutorial setDefaultPageIndex={setDefaultPageIndex} /> */}
+                    <Tutorial setDefaultPageIndex={setDefaultPageIndex} />
                 </div>
-            ) : null}
+            ) : null} */}
             <ErrorDialog
                 content={<div className={style.dialogContent}>{dialogContent}</div>}
                 onClose={() => {

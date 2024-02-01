@@ -50,6 +50,12 @@ interface QueryFormState extends InitState {
     isAnalysisBySearch: boolean;
     setIsAnalysisBySearch: (isAnalysisBySearch: boolean) => void;
     resetQuery: () => void;
+    showedTutorial: boolean;
+    setShowedTutorial: (showedTutorial: boolean) => void;
+    defaultPageIndex: number;
+    setDefaultPageIndex: (defaultPageIndex: number) => void;
+    playTutorial: boolean;
+    setPlayTutoral: (playTutorial: boolean) => void;
 }
 
 let useQueryFormStore: StoreWithSelectors<QueryFormState>;
@@ -337,6 +343,24 @@ const initialState = (
                 overUnder: true
             }
         }));
+    },
+    showedTutorial: false,
+    setShowedTutorial: (showedTutorial: boolean) => {
+        set(state => {
+            return { ...state, showedTutorial };
+        });
+    },
+    defaultPageIndex: 0,
+    setDefaultPageIndex: (defaultPageIndex: number) => {
+        set(state => {
+            return { ...state, defaultPageIndex };
+        });
+    },
+    playTutorial: true,
+    setPlayTutoral: (playTutorial: boolean) => {
+        set(state => {
+            return { ...state, playTutorial };
+        });
     }
 });
 
