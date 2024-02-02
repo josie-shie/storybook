@@ -46,7 +46,7 @@ function AnalysisItem({
         const updatedArticleList = [...predictArticleList, ...res.data.posts];
         setPredictArticleList(updatedArticleList);
         setArticleLength(res.data.pagination.totalCount);
-        setTotalPage(res.data.pagination.pageCount);
+        setTotalPage(res.data.pagination.totalCount);
         setIsNoData(res.data.pagination.totalCount === 0);
     };
 
@@ -146,7 +146,7 @@ function AnalysisItem({
                             </li>
                         );
                     })}
-                    {currentPage < totalPage ? (
+                    {predictArticleList.length < totalPage ? (
                         <InfiniteScroll onVisible={loadMoreList}>
                             <div className={style.loadMore}>
                                 <CircularProgress size={24} />
