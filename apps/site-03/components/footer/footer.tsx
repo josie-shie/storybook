@@ -1,6 +1,6 @@
 'use client';
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { usePathname } from 'next/navigation';
 import style from './footer.module.scss';
 import GameIcon from './img/game.svg';
@@ -48,14 +48,13 @@ const CategoryList = [
 ];
 
 function FooterComponent() {
-    // const router = useRouter();
     const pathname = usePathname();
 
     const [activeItem, setActiveItem] = useState(pathname);
 
-    useEffect(() => {
-        setActiveItem(pathname);
-    }, [pathname]);
+    const updateActive = (path: string) => {
+        setActiveItem(path);
+    };
 
     return (
         <div className={style.footerPlaceholder}>
@@ -64,13 +63,13 @@ function FooterComponent() {
                     return (
                         <Link
                             className={`${style.listItem} ${
-                                activeItem === menu.value ||
-                                menu.includedRouters.some(str => activeItem.includes(str))
-                                    ? style.active
-                                    : ''
+                                activeItem === menu.value ? style.active : ''
                             }`}
                             href={menu.value}
                             key={menu.value}
+                            onClick={() => {
+                                updateActive(menu.value);
+                            }}
                             title={menu.label}
                         >
                             <div className={style.iconBox}>{menu.icon}</div>
