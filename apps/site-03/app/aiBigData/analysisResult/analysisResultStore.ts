@@ -374,7 +374,7 @@ const initialState = (
             };
         });
     },
-    dialogContentType: 'system',
+    dialogContentType: 'leaveResult',
     openNoramlDialog: false,
     dialogContent: null,
     setOpenNormalDialog: (openNoramlDialog: boolean) => {

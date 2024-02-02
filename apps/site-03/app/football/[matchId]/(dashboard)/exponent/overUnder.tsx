@@ -40,10 +40,10 @@ function OddBar({
                 className={`odd ${
                     isCompare &&
                     initialData &&
-                    getOddsClassName(initialData.underOdds, targetData.underOdds)
+                    getOddsClassName(initialData.overOdds, targetData.overOdds)
                 }`}
             >
-                {targetData.underOdds}
+                {targetData.overOdds}
             </div>
             <div
                 className={`odd ${
@@ -56,11 +56,12 @@ function OddBar({
                 className={`odd ${
                     isCompare &&
                     initialData &&
-                    getOddsClassName(initialData.overOdds, targetData.overOdds)
+                    getOddsClassName(initialData.underOdds, targetData.underOdds)
                 }`}
             >
-                {targetData.overOdds}
+                {targetData.underOdds}
             </div>
+
             {isCompare ? (
                 <div className="odd more">
                     <MoreIcon />

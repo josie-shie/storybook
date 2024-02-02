@@ -92,7 +92,7 @@ function BarChart({ chartData }: { chartData: StatisticsCategories }) {
                                 display: !handicap.upper ? 'none' : 'inherit'
                             }}
                         >
-                            {handicap.upper}%
+                            {handicap.upper > 16 ? `${handicap.upper}%` : null}
                         </div>
                         <div
                             className={`${style.block} ${style.bottom}`}
@@ -101,7 +101,7 @@ function BarChart({ chartData }: { chartData: StatisticsCategories }) {
                                 display: !handicap.lower ? 'none' : 'flex'
                             }}
                         >
-                            {handicap.lower}%
+                            {handicap.lower > 16 ? `${handicap.lower}%` : null}
                         </div>
                     </div>
                 </li>
@@ -115,7 +115,7 @@ function BarChart({ chartData }: { chartData: StatisticsCategories }) {
                                 display: !overUnder.over ? 'none' : 'inherit'
                             }}
                         >
-                            {overUnder.over}%
+                            {overUnder.over > 16 ? `${overUnder.over}%` : null}
                         </div>
                         <div
                             className={`${style.block} ${style.bottom}`}
@@ -124,7 +124,7 @@ function BarChart({ chartData }: { chartData: StatisticsCategories }) {
                                 display: !overUnder.under ? 'none' : 'flex'
                             }}
                         >
-                            {overUnder.under}%
+                            {overUnder.under > 16 ? `${overUnder.under}%` : null}
                         </div>
                     </div>
                 </li>
@@ -138,7 +138,7 @@ function BarChart({ chartData }: { chartData: StatisticsCategories }) {
                                 display: !moneyLine.home ? 'none' : 'inherit'
                             }}
                         >
-                            {moneyLine.home}%
+                            {moneyLine.home > 16 ? `${moneyLine.home}%` : null}
                         </div>
                         <div
                             className={`${style.block} ${style.middle}`}
@@ -147,7 +147,7 @@ function BarChart({ chartData }: { chartData: StatisticsCategories }) {
                                 display: !moneyLine.away ? 'none' : 'flex'
                             }}
                         >
-                            {moneyLine.away}%
+                            {moneyLine.away > 16 ? `${moneyLine.away}%` : null}
                         </div>
                         <div
                             className={`${style.block} ${style.bottom}`}
@@ -156,7 +156,7 @@ function BarChart({ chartData }: { chartData: StatisticsCategories }) {
                                 display: !moneyLine.draw ? 'none' : 'flex'
                             }}
                         >
-                            {moneyLine.draw}%
+                            {moneyLine.draw > 16 ? `${moneyLine.draw}%` : null}
                         </div>
                     </div>
                 </li>

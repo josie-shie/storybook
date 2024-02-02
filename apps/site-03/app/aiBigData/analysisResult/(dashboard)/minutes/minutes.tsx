@@ -7,6 +7,7 @@ import { GoalsIn15MinsType, getFootballStatsMatches } from 'data-center';
 import FifteenMinutesChart from './components/fifteenMinutesChart/fifteenMinutesChart';
 import MinutesTable from './components/minutesTable/minutesTable';
 import Range from './range';
+import Footer from '../../components/footer/footer';
 
 function MinutesContent({
     list,
@@ -117,6 +118,7 @@ function Minutes() {
             <div className={style.minutes}>
                 <MinutesContent list={list} maxOverValueIndex={maxOverValueIndex} />
                 <Range />
+                <Footer />
             </div>
         </>
     );

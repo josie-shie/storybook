@@ -238,6 +238,7 @@
             justify-content: center;
             text-align: center;
             color: #9b9b9b;
+            white-space: nowrap;
         }
 
         .refund {
@@ -280,75 +281,5 @@
         .confirm {
             color: #4489ff;
         }
-    }
-}
-
-@keyframes dropTopShadowFadeOut {
-    0%,
-    60% {
-        filter: drop-shadow(0 0 17px rgb(255 255 255 / 60%));
-    }
-
-    100% {
-        filter: none;
-    }
-}
-
-@keyframes dropBottomShadowFadeOut {
-    0%,
-    60% {
-        box-shadow: 0 0 17px 0 rgb(255 255 255 / 60%);
-    }
-
-    100% {
-        box-shadow: none;
-    }
-}
-
-@keyframes handicapExpandAnimation {
-    0% {
-        width: 10px;
-        height: 10px;
-    }
-
-    100% {
-        width: 66px;
-        height: 277px;
-    }
-}
-
-@keyframes minutesExpandAnimation {
-    0% {
-        width: 66px;
-        height: 180px;
-    }
-
-    100% {
-        width: 134px;
-        height: 160px;
-    }
-}
-
-@keyframes rangeExpandAnimation {
-    0% {
-        width: 134px;
-        height: 160px;
-    }
-
-    100% {
-        width: 227px;
-        height: 199px;
-    }
-}
-
-@keyframes bodanExpandAnimation {
-    0% {
-        width: 0;
-        height: 0;
-    }
-
-    100% {
-        width: 130px;
-        height: 35px;
     }
 }

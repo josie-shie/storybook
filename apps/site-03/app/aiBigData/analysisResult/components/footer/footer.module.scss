@@ -1,0 +1,19 @@
+.footer {
+    width: 100%;
+    margin-top: 16px;
+    position: relative;
+    padding-bottom: 36px;
+
+    .text {
+        color: #9b9b9b;
+        text-align: center;
+        font-size: 12px;
+        font-weight: 400;
+    }
+
+    .back {
+        position: absolute;
+        right: 0;
+        top: -4px;
+    }
+}
