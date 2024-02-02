@@ -937,7 +937,7 @@ function TabContent({
                 <div className={style.largeGap}>
                     {secondRender || status === 'exponent' ? (
                         //  fetchInitData?.exponent || fetchData.exponent
-                        <Exponent exponentData={exponentMock} />
+                        <Exponent exponentData={exponentMock} matchId={matchId} />
                     ) : null}
                 </div>
                 <div className={style.largeGap}>

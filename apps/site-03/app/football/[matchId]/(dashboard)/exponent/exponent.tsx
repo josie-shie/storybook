@@ -2,8 +2,15 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { slickOption } from 'ui/stories/slickPro/slick';
-import type { GetExponentResponse } from 'data-center';
-import { createExponentStore } from '../../exponentStore';
+import type {
+    GetExponentResponse,
+    ExponentHandicapsInfo,
+    ExponentWinDrawLoseInfo,
+    ExponentOverUnderInfo
+} from 'data-center';
+import { mqttService } from 'lib';
+import { createExponentStore, useExponentStore } from '../../exponentStore';
+import { useContestDetailStore } from '../../contestDetailStore';
 import style from './exponent.module.scss';
 import Handicap from './handicap';
 import OverUnder from './overUnder';
@@ -11,11 +18,33 @@ import WinLose from './winLose';
 import Corners from './corners';
 import ExponentInfoDrawer from './detailDrawer/exponentInfoDrawer';
 
-function Exponent({ exponentData }: { exponentData: GetExponentResponse }) {
+interface OddsRunningMqttResponse {
+    matchId: number;
+    companyId: number;
+    odds1: string;
+    odds2: string;
+    odds3: string;
+    type: number;
+    modifytime: number;
+}
+
+type TabListType = 'handicap' | 'overUnder' | 'winDrawLose' | 'corners';
+
+function Exponent({
+    exponentData,
+    matchId
+}: {
+    exponentData: GetExponentResponse;
+    matchId: number;
+}) {
     createExponentStore({
         companyList: exponentData.companyList,
         companyInfo: exponentData.companyInfo
     });
+
+    const companyInfo = useExponentStore.use.companyInfo();
+    const setCompanyInfo = useExponentStore.use.setCompanyInfo();
+    const matchDetail = useContestDetailStore.use.matchDetail();
 
     const tabActive = {
         backgroundColor: '#4489FF',
@@ -44,6 +73,75 @@ function Exponent({ exponentData }: { exponentData: GetExponentResponse }) {
     const handleResetHeight = () => {
         slickOption.contestInfoResetHeight();
     };
+
+    const syncExponent = (message: OddsRunningMqttResponse) => {
+        if (message.matchId === Number(matchId)) {
+            const newData = { ...companyInfo };
+            let updateType = '' as TabListType;
+            let updateData = {} as
+                | ExponentHandicapsInfo
+                | ExponentWinDrawLoseInfo
+                | ExponentOverUnderInfo;
+
+            switch (message.type) {
+                case 1:
+                case 6:
+                    updateType = 'handicap';
+                    updateData = {
+                        handicap: parseFloat(message.odds2),
+                        homeOdds: parseFloat(message.odds1),
+                        awayOdds: parseFloat(message.odds3),
+                        closed: message.type === 6
+                    };
+                    break;
+                case 2:
+                case 7:
+                    updateType = 'overUnder';
+                    updateData = {
+                        line: parseFloat(message.odds2),
+                        overOdds: parseFloat(message.odds1),
+                        underOdds: parseFloat(message.odds3),
+                        closed: message.type === 7
+                    };
+                    break;
+                case 4:
+                case 5:
+                    updateType = 'winDrawLose';
+                    updateData = {
+                        homeWin: parseFloat(message.odds1),
+                        draw: parseFloat(message.odds2),
+                        awayWin: parseFloat(message.odds3),
+                        closed: message.type === 5
+                    };
+                    break;
+                case 8:
+                case 9:
+                    updateType = 'corners';
+                    updateData = {
+                        line: parseFloat(message.odds2),
+                        overOdds: parseFloat(message.odds1),
+                        underOdds: parseFloat(message.odds3),
+                        closed: message.type === 9
+                    };
+                    break;
+                default:
+                    console.error('Unknown type');
+                    break;
+            }
+
+            if (message.companyId in newData[updateType]) {
+                newData[updateType][message.companyId].live = updateData;
+
+                if (matchDetail.state < 1) {
+                    newData[updateType][message.companyId].beforeMatch = updateData;
+                }
+
+                setCompanyInfo(newData);
+            }
+        }
+    };
+
+    mqttService.getOddsRunning(syncExponent);
 
     return (
         <>
