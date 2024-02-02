@@ -23,6 +23,7 @@ import Tutorial from '../components/tutorial/tutorial';
 
 function LeaveResultPage() {
     const router = useRouter();
+    const setDefaultPageIndex = useQueryFormStore.use.setDefaultPageIndex();
     const setOpenNormalDialog = useAnalyticsResultStore.use.setOpenNormalDialog();
 
     return (
@@ -36,6 +37,7 @@ function LeaveResultPage() {
                     <div
                         onClick={() => {
                             setOpenNormalDialog(false);
+                            setDefaultPageIndex(0);
                             router.push('/aiBigData/queryForm');
                         }}
                     >

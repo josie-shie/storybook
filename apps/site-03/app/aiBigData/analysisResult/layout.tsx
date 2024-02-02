@@ -31,7 +31,6 @@ function QueryInfo({ children }: { children: ReactNode }) {
     const setDialogContentType = useAnalyticsResultStore.use.setDialogContentType();
     const setHandicapEchart = useAnalyticsResultStore.use.setHandicapEchart();
     const setUserInfo = useUserStore.use.setUserInfo();
-    const setDefaultPageIndex = useQueryFormStore.use.setDefaultPageIndex();
 
     const handicapTeam = {
         home: '主',
@@ -114,7 +113,6 @@ function QueryInfo({ children }: { children: ReactNode }) {
     const back = () => {
         setDialogContentType('leaveResult');
         setOpenNormalDialog(true);
-        setDefaultPageIndex(0);
     };
 
     return (

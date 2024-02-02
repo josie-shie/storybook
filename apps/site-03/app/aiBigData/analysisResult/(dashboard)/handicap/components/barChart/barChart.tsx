@@ -89,7 +89,9 @@ function BarChart({ chartData }: { chartData: StatisticsCategories }) {
                             className={`${style.block} ${style.top}`}
                             style={{
                                 height: `${handicap.upper}%`,
-                                display: !handicap.upper ? 'none' : 'inherit'
+                                display: !handicap.upper ? 'none' : 'inherit',
+                                borderBottomLeftRadius: handicap.lower <= 0 ? '4px' : 0,
+                                borderBottomRightRadius: handicap.lower <= 0 ? '4px' : 0
                             }}
                         >
                             {handicap.upper > 16 ? `${handicap.upper}%` : null}
@@ -98,7 +100,9 @@ function BarChart({ chartData }: { chartData: StatisticsCategories }) {
                             className={`${style.block} ${style.bottom}`}
                             style={{
                                 height: `${handicap.lower}%`,
-                                display: !handicap.lower ? 'none' : 'flex'
+                                display: !handicap.lower ? 'none' : 'flex',
+                                borderTopLeftRadius: handicap.upper <= 0 ? '4px' : 0,
+                                borderTopRightRadius: handicap.upper <= 0 ? '4px' : 0
                             }}
                         >
                             {handicap.lower > 16 ? `${handicap.lower}%` : null}
@@ -112,7 +116,9 @@ function BarChart({ chartData }: { chartData: StatisticsCategories }) {
                             className={`${style.block} ${style.top}`}
                             style={{
                                 height: `${overUnder.over}%`,
-                                display: !overUnder.over ? 'none' : 'inherit'
+                                display: !overUnder.over ? 'none' : 'inherit',
+                                borderBottomLeftRadius: overUnder.under <= 0 ? '4px' : 0,
+                                borderBottomRightRadius: overUnder.under <= 0 ? '4px' : 0
                             }}
                         >
                             {overUnder.over > 16 ? `${overUnder.over}%` : null}
@@ -121,7 +127,9 @@ function BarChart({ chartData }: { chartData: StatisticsCategories }) {
                             className={`${style.block} ${style.bottom}`}
                             style={{
                                 height: `${overUnder.under}%`,
-                                display: !overUnder.under ? 'none' : 'flex'
+                                display: !overUnder.under ? 'none' : 'flex',
+                                borderTopLeftRadius: overUnder.over <= 0 ? '4px' : 0,
+                                borderTopRightRadius: overUnder.over <= 0 ? '4px' : 0
                             }}
                         >
                             {overUnder.under > 16 ? `${overUnder.under}%` : null}
@@ -135,7 +143,11 @@ function BarChart({ chartData }: { chartData: StatisticsCategories }) {
                             className={`${style.block} ${style.top}`}
                             style={{
                                 height: `${moneyLine.home}%`,
-                                display: !moneyLine.home ? 'none' : 'inherit'
+                                display: !moneyLine.home ? 'none' : 'inherit',
+                                borderBottomLeftRadius:
+                                    moneyLine.draw && moneyLine.away <= 0 ? '4px' : 0,
+                                borderBottomRightRadius:
+                                    moneyLine.draw && moneyLine.away <= 0 ? '4px' : 0
                             }}
                         >
                             {moneyLine.home > 16 ? `${moneyLine.home}%` : null}
@@ -144,7 +156,11 @@ function BarChart({ chartData }: { chartData: StatisticsCategories }) {
                             className={`${style.block} ${style.middle}`}
                             style={{
                                 height: `${moneyLine.away}%`,
-                                display: !moneyLine.away ? 'none' : 'flex'
+                                display: !moneyLine.away ? 'none' : 'flex',
+                                borderBottomLeftRadius: moneyLine.draw <= 0 ? '4px' : 0,
+                                borderBottomRightRadius: moneyLine.draw <= 0 ? '4px' : 0,
+                                borderTopLeftRadius: moneyLine.home <= 0 ? '4px' : 0,
+                                borderTopRightRadius: moneyLine.home <= 0 ? '4px' : 0
                             }}
                         >
                             {moneyLine.away > 16 ? `${moneyLine.away}%` : null}
