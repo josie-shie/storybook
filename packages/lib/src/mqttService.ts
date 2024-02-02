@@ -1,13 +1,7 @@
 import type { MqttClient } from 'mqtt';
 import * as mqtt from 'mqtt';
 import { getRandomInt } from './random';
-import {
-    deProtoOdds,
-    deProtoOddsChange,
-    deProtoAnalysis,
-    toProtoAnalysis,
-    deProtoNotifyMessage
-} from './prtobuf';
+import { deProtoOdds, deProtoOddsChange, deProtoAnalysis, toProtoAnalysis } from './prtobuf';
 
 export interface AnalysisRequest {
     mission: string;
@@ -520,15 +514,11 @@ const handleAnalysisMessage = async (message: Buffer) => {
     }
 };
 
-const handleNotifyMessage = async (message: Buffer) => {
-    const messageObject = await deProtoNotifyMessage(message);
-
-    const decodedMessage = toSerializableObject(
-        messageObject as unknown as Record<string, unknown>
-    );
+const handleNotifyMessage = (message: Buffer) => {
+    const messageObject = JSON.parse(textDecoder.decode(message)) as NotifyMessage;
 
     for (const messageMethod of usedNotifyMessageQueue) {
-        messageMethod(decodedMessage as unknown as NotifyMessage);
+        messageMethod(messageObject as unknown as NotifyMessage);
     }
 };
 
@@ -681,7 +671,7 @@ export const mqttService = {
                 if (topic === 'updateasia_odds_change') void handleOddsChangeMessage(message);
                 if (topic === 'updatetechnic') handleDetailTechnicListMessage(message);
                 if (topic === 'analytical/analysis') void handleAnalysisMessage(message);
-                if (topic === `sportim/notify/${memberId}`) void handleNotifyMessage(message);
+                if (topic === `sportim/notify/${memberId}`) handleNotifyMessage(message);
             });
             init = false;
 
