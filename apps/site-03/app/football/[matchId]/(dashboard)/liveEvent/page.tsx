@@ -7,7 +7,6 @@ async function Page({ params }: { params: { matchId: number } }) {
     if (!liveTextData.success) {
         return new Error();
     }
-
     return (
         <TabContent
             fetchInitData={{ textLive: liveTextData.data }}
