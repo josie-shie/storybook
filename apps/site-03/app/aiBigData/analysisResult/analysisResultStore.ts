@@ -19,7 +19,10 @@ export interface Statistics {
     upperPercentage: number;
     lowerPercentage: number;
     drawPercentage: number;
-    matchIds?: number[];
+    upperMatchIds?: number[];
+    lowerMatchIds?: number[];
+    drawMatchIds?: number[];
+    totalMatchIds?: number[];
 }
 
 export interface StatisticsCategories {
@@ -57,6 +60,14 @@ function groupSameWeek(dayListData: Record<string, Statistics>) {
         const date = dayjs(timestampInSeconds * 1000);
 
         const weekNumber = date.isoWeek();
+        const totalMatchIds = [
+            ...(dayListData[dateStr].upperMatchIds || []),
+            ...(dayListData[dateStr].lowerMatchIds || []),
+            ...(dayListData[dateStr].drawMatchIds || [])
+        ];
+        const uniqueMatchIds = totalMatchIds.filter((value, index, self) => {
+            return self.indexOf(value) === index;
+        });
 
         if (!Object.prototype.hasOwnProperty.call(weeklyData, weekNumber)) {
             weeklyData[weekNumber] = {
@@ -66,7 +77,7 @@ function groupSameWeek(dayListData: Record<string, Statistics>) {
                 upperPercentage: 0,
                 drawPercentage: 0,
                 lowerPercentage: 0,
-                matchIds: dayListData[dateStr].matchIds || []
+                totalMatchIds: uniqueMatchIds
             };
         }
 
@@ -145,16 +156,16 @@ const initialState = (
                 if (
                     Object.prototype.hasOwnProperty.call(fullDayHandicap, dayjs(item.date).unix())
                 ) {
-                    fullDayHandicap[dayjs(item.date).unix()].upper = item.matches;
+                    fullDayHandicap[dayjs(item.date).unix()].upper = item.matchIds.length;
                 } else {
                     fullDayHandicap[dayjs(item.date).unix()] = {
-                        upper: item.matches,
+                        upper: item.matchIds.length,
                         lower: 0,
                         draw: 0,
                         upperPercentage: 0,
                         drawPercentage: 0,
                         lowerPercentage: 0,
-                        matchIds: analysisResultData.fullHandicapUpper?.map(match => match.matchId)
+                        upperMatchIds: item.matchIds
                     };
                 }
             });
@@ -163,16 +174,16 @@ const initialState = (
                 if (
                     Object.prototype.hasOwnProperty.call(fullDayHandicap, dayjs(item.date).unix())
                 ) {
-                    fullDayHandicap[dayjs(item.date).unix()].lower = item.matches;
+                    fullDayHandicap[dayjs(item.date).unix()].lower = item.matchIds.length;
                 } else {
                     fullDayHandicap[dayjs(item.date).unix()] = {
                         upper: 0,
-                        lower: item.matches,
+                        lower: item.matchIds.length,
                         draw: 0,
                         upperPercentage: 0,
                         drawPercentage: 0,
                         lowerPercentage: 0,
-                        matchIds: analysisResultData.fullHandicapLower?.map(match => match.matchId)
+                        lowerMatchIds: item.matchIds
                     };
                 }
             });
@@ -181,15 +192,16 @@ const initialState = (
                 if (
                     Object.prototype.hasOwnProperty.call(fullDayHandicap, dayjs(item.date).unix())
                 ) {
-                    fullDayHandicap[dayjs(item.date).unix()].draw = item.matches;
+                    fullDayHandicap[dayjs(item.date).unix()].draw = item.matchIds.length;
                 } else {
                     fullDayHandicap[dayjs(item.date).unix()] = {
                         upper: 0,
                         lower: 0,
-                        draw: item.matches,
+                        draw: item.matchIds.length,
                         upperPercentage: 0,
                         drawPercentage: 0,
-                        lowerPercentage: 0
+                        lowerPercentage: 0,
+                        drawMatchIds: item.matchIds
                     };
                 }
             });
@@ -199,16 +211,16 @@ const initialState = (
                 if (
                     Object.prototype.hasOwnProperty.call(fullDayOverUnder, dayjs(item.date).unix())
                 ) {
-                    fullDayOverUnder[dayjs(item.date).unix()].upper = item.matches;
+                    fullDayOverUnder[dayjs(item.date).unix()].upper = item.matchIds.length;
                 } else {
                     fullDayOverUnder[dayjs(item.date).unix()] = {
-                        upper: item.matches,
+                        upper: item.matchIds.length,
                         lower: 0,
                         draw: 0,
                         upperPercentage: 0,
                         drawPercentage: 0,
                         lowerPercentage: 0,
-                        matchIds: analysisResultData.fullOverUnderOver?.map(match => match.matchId)
+                        upperMatchIds: item.matchIds
                     };
                 }
             });
@@ -218,16 +230,16 @@ const initialState = (
                 if (
                     Object.prototype.hasOwnProperty.call(fullDayOverUnder, dayjs(item.date).unix())
                 ) {
-                    fullDayOverUnder[dayjs(item.date).unix()].lower = item.matches;
+                    fullDayOverUnder[dayjs(item.date).unix()].lower = item.matchIds.length;
                 } else {
                     fullDayOverUnder[dayjs(item.date).unix()] = {
                         upper: 0,
-                        lower: item.matches,
+                        lower: item.matchIds.length,
                         draw: 0,
                         upperPercentage: 0,
                         drawPercentage: 0,
                         lowerPercentage: 0,
-                        matchIds: analysisResultData.fullOverUnderUnder?.map(match => match.matchId)
+                        lowerMatchIds: item.matchIds
                     };
                 }
             });
@@ -237,15 +249,16 @@ const initialState = (
                 if (
                     Object.prototype.hasOwnProperty.call(fullDayOverUnder, dayjs(item.date).unix())
                 ) {
-                    fullDayOverUnder[dayjs(item.date).unix()].draw = item.matches;
+                    fullDayOverUnder[dayjs(item.date).unix()].draw = item.matchIds.length;
                 } else {
                     fullDayOverUnder[dayjs(item.date).unix()] = {
                         upper: 0,
                         lower: 0,
-                        draw: item.matches,
+                        draw: item.matchIds.length,
                         upperPercentage: 0,
                         drawPercentage: 0,
-                        lowerPercentage: 0
+                        lowerPercentage: 0,
+                        drawMatchIds: item.matchIds
                     };
                 }
             });
@@ -255,15 +268,16 @@ const initialState = (
                 if (
                     Object.prototype.hasOwnProperty.call(fullDayMoneyLine, dayjs(item.date).unix())
                 ) {
-                    fullDayMoneyLine[dayjs(item.date).unix()].upper = item.matches;
+                    fullDayMoneyLine[dayjs(item.date).unix()].upper = item.matchIds.length;
                 } else {
                     fullDayMoneyLine[dayjs(item.date).unix()] = {
-                        upper: item.matches,
+                        upper: item.matchIds.length,
                         lower: 0,
                         draw: 0,
                         upperPercentage: 0,
                         drawPercentage: 0,
-                        lowerPercentage: 0
+                        lowerPercentage: 0,
+                        upperMatchIds: item.matchIds
                     };
                 }
             });
@@ -273,15 +287,16 @@ const initialState = (
                 if (
                     Object.prototype.hasOwnProperty.call(fullDayMoneyLine, dayjs(item.date).unix())
                 ) {
-                    fullDayMoneyLine[dayjs(item.date).unix()].lower = item.matches;
+                    fullDayMoneyLine[dayjs(item.date).unix()].lower = item.matchIds.length;
                 } else {
                     fullDayMoneyLine[dayjs(item.date).unix()] = {
                         upper: 0,
-                        lower: item.matches,
+                        lower: item.matchIds.length,
                         draw: 0,
                         upperPercentage: 0,
                         drawPercentage: 0,
-                        lowerPercentage: 0
+                        lowerPercentage: 0,
+                        lowerMatchIds: item.matchIds
                     };
                 }
             });
@@ -291,15 +306,16 @@ const initialState = (
                 if (
                     Object.prototype.hasOwnProperty.call(fullDayMoneyLine, dayjs(item.date).unix())
                 ) {
-                    fullDayMoneyLine[dayjs(item.date).unix()].draw = item.matches;
+                    fullDayMoneyLine[dayjs(item.date).unix()].draw = item.matchIds.length;
                 } else {
                     fullDayMoneyLine[dayjs(item.date).unix()] = {
                         upper: 0,
                         lower: 0,
-                        draw: item.matches,
+                        draw: item.matchIds.length,
                         upperPercentage: 0,
                         drawPercentage: 0,
-                        lowerPercentage: 0
+                        lowerPercentage: 0,
+                        drawMatchIds: item.matchIds
                     };
                 }
             });

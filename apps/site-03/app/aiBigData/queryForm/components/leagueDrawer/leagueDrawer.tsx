@@ -205,6 +205,11 @@ function LeagueDrawer() {
     const [isOpenDrawer, setIsOpenDrawer] = useState(false);
     const contestInfo = useMatchFilterStore.use.contestInfo();
     const selectedleagueIdList = useMatchFilterStore.use.selectedleagueIdList();
+    const resetQuery = useMatchFilterStore.use.resetQuery();
+
+    useEffect(() => {
+        resetQuery();
+    }, []);
 
     return (
         <div className={style.leagueDrawer}>

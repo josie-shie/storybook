@@ -33,6 +33,7 @@ interface ContestList extends InitState {
     revertFilterList: (group: GroupType) => void;
     resetFilter: (group: GroupType) => void;
     reset: () => void;
+    resetQuery: () => void;
 }
 
 let isInit = true;
@@ -287,6 +288,9 @@ const initialState = (set: (updater: (state: ContestList) => Partial<ContestList
     },
     reset: () => {
         set(() => ({ contestList: [], contestInfo: {} }));
+    },
+    resetQuery: () => {
+        set(() => ({ selectedleagueIdList: [] }));
     }
 });
 

@@ -1,13 +1,13 @@
-import { MatchDateMatchListType, getFootballStatsMatches } from 'data-center';
+import { getFootballStatsMatches } from 'data-center';
 import style from './handicapTable.module.scss';
 import { useNotificationStore } from '@/store/notificationStore';
 import { useAnalyticsResultStore } from '@/app/aiBigData/analysisResult/analysisResultStore';
 import { useMatchFilterStore } from '@/app/aiBigData/analysisResult/matchFilterStore';
 
 interface TableDataType {
-    topValue?: MatchDateMatchListType[];
-    middleValue?: MatchDateMatchListType[];
-    bottomValue: MatchDateMatchListType[];
+    topValue?: number[];
+    middleValue?: number[];
+    bottomValue: number[];
     topLabel?: string;
     middleLabel?: string;
     bottomLabel: string;
@@ -41,18 +41,13 @@ function HandicapTable({ tableData }: { tableData: TableDataType[] }) {
         setShowContestDrawer(true);
     };
 
-    const openMatchListDrawer = (
-        matchList: MatchDateMatchListType[],
-        selectedType: string,
-        odds: string
-    ) => {
+    const openMatchListDrawer = (matchList: number[], selectedType: string, odds: string) => {
         setSelectedResult({
             type: selectedType,
             odds
         });
 
-        const matchIdList = matchList.map(match => match.matchId);
-        void fetchMatchList(matchIdList);
+        void fetchMatchList(matchList);
     };
 
     return (

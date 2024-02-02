@@ -2,27 +2,17 @@
 import { useEffect, type ReactNode } from 'react';
 import Chip from '@mui/material/Chip';
 import { useMatchFilterStore } from '../matchFilterStore';
-import { createAnalysisResultStore } from './analysisResultStore';
+import { createAnalysisResultStore, useAnalyticsResultStore } from './analysisResultStore';
 import { creatMatchFilterStore } from './matchFilterStore';
 import style from './layout.module.scss';
 import CloseIcon from './img/close.svg';
 import { useQueryFormStore } from '@/app/aiBigData/queryFormStore';
 import Header from '@/components/header/headerTransparent';
+import { GetFootballStatsRequest, getFootballStats, getMemberInfo } from 'data-center';
+import dayjs from 'dayjs';
+import { useUserStore } from '@/store/userStore';
 
 type HandicapSideType = 'home' | 'away';
-
-function CreateStore({ children }: { children: ReactNode }) {
-    createAnalysisResultStore({
-        analysisResultData: undefined
-    });
-
-    creatMatchFilterStore({
-        contestList: [],
-        contestInfo: {}
-    });
-
-    return <>{children}</>;
-}
 
 function QueryInfo({ children }: { children: ReactNode }) {
     const endDate = useQueryFormStore.use.endDate();
@@ -35,18 +25,93 @@ function QueryInfo({ children }: { children: ReactNode }) {
     const selectedleagueIdList = useMatchFilterStore.use.selectedleagueIdList();
     const contestInfo = useMatchFilterStore.use.contestInfo();
     const setFilterSelected = useMatchFilterStore.use.setFilterSelected();
+    const setLoading = useQueryFormStore.use.setLoading();
+    const setOpenNormalDialog = useAnalyticsResultStore.use.setOpenNormalDialog();
+    const setAnalysisResultData = useAnalyticsResultStore.use.setAnalysisResultData();
+    const setDialogContentType = useAnalyticsResultStore.use.setDialogContentType();
+    const setHandicapEchart = useAnalyticsResultStore.use.setHandicapEchart();
+    const setUserInfo = useUserStore.use.setUserInfo();
 
     const handicapTeam = {
         home: '主',
         away: '客'
     };
 
-    const handleDelete = (leagueName: string) => {
+    const handleDelete = async (leagueName: string, leagueId: number) => {
+        if (selectedleagueIdList.length <= 1) return;
+        const queryLeagueIds = selectedleagueIdList.filter(id => id !== leagueId);
+
+        await fetchData(queryLeagueIds);
         setFilterSelected(leagueName, 'league');
     };
 
+    const fetchData = async (queryLeagueIds: number[]) => {
+        const query: GetFootballStatsRequest = {
+            mission: 'create',
+            leagues: queryLeagueIds,
+            startTime: dayjs(startDate).unix(),
+            endTime: dayjs(endDate).unix()
+        };
+        if (handicap) {
+            query.handicapSide = teamSelected.length >= 2 ? 'all' : teamSelected[0];
+            query.handicapValues = teamHandicapOdds;
+        }
+        if (overUnder) {
+            query.overUnderValues = handicapOddsSelected;
+        }
+
+        setLoading(true);
+        const res = await getFootballStats(query);
+
+        if (!res.success) {
+            setTimeout(() => {
+                setOpenNormalDialog(true);
+                setLoading(false);
+                setAnalysisResultData(undefined);
+            }, 500);
+            return;
+        }
+
+        if (res.data.errorStatus) {
+            let dialogType = 'system';
+            switch (res.data.errorStatus) {
+                case '0':
+                    dialogType = 'system'; // 系統錯誤
+                    break;
+                case '1':
+                    dialogType = 'parameter'; // 參數錯誤
+                    break;
+                case '2':
+                    dialogType = 'empty'; //沒有資料
+                    break;
+                case '3':
+                    dialogType = 'balance'; // 餘額不足
+                    break;
+                default:
+                    break;
+            }
+            setDialogContentType(dialogType);
+            setOpenNormalDialog(true);
+            setLoading(false);
+            setAnalysisResultData(undefined);
+            return;
+        }
+
+        setAnalysisResultData(res.data);
+        setHandicapEchart(res.data);
+        setLoading(false);
+        void getUserInfo();
+    };
+
+    const getUserInfo = async () => {
+        const res = await getMemberInfo();
+        if (res.success) {
+            setUserInfo(res.data);
+        }
+    };
+
     return (
-        <CreateStore>
+        <>
             <div className={style.bigDataGame}>
                 <div className={style.column}>
                     <div className={style.row}>
@@ -60,7 +125,7 @@ function QueryInfo({ children }: { children: ReactNode }) {
                                         key={id}
                                         label={contestInfo[id].leagueChsShort}
                                         onDelete={() => {
-                                            handleDelete(contestInfo[id].leagueChsShort);
+                                            void handleDelete(contestInfo[id].leagueChsShort, id);
                                         }}
                                     />
                                 );
@@ -93,7 +158,7 @@ function QueryInfo({ children }: { children: ReactNode }) {
                 </div>
             </div>
             {children}
-        </CreateStore>
+        </>
     );
 }
 
@@ -101,6 +166,15 @@ function AnalysisResultLayout({ children }: { children: ReactNode }) {
     useEffect(() => {
         window.scroll(0, 0);
     }, []);
+
+    createAnalysisResultStore({
+        analysisResultData: undefined
+    });
+
+    creatMatchFilterStore({
+        contestList: [],
+        contestInfo: {}
+    });
 
     return (
         <div className={style.resultLayout}>

@@ -133,7 +133,7 @@ export type BigDataHintListResponse = BigDataHint[];
 
 const DailyMatchSchema = z.object({
     date: z.string(),
-    matches: z.number()
+    matchIds: z.array(z.number())
 });
 
 export type DailyMatch = z.infer<typeof DailyMatchSchema>;
@@ -149,12 +149,7 @@ const GoalsIn15MinsSchema = z.object({
     goalsUnder: z.array(z.number())
 });
 
-const MatchDateMatchListSchema = z.object({
-    matchId: z.number(),
-    matchDate: z.string()
-});
-
-export type MatchDateMatchListType = z.infer<typeof MatchDateMatchListSchema>;
+export type MatchDateMatchListType = z.infer<typeof DailyMatchSchema>;
 export type GoalsIn15Mins = z.infer<typeof GoalsIn15MinsSchema>;
 export type GoalsIn15MinsType = GoalsIn15Mins;
 
@@ -167,25 +162,16 @@ const GetFootballStatsSchema = z.object({
     startTime: z.number(),
     endTime: z.number(),
     // 全場讓球
-    fullHandicapUpper: z.array(MatchDateMatchListSchema).nullable(),
-    fullHandicapLower: z.array(MatchDateMatchListSchema).nullable(),
-    fullHandicapDraw: z.array(MatchDateMatchListSchema).nullable(),
     fullHandicapUpperDaily: z.array(DailyMatchSchema).nullable(),
     fullHandicapLowerDaily: z.array(DailyMatchSchema).nullable(),
     fullHandicapDrawDaily: z.array(DailyMatchSchema).nullable(),
 
     // 全場大小
-    fullOverUnderOver: z.array(MatchDateMatchListSchema).nullable(),
-    fullOverUnderUnder: z.array(MatchDateMatchListSchema).nullable(),
-    fullOverUnderDraw: z.array(MatchDateMatchListSchema).nullable(),
     fullOverUnderOverDaily: z.array(DailyMatchSchema).nullable(),
     fullOverUnderUnderDaily: z.array(DailyMatchSchema).nullable(),
     fullOverUnderDrawDaily: z.array(DailyMatchSchema).nullable(),
 
     // 全場獨贏
-    fullTimeHomeWin: z.array(MatchDateMatchListSchema).nullable(),
-    fullTimeDraw: z.array(MatchDateMatchListSchema).nullable(),
-    fullTimeAwayWin: z.array(MatchDateMatchListSchema).nullable(),
     fullTimeHomeWinDaily: z.array(DailyMatchSchema).nullable(),
     fullTimeDrawDaily: z.array(DailyMatchSchema).nullable(),
     fullTimeAwayWinDaily: z.array(DailyMatchSchema).nullable(),
@@ -408,23 +394,14 @@ export const getFootballStats = async (
         const formattedData = {
             getFootballStats: {
                 ...data.getFootballStats,
-                fullHandicapUpper: data.getFootballStats.fullHandicapUpper || [],
-                fullHandicapLower: data.getFootballStats.fullHandicapLower || [],
-                fullHandicapDraw: data.getFootballStats.fullHandicapDraw || [],
                 fullHandicapUpperDaily: data.getFootballStats.fullHandicapUpperDaily || [],
                 fullHandicapLowerDaily: data.getFootballStats.fullHandicapLowerDaily || [],
                 fullHandicapDrawDaily: data.getFootballStats.fullHandicapDrawDaily || [],
                 // 全場大小
-                fullOverUnderOver: data.getFootballStats.fullOverUnderOver || [],
-                fullOverUnderUnder: data.getFootballStats.fullOverUnderUnder || [],
-                fullOverUnderDraw: data.getFootballStats.fullOverUnderDraw || [],
                 fullOverUnderOverDaily: data.getFootballStats.fullOverUnderOverDaily || [],
                 fullOverUnderUnderDaily: data.getFootballStats.fullOverUnderUnderDaily || [],
                 fullOverUnderDrawDaily: data.getFootballStats.fullOverUnderDrawDaily || [],
                 // 全場獨贏
-                fullTimeHomeWin: data.getFootballStats.fullTimeHomeWin || [],
-                fullTimeDraw: data.getFootballStats.fullTimeDraw || [],
-                fullTimeAwayWin: data.getFootballStats.fullTimeAwayWin || [],
                 fullTimeHomeWinDaily: data.getFootballStats.fullTimeHomeWinDaily || [],
                 fullTimeDrawDaily: data.getFootballStats.fullTimeDrawDaily || [],
                 fullTimeAwayWinDaily: data.getFootballStats.fullTimeAwayWinDaily || [],

@@ -141,7 +141,7 @@ function MixedLineChart({
             {
                 type: 'bar' as const,
                 label: '',
-                data: new Array(lowerLineData.length).fill(95) as ChartDataType,
+                data: new Array(lowerLineData.length).fill(110) as ChartDataType,
                 borderWidth: 1,
                 borderColor: new Array(lowerLineData.length).fill('rgba(0, 0, 0, 0)'),
                 borderRadius: 4,
@@ -198,11 +198,13 @@ function MixedLineChart({
             Object.keys(chartData[periodSwitch][type])[clickedLabel]
         ] as Statistics;
 
-        if (Array.isArray(data.matchIds)) {
-            setMatchIds(data.matchIds);
-        } else {
-            setMatchIds([]);
-        }
+        const matchList = [...(data.lowerMatchIds || []), ...(data.upperMatchIds || [])].filter(
+            (value, index, self) => {
+                return self.indexOf(value) === index;
+            }
+        );
+
+        setMatchIds(matchList);
     };
 
     const options = {
@@ -242,8 +244,8 @@ function MixedLineChart({
                 type: 'linear' as const,
                 display: false,
                 position: 'left' as const,
-                min: -1,
-                max: 101,
+                min: -10,
+                max: 110,
                 ticks: {
                     stepSize: 50,
                     callback: function (value: number) {
@@ -287,19 +289,24 @@ function MixedLineChart({
 
         let index = 1;
         let totalMatchCount = 0;
+
         for (const key in chartData[periodSwitch][type]) {
             if (Object.prototype.hasOwnProperty.call(chartData[periodSwitch][type], key)) {
                 const dateItem = chartData[periodSwitch][type][key];
 
-                totalMatchCount += dateItem.matchIds?.length || 0;
+                const matchList = [
+                    ...(dateItem.upperMatchIds || []),
+                    ...(dateItem.lowerMatchIds || [])
+                ].filter((value, i, self) => {
+                    return self.indexOf(value) === i;
+                });
+
+                totalMatchCount += matchList.length;
 
                 if (periodSwitch === 'week') {
-                    arr.push([`W${index}`, `${dateItem.matchIds?.length || 0}场`]);
+                    arr.push([`W${index}`, `${dateItem.totalMatchIds?.length || 0}场`]);
                 } else {
-                    arr.push([
-                        dayjs(parseInt(key) * 1000).format('M/D'),
-                        `${dateItem.matchIds?.length || 0}场`
-                    ]);
+                    arr.push([dayjs(parseInt(key) * 1000).format('M/D'), `${matchList.length}场`]);
                 }
                 newUpperLineData.push(dateItem.upperPercentage);
                 newLowerLineData.push(dateItem.lowerPercentage);
@@ -315,7 +322,7 @@ function MixedLineChart({
         newChartData.datasets[1].data = newLowerLineData;
 
         // 更新Bar Chart的数据和样式
-        newChartData.datasets[2].data = new Array(arr.length).fill(100) as ChartDataType;
+        newChartData.datasets[2].data = new Array(arr.length).fill(110) as ChartDataType;
         newChartData.datasets[2].borderColor = new Array(arr.length).fill(transparentColor);
         newChartData.datasets[2].backgroundColor = new Array(arr.length).fill(transparentColor);
 
@@ -357,9 +364,13 @@ function MixedLineChart({
             if (currentPeriodKeys.length > 0) {
                 const currentPeriod = currentPeriodKeys[0] as unknown as keyof CurrentDataType;
                 const firstBarData: Statistics = currentData[currentPeriod];
-                if (firstBarData.matchIds) {
-                    setMatchIds(firstBarData.matchIds);
-                }
+                const matchList = [
+                    ...(firstBarData.lowerMatchIds || []),
+                    ...(firstBarData.upperMatchIds || [])
+                ].filter((value, index, self) => {
+                    return self.indexOf(value) === index;
+                });
+                setMatchIds(matchList);
             }
         }
     }, [labels, periodSwitch, type, chartData]);
@@ -370,7 +381,7 @@ function MixedLineChart({
                 <div className={style.dateRange}>
                     {startDate} ~ {endDate}, 总{totalMatch}场
                 </div>
-                {labels.length <= 3 ? null : (
+                {Object.keys(chartData.week[type]).length <= 3 ? null : (
                     <Switch
                         onChange={(value: TimeValue) => {
                             setPeriodSwitch(value);
