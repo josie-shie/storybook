@@ -1,31 +1,7 @@
 import type { MqttClient } from 'mqtt';
 import * as mqtt from 'mqtt';
 import { getRandomInt } from './random';
-import { deProtoOdds, deProtoOddsChange, toProtoAnalysis } from './prtobuf';
-
-export interface AnalysisRequest {
-    mission: string;
-    memberId: number;
-    handicapSide: string;
-    handicapValues: string;
-    overUnderValues: string;
-    startTime: number;
-    endTime: number;
-    message: string;
-    ticketId: string;
-}
-
-export interface AnalysisResponse {
-    mission: string;
-    memberId: number;
-    ticketId: string;
-    message: string;
-    handicapSide: string;
-    handicapValues: string;
-    overUnderValues: string;
-    startTime: number;
-    endTime: number;
-}
+import { deProtoOdds } from './prtobuf';
 
 export interface NewMessageNotify {
     sender: string;
@@ -170,10 +146,8 @@ const useEventQueue: ((data: EventInfo) => void)[] = [];
 const useTextLiveQueue: ((data: TextLiveResponse) => void)[] = [];
 
 const useOddsQueue: ((data: OddsType) => void)[] = [];
-const useOddsChangeQueue: ((data: OddChangeType) => void)[] = [];
 const useTechnicalQueue: ((data: TechnicalInfoData) => void)[] = [];
 const useOddsRunningQueue: ((data: OddsRunningType) => void)[] = [];
-const useAnalysisQueue: ((data: AnalysisResponse) => void)[] = [];
 const usedNotifyMessageQueue: ((data: NotifyMessage) => void)[] = [];
 
 let init = true;
@@ -335,16 +309,6 @@ export type OddsEuropeOdds = OddChangeEuropeOdds &
         awayInitialOdds: number;
     }>;
 
-export interface OddChangeType {
-    match?: OddChangeMatch;
-    handicapHalfList?: OddChangeHandicapHalf[];
-    handicapList?: OddChangeHandicap[];
-    overUnderHalfList?: OddChangeOverUnderHalf[];
-    overUnderList?: OddChangeOverUnder[];
-    europeOddsHalfList?: OddChangeEuropeOddsHalf[];
-    europeOddsList?: OddChangeEuropeOdds[];
-}
-
 export interface OddsType {
     match?: OddsMatch;
     handicapHalfList?: OddsHandicapHalf[];
@@ -428,7 +392,7 @@ export function integrateData(
     });
 }
 
-function createHashTable(data: OddChangeType | OddsType) {
+function createHashTable(data: OddsType) {
     const hashTable = {};
     const {
         handicapHalfList = [],
@@ -460,18 +424,6 @@ const handleOddsMessage = async (message: Buffer) => {
     }
 };
 
-const handleOddsChangeMessage = async (message: Buffer) => {
-    const messageObject = await deProtoOddsChange(message);
-    const decodedMessage = toSerializableObject(
-        messageObject as unknown as Record<string, unknown>
-    );
-
-    for (const messageMethod of useOddsChangeQueue) {
-        const formatDecodedMessage = createHashTable(decodedMessage);
-        messageMethod(formatDecodedMessage);
-    }
-};
-
 const handleDetailEventMessage = (message: Buffer) => {
     const messageObject = JSON.parse(textDecoder.decode(message)) as EventInfo;
 
@@ -498,14 +450,6 @@ const handleDetailTechnicListMessage = (message: Buffer) => {
 
     for (const messageMethod of useTechnicalQueue) {
         messageMethod(messageObject as unknown as TechnicalInfoData);
-    }
-};
-
-const handleAnalysisMessage = (message: Buffer) => {
-    const messageObject = JSON.parse(textDecoder.decode(message)) as AnalysisResponse;
-
-    for (const messageMethod of useAnalysisQueue) {
-        messageMethod(messageObject as unknown as AnalysisResponse);
     }
 };
 
@@ -551,11 +495,9 @@ export const mqttService = {
                 client.subscribe('updateevent');
                 client.subscribe('updatetext_live');
 
-                // client.subscribe('updateasia_odds');
-                // client.subscribe('updateasia_odds_change');
+                client.subscribe('updateasia_odds');
 
                 // client.subscribe('updatetechnic'); 技術統計 站不做
-                client.subscribe('analytical/analysis');
                 client.subscribe(`sport/user_notify/${memberId}`);
             });
             client.on('message', (topic, message) => {
@@ -564,9 +506,7 @@ export const mqttService = {
                 if (topic === 'updatetext_live') handleDetailTextLiveMessage(message);
 
                 if (topic === 'updateasia_odds') void handleOddsMessage(message);
-                if (topic === 'updateasia_odds_change') void handleOddsChangeMessage(message);
                 if (topic === 'updatetechnic') handleDetailTechnicListMessage(message);
-                if (topic === 'analytical/analysis') handleAnalysisMessage(message);
                 if (topic === `sport/user_notify/${memberId}`) handleNotifyMessage(message);
             });
             init = false;
@@ -607,39 +547,13 @@ export const mqttService = {
     getOdds: (onMessage: (data: OddsType) => void) => {
         useOddsQueue.push(onMessage);
     },
-    getOddsChange: (onMessage: (data: OddChangeType) => void) => {
-        useOddsChangeQueue.push(onMessage);
-    },
     getTechnicList: (onMessage: (data: TechnicalInfoData) => void) => {
         useTechnicalQueue.push(onMessage);
     },
     getOddsRunning: (onMessage: (data: OddsRunningType) => void) => {
         useOddsRunningQueue.push(onMessage);
     },
-    getAnalysis: (onMessage: (data: AnalysisResponse) => void) => {
-        useAnalysisQueue.push(onMessage);
-    },
     getNotifyMessage: (onMessage: (data: NotifyMessage) => void) => {
         usedNotifyMessageQueue.push(onMessage);
-    },
-    publishAnalysis: async (data: AnalysisRequest) => {
-        // eslint-disable-next-line no-console -- MQTT request
-        console.dir(data);
-        if (!init) {
-            const res = await toProtoAnalysis(data);
-            const bufferData = Buffer.from(res);
-
-            client.publish('analytical/analysis', bufferData, { qos: 2 }, error => {
-                if (error) {
-                    console.error(error);
-                } else {
-                    // eslint-disable-next-line -- success console
-                    console.log('Success Published');
-                }
-            });
-        } else {
-            // eslint-disable-next-line -- error console
-            console.log('mqtt not init');
-        }
     }
 };

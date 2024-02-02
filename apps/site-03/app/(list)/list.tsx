@@ -57,12 +57,8 @@ function List({
 
     const [currentStatus, setCurrentStatus] = useState(tabList[0].status);
 
-    const onSlickEnd = (nowIndex: number, prevIndex: number) => {
-        const tabRef = [allRef, progressRef, scheduleRef, resultRef];
-        const currentRef = tabRef[prevIndex].current;
-        if (currentRef) {
-            currentRef.scrollTop = 0;
-        }
+    const onSlickEnd = (nowIndex: number) => {
+        scrollTop();
 
         setCurrentStatus(tabList[nowIndex].status);
     };
