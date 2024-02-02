@@ -1,20 +1,10 @@
 import Image from 'next/image';
-import {
-    getMemberIndividualGuessMatches,
-    payForProGuess,
-    getMemberInfo,
-    type MemberIndividualGuessMatch
-} from 'data-center';
+import { getMemberIndividualGuessMatches, type MemberIndividualGuessMatch } from 'data-center';
 import { useEffect, useState } from 'react';
 import { timestampToString } from 'lib';
 import { InfiniteScroll } from 'ui';
 import CircularProgress from '@mui/material/CircularProgress';
-import { useRouter } from 'next/navigation';
-import UnlockButton from '@/components/unlockButton/unlockButton';
 import NoData from '@/components/baseNoData/noData';
-import { useUserStore } from '@/store/userStore';
-import NormalDialog from '@/components/normalDialog/normalDialog';
-import ConfirmPayDrawer from '@/components/confirmPayDrawer/confirmPayDrawer';
 import IconWin from './img/win.png';
 import IconLose from './img/lose.png';
 import IconDraw from './img/draw.png';
@@ -60,18 +50,11 @@ function BettingPlan({
     const [isNoData, setIsNoData] = useState<boolean | null>(null);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPage, setTotalPage] = useState(1);
-    const [isOpenPaid, setIsOpenPaid] = useState(false);
-    const [articleInfo, setArticleInfo] = useState({} as MemberIndividualGuessMatch);
-    const [isOpenRecharge, setIsOpenRecharge] = useState(false);
 
-    const isLogin = useUserStore.use.isLogin();
-    const isVip = useUserStore.use.memberSubscribeStatus();
-    const userInfo = useUserStore.use.userInfo();
-    const setUserInfo = useUserStore.use.setUserInfo();
-
-    const router = useRouter();
-
-    const fetchData = async () => {
+    const fetchData = async (resetList = false) => {
+        if (resetList) {
+            setGuessMatchesList([]);
+        }
         const res = await getMemberIndividualGuessMatches({
             memberId: Number(params.masterId),
             currentPage,
@@ -83,29 +66,13 @@ function BettingPlan({
             return new Error();
         }
 
-        const updatedGuessMatchesList = guessMatchesList.concat(res.data.guessMatchList);
+        const updatedGuessMatchesList = resetList
+            ? res.data.guessMatchList
+            : guessMatchesList.concat(res.data.guessMatchList);
         setGuessMatchesList(updatedGuessMatchesList);
         setGuessLength(res.data.pagination.totalCount);
         setIsNoData(res.data.guessMatchList.length === 0);
-        setTotalPage(res.data.pagination.pageCount);
-    };
-
-    const fetchResetData = async () => {
-        const res = await getMemberIndividualGuessMatches({
-            memberId: Number(params.masterId),
-            currentPage,
-            pageSize: 30,
-            guessType: planActiveTab
-        });
-
-        if (!res.success) {
-            return new Error();
-        }
-
-        setGuessMatchesList(res.data.guessMatchList);
-        setGuessLength(res.data.pagination.totalCount);
-        setIsNoData(res.data.guessMatchList.length === 0);
-        setTotalPage(res.data.pagination.pageCount);
+        setTotalPage(res.data.pagination.totalCount);
     };
 
     const loadMoreList = () => {
@@ -114,64 +81,13 @@ function BettingPlan({
         }
     };
 
-    const handlingDialog = async (item: MemberIndividualGuessMatch) => {
-        if (!isLogin) {
-            setIsOpenPaid(false);
-            router.push(`/master/masterAvatar/${params.masterId}?status=analysis&auth=login`);
-            return;
-        }
-
-        if (isVip.planId === 1) {
-            const res = await payForProGuess({ guessId: item.id });
-
-            if (!res.success) {
-                return new Error();
-            }
-            router.push(`/master/article/${item.id}`);
-            return;
-        }
-        setIsOpenPaid(true);
-        setArticleInfo(item);
-    };
-
-    const onSubmit = async () => {
-        if (userInfo.balance < articleInfo.unlockPrice) {
-            setIsOpenPaid(false);
-            setIsOpenRecharge(true);
-            return;
-        }
-
-        const res = await payForProGuess({ guessId: Number(articleInfo.id) });
-
-        if (!res.success) {
-            return new Error();
-        }
-        setIsOpenPaid(false);
-        void fetchResetData();
-        void getUser();
-    };
-
-    const getUser = async () => {
-        const res = await getMemberInfo();
-        if (!res.success) {
-            return new Error();
-        }
-        setUserInfo(res.data);
-    };
-
-    const goPayment = () => {
-        setIsOpenRecharge(false);
-        router.push('/userInfo/subscribe');
-    };
-
     useEffect(() => {
         void fetchData();
     }, [currentPage]);
 
     useEffect(() => {
-        setGuessMatchesList([]);
         setCurrentPage(1);
-        void fetchData();
+        void fetchData(true);
     }, [planActiveTab]);
 
     return (
@@ -181,10 +97,10 @@ function BettingPlan({
             {guessMatchesList.length === 0 && isNoData ? (
                 <NoData text="暂无资料" />
             ) : (
-                <>
+                <ul className={style.bettingPlanList}>
                     {guessMatchesList.map(item => {
                         return (
-                            <div className={style.bettingPlan} key={item.id}>
+                            <li className={style.bettingPlanCard} key={item.id}>
                                 {filterIcon[item.predictionResult]}
                                 <div className={style.top}>
                                     {item.leagueName}
@@ -213,39 +129,28 @@ function BettingPlan({
                                     </div>
                                 </div>
                                 <div className={style.bot}>
-                                    {!item.isPaidToRead ? (
-                                        <div
-                                            className={`${style.message} ${
-                                                item.predictionResult === 'WIN' && style.win
-                                            }`}
-                                        >
-                                            {filterOdds[item.predictedPlay] === 'overUnder'
-                                                ? ''
-                                                : `${item.handicapOdds > 0 ? '让球' : '受让'}${
-                                                      item.handicapInChinese
-                                                  }`}{' '}
-                                            {item.predictedPlay === 'OVER' &&
-                                                `${item.overUnderOdds} 小`}
-                                            {item.predictedPlay === 'UNDER' &&
-                                                `${item.overUnderOdds} 大`}
-                                            {item.predictedPlay === 'HOME' && item.homeTeamName}
-                                            {item.predictedPlay === 'AWAY' && item.awayTeamName}
-                                        </div>
-                                    ) : (
-                                        <div />
-                                    )}
-
-                                    {item.isPaidToRead ? (
-                                        <UnlockButton
-                                            handleClick={() => void handlingDialog(item)}
-                                            price={item.unlockPrice}
-                                        />
-                                    ) : null}
+                                    <div
+                                        className={`${style.message} ${
+                                            item.predictionResult === 'WIN' && style.win
+                                        }`}
+                                    >
+                                        {filterOdds[item.predictedPlay] === 'overUnder'
+                                            ? ''
+                                            : `${item.handicapOdds > 0 ? '让球' : '受让'}${
+                                                  item.handicapInChinese
+                                              }`}{' '}
+                                        {item.predictedPlay === 'OVER' &&
+                                            `${item.overUnderOdds} 小`}
+                                        {item.predictedPlay === 'UNDER' &&
+                                            `${item.overUnderOdds} 大`}
+                                        {item.predictedPlay === 'HOME' && item.homeTeamName}
+                                        {item.predictedPlay === 'AWAY' && item.awayTeamName}
+                                    </div>
                                 </div>
-                            </div>
+                            </li>
                         );
                     })}
-                    {currentPage < totalPage ? (
+                    {guessMatchesList.length < totalPage ? (
                         <InfiniteScroll onVisible={loadMoreList}>
                             <div className={style.loadMore}>
                                 <CircularProgress size={24} />
@@ -256,30 +161,8 @@ function BettingPlan({
                             <p>已滑到底啰</p>
                         </div>
                     )}
-                </>
+                </ul>
             )}
-            <ConfirmPayDrawer
-                isOpen={isOpenPaid}
-                onClose={() => {
-                    setIsOpenPaid(false);
-                }}
-                onOpen={() => {
-                    setIsOpenPaid(true);
-                }}
-                onPay={onSubmit}
-                price={articleInfo.unlockPrice}
-                title="查看方案 ?"
-            />
-            <NormalDialog
-                cancelText="取消"
-                confirmText="去充值"
-                content={<div>余额不足，请充值</div>}
-                onClose={() => {
-                    setIsOpenRecharge(false);
-                }}
-                onConfirm={goPayment}
-                openDialog={isOpenRecharge}
-            />
         </>
     );
 }

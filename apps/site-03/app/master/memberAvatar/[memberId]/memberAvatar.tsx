@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import style from './memberAvatar.module.scss';
 import Guess from './components/guess/guess';
 import MemberItem from './components/memberItem/memberItem';
+import Footer from '@/components/footer/footer';
 
 export const metadata: Metadata = {
     title: '专家预测 | FutureSport'
@@ -43,23 +44,25 @@ function MasterAvatar({ params }: { params: { memberId: string } }) {
         setSecondRender(true);
     }, []);
     return (
-        <div className={style.memberAvatar}>
-            <Slick
-                autoHeight
-                className={style.slick}
-                initialSlide={initialSlide}
-                onSlickEnd={onSlickEnd}
-                styling="underline"
-                tabs={tabList}
-            >
-                <div className={`${style.largeGap}`}>
-                    {secondRender || status === 'guess' ? <Guess params={params} /> : null}
-                </div>
-                <div className={`${style.largeGap}`}>
-                    {secondRender || status === 'focus' ? <MemberItem params={params} /> : null}
-                </div>
-            </Slick>
-        </div>
+        <>
+            <div className={style.memberAvatar}>
+                <Slick
+                    className={style.slick}
+                    initialSlide={initialSlide}
+                    onSlickEnd={onSlickEnd}
+                    styling="underline"
+                    tabs={tabList}
+                >
+                    <div className={`${style.largeGap}`}>
+                        {secondRender || status === 'guess' ? <Guess params={params} /> : null}
+                    </div>
+                    <div className={`${style.largeGap}`}>
+                        {secondRender || status === 'focus' ? <MemberItem params={params} /> : null}
+                    </div>
+                </Slick>
+            </div>
+            <Footer />
+        </>
     );
 }
 

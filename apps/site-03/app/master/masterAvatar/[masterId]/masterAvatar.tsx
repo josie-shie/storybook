@@ -7,6 +7,7 @@ import style from './masterAvatar.module.scss';
 import Guess from './components/guess/guess';
 import MasterItem from './components/masterItem/masterItem';
 import AnalysisItem from './components/analysisItem/analysisItem';
+import Footer from '@/components/footer/footer';
 
 export const metadata: Metadata = {
     title: '专家预测 | FutureSport'
@@ -51,28 +52,30 @@ function MasterAvatar({ params }: { params: { masterId: string } }) {
     }, []);
 
     return (
-        <div className={style.masterAvatar}>
-            <Slick
-                autoHeight
-                className={style.slick}
-                initialSlide={initialSlide}
-                onSlickEnd={onSlickEnd}
-                styling="underline"
-                tabs={tabList}
-            >
-                <div className={`${style.largeGap}`}>
-                    {secondRender || status === 'analysis' ? (
-                        <AnalysisItem params={params} setArticleLength={setArticleLength} />
-                    ) : null}
-                </div>
-                <div className={`${style.largeGap}`}>
-                    {secondRender || status === 'guess' ? <Guess params={params} /> : null}
-                </div>
-                <div className={`${style.largeGap}`}>
-                    {secondRender || status === 'focus' ? <MasterItem params={params} /> : null}
-                </div>
-            </Slick>
-        </div>
+        <>
+            <div className={style.masterAvatar}>
+                <Slick
+                    className={style.slick}
+                    initialSlide={initialSlide}
+                    onSlickEnd={onSlickEnd}
+                    styling="underline"
+                    tabs={tabList}
+                >
+                    <div className={`${style.largeGap}`}>
+                        {secondRender || status === 'analysis' ? (
+                            <AnalysisItem params={params} setArticleLength={setArticleLength} />
+                        ) : null}
+                    </div>
+                    <div className={`${style.largeGap}`}>
+                        {secondRender || status === 'guess' ? <Guess params={params} /> : null}
+                    </div>
+                    <div className={`${style.largeGap}`}>
+                        {secondRender || status === 'focus' ? <MasterItem params={params} /> : null}
+                    </div>
+                </Slick>
+            </div>
+            <Footer />
+        </>
     );
 }
 

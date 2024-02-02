@@ -19,13 +19,7 @@ function IsVipProfile() {
     return (
         <Link href="/userInfo">
             <div className={style.profile}>
-                <Image
-                    alt=""
-                    className={style.icon}
-                    height={24}
-                    src={profileIcon}
-                    width={24}
-                />
+                <Image alt="" className={style.icon} height={24} src={profileIcon} width={24} />
                 <div className={style.totalNumber}>
                     {isLogin && typeof userInfo.balance === 'number' ? (
                         <>{formatNumberWithCommas(userInfo.balance)}</>
