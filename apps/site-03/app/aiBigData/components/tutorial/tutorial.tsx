@@ -74,13 +74,8 @@ function Tutorial({
         <div
             className={style.tutorial}
             style={{
-                height: '100dvh',
-                width: '100%',
-                display: !playTutorial ? 'none' : '',
-                position: 'relative',
                 backgroundImage: setDefaultPageIndex ? 'none' : `url(${fixedBgImage.src})`,
-                backgroundSize: 'contain',
-                backgroundRepeat: 'no-repeat'
+                display: !playTutorial ? 'none' : ''
             }}
         >
             <Swiper
@@ -98,17 +93,17 @@ function Tutorial({
             >
                 <SwiperSlide>
                     {/* 需要判斷index不然預設全部渲染就沒有動畫效果 */}
-                    <div className={style.slide} style={{ height: '100dvh' }}>
+                    <div className={style.slide}>
                         {currentIndex === 0 && <Handicap isShowed={isShowed} />}
                     </div>
                 </SwiperSlide>
                 <SwiperSlide>
-                    <div className={style.slide} style={{ height: '100dvh' }}>
+                    <div className={style.slide}>
                         {currentIndex === 1 && <Minutes isShowed={isShowed} />}
                     </div>
                 </SwiperSlide>
                 <SwiperSlide>
-                    <div className={style.slide} style={{ height: '100dvh' }}>
+                    <div className={style.slide}>
                         {currentIndex === 2 && <Bodan isShowed={isShowed} />}
                     </div>
                 </SwiperSlide>

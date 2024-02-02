@@ -23,13 +23,13 @@ function Handicap({ isShowed }: { isShowed: Record<number, number> }) {
 
     return (
         <div className={style.images}>
-            <div className={style.tutorialTop} style={{ gap: '30px' }}>
+            <div className={`${style.tutorialTop} ${style.handicapTop}`}>
                 <Image
                     alt=""
                     height={32}
                     width={193}
                     src={handicapTop.src}
-                    style={{ objectFit: 'contain' }}
+                    className={style.image}
                 />
                 <Image
                     alt=""
@@ -41,7 +41,7 @@ function Handicap({ isShowed }: { isShowed: Record<number, number> }) {
                 {!showW2 && (
                     <motion.div
                         initial={
-                            isShowed[0] <= 0 ? { opacity: 1, left: '48px', top: '74px' } : false
+                            isShowed[0] <= 0 ? { opacity: '1', left: '48px', top: '74px' } : false
                         }
                         animate={{ left: '112px', top: '74px' }} // 假设W2的位置
                         transition={{ duration: 0.8, delay: 2 }}
@@ -51,26 +51,16 @@ function Handicap({ isShowed }: { isShowed: Record<number, number> }) {
                         }}
                     >
                         <Image src={W1.src} alt="W1" width={64} height={222} />
-                        <div style={{ position: 'absolute', right: -20, bottom: -52 }}>
+                        <div className={style.w1Hand}>
                             <HandIcon />
                         </div>
                     </motion.div>
                 )}
                 {showW2 && (
-                    <div
-                        style={{
-                            position: 'absolute',
-                            left: '112px',
-                            top: '74px',
-                            opacity: 1,
-                            width: '64px',
-                            height: '222px'
-                        }}
-                    >
+                    <div className={style.w2Inital}>
                         <Image src={W2.src} alt="W2" width={64} height={222} />
                         <div
-                            style={{ position: 'absolute', right: -20, bottom: -58 }}
-                            className={`${
+                            className={`${style.w2Hand} ${
                                 isShowed[0] > 0 ? style.staticHand : style.handAnimationHandler
                             }`}
                         >
@@ -79,14 +69,7 @@ function Handicap({ isShowed }: { isShowed: Record<number, number> }) {
                     </div>
                 )}
 
-                <div
-                    style={{
-                        display: 'flex',
-                        justifyContent: 'right',
-                        marginTop: '2px',
-                        marginRight: '20px'
-                    }}
-                >
+                <div className={style.description}>
                     <motion.div
                         initial={isShowed[0] <= 0 ? { opacity: 0 } : false}
                         animate={{ opacity: 1 }}
@@ -97,13 +80,13 @@ function Handicap({ isShowed }: { isShowed: Record<number, number> }) {
                             height={56}
                             width={122}
                             src={HandicapTopDescription.src}
-                            style={{ objectFit: 'contain' }}
+                            className={style.image}
                         />
                     </motion.div>
                 </div>
             </div>
-            <div className={style.tutorialBottom}>
-                <div style={{ display: 'relative' }}>
+            <div className={`${style.tutorialBottom} ${style.handicapBottom}`}>
+                <div className={style.table}>
                     <motion.div
                         initial={isShowed[0] <= 0 ? { opacity: 0 } : false}
                         animate={{ opacity: 1 }}
@@ -114,8 +97,9 @@ function Handicap({ isShowed }: { isShowed: Record<number, number> }) {
                             height={66}
                             width={114}
                             src={handicapBottomTable.src}
-                            style={{ objectFit: 'contain' }}
-                            className={`${isShowed[0] <= 0 && style.bottomAnimation}`}
+                            className={`${style.image} ${
+                                isShowed[0] <= 0 && style.bottomAnimation
+                            }`}
                         />
                     </motion.div>
 
@@ -124,18 +108,11 @@ function Handicap({ isShowed }: { isShowed: Record<number, number> }) {
                         animate={{ opacity: 1 }}
                         transition={{ delay: 5, duration: 1 }}
                     >
-                        <HighlightHandIcon
-                            style={{ position: 'absolute', top: '36px', left: '82px' }}
-                        />
+                        <HighlightHandIcon className={style.hightlightHand} />
                     </motion.div>
                 </div>
 
-                <div
-                    style={{
-                        display: 'flex',
-                        justifyContent: 'right'
-                    }}
-                >
+                <div className={style.description}>
                     <motion.div
                         initial={isShowed[0] <= 0 ? { opacity: 0 } : false}
                         animate={{ opacity: 1 }}
@@ -146,7 +123,7 @@ function Handicap({ isShowed }: { isShowed: Record<number, number> }) {
                             height={56}
                             width={122}
                             src={HandicapBottomDescription.src}
-                            style={{ objectFit: 'contain' }}
+                            className={style.iamge}
                         />
                     </motion.div>
                 </div>

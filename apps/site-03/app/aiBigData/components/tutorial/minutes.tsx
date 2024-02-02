@@ -10,48 +10,38 @@ import { motion } from 'framer-motion';
 function Minutes({ isShowed }: { isShowed: Record<number, number> }) {
     return (
         <div className={style.images}>
-            <div className={style.tutorialTop}>
+            <div className={`${style.tutorialTop} ${style.miutesTop}`}>
                 <Image
                     alt=""
                     height={32}
                     width={96}
                     src={MinutesTopImage.src}
-                    style={{ objectFit: 'contain' }}
+                    className={style.image}
                 />
-                <div style={{ display: 'flex', marginTop: '42px' }}>
+                <div className={style.description}>
                     <Image
                         alt=""
                         height={100}
                         width={130}
                         src={MinutesTopTable.src}
-                        style={{ objectFit: 'contain' }}
-                        className={`${isShowed[1] <= 1 && style.animation}`}
+                        className={`${style.image} ${isShowed[1] <= 1 && style.animation}`}
                     />
                     <Image
                         alt=""
                         height={56}
                         width={120}
                         src={MinutesTopDescription1.src}
-                        style={{ objectFit: 'contain' }}
+                        className={style.image}
                     />
                     <motion.div
                         initial={isShowed[1] <= 1 ? { opacity: 0 } : false}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 1, duration: 1 }}
                     >
-                        <HighLightHand
-                            style={{ position: 'absolute', left: '80px', top: '150px' }}
-                        />
+                        <HighLightHand className={style.highLightHand} />
                     </motion.div>
                 </div>
-                <div
-                    style={{
-                        display: 'flex',
-                        justifyContent: 'right',
-                        marginTop: '16px',
-                        marginRight: '36px'
-                    }}
-                >
+                <div className={style.minutesBottom}>
                     <motion.div
                         initial={isShowed[1] <= 1 ? { opacity: 0 } : false}
                         animate={{ opacity: 1 }}
@@ -62,7 +52,7 @@ function Minutes({ isShowed }: { isShowed: Record<number, number> }) {
                             height={56}
                             width={120}
                             src={MinutesTopDescription2.src}
-                            style={{ objectFit: 'contain' }}
+                            className={style.image}
                         />
                     </motion.div>
                 </div>
