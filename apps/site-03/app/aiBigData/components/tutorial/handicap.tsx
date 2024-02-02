@@ -24,7 +24,13 @@ function Handicap({ isShowed }: { isShowed: Record<number, number> }) {
     return (
         <div className={style.images}>
             <div className={`${style.tutorialTop} ${style.handicapTop}`}>
-                <Image alt="" className={style.image} height={32} src={handicapTop.src} />
+                <Image
+                    alt=""
+                    className={style.image}
+                    width={193}
+                    height={32}
+                    src={handicapTop.src}
+                />
                 <Image
                     alt=""
                     className={`${isShowed[0] <= 0 && style.animation} ${style.firstImg}`}
@@ -73,6 +79,7 @@ function Handicap({ isShowed }: { isShowed: Record<number, number> }) {
                         <Image
                             alt=""
                             className={style.image}
+                            width={122}
                             height={56}
                             src={HandicapTopDescription.src}
                         />
@@ -87,6 +94,7 @@ function Handicap({ isShowed }: { isShowed: Record<number, number> }) {
                         transition={{ delay: 4, duration: 1 }}
                     >
                         <Image
+                            width={114}
                             alt=""
                             className={`${style.image} ${
                                 isShowed[0] <= 0 && style.bottomAnimation
@@ -112,6 +120,7 @@ function Handicap({ isShowed }: { isShowed: Record<number, number> }) {
                         transition={{ delay: 5, duration: 1 }}
                     >
                         <Image
+                            width={122}
                             alt=""
                             className={style.iamge}
                             height={56}
