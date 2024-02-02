@@ -15,7 +15,7 @@ function Information({ information }: { information: GetInformationResponse }) {
         color: '#fff'
     };
     const tabDefault = {
-        backgroundColor: '#f3f3f3',
+        backgroundColor: '#f8f8f8',
         color: '#8d8d8d'
     };
 

@@ -1,5 +1,9 @@
 .oddsDetailDrawer {
     :global {
+        .ui-tab {
+            height: calc(100dvh - 46px);
+        }
+
         .ui-tabs-header {
             flex-wrap: nowrap;
             font-size: 12px;
@@ -51,37 +55,8 @@
         .back {
             position: absolute;
             left: 16px;
-            top: 12px;
-        }
-    }
-
-    .teamScore {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-        padding: 6px 10px;
-
-        .score {
-            width: 10%;
-            color: #00ac6e;
-            font-size: 12px;
-            font-weight: 500;
-        }
-
-        .homeTeam,
-        .awayTeam {
-            width: 45%;
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        .homeTeam {
-            text-align: right;
-        }
-
-        .awayTeam {
-            text-align: left;
+            top: 50%;
+            transform: translateY(-50%);
         }
     }
 

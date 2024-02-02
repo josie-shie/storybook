@@ -5,145 +5,349 @@ import type { ReturnData, FetchResultData } from '../common';
 import { GET_COMPANY_ODDS_DETAIL_QUERY } from './graphqlQueries';
 
 const HandicapsInfoSchema = z.object({
-    matchId: z.number(),
-    companyId: z.number(),
-    initialHandicap: z.number(),
-    homeInitialOdds: z.number(),
-    awayInitialOdds: z.number(),
-    currentHandicap: z.number(),
-    homeCurrentOdds: z.number(),
-    awayCurrentOdds: z.number(),
-    oddsChangeTime: z.number(),
-    oddsType: z.number(),
-    state: z.number(),
-    homeScore: z.number(),
-    awayScore: z.number(),
-    isClosed: z.boolean()
+    handicap: z.number(),
+    homeOdds: z.number(),
+    awayOdds: z.number(),
+    closed: z.boolean()
 });
 
-type OriginalHandicapsInfo = z.infer<typeof HandicapsInfoSchema>;
-type HandicapsInfo = Omit<OriginalHandicapsInfo, 'initialHandicap' | 'currentHandicap'> & {
-    initialHandicap: number;
-    currentHandicap: number;
-};
+export type ExponentHandicapsInfo = z.infer<typeof HandicapsInfoSchema>;
 
-const TotalGoalsInfoSchema = z.object({
-    matchId: z.number(),
-    companyId: z.number(),
-    initialHandicap: z.number(),
-    overInitialOdds: z.number(),
-    underInitialOdds: z.number(),
-    currentHandicap: z.number(),
-    overCurrentOdds: z.number(),
-    underCurrentOdds: z.number(),
-    oddsChangeTime: z.number(),
-    oddsType: z.number(),
-    state: z.number(),
-    homeScore: z.number(),
-    awayScore: z.number(),
-    isClosed: z.boolean()
+const WinDrawLoseInfoSchema = z.object({
+    homeWin: z.number(),
+    draw: z.number(),
+    awayWin: z.number(),
+    closed: z.boolean()
 });
 
-type OriginalTotalGoalsInfo = z.infer<typeof TotalGoalsInfoSchema>;
-type TotalGoalsInfo = Omit<OriginalTotalGoalsInfo, 'initialHandicap' | 'currentHandicap'> & {
-    initialHandicap: number;
-    currentHandicap: number;
-};
+export type ExponentWinDrawLoseInfo = z.infer<typeof WinDrawLoseInfoSchema>;
 
-const WinDrawLoseSchema = z.object({
-    matchId: z.number(),
-    companyId: z.number(),
-    initialHomeOdds: z.number(),
-    initialDrawOdds: z.number(),
-    initialAwayOdds: z.number(),
-    currentHomeOdds: z.number(),
-    currentDrawOdds: z.number(),
-    currentAwayOdds: z.number(),
-    oddsChangeTime: z.number(),
-    oddsType: z.number(),
-    state: z.number(),
-    homeScore: z.number(),
-    awayScore: z.number(),
-    isClosed: z.boolean()
+const OverUnderInfoSchema = z.object({
+    overOdds: z.number(),
+    line: z.number(),
+    underOdds: z.number(),
+    closed: z.boolean()
 });
 
-export type WinLoseInfo = z.infer<typeof WinDrawLoseSchema>;
+export type ExponentOverUnderInfo = z.infer<typeof OverUnderInfoSchema>;
 
-const GetCompanyOddsDetailSchema = z.object({
-    matchId: z.number(),
-    homeTeam: z.string(),
-    awayTeam: z.string(),
-    homeScore: z.number(),
-    awayScore: z.number(),
-    startTime: z.number(),
-    companyOdds: z.object({
-        companyId: z.number(),
-        companyName: z.string(),
-        fullHandicap: z.array(HandicapsInfoSchema),
-        halfHandicap: z.array(HandicapsInfoSchema),
-        fullTotalGoal: z.array(TotalGoalsInfoSchema),
-        halfTotalGoal: z.array(TotalGoalsInfoSchema),
-        fullWinDrawLose: z.array(WinDrawLoseSchema),
-        halfWinDrawLose: z.array(WinDrawLoseSchema)
+const HandicapsListSchema = z.object({
+    companyName: z.string(),
+    initial: HandicapsInfoSchema,
+    beforeMatch: HandicapsInfoSchema,
+    live: HandicapsInfoSchema
+});
+
+const WinDrawLoseListSchema = z.object({
+    companyName: z.string(),
+    initial: WinDrawLoseInfoSchema,
+    beforeMatch: WinDrawLoseInfoSchema,
+    live: WinDrawLoseInfoSchema
+});
+
+const OverUnderListSchema = z.object({
+    companyName: z.string(),
+    initial: OverUnderInfoSchema,
+    beforeMatch: OverUnderInfoSchema,
+    live: OverUnderInfoSchema
+});
+
+export interface CompanyList {
+    handicap: number[];
+    overUnder: number[];
+    winDrawLose: number[];
+    corners: number[];
+}
+
+export type HandicapsCompanySchema = Record<number, z.infer<typeof HandicapsListSchema>>;
+
+export type WinDrawLoseCompanySchema = Record<number, z.infer<typeof WinDrawLoseListSchema>>;
+
+export type OverUnderCompanySchema = Record<number, z.infer<typeof OverUnderListSchema>>;
+
+const CompanyDetailResultSchema = z.object({
+    getCompanyOddsDetail: z.object({
+        handicap: z.string(),
+        overUnder: z.string(),
+        winDrawLose: z.string(),
+        corners: z.string()
     })
 });
 
-const CompanyDetailSchema = z.object({
-    getCompanyOddsDetail: GetCompanyOddsDetailSchema
-});
+type CompanyDetailResult = z.infer<typeof CompanyDetailResultSchema>;
 
-type CompanyDetailResult = z.infer<typeof CompanyDetailSchema>;
-
-interface CompanyHandicapsDataType {
-    half: {
-        list: number[];
-        info: Record<number, HandicapsInfo>;
-    };
-    full: {
-        list: number[];
-        info: Record<number, HandicapsInfo>;
-    };
-}
-
-interface CompanyTotalGoalDataType {
-    half: {
-        list: number[];
-        info: Record<number, TotalGoalsInfo>;
-    };
-    full: {
-        list: number[];
-        info: Record<number, TotalGoalsInfo>;
-    };
-}
-
-interface CompanyWinLoseDataDataType {
-    half: {
-        list: number[];
-        info: Record<number, WinLoseInfo>;
-    };
-    full: {
-        list: number[];
-        info: Record<number, WinLoseInfo>;
-    };
+export interface CompanyInfo {
+    handicap: HandicapsCompanySchema;
+    overUnder: OverUnderCompanySchema;
+    winDrawLose: WinDrawLoseCompanySchema;
+    corners: OverUnderCompanySchema;
 }
 
 export interface GetExponentResponse {
-    handicapsData: CompanyHandicapsDataType;
-    totalGoalData: CompanyTotalGoalDataType;
-    winLoseData: CompanyWinLoseDataDataType;
+    companyInfo: CompanyInfo;
+    companyList: CompanyList;
 }
+
+const HandicapsDetailInfoSchema = z.object({
+    awayScore: z.number(),
+    homeScore: z.number(),
+    handicap: z.number(),
+    homeOdds: z.number(),
+    awayOdds: z.number(),
+    closed: z.boolean(),
+    state: z.number(),
+    oddsChangeTime: z.number()
+});
+
+export type ExponentDetailHandicapsInfo = z.infer<typeof HandicapsDetailInfoSchema>;
+
+const WinDrawLoseDetailInfoSchema = z.object({
+    awayScore: z.number(),
+    homeScore: z.number(),
+    homeWin: z.number(),
+    draw: z.number(),
+    awayWin: z.number(),
+    closed: z.boolean(),
+    state: z.number(),
+    oddsChangeTime: z.number()
+});
+
+export type ExponentDetailWinDrawLoseInfo = z.infer<typeof WinDrawLoseDetailInfoSchema>;
+
+const OverUnderDetailInfoSchema = z.object({
+    awayScore: z.number(),
+    homeScore: z.number(),
+    overOdds: z.number(),
+    line: z.number(),
+    underOdds: z.number(),
+    closed: z.boolean(),
+    state: z.number(),
+    oddsChangeTime: z.number()
+});
+
+export type ExponentDetailOverUnderInfo = z.infer<typeof OverUnderDetailInfoSchema>;
+
+const GetExponentDetailResultSchema = z.object({
+    getCompanyDetail: z.object({
+        handicap: z.string(),
+        overUnder: z.string(),
+        winDrawLose: z.string(),
+        corners: z.string()
+    })
+});
+
+export type GetExponentDetailResult = z.infer<typeof GetExponentDetailResultSchema>;
+
+const GetExponentDetailResponseSchema = z.object({
+    handicap: z.array(HandicapsDetailInfoSchema),
+    overUnder: z.array(OverUnderDetailInfoSchema),
+    winDrawLose: z.array(WinDrawLoseDetailInfoSchema),
+    corners: z.array(OverUnderDetailInfoSchema)
+});
+
+export type GetExponentDetailResponse = z.infer<typeof GetExponentDetailResponseSchema>;
 
 /**
  * 取得賽事指數
- * - params : (matchId: number, companyId: number)
+ * - params : (matchId: number)
  * - returns : {@link GetExponentResponse}
  */
-export const getExponent = async (
-    matchId: number,
-    companyId: number
-): Promise<ReturnData<GetExponentResponse>> => {
+export const getExponent = async (matchId: number): Promise<ReturnData<GetExponentResponse>> => {
     try {
         const { data, errors } = await fetcher<FetchResultData<CompanyDetailResult>, unknown>(
+            {
+                data: {
+                    query: GET_COMPANY_ODDS_DETAIL_QUERY,
+                    variables: {
+                        input: {
+                            matchId
+                        }
+                    }
+                }
+            },
+            { cache: 'no-store' }
+        );
+
+        throwErrorMessage(errors);
+        const resData = data.getCompanyOddsDetail;
+
+        const companyList: CompanyList = {
+            handicap: [],
+            overUnder: [],
+            winDrawLose: [],
+            corners: []
+        };
+
+        const companyInfo: CompanyInfo = {
+            handicap: JSON.parse(resData.handicap) as HandicapsCompanySchema,
+            overUnder: JSON.parse(resData.overUnder) as OverUnderCompanySchema,
+            winDrawLose: JSON.parse(resData.winDrawLose) as WinDrawLoseCompanySchema,
+            corners: JSON.parse(resData.corners) as OverUnderCompanySchema
+        };
+
+        for (const type in companyInfo) {
+            if (type === 'winDrawLose') {
+                for (const item in companyInfo[type]) {
+                    companyList[type].push(Number(item));
+                    companyInfo[type][Number(item)] = {
+                        companyName: companyInfo[type][item].companyName,
+                        initial: {
+                            homeWin: truncateFloatingPoint(
+                                companyInfo[type][item].initial.homeWin,
+                                2
+                            ),
+                            draw: truncateFloatingPoint(companyInfo[type][item].initial.draw, 2),
+                            awayWin: truncateFloatingPoint(
+                                companyInfo[type][item].initial.awayWin,
+                                2
+                            ),
+                            closed: companyInfo[type][item].initial.closed
+                        },
+                        beforeMatch: {
+                            homeWin: truncateFloatingPoint(
+                                companyInfo[type][item].beforeMatch.homeWin,
+                                2
+                            ),
+                            draw: truncateFloatingPoint(
+                                companyInfo[type][item].beforeMatch.draw,
+                                2
+                            ),
+                            awayWin: truncateFloatingPoint(
+                                companyInfo[type][item].beforeMatch.awayWin,
+                                2
+                            ),
+                            closed: companyInfo[type][item].beforeMatch.closed
+                        },
+                        live: {
+                            homeWin: truncateFloatingPoint(companyInfo[type][item].live.homeWin, 2),
+                            draw: truncateFloatingPoint(companyInfo[type][item].live.draw, 2),
+                            awayWin: truncateFloatingPoint(companyInfo[type][item].live.awayWin, 2),
+                            closed: companyInfo[type][item].live.closed
+                        }
+                    };
+                }
+            } else if (type === 'handicap') {
+                for (const item in companyInfo[type]) {
+                    companyList[type].push(Number(item));
+                    companyInfo[type][item] = {
+                        companyName: companyInfo[type][item].companyName,
+                        initial: {
+                            handicap: truncateFloatingPoint(
+                                companyInfo[type][item].initial.handicap,
+                                2
+                            ),
+                            homeOdds: truncateFloatingPoint(
+                                companyInfo[type][item].initial.homeOdds,
+                                2
+                            ),
+                            awayOdds: truncateFloatingPoint(
+                                companyInfo[type][item].initial.awayOdds,
+                                2
+                            ),
+                            closed: companyInfo[type][item].initial.closed
+                        },
+                        beforeMatch: {
+                            handicap: truncateFloatingPoint(
+                                companyInfo[type][item].beforeMatch.handicap,
+                                2
+                            ),
+                            homeOdds: truncateFloatingPoint(
+                                companyInfo[type][item].beforeMatch.homeOdds,
+                                2
+                            ),
+                            awayOdds: truncateFloatingPoint(
+                                companyInfo[type][item].beforeMatch.awayOdds,
+                                2
+                            ),
+                            closed: companyInfo[type][item].beforeMatch.closed
+                        },
+                        live: {
+                            handicap: truncateFloatingPoint(
+                                companyInfo[type][item].live.handicap,
+                                2
+                            ),
+                            homeOdds: truncateFloatingPoint(
+                                companyInfo[type][item].live.homeOdds,
+                                2
+                            ),
+                            awayOdds: truncateFloatingPoint(
+                                companyInfo[type][item].live.awayOdds,
+                                2
+                            ),
+                            closed: companyInfo[type][item].live.closed
+                        }
+                    };
+                }
+            } else if (type === 'overUnder' || type === 'corners') {
+                for (const item in companyInfo[type]) {
+                    companyList[type].push(Number(item));
+                    companyInfo[type][item] = {
+                        companyName: companyInfo[type][item].companyName,
+                        initial: {
+                            line: truncateFloatingPoint(companyInfo[type][item].initial.line, 2),
+                            overOdds: truncateFloatingPoint(
+                                companyInfo[type][item].initial.overOdds,
+                                2
+                            ),
+                            underOdds: truncateFloatingPoint(
+                                companyInfo[type][item].initial.underOdds,
+                                2
+                            ),
+                            closed: companyInfo[type][item].initial.closed
+                        },
+                        beforeMatch: {
+                            line: truncateFloatingPoint(
+                                companyInfo[type][item].beforeMatch.line,
+                                2
+                            ),
+                            overOdds: truncateFloatingPoint(
+                                companyInfo[type][item].beforeMatch.overOdds,
+                                2
+                            ),
+                            underOdds: truncateFloatingPoint(
+                                companyInfo[type][item].beforeMatch.underOdds,
+                                2
+                            ),
+                            closed: companyInfo[type][item].beforeMatch.closed
+                        },
+                        live: {
+                            line: truncateFloatingPoint(companyInfo[type][item].live.line, 2),
+                            overOdds: truncateFloatingPoint(
+                                companyInfo[type][item].live.overOdds,
+                                2
+                            ),
+                            underOdds: truncateFloatingPoint(
+                                companyInfo[type][item].live.underOdds,
+                                2
+                            ),
+                            closed: companyInfo[type][item].live.closed
+                        }
+                    };
+                }
+            }
+        }
+
+        const res: GetExponentResponse = { companyInfo, companyList };
+        return {
+            success: true,
+            data: res
+        };
+    } catch (error) {
+        return handleApiError(error);
+    }
+};
+
+/**
+ * 取得賽事指數詳情
+ * - params : (matchId: number, companyId: number)
+ * - returns : {@link GetExponentDetailResponse}
+ */
+export const getExponentDetail = async (
+    matchId: number,
+    companyId: number
+): Promise<ReturnData<GetExponentDetailResponse>> => {
+    try {
+        const { data, errors } = await fetcher<FetchResultData<GetExponentDetailResult>, unknown>(
             {
                 data: {
                     query: GET_COMPANY_ODDS_DETAIL_QUERY,
@@ -159,148 +363,59 @@ export const getExponent = async (
         );
 
         throwErrorMessage(errors);
-        CompanyDetailSchema.parse(data);
-        const resData = data.getCompanyOddsDetail.companyOdds;
+        const resData = data.getCompanyDetail;
 
-        const handicapsData: CompanyHandicapsDataType = {
-            half: {
-                list: [],
-                info: {}
-            },
-            full: {
-                list: [],
-                info: {}
-            }
+        const companyInfo: GetExponentDetailResponse = {
+            handicap: JSON.parse(resData.handicap) as ExponentDetailHandicapsInfo[],
+            overUnder: JSON.parse(resData.overUnder) as ExponentDetailOverUnderInfo[],
+            winDrawLose: JSON.parse(resData.winDrawLose) as ExponentDetailWinDrawLoseInfo[],
+            corners: JSON.parse(resData.corners) as ExponentDetailOverUnderInfo[]
         };
 
-        if (resData.halfHandicap.length > 0) {
-            for (const item of resData.halfHandicap) {
-                if (!handicapsData.half.list.includes(item.companyId)) {
-                    handicapsData.half.list.push(item.companyId);
+        for (const type in companyInfo) {
+            if (type === 'winDrawLose') {
+                for (let item of companyInfo[type]) {
+                    item = {
+                        homeScore: item.homeScore,
+                        awayScore: item.awayScore,
+                        oddsChangeTime: item.awayScore,
+                        state: item.state,
+                        closed: item.closed,
+                        homeWin: truncateFloatingPoint(item.homeWin, 2),
+                        draw: truncateFloatingPoint(item.draw, 2),
+                        awayWin: truncateFloatingPoint(item.awayWin, 2)
+                    };
                 }
-
-                handicapsData.half.info[item.companyId] = {
-                    ...item,
-                    homeInitialOdds: truncateFloatingPoint(item.homeInitialOdds, 2),
-                    awayInitialOdds: truncateFloatingPoint(item.awayInitialOdds, 2),
-                    homeCurrentOdds: truncateFloatingPoint(item.homeCurrentOdds, 2),
-                    awayCurrentOdds: truncateFloatingPoint(item.awayCurrentOdds, 2),
-                    initialHandicap: item.initialHandicap,
-                    currentHandicap: item.currentHandicap
-                };
-            }
-        }
-        if (resData.fullHandicap.length > 0) {
-            for (const item of resData.fullHandicap) {
-                if (!handicapsData.full.list.includes(item.companyId)) {
-                    handicapsData.full.list.push(item.companyId);
+            } else if (type === 'handicap') {
+                for (let item of companyInfo[type]) {
+                    item = {
+                        homeScore: item.homeScore,
+                        awayScore: item.awayScore,
+                        oddsChangeTime: item.awayScore,
+                        state: item.state,
+                        closed: item.closed,
+                        homeOdds: truncateFloatingPoint(item.homeOdds, 2),
+                        handicap: truncateFloatingPoint(item.handicap, 2),
+                        awayOdds: truncateFloatingPoint(item.awayOdds, 2)
+                    };
                 }
-
-                handicapsData.full.info[item.companyId] = {
-                    ...item,
-                    homeInitialOdds: truncateFloatingPoint(item.homeInitialOdds, 2),
-                    awayInitialOdds: truncateFloatingPoint(item.awayInitialOdds, 2),
-                    homeCurrentOdds: truncateFloatingPoint(item.homeCurrentOdds, 2),
-                    awayCurrentOdds: truncateFloatingPoint(item.awayCurrentOdds, 2),
-                    initialHandicap: item.initialHandicap,
-                    currentHandicap: item.currentHandicap
-                };
-            }
-        }
-
-        const totalGoalData: CompanyTotalGoalDataType = {
-            half: {
-                list: [],
-                info: {}
-            },
-            full: {
-                list: [],
-                info: {}
-            }
-        };
-
-        if (resData.halfTotalGoal.length > 0) {
-            for (const item of resData.halfTotalGoal) {
-                if (!totalGoalData.half.list.includes(item.companyId)) {
-                    totalGoalData.half.list.push(item.companyId);
+            } else if (type === 'overUnder' || type === 'corners') {
+                for (let item of companyInfo[type]) {
+                    item = {
+                        homeScore: item.homeScore,
+                        awayScore: item.awayScore,
+                        oddsChangeTime: item.awayScore,
+                        state: item.state,
+                        closed: item.closed,
+                        overOdds: truncateFloatingPoint(item.overOdds, 2),
+                        line: truncateFloatingPoint(item.line, 2),
+                        underOdds: truncateFloatingPoint(item.underOdds, 2)
+                    };
                 }
-
-                totalGoalData.half.info[item.companyId] = {
-                    ...item,
-                    overInitialOdds: truncateFloatingPoint(item.overInitialOdds, 2),
-                    underInitialOdds: truncateFloatingPoint(item.underInitialOdds, 2),
-                    overCurrentOdds: truncateFloatingPoint(item.overCurrentOdds, 2),
-                    underCurrentOdds: truncateFloatingPoint(item.underCurrentOdds, 2),
-                    initialHandicap: item.initialHandicap,
-                    currentHandicap: item.currentHandicap
-                };
-            }
-        }
-        if (resData.fullTotalGoal.length > 0) {
-            for (const item of resData.fullTotalGoal) {
-                if (!totalGoalData.full.list.includes(item.companyId)) {
-                    totalGoalData.full.list.push(item.companyId);
-                }
-
-                totalGoalData.full.info[item.companyId] = {
-                    ...item,
-                    overInitialOdds: truncateFloatingPoint(item.overInitialOdds, 2),
-                    underInitialOdds: truncateFloatingPoint(item.underInitialOdds, 2),
-                    overCurrentOdds: truncateFloatingPoint(item.overCurrentOdds, 2),
-                    underCurrentOdds: truncateFloatingPoint(item.underCurrentOdds, 2),
-                    initialHandicap: item.initialHandicap,
-                    currentHandicap: item.currentHandicap
-                };
             }
         }
 
-        const winLoseData: CompanyWinLoseDataDataType = {
-            half: {
-                list: [],
-                info: {}
-            },
-            full: {
-                list: [],
-                info: {}
-            }
-        };
-
-        if (resData.halfWinDrawLose.length > 0) {
-            for (const item of resData.halfWinDrawLose) {
-                if (!winLoseData.half.list.includes(item.companyId)) {
-                    winLoseData.half.list.push(item.companyId);
-                }
-
-                winLoseData.half.info[item.companyId] = {
-                    ...item,
-                    initialHomeOdds: truncateFloatingPoint(item.initialHomeOdds, 2),
-                    initialDrawOdds: truncateFloatingPoint(item.initialDrawOdds, 2),
-                    initialAwayOdds: truncateFloatingPoint(item.initialAwayOdds, 2),
-                    currentHomeOdds: truncateFloatingPoint(item.currentHomeOdds, 2),
-                    currentDrawOdds: truncateFloatingPoint(item.currentDrawOdds, 2),
-                    currentAwayOdds: truncateFloatingPoint(item.currentAwayOdds, 2)
-                };
-            }
-        }
-        if (resData.fullWinDrawLose.length > 0) {
-            for (const item of resData.fullWinDrawLose) {
-                if (!winLoseData.full.list.includes(item.companyId)) {
-                    winLoseData.full.list.push(item.companyId);
-                }
-
-                winLoseData.full.info[item.companyId] = {
-                    ...item,
-                    initialHomeOdds: truncateFloatingPoint(item.initialHomeOdds, 2),
-                    initialDrawOdds: truncateFloatingPoint(item.initialDrawOdds, 2),
-                    initialAwayOdds: truncateFloatingPoint(item.initialAwayOdds, 2),
-                    currentHomeOdds: truncateFloatingPoint(item.currentHomeOdds, 2),
-                    currentDrawOdds: truncateFloatingPoint(item.currentDrawOdds, 2),
-                    currentAwayOdds: truncateFloatingPoint(item.currentAwayOdds, 2)
-                };
-            }
-        }
-
-        const res: GetExponentResponse = { handicapsData, totalGoalData, winLoseData };
+        const res: GetExponentDetailResponse = companyInfo;
         return {
             success: true,
             data: res

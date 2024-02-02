@@ -1,8 +1,8 @@
 'use client';
 import type { GetLiveTextResponse } from 'data-center';
-import Image from 'next/image';
 import NoData from '@/components/baseNoData/noData';
 import { useContestDetailStore } from '../../contestDetailStore';
+import TeamLogo from '../../components/teamLogo';
 import style from './textLive.module.scss';
 import { eventStatusMap } from './eventStatusMap';
 import NoticeIcon from './img/notice.svg';
@@ -40,7 +40,7 @@ function TextLive({ liveList }: { liveList: GetLiveTextResponse }) {
                             </div>
                             {live.position !== 0 && (
                                 <div className={style.team}>
-                                    <Image
+                                    <TeamLogo
                                         alt=""
                                         height={24}
                                         src={

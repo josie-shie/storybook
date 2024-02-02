@@ -1,97 +1,133 @@
+import { useState } from 'react';
 import { handicapToString } from 'lib';
-import { useContestDetailStore } from '../../contestDetailStore';
+import type { ExponentHandicapsInfo } from 'data-center';
+import Select from '@/app/football/[matchId]/(dashboard)/components/select/select';
+import NoData from '@/components/baseNoData/noData';
 import { useExponentStore } from '../../exponentStore';
 import style from './exponent.module.scss';
+import MoreIcon from './img/more.svg';
+
+const oddTimeOption = [
+    { label: '即时', value: 'live' },
+    { label: '赛前', value: 'beforeMatch' }
+];
+
+type OddTimeType = 'live' | 'beforeMatch';
+
+type TabListType = 'handicap' | 'overUnder' | 'winDrawLose' | 'corners';
 
 const getOddsClassName = (initialOdds: number, currentOdds: number): string => {
     if (initialOdds === currentOdds) return '';
     return initialOdds > currentOdds ? 'greenText' : 'redText';
 };
 
-function NoData() {
-    return (
-        <div className={style.handicap}>
-            <div className="dataTable">
-                <div className="tableHead">
-                    <div className="tr">
-                        <div className="th">公司</div>
-                        <div className="th">初</div>
-                        <div className="th">即</div>
-                    </div>
-                </div>
-                <div className="tableBody">
-                    <div className="tr">
-                        <div className="td" style={{ width: '100%' }}>
-                            暂无数据
-                        </div>
-                    </div>
-                </div>
+function OddBar({
+    targetData,
+    initialData,
+    isCompare
+}: {
+    targetData: ExponentHandicapsInfo;
+    initialData?: ExponentHandicapsInfo;
+    isCompare?: boolean;
+}) {
+    return targetData.closed ? (
+        <div className="td">
+            <div className="odds">-</div>
+            <div className="odds">封</div>
+            <div className="odds">-</div>
+        </div>
+    ) : (
+        <div className="td">
+            <div
+                className={`odd ${
+                    isCompare &&
+                    initialData &&
+                    getOddsClassName(initialData.homeOdds, targetData.homeOdds)
+                }`}
+            >
+                {targetData.homeOdds}
             </div>
+            <div
+                className={`odd ${
+                    isCompare &&
+                    initialData &&
+                    getOddsClassName(initialData.handicap, targetData.handicap)
+                }`}
+            >
+                {handicapToString(targetData.handicap)}
+            </div>
+            <div
+                className={`odd ${
+                    isCompare &&
+                    initialData &&
+                    getOddsClassName(initialData.awayOdds, targetData.awayOdds)
+                }`}
+            >
+                {targetData.awayOdds}
+            </div>
+            {isCompare ? (
+                <div className="odd more">
+                    <MoreIcon />
+                </div>
+            ) : null}
         </div>
     );
 }
 
 function Handicap() {
-    const exponentData = useExponentStore.use.exponentData();
-    const totalGoalsRadio = useExponentStore.use.totalGoalsRadio();
-    const companyNameMap = useContestDetailStore.use.companyNameMap();
+    const [oddTime, setOddTime] = useState<OddTimeType>('live');
+    const companyList = useExponentStore.use.companyList().handicap;
+    const companyInfo = useExponentStore.use.companyInfo().handicap;
+    const setDetailOption = useExponentStore.use.setDetailOption();
+    const setIsDetailOpen = useExponentStore.use.setIsDetailOpen();
 
-    const dataList = Object.prototype.hasOwnProperty.call(exponentData, 'full')
-        ? exponentData?.handicapsData[totalGoalsRadio]
-        : {
-              list: [],
-              info: {}
-          };
-
-    if (!dataList || dataList.list.length === 0) return <NoData text="暂无资料" />;
+    const handleDetail = (detailCompanyId: number, detailSelectedKind: TabListType) => {
+        setDetailOption(detailCompanyId, detailSelectedKind);
+        setIsDetailOpen(true);
+    };
 
     return (
         <div className={style.handicap}>
-            <div className="dataTable">
-                <div className="tableHead">
-                    <div className="tr">
-                        <div className="th">公司</div>
-                        <div className="th">初</div>
-                        <div className="th">即</div>
-                    </div>
-                </div>
-                <div className="tableBody">
-                    {dataList.list.map(companyId => (
-                        <div className="tr" key={companyId}>
-                            <div className="td">{companyNameMap[companyId]}</div>
-                            <div className="td">{dataList.info[companyId].homeInitialOdds}</div>
-                            <div className="td">
-                                {handicapToString(dataList.info[companyId].initialHandicap)}
-                            </div>
-                            <div className="td">{dataList.info[companyId].awayInitialOdds}</div>
-                            <div
-                                className={`td ${getOddsClassName(
-                                    dataList.info[companyId].homeInitialOdds,
-                                    dataList.info[companyId].homeCurrentOdds
-                                )}`}
-                            >
-                                {dataList.info[companyId].homeCurrentOdds}
-                            </div>
-                            <div
-                                className={`td ${getOddsClassName(
-                                    dataList.info[companyId].initialHandicap,
-                                    dataList.info[companyId].currentHandicap
-                                )}`}
-                            >
-                                {handicapToString(dataList.info[companyId].currentHandicap)}
-                            </div>
-                            <div
-                                className={`td ${getOddsClassName(
-                                    dataList.info[companyId].awayInitialOdds,
-                                    dataList.info[companyId].awayCurrentOdds
-                                )}`}
-                            >
-                                {dataList.info[companyId].awayCurrentOdds}
+            {companyList.length > 0 ? (
+                <div className="dataTable">
+                    <div className="tableHead">
+                        <div className="tr">
+                            <div className="th">公司</div>
+                            <div className="th">初始</div>
+                            <div className="th">
+                                <Select
+                                    onChange={value => {
+                                        setOddTime(value as OddTimeType);
+                                    }}
+                                    options={oddTimeOption}
+                                    selectedValue={oddTime}
+                                />
                             </div>
                         </div>
-                    ))}
+                    </div>
+                    <div className="tableBody">
+                        {companyList.map(companyId => (
+                            <div
+                                className="tr"
+                                key={companyId}
+                                onClick={() => {
+                                    handleDetail(companyId, 'handicap');
+                                }}
+                            >
+                                <div className="td">{companyInfo[companyId].companyName}</div>
+                                <OddBar targetData={companyInfo[companyId].initial} />
+                                <OddBar
+                                    initialData={companyInfo[companyId].initial}
+                                    isCompare
+                                    targetData={companyInfo[companyId][oddTime]}
+                                />
+                            </div>
+                        ))}
+                    </div>
                 </div>
-            </div>
+            ) : (
+                <NoData text="暂无资料" />
+            )}
         </div>
     );
 }

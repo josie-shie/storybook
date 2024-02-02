@@ -1,21 +1,19 @@
 'use client';
 
-import { useEffect, useState, useRef } from 'react';
 import Image from 'next/image';
-import Gun from './img/gun.svg';
+import type { GetLineUpInfoResponse } from 'data-center';
+import { useContestDetailStore } from '../../contestDetailStore';
+import TeamLogo from '../../components/teamLogo';
 import Place from './img/place.svg';
 import CocahIcon from './img/coachIcon.svg';
 import CocahDefault from './img/coach.png';
 import GroundBg from './img/groundBg.png';
 import CourtTop from './img/courtTop.png';
 import CourtBottom from './img/courtBottom.png';
-import DefaultTeamLogoIcon from '../../img/defaultTeamLogo.png';
-import { useContestDetailStore } from '../../contestDetailStore';
 import style from './lineUp.module.scss';
 import Player from './player';
 import PlayerList from './playerList';
 import PlayerIconList from './playerIconList';
-import type { GetLineUpInfoResponse } from 'data-center';
 
 function LineUp({ lineUpData }: { lineUpData: GetLineUpInfoResponse }) {
     const matchDetail = useContestDetailStore.use.matchDetail();
@@ -67,17 +65,17 @@ function LineUp({ lineUpData }: { lineUpData: GetLineUpInfoResponse }) {
                     <div className={style.lineUpTeam}>
                         <div className={style.leftTeam}>
                             <div className={style.leftTeamBox}>
-                                <Image
-                                    alt="homeTeam"
+                                <TeamLogo
+                                    alt=""
                                     height={20}
-                                    src={matchDetail.homeLogo || DefaultTeamLogoIcon}
+                                    src={matchDetail.homeLogo}
                                     width={20}
                                 />
                                 <span className={style.teamName}>{matchDetail.homeChs}</span>
                             </div>
                         </div>
                         <div className={style.coach}>
-                            <CocahIcon width={18} height={18} />
+                            <CocahIcon height={18} width={18} />
                             <span>
                                 {lineUpData.teams.HOME.coach_name_zh &&
                                 lineUpData.teams.HOME.coach_name_zh !== '0'
@@ -89,8 +87,8 @@ function LineUp({ lineUpData }: { lineUpData: GetLineUpInfoResponse }) {
                     {homeStarters.map((player, index) => (
                         <Player
                             key={index}
-                            teamColor={lineUpData.teams.HOME.team_color}
                             lineUpData={player}
+                            teamColor={lineUpData.teams.HOME.team_color}
                         />
                     ))}
                 </div>
@@ -107,17 +105,17 @@ function LineUp({ lineUpData }: { lineUpData: GetLineUpInfoResponse }) {
                     <div className={`${style.lineUpTeam} ${style.away}`}>
                         <div className={style.leftTeam}>
                             <div className={style.leftTeamBox}>
-                                <Image
-                                    alt="awayTeam"
+                                <TeamLogo
+                                    alt=""
                                     height={20}
-                                    src={matchDetail.awayLogo || DefaultTeamLogoIcon}
+                                    src={matchDetail.awayLogo}
                                     width={20}
                                 />
                                 <span className={style.teamName}>{matchDetail.awayChs}</span>
                             </div>
                         </div>
                         <div className={style.coach}>
-                            <CocahIcon width={18} height={18} />
+                            <CocahIcon height={18} width={18} />
                             <span>
                                 {lineUpData.teams.AWAY.coach_name_zh &&
                                 lineUpData.teams.AWAY.coach_name_zh !== '0'
@@ -128,10 +126,10 @@ function LineUp({ lineUpData }: { lineUpData: GetLineUpInfoResponse }) {
                     </div>
                     {awayStarters.map((player, index) => (
                         <Player
+                            isBottom
                             key={index}
-                            teamColor={lineUpData.teams.AWAY.team_color}
                             lineUpData={player}
-                            isBottom={true}
+                            teamColor={lineUpData.teams.AWAY.team_color}
                         />
                     ))}
                 </div>
@@ -143,24 +141,14 @@ function LineUp({ lineUpData }: { lineUpData: GetLineUpInfoResponse }) {
             <div className={style.teamPlayer}>
                 <div className={style.matchTeam}>
                     <div className={style.container}>
-                        <Image
-                            alt="homeTeam"
-                            height={31}
-                            src={matchDetail.homeLogo || DefaultTeamLogoIcon}
-                            width={31}
-                        />
+                        <TeamLogo alt="" height={31} src={matchDetail.homeLogo} width={31} />
                         <div className={style.text}>
                             <div className={style.name}>{matchDetail.homeChs}</div>
                             {/* <div className={style.extra}>替补身价：757.5万欧</div> */}
                         </div>
                     </div>
                     <div className={style.container}>
-                        <Image
-                            alt="awayTeam"
-                            height={31}
-                            src={matchDetail.awayLogo || DefaultTeamLogoIcon}
-                            width={31}
-                        />
+                        <TeamLogo alt="" height={31} src={matchDetail.awayLogo} width={31} />
                         <div className={style.text}>
                             <div className={style.name}>{matchDetail.awayChs}</div>
                             {/* <div className={style.extra}>替补身价：537.5万欧</div> */}
@@ -206,12 +194,12 @@ function LineUp({ lineUpData }: { lineUpData: GetLineUpInfoResponse }) {
                     </div>
                 </div>
                 <PlayerList
-                    homeBackUp={homeBackUp}
                     awayBackUp={awayBackUp}
-                    homeColor={lineUpData.teams.HOME.team_color}
                     awayColor={lineUpData.teams.AWAY.team_color}
-                    homeFormation={homeFormation}
                     awayFormation={awayFormation}
+                    homeBackUp={homeBackUp}
+                    homeColor={lineUpData.teams.HOME.team_color}
+                    homeFormation={homeFormation}
                 />
                 <PlayerIconList />
             </div>

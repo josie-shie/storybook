@@ -7,17 +7,23 @@
         top: 80px;
         left: 50%;
         transform: translateX(-50%);
-
-        img {
-            display: block;
-            margin: 0 auto;
-        }
-
-        > div {
-            margin-top: 4px;
-            text-align: center;
-            color: #9b9b9b;
-            font-size: 14px;
-        }
     }
+}
+
+.noDataFlex {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.image {
+    display: block;
+    margin: 0 auto;
+}
+
+.text {
+    margin-top: 4px;
+    text-align: center;
+    color: #9b9b9b;
+    font-size: 14px;
 }

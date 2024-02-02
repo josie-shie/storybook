@@ -1,0 +1,102 @@
+.detailTable {
+    position: relative;
+    display: flex;
+    height: calc(100dvh - 100px);
+
+    .companyList {
+        width: 72px;
+        display: flex;
+        flex-direction: column;
+        background-color: #f3f3f3;
+        border-top-left-radius: 6px;
+        border-bottom-left-radius: 6px;
+        padding-left: 6px;
+
+        .company {
+            height: 38px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #8d8d8d;
+            font-size: 12px;
+            border-top-left-radius: 6px;
+            border-bottom-left-radius: 6px;
+
+            &:first-child {
+                height: 28px;
+            }
+
+            &.active {
+                background-color: #fff;
+                color: #4489ff;
+            }
+        }
+    }
+
+    :global {
+        .dataTable {
+            flex: 1;
+            margin-bottom: 0;
+            border: 1px solid #f3f3f3;
+            border-left: none;
+            border-top-right-radius: 6px;
+            border-bottom-right-radius: 6px;
+
+            .tableHead {
+                height: 27px;
+                background-color: initial;
+                border-radius: 0;
+                border: none;
+                border-bottom: 1px solid #f3f3f3;
+
+                .th {
+                    color: #8d8d8d;
+
+                    &:nth-of-type(4) {
+                        width: 68px;
+                        flex: initial;
+                    }
+                }
+            }
+
+            .tableBody {
+                max-height: calc(100dvh - 128px);
+                overflow-y: auto;
+                touch-action: pan-y;
+
+                .tr {
+                    height: 38px;
+                    border-top: 1px solid #fff;
+                    border-bottom: 1px solid #f3f3f3;
+
+                    .td {
+                        border: none;
+
+                        &:nth-of-type(4) {
+                            width: 68px;
+                            flex: initial;
+                        }
+                    }
+
+                    &:nth-of-type(2n) {
+                        .td {
+                            background-color: initial;
+                        }
+                    }
+
+                    &:last-of-type {
+                        .td {
+                            &:first-of-type {
+                                border-radius: 0;
+                            }
+
+                            &:last-of-type {
+                                border-radius: 0;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

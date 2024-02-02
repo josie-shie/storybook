@@ -4,8 +4,6 @@ import { getRandomInt } from './random';
 import {
     deProtoOdds,
     deProtoOddsChange,
-    deProtoOddRunning,
-    deProtoOddRunningHalf,
     deProtoAnalysis,
     toProtoAnalysis,
     deProtoNotifyMessage
@@ -536,7 +534,6 @@ const handleNotifyMessage = async (message: Buffer) => {
 
 export interface OddsRunningType {
     matchId?: number;
-    isHalf: boolean;
     data?: {
         id: number;
         matchId: number;
@@ -631,51 +628,25 @@ function createOddRunningHashTable(oddList: OddsRunningType) {
         };
 
         if (item.type === 1 || item.type === 6) {
-            const key = oddList.isHalf ? 'handicapHalf' : 'handicap';
-            result[item.matchId][item.companyId][key] = bettingData;
+            result[item.matchId][item.companyId].handicap = bettingData;
         } else {
             bettingData.currentOverOdds = parseFloat(item.odds1);
             bettingData.currentUnderOdds = parseFloat(item.odds3);
-            const key = oddList.isHalf ? 'overUnderHalf' : 'overUnder';
-            result[item.matchId][item.companyId][key] = bettingData;
+            result[item.matchId][item.companyId].overUnder = bettingData;
         }
     });
 
     return result;
 }
 
-const handleOddRunningMessage = async (message: Buffer) => {
-    const messageObject = await deProtoOddRunning(message);
-
-    const decodedMessage = toSerializableObject(
-        messageObject as unknown as Record<string, unknown>
-    );
+const handleOddRunningMessage = (message: Buffer) => {
+    const messageObject = JSON.parse(textDecoder.decode(message)) as OddsRunningHashTable;
 
     for (const messageMethod of useOddsRunningQueue) {
-        const formatDecodedMessage = createOddRunningHashTable({
-            ...decodedMessage,
-            isHalf: false
-        });
+        const formatDecodedMessage = createOddRunningHashTable(messageObject);
+
         messageMethod(formatDecodedMessage);
     }
-
-    // console.log('[MQTT On Odd Running message ContestMessage]: ', decodedMessage);
-};
-
-const handleOddRunningHalfMessage = async (message: Buffer) => {
-    const messageObject = await deProtoOddRunningHalf(message);
-
-    const decodedMessage = toSerializableObject(
-        messageObject as unknown as Record<string, unknown>
-    );
-
-    for (const messageMethod of useOddsRunningHalfQueue) {
-        const formatDecodedMessage = createOddRunningHashTable({ ...decodedMessage, isHalf: true });
-        messageMethod(formatDecodedMessage);
-    }
-
-    // eslint-disable-next-line no-console -- Check mqtt message
-    console.log('[MQTT On Odd Running Half message ContestMessage]: ', decodedMessage);
 };
 
 export const mqttService = {
@@ -696,7 +667,8 @@ export const mqttService = {
 
                 // client.subscribe('updateasia_odds');
                 // client.subscribe('updateasia_odds_change');
-                // client.subscribe('updatetechnic');
+
+                // client.subscribe('updatetechnic'); 技術統計 站不做
                 client.subscribe('analytical/analysis');
                 client.subscribe(`sportim/notify/${memberId}`);
             });
@@ -714,7 +686,7 @@ export const mqttService = {
             init = false;
 
             if (isConnect) {
-                // mqttService.oddRunningInit();
+                mqttService.oddRunningInit();
             }
         }
         return client;
@@ -724,11 +696,9 @@ export const mqttService = {
             // eslint-disable-next-line no-console -- Check lifecycle
             console.log('Mqtt oddRunning connected');
             client.subscribe('updateodds_running');
-            client.subscribe('updateodds_running_half');
 
             client.on('message', (topic, message) => {
-                if (topic === 'updateodds_running') void handleOddRunningMessage(message);
-                if (topic === 'updateodds_running_half') void handleOddRunningHalfMessage(message);
+                if (topic === 'updateodds_running') handleOddRunningMessage(message);
             });
         } else {
             isConnect = true;
@@ -738,7 +708,6 @@ export const mqttService = {
         // eslint-disable-next-line no-console -- Check lifecycle
         console.log('Mqtt oddRunning deinit');
         client.unsubscribe('updateodds_running');
-        client.unsubscribe('updateodds_running_half');
     },
     getMessage: (onMessage: (data: OriginalContestInfo) => void) => {
         useMessageQueue.push(onMessage);
