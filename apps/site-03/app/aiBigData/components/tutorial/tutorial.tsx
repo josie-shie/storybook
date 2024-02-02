@@ -24,7 +24,7 @@ function Tutorial({
     playTutorial,
     setPlayTutorial
 }: {
-    setDefaultPageIndex: (val: number) => void;
+    setDefaultPageIndex?: (val: number) => void;
     playTutorial: boolean;
     setPlayTutorial: (playTutial: boolean) => void;
 }) {
@@ -35,13 +35,15 @@ function Tutorial({
         1: 0,
         2: 0
     });
+    const [swiperHeight, setSwiperHeight] = useState('calc(100dvh - 30px)');
 
     const showedTutorial = useQueryFormStore.use.showedTutorial();
     const setShowedTutorial = useQueryFormStore.use.setShowedTutorial();
 
     const handleSlideChange = (swiper: SwiperClass) => {
+        setSwiperHeight(`calc(100dvh - ${30 + swiper.activeIndex}px)`);
         setCurrentIndex(swiper.activeIndex);
-        setDefaultPageIndex(swiper.activeIndex);
+        setDefaultPageIndex && setDefaultPageIndex(swiper.activeIndex);
         setIsShowed(prevState => {
             const currentCount = prevState[swiper.activeIndex] || 0;
             return {
@@ -60,7 +62,7 @@ function Tutorial({
     const handleClose = () => {
         setPlayTutorial(false);
         !showedTutorial && localStorage.setItem('showAnalysisTutorial', 'false');
-        setDefaultPageIndex(0);
+        setDefaultPageIndex && setDefaultPageIndex(0);
         setShowedTutorial(true);
     };
 
@@ -73,10 +75,12 @@ function Tutorial({
             className={style.tutorial}
             style={{
                 height: '100dvh',
+                width: '100%',
                 display: !playTutorial ? 'none' : '',
                 position: 'relative',
-                backgroundImage: `url(${fixedBgImage.src})`,
-                backgroundSize: 'contain'
+                backgroundImage: setDefaultPageIndex ? 'none' : `url(${fixedBgImage.src})`,
+                backgroundSize: 'contain',
+                backgroundRepeat: 'no-repeat'
             }}
         >
             <Swiper
@@ -90,26 +94,22 @@ function Tutorial({
                 onSlideChange={handleSlideChange}
                 pagination={{ clickable: true }}
                 slidesPerView={1}
-                style={{ height: 'calc(100dvh - 30px)' }}
+                style={{ height: swiperHeight }}
             >
                 <SwiperSlide>
                     {/* 需要判斷index不然預設全部渲染就沒有動畫效果 */}
-                    <div className={style.slide}>
+                    <div className={style.slide} style={{ height: '100dvh' }}>
                         {currentIndex === 0 && <Handicap isShowed={isShowed} />}
                     </div>
                 </SwiperSlide>
                 <SwiperSlide>
-                    <div className={style.slide}>
-                        <div className={style.slide}>
-                            {currentIndex === 1 && <Minutes isShowed={isShowed} />}
-                        </div>
+                    <div className={style.slide} style={{ height: '100dvh' }}>
+                        {currentIndex === 1 && <Minutes isShowed={isShowed} />}
                     </div>
                 </SwiperSlide>
                 <SwiperSlide>
-                    <div className={style.slide}>
-                        <div className={style.slide}>
-                            {currentIndex === 2 && <Bodan isShowed={isShowed} />}
-                        </div>
+                    <div className={style.slide} style={{ height: '100dvh' }}>
+                        {currentIndex === 2 && <Bodan isShowed={isShowed} />}
                     </div>
                 </SwiperSlide>
             </Swiper>

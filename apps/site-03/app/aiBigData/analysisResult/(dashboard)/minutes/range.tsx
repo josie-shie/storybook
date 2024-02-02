@@ -142,7 +142,7 @@ function Range() {
     return (
         <>
             <div className={style.range}>
-                <GoalRangeChart chartList={headers} />
+                <GoalRangeChart chartList={headers} maxIndex={maxIndex} />
                 <div className={style.legend}>
                     {headers.map(header => (
                         <span style={{ color: header.color }} key={header.legend}>

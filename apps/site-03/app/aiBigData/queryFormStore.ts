@@ -356,7 +356,7 @@ const initialState = (
             return { ...state, defaultPageIndex };
         });
     },
-    playTutorial: true,
+    playTutorial: false,
     setPlayTutoral: (playTutorial: boolean) => {
         set(state => {
             return { ...state, playTutorial };

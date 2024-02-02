@@ -68,7 +68,7 @@ function ActivedTooltip({ label }: { label: string }) {
         </div>`;
 }
 
-function GoalRangeChart({ chartList }: { chartList: ChartType[] }) {
+function GoalRangeChart({ chartList, maxIndex }: { chartList: ChartType[]; maxIndex: number }) {
     const echartsRef: React.RefObject<ReactEcharts> = useRef(null);
     const [options, setOptions] = useState<OptionType>({} as OptionType);
 
@@ -132,7 +132,7 @@ function GoalRangeChart({ chartList }: { chartList: ChartType[] }) {
             chartInstance.dispatchAction({
                 type: 'showTip',
                 seriesIndex: 0,
-                dataIndex: 1
+                dataIndex: maxIndex
             });
         }
     }, [options, echartsRef]);

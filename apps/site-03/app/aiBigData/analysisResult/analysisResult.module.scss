@@ -57,17 +57,23 @@
     }
 }
 
+.tutorialBlock {
+    position: absolute;
+    top: 0;
+    z-index: 10;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 100dvh;
+}
+
+.playTutorial {
+    height: calc(100dvh - 152px);
+    overflow-y: hidden;
+}
+
 .analysisResult {
     position: relative;
-
-    .tutorialBlock {
-        position: absolute;
-        top: 0;
-        z-index: 2;
-        left: 0;
-        right: 0;
-        bottom: 0;
-    }
 
     .resultPage {
         .bigDataGame {

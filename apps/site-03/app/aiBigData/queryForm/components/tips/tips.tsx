@@ -11,6 +11,7 @@ function Tips({
     const showTutorial = () => {
         setPlayTutorial(true);
         setShowedTutorial(true);
+        localStorage.setItem('showAnalysisTutorial', 'false');
     };
 
     return (
