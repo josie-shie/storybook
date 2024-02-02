@@ -1,0 +1,137 @@
+.lineChart {
+    position: relative;
+    padding-top: 12px;
+
+    .chartDetail {
+        color: #4a4a4a;
+        font-size: 12px;
+        font-weight: 500;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        :global {
+            .switch {
+                border: 0;
+                border-radius: 0;
+
+                span {
+                    color: #4a4a4a;
+                }
+
+                .indicator {
+                    background-color: transparent;
+                }
+
+                .active {
+                    color: #fff;
+                    background-color: #4a4a4a;
+                    border-radius: 30px;
+                }
+            }
+        }
+    }
+
+    .legend {
+        position: absolute;
+        right: 0;
+        display: flex;
+        justify-content: flex-end;
+        gap: 6px;
+        z-index: 3;
+
+        .label {
+            font-size: 12px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 2px;
+
+            .circle {
+                width: 10px;
+                height: 10px;
+                border-radius: 5px;
+            }
+        }
+    }
+
+    .blurCoverTop {
+        display: flex;
+        position: absolute;
+        left: 26px;
+        top: 22px;
+        z-index: 2;
+        width: 100px;
+        height: 138px;
+        background: linear-gradient(273deg, rgba(255, 255, 255, 0) 13.83%, #fff 91.58%);
+        justify-content: flex-start;
+        align-items: center;
+        pointer-events: none;
+
+        svg {
+            margin-left: 12px;
+        }
+    }
+
+    .blurCoverBottom {
+        position: absolute;
+        right: 0;
+        top: 34px;
+        z-index: 2;
+        width: 100px;
+        height: 130px;
+        background: linear-gradient(273deg, #fff 13.83%, rgba(255, 255, 255, 0) 91.58%);
+        justify-content: flex-end;
+        align-items: center;
+        pointer-events: none;
+
+        svg {
+            margin-right: 12px;
+        }
+    }
+
+    .chartContainer {
+        position: relative;
+
+        .yAsix {
+            width: 36px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 42px;
+            text-align: left;
+            position: absolute;
+            left: 0;
+            top: 6px;
+            z-index: 3;
+            background-color: #fff;
+
+            .label {
+                font-size: 10px;
+                font-weight: 500;
+                line-height: 16px;
+            }
+
+            .redLabel {
+                color: #ff4343;
+            }
+
+            .greyLabel {
+                color: #bfbfbf;
+            }
+        }
+
+        .chart {
+            position: relative;
+            overflow-x: auto;
+            height: 184px;
+
+            .chartScroll {
+                height: 184px;
+                position: relative;
+                left: 36px;
+                width: 310px;
+            }
+        }
+    }
+}

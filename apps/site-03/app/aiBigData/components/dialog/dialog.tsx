@@ -1,7 +1,7 @@
 'use client';
 import { forwardRef } from 'react';
 import type { CSSProperties, ReactElement } from 'react';
-import { Dialog } from '@mui/material';
+import { Dialog, DialogProps } from '@mui/material';
 import Slide from '@mui/material/Slide';
 import type { TransitionProps } from '@mui/material/transitions';
 import style from './dialog.module.scss';
@@ -23,6 +23,11 @@ const Transition = forwardRef(function Transition(
 });
 
 function ErrorDialog({ content, openDialog, onClose, customStyle }: NormalDialogProps) {
+    const handleClose: DialogProps['onClose'] = (event, reason) => {
+        if (reason === 'backdropClick') return;
+        onClose();
+    };
+
     return (
         <Dialog
             PaperProps={{
@@ -34,8 +39,9 @@ function ErrorDialog({ content, openDialog, onClose, customStyle }: NormalDialog
             }}
             TransitionComponent={Transition}
             keepMounted
-            onClose={onClose}
+            onClose={handleClose}
             open={openDialog}
+            disableEscapeKeyDown
         >
             <div className={style.normalDialog} style={customStyle}>
                 <div className={style.content}>{content}</div>
