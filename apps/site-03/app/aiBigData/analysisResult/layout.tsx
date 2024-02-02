@@ -11,6 +11,7 @@ import Header from '@/components/header/headerTransparent';
 import { GetFootballStatsRequest, getFootballStats, getMemberInfo } from 'data-center';
 import dayjs from 'dayjs';
 import { useUserStore } from '@/store/userStore';
+import { useRouter } from 'next/navigation';
 
 type HandicapSideType = 'home' | 'away';
 
@@ -163,6 +164,9 @@ function QueryInfo({ children }: { children: ReactNode }) {
 }
 
 function AnalysisResultLayout({ children }: { children: ReactNode }) {
+    const router = useRouter();
+    const setDefaultPageIndex = useQueryFormStore.use.setDefaultPageIndex();
+
     useEffect(() => {
         window.scroll(0, 0);
     }, []);
@@ -176,9 +180,14 @@ function AnalysisResultLayout({ children }: { children: ReactNode }) {
         contestInfo: {}
     });
 
+    const back = () => {
+        setDefaultPageIndex(0);
+        router.push('/aiBigData/queryForm');
+    };
+
     return (
         <div className={style.resultLayout}>
-            <Header title="分析结果" />
+            <Header title="分析结果" backHandler={back} />
             <QueryInfo>{children}</QueryInfo>
         </div>
     );

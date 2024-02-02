@@ -8,8 +8,19 @@ import HandicapTopDescription from './img/handicapTopDescription.png';
 import HandicapBottomDescription from './img/handicapBottomDescription.png';
 import HighlightHandIcon from './img/highlightHand.svg';
 import { motion } from 'framer-motion';
+import W1 from './img/W1.png';
+import W2 from './img/W2.png';
+import { useEffect, useState } from 'react';
 
 function Handicap({ isShowed }: { isShowed: Record<number, number> }) {
+    const [showW2, setShowW2] = useState(false);
+
+    useEffect(() => {
+        if (isShowed[0] > 0) {
+            setShowW2(true);
+        }
+    }, []);
+
     return (
         <div className={style.images}>
             <div className={style.tutorialTop} style={{ gap: '30px' }}>
@@ -27,7 +38,47 @@ function Handicap({ isShowed }: { isShowed: Record<number, number> }) {
                     src={handicapTopBar.src}
                     className={`${isShowed[0] <= 0 && style.animation}`}
                 />
-                <HandIcon style={{ position: 'absolute', top: '246px', left: '70px' }} />
+                {!showW2 && (
+                    <motion.div
+                        initial={
+                            isShowed[0] <= 0 ? { opacity: 1, left: '48px', top: '74px' } : false
+                        }
+                        animate={{ left: '112px', top: '74px' }} // 假设W2的位置
+                        transition={{ duration: 0.8, delay: 2 }}
+                        style={{ position: 'absolute' }}
+                        onAnimationComplete={() => {
+                            setShowW2(true);
+                        }}
+                    >
+                        <Image src={W1.src} alt="W1" width={64} height={222} />
+                        <div style={{ position: 'absolute', right: -20, bottom: -52 }}>
+                            <HandIcon />
+                        </div>
+                    </motion.div>
+                )}
+                {showW2 && (
+                    <div
+                        style={{
+                            position: 'absolute',
+                            left: '112px',
+                            top: '74px',
+                            opacity: 1,
+                            width: '64px',
+                            height: '222px'
+                        }}
+                    >
+                        <Image src={W2.src} alt="W2" width={64} height={222} />
+                        <div
+                            style={{ position: 'absolute', right: -20, bottom: -58 }}
+                            className={`${
+                                isShowed[0] > 0 ? style.staticHand : style.handAnimationHandler
+                            }`}
+                        >
+                            <HandIcon />
+                        </div>
+                    </div>
+                )}
+
                 <div
                     style={{
                         display: 'flex',
@@ -39,7 +90,7 @@ function Handicap({ isShowed }: { isShowed: Record<number, number> }) {
                     <motion.div
                         initial={isShowed[0] <= 0 ? { opacity: 0 } : false}
                         animate={{ opacity: 1 }}
-                        transition={{ delay: 1, duration: 1 }}
+                        transition={{ delay: 2.5, duration: 1 }}
                     >
                         <Image
                             alt=""
@@ -56,7 +107,7 @@ function Handicap({ isShowed }: { isShowed: Record<number, number> }) {
                     <motion.div
                         initial={isShowed[0] <= 0 ? { opacity: 0 } : false}
                         animate={{ opacity: 1 }}
-                        transition={{ delay: 2, duration: 1 }}
+                        transition={{ delay: 4, duration: 1 }}
                     >
                         <Image
                             alt=""
@@ -71,7 +122,7 @@ function Handicap({ isShowed }: { isShowed: Record<number, number> }) {
                     <motion.div
                         initial={isShowed[0] <= 0 ? { opacity: 0 } : false}
                         animate={{ opacity: 1 }}
-                        transition={{ delay: 3, duration: 1 }}
+                        transition={{ delay: 5, duration: 1 }}
                     >
                         <HighlightHandIcon
                             style={{ position: 'absolute', top: '36px', left: '82px' }}
@@ -88,7 +139,7 @@ function Handicap({ isShowed }: { isShowed: Record<number, number> }) {
                     <motion.div
                         initial={isShowed[0] <= 0 ? { opacity: 0 } : false}
                         animate={{ opacity: 1 }}
-                        transition={{ delay: 3, duration: 1 }}
+                        transition={{ delay: 5, duration: 1 }}
                     >
                         <Image
                             alt=""

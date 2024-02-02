@@ -179,7 +179,6 @@ function QueryForm() {
     const setDialogContent = useQueryFormStore.use.setDialogContent();
     const dialogContentType = useQueryFormStore.use.dialogContentType();
     const resetQuery = useQueryFormStore.use.resetQuery();
-    const setDefaultPageIndex = useQueryFormStore.use.setDefaultPageIndex();
     const playTutorial = useQueryFormStore.use.playTutorial();
     const setPlayTutorial = useQueryFormStore.use.setPlayTutoral();
 
@@ -226,11 +225,7 @@ function QueryForm() {
             <FormContent setZeroMatchList={setZeroMatchList} />
             {playTutorial ? (
                 <div className={style.tutorialBlock}>
-                    <Tutorial
-                        setDefaultPageIndex={setDefaultPageIndex}
-                        playTutorial={playTutorial}
-                        setPlayTutorial={setPlayTutorial}
-                    />
+                    <Tutorial playTutorial={playTutorial} setPlayTutorial={setPlayTutorial} />
                 </div>
             ) : null}
             <Dialog
