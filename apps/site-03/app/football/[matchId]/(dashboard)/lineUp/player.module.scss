@@ -1,0 +1,115 @@
+.player {
+    position: absolute;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    min-height: 80px;
+    transform: translate(-50%, -50%);
+
+    &.away {
+        transform: translate(-50%, 70%);
+    }
+
+    .playerBox {
+        position: relative;
+
+        .playerImg {
+            width: 32px;
+            height: 32px;
+            background-repeat: no-repeat;
+            background-position: 50%;
+            border-radius: 50%;
+            background-size: contain;
+            box-shadow: 0 2px 4px 0 rgba(36, 77, 0, 0.6);
+            margin: 0 auto;
+            border-width: 2px;
+            border-style: solid;
+            background-color: #fff;
+            position: relative;
+
+            .leftTop {
+                position: absolute;
+                top: -4px;
+                left: -10px;
+                width: 16px;
+                height: 16px;
+                border-radius: 50%;
+                overflow: hidden;
+
+                p {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    height: 16px;
+                    font-size: 9px;
+                    color: #fff;
+                    border-radius: 50%;
+                }
+            }
+
+            .leftBottom {
+                position: absolute;
+                bottom: -4px;
+                left: -10px;
+                display: flex;
+                justify-content: flex-end;
+                width: 16px;
+                height: 16px;
+            }
+
+            .rightTop {
+                position: absolute;
+                top: -4px;
+                left: 24px;
+                display: flex;
+                align-items: center;
+                gap: 2px;
+                height: 16px;
+
+                span {
+                    color: #fff;
+                    font-size: 11px;
+                }
+            }
+
+            .rightBottom {
+                position: absolute;
+                bottom: -2px;
+                left: 24px;
+                height: 14px;
+                white-space: nowrap;
+            }
+        }
+
+        .playerName {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 40px;
+            color: #fff;
+            font-size: 12px;
+            margin-top: 4px;
+            // zoom: 0.8;
+        }
+
+        .playerScore {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 25px;
+            height: 12px;
+            padding: 4px 6px;
+            font-size: 12px;
+            border-radius: 12px;
+            color: #fff;
+            zoom: 0.833;
+
+            .icon {
+                position: absolute;
+                top: 0;
+                left: -14px;
+            }
+        }
+    }
+}

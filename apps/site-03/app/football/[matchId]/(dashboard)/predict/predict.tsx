@@ -7,8 +7,8 @@ import { creatPredictStore } from './predictStore';
 function Predict({ predictData, matchId }: { predictData: GetPostListResponse; matchId: number }) {
     creatPredictStore({
         predictList: predictData.posts,
-        totalPage: predictData.totalPage,
-        totalArticle: predictData.totalArticle
+        pageCount: predictData.pagination.pageCount,
+        totalCount: predictData.pagination.totalCount
     });
     return <PredictList matchId={matchId} />;
 }

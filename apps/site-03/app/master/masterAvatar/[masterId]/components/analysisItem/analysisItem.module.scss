@@ -1,12 +1,152 @@
-.analysisItem {
-    margin-bottom: 16px;
+.article {
     margin-top: 12px;
 }
+.articleCard {
+    position: relative;
+    padding: 12px 12px 0 12px;
+    margin-bottom: 8px;
+    border-radius: 8px;
+    border: 1px solid #dadada;
 
-.loadMore {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    .result {
+        position: absolute;
+        top: 3px;
+        right: 3px;
+    }
+
+    .unlockStatus {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 0px;
+        height: 0px;
+        border-top: 30px solid #e6effe;
+        border-right: 30px solid transparent;
+
+        .unlocked {
+            position: absolute;
+            top: -31px;
+            left: 1px;
+        }
+    }
+
+    .user {
+        display: flex;
+
+        .userInfo {
+            flex-grow: 1;
+
+            .userName {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                font-size: 12px;
+                font-weight: 500;
+                color: #979797;
+
+                .plan {
+                    font-size: 12px;
+                    font-weight: 500;
+                    color: #8d8d8d;
+                    padding: 2px 4px;
+                    border-radius: 4px;
+                    background: #f3f3f3;
+                    border: 1px solid #bfbfbf;
+                }
+            }
+
+            .tagsContainer {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 4px;
+
+                :global(.baseTag) {
+                    margin-right: 0;
+                }
+
+                :global(.tagLayout) {
+                    margin-right: 0;
+                }
+            }
+        }
+    }
+
+    .leagueTeam {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 4px;
+
+        span {
+            color: #8d8d8d;
+            font-size: 12px;
+            font-weight: 500;
+
+            &:first-child {
+                color: #276ce1;
+            }
+        }
+
+        .line {
+            color: #d9d9d9;
+        }
+    }
+
+    .title {
+        font-size: 14px;
+        font-weight: 600;
+        margin-top: 6px;
+        color: #4a4a4a;
+        word-break: break-all;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
+        max-height: 50px;
+    }
+
+    .game {
+        padding: 8px 0;
+        position: relative;
+    }
+
+    .postTime {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 12px;
+        color: #979797;
+        padding: 0 0 12px;
+
+        .seen {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+
+            span {
+                display: flex;
+                align-items: center;
+                gap: 2px;
+                font-size: 12px;
+                font-weight: 500;
+                color: #8d8d8d;
+
+                &:last-child {
+                    color: #4489ff;
+                }
+            }
+
+            .line {
+                color: #d9d9d9;
+            }
+        }
+    }
+
+    .loadMore {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 }
 
 .listEnd {
@@ -17,116 +157,4 @@
         font-size: 12px;
         padding: 8px 0;
     }
-}
-
-.top {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-
-    .left {
-        display: flex;
-        justify-content: flex-start;
-
-        .decorate::before {
-            content: '';
-            display: inline-block;
-            width: 4px;
-            height: 16px;
-            background: #4489ff;
-            border-radius: 1px;
-            margin-right: 8px;
-        }
-
-        .title {
-            font-size: 14px;
-            font-weight: 600;
-            color: #4a4a4a;
-            height: 40px;
-            display: -webkit-box;
-            -webkit-box-orient: vertical;
-            -webkit-line-clamp: 2;
-            overflow: hidden;
-            word-break: break-all;
-            padding-right: 4px;
-        }
-    }
-
-    .unlockStatus {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-end;
-
-        .unlockNumber {
-            font-size: 12px;
-            font-weight: 500;
-            padding-top: 2px;
-            color: #4489ff;
-        }
-
-        .unlocked {
-            font-size: 12px;
-            font-weight: 500;
-            word-break: keep-all;
-            color: #4489ff;
-            padding: 0 8px 8px;
-        }
-    }
-}
-
-.mid {
-    padding: 8px 0;
-
-    .detail {
-        font-size: 13px;
-        font-weight: 500;
-        color: #276ce1;
-        padding-bottom: 4px;
-
-        .time {
-            color: #9b9b9b;
-            padding-left: 4px;
-        }
-    }
-
-    .combination {
-        font-size: 14px;
-        font-weight: 500;
-        background: #f3f3f3;
-        color: #757575;
-        position: relative;
-        padding: 10px;
-        border-radius: 8px;
-
-        .icon {
-            position: absolute;
-            right: 4px;
-            top: -25px;
-            width: 36px;
-            height: auto;
-            background: #fb897a;
-            border-radius: 50%;
-        }
-
-        .team {
-            display: flex;
-            align-items: center;
-
-            .tag {
-                padding: 2px 6px;
-                color: #4489ff;
-                font-size: 11px;
-                font-weight: 500;
-                border: 1px solid #4489ff;
-                border-radius: 4px;
-                margin-right: 4px;
-            }
-        }
-    }
-}
-
-.postTime {
-    font-size: 12px;
-    color: #979797;
-    padding-bottom: 8px;
 }

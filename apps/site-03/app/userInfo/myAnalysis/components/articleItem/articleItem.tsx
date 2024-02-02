@@ -1,6 +1,5 @@
 'use client';
-import { useRouter } from 'next/navigation';
-import { timestampToString } from 'lib';
+import { truncateFloatingPoint, timestampToTodayTime } from 'lib';
 import Image from 'next/image';
 import Tag from '@/components/tag/tag';
 import TagSplit from '@/components/tagSplit/tagSplit';
@@ -14,7 +13,11 @@ import Draw from './img/draw.png';
 import Eye from './img/eye.svg';
 import LockOpen from './img/lockOpen.svg';
 import LockOpenBlue from './img/lockOpenBlue.svg';
-import { truncateFloatingPoint, timestampToTodayTime } from 'lib';
+
+interface MentorArticleCount {
+    predictedPlay: string;
+    counts: number;
+}
 
 interface Tags {
     id: number;
@@ -74,14 +77,22 @@ interface GetUnlockPostProps {
         matchTime: number;
         createdAt: number;
         memberTags: Tags;
+        unlockCounts: number;
+        seenCounts: number;
+        mentorArticleCount: MentorArticleCount;
     };
 }
 
 function ArticleItem({ item }: GetUnlockPostProps) {
-    const router = useRouter();
-
-    const goInfo = (mentorId: number) => {
-        router.push(`/master/masterAvatar/${mentorId}?status=analysis`);
+    const getText = predictedPlay => {
+        switch (predictedPlay) {
+            case 'HANDICAP':
+                return '胜负';
+            case 'OVERUNDER':
+                return '总进球';
+            default:
+                return '';
+        }
     };
 
     return (
@@ -122,6 +133,28 @@ function ArticleItem({ item }: GetUnlockPostProps) {
                         {item.mentorName}
                     </Link>
                     <div className={style.tagsContainer}>
+                        {item.mentorArticleCount.predictedPlay === 'HANDICAP' &&
+                            item.mentorArticleCount.counts >= 10 && (
+                                <Tag
+                                    background="#f3f3f3"
+                                    borderColor="#bfbfbf"
+                                    color="#8d8d8d"
+                                    text={`${getText(item.mentorArticleCount.predictedPlay)} ${
+                                        item.mentorArticleCount.counts
+                                    }場`}
+                                />
+                            )}
+                        {item.mentorArticleCount.predictedPlay === 'OVERUNDER' &&
+                            item.mentorArticleCount.counts >= 10 && (
+                                <Tag
+                                    background="#f3f3f3"
+                                    borderColor="#bfbfbf"
+                                    color="#8d8d8d"
+                                    text={`${getText(item.mentorArticleCount.predictedPlay)} ${
+                                        item.mentorArticleCount.counts
+                                    }場`}
+                                />
+                            )}
                         {item.memberTags.winMaxAccurateStreak > 3 && (
                             <Tag
                                 icon={<Image alt="fire" src={Fire} />}
@@ -156,7 +189,11 @@ function ArticleItem({ item }: GetUnlockPostProps) {
                         {truncateFloatingPoint(item.memberTags.weekHitRate, 2)}
                         <i>%</i>
                     </span>
-                    <span className={style.hitName}>近十命中</span>
+                    {item.memberTags.weekHitRecentTen > 0 && (
+                        <span
+                            className={style.hitName}
+                        >{`近十中${item.memberTags.weekHitRecentTen}`}</span>
+                    )}
                 </div>
             </div>
             <Link href={`/master/articleDetail/${item.postId}`}>
@@ -176,12 +213,12 @@ function ArticleItem({ item }: GetUnlockPostProps) {
                 <div className={style.seen}>
                     <span>
                         <Eye />
-                        9999
+                        {item.seenCounts}
                     </span>
                     <span className={style.line}>|</span>
                     <span>
                         <LockOpen />
-                        344
+                        {item.unlockCounts}
                     </span>
                 </div>
                 {/* {item.seenCounts && item.unlockCounts ? (

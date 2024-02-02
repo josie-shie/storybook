@@ -619,6 +619,10 @@ export const subscribePlan = async ({
 
 export interface GetUnlockedPostRequest {
     memberId: number;
+    pagination: {
+        currentPage: number;
+        perPage: number;
+    };
 }
 
 const MemberTagsSchema = z.object({
@@ -627,7 +631,14 @@ const MemberTagsSchema = z.object({
     ranking: z.number()
 });
 
-const GetUnlockedPostSchema = z.object({
+export type MemberTag = z.infer<typeof MemberTagsSchema>;
+
+const MentorArticleCountSchema = z.object({
+    predictedPlay: z.string(),
+    counts: z.number()
+});
+
+const GetUnlockedPostDataSchema = z.object({
     postId: z.number(),
     analysisTitle: z.string(),
     analysisContent: z.string(),
@@ -644,40 +655,46 @@ const GetUnlockedPostSchema = z.object({
     awayTeamName: z.string(),
     matchTime: z.number(),
     createdAt: z.number(),
-    memberTags: TagSchema
+    memberTags: TagSchema,
+    unlockCounts: z.number(),
+    seenCounts: z.number(),
+    mentorArticleCount: MentorArticleCountSchema
 });
 
-export type MemberTag = z.infer<typeof MemberTagsSchema>;
+export type GetUnlockedPostData = z.infer<typeof GetUnlockedPostDataSchema>;
 
-export type GetUnlockedPost = z.infer<typeof GetUnlockedPostSchema>;
-
-const GetUnlockedPostResultSchema = z.object({
-    getUnlockedPost: z.object({
-        list: z.array(GetUnlockedPostSchema)
+const GetUnlockedPostListSchema = z.object({
+    list: z.array(GetUnlockedPostDataSchema),
+    pagination: z.object({
+        pageCount: z.number(),
+        totalCount: z.number()
     })
 });
 
+export type GetUnlockedPostResponse = z.infer<typeof GetUnlockedPostListSchema>;
+
+const GetUnlockedPostResultSchema = z.object({
+    getUnlockedPost: GetUnlockedPostListSchema
+});
+
 type GetUnlockedPostResult = z.infer<typeof GetUnlockedPostResultSchema>;
-export type GetUnlockedPostResponse = GetUnlockedPost[];
 
 /**
  * 取得已解鎖的文章列表
  * - params {@link GetUnlockedPostRequest}
  * - returns {@link GetUnlockedPostResponse}
- * {@link GetUnlockedPost} {@link MemberTag}
+ * {@link GetMemberTransactionData} {@link MemberTag} {@link Pagination}
  */
-export const getUnlockedPost = async ({
-    memberId
-}: GetUnlockedPostRequest): Promise<ReturnData<GetUnlockedPostResponse>> => {
+export const getUnlockedPost = async (
+    input: GetUnlockedPostRequest
+): Promise<ReturnData<GetUnlockedPostResponse>> => {
     try {
         const { data, errors } = await fetcher<FetchResultData<GetUnlockedPostResult>, unknown>(
             {
                 data: {
                     query: GET_UNLOCKED_QUERY,
                     variables: {
-                        input: {
-                            memberId
-                        }
+                        input
                     }
                 }
             },
@@ -687,7 +704,7 @@ export const getUnlockedPost = async ({
         throwErrorMessage(errors);
         GetUnlockedPostResultSchema.parse(data);
 
-        return { success: true, data: data.getUnlockedPost.list };
+        return { success: true, data: data.getUnlockedPost };
     } catch (error) {
         return handleApiError(error);
     }

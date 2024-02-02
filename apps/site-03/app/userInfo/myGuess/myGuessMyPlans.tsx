@@ -72,11 +72,11 @@ const tabList = [
         value: '0'
     },
     {
-        label: '让分',
+        label: '总胜负',
         value: '1'
     },
     {
-        label: '大小',
+        label: '总进球',
         value: '2'
     }
 ];
@@ -132,8 +132,8 @@ function MyGuessMyPlans({ setIsOpenRecord }: MyGuessMyPlansProps) {
     }, [setMyPlans, uid]);
 
     return (
-        <>
-            <div className={style.title}>
+        <div className={style.recordList}>
+            <div className={style.guessTitle}>
                 <span>我猜过的</span>
                 <span className={style.record} onClick={handleOpenRecord}>
                     查看纪录
@@ -147,6 +147,7 @@ function MyGuessMyPlans({ setIsOpenRecord }: MyGuessMyPlansProps) {
                     }}
                     position="center"
                     styling="button"
+                    gap={8}
                 >
                     {tabList.map(item => {
                         return (
@@ -167,7 +168,7 @@ function MyGuessMyPlans({ setIsOpenRecord }: MyGuessMyPlansProps) {
                     })}
                 </Tabs>
             </div>
-        </>
+        </div>
     );
 }
 

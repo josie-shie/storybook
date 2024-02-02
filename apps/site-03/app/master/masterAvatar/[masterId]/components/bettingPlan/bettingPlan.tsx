@@ -30,12 +30,12 @@ const filterIcon = {
 };
 
 const filterPlay = {
-    HOME: '让球',
-    AWAY: '让球',
-    OVER: '大小',
-    UNDER: '大小',
-    HANDICAP: '让球',
-    OVERUNDER: '大小'
+    HOME: '胜负',
+    AWAY: '胜负',
+    OVER: '总进球',
+    UNDER: '总进球',
+    HANDICAP: '胜负',
+    OVERUNDER: '总进球'
 };
 
 const filterOdds = {
@@ -83,7 +83,7 @@ function BettingPlan({
             return new Error();
         }
 
-        const updatedGuessMatchesList = [...guessMatchesList, ...res.data.guessMatchList];
+        const updatedGuessMatchesList = guessMatchesList.concat(res.data.guessMatchList);
         setGuessMatchesList(updatedGuessMatchesList);
         setGuessLength(res.data.pagination.totalCount);
         setIsNoData(res.data.guessMatchList.length === 0);

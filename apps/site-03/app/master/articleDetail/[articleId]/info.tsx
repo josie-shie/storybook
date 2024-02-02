@@ -19,10 +19,10 @@ interface InfoProps {
     article: GetPostDetailResponse;
     info: GetMemberProfileWithMemberIdResponse;
     isNoInfoData: boolean;
-    setArticle: Dispatch<SetStateAction<GetPostDetailResponse>>;
+    setInfo: Dispatch<SetStateAction<GetMemberProfileWithMemberIdResponse>>;
 }
 
-function Info({ article, info, isNoInfoData, setArticle }: InfoProps) {
+function Info({ article, info, isNoInfoData, setInfo }: InfoProps) {
     const userInfo = useUserStore.use.userInfo();
     const isLogin = useUserStore.use.isLogin();
 
@@ -40,9 +40,9 @@ function Info({ article, info, isNoInfoData, setArticle }: InfoProps) {
             return new Error();
         }
 
-        setArticle(prevData => ({
+        setInfo(prevData => ({
             ...prevData,
-            followed: !prevData.followed
+            isFollowed: !prevData.isFollowed
         }));
     };
 
@@ -170,12 +170,12 @@ function Info({ article, info, isNoInfoData, setArticle }: InfoProps) {
                         </div>
                     </div>
                     <div
-                        className={article.followed ? style.focused : style.focus}
+                        className={info.isFollowed ? style.focused : style.focus}
                         onClick={() => {
-                            void onIsFocused(article.mentorId, article.followed);
+                            void onIsFocused(article.mentorId, info.isFollowed);
                         }}
                     >
-                        {article.followed ? '已关注' : '关注'}
+                        {info.isFollowed ? '已关注' : '关注'}
                     </div>
                 </section>
             ) : (

@@ -43,8 +43,9 @@ function MasterAvatar({ params }: { params: { memberId: string } }) {
         setSecondRender(true);
     }, []);
     return (
-        <div className={style.masterAvatar}>
+        <div className={style.memberAvatar}>
             <Slick
+                autoHeight
                 className={style.slick}
                 initialSlide={initialSlide}
                 onSlickEnd={onSlickEnd}

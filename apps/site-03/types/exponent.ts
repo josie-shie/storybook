@@ -16,14 +16,7 @@ interface ExponentDataType {
     goalTotal: MatchData[];
 }
 
-export interface OptionsType {
-    label: string;
-    value: string;
-}
-
 export type ExponentType = 'handicapsData' | 'winLoseData' | 'totalGoalData' | 'handicaps';
-
-export type TotalGoalsRadioType = 'half' | 'full';
 
 export interface Exponent {
     half: ExponentDataType;

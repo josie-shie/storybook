@@ -1,0 +1,74 @@
+.oddsDetailDrawer {
+    :global {
+        .ui-tab {
+            height: calc(100dvh - 46px);
+        }
+
+        .ui-tabs-header {
+            flex-wrap: nowrap;
+            font-size: 12px;
+            font-weight: 500;
+
+            .ui-tab-header-liner {
+                min-width: 0;
+                width: 60px;
+            }
+
+            .ui-button {
+                white-space: nowrap;
+            }
+        }
+
+        .tr {
+            .colspan-3 {
+                flex: 3 !important;
+            }
+
+            .hidden {
+                display: none !important;
+            }
+
+            .td {
+                width: 45px;
+                flex: 1;
+            }
+
+            .td:last-child,
+            .th:last-child {
+                min-width: 82px;
+                white-space: nowrap;
+            }
+        }
+    }
+
+    .header {
+        position: relative;
+        padding: 12px 16px;
+
+        .title {
+            text-align: center;
+            font-size: 16px;
+            font-weight: 600;
+            color: #222;
+        }
+
+        .back {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+    }
+
+    .notYet {
+        color: #9b9b9b;
+    }
+
+    .finish {
+        color: #fd9a00;
+    }
+
+    .playOff {
+        color: #f85640;
+    }
+}

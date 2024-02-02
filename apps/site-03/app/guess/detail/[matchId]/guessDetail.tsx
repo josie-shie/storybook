@@ -7,6 +7,7 @@ import style from './guessDetail.module.scss';
 import VsBox from './vsBox';
 import MasterPlan from './masterPlan';
 import { createGuessDetailStore } from './guessDetailStore';
+import Hints from './components/hints/hints';
 
 export const metadata: Metadata = {
     title: '推荐详情 | FutureSport'
@@ -31,6 +32,7 @@ function GuessDetail({ backHistory }: { backHistory: boolean }) {
 
     return (
         <div className={style.guessDetail}>
+            <Hints />
             <Header backHandler={back} title={headerProps.title} />
             <div className={style.container}>
                 <VsBox />

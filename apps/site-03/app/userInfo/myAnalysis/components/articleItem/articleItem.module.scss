@@ -49,7 +49,9 @@
         .tagsContainer {
             display: flex;
             flex-wrap: wrap;
+            align-items: center;
             gap: 4px;
+            min-height: 20px;
 
             :global(.baseTag) {
                 margin-right: 0;

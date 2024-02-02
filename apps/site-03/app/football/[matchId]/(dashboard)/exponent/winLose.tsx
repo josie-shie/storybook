@@ -1,107 +1,118 @@
-import { useContestDetailStore } from '../../contestDetailStore';
+import { useState } from 'react';
+import { handicapToString } from 'lib';
+import type { ExponentWinDrawLoseInfo } from 'data-center';
+import Select from '@/app/football/[matchId]/(dashboard)/components/select/select';
+import NoData from '@/components/baseNoData/noData';
 import { useExponentStore } from '../../exponentStore';
 import style from './exponent.module.scss';
+import MoreIcon from './img/more.svg';
+
+const oddTimeOption = [
+    { label: '即时', value: 'live' },
+    { label: '赛前', value: 'beforeMatch' }
+];
+
+type OddTimeType = 'live' | 'beforeMatch';
 
 const getOddsClassName = (initialOdds: number, currentOdds: number): string => {
     if (initialOdds === currentOdds) return '';
     return initialOdds > currentOdds ? 'greenText' : 'redText';
 };
 
-function NoData() {
+function OddBar({
+    targetData,
+    initialData,
+    isCompare
+}: {
+    targetData: ExponentWinDrawLoseInfo;
+    initialData?: ExponentWinDrawLoseInfo;
+    isCompare?: boolean;
+}) {
+    return targetData.closed ? (
+        <div className="td">
+            <div className="odds">-</div>
+            <div className="odds">封</div>
+            <div className="odds">-</div>
+        </div>
+    ) : (
+        <div className="td">
+            <div
+                className={`odd ${
+                    isCompare &&
+                    initialData &&
+                    getOddsClassName(initialData.homeWin, targetData.homeWin)
+                }`}
+            >
+                {targetData.homeWin}
+            </div>
+            <div
+                className={`odd ${
+                    isCompare && initialData && getOddsClassName(initialData.draw, targetData.draw)
+                }`}
+            >
+                {handicapToString(targetData.draw)}
+            </div>
+            <div
+                className={`odd ${
+                    isCompare &&
+                    initialData &&
+                    getOddsClassName(initialData.awayWin, targetData.awayWin)
+                }`}
+            >
+                {targetData.awayWin}
+            </div>
+            {isCompare ? (
+                <div className="odd more">
+                    <MoreIcon />
+                </div>
+            ) : null}
+        </div>
+    );
+}
+
+function WinLose() {
+    const [oddTime, setOddTime] = useState<OddTimeType>('live');
+    const companyList = useExponentStore.use.companyList().winDrawLose;
+    const companyInfo = useExponentStore.use.companyInfo().winDrawLose;
+
     return (
         <div className={style.handicap}>
-            <div className="dataTable">
-                <div className="tableHead">
-                    <div className="tr">
-                        <div className="th">公司</div>
-                        <div className="th" />
-                        <div className="th">主胜</div>
-                        <div className="th">平局</div>
-                        <div className="th">客胜</div>
-                    </div>
-                </div>
-                <div className="tableBody">
-                    <div className="tr">
-                        <div className="td" style={{ width: '100%' }}>
-                            暂无数据
+            {companyList.length > 0 ? (
+                <div className="dataTable">
+                    <div className="tableHead">
+                        <div className="tr">
+                            <div className="th">公司</div>
+                            <div className="th">初始</div>
+                            <div className="th">
+                                <Select
+                                    onChange={value => {
+                                        setOddTime(value as OddTimeType);
+                                    }}
+                                    options={oddTimeOption}
+                                    selectedValue={oddTime}
+                                />
+                            </div>
                         </div>
                     </div>
+                    <div className="tableBody">
+                        {companyList.map(companyId => (
+                            <div className="tr" key={companyId}>
+                                <div className="td">{companyInfo[companyId].companyName}</div>
+                                <OddBar targetData={companyInfo[companyId].initial} />
+                                <OddBar
+                                    initialData={companyInfo[companyId].initial}
+                                    isCompare
+                                    targetData={companyInfo[companyId][oddTime]}
+                                />
+                            </div>
+                        ))}
+                    </div>
                 </div>
-            </div>
+            ) : (
+                <NoData text="暂无资料" />
+            )}
         </div>
     );
 }
 
-function Victory() {
-    const exponentData = useExponentStore.use.exponentData();
-    const totalGoalsRadio = useExponentStore.use.totalGoalsRadio();
-    const companyNameMap = useContestDetailStore.use.companyNameMap();
-
-    const dataList = Object.prototype.hasOwnProperty.call(exponentData, 'full')
-        ? exponentData?.winLoseData[totalGoalsRadio]
-        : {
-              list: [],
-              info: {}
-          };
-
-    if (!dataList || dataList.list.length === 0) return <NoData text="暂无资料" />;
-
-    return (
-        <div className={style.winLose}>
-            <div className="dataTable">
-                <div className="tableHead">
-                    <div className="tr">
-                        <div className="th">公司</div>
-                        <div className="th" />
-                        <div className="th">主胜</div>
-                        <div className="th">平局</div>
-                        <div className="th">客胜</div>
-                    </div>
-                </div>
-                <div className="tableBody">
-                    {dataList.list.map(companyId => (
-                        <div className="company" key={companyId}>
-                            <div className="tr">
-                                <div className="td">{companyNameMap[companyId]}</div>
-                                <div className="td">初</div>
-                                <div className="td">{dataList.info[companyId].initialHomeOdds}</div>
-                                <div className="td">{dataList.info[companyId].initialDrawOdds}</div>
-                                <div className="td">{dataList.info[companyId].initialAwayOdds}</div>
-                            </div>
-                            <div className="tr">
-                                <div className="td" />
-                                <div className="td">即</div>
-                                <div
-                                    className={`td ${getOddsClassName(
-                                        dataList.info[companyId].initialHomeOdds,
-                                        dataList.info[companyId].currentHomeOdds
-                                    )}`}
-                                >
-                                    {dataList.info[companyId].currentHomeOdds}
-                                </div>
-                                <div
-                                    className={`td ${getOddsClassName(
-                                        dataList.info[companyId].initialDrawOdds,
-                                        dataList.info[companyId].currentDrawOdds
-                                    )}`}
-                                >
-                                    {dataList.info[companyId].currentDrawOdds}
-                                </div>
-                                <div
-                                    className={`td ${getOddsClassName(
-                                        dataList.info[companyId].initialDrawOdds,
-                                        dataList.info[companyId].initialAwayOdds
-                                    )}`}
-                                >
-                                    {dataList.info[companyId].currentAwayOdds}
-                                </div>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            </div>
-        </div>
-    );
-}
-
-export default Victory;
+export default WinLose;
