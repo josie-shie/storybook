@@ -67,15 +67,15 @@ function GameDetail({
                     className={`gameTime ${
                         statusStyleMap[matchDetail.state || (interceptData?.state as number)]
                     }`}
-                    startTime={matchDetail.startTime || interceptData?.startTime || 0}
+                    startTime={matchDetail.matchTime || (interceptData?.matchTime as number) || 0}
                     status={liveState}
                 />
 
                 <div className={style.homeScore}>
-                    {syncData.homeScore || matchDetail.homeScore || interceptData?.homeScore}
+                    {syncData.homeScore || matchDetail.homeScore || interceptData?.homeScore || 0}
                 </div>
                 <div className={style.awayScore}>
-                    {syncData.awayScore || matchDetail.awayScore || interceptData?.awayScore}
+                    {syncData.awayScore || matchDetail.awayScore || interceptData?.awayScore || 0}
                 </div>
             </div>
 

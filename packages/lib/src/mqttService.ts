@@ -1,7 +1,7 @@
 import type { MqttClient } from 'mqtt';
 import * as mqtt from 'mqtt';
 import { getRandomInt } from './random';
-import { deProtoOdds, deProtoOddsChange, deProtoAnalysis, toProtoAnalysis } from './prtobuf';
+import { deProtoOdds, deProtoOddsChange, toProtoAnalysis } from './prtobuf';
 
 export interface AnalysisRequest {
     mission: string;
@@ -172,8 +172,7 @@ const useTextLiveQueue: ((data: TextLiveResponse) => void)[] = [];
 const useOddsQueue: ((data: OddsType) => void)[] = [];
 const useOddsChangeQueue: ((data: OddChangeType) => void)[] = [];
 const useTechnicalQueue: ((data: TechnicalInfoData) => void)[] = [];
-const useOddsRunningQueue: ((data: OddsRunningHashTable) => void)[] = [];
-const useOddsRunningHalfQueue: ((data: OddsRunningHashTable) => void)[] = [];
+const useOddsRunningQueue: ((data: OddsRunningType) => void)[] = [];
 const useAnalysisQueue: ((data: AnalysisResponse) => void)[] = [];
 const usedNotifyMessageQueue: ((data: NotifyMessage) => void)[] = [];
 
@@ -502,15 +501,11 @@ const handleDetailTechnicListMessage = (message: Buffer) => {
     }
 };
 
-const handleAnalysisMessage = async (message: Buffer) => {
-    const messageObject = await deProtoAnalysis(message);
-
-    const decodedMessage = toSerializableObject(
-        messageObject as unknown as Record<string, unknown>
-    );
+const handleAnalysisMessage = (message: Buffer) => {
+    const messageObject = JSON.parse(textDecoder.decode(message)) as AnalysisResponse;
 
     for (const messageMethod of useAnalysisQueue) {
-        messageMethod(decodedMessage as unknown as AnalysisResponse);
+        messageMethod(messageObject as unknown as AnalysisResponse);
     }
 };
 
@@ -523,119 +518,20 @@ const handleNotifyMessage = (message: Buffer) => {
 };
 
 export interface OddsRunningType {
-    matchId?: number;
-    data?: {
-        id: number;
-        matchId: number;
-        time: string;
-        homeScore: number;
-        awayScore: number;
-        homeRed: number;
-        awayRed: number;
-        type: number;
-        companyId: number;
-        odds1: string;
-        odds2: string;
-        odds3: string;
-        modifytime: number;
-    }[];
-    list?: {
-        id: number;
-        matchId: number;
-        time: string;
-        homeScore: number;
-        awayScore: number;
-        homeRed: number;
-        awayRed: number;
-        type: number;
-        companyId: number;
-        odds1: string;
-        odds2: string;
-        odds3: string;
-        modifytime: number;
-    }[];
-}
-
-export type OddsRunningHashTable = Record<
-    number,
-    Record<
-        number,
-        {
-            handicapHalf?: BettingData;
-            handicap?: BettingData;
-            overUnderHalf?: BettingData;
-            overUnder?: BettingData;
-        }
-    >
->;
-
-interface BettingData {
-    id: number;
     matchId: number;
-    time: string;
-    homeScore: number;
-    awayScore: number;
-    type: number;
     companyId: number;
-    homeCurrentOdds?: number;
-    currentHandicap: number;
-    awayCurrentOdds?: number;
-    currentOverOdds?: number;
-    currentUnderOdds?: number;
+    odds1: string;
+    odds2: string;
+    odds3: string;
+    type: number;
     modifytime: number;
-    isClosed: boolean;
-}
-
-function createOddRunningHashTable(oddList: OddsRunningType) {
-    const result: OddsRunningHashTable = {};
-
-    oddList.list?.forEach(item => {
-        if (item.type !== 1 && item.type !== 2 && item.type !== 6 && item.type !== 7) {
-            return;
-        }
-
-        if (!result[item.matchId] as boolean) {
-            result[item.matchId] = {};
-        }
-
-        if (!result[item.matchId][item.companyId] as boolean) {
-            result[item.matchId][item.companyId] = {};
-        }
-
-        const bettingData: BettingData = {
-            id: item.id,
-            matchId: item.matchId,
-            time: item.time,
-            homeScore: item.homeScore,
-            awayScore: item.awayScore,
-            type: item.type,
-            companyId: item.companyId,
-            homeCurrentOdds: parseFloat(item.odds1),
-            currentHandicap: parseFloat(item.odds2),
-            awayCurrentOdds: parseFloat(item.odds3),
-            modifytime: item.modifytime,
-            isClosed: item.type === 6 || item.type === 7
-        };
-
-        if (item.type === 1 || item.type === 6) {
-            result[item.matchId][item.companyId].handicap = bettingData;
-        } else {
-            bettingData.currentOverOdds = parseFloat(item.odds1);
-            bettingData.currentUnderOdds = parseFloat(item.odds3);
-            result[item.matchId][item.companyId].overUnder = bettingData;
-        }
-    });
-
-    return result;
 }
 
 const handleOddRunningMessage = (message: Buffer) => {
-    const messageObject = JSON.parse(textDecoder.decode(message)) as OddsRunningHashTable;
+    const messageObject = JSON.parse(textDecoder.decode(message)) as OddsRunningType;
 
     for (const messageMethod of useOddsRunningQueue) {
-        const formatDecodedMessage = createOddRunningHashTable(messageObject);
-
-        messageMethod(formatDecodedMessage);
+        messageMethod(messageObject);
     }
 };
 
@@ -660,7 +556,7 @@ export const mqttService = {
 
                 // client.subscribe('updatetechnic'); 技術統計 站不做
                 client.subscribe('analytical/analysis');
-                client.subscribe(`sportim/notify/${memberId}`);
+                client.subscribe(`sport/user_notify/${memberId}`);
             });
             client.on('message', (topic, message) => {
                 if (topic === 'updatematch') handleContestMessage(message);
@@ -670,8 +566,8 @@ export const mqttService = {
                 if (topic === 'updateasia_odds') void handleOddsMessage(message);
                 if (topic === 'updateasia_odds_change') void handleOddsChangeMessage(message);
                 if (topic === 'updatetechnic') handleDetailTechnicListMessage(message);
-                if (topic === 'analytical/analysis') void handleAnalysisMessage(message);
-                if (topic === `sportim/notify/${memberId}`) handleNotifyMessage(message);
+                if (topic === 'analytical/analysis') handleAnalysisMessage(message);
+                if (topic === `sport/user_notify/${memberId}`) handleNotifyMessage(message);
             });
             init = false;
 
@@ -717,11 +613,8 @@ export const mqttService = {
     getTechnicList: (onMessage: (data: TechnicalInfoData) => void) => {
         useTechnicalQueue.push(onMessage);
     },
-    getOddsRunning: (onMessage: (data: OddsRunningHashTable) => void) => {
+    getOddsRunning: (onMessage: (data: OddsRunningType) => void) => {
         useOddsRunningQueue.push(onMessage);
-    },
-    getOddsRunningHalf: (onMessage: (data: OddsRunningHashTable) => void) => {
-        useOddsRunningHalfQueue.push(onMessage);
     },
     getAnalysis: (onMessage: (data: AnalysisResponse) => void) => {
         useAnalysisQueue.push(onMessage);

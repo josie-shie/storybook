@@ -14,6 +14,7 @@ interface ExponentState extends InitState {
     isDetailOpen: boolean;
     detailCompanyId: number;
     detailSelectedKind: TabListType;
+    setCompanyInfo: (companyInfo: CompanyInfo) => void;
     setIsDetailOpen: (isOpen: boolean) => void;
     setDetailSelectedKind: (detailSelectedKind: TabListType) => void;
     setDetailCompanyId: (detailCompanyId: number) => void;
@@ -41,15 +42,9 @@ const initialState = (
     isDetailOpen: false,
     detailCompanyId: 3,
     detailSelectedKind: 'handicap' as TabListType,
-    setExponentData: ({
-        companyInfo,
-        companyList
-    }: {
-        companyInfo: CompanyInfo;
-        companyList: CompanyList;
-    }) => {
+    setCompanyInfo: (companyInfo: CompanyInfo) => {
         set(state => {
-            return { ...state, companyInfo, companyList };
+            return { ...state, companyInfo };
         });
     },
     setIsDetailOpen: (isOpen: boolean) => {
