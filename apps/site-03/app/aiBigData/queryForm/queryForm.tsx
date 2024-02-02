@@ -1,4 +1,5 @@
 'use client';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import type { CheckMatchesCountRequest, GetFootballLeagueRequest } from 'data-center';
@@ -16,6 +17,40 @@ import Form from './components/form/form';
 import CoinIcon from './img/coin.svg';
 import dayjs from 'dayjs';
 import Tutorial from '../components/tutorial/tutorial';
+import RechargeIcon from './img/rechargeIcon.png';
+import ConfirmPayDrawer from '@/components/confirmPayDrawer/confirmPayDrawer';
+
+function RechargeAlert() {
+    const router = useRouter();
+    const setOpenDialog = useQueryFormStore.use.setOpenNormalDialog();
+
+    const recharge = () => {
+        setOpenDialog(false);
+        router.push('/userInfo/subscribe');
+    };
+
+    return (
+        <>
+            <div className={style.dialogMessage}>
+                <Image alt="" height={100} src={RechargeIcon} width={100} />
+                <p>余额不足，请充值</p>
+            </div>
+            <div className={style.footer}>
+                <div
+                    className={style.close}
+                    onClick={() => {
+                        setOpenDialog(false);
+                    }}
+                >
+                    返回
+                </div>
+                <div className={style.confirm} onClick={recharge}>
+                    前往充值
+                </div>
+            </div>
+        </>
+    );
+}
 
 function CheckLeague({ leagueIdList }: { leagueIdList: number[] }) {
     const router = useRouter();
@@ -79,6 +114,7 @@ function SubmitButton({ setZeroMatchList }: { setZeroMatchList: (list: number[])
     const endTime = useQueryFormStore.use.endDate();
     const setDialogContentType = useQueryFormStore.use.setDialogContentType();
     const setIsNotificationVisible = useNotificationStore.use.setIsVisible();
+    const isOpenPayDrawer = useQueryFormStore.use.isOpenPayDrawer();
 
     const submit = async () => {
         if (!selectedleagueIdList.length) {
@@ -96,14 +132,21 @@ function SubmitButton({ setZeroMatchList }: { setZeroMatchList: (list: number[])
 
         if (!isVip) {
             if (userInfo.balance < 80) {
+                setDialogContentType('recharge');
                 setOpenNormalDialog(true);
                 return;
             }
 
             setIsOpenPayDrawer(true);
             return;
+        } else {
+            setIsAnalysisBySearch(true);
+            router.push('/aiBigData/analysisResult');
         }
+    };
 
+    const normalMemberToResultPage = () => {
+        setIsOpenPayDrawer(false);
         setIsAnalysisBySearch(true);
         router.push('/aiBigData/analysisResult');
     };
@@ -146,6 +189,18 @@ function SubmitButton({ setZeroMatchList }: { setZeroMatchList: (list: number[])
                 ) : null}
                 <span>获得趋势分析</span>
             </motion.button>
+            <ConfirmPayDrawer
+                isOpen={isOpenPayDrawer}
+                onClose={() => {
+                    setIsOpenPayDrawer(false);
+                }}
+                onOpen={() => {
+                    setIsOpenPayDrawer(true);
+                }}
+                onPay={normalMemberToResultPage}
+                price={80}
+                title="获得智能盘路分析？"
+            />
         </div>
     );
 }
@@ -213,6 +268,9 @@ function QueryForm() {
         switch (dialogContentType) {
             case 'league':
                 setDialogContent(<CheckLeague leagueIdList={zeroMatchList} />);
+                break;
+            case 'recharge':
+                setDialogContent(<RechargeAlert />);
                 break;
             default:
                 setDialogContent(null);

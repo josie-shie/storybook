@@ -1,14 +1,15 @@
-import { useEffect, useState } from 'react';
-import Image from 'next/image';
+import { useEffect } from 'react';
+// import Image from 'next/image';
 import type { GetFootballStatsMatch } from 'data-center';
 import BottomDrawer from '@/components/drawer/bottomDrawer';
 import NoData from '@/components/baseNoData/noData';
-import MatchFilterDrawer from '../matchFilterDrawer/matchFilterDrawer';
+// import MatchFilterDrawer from '../matchFilterDrawer/matchFilterDrawer';
 import { useMatchFilterStore } from '../../matchFilterStore';
 import style from './contestDrawerList.module.scss';
-import iconFilter from './img/filterIcon.png';
+// import iconFilter from './img/filterIcon.png';
 import ContestCard from '../contestCard/contestCard';
 import { useQueryFormStore } from '@/app/aiBigData/queryFormStore';
+import Footer from '../footer/footer';
 
 function ContestDrawerList({
     isOpen,
@@ -32,25 +33,25 @@ function ContestDrawerList({
     const contestInfo = useMatchFilterStore.use.contestInfo();
     const setFilterInit = useMatchFilterStore.use.setFilterInit();
     const filterList = useMatchFilterStore.use.filterList();
-    const [isFilterOpen, setIsFilterOpen] = useState(true);
+    // const [isFilterOpen, setIsFilterOpen] = useState(true);
     const contestList = useMatchFilterStore.use.contestList();
     const defaultPageIndex = useQueryFormStore.use.defaultPageIndex();
 
-    const closeFilter = () => {
-        setIsFilterOpen(false);
-    };
+    // const closeFilter = () => {
+    //     setIsFilterOpen(false);
+    // };
 
-    const openFilter = () => {
-        setIsFilterOpen(true);
-    };
+    // const openFilter = () => {
+    //     setIsFilterOpen(true);
+    // };
 
     useEffect(() => {
         setFilterInit();
     }, [contestInfo, setFilterInit]);
 
-    useEffect(() => {
-        setIsFilterOpen(false);
-    }, []);
+    // useEffect(() => {
+    //     setIsFilterOpen(false);
+    // }, []);
 
     const filterByStatus = (list: number[]) => {
         const filterGroup = filterList.group === 'league' ? 'leagueChsShort' : 'countryCn';
@@ -87,7 +88,8 @@ function ContestDrawerList({
                                 总共<span className={style.contestNum}>{contestList.length}</span>场
                             </span>
                         </h2>
-                        <div
+                        {/* 暂时不需要筛选功能 */}
+                        {/* <div
                             className={style.filter}
                             onClick={() => {
                                 openFilter();
@@ -95,7 +97,7 @@ function ContestDrawerList({
                         >
                             筛选
                             <Image alt="" className={style.image} src={iconFilter} />
-                        </div>
+                        </div> */}
                     </div>
 
                     <div className={style.cardList}>
@@ -106,10 +108,12 @@ function ContestDrawerList({
                         ) : (
                             <NoData text="暂无资料" />
                         )}
+
+                        <Footer displayBack={false} />
                     </div>
                 </div>
             </BottomDrawer>
-            <MatchFilterDrawer isOpen={isFilterOpen} onClose={closeFilter} onOpen={openFilter} />
+            {/* <MatchFilterDrawer isOpen={isFilterOpen} onClose={closeFilter} onOpen={openFilter} /> */}
         </>
     );
 }

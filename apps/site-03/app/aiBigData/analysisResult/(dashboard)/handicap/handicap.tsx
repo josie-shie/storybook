@@ -12,6 +12,7 @@ import MixedLineChart from './components/mixedLineChart/mixedLineChart';
 import { GetFootballStatsMatchesResponse, getFootballStatsMatches } from 'data-center';
 import { useNotificationStore } from '@/store/notificationStore';
 import ContestCard from '../../components/contestCard/contestCard';
+import Footer from '../../components/footer/footer';
 
 function ContestList({ matchIds }: { matchIds: number[] }) {
     const [matchList, setMatchList] = useState<GetFootballStatsMatchesResponse>([]);
@@ -223,6 +224,7 @@ function Handicap() {
             <BarChart chartData={handicapEchart.full.day} />
             <HandicapTable tableData={tableData} />
             <MatchesTrend />
+            <Footer />
         </div>
     );
 }

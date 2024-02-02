@@ -24,8 +24,8 @@ const CategoryList = [
     },
     {
         label: '智能分析',
-        value: '/bigData/analysis?status=analysis',
-        includedRouters: ['/bigData'],
+        value: '/aiBigData/queryForm',
+        includedRouters: ['/aiBigData'],
         icon: <AnalyzeIcon className={`${style.icon} ${style.analyzeIcon}`} />
     },
     {
