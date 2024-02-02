@@ -129,6 +129,16 @@ function OddsInfo({
         setPinnedContest({ matchId });
     };
 
+    const hideHandicap =
+        contestInfo.handicapHomeCurrentOdds === 0 &&
+        contestInfo.handicapCurrent === '0' &&
+        contestInfo.handicapAwayCurrentOdds === 0;
+
+    const hideOverUnder =
+        contestInfo.overUnderOverCurrentOdds === 0 &&
+        contestInfo.overUnderCurrent === '0' &&
+        contestInfo.overUnderUnderCurrentOdds === 0;
+
     return (
         <div className={style.oddsInfo}>
             <div className={`${style.oddBox} ${style.left}`}>
@@ -151,20 +161,26 @@ function OddsInfo({
                     )}
                 </div>
                 <span className={style.odd}>
-                    <CompareOdds
-                        value={
-                            syncData.handicapHomeCurrentOdds || contestInfo.handicapHomeCurrentOdds
-                        }
-                    />
-                    <CompareOdds
-                        defaultColor="blue"
-                        value={syncData.handicapCurrent || contestInfo.handicapCurrent}
-                    />
-                    <CompareOdds
-                        value={
-                            syncData.handicapAwayCurrentOdds || contestInfo.handicapAwayCurrentOdds
-                        }
-                    />
+                    {!hideHandicap && (
+                        <>
+                            <CompareOdds
+                                value={
+                                    syncData.handicapHomeCurrentOdds ||
+                                    contestInfo.handicapHomeCurrentOdds
+                                }
+                            />
+                            <CompareOdds
+                                defaultColor="blue"
+                                value={syncData.handicapCurrent || contestInfo.handicapCurrent}
+                            />
+                            <CompareOdds
+                                value={
+                                    syncData.handicapAwayCurrentOdds ||
+                                    contestInfo.handicapAwayCurrentOdds
+                                }
+                            />
+                        </>
+                    )}
                 </span>
             </div>
             <div className={style.mid}>
@@ -180,22 +196,26 @@ function OddsInfo({
             </div>
             <div className={`${style.oddBox} ${style.right}`}>
                 <span className={style.odd}>
-                    <CompareOdds
-                        value={
-                            syncData.overUnderOverCurrentOdds ||
-                            contestInfo.overUnderOverCurrentOdds
-                        }
-                    />
-                    <CompareOdds
-                        defaultColor="blue"
-                        value={syncData.overUnderCurrent || contestInfo.overUnderCurrent}
-                    />
-                    <CompareOdds
-                        value={
-                            syncData.overUnderUnderCurrentOdds ||
-                            contestInfo.overUnderUnderCurrentOdds
-                        }
-                    />
+                    {!hideOverUnder && (
+                        <>
+                            <CompareOdds
+                                value={
+                                    syncData.overUnderOverCurrentOdds ||
+                                    contestInfo.overUnderOverCurrentOdds
+                                }
+                            />
+                            <CompareOdds
+                                defaultColor="blue"
+                                value={syncData.overUnderCurrent || contestInfo.overUnderCurrent}
+                            />
+                            <CompareOdds
+                                value={
+                                    syncData.overUnderUnderCurrentOdds ||
+                                    contestInfo.overUnderUnderCurrentOdds
+                                }
+                            />
+                        </>
+                    )}
                 </span>
                 <div className={style.IconHolder} />
             </div>
@@ -270,6 +290,12 @@ function TopArea({
         timeStamp: contestInfo.matchTime,
         formattedString: 'HH:mm'
     });
+
+    const hideHandicap =
+        contestInfo.handicapHomeCurrentOdds === 0 &&
+        contestInfo.handicapCurrent === '0' &&
+        contestInfo.handicapAwayCurrentOdds === 0;
+
     return (
         <div className={style.topArea}>
             <div className={style.left}>
@@ -304,10 +330,14 @@ function TopArea({
                             contestInfo.homeScore > contestInfo.awayScore && style.win
                         }`}
                     >
-                        <p className={style.handicap}>{contestInfo.handicapCurrent}</p>
-                        <p className={style.result}>
-                            {contestInfo.homeScore > contestInfo.awayScore ? '赢' : '输'}
-                        </p>
+                        {hideHandicap ? null : (
+                            <>
+                                <p className={style.handicap}>{contestInfo.handicapCurrent}</p>
+                                <p className={style.result}>
+                                    {contestInfo.homeScore > contestInfo.awayScore ? '赢' : '输'}
+                                </p>
+                            </>
+                        )}
                     </div>
                 ) : (
                     <>

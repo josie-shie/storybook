@@ -67,7 +67,7 @@ function GameDetail({
                     className={`gameTime ${
                         statusStyleMap[matchDetail.state || (interceptData?.state as number)]
                     }`}
-                    startTime={matchDetail.matchTime || (interceptData?.matchTime as number) || 0}
+                    startTime={matchDetail.startTime || interceptData?.startTime || 0}
                     status={liveState}
                 />
 
@@ -81,8 +81,8 @@ function GameDetail({
 
             <div className={style.textHolder}>
                 <p className={style.text}>
-                    半場 {matchDetail.homeHalfScore || interceptData?.homeHalfScore}-
-                    {matchDetail.awayHalfScore || interceptData?.awayHalfScore}
+                    半場 {matchDetail.homeHalfScore || interceptData?.homeHalfScore || 0}-
+                    {matchDetail.awayHalfScore || interceptData?.awayHalfScore || 0}
                 </p>
             </div>
         </div>
