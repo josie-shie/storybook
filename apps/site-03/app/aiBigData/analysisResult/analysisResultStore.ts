@@ -109,12 +109,8 @@ interface AnalysisResultState extends InitState {
     setDialogContentType: (dialogContentType: string) => void;
     setOpenNormalDialog: (openNoramlDialog: boolean) => void;
     setDialogContent: (dialogContent: ReactNode) => void;
-    defaultPageIndex: number;
-    setDefaultPageIndex: (defaultPageIndex: number) => void;
     tabSlideScroll: boolean;
     setTabSlideScroll: (tabSlideScroll: boolean) => void;
-    showedTutorial: boolean;
-    setShowedTutorial: (showedTutorial: boolean) => void;
 }
 
 let useAnalyticsResultStore: StoreWithSelectors<AnalysisResultState>;
@@ -396,22 +392,10 @@ const initialState = (
             return { ...state, dialogContent };
         });
     },
-    defaultPageIndex: 0,
-    setDefaultPageIndex: (defaultPageIndex: number) => {
-        set(state => {
-            return { ...state, defaultPageIndex };
-        });
-    },
     tabSlideScroll: true,
     setTabSlideScroll: (tabSlideScroll: boolean) => {
         set(state => {
             return { ...state, tabSlideScroll };
-        });
-    },
-    showedTutorial: false,
-    setShowedTutorial: (showedTutorial: boolean) => {
-        set(state => {
-            return { ...state, showedTutorial };
         });
     }
 });

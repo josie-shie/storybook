@@ -20,7 +20,7 @@
         :global(.ui-tab-header) {
             :global(.ui-tabs-header) {
                 padding: 8px 12px 0;
-                justify-content: center;
+                justify-content: center !important;
 
                 :global(.ui-button) {
                     display: flex;
@@ -57,17 +57,20 @@
     }
 }
 
+.tutorialBlock {
+    position: fixed;
+    inset: 0;
+    z-index: 10;
+    height: 100dvh;
+}
+
+.playTutorial {
+    height: calc(100dvh - 152px);
+    overflow-y: hidden;
+}
+
 .analysisResult {
     position: relative;
-
-    .tutorialBlock {
-        position: absolute;
-        top: 0;
-        z-index: 2;
-        left: 0;
-        right: 0;
-        bottom: 0;
-    }
 
     .resultPage {
         .bigDataGame {
@@ -109,7 +112,7 @@
 }
 
 .tutorial {
-    background: rgba(0, 0, 0, 0.8);
+    background: rgb(0 0 0 / 80%);
 
     .slide {
         .images {

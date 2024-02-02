@@ -15,11 +15,11 @@ import style from './analysisResult.module.scss';
 import Handicap from './(dashboard)/handicap/handicap';
 import { useAnalyticsResultStore } from './analysisResultStore';
 import ContestDrawerList from './components/contestDrawerList/contestDrawerList';
-// import Tutorial from './tutorial';
 import SystemErrorImage from './img/systemError.svg';
 import EmptyDataImage from './img/emptyData.svg';
 import AnalyzeDataImage from './img/analyzeData.svg';
 import Minutes from './(dashboard)/minutes/minutes';
+import Tutorial from '../components/tutorial/tutorial';
 
 function InsufficientBalance() {
     const router = useRouter();
@@ -129,14 +129,16 @@ function SystemError() {
 
 function AnalysisResult() {
     const router = useRouter();
-    const defaultPageIndex = useAnalyticsResultStore.use.defaultPageIndex();
-    const setDefaultPageIndex = useAnalyticsResultStore.use.setDefaultPageIndex();
+    const defaultPageIndex = useQueryFormStore.use.defaultPageIndex();
+    const setDefaultPageIndex = useQueryFormStore.use.setDefaultPageIndex();
     const showContestDrawer = useAnalyticsResultStore.use.showContestDrawer();
     const setShowContestDrawer = useAnalyticsResultStore.use.setShowContestDrawer();
     const selectedResult = useAnalyticsResultStore.use.selectedResult();
     const contestList = useAnalyticsResultStore.use.contestList();
-    const showedTutorial = useAnalyticsResultStore.use.showedTutorial();
-    const setShowedTutorial = useAnalyticsResultStore.use.setShowedTutorial();
+    const showedTutorial = useQueryFormStore.use.showedTutorial();
+    const setShowedTutorial = useQueryFormStore.use.setShowedTutorial();
+    const setPlayTutorial = useQueryFormStore.use.setPlayTutoral();
+    const playTutorial = useQueryFormStore.use.playTutorial();
 
     const endDate = useQueryFormStore.use.endDate();
     const startDate = useQueryFormStore.use.startDate();
@@ -161,10 +163,6 @@ function AnalysisResult() {
     const setDialogContentType = useAnalyticsResultStore.use.setDialogContentType();
     const setUserInfo = useUserStore.use.setUserInfo();
     const allowSlideScroll = useAnalyticsResultStore.use.tabSlideScroll();
-
-    useEffect(() => {
-        setShowedTutorial(Boolean(localStorage.getItem('showAnalysisTutorial')));
-    }, []);
 
     const tabStyle = {
         gap: 4,
@@ -273,6 +271,13 @@ function AnalysisResult() {
         }
 
         if (!isAnalysisBySearch) return;
+        const isShowTutorial = Boolean(localStorage.getItem('showAnalysisTutorial'));
+
+        if (!isShowTutorial) {
+            setPlayTutorial(true);
+            setShowedTutorial(Boolean(localStorage.getItem('showAnalysisTutorial')));
+        }
+
         void fetchData();
     }, []);
 
@@ -296,7 +301,7 @@ function AnalysisResult() {
 
     return (
         <>
-            <div className={style.dashboard}>
+            <div className={`${style.dashboard} ${playTutorial ? style.playTutorial : ''}`}>
                 <Tabs
                     allowSlideScroll={tabStyle.allowSlideScroll}
                     buttonRadius={tabStyle.buttonRadius}
@@ -328,7 +333,11 @@ function AnalysisResult() {
             </div>
             {!showedTutorial && analysisRecord ? (
                 <div className={style.tutorialBlock}>
-                    {/* <Tutorial setDefaultPageIndex={setDefaultPageIndex} /> */}
+                    <Tutorial
+                        setDefaultPageIndex={setDefaultPageIndex}
+                        setPlayTutorial={setPlayTutorial}
+                        playTutorial={playTutorial}
+                    />
                 </div>
             ) : null}
             <ErrorDialog
