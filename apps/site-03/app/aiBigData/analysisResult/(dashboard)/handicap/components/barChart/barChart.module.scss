@@ -29,6 +29,9 @@
             .bar {
                 height: 140px;
                 text-align: center;
+                display: flex;
+                flex-direction: column;
+                gap: 2px;
 
                 .block {
                     width: 54px;
