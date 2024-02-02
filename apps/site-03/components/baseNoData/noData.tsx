@@ -6,17 +6,19 @@ import style from './noData.module.scss';
 function NoData({
     text,
     textSecond,
-    className
+    className,
+    isFlex = false
 }: {
     text: string;
     textSecond?: string;
     className?: string;
+    isFlex?: boolean;
 }) {
     return (
-        <div className={`ui-no-data ${style.noDataBox} ${className}`}>
+        <div className={`ui-no-data ${isFlex ? style.noDataFlex : style.noDataBox} ${className}`}>
             <div className={style.content}>
-                <Image alt="" height={100} src={NoDataIcon} width={100} />
-                <div>{text}</div>
+                <Image alt="" className={style.image} height={100} src={NoDataIcon} width={100} />
+                <div className={style.text}>{text}</div>
                 {textSecond ? <div>{textSecond}</div> : null}
             </div>
         </div>

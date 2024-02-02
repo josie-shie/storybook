@@ -1,55 +1,80 @@
 import { initStore } from 'lib';
 import type { StoreWithSelectors } from 'lib';
-import type { GetExponentResponse } from 'data-center';
-import type { ExponentType, OptionsType, TotalGoalsRadioType } from '@/types/exponent';
+import type { CompanyInfo, CompanyList } from 'data-center';
 
 interface InitState {
-    exponentData: GetExponentResponse | null;
+    companyInfo: CompanyInfo;
+    companyList: CompanyList;
 }
+
+type TabListType = 'handicap' | 'overUnder' | 'winDrawLose' | 'corners';
 
 interface ExponentState extends InitState {
     loading: boolean;
-    options: OptionsType[];
-    selectedOption: ExponentType;
-    setSelectedOption: (value: ExponentType) => void;
-    totalGoalsRadio: TotalGoalsRadioType;
-    setTotalGoalsRadio: (value: TotalGoalsRadioType) => void;
+    isDetailOpen: boolean;
+    detailCompanyId: number;
+    detailSelectedKind: TabListType;
+    setIsDetailOpen: (isOpen: boolean) => void;
+    setDetailSelectedKind: (detailSelectedKind: TabListType) => void;
+    setDetailCompanyId: (detailCompanyId: number) => void;
+    setDetailOption: (detailCompanyId: number, detailSelectedKind: TabListType) => void;
 }
 
 let useExponentStore: StoreWithSelectors<ExponentState>;
 
-const initialState = (set: (data: Partial<ExponentState>) => void) => ({
-    exponentData: null,
-    totalGoalsRadio: 'full' as const,
+const initialState = (
+    set: (updater: (state: ExponentState) => Partial<ExponentState>) => void
+) => ({
+    companyInfo: {
+        handicap: [],
+        overUnder: [],
+        winDrawLose: [],
+        corners: []
+    } as CompanyInfo,
+    companyList: {
+        handicap: [],
+        overUnder: [],
+        winDrawLose: [],
+        corners: []
+    } as CompanyList,
     loading: false,
-    options: [
-        {
-            label: '让分',
-            value: 'handicapsData'
-        },
-        {
-            label: '胜平负',
-            value: 'winLoseData'
-        },
-        {
-            label: '进球数',
-            value: 'totalGoalData'
-        }
-    ],
-    selectedOption: 'handicapsData' as const,
-    setExponentList: (exponentData: GetExponentResponse) => {
-        set({ exponentData });
+    isDetailOpen: false,
+    detailCompanyId: 3,
+    detailSelectedKind: 'handicap' as TabListType,
+    setExponentData: ({
+        companyInfo,
+        companyList
+    }: {
+        companyInfo: CompanyInfo;
+        companyList: CompanyList;
+    }) => {
+        set(state => {
+            return { ...state, companyInfo, companyList };
+        });
     },
-    setTotalGoalsRadio: (totalGoalsRadio: TotalGoalsRadioType) => {
-        set({ totalGoalsRadio });
+    setIsDetailOpen: (isOpen: boolean) => {
+        set(state => {
+            return { ...state, isDetailOpen: isOpen };
+        });
     },
-    setSelectedOption: (selectedOption: ExponentType) => {
-        set({ selectedOption });
-        set({ totalGoalsRadio: 'full' });
+    setDetailSelectedKind: (detailSelectedKind: TabListType) => {
+        set(state => {
+            return { ...state, detailSelectedKind };
+        });
+    },
+    setDetailCompanyId: (detailCompanyId: number) => {
+        set(state => {
+            return { ...state, detailCompanyId };
+        });
+    },
+    setDetailOption: (detailCompanyId: number, detailSelectedKind: TabListType) => {
+        set(state => {
+            return { ...state, detailCompanyId, detailSelectedKind };
+        });
     }
 });
 
-const creatExponentStore = (init: InitState) =>
+const createExponentStore = (init: InitState) =>
     (useExponentStore = initStore<ExponentState>(initialState, init));
 
-export { creatExponentStore, useExponentStore };
+export { createExponentStore, useExponentStore };

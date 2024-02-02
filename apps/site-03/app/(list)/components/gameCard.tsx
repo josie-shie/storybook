@@ -182,8 +182,8 @@ function OddsInfo({
                 <span className={style.odd}>
                     <CompareOdds
                         value={
-                            syncData.overUnderUnderCurrentOdds ||
-                            contestInfo.overUnderUnderCurrentOdds
+                            syncData.overUnderOverCurrentOdds ||
+                            contestInfo.overUnderOverCurrentOdds
                         }
                     />
                     <CompareOdds
@@ -192,8 +192,8 @@ function OddsInfo({
                     />
                     <CompareOdds
                         value={
-                            syncData.overUnderOverCurrentOdds ||
-                            contestInfo.overUnderOverCurrentOdds
+                            syncData.overUnderUnderCurrentOdds ||
+                            contestInfo.overUnderUnderCurrentOdds
                         }
                     />
                 </span>

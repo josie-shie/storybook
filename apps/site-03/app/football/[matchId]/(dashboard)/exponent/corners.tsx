@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { handicapToString } from 'lib';
-import type { ExponentWinDrawLoseInfo } from 'data-center';
+import type { ExponentOverUnderInfo } from 'data-center';
 import Select from '@/app/football/[matchId]/(dashboard)/components/select/select';
 import NoData from '@/components/baseNoData/noData';
 import { useExponentStore } from '../../exponentStore';
@@ -24,8 +24,8 @@ function OddBar({
     initialData,
     isCompare
 }: {
-    targetData: ExponentWinDrawLoseInfo;
-    initialData?: ExponentWinDrawLoseInfo;
+    targetData: ExponentOverUnderInfo;
+    initialData?: ExponentOverUnderInfo;
     isCompare?: boolean;
 }) {
     return targetData.closed ? (
@@ -40,26 +40,26 @@ function OddBar({
                 className={`odd ${
                     isCompare &&
                     initialData &&
-                    getOddsClassName(initialData.homeWin, targetData.homeWin)
+                    getOddsClassName(initialData.underOdds, targetData.underOdds)
                 }`}
             >
-                {targetData.homeWin}
+                {targetData.underOdds}
             </div>
             <div
                 className={`odd ${
-                    isCompare && initialData && getOddsClassName(initialData.draw, targetData.draw)
+                    isCompare && initialData && getOddsClassName(initialData.line, targetData.line)
                 }`}
             >
-                {handicapToString(targetData.draw)}
+                {handicapToString(targetData.line)}
             </div>
             <div
                 className={`odd ${
                     isCompare &&
                     initialData &&
-                    getOddsClassName(initialData.awayWin, targetData.awayWin)
+                    getOddsClassName(initialData.overOdds, targetData.overOdds)
                 }`}
             >
-                {targetData.awayWin}
+                {targetData.overOdds}
             </div>
             {isCompare ? (
                 <div className="odd more">
@@ -70,10 +70,10 @@ function OddBar({
     );
 }
 
-function WinLose() {
+function Corners() {
     const [oddTime, setOddTime] = useState<OddTimeType>('live');
-    const companyList = useExponentStore.use.companyList().winDrawLose;
-    const companyInfo = useExponentStore.use.companyInfo().winDrawLose;
+    const companyList = useExponentStore.use.companyList().corners;
+    const companyInfo = useExponentStore.use.companyInfo().corners;
 
     return (
         <div className={style.handicap}>
@@ -115,4 +115,4 @@ function WinLose() {
     );
 }
 
-export default WinLose;
+export default Corners;
