@@ -1,5 +1,5 @@
 .tutorial {
-    background: rgba(0, 0, 0, 0.8);
+    background: rgb(0 0 0 / 80%);
     height: 100dvh;
     width: 100%;
     position: relative;
@@ -18,7 +18,8 @@
             flex-direction: column;
             align-items: center;
             gap: 56px;
-            padding: 128px 30px 0;
+            justify-content: center;
+            padding: 0 30px;
             height: 100dvh;
         }
     }
@@ -30,18 +31,18 @@
         width: 100%;
         flex-direction: column;
 
+        .firstImg {
+            width: 100%;
+        }
+
         .staticHand {
             border-radius: 36px;
             background: linear-gradient(
                     0deg,
-                    rgba(255, 255, 255, 0.1) 0%,
-                    rgba(255, 255, 255, 0.1) 100%
+                    rgb(255 255 255 / 10%) 0%,
+                    rgb(255 255 255 / 10%) 100%
                 ),
-                radial-gradient(
-                    50% 50% at 50% 50%,
-                    rgba(6, 95, 245, 0.26) 0%,
-                    rgba(6, 95, 245, 0.08) 100%
-                );
+                radial-gradient(50% 50% at 50% 50%, rgb(6 95 245 / 26%) 0%, rgb(6 95 245 / 8%) 100%);
         }
 
         .handAnimationHandler {
@@ -53,21 +54,14 @@
         .handAnimationHandler::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            inset: 0;
             border-radius: 36px;
             background: linear-gradient(
                     0deg,
-                    rgba(255, 255, 255, 0.1) 0%,
-                    rgba(255, 255, 255, 0.1) 100%
+                    rgb(255 255 255 / 10%) 0%,
+                    rgb(255 255 255 / 10%) 100%
                 ),
-                radial-gradient(
-                    50% 50% at 50% 50%,
-                    rgba(6, 95, 245, 0.26) 0%,
-                    rgba(6, 95, 245, 0.08) 100%
-                );
+                radial-gradient(50% 50% at 50% 50%, rgb(6 95 245 / 26%) 0%, rgb(6 95 245 / 8%) 100%);
             animation: 4s ease-in-out 0s 1 normal none running handAnimation;
         }
     }
@@ -238,12 +232,15 @@
     0% {
         opacity: 0;
     }
+
     33.3% {
         opacity: 1;
     }
+
     66.6% {
         opacity: 0;
     }
+
     100% {
         opacity: 1;
     }

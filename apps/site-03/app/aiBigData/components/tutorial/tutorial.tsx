@@ -5,16 +5,15 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Scrollbar, A11y, EffectFade } from 'swiper';
 import type SwiperClass from 'swiper';
 import { useEffect, useState } from 'react';
+import { useQueryFormStore } from '@/app/aiBigData/queryFormStore';
 import style from './tutorial.module.scss';
 import leftArrowIcon from './img/leftArrow.png';
 import rightArrowIcon from './img/rightArrow.png';
-import { useQueryFormStore } from '@/app/aiBigData/queryFormStore';
 import fixedBgImage from './img/fixedBg.png';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/scrollbar';
 import 'swiper/css/effect-fade';
-
 import Handicap from './handicap';
 import Minutes from './minutes';
 import Bodan from './bodan';
@@ -35,13 +34,11 @@ function Tutorial({
         1: 0,
         2: 0
     });
-    const [swiperHeight, setSwiperHeight] = useState('calc(100dvh - 30px)');
 
     const showedTutorial = useQueryFormStore.use.showedTutorial();
     const setShowedTutorial = useQueryFormStore.use.setShowedTutorial();
 
     const handleSlideChange = (swiper: SwiperClass) => {
-        setSwiperHeight(`calc(100dvh - ${30 + swiper.activeIndex}px)`);
         setCurrentIndex(swiper.activeIndex);
         setDefaultPageIndex && setDefaultPageIndex(swiper.activeIndex);
         setIsShowed(prevState => {
@@ -75,7 +72,9 @@ function Tutorial({
             className={style.tutorial}
             style={{
                 backgroundImage: setDefaultPageIndex ? 'none' : `url(${fixedBgImage.src})`,
-                display: !playTutorial ? 'none' : ''
+                display: !playTutorial ? 'none' : '',
+                backgroundSize: '100%',
+                backgroundRepeat: 'no-repeat'
             }}
         >
             <Swiper
@@ -89,7 +88,6 @@ function Tutorial({
                 onSlideChange={handleSlideChange}
                 pagination={{ clickable: true }}
                 slidesPerView={1}
-                style={{ height: swiperHeight }}
             >
                 <SwiperSlide>
                     {/* 需要判斷index不然預設全部渲染就沒有動畫效果 */}
