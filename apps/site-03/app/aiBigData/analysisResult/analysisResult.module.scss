@@ -114,110 +114,6 @@
     }
 }
 
-.tutorial {
-    background: rgba(0, 0, 0, 0.8);
-
-    .slide {
-        .images {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 50px;
-            padding: 50px 30px 0;
-        }
-    }
-
-    .tutorialTop {
-        position: relative;
-
-        .highlightImage {
-            position: absolute;
-            left: 0;
-            top: 74px;
-        }
-
-        .handicapAnimation {
-            animation:
-                handicapExpandAnimation 0.8s forwards,
-                dropTopShadowFadeOut 2s forwards;
-        }
-
-        .minutesAnimation {
-            animation:
-                minutesExpandAnimation 0.6s forwards,
-                dropTopShadowFadeOut 2s forwards;
-        }
-
-        .rangeAnimation {
-            animation:
-                rangeExpandAnimation 0.6s forwards,
-                dropTopShadowFadeOut 2s forwards;
-        }
-
-        .bodanAnimation {
-            animation:
-                bodanExpandAnimation 0.8s forwards,
-                dropTopShadowFadeOut 2s forwards;
-        }
-    }
-
-    .tutorialBottom {
-        position: relative;
-
-        .highlightImage {
-            position: absolute;
-            left: 0;
-        }
-
-        .hightlightAnimation {
-            animation: dropBottomShadowFadeOut 2s forwards;
-            animation-delay: 0.8s;
-        }
-    }
-
-    .bottomButton {
-        text-align: center;
-        font-size: 14px;
-        color: #8d8d8d;
-        opacity: 0.8;
-        position: absolute;
-        bottom: 26px;
-        left: 50%;
-        transform: translateX(-50%);
-        z-index: 3;
-    }
-
-    :global {
-        .swiper-pagination-bullet {
-            background-color: #fff3;
-        }
-
-        .swiper-pagination-bullet-active {
-            background-color: #fff;
-        }
-
-        .swiper-pagination-horizontal {
-            bottom: 56px;
-        }
-
-        .navigation-prev {
-            all: unset;
-            z-index: 3;
-            left: 122px;
-            bottom: 84px;
-            position: absolute;
-        }
-
-        .navigation-next {
-            all: unset;
-            z-index: 3;
-            right: 122px;
-            bottom: 84px;
-            position: absolute;
-        }
-    }
-}
-
 .dialogContent {
     width: 100%;
     color: #222;
@@ -241,6 +137,7 @@
             justify-content: center;
             text-align: center;
             color: #9b9b9b;
+            white-space: nowrap;
         }
 
         .refund {
@@ -283,75 +180,5 @@
         .confirm {
             color: #4489ff;
         }
-    }
-}
-
-@keyframes dropTopShadowFadeOut {
-    0%,
-    60% {
-        filter: drop-shadow(0 0 17px rgb(255 255 255 / 60%));
-    }
-
-    100% {
-        filter: none;
-    }
-}
-
-@keyframes dropBottomShadowFadeOut {
-    0%,
-    60% {
-        box-shadow: 0 0 17px 0 rgb(255 255 255 / 60%);
-    }
-
-    100% {
-        box-shadow: none;
-    }
-}
-
-@keyframes handicapExpandAnimation {
-    0% {
-        width: 10px;
-        height: 10px;
-    }
-
-    100% {
-        width: 66px;
-        height: 277px;
-    }
-}
-
-@keyframes minutesExpandAnimation {
-    0% {
-        width: 66px;
-        height: 180px;
-    }
-
-    100% {
-        width: 134px;
-        height: 160px;
-    }
-}
-
-@keyframes rangeExpandAnimation {
-    0% {
-        width: 134px;
-        height: 160px;
-    }
-
-    100% {
-        width: 227px;
-        height: 199px;
-    }
-}
-
-@keyframes bodanExpandAnimation {
-    0% {
-        width: 0;
-        height: 0;
-    }
-
-    100% {
-        width: 130px;
-        height: 35px;
     }
 }

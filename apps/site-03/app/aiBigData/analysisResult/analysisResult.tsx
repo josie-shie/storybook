@@ -21,6 +21,41 @@ import AnalyzeDataImage from './img/analyzeData.svg';
 import Minutes from './(dashboard)/minutes/minutes';
 import Tutorial from '../components/tutorial/tutorial';
 
+function LeaveResultPage() {
+    const router = useRouter();
+    const setOpenNormalDialog = useAnalyticsResultStore.use.setOpenNormalDialog();
+
+    return (
+        <>
+            <div className={style.dialogMessage}>
+                <p>返回主页当前数据会清空</p>
+                <p>确定返回？</p>
+            </div>
+            <div className={style.footer}>
+                <div className={style.close}>
+                    <div
+                        onClick={() => {
+                            setOpenNormalDialog(false);
+                            router.push('/aiBigData/queryForm');
+                        }}
+                    >
+                        返回AI智能分析主页
+                    </div>
+                </div>
+
+                <div
+                    className={style.confirm}
+                    onClick={() => {
+                        setOpenNormalDialog(false);
+                    }}
+                >
+                    取消
+                </div>
+            </div>
+        </>
+    );
+}
+
 function InsufficientBalance() {
     const router = useRouter();
     const setOpenNormalDialog = useAnalyticsResultStore.use.setOpenNormalDialog();
@@ -293,6 +328,9 @@ function AnalysisResult() {
             case 'balance':
                 setDialogContent(<InsufficientBalance />);
                 break;
+            case 'leaveResult':
+                setDialogContent(<LeaveResultPage />);
+                break;
             default:
                 setDialogContent(null);
                 break;
@@ -344,6 +382,9 @@ function AnalysisResult() {
                 content={<div className={style.dialogContent}>{dialogContent}</div>}
                 onClose={() => {
                     setOpenNormalDialog(false);
+                }}
+                customStyle={{
+                    width: dialogErrorType === 'leaveResult' ? '300px' : '188px'
                 }}
                 openDialog={openNoramlDialog}
             />
