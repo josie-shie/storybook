@@ -97,3 +97,13 @@ export const GET_ODDS_RUNNING_QUERY = `
         }
     }
 `;
+
+export const GET_TEXT_LIVE_QUERY = `
+    query getTextLive($matchId: Int!) {
+        soccerLive {
+            getTextLive(input:{ matchId: $matchId }) {
+                textLive
+            }
+        }
+    }
+`;

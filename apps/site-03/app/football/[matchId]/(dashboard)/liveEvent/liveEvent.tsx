@@ -2,7 +2,7 @@
 import type { EventInfo, GetLiveTextResponse } from 'data-center';
 import { slickOption } from 'ui/stories/slickPro/slick';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { mqttService } from 'lib';
 import style from './liveEvent.module.scss';
 import TextLive from './textLive';
@@ -245,11 +245,13 @@ interface TextLiveMqttResponse {
 function EventContainer({
     initEvent,
     tabKey,
-    matchId
+    matchId,
+    handleResetHeight
 }: {
     initEvent: EventInfo[];
     tabKey: string;
     matchId: number;
+    handleResetHeight: () => void;
 }) {
     const [eventList, setEventList] = useState(initEvent);
     const syncEvent = (message: Partial<EventInfo>) => {
@@ -257,6 +259,7 @@ function EventContainer({
             const liveEvent = JSON.parse(JSON.stringify(message)) as EventInfo;
 
             setEventList([...eventList, liveEvent]);
+            handleResetHeight();
         }
     };
 
@@ -270,11 +273,13 @@ function EventContainer({
 function LiveContainer({
     initLive,
     tabKey,
-    matchId
+    matchId,
+    handleResetHeight
 }: {
     initLive: GetLiveTextResponse;
     tabKey: string;
     matchId: number;
+    handleResetHeight: () => void;
 }) {
     const [liveList, setLiveList] = useState<GetLiveTextResponse>(initLive);
     const syncLiveText = (message: TextLiveMqttResponse) => {
@@ -283,9 +288,14 @@ function LiveContainer({
                 return;
             }
             setLiveList(message.textLiveData);
+            handleResetHeight();
         }
     };
     mqttService.getTextLiveList(syncLiveText);
+
+    useEffect(() => {
+        setLiveList(initLive);
+    }, [initLive]);
 
     if (tabKey !== 'live') return null;
 
@@ -342,9 +352,15 @@ function LiveEvent({ textLive, matchId }: { textLive: GetLiveTextResponse; match
                     transition={{ duration: 0.16 }}
                 >
                     {tabKey === 'live' ? (
-                        <LiveContainer initLive={textLive} matchId={matchId} tabKey={tabKey} />
+                        <LiveContainer
+                            handleResetHeight={handleResetHeight}
+                            initLive={textLive}
+                            matchId={matchId}
+                            tabKey={tabKey}
+                        />
                     ) : (
                         <EventContainer
+                            handleResetHeight={handleResetHeight}
                             initEvent={eventListMock}
                             matchId={matchId}
                             tabKey={tabKey}

@@ -2,7 +2,11 @@ import { fetcher } from 'lib'; // handicapToString, truncateFatingPoint
 import { z } from 'zod';
 import { handleApiError, throwErrorMessage } from '../common';
 import type { ReturnData, FetchResultData } from '../common';
-import { GET_SINGLE_MATCH_QUERY, GET_ODDS_RUNNING_QUERY } from './graphqlQueries';
+import {
+    GET_SINGLE_MATCH_QUERY,
+    GET_ODDS_RUNNING_QUERY,
+    GET_TEXT_LIVE_QUERY
+} from './graphqlQueries';
 
 const SingleMatchSchema = z.object({
     matchId: z.number(),
@@ -247,10 +251,15 @@ const TextLiveSchema = z.object({
 });
 
 const GetLiveTextResultSchema = z.object({
-    getLiveText: z.array(TextLiveSchema)
+    soccerLive: z.object({
+        getTextLive: z.object({
+            textLive: z.string()
+        })
+    })
 });
 
 export type GetLiveTextResult = z.infer<typeof GetLiveTextResultSchema>;
+
 export type GetLiveTextResponse = z.infer<typeof TextLiveSchema>[];
 
 const PlayerListSchema = z.object({
@@ -420,11 +429,9 @@ export const getLiveText = async (matchId: number): Promise<ReturnData<GetLiveTe
         const { data, errors } = await fetcher<FetchResultData<GetLiveTextResult>, unknown>(
             {
                 data: {
-                    query: GET_ODDS_RUNNING_QUERY,
+                    query: GET_TEXT_LIVE_QUERY,
                     variables: {
-                        input: {
-                            matchId
-                        }
+                        matchId
                     }
                 }
             },
@@ -433,9 +440,10 @@ export const getLiveText = async (matchId: number): Promise<ReturnData<GetLiveTe
 
         throwErrorMessage(errors);
 
+        const res = JSON.parse(data.soccerLive.getTextLive.textLive) as GetLiveTextResponse;
         return {
             success: true,
-            data: data.getLiveText
+            data: res
         };
     } catch (error) {
         return handleApiError(error);
