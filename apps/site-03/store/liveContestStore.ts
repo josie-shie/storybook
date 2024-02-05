@@ -81,7 +81,7 @@ const initialState = (set: (updater: (state: LiveContest) => Partial<LiveContest
                         handicapCurrent: convertHandicap(Number(odds.odds2)),
                         handicapHomeCurrentOdds: truncateFloatingPoint(Number(odds.odds1), 2),
                         handicapAwayCurrentOdds: truncateFloatingPoint(Number(odds.odds3), 2),
-                        closed: odds.type === 6
+                        handicapClosed: odds.type === 6
                     };
                     break;
                 case 2:
@@ -90,7 +90,7 @@ const initialState = (set: (updater: (state: LiveContest) => Partial<LiveContest
                         overUnderCurrent: convertHandicap(Number(odds.odds2)),
                         overUnderOverCurrentOdds: truncateFloatingPoint(Number(odds.odds1), 2),
                         overUnderUnderCurrentOdds: truncateFloatingPoint(Number(odds.odds3), 2),
-                        closed: odds.type === 7
+                        OverUnderIsClose: odds.type === 7
                     };
                     break;
                 default:

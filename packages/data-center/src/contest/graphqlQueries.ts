@@ -16,6 +16,7 @@ export const GET_CONTEST_LIST_QUERY = `
                 subLeagueCht
                 matchTime
                 startTime
+                halfStartTime
                 homeEn
                 homeChs
                 homeCht
@@ -67,6 +68,18 @@ export const GET_CONTEST_LIST_QUERY = `
                 hasAnimation
                 homeLogo
                 awayLogo
+                countryCn
+                handicapClosed
+                handicapCurrent
+                handicapHomeCurrentOdds
+                handicapAwayCurrentOdds
+                overUnderClosed
+                overUnderCurrent
+                overUnderOverCurrentOdds
+                overUnderUnderCurrentOdds
+                status
+                hasAnimation
+                leagueLevel
             }
         }
     }

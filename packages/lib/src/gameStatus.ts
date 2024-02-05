@@ -5,10 +5,10 @@ import dayjs from 'dayjs';
 
 export const handleStartTime = (startTime: number, endTime?: number) => {
     if (!startTime) return 0;
-    const start = dayjs(startTime * 1000);
-    const end = endTime ? dayjs(endTime * 1000) : dayjs();
-    const diffMinutes = end.diff(start, 'minute');
-    return diffMinutes || 1;
+    const start = startTime;
+    const end = endTime ? endTime : dayjs().unix();
+    const minutes = Math.floor((end - start) / 60);
+    return minutes || 1;
 };
 
 export const handleGameTime = (
@@ -40,8 +40,8 @@ export const handleGameTime = (
             state: 'playing',
             time:
                 handleStartTime(startTime, endTime) > 45
-                    ? `45+${handleStartTime(startTime, endTime) - 45}`
-                    : `${handleStartTime(startTime, endTime)}`
+                    ? `45+`
+                    : `${handleStartTime(startTime, endTime) + 1}`
         };
     }
     if (state === 2) {
@@ -52,8 +52,8 @@ export const handleGameTime = (
             state: 'playing',
             time:
                 handleStartTime(startTime, endTime) + 45 > 90
-                    ? `90+${handleStartTime(startTime, endTime) - 45}`
-                    : `${handleStartTime(startTime, endTime) + 45}`
+                    ? `90+`
+                    : `${handleStartTime(startTime, endTime) + 45 + 1}`
         };
     }
     if (state === 4) {
