@@ -5,7 +5,8 @@ import type { ReturnData, FetchResultData } from '../common';
 import {
     GET_SINGLE_MATCH_QUERY,
     GET_ODDS_RUNNING_QUERY,
-    GET_TEXT_LIVE_QUERY
+    GET_TEXT_LIVE_QUERY,
+    GET_EVENT_DATA_QUERY
 } from './graphqlQueries';
 
 const SingleMatchSchema = z.object({
@@ -165,22 +166,36 @@ const WinDrawLoseTypeSchema = z.object({
 export type WinDrawLoseType = z.infer<typeof WinDrawLoseTypeSchema>;
 
 const EventInfoSchema = z.object({
+    id: z.number().optional(),
     matchId: z.number(),
     isHome: z.boolean(),
     kind: z.number(),
+    kindName: z.string().optional(),
     time: z.string(),
-    nameEn: z.string(),
+    nameEn: z.string().optional(),
     nameChs: z.string(),
-    nameCht: z.string(),
+    nameCht: z.string().optional(),
     playerId: z.string(),
     playerId2: z.string(),
-    nameEn2: z.string(),
+    nameEn2: z.string().optional(),
     nameChs2: z.string(),
-    nameCht2: z.string(),
+    nameCht2: z.string().optional(),
     overtime: z.string()
 });
 
 export type EventInfo = z.infer<typeof EventInfoSchema>;
+
+const GetEventDataResultSchema = z.object({
+    soccerLive: z.object({
+        getEventData: z.object({
+            eventData: z.array(EventInfoSchema)
+        })
+    })
+});
+
+type GetEventDataResult = z.infer<typeof GetEventDataResultSchema>;
+
+export type GetEventDataResponse = z.infer<typeof EventInfoSchema>[];
 
 const InformationInfoSchema = z.object({
     content: z.string(),
@@ -441,6 +456,37 @@ export const getLiveText = async (matchId: number): Promise<ReturnData<GetLiveTe
         throwErrorMessage(errors);
 
         const res = JSON.parse(data.soccerLive.getTextLive.textLive) as GetLiveTextResponse;
+        return {
+            success: true,
+            data: res
+        };
+    } catch (error) {
+        return handleApiError(error);
+    }
+};
+
+/**
+ * 取得指定賽事重要事件
+ * - params : (matchId: number)
+ * - returns : {@link GetEventDataResponse}
+ */
+export const getEventData = async (matchId: number): Promise<ReturnData<GetEventDataResponse>> => {
+    try {
+        const { data, errors } = await fetcher<FetchResultData<GetEventDataResult>, unknown>(
+            {
+                data: {
+                    query: GET_EVENT_DATA_QUERY,
+                    variables: {
+                        matchId
+                    }
+                }
+            },
+            { cache: 'no-store' }
+        );
+
+        throwErrorMessage(errors);
+
+        const res = data.soccerLive.getEventData.eventData;
         return {
             success: true,
             data: res
