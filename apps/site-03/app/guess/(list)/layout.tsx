@@ -1,7 +1,7 @@
 'use client';
 import type { ReactNode } from 'react';
 import { useParams } from 'next/navigation';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import Header from '@/components/header/headerLogo';
 import Footer from '@/components/footer/footer';
 import style from './layout.module.scss';
@@ -11,11 +11,10 @@ function InterceptingContent({ para }: { para: ReactNode }) {
     const params = useParams();
 
     return (
-        <AnimatePresence>
+        <>
             {params.matchId || params.masterId ? (
                 <motion.div
                     animate={{ transform: 'translateX(0)' }}
-                    exit={{ transform: 'translateX(100%)' }}
                     initial={{ transform: 'translateX(100%)' }}
                     key="interceptingContent"
                     style={{
@@ -32,7 +31,7 @@ function InterceptingContent({ para }: { para: ReactNode }) {
                     {para}
                 </motion.div>
             ) : null}
-        </AnimatePresence>
+        </>
     );
 }
 

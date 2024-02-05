@@ -2,7 +2,7 @@
 
 import type { ReactNode } from 'react';
 import { useParams, usePathname } from 'next/navigation';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import Header from '@/components/header/headerLogo';
 import Footer from '@/components/footer/footer';
 import style from './layout.module.scss';
@@ -13,11 +13,10 @@ function InterceptingArticle({ art }: { art: ReactNode }) {
     const isMatchedURL = path.includes('/articleDetail');
 
     return (
-        <AnimatePresence>
+        <>
             {params.articleId && isMatchedURL ? (
                 <motion.div
                     animate={{ transform: 'translateX(0)' }}
-                    exit={{ transform: 'translateX(100%)' }}
                     initial={{ transform: 'translateX(100%)' }}
                     key="modalArticleDetail"
                     style={{
@@ -34,7 +33,7 @@ function InterceptingArticle({ art }: { art: ReactNode }) {
                     {art}
                 </motion.div>
             ) : null}
-        </AnimatePresence>
+        </>
     );
 }
 
@@ -44,7 +43,7 @@ function InterceptingExpert({ personal }: { personal: ReactNode }) {
     const isMatchedURL = path.includes('/masterAvatar');
 
     return (
-        <AnimatePresence>
+        <>
             {params.masterId && isMatchedURL ? (
                 <motion.div
                     animate={{ transform: 'translateX(0)' }}
@@ -65,7 +64,7 @@ function InterceptingExpert({ personal }: { personal: ReactNode }) {
                     {personal}
                 </motion.div>
             ) : null}
-        </AnimatePresence>
+        </>
     );
 }
 
