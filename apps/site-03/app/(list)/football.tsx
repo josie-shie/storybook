@@ -117,7 +117,7 @@ function ContestList({
     }, [rows]);
 
     useEffect(() => {
-        const dateString = scheduleDate || resultsDate || Date.now();
+        const dateString = (status === 'result' ? resultsDate : scheduleDate) || Date.now();
         const fetchContestData = async (timestamp: number) => {
             if (!secondRender) return;
             try {
@@ -279,7 +279,6 @@ const Football = forwardRef(function Football(
 
         if (status === 'result') {
             setResultsDate(dateFormat);
-            return;
         }
         if (status === 'schedule') {
             setScheduleDate(dateFormat);
