@@ -2,7 +2,7 @@ import { fetcher } from 'lib';
 import { z } from 'zod';
 import { handleApiError, throwErrorMessage } from '../common';
 import type { ReturnData, FetchResultData } from '../common';
-import { GET_ODDS_LOG_BY_MATCH_QUERY } from './graphqlQueries';
+import { GET_ODDS_LOG_BY_MATCH_QUERY, GET_ODDS_LOG_BY_COMPANY_QUERY } from './graphqlQueries';
 
 const HandicapsInfoSchema = z.object({
     handicap: z.number(),
@@ -222,7 +222,7 @@ export const getExponentDetail = async (
         const { data, errors } = await fetcher<FetchResultData<GetExponentDetailResult>, unknown>(
             {
                 data: {
-                    query: GET_ODDS_LOG_BY_MATCH_QUERY,
+                    query: GET_ODDS_LOG_BY_COMPANY_QUERY,
                     variables: {
                         matchId,
                         companyId

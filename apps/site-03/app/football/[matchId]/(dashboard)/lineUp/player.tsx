@@ -1,9 +1,9 @@
 'use client';
 import Image from 'next/image';
+import type { PlayerList } from 'data-center';
 import Captain from './img/captain.png';
 import style from './player.module.scss';
 import DefaultPlayer from './img/defaultPlayer.png';
-import type { PlayerList } from 'data-center';
 
 interface PlayerProps {
     lineUpData: PlayerList;
@@ -45,7 +45,7 @@ function Player({ lineUpData, teamColor, isBottom = false }: PlayerProps) {
                 >
                     <div className={style.leftTop}>
                         <div className={style.cover}>{lineUpData.number}</div>
-                        <div className={style.color} style={{ backgroundColor: teamColor }}></div>
+                        <div className={style.color} style={{ backgroundColor: teamColor }} />
                     </div>
                     {/* <div className={style.leftBottom}>
                         <span>
@@ -60,7 +60,7 @@ function Player({ lineUpData, teamColor, isBottom = false }: PlayerProps) {
                         <Ball width={16} height={16} />
                     </div> */}
                 </div>
-                <p className={style.playerName}>
+                <div className={style.playerName}>
                     {lineUpData.isCaptain ? (
                         <Image
                             alt="captain"
@@ -70,12 +70,12 @@ function Player({ lineUpData, teamColor, isBottom = false }: PlayerProps) {
                             width={12}
                         />
                     ) : null}
-                    <p>
+                    <div>
                         {lineUpData.nameChs && lineUpData.nameChs !== '0'
                             ? shortName(lineUpData.nameChs)
                             : lineUpData.nameEn}
-                    </p>
-                </p>
+                    </div>
+                </div>
                 {/* <p className={style.playerScore} style={{ backgroundColor: teamColor }}>
                     <Winner className={style.icon} width={12} height={12} />
                     <span>{lineUpData.number}</span>
