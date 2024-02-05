@@ -107,3 +107,26 @@ export const GET_TEXT_LIVE_QUERY = `
         }
     }
 `;
+
+export const GET_EVENT_DATA_QUERY = `
+    query getEventData($matchId: Int!) {
+        soccerLive {
+            getEventData(input:{ matchId: $matchId }) {
+                eventData {
+                    id
+                    matchId
+                    isHome
+                    kind
+                    kindName
+                    time
+                    second
+                    overTime
+                    playerId
+                    nameChs:playerChs
+                    playerId2:playerOffOrAssistId
+                    nameChs2:playerOffOrAssistChs
+                  }
+            }
+        }
+    }
+`;
