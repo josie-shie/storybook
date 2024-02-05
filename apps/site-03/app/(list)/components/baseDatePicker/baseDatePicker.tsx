@@ -10,10 +10,9 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
-import Image from 'next/image';
 import style from './baseDatePicker.module.scss';
 import 'react-datepicker/dist/react-datepicker.css';
-import DateIcon from './img/date.png';
+import DateIcon from './img/date.svg';
 
 registerLocale('zh-CN', zhCN);
 
@@ -121,7 +120,7 @@ function BaseDatePicker({
                     ))}
                 </Tabs>
                 <IconButton onClick={handleOpenModal}>
-                    <Image alt="" height={24} src={DateIcon} width={24} />
+                    <DateIcon />
                 </IconButton>
             </Box>
             <Modal className={style.datePickerModal} onClose={handleCloseModal} open={openModal}>

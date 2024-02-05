@@ -7,7 +7,6 @@ import { useUserStore } from '@/store/userStore';
 import style from './baseBanner.module.scss';
 import GuessBannerImage from './img/guessBanner.png';
 import RegisterBannerImage from './img/registerBanner.png';
-import VipBannerImage from './img/vipBanner.png';
 
 const defaultConfig = {
     label: 'guessBanner',
@@ -24,23 +23,17 @@ interface StaticImageData {
 function getRandomImageConfig(isLogin: boolean) {
     const config: {
         1: StaticImageData;
-        2: StaticImageData;
-        3?: StaticImageData;
+        2?: StaticImageData;
     } = {
         1: {
             label: 'guessBanner',
             image: GuessBannerImage,
             link: '/guess'
-        },
-        2: {
-            label: 'vipBanner',
-            image: VipBannerImage,
-            link: '/userInfo/subscribe'
         }
     };
 
-    if (isLogin) {
-        config[3] = {
+    if (!isLogin) {
+        config[2] = {
             label: 'registerBanner',
             image: RegisterBannerImage,
             link: '/?auth=register'
@@ -55,8 +48,8 @@ function BaseBanner({ className }: { className: string }) {
     const isLogin = useUserStore.use.isLogin();
 
     const randomImage = getRandomImageConfig(isLogin);
-    const maxRandomNumber = isLogin ? 2 : 3;
-    const randomNumberInit = getRandomInt(1, maxRandomNumber) as 1 | 2 | 3;
+    const maxRandomNumber = isLogin ? 1 : 2;
+    const randomNumberInit = getRandomInt(1, maxRandomNumber) as 1 | 2;
 
     useEffect(() => {
         setIsMounted(true);
