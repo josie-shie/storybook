@@ -200,7 +200,7 @@ function ArticleCard({ article }: { article: RecommendPost }) {
                     </div>
                     <div className={style.rate}>
                         <span className={style.hit}>
-                            {article.weekHitRate}
+                            {article.tag.weekHitRateDisplay}
                             <i>%</i>
                         </span>
                         {article.lastTenAnalysisWinCountStr && (
