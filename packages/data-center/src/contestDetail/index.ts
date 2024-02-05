@@ -486,7 +486,10 @@ export const getLiveText = async (matchId: number): Promise<ReturnData<GetLiveTe
 
         throwErrorMessage(errors);
 
-        const res = JSON.parse(data.soccerLive.getTextLive.textLive) as GetLiveTextResponse;
+        const res =
+            data.soccerLive.getTextLive.textLive !== ''
+                ? (JSON.parse(data.soccerLive.getTextLive.textLive) as GetLiveTextResponse)
+                : ({} as GetLiveTextResponse);
         return {
             success: true,
             data: res

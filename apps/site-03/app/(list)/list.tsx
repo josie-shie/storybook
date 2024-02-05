@@ -1,11 +1,9 @@
 'use client';
-import { useRouter } from 'next/navigation';
 import { Slick } from 'ui/stories/slickPro/slick';
 import { type GetContestListResponse } from 'data-center';
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import BottomDrawer from '@/components/drawer/bottomDrawer';
-import { useUserStore } from '@/store/userStore';
 import LongDragonResult from './longDragonResult';
 import { useLongDragonStore } from './longDragonStore';
 import Football from './football';
@@ -19,14 +17,12 @@ function List({
     todayContest: GetContestListResponse;
     pinnedContest: number[];
 }) {
-    const router = useRouter();
     const allRef = useRef<HTMLDivElement>(null);
     const progressRef = useRef<HTMLDivElement>(null);
     const scheduleRef = useRef<HTMLDivElement>(null);
     const resultRef = useRef<HTMLDivElement>(null);
     const [secendRender, setSecendRender] = useState(false);
     const [showScrollTop, setShowScrollTop] = useState(false);
-    const isLogin = useUserStore.use.isLogin();
     const setHandicapTips = useLongDragonStore.use.setHandicapTips();
     const setHintsSelectType = useLongDragonStore.use.setHintsSelectType();
     const showLongDragon = useLongDragonStore.use.showLongDragon();
@@ -83,10 +79,6 @@ function List({
     }, []);
 
     const isOpenLongDragon = () => {
-        if (!isLogin) {
-            router.push(`/?auth=login`);
-            return;
-        }
         setShowLongDragon(true);
     };
 

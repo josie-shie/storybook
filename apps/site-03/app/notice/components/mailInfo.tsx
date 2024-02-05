@@ -94,6 +94,7 @@ function MailInfo() {
                             <div className={style.contentImage}>
                                 <Image
                                     alt="cover"
+                                    layout="responsive"
                                     height={180}
                                     src={selectedMailData.contentImage}
                                     width={342}
