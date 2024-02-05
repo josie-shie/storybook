@@ -121,6 +121,69 @@ export const GET_TEXT_LIVE_QUERY = `
     }
 `;
 
+export const GET_LINE_UP_QUERY = `
+    query getLineup($matchId: Int!) {
+        soccerLineup {
+            getLineup(input:{ matchId: $matchId }) {
+                matchId
+                teams {
+                    venueId
+                    venueEn
+                    venueZh
+                    home {
+                        teamId
+                        arrayFormat
+                        winRate
+                        teamColor
+                        coachId
+                        coachNameEn
+                        coachNameZh
+                        coachNameZht
+                        coachLogo
+                        players {
+                            playerId
+                            nameChs
+                            nameCht
+                            nameEn
+                            number
+                            position
+                            playerStatus
+                            positionY
+                            positionX
+                            playerLogo
+                            isCaptain
+                        }
+                    }
+                    away {
+                        teamId
+                        arrayFormat
+                        winRate
+                        teamColor
+                        coachId
+                        coachNameEn
+                        coachNameZh
+                        coachNameZht
+                        coachLogo
+                        players {
+                            playerId
+                            nameChs
+                            nameCht
+                            nameEn
+                            number
+                            position
+                            playerStatus
+                            positionY
+                            positionX
+                            playerLogo
+                            isCaptain
+                        }
+                    }
+                }
+            }
+        }
+    }
+`;
+
 export const GET_EVENT_DATA_QUERY = `
     query getEventData($matchId: Int!) {
         soccerLive {

@@ -6,6 +6,7 @@ import {
     GET_SINGLE_MATCH_QUERY,
     GET_ODDS_RUNNING_QUERY,
     GET_TEXT_LIVE_QUERY,
+    GET_LINE_UP_QUERY,
     GET_EVENT_DATA_QUERY,
     GET_INTELLIGENCE_QUERY
 } from './graphqlQueries';
@@ -294,46 +295,60 @@ export type GetLiveTextResult = z.infer<typeof GetLiveTextResultSchema>;
 export type GetLiveTextResponse = z.infer<typeof TextLiveSchema>[];
 
 const PlayerListSchema = z.object({
-    player_id: z.number(),
-    name_en: z.string(),
-    name_chs: z.string(),
-    name_cht: z.string(),
+    playerId: z.number(),
+    nameEn: z.string(),
+    nameChs: z.string(),
+    nameCht: z.string(),
     number: z.number(),
     position: z.number(),
-    player_status: z.string(),
-    position_y: z.number(),
-    position_x: z.number()
+    playerStatus: z.string(),
+    positionY: z.number(),
+    positionX: z.number(),
+    playerLogo: z.string(),
+    isCaptain: z.number()
 });
 
 export type PlayerList = z.infer<typeof PlayerListSchema>;
 
 const TeamsDetailSchema = z.object({
-    team_id: z.number(),
-    array_format: z.string(),
-    team_color: z.string(),
-    coach_id: z.number(),
-    coach_name_en: z.string(),
-    coach_name_zh: z.string(),
-    coach_name_zht: z.string(),
-    coach_logo: z.string(),
+    teamId: z.number(),
+    arrayFormat: z.string(),
+    winRate: z.number(),
+    teamColor: z.string(),
+    coachId: z.number(),
+    coachNameEn: z.string(),
+    coachNameZh: z.string(),
+    coachNameZht: z.string(),
+    coachLogo: z.string(),
     players: z.array(PlayerListSchema)
 });
 
 export type TeamsDetail = z.infer<typeof TeamsDetailSchema>;
 
 const TeamsSchema = z.object({
-    HOME: TeamsDetailSchema,
-    AWAY: TeamsDetailSchema
+    venueId: z.number(),
+    venueEn: z.string(),
+    venueZh: z.string(),
+    home: TeamsDetailSchema,
+    away: TeamsDetailSchema
 });
 
 export type Teams = z.infer<typeof TeamsSchema>;
 
 const LineUpInfoSchema = z.object({
-    match_id: z.number(),
+    matchId: z.number(),
     teams: TeamsSchema
 });
 
 export type GetLineUpInfoResponse = z.infer<typeof LineUpInfoSchema>;
+
+const GetLineUpInfohResultSchema = z.object({
+    soccerLineup: z.object({
+        getLineup: LineUpInfoSchema
+    })
+});
+
+type GetLineUpInfoResult = z.infer<typeof GetLineUpInfohResultSchema>;
 
 /**
  * 取得指定賽事
@@ -473,6 +488,36 @@ export const getLiveText = async (matchId: number): Promise<ReturnData<GetLiveTe
         return {
             success: true,
             data: res
+        };
+    } catch (error) {
+        return handleApiError(error);
+    }
+};
+
+/**
+ * 取得指定賽事陣容
+ * - params : (matchId: number)
+ * - returns : {@link GetLineUpInfoResponse}
+ */
+export const getLineup = async (matchId: number): Promise<ReturnData<GetLineUpInfoResponse>> => {
+    try {
+        const { data, errors } = await fetcher<FetchResultData<GetLineUpInfoResult>, unknown>(
+            {
+                data: {
+                    query: GET_LINE_UP_QUERY,
+                    variables: {
+                        matchId
+                    }
+                }
+            },
+            { cache: 'no-store' }
+        );
+
+        throwErrorMessage(errors);
+
+        return {
+            success: true,
+            data: data.soccerLineup.getLineup
         };
     } catch (error) {
         return handleApiError(error);

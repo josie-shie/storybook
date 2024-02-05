@@ -1,11 +1,11 @@
 'use client';
 import Coat from './img/coat.png';
-import ChangeUp from './img/changeUp.svg';
-import Ball from './img/ball.svg';
-import RedCard from './img/redCard.svg';
-import YellowCard from './img/yellowCard.svg';
-import Support from './img/support.svg';
-import Winner from './img/winner.svg';
+// import ChangeUp from './img/changeUp.svg';
+// import Ball from './img/ball.svg';
+// import RedCard from './img/redCard.svg';
+// import YellowCard from './img/yellowCard.svg';
+// import Support from './img/support.svg';
+// import Winner from './img/winner.svg';
 import style from './playerList.module.scss';
 import type { PlayerList } from 'data-center';
 
@@ -48,20 +48,29 @@ function PlayerItem({ playerList, teamColor, formation, isLeft = false }: Player
         return positionsMap[position] || '';
     };
 
+    const shortName = (name: string) => {
+        const fullName = name;
+        const lastIndexOfDot = fullName.lastIndexOf('·');
+        const lastNamePart =
+            lastIndexOfDot !== -1 ? fullName.substring(lastIndexOfDot + 1) : fullName;
+
+        return lastNamePart;
+    };
+
     return (
         <div className={`${style.playerItem} ${isLeft ? style.rightLine : ''}`}>
             <div className={style.detail}>
                 <div className={style.left} style={{ backgroundColor: teamColor }}>
                     <div className={style.coat} style={{ backgroundImage: `url(${Coat.src})` }}>
-                        8
+                        {playerList.number}
                     </div>
                 </div>
                 <div className={style.substitute}>
                     <div className={style.nameScore}>
                         <p className={style.name}>
-                            {playerList.name_chs && playerList.name_chs !== '0'
-                                ? playerList.name_chs
-                                : playerList.name_en}
+                            {playerList.nameChs && playerList.nameChs !== '0'
+                                ? shortName(playerList.nameChs)
+                                : playerList.nameEn}
                         </p>
                         <div className={style.score}>
                             <p className={style.position}>
@@ -96,7 +105,7 @@ function PlayerList({
             <div className={style.container}>
                 {homeBackUp.map(item => (
                     <PlayerItem
-                        key={item.player_id}
+                        key={item.playerId}
                         playerList={item}
                         teamColor={homeColor}
                         formation={homeFormation}
@@ -107,7 +116,7 @@ function PlayerList({
             <div className={style.container}>
                 {awayBackUp.map(item => (
                     <PlayerItem
-                        key={item.player_id}
+                        key={item.playerId}
                         playerList={item}
                         teamColor={awayColor}
                         formation={awayFormation}
