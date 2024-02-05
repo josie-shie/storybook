@@ -1,22 +1,32 @@
 import { initStore, convertHandicap, truncateFloatingPoint } from 'lib';
-import type { StoreWithSelectors, OddsHashTable } from 'lib';
+import type { StoreWithSelectors } from 'lib';
 import type { OriginalContestInfo, ContestInfo } from 'data-center';
 
 type ContestTable = Record<string, Partial<ContestInfo>>;
+
+interface OddsRunningMqttResponse {
+    matchId: number;
+    companyId: number;
+    odds1: string;
+    odds2: string;
+    odds3: string;
+    type: number;
+    modifytime: number;
+}
 
 interface InitState {
     contestInfo: ContestTable;
 }
 interface LiveContest extends InitState {
     setContestInfoContest: (info: Partial<OriginalContestInfo>) => void;
-    setContestOdds: (odds: OddsHashTable) => void;
+    setContestOdds: (odds: OddsRunningMqttResponse) => void;
 }
 
 let isInit = true;
 let useLiveContestStore: StoreWithSelectors<LiveContest>;
 
 const initialState = (set: (updater: (state: LiveContest) => Partial<LiveContest>) => void) => ({
-    contestInfo: {},
+    contestInfo: {} as ContestTable,
     setContestInfoContest: (info: Partial<OriginalContestInfo>) => {
         const id = info.matchId?.toString();
         if (!id) return;
@@ -57,59 +67,40 @@ const initialState = (set: (updater: (state: LiveContest) => Partial<LiveContest
         });
     },
 
-    setContestOdds: (odds: OddsHashTable) => {
-        Object.keys(odds).forEach(matchId => {
-            Object.keys(odds[matchId]).forEach(companyId => {
-                if (companyId === '3') {
-                    const obj = odds[matchId][companyId];
-                    set(state => {
-                        const newContestInfo: ContestTable = { ...state.contestInfo };
-                        const updatedOdds = {
-                            ...(typeof obj.handicap.currentHandicap === 'number' && {
-                                handicapCurrent: convertHandicap(obj.handicap.currentHandicap)
-                            }),
-                            ...(typeof obj.overUnder.currentHandicap === 'number' && {
-                                overUnderCurrent: convertHandicap(obj.overUnder.currentHandicap)
-                            }),
-                            ...(typeof obj.handicap.homeCurrentOdds === 'number' && {
-                                handicapHomeCurrentOdds: truncateFloatingPoint(
-                                    obj.handicap.homeCurrentOdds,
-                                    2
-                                )
-                            }),
-                            ...(typeof obj.handicap.awayCurrentOdds === 'number' && {
-                                handicapAwayCurrentOdds: truncateFloatingPoint(
-                                    obj.handicap.awayCurrentOdds,
-                                    2
-                                )
-                            }),
-                            ...(typeof obj.overUnder.currentUnderOdds === 'number' && {
-                                overUnderUnderCurrentOdds: truncateFloatingPoint(
-                                    obj.overUnder.currentUnderOdds,
-                                    2
-                                )
-                            }),
-                            ...(typeof obj.overUnder.currentOverOdds === 'number' && {
-                                overUnderOverCurrentOdds: truncateFloatingPoint(
-                                    obj.overUnder.currentOverOdds,
-                                    2
-                                )
-                            })
-                        } as Partial<ContestInfo>;
+    setContestOdds: (odds: OddsRunningMqttResponse) => {
+        if (odds.type !== 1 && odds.type !== 6 && odds.type !== 2 && odds.type !== 7) return;
 
-                        if (Object.hasOwnProperty.call(newContestInfo, matchId)) {
-                            newContestInfo[matchId] = {
-                                ...newContestInfo[matchId],
-                                ...updatedOdds
-                            };
-                        } else {
-                            newContestInfo[matchId] = updatedOdds;
-                        }
+        set(state => {
+            const newContestInfo: ContestTable = { ...state.contestInfo };
+            let updateData = {};
 
-                        return { ...state, contestInfo: newContestInfo };
-                    });
-                }
-            });
+            switch (odds.type) {
+                case 1:
+                case 6:
+                    updateData = {
+                        handicapCurrent: convertHandicap(Number(odds.odds2)),
+                        handicapHomeCurrentOdds: truncateFloatingPoint(Number(odds.odds1), 2),
+                        handicapAwayCurrentOdds: truncateFloatingPoint(Number(odds.odds3), 2),
+                        handicapClosed: odds.type === 6
+                    };
+                    break;
+                case 2:
+                case 7:
+                    updateData = {
+                        overUnderCurrent: convertHandicap(Number(odds.odds2)),
+                        overUnderOverCurrentOdds: truncateFloatingPoint(Number(odds.odds1), 2),
+                        overUnderUnderCurrentOdds: truncateFloatingPoint(Number(odds.odds3), 2),
+                        OverUnderIsClose: odds.type === 7
+                    };
+                    break;
+                default:
+                    console.error('Unknown type');
+                    break;
+            }
+
+            newContestInfo[odds.matchId] = { ...newContestInfo[odds.matchId], ...updateData };
+
+            return { ...state, contestInfo: newContestInfo };
         });
     }
 });

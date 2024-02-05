@@ -27,17 +27,22 @@ const ContestInfoSchema = z.object({
     matchId: z.number(),
     matchTime: z.number(),
     startTime: z.number(),
+    halfStartTime: z.number(),
     state: z.number(),
     color: z.string(),
     countryCn: z.string(),
+    handicapClosed: z.boolean(),
     handicapCurrent: z.number(),
     handicapHomeCurrentOdds: z.number(),
     handicapAwayCurrentOdds: z.number(),
+    overUnderClosed: z.boolean(),
     overUnderCurrent: z.number(),
     overUnderOverCurrentOdds: z.number(),
     overUnderUnderCurrentOdds: z.number(),
     homeLogo: z.string(),
-    awayLogo: z.string()
+    awayLogo: z.string(),
+    status: z.number(),
+    leagueLevel: z.number()
 });
 
 export type OriginalContestInfo = z.infer<typeof ContestInfoSchema>;

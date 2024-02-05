@@ -54,7 +54,10 @@ function LineUp({ lineUpData }: { lineUpData: GetLineUpInfoResponse }) {
     const awayFormation = lineUpData?.teams?.away?.arrayFormat;
 
     const getCoachName = team => {
-        const { coachNameZh, coachNameZht, coachNameEn } = team;
+        const coachNameZh = team?.coachNameZh;
+        const coachNameZht = team?.coachNameZht;
+        const coachNameEn = team?.coachNameEn;
+
         return coachNameZh && coachNameZh !== '0'
             ? coachNameZh
             : coachNameZht && coachNameZht !== '0'

@@ -1,11 +1,11 @@
 'use client';
 import Coat from './img/coat.png';
-import ChangeUp from './img/changeUp.svg';
-import Ball from './img/ball.svg';
-import RedCard from './img/redCard.svg';
-import YellowCard from './img/yellowCard.svg';
-import Support from './img/support.svg';
-import Winner from './img/winner.svg';
+// import ChangeUp from './img/changeUp.svg';
+// import Ball from './img/ball.svg';
+// import RedCard from './img/redCard.svg';
+// import YellowCard from './img/yellowCard.svg';
+// import Support from './img/support.svg';
+// import Winner from './img/winner.svg';
 import style from './playerList.module.scss';
 import type { PlayerList } from 'data-center';
 

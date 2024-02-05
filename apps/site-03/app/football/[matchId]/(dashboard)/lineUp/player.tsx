@@ -1,11 +1,5 @@
 'use client';
 import Image from 'next/image';
-import Change from './img/change.svg';
-import Ball from './img/ball.svg';
-import RedCard from './img/redCard.svg';
-import YellowCard from './img/yellowCard.svg';
-import Support from './img/support.svg';
-import Winner from './img/winner.svg';
 import Captain from './img/captain.png';
 import style from './player.module.scss';
 import DefaultPlayer from './img/defaultPlayer.png';

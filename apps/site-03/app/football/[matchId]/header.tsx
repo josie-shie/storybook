@@ -11,7 +11,7 @@ import style from './header.module.scss';
 import BackIcon from './img/back.svg';
 import TeamLogo from './components/teamLogo';
 import ShareIcon from './img/share.svg';
-import VideoIcon from './img/video.svg';
+// import VideoIcon from './img/video.svg';
 import LiveIcon from './img/live.svg';
 
 const statusStyleMap = {
@@ -70,6 +70,9 @@ function Header({
 
     const liveState = syncData.state || matchDetail.state || (interceptData?.state as number);
 
+    const matchStartTime = syncData.startTime || matchDetail.startTime;
+    const matchHalfStartTime = syncData.halfStartTime || matchDetail.halfStartTime;
+
     const currentMatchTime =
         useFormattedTime({
             timeStamp: matchDetail.matchTime || (interceptData?.matchTime as number),
@@ -127,15 +130,25 @@ function Header({
                 </div>
                 <div className={style.optionHolder}>
                     <div className={style.option}>
-                        <div className={style.live} onClick={handleAnimate}>
-                            <div className={style.liveAnimate} />
-                            <LiveIcon className={style.liveIcon} />
-                        </div>
+                        {matchDetail.hasAnimation ? (
+                            <>
+                                <a
+                                    className={style.live}
+                                    href="https://www.miguvideo.com/p/live/120000459594"
+                                    target="_black"
+                                >
+                                    <div className={style.liveAnimate} />
+                                    <LiveIcon className={style.liveIcon} />
+                                </a>
+                                <div className={style.line} />
+                            </>
+                        ) : null}
+
+                        {/* 目前無動畫暫隱藏
                         <div className={style.video} onClick={handleAnimate}>
                             <VideoIcon />
                             <p className={style.videoText}>动画</p>
-                        </div>
-                        <div className={style.line} />
+                        </div> */}
                         <div className={style.share}>
                             <ShareIcon onClick={handleShare} />
                         </div>
@@ -156,7 +169,7 @@ function Header({
                         className={`gameTime ${
                             statusStyleMap[matchDetail.state] || (interceptData?.state as number)
                         }`}
-                        startTime={matchDetail.startTime || interceptData?.startTime || 0}
+                        startTime={liveState === 1 ? matchStartTime : matchHalfStartTime}
                         status={liveState}
                     />
                     <p className={style.score}>

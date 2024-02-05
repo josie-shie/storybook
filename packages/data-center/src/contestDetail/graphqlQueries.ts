@@ -15,6 +15,7 @@ export const GET_SINGLE_MATCH_QUERY = `
             subLeagueCht
             matchTime
             startTime
+            halfStartTime
             homeEn
             homeChs
             homeCht
@@ -58,6 +59,18 @@ export const GET_SINGLE_MATCH_QUERY = `
             updateTime
             homeLogo
             awayLogo
+            countryCn
+            handicapClosed
+            handicapCurrent
+            handicapHomeCurrentOdds
+            handicapAwayCurrentOdds
+            overUnderClosed
+            overUnderCurrent
+            overUnderOverCurrentOdds
+            overUnderUnderCurrentOdds
+            status
+            hasAnimation
+            leagueLevel
         } 
     }  
 `;
@@ -165,6 +178,62 @@ export const GET_LINE_UP_QUERY = `
                             isCaptain
                         }
                     }
+                }
+            }
+        }
+    }
+`;
+
+export const GET_EVENT_DATA_QUERY = `
+    query getEventData($matchId: Int!) {
+        soccerLive {
+            getEventData(input:{ matchId: $matchId }) {
+                eventData {
+                    id
+                    matchId
+                    isHome
+                    kind
+                    kindName
+                    time
+                    second
+                    overTime
+                    playerId
+                    nameChs:playerChs
+                    playerId2:playerOffOrAssistId
+                    nameChs2:playerOffOrAssistChs
+                  }
+            }
+        }
+    }
+`;
+
+export const GET_INTELLIGENCE_QUERY = `
+    query getIntelligence($matchId: Int!) {
+        news {
+            getIntelligence(input:{ matchId: $matchId }) {
+                bad {
+                    home {
+                      content
+                      importance
+                    }
+                    away{
+                      content
+                      importance
+                    }
+                }
+                good {
+                    home {
+                      content
+                      importance
+                    }
+                    away{
+                      content
+                      importance
+                    }
+                }
+                neutral {
+                    content
+                    importance
                 }
             }
         }
