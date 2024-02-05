@@ -70,11 +70,11 @@ function Player({ lineUpData, teamColor, isBottom = false }: PlayerProps) {
                             width={12}
                         />
                     ) : null}
-                    <div>
+                    <p>
                         {lineUpData.nameChs && lineUpData.nameChs !== '0'
                             ? shortName(lineUpData.nameChs)
                             : lineUpData.nameEn}
-                    </div>
+                    </p>
                 </div>
                 {/* <p className={style.playerScore} style={{ backgroundColor: teamColor }}>
                     <Winner className={style.icon} width={12} height={12} />

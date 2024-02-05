@@ -71,7 +71,7 @@ function MailCard({ mailData }: { mailData: GetMailMemberResponse }) {
                 </div>
                 {mailData.coverImage ? (
                     <div className={style.coverImage}>
-                        <Image alt="cover" height={180} src={mailData.coverImage} width={342} />
+                        <Image alt="cover" layout="responsive" height={180} src={mailData.coverImage} width={342} />
                     </div>
                 ) : null}
             </div>
