@@ -55,6 +55,7 @@ function MasterAvatar({ params }: { params: { masterId: string } }) {
         <>
             <div className={style.masterAvatar}>
                 <Slick
+                    autoHeight
                     className={style.slick}
                     initialSlide={initialSlide}
                     onSlickEnd={onSlickEnd}
