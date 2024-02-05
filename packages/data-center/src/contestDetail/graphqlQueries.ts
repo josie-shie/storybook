@@ -130,3 +130,36 @@ export const GET_EVENT_DATA_QUERY = `
         }
     }
 `;
+
+export const GET_INTELLIGENCE_QUERY = `
+    query getIntelligence($matchId: Int!) {
+        news {
+            getIntelligence(input:{ matchId: $matchId }) {
+                bad {
+                    home {
+                      content
+                      importance
+                    }
+                    away{
+                      content
+                      importance
+                    }
+                }
+                good {
+                    home {
+                      content
+                      importance
+                    }
+                    away{
+                      content
+                      importance
+                    }
+                }
+                neutral {
+                    content
+                    importance
+                }
+            }
+        }
+    }
+`;

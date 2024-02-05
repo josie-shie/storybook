@@ -6,7 +6,8 @@ import {
     GET_SINGLE_MATCH_QUERY,
     GET_ODDS_RUNNING_QUERY,
     GET_TEXT_LIVE_QUERY,
-    GET_EVENT_DATA_QUERY
+    GET_EVENT_DATA_QUERY,
+    GET_INTELLIGENCE_QUERY
 } from './graphqlQueries';
 
 const SingleMatchSchema = z.object({
@@ -217,7 +218,9 @@ const InformationListSchema = z.object({
 export type GetInformationResponse = z.infer<typeof InformationListSchema>;
 
 const GetInformationListResultSchema = z.object({
-    getInformation: InformationListSchema
+    news: z.object({
+        getIntelligence: InformationListSchema
+    })
 });
 
 type GetInformationListResult = z.infer<typeof GetInformationListResultSchema>;
@@ -412,11 +415,9 @@ export const getInformation = async (
         const { data, errors } = await fetcher<FetchResultData<GetInformationListResult>, unknown>(
             {
                 data: {
-                    query: GET_ODDS_RUNNING_QUERY,
+                    query: GET_INTELLIGENCE_QUERY,
                     variables: {
-                        input: {
-                            matchId
-                        }
+                        matchId
                     }
                 }
             },
@@ -427,7 +428,7 @@ export const getInformation = async (
 
         return {
             success: true,
-            data: data.getInformation
+            data: data.news.getIntelligence
         };
     } catch (error) {
         return handleApiError(error);

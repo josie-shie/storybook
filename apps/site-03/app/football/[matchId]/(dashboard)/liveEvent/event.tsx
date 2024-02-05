@@ -109,7 +109,7 @@ function Event({ eventList }: { eventList: EventInfo[] }) {
                     ))}
                 </ul>
             ) : (
-                <NoData text="暂无资料1" />
+                <NoData text="暂无资料" />
             )}
         </>
     );
