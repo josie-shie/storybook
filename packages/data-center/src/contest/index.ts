@@ -42,7 +42,9 @@ const ContestInfoSchema = z.object({
     homeLogo: z.string(),
     awayLogo: z.string(),
     status: z.number(),
-    leagueLevel: z.number()
+    leagueLevel: z.number(),
+    mobileLiveUrl: z.string(),
+    pcLiveUrl: z.string()
 });
 
 export type OriginalContestInfo = z.infer<typeof ContestInfoSchema>;

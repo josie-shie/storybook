@@ -71,6 +71,8 @@ export const GET_SINGLE_MATCH_QUERY = `
             status
             hasAnimation
             leagueLevel
+            mobileLiveUrl
+            pcLiveUrl
         } 
     }  
 `;

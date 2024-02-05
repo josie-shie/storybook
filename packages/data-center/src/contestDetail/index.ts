@@ -80,7 +80,9 @@ const SingleMatchSchema = z.object({
     overUnderUnderCurrentOdds: z.number(),
     status: z.number(),
     hasAnimation: z.boolean(),
-    leagueLevel: z.number()
+    leagueLevel: z.number(),
+    mobileLiveUrl: z.string(),
+    pcLiveUrl: z.string()
 });
 
 const GetSingleMatchResultSchema = z.object({
