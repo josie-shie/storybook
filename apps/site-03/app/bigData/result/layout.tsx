@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, type ReactNode } from 'react';
 import { useParams } from 'next/navigation';
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { createAnalysisResultStore } from './analysisResultStore';
 import { creatMatchFilterStore } from './matchFilterStore';
 import style from './layout.module.scss';
@@ -9,11 +9,10 @@ import style from './layout.module.scss';
 function InterceptingDetail({ modal }: { modal: ReactNode }) {
     const params = useParams();
     return (
-        <AnimatePresence>
+        <>
             {params.matchId ? (
                 <motion.div
                     animate={{ transform: 'translateX(0)' }}
-                    exit={{ transform: 'translateX(100%)' }}
                     initial={{ transform: 'translateX(100%)' }}
                     key="modalDetail"
                     style={{
@@ -30,7 +29,7 @@ function InterceptingDetail({ modal }: { modal: ReactNode }) {
                     <div className={style.modal}>{modal}</div>
                 </motion.div>
             ) : null}
-        </AnimatePresence>
+        </>
     );
 }
 

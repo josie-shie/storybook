@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { useEffect, useRef } from 'react';
 import { mqttService } from 'lib';
 import { Badge } from '@mui/material';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import type { NotifyMessage } from 'lib';
 import Link from 'next/link';
 import { useMessageStore } from '@/store/messageStore';
@@ -51,30 +51,28 @@ function NewMessageAlert() {
 
     return (
         <div className={style.newMessageAlert}>
-            <AnimatePresence>
-                {isNewMessageVisible ? (
-                    <motion.div
-                        animate={{ x: 0, opacity: 1 }}
-                        className={style.newMessageBox}
-                        exit={{ x: '100vw', opacity: 0 }}
-                        initial={{ x: '100vw', opacity: 0 }}
-                        style={{ position: 'relative', zIndex: 1 }}
-                        transition={{ ease: 'easeOut', duration: 0.3 }}
-                    >
-                        <Badge badgeContent={unreadMessageNotify.totalCount} color="primary">
-                            <Image alt="football" src={MessageInfo} width={21} />
-                        </Badge>
-                        <div className={style.message}>
-                            <div>來自 &nbsp;</div>
-                            <div className={style.content}>{newMessageNotify.sender}</div>
-                            <div> &nbsp; 的新訊息</div>
-                        </div>
-                        <Link className={style.goSingle} href="/notice/chat">
-                            查看
-                        </Link>
-                    </motion.div>
-                ) : null}
-            </AnimatePresence>
+            {isNewMessageVisible ? (
+                <motion.div
+                    animate={{ x: 0, opacity: 1 }}
+                    className={style.newMessageBox}
+                    exit={{ x: '100vw', opacity: 0 }}
+                    initial={{ x: '100vw', opacity: 0 }}
+                    style={{ position: 'relative', zIndex: 1 }}
+                    transition={{ ease: 'easeOut', duration: 0.3 }}
+                >
+                    <Badge badgeContent={unreadMessageNotify.totalCount} color="primary">
+                        <Image alt="football" src={MessageInfo} width={21} />
+                    </Badge>
+                    <div className={style.message}>
+                        <div>來自 &nbsp;</div>
+                        <div className={style.content}>{newMessageNotify.sender}</div>
+                        <div> &nbsp; 的新訊息</div>
+                    </div>
+                    <Link className={style.goSingle} href="/notice/chat">
+                        查看
+                    </Link>
+                </motion.div>
+            ) : null}
         </div>
     );
 }
