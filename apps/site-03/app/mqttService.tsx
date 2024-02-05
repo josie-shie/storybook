@@ -1,11 +1,20 @@
 'use client';
 import type { ReactNode } from 'react';
 import { useEffect } from 'react';
-import type { OddsHashTable } from 'lib';
 import { mqttService } from 'lib';
 import type { OriginalContestInfo } from 'data-center';
 import { useLiveContestStore } from '@/store/liveContestStore';
 import { useUserStore } from '@/store/userStore';
+
+interface OddsRunningMqttResponse {
+    matchId: number;
+    companyId: number;
+    odds1: string;
+    odds2: string;
+    odds3: string;
+    type: number;
+    modifytime: number;
+}
 
 function MqttService({ children }: { children: ReactNode }) {
     useEffect(() => {
@@ -15,12 +24,12 @@ function MqttService({ children }: { children: ReactNode }) {
         const syncGlobalStore = (message: Partial<OriginalContestInfo>) => {
             updateInfo(message);
         };
-        const syncGlobalOddsStore = (message: OddsHashTable) => {
+        const syncGlobalOddsStore = (message: OddsRunningMqttResponse) => {
             updateOdds(message);
         };
         mqttService.init({ memberId });
         mqttService.getMessage(syncGlobalStore);
-        mqttService.getOdds(syncGlobalOddsStore);
+        mqttService.getOddsRunning(syncGlobalOddsStore);
     }, []);
 
     return <>{children}</>;

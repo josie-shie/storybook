@@ -6,7 +6,8 @@ import type {
     GetExponentResponse,
     ExponentHandicapsInfo,
     ExponentWinDrawLoseInfo,
-    ExponentOverUnderInfo
+    ExponentOverUnderInfo,
+    CompanyInfo
 } from 'data-center';
 import { mqttService } from 'lib';
 import { createExponentStore, useExponentStore } from '../../exponentStore';
@@ -76,7 +77,7 @@ function Exponent({
 
     const syncExponent = (message: OddsRunningMqttResponse) => {
         if (message.matchId === Number(matchId)) {
-            const newData = { ...companyInfo };
+            const newData = { ...companyInfo } as CompanyInfo;
             let updateType = '' as TabListType;
             let updateData = {} as
                 | ExponentHandicapsInfo
