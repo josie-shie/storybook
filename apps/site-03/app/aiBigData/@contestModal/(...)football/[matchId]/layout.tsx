@@ -8,6 +8,7 @@ import GuessBar from '@/app/football/[matchId]/guessBar';
 import TabContent from '@/app/football/[matchId]/tabContent';
 import OddMqttService from '@/app/football/[matchId]/oddMqttService';
 import { useInterceptPassStore } from '@/store/interceptPassStore';
+import { useLockBodyScroll } from '@/hooks/lockScroll';
 
 interface InterceptDataType {
     awayChs: string;
@@ -31,6 +32,9 @@ function DetailLayout({ params }: { params: { matchId: number } }) {
     const [contestDetail, setContestDetail] = useState({});
     const interceptData = useInterceptPassStore.use.interceptData();
     const resetInterceptData = useInterceptPassStore.use.resetInterceptData();
+
+    useLockBodyScroll();
+
     useEffect(() => {
         const fetchData = async () => {
             const res = await getMatchDetail(params.matchId);

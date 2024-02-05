@@ -47,7 +47,6 @@ function InterceptingExpert({ personal }: { personal: ReactNode }) {
             {params.masterId && isMatchedURL ? (
                 <motion.div
                     animate={{ transform: 'translateX(0)' }}
-                    exit={{ transform: 'translateX(100%)' }}
                     initial={{ transform: 'translateX(100%)' }}
                     key="modalMasterDetail"
                     style={{
