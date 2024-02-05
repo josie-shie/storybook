@@ -32,9 +32,12 @@ function OddBar({
 }) {
     return targetData.closed ? (
         <div className="td">
-            <div className="odds">-</div>
-            <div className="odds">封</div>
-            <div className="odds">-</div>
+            <div className="odd">-</div>
+            <div className="odd">封</div>
+            <div className="odd">-</div>
+            <div className="odd more">
+                <MoreIcon />
+            </div>
         </div>
     ) : (
         <div className="td">

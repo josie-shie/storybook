@@ -15,9 +15,9 @@ import type {
     GetLineUpInfoResponse
 } from 'data-center';
 import {
-    getAnalysisOthers,
-    getBeforeGameIndex,
-    getLeaguePointsRank,
+    // getAnalysisOthers,
+    // getBeforeGameIndex,
+    // getLeaguePointsRank,
     getPostList,
     getLiveText,
     getLineup,
@@ -29,7 +29,7 @@ import LiveBox from './(dashboard)/liveEvent/liveEvent';
 import MessageBoard from './(dashboard)/messageBoard/messageBoard';
 import LineUp from './(dashboard)/lineUp/lineUp';
 import Predict from './(dashboard)/predict/predict';
-import Analyze from './(dashboard)/analyze/analyze';
+// import Analyze from './(dashboard)/analyze/analyze';
 import Exponent from './(dashboard)/exponent/exponent';
 import Information from './(dashboard)/information/information';
 
@@ -74,11 +74,11 @@ function TabContent({
             href: `/football/${matchId}/predict`,
             status: 'predict'
         },
-        {
-            label: '阵容',
-            href: `/football/${matchId}/lineUp`,
-            status: 'lineUp'
-        },
+        // {
+        //     label: '阵容',
+        //     href: `/football/${matchId}/lineUp`,
+        //     status: 'lineUp'
+        // },
         {
             label: '指数',
             href: `/football/${matchId}/exponent`,
@@ -88,12 +88,12 @@ function TabContent({
             label: '情报',
             href: `/football/${matchId}/information`,
             status: 'information'
-        },
-        {
-            label: '数据',
-            href: `/football/${matchId}/analyze`,
-            status: 'analyze'
         }
+        // {
+        //     label: '数据',
+        //     href: `/football/${matchId}/analyze`,
+        //     status: 'analyze'
+        // }
     ];
     const [fetchData, setFetchData] = useState({
         analyze: {
@@ -166,42 +166,42 @@ function TabContent({
             neutral: []
         } as GetInformationResponse
     });
-    const [analysisDataLoading, setAnalysisDataLoading] = useState(false);
-    const [beforeGameDataLoading, setBeforeGameDataLoading] = useState(false);
-    const [leaguePointsRankLoading, setLeaguePointsRankLoading] = useState(false);
+    // const [analysisDataLoading, setAnalysisDataLoading] = useState(false);
+    // const [beforeGameDataLoading, setBeforeGameDataLoading] = useState(false);
+    // const [leaguePointsRankLoading, setLeaguePointsRankLoading] = useState(false);
 
     const handleSecondFetch = {
-        analyze: async () => {
-            setAnalysisDataLoading(true);
-            setBeforeGameDataLoading(true);
-            setLeaguePointsRankLoading(true);
+        // analyze: async () => {
+        //     setAnalysisDataLoading(true);
+        //     setBeforeGameDataLoading(true);
+        //     setLeaguePointsRankLoading(true);
 
-            const [analysisData, beforeGameData, leaguePointsRank] = await Promise.all([
-                getAnalysisOthers(matchId),
-                getBeforeGameIndex(matchId, 3),
-                getLeaguePointsRank(matchId)
-            ]);
+        //     const [analysisData, beforeGameData, leaguePointsRank] = await Promise.all([
+        //         getAnalysisOthers(matchId),
+        //         getBeforeGameIndex(matchId, 3),
+        //         getLeaguePointsRank(matchId)
+        //     ]);
 
-            setAnalysisDataLoading(false);
-            setBeforeGameDataLoading(false);
-            setLeaguePointsRankLoading(false);
+        //     setAnalysisDataLoading(false);
+        //     setBeforeGameDataLoading(false);
+        //     setLeaguePointsRankLoading(false);
 
-            if (!analysisData.success || !beforeGameData.success || !leaguePointsRank.success) {
-                return {
-                    success: false,
-                    error: ''
-                };
-            }
+        //     if (!analysisData.success || !beforeGameData.success || !leaguePointsRank.success) {
+        //         return {
+        //             success: false,
+        //             error: ''
+        //         };
+        //     }
 
-            return {
-                success: true,
-                data: {
-                    analysisData: analysisData.data,
-                    beforeGameData: beforeGameData.data,
-                    leaguePointsRank: leaguePointsRank.data
-                }
-            };
-        },
+        //     return {
+        //         success: true,
+        //         data: {
+        //             analysisData: analysisData.data,
+        //             beforeGameData: beforeGameData.data,
+        //             leaguePointsRank: leaguePointsRank.data
+        //         }
+        //     };
+        // },
         predict: async () => {
             const predictData = await getPostList({
                 memberId: 1,
@@ -321,7 +321,7 @@ function TabContent({
                         />
                     ) : null}
                 </div>
-                <div className={style.largeGap}>
+                {/* <div className={style.largeGap}>
                     {secondRender || status === 'analyze' ? (
                         <Analyze
                             analysisData={
@@ -341,7 +341,7 @@ function TabContent({
                             leaguePointsRankLoading={leaguePointsRankLoading}
                         />
                     ) : null}
-                </div>
+                </div> */}
             </Slick>
         </div>
     );
