@@ -1,14 +1,14 @@
 'use client';
 import { useEffect, type ReactNode } from 'react';
 import { useParams } from 'next/navigation';
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { creatQueryFormStore } from './queryFormStore';
 import { creatMatchFilterStore } from './matchFilterStore';
 
 function InterceptingDetail({ modal }: { modal: ReactNode }) {
     const params = useParams();
     return (
-        <AnimatePresence>
+        <>
             {params.matchId ? (
                 <motion.div
                     animate={{ transform: 'translateX(0)' }}
@@ -28,7 +28,7 @@ function InterceptingDetail({ modal }: { modal: ReactNode }) {
                     {modal}
                 </motion.div>
             ) : null}
-        </AnimatePresence>
+        </>
     );
 }
 

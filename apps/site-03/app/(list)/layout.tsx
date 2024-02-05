@@ -1,7 +1,7 @@
 'use client';
 import { type ReactNode } from 'react';
 import { useParams } from 'next/navigation';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import Header from '@/components/header/headerLogo';
 import Footer from '@/components/footer/footer';
 import style from './layout.module.scss';
@@ -9,8 +9,9 @@ import { creatLongDragonStore } from './longDragonStore';
 
 function InterceptingDetail({ modal }: { modal: ReactNode }) {
     const params = useParams();
+
     return (
-        <AnimatePresence>
+        <>
             {params.matchId ? (
                 <motion.div
                     animate={{ transform: 'translateX(0)' }}
@@ -30,7 +31,7 @@ function InterceptingDetail({ modal }: { modal: ReactNode }) {
                     {modal}
                 </motion.div>
             ) : null}
-        </AnimatePresence>
+        </>
     );
 }
 
