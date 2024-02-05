@@ -15,7 +15,7 @@ import { useContestListStore } from '../contestListStore';
 import style from './gameCard.module.scss';
 import { CompareOdds } from './compareOdds';
 import Soccer from './img/soccer.png';
-import VideoIcon from './img/video.svg';
+// import VideoIcon from './img/video.svg';
 import CornerIcon from './img/corner.svg';
 import LiveIcon from './img/live.svg';
 import UpIcon from './img/up.svg';
@@ -139,6 +139,13 @@ function OddsInfo({
         contestInfo.overUnderCurrent === '0' &&
         contestInfo.overUnderUnderCurrentOdds === 0;
 
+    const HandicapIsClose =
+        (typeof syncData.handicapClosed !== 'undefined' && syncData.handicapClosed) ||
+        contestInfo.handicapClosed;
+    const OverUnderIsClose =
+        (typeof syncData.overUnderClosed !== 'undefined' && syncData.overUnderClosed) ||
+        contestInfo.overUnderClosed;
+
     return (
         <div className={style.oddsInfo}>
             <div className={`${style.oddBox} ${style.left}`}>
@@ -163,22 +170,34 @@ function OddsInfo({
                 <span className={style.odd}>
                     {!hideHandicap && (
                         <>
-                            <CompareOdds
-                                value={
-                                    syncData.handicapHomeCurrentOdds ||
-                                    contestInfo.handicapHomeCurrentOdds
-                                }
-                            />
-                            <CompareOdds
-                                defaultColor="blue"
-                                value={syncData.handicapCurrent || contestInfo.handicapCurrent}
-                            />
-                            <CompareOdds
-                                value={
-                                    syncData.handicapAwayCurrentOdds ||
-                                    contestInfo.handicapAwayCurrentOdds
-                                }
-                            />
+                            {HandicapIsClose ? (
+                                <>
+                                    <p>-</p>
+                                    <p>封</p>
+                                    <p>-</p>
+                                </>
+                            ) : (
+                                <>
+                                    <CompareOdds
+                                        value={
+                                            syncData.handicapHomeCurrentOdds ||
+                                            contestInfo.handicapHomeCurrentOdds
+                                        }
+                                    />
+                                    <CompareOdds
+                                        defaultColor="blue"
+                                        value={
+                                            syncData.handicapCurrent || contestInfo.handicapCurrent
+                                        }
+                                    />
+                                    <CompareOdds
+                                        value={
+                                            syncData.handicapAwayCurrentOdds ||
+                                            contestInfo.handicapAwayCurrentOdds
+                                        }
+                                    />
+                                </>
+                            )}
                         </>
                     )}
                 </span>
@@ -198,22 +217,35 @@ function OddsInfo({
                 <span className={style.odd}>
                     {!hideOverUnder && (
                         <>
-                            <CompareOdds
-                                value={
-                                    syncData.overUnderOverCurrentOdds ||
-                                    contestInfo.overUnderOverCurrentOdds
-                                }
-                            />
-                            <CompareOdds
-                                defaultColor="blue"
-                                value={syncData.overUnderCurrent || contestInfo.overUnderCurrent}
-                            />
-                            <CompareOdds
-                                value={
-                                    syncData.overUnderUnderCurrentOdds ||
-                                    contestInfo.overUnderUnderCurrentOdds
-                                }
-                            />
+                            {OverUnderIsClose ? (
+                                <>
+                                    <p>-</p>
+                                    <p>封</p>
+                                    <p>-</p>
+                                </>
+                            ) : (
+                                <>
+                                    <CompareOdds
+                                        value={
+                                            syncData.overUnderOverCurrentOdds ||
+                                            contestInfo.overUnderOverCurrentOdds
+                                        }
+                                    />
+                                    <CompareOdds
+                                        defaultColor="blue"
+                                        value={
+                                            syncData.overUnderCurrent ||
+                                            contestInfo.overUnderCurrent
+                                        }
+                                    />
+                                    <CompareOdds
+                                        value={
+                                            syncData.overUnderUnderCurrentOdds ||
+                                            contestInfo.overUnderUnderCurrentOdds
+                                        }
+                                    />
+                                </>
+                            )}
                         </>
                     )}
                 </span>
@@ -296,6 +328,10 @@ function TopArea({
         contestInfo.handicapCurrent === '0' &&
         contestInfo.handicapAwayCurrentOdds === 0;
 
+    const matchState = syncData.state || contestInfo.state;
+    const matchStartTime = syncData.startTime || contestInfo.startTime;
+    const matchHalfStartTime = syncData.halfStartTime || contestInfo.halfStartTime;
+
     return (
         <div className={style.topArea}>
             <div className={style.left}>
@@ -307,7 +343,7 @@ function TopArea({
             <div className={style.mid}>
                 <div className={style.status}>
                     <GameStatus
-                        startTime={contestInfo.startTime}
+                        startTime={matchState === 1 ? matchStartTime : matchHalfStartTime}
                         status={syncData.state || contestInfo.state}
                     />
                 </div>
@@ -347,9 +383,10 @@ function TopArea({
                                 <LiveIcon />
                             </div>
                         ) : null}
-                        {contestInfo.hasAnimation ? (
+                        {/* 目前無動畫暫隱藏
+                            {contestInfo.hasAnimation ? (
                             <VideoIcon className={style.videoIcon} />
-                        ) : null}
+                        ) : null} */}
                     </>
                 )}
             </div>

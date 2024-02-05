@@ -58,6 +58,8 @@ function GameDetail({
     const syncData = Object.hasOwnProperty.call(globalStore, matchId) ? globalStore[matchId] : {};
 
     const liveState = syncData.state || matchDetail.state || (interceptData?.state as number);
+    const matchStartTime = syncData.startTime || matchDetail.startTime;
+    const matchHalfStartTime = syncData.halfStartTime || matchDetail.halfStartTime;
 
     return (
         <div className={style.gameStatus}>
@@ -67,7 +69,7 @@ function GameDetail({
                     className={`gameTime ${
                         statusStyleMap[matchDetail.state || (interceptData?.state as number)]
                     }`}
-                    startTime={matchDetail.startTime || interceptData?.startTime || 0}
+                    startTime={liveState === 1 ? matchStartTime : matchHalfStartTime}
                     status={liveState}
                 />
 

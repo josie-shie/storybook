@@ -25,6 +25,7 @@ const SingleMatchSchema = z.object({
     subLeagueCht: z.string(),
     matchTime: z.number(),
     startTime: z.number(),
+    halfStartTime: z.number(),
     homeEn: z.string(),
     homeChs: z.string(),
     homeCht: z.string(),
@@ -66,7 +67,19 @@ const SingleMatchSchema = z.object({
     isHidden: z.boolean(),
     injuryTime: z.string(),
     homeLogo: z.string(),
-    awayLogo: z.string()
+    awayLogo: z.string(),
+    countryCn: z.string(),
+    handicapClosed: z.boolean(),
+    handicapCurrent: z.number(),
+    handicapHomeCurrentOdds: z.number(),
+    handicapAwayCurrentOdds: z.number(),
+    overUnderClosed: z.boolean(),
+    overUnderCurrent: z.number(),
+    overUnderOverCurrentOdds: z.number(),
+    overUnderUnderCurrentOdds: z.number(),
+    status: z.number(),
+    hasAnimation: z.boolean(),
+    leagueLevel: z.number()
 });
 
 const GetSingleMatchResultSchema = z.object({
