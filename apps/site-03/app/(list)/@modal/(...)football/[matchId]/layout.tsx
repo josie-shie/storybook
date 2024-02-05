@@ -8,6 +8,7 @@ import GuessBar from '@/app/football/[matchId]/guessBar';
 import TabContent from '@/app/football/[matchId]/tabContent';
 import OddMqttService from '@/app/football/[matchId]/oddMqttService';
 import { useInterceptPassStore } from '@/store/interceptPassStore';
+import { useLockBodyScroll } from '@/hooks/lockScroll';
 
 interface InterceptDataType {
     awayChs: string;
@@ -47,6 +48,8 @@ function DetailLayout({ params }: { params: { matchId: number } }) {
             }
         };
     }, [params.matchId]);
+
+    useLockBodyScroll();
 
     return (
         <>
