@@ -2,7 +2,7 @@ import { fetcher } from 'lib';
 import { z } from 'zod';
 import { handleApiError, throwErrorMessage } from '../common';
 import type { ReturnData, FetchResultData } from '../common';
-import { GET_COMPANY_ODDS_DETAIL_QUERY } from './graphqlQueries';
+import { GET_ODDS_LOG_BY_MATCH_QUERY } from './graphqlQueries';
 
 const HandicapsInfoSchema = z.object({
     handicap: z.number(),
@@ -166,11 +166,9 @@ export const getExponent = async (matchId: number): Promise<ReturnData<GetExpone
         const { data, errors } = await fetcher<FetchResultData<CompanyDetailResult>, unknown>(
             {
                 data: {
-                    query: GET_COMPANY_ODDS_DETAIL_QUERY,
+                    query: GET_ODDS_LOG_BY_MATCH_QUERY,
                     variables: {
-                        input: {
-                            matchId
-                        }
+                        matchId
                     }
                 }
             },
@@ -224,12 +222,10 @@ export const getExponentDetail = async (
         const { data, errors } = await fetcher<FetchResultData<GetExponentDetailResult>, unknown>(
             {
                 data: {
-                    query: GET_COMPANY_ODDS_DETAIL_QUERY,
+                    query: GET_ODDS_LOG_BY_MATCH_QUERY,
                     variables: {
-                        input: {
-                            matchId,
-                            companyId
-                        }
+                        matchId,
+                        companyId
                     }
                 }
             },
