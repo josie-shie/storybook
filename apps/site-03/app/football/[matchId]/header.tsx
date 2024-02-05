@@ -130,11 +130,11 @@ function Header({
                 </div>
                 <div className={style.optionHolder}>
                     <div className={style.option}>
-                        {matchDetail.mobileLiveUrl.length > 0 ? (
+                        {matchDetail.hasAnimation ? (
                             <>
                                 <a
                                     className={style.live}
-                                    href={matchDetail.mobileLiveUrl}
+                                    href="https://www.miguvideo.com/p/live/120000459594"
                                     target="_black"
                                 >
                                     <div className={style.liveAnimate} />

@@ -127,7 +127,7 @@ function ExponentInfoDrawer() {
                 detailCompanyId: res.data
             }));
         } catch (error) {
-            throw new Error();
+            console.error(error);
         }
     };
 

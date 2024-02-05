@@ -74,11 +74,11 @@ function TabContent({
             href: `/football/${matchId}/predict`,
             status: 'predict'
         },
-        // {
-        //     label: '阵容',
-        //     href: `/football/${matchId}/lineUp`,
-        //     status: 'lineUp'
-        // },
+        {
+            label: '阵容',
+            href: `/football/${matchId}/lineUp`,
+            status: 'lineUp'
+        },
         {
             label: '指数',
             href: `/football/${matchId}/exponent`,
