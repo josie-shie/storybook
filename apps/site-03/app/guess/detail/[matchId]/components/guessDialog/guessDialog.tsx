@@ -53,10 +53,10 @@ function GuessDialog({
         >
             {guessesLeft === 0 ? (
                 <div className={style.guessDialog}>
-                    <div className={style.useCount}>今日競猜次數次數已使用完畢</div>
+                    <div className={style.useCount}>今日竞猜次数已使用完毕</div>
                     <div className={style.footer}>
                         <div className={style.confirm} onClick={onClose}>
-                            關閉
+                            关闭
                         </div>
                     </div>
                 </div>
