@@ -96,7 +96,12 @@ function Setting({
     return (
         <>
             {onMounted ? (
-                <BottomDrawer isOpen={isOpen} onClose={onClose} onOpen={onOpen}>
+                <BottomDrawer
+                    isOpen={isOpen}
+                    onClose={onClose}
+                    onOpen={onOpen}
+                    topLineDisplay="none"
+                >
                     <div className={style.setting}>
                         <div className={style.topLine} />
                         <div className={style.item}>
