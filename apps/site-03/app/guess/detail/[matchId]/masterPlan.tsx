@@ -169,7 +169,7 @@ function MasterPlan() {
             <div className={style.area}>
                 <div className={style.planList}>
                     <div className={style.title}>
-                        <span>同场猜球高手方案</span>
+                        <span>同场猜球高手方案({masterPlanList.length})</span>
                     </div>
                     {isPlanLoading ? (
                         <div className={style.planLoading}>
