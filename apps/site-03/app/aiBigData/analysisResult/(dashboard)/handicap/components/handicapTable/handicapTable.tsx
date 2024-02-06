@@ -52,66 +52,76 @@ function HandicapTable({ tableData }: { tableData: TableDataType[] }) {
 
     return (
         <div className={style.handicapTable}>
-            <table className={style.table}>
-                <tbody>
-                    {tableData.map((cell, index) => (
-                        <tr key={`handicapTable_${index.toString()}`}>
-                            {cell.topValue ? (
-                                <td rowSpan={index === 1 ? 2 : 1}>
-                                    <div
-                                        onClick={() => {
-                                            openMatchListDrawer(
-                                                cell.topValue || [],
-                                                '全场让分',
-                                                cell.topLabel || ''
-                                            );
-                                        }}
-                                    >
-                                        <span className={style.label}>{cell.topLabel}</span>
-                                        <span className={style.matchLength}>
-                                            {cell.topValue.length}
-                                        </span>
+            <div className={style.table}>
+                <div className={style.tableBody}>
+                    <div className={style.row}>
+                        {tableData.map((cell, index) => (
+                            <div key={`handicapTable_${index.toString()}`} className={style.tr}>
+                                {cell.topValue ? (
+                                    <div className={style.td}>
+                                        <div
+                                            onClick={() => {
+                                                openMatchListDrawer(
+                                                    cell.topValue || [],
+                                                    '全场让分',
+                                                    cell.topLabel || ''
+                                                );
+                                            }}
+                                        >
+                                            <span className={style.label}>{cell.topLabel}</span>
+                                            <span className={style.matchLength}>
+                                                {cell.topValue.length}
+                                            </span>
+                                        </div>
                                     </div>
-                                </td>
-                            ) : null}
-                            {cell.middleValue ? (
-                                <td rowSpan={index === 1 ? 2 : 1}>
-                                    <div
-                                        onClick={() => {
-                                            openMatchListDrawer(
-                                                cell.middleValue || [],
-                                                '全场大小',
-                                                cell.middleLabel || ''
-                                            );
-                                        }}
-                                    >
-                                        <span className={style.label}>{cell.middleLabel}</span>
-                                        <span className={style.matchLength}>
-                                            {cell.middleValue.length}
-                                        </span>
+                                ) : null}
+                                {cell.middleValue ? (
+                                    <div className={style.td}>
+                                        <div
+                                            onClick={() => {
+                                                openMatchListDrawer(
+                                                    cell.middleValue || [],
+                                                    '全场大小',
+                                                    cell.middleLabel || ''
+                                                );
+                                            }}
+                                        >
+                                            <span className={style.label}>{cell.middleLabel}</span>
+                                            <span className={style.matchLength}>
+                                                {cell.middleValue.length}
+                                            </span>
+                                        </div>
                                     </div>
-                                </td>
-                            ) : null}
-                            <td>
-                                <div
-                                    onClick={() => {
-                                        openMatchListDrawer(
-                                            cell.bottomValue,
-                                            '全场独赢',
-                                            cell.bottomLabel
-                                        );
-                                    }}
-                                >
-                                    <span className={style.label}>{cell.bottomLabel}</span>
-                                    <span className={style.matchLength}>
-                                        {cell.bottomValue.length}
-                                    </span>
-                                </div>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+                                ) : null}
+                            </div>
+                        ))}
+                    </div>
+                    <div className={style.row}>
+                        {tableData.map((cell, index) => (
+                            <div key={`handicapTable_${index.toString()}`} className={style.tr}>
+                                {cell.bottomValue ? (
+                                    <div className={`${style.td} ${style.bottomTd}`}>
+                                        <div
+                                            onClick={() => {
+                                                openMatchListDrawer(
+                                                    cell.bottomValue,
+                                                    '全场独赢',
+                                                    cell.bottomLabel
+                                                );
+                                            }}
+                                        >
+                                            <span className={style.label}>{cell.bottomLabel}</span>
+                                            <span className={style.matchLength}>
+                                                {cell.bottomValue.length}
+                                            </span>
+                                        </div>
+                                    </div>
+                                ) : null}
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
         </div>
     );
 }

@@ -210,7 +210,7 @@ export const GET_FOOTBALL_LEAGUE_QUERY = `
 `;
 
 export const CHECK_MATCHES_COUNT_QUERY = `
-  query checkMatchesCount($input: MatchesCountInput!){
+  query checkMatchesCount($input: SmartAnalyRequestInput!){
     checkMatchesCount(input: $input) {
       list {
         leagueId

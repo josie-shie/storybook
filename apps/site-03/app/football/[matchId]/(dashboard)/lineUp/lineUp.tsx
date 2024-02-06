@@ -87,7 +87,10 @@ function LineUp({ lineUpData }: { lineUpData: GetLineUpInfoResponse }) {
                         <h6>首发阵容</h6>
                         <p>（点击球员/教练/裁判查看数据）</p>
                     </div>
-                    <div className={style.ground} style={{ backgroundImage: `url(${GroundBg.src})` }}>
+                    <div
+                        className={style.ground}
+                        style={{ backgroundImage: `url(${GroundBg.src})` }}
+                    >
                         {/* <div className={style.groundName}>
                             <Gun />
                             <span>雅莉姍大金</span>
@@ -95,12 +98,17 @@ function LineUp({ lineUpData }: { lineUpData: GetLineUpInfoResponse }) {
                         {lineUpData?.teams?.venueZh || lineUpData?.teams?.venueEn ? (
                             <div className={style.groundName}>
                                 <Place />
-                                <span>{lineUpData?.teams?.venueZh || lineUpData?.teams?.venueEn}</span>
+                                <span>
+                                    {lineUpData?.teams?.venueZh || lineUpData?.teams?.venueEn}
+                                </span>
                             </div>
                         ) : null}
                     </div>
                     <div className={style.court}>
-                        <div className={style.field} style={{ backgroundImage: `url(${CourtTop.src})` }}>
+                        <div
+                            className={style.field}
+                            style={{ backgroundImage: `url(${CourtTop.src})` }}
+                        >
                             <div className={style.winWorth}>
                                 <p>
                                     <span>阵型: {lineUpData?.teams?.home?.arrayFormat}</span>
@@ -119,7 +127,9 @@ function LineUp({ lineUpData }: { lineUpData: GetLineUpInfoResponse }) {
                                             src={matchDetail.homeLogo}
                                             width={20}
                                         />
-                                        <span className={style.teamName}>{matchDetail.homeChs}</span>
+                                        <span className={style.teamName}>
+                                            {matchDetail.homeChs}
+                                        </span>
                                     </div>
                                 </div>
                                 {lineUpData?.teams?.home.coachNameZh &&
@@ -139,7 +149,10 @@ function LineUp({ lineUpData }: { lineUpData: GetLineUpInfoResponse }) {
                                 />
                             ))}
                         </div>
-                        <div className={style.field} style={{ backgroundImage: `url(${CourtBottom.src})` }}>
+                        <div
+                            className={style.field}
+                            style={{ backgroundImage: `url(${CourtBottom.src})` }}
+                        >
                             <div className={`${style.winWorth} ${style.away}`}>
                                 <p>
                                     <span>阵型: {lineUpData?.teams?.away?.arrayFormat}</span>
@@ -158,7 +171,9 @@ function LineUp({ lineUpData }: { lineUpData: GetLineUpInfoResponse }) {
                                             src={matchDetail.awayLogo}
                                             width={20}
                                         />
-                                        <span className={style.teamName}>{matchDetail.awayChs}</span>
+                                        <span className={style.teamName}>
+                                            {matchDetail.awayChs}
+                                        </span>
                                     </div>
                                 </div>
                                 {lineUpData?.teams?.away?.coachNameZh &&
@@ -180,7 +195,7 @@ function LineUp({ lineUpData }: { lineUpData: GetLineUpInfoResponse }) {
                             ))}
                         </div>
                     </div>
-        
+
                     <div className={style.title}>
                         <h6>替补阵容</h6>
                     </div>
@@ -232,7 +247,6 @@ function LineUp({ lineUpData }: { lineUpData: GetLineUpInfoResponse }) {
                 <NoData text="暂无资料" />
             )}
         </>
-        
     );
 }
 

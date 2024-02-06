@@ -22,7 +22,7 @@ function Tips({
             </div>
             <div className={style.content}>
                 <p className={style.description}>
-                    选择让分或大小盘，获取指定时间内所有賽事智能盘口分析包括：让球大小、进球数区间、15分钟进球、波胆
+                    选择让分或大小盘，获取指定时间内所有賽事智能盘口分析包括：让分大小、进球数区间、15分钟进球、波胆
                 </p>
             </div>
             <div className={style.bottom} onClick={showTutorial}>
