@@ -2,7 +2,7 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import type { ReactNode } from 'react';
 import { useEffect, useRef, useState } from 'react';
-import { useUserStore } from '@/store/userStore';
+import { appStateStore } from '@/store/appStateStore';
 import style from './header.module.scss';
 import backLeftArrowImg from './img/backLeftArrow.png';
 import Profile from './components/profile/profile';
@@ -18,14 +18,17 @@ interface HeaderProps {
 }
 
 function HeaderTransparent({ title, srcPath, backHandler, children, back = true }: HeaderProps) {
-    const userInfoIsLoading = useUserStore.use.userInfoIsLoading();
     const router = useRouter();
-    const [mounted, setMounted] = useState(false);
     const headerRef = useRef<HTMLDivElement | null>(null);
     const [noBg, setNoBg] = useState(true);
+    const isClientSide = appStateStore.use.isClientSide();
+
     useEffect(() => {
-        setMounted(true);
-    }, []);
+        const setIsClientSide = appStateStore.getState().setIsClientSide;
+        if (!isClientSide) {
+            setIsClientSide(true);
+        }
+    }, [isClientSide]);
 
     const goBack = () => {
         if (srcPath) {
@@ -79,7 +82,7 @@ function HeaderTransparent({ title, srcPath, backHandler, children, back = true 
 
                     <div className={style.text}>{title}</div>
                 </div>
-                {mounted && !userInfoIsLoading
+                {isClientSide
                     ? children || (
                           <div className={style.userOption}>
                               <Notice />

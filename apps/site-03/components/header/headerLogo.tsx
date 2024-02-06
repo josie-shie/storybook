@@ -1,8 +1,9 @@
 'use client';
 import Link from 'next/link';
 import type { ReactNode } from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import Image from 'next/image';
+import { appStateStore } from '@/store/appStateStore';
 import dotBackground from './img/dotBackground.png';
 import style from './header.module.scss';
 import LogoIconImg from './img/logoIcon.svg';
@@ -24,10 +25,14 @@ function HeaderLogo({
     children?: ReactNode;
     back?: boolean;
 }) {
-    const [mounted, setMounted] = useState(false);
+    const isClientSide = appStateStore.use.isClientSide();
+
     useEffect(() => {
-        setMounted(true);
-    }, []);
+        const setIsClientSide = appStateStore.getState().setIsClientSide;
+        if (!isClientSide) {
+            setIsClientSide(true);
+        }
+    }, [isClientSide]);
 
     const headerStyle = background
         ? {
@@ -51,7 +56,7 @@ function HeaderLogo({
                         {title ? <div className={style.titleText}>{title}</div> : <Logo />}
                     </div>
                 </Link>
-                {mounted
+                {isClientSide
                     ? children || (
                           <div className={style.userOption}>
                               <Notice />
