@@ -29,21 +29,22 @@
 
 .finger {
     position: absolute;
-    top: 140px;
-    left: 12px;
-    animation: finger-animation 1.2s infinite;
+    top: 152px;
+    left: 8px;
+
+    // animation: finger-animation 1.2s infinite;
 }
 
-@keyframes finger-animation {
-    0% {
-        transform: translateX(50px);
-    }
+// @keyframes finger-animation {
+//     0% {
+//         transform: translateX(50px);
+//     }
 
-    70% {
-        transform: translateX(0);
-    }
+//     70% {
+//         transform: translateX(0);
+//     }
 
-    100% {
-        transform: translateX(0) scale(0.8);
-    }
-}
+//     100% {
+//         transform: translateX(0) scale(0.8);
+//     }
+// }
