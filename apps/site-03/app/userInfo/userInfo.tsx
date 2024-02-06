@@ -16,11 +16,11 @@ import Fire from '@/app/img/fire.png';
 import { useAuthStore } from '@/store/authStore';
 import { useUserStore } from '@/store/userStore';
 import userInfoBg from './img/userInfoBg.png';
-import BuyBag from './img/buyBag.png';
+// import BuyBag from './img/buyBag.png';
 import MyFocus from './img/myFocus.png';
 import MyFans from './img/myFans.png';
 import MyGame from './img/myGame.png';
-import VipTip from './img/vipTip.png';
+// import VipTip from './img/vipTip.png';
 import MyAnalyze from './img/myAnalyze.png';
 import UserIcon from './img/user.svg';
 import UnlockIcon from './img/unlock.svg';
@@ -36,7 +36,7 @@ function UserInfo() {
     const router = useRouter();
     const userInfo = useUserStore.use.userInfo();
     const tags = useUserStore.use.tags();
-    const memberSubscribeStatus = useUserStore.use.memberSubscribeStatus();
+    // const memberSubscribeStatus = useUserStore.use.memberSubscribeStatus();
     const openChangePasswordDrawer = useAuthStore.use.setIsDrawerOpen();
     const setUserInfo = useUserStore.use.setUserInfo();
     const setAuthQuery = useUserStore.use.setAuthQuery();
@@ -68,9 +68,8 @@ function UserInfo() {
         router.push('/userInfo/account');
     };
 
-    {
-        /* 保留等充值開放時再開啟 */
-    }
+    /* 保留等充值開放時再開啟 */
+
     // const goRecharge = () => {
     //     router.push('/userInfo/recharge');
     // };
@@ -85,7 +84,7 @@ function UserInfo() {
         setIsLogin(false);
         void getUserInfo();
         setTimeout(() => {
-            router.push('/?auth=login');
+            window.location.href = '/?auth=login';
         }, 1000);
     };
 
