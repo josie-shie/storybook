@@ -1,9 +1,8 @@
-import Image from 'next/image';
 import Link from 'next/link';
 import { formatNumberWithCommas } from 'lib';
 import { useUserStore } from '@/store/userStore';
 import { useAuthStore } from '@/store/authStore';
-import profileIcon from '../../img/profileIcon.png';
+import StarIcon from '../../img/star.svg';
 import style from './profile.module.scss';
 
 function IsVipProfile() {
@@ -19,7 +18,7 @@ function IsVipProfile() {
     return (
         <Link href="/userInfo">
             <div className={style.profile}>
-                <Image alt="" className={style.icon} height={24} src={profileIcon} width={24} />
+                <StarIcon className={style.icon} />
                 <div className={style.totalNumber}>
                     {isLogin && typeof userInfo.balance === 'number' ? (
                         <>{formatNumberWithCommas(userInfo.balance)}</>
