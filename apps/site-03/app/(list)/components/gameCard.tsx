@@ -377,7 +377,7 @@ function TopArea({
                     </div>
                 ) : (
                     <>
-                        {contestInfo.hasAnimation ? (
+                        {contestInfo.mobileLiveUrl ? (
                             <div className={style.live}>
                                 <div className={style.liveAnimate} />
                                 <LiveIcon />
