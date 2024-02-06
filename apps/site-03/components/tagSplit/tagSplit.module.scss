@@ -33,8 +33,16 @@
         border-bottom-right-radius: 3px;
         text-align: center;
 
+        &.hit {
+            width: 80%;
+        }
+
         .tagNumber {
             padding-left: 2px;
         }
+    }
+
+    &.hit {
+        width: 56px;
     }
 }

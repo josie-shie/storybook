@@ -10,9 +10,10 @@
 
         .topTitle {
             display: flex;
-            align-items: center;
+            align-items: flex-start;
+            flex-direction: column;
             justify-content: space-between;
-            margin-bottom: 30px;
+            margin-bottom: 14px;
 
             .leagueTeam {
                 display: flex;

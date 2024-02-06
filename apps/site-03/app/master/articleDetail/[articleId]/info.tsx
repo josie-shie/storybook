@@ -107,7 +107,14 @@ function Info({ article, info, isNoInfoData, setInfo }: InfoProps) {
                                         }場`}
                                     />
                                 )}
-
+                                {info.highlights.weekHitRecentTen > 0 && (
+                                    <TagSplit
+                                        isBlueBg={false}
+                                        number={info.highlights.weekHitRecentTen}
+                                        hit={true}
+                                        text="近"
+                                    />
+                                )}
                                 {info.highlights.winMaxAccurateStreak > 0 && (
                                     <Tag
                                         icon={<Image alt="fire" src={Fire} />}

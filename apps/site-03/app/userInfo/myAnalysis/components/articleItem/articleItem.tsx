@@ -155,6 +155,14 @@ function ArticleItem({ item }: GetUnlockPostProps) {
                                     }場`}
                                 />
                             )}
+                        {item.memberTags.weekHitRecentTen > 0 && (
+                            <TagSplit
+                                isBlueBg={false}
+                                number={item.memberTags.weekHitRecentTen}
+                                hit={true}
+                                text="近"
+                            />
+                        )}
                         {item.memberTags.winMaxAccurateStreak > 3 && (
                             <Tag
                                 icon={<Image alt="fire" src={Fire} />}
@@ -210,20 +218,9 @@ function ArticleItem({ item }: GetUnlockPostProps) {
             </Link>
             <div className={style.postTime}>
                 <span>{timestampToTodayTime(item.createdAt)}</span>
-                <div className={style.seen}>
-                    <span>
-                        <Eye />
-                        {item.seenCounts}
-                    </span>
-                    <span className={style.line}>|</span>
-                    <span>
-                        <LockOpen />
-                        {item.unlockCounts}
-                    </span>
-                </div>
-                {/* {item.seenCounts && item.unlockCounts ? (
+                {item.seenCounts || item.unlockCounts ? (
                     <div className={style.seen}>
-                        {item.seenCounts && (
+                        {item.seenCounts ? (
                             <>
                                 <span>
                                     <Eye />
@@ -231,15 +228,15 @@ function ArticleItem({ item }: GetUnlockPostProps) {
                                 </span>
                                 <span className={style.line}>|</span>
                             </>
-                        )}
-                        {item.unlockCounts && (
+                        ) : null}
+                        {item.unlockCounts ? (
                             <span>
                                 <LockOpen />
                                 {item.unlockCounts}
                             </span>
-                        )}
+                        ) : null}
                     </div>
-                ) : null} */}
+                ) : null}
             </div>
         </div>
     );

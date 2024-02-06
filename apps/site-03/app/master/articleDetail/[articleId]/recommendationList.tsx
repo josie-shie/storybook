@@ -194,9 +194,9 @@ function RecommendationItem({
                                         <div className={style.time}>
                                             发表于今天 {timestampToMonthDay(item.createdAt)}
                                         </div>
-                                        {item.seenCounts && item.unlockCounts ? (
+                                        {item.seenCounts || item.unlockCounts ? (
                                             <div className={style.seen}>
-                                                {item.seenCounts && (
+                                                {item.seenCounts ? (
                                                     <>
                                                         <span>
                                                             <Eye />
@@ -204,13 +204,13 @@ function RecommendationItem({
                                                         </span>
                                                         <span className={style.line}>|</span>
                                                     </>
-                                                )}
-                                                {item.unlockCounts && (
+                                                ) : null}
+                                                {item.unlockCounts ? (
                                                     <span>
                                                         <LockOpenBlue />
                                                         {item.unlockCounts}
                                                     </span>
-                                                )}
+                                                ) : null}
                                             </div>
                                         ) : null}
                                     </div>

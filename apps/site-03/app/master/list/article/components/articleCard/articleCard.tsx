@@ -1,6 +1,5 @@
 'use client';
 
-import { IconFlame } from '@tabler/icons-react';
 import { useRouter } from 'next/navigation';
 import { timestampToTodayTime } from 'lib';
 import type { RecommendPost } from 'data-center';
@@ -20,6 +19,7 @@ import Draw from '../../img/draw.png';
 import Eye from './img/eye.svg';
 import LockOpen from './img/lockOpen.svg';
 import LockOpenBlue from './img/lockOpenBlue.svg';
+import Fire from './img/fire.svg';
 import style from './articleCard.module.scss';
 import Wallet from './img/wallet.png';
 
@@ -147,9 +147,17 @@ function ArticleCard({ article }: { article: RecommendPost }) {
                                     }場`}
                                 />
                             )}
+                            {article.tag.weekHitRecentTen > 0 && (
+                                <TagSplit
+                                    isBlueBg={false}
+                                    number={article.tag.weekHitRecentTen}
+                                    hit={true}
+                                    text="近"
+                                />
+                            )}
                             {article.tag.winMaxAccurateStreak > 0 && (
                                 <Tag
-                                    icon={<IconFlame size={10} />}
+                                    icon={<Fire size={10} />}
                                     text={`${article.tag.winMaxAccurateStreak} 連紅`}
                                 />
                             )}
@@ -181,11 +189,7 @@ function ArticleCard({ article }: { article: RecommendPost }) {
                             {article.tag.weekHitRateDisplay}
                             <i>%</i>
                         </span>
-                        {article.lastTenAnalysisWinCountStr && (
-                            <span className={style.hitName}>
-                                {article.lastTenAnalysisWinCountStr}
-                            </span>
-                        )}
+                        <span className={style.hitName}>近十命中</span>
                     </div>
                 </div>
 
@@ -203,9 +207,9 @@ function ArticleCard({ article }: { article: RecommendPost }) {
                 </Link>
                 <div className={style.postTime}>
                     <span>{timestampToTodayTime(article.createdAt)}</span>
-                    {article.seenCounts && article.unlockCounts ? (
+                    {article.seenCounts || article.unlockCounts ? (
                         <div className={style.seen}>
-                            {article.seenCounts && (
+                            {article.seenCounts ? (
                                 <>
                                     <span>
                                         <Eye />
@@ -213,13 +217,13 @@ function ArticleCard({ article }: { article: RecommendPost }) {
                                     </span>
                                     <span className={style.line}>|</span>
                                 </>
-                            )}
-                            {article.unlockCounts && (
+                            ) : null}
+                            {article.unlockCounts ? (
                                 <span>
                                     <LockOpen />
                                     {article.unlockCounts}
                                 </span>
-                            )}
+                            ) : null}
                         </div>
                     ) : null}
                 </div>
