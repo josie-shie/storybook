@@ -9,10 +9,12 @@ import MailCard from './components/mailCard';
 import style from './notice.module.scss';
 import { useNoticeStore } from './noticeStore';
 import MailInfo from './components/mailInfo';
+import SkeletonLayout from './components/skeleton/skeleton';
 
 function MailList() {
     const editStatus = useNoticeStore.use.editStatus();
     const mailList = useNoticeStore.use.mailList();
+    const [isNoData, setIsNoData] = useState<boolean | null>(null);
 
     useEffect(() => {
         const setMailList = useNoticeStore.getState().setMailList;
@@ -23,6 +25,7 @@ function MailList() {
                 return;
             }
             setMailList(res.data);
+            setIsNoData(res.data.length === 0);
         };
 
         const refetchMailList = async (notify?: NotifyMessage) => {
@@ -56,10 +59,6 @@ function MailList() {
         setActiveTagName(tagName);
     };
 
-    if (mailList.length === 0) {
-        return <NoData text="暂无资料" />;
-    }
-
     return (
         <>
             {tagNames.length ? (
@@ -81,11 +80,17 @@ function MailList() {
                 </div>
             ) : null}
 
-            <ul className={`${style.noticeList} ${editStatus ? style.isEdit : ''}`}>
-                {filteredMailList.map(mail => (
-                    <MailCard key={mail.mailMemberId} mailData={mail} />
-                ))}
-            </ul>
+            {filteredMailList.length === 0 && isNoData === null && <SkeletonLayout />}
+
+            {filteredMailList.length === 0 && isNoData ? (
+                <NoData text="暂无资料" />
+            ) : (
+                <ul className={`${style.noticeList} ${editStatus ? style.isEdit : ''}`}>
+                    {filteredMailList.map(mail => (
+                        <MailCard key={mail.mailMemberId} mailData={mail} />
+                    ))}
+                </ul>
+            )}
         </>
     );
 }
