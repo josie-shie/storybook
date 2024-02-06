@@ -38,6 +38,7 @@ function HighlightTag({ type, value }: TagProps) {
 interface GameCardProps {
     plan: ProGuess;
     onOpenPaidDialog: () => void;
+    handleVIPUnlock: (gameId: number) => void;
 }
 
 const sortHotStreakFirst = (highlights: ProGuess['highlights']) => {
@@ -46,7 +47,7 @@ const sortHotStreakFirst = (highlights: ProGuess['highlights']) => {
     return copyArray;
 };
 
-function GameCard({ plan, onOpenPaidDialog }: GameCardProps) {
+function GameCard({ plan, onOpenPaidDialog, handleVIPUnlock }: GameCardProps) {
     const detail = useGuessDetailStore.use.detail();
     const unlockPrice = useGuessDetailStore.use.masterPlanPrice();
     const isVIP = useUserStore.use.memberSubscribeStatus().planId === 1;
@@ -66,6 +67,14 @@ function GameCard({ plan, onOpenPaidDialog }: GameCardProps) {
 
     const playWayLabel =
         plan.predictedType === 'HANDICAP' ? plan.handicapInChinese : plan.overUnderOdds;
+
+    const handleButtonOnClick = (planId: number) => {
+        if (isVIP) {
+            handleVIPUnlock(planId);
+        } else {
+            onOpenPaidDialog();
+        }
+    };
 
     return (
         <div className={style.gameCard}>
@@ -96,7 +105,12 @@ function GameCard({ plan, onOpenPaidDialog }: GameCardProps) {
             <div className={style.paid}>
                 {plan.predictedPlay === 'LOCK' ? (
                     <>
-                        <div className={style.noPaid} onClick={onOpenPaidDialog}>
+                        <div
+                            className={style.noPaid}
+                            onClick={() => {
+                                handleButtonOnClick(plan.guessId);
+                            }}
+                        >
                             {isVIP ? (
                                 <span className={style.text}>查看</span>
                             ) : (
