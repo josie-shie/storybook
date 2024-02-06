@@ -87,9 +87,8 @@ function HandicapTrend() {
 
 function MatchesTrend() {
     const tabStyle = {
-        gap: 0,
-        swiperOpen: false,
-        buttonRadius: 0
+        gap: 4,
+        swiperOpen: false
     };
 
     const tabList = [
@@ -115,7 +114,6 @@ function MatchesTrend() {
             </div>
             <div className={style.tabContainer}>
                 <Tabs
-                    buttonRadius={tabStyle.buttonRadius}
                     gap={tabStyle.gap}
                     position="center"
                     styling="text"
@@ -200,11 +198,11 @@ function Handicap() {
                 bottomValue: moneylineAwayMatchList,
                 topLabel: '下',
                 middleLabel: '小',
-                bottomLabel: '客'
+                bottomLabel: '和'
             },
             {
                 bottomValue: moneylineDrawMatchList,
-                bottomLabel: '和'
+                bottomLabel: '客'
             }
         ];
         setTableData(newTableData);
