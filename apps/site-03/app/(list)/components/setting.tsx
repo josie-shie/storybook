@@ -1,11 +1,10 @@
 'use client';
 import Switch from '@mui/material/Switch';
 import { useState, useRef, useEffect } from 'react';
-import Image from 'next/image';
 import { soundList, soundMap, soundSource, soundDefault } from 'lib';
 import BottomDrawer from '@/components/drawer/bottomDrawer';
 import style from './setting.module.scss';
-import RightIcon from './img/right.png';
+import RightIcon from './img/right.svg';
 
 function SoundSelector({
     isOpen,
@@ -141,7 +140,7 @@ function Setting({
                         >
                             <span>主隊进球声音</span>
                             <span className={style.selector}>
-                                {soundMap[homeSound]} <Image alt="arrow" src={RightIcon} />
+                                {soundMap[homeSound]} <RightIcon />
                             </span>
                         </div>
                         <div
@@ -152,7 +151,7 @@ function Setting({
                         >
                             <span>客隊进球声音</span>
                             <span className={style.selector}>
-                                {soundMap[awaySound]} <Image alt="arrow" src={RightIcon} />
+                                {soundMap[awaySound]} <RightIcon />
                             </span>
                         </div>
                     </div>
