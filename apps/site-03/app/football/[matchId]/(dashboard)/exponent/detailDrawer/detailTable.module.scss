@@ -81,6 +81,10 @@
                             width: 80px;
                             flex: initial;
                         }
+
+                        .odd_playing {
+                            color: #4489ff;
+                        }
                     }
 
                     &:nth-of-type(2n) {
