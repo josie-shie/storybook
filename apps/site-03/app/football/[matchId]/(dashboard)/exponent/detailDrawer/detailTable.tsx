@@ -3,50 +3,215 @@ import type {
     ExponentDetailWinDrawLoseInfo,
     ExponentDetailOverUnderInfo
 } from 'data-center';
-import { handleMatchDateTime } from 'lib';
+import { handleMatchDateTime, handicapToString } from 'lib';
+import CircularProgress from '@mui/material/CircularProgress';
 import { useExponentStore } from '@/app/football/[matchId]/exponentStore';
 import style from './detailTable.module.scss';
 
-function Handicap({ info }: { info: ExponentDetailHandicapsInfo }) {
-    return (
-        <>
-            <div className="td">{info.homeOdds}</div>
-            <div className="td">{info.handicap}</div>
-            <div className="td">{info.awayOdds}</div>
-        </>
-    );
+interface ExponentInfoListType {
+    handicap: Record<number, ExponentDetailHandicapsInfo[]>;
+    overUnder: Record<number, ExponentDetailOverUnderInfo[]>;
+    winDrawLose: Record<number, ExponentDetailWinDrawLoseInfo[]>;
+    corners: Record<number, ExponentDetailOverUnderInfo[]>;
 }
 
-function WinDrawLose({ info }: { info: ExponentDetailWinDrawLoseInfo }) {
-    return (
-        <>
-            <div className="td">{info.homeWin}</div>
-            <div className="td">{info.draw}</div>
-            <div className="td">{info.awayWin}</div>
-        </>
-    );
-}
-
-function OverUnder({ info }: { info: ExponentDetailOverUnderInfo }) {
-    return (
-        <>
-            <div className="td">{info.overOdds}</div>
-            <div className="td">{info.line}</div>
-            <div className="td">{info.underOdds}</div>
-        </>
-    );
-}
-function DetailTable({
-    dataList
+function Handicap({
+    info,
+    lastInfo
 }: {
-    dataList:
-        | ExponentDetailHandicapsInfo[]
-        | ExponentDetailWinDrawLoseInfo[]
-        | ExponentDetailOverUnderInfo[];
+    info: ExponentDetailHandicapsInfo;
+    lastInfo: ExponentDetailHandicapsInfo;
 }) {
+    return (
+        <>
+            <div
+                className={`td ${lastInfo.homeOdds > info.homeOdds && 'greenText'} ${
+                    lastInfo.homeOdds < info.homeOdds && 'redText'
+                }`}
+            >
+                {info.homeOdds}
+            </div>
+            <div
+                className={`td ${lastInfo.handicap > info.handicap && 'greenText'} ${
+                    lastInfo.handicap < info.handicap && 'redText'
+                }`}
+            >
+                {handicapToString(info.handicap)}
+            </div>
+            <div
+                className={`td ${lastInfo.awayOdds > info.awayOdds && 'greenText'} ${
+                    lastInfo.awayOdds < info.awayOdds && 'redText'
+                }`}
+            >
+                {info.awayOdds}
+            </div>
+        </>
+    );
+}
+
+function WinDrawLose({
+    info,
+    lastInfo
+}: {
+    info: ExponentDetailWinDrawLoseInfo;
+    lastInfo: ExponentDetailWinDrawLoseInfo;
+}) {
+    return (
+        <>
+            <div
+                className={`td ${lastInfo.homeWin > info.homeWin && 'greenText'} ${
+                    lastInfo.homeWin < info.homeWin && 'redText'
+                }`}
+            >
+                {info.homeWin}
+            </div>
+            <div
+                className={`td ${lastInfo.draw > info.draw && 'greenText'} ${
+                    lastInfo.draw < info.draw && 'redText'
+                }`}
+            >
+                {info.draw}
+            </div>
+            <div
+                className={`td ${lastInfo.awayWin > info.awayWin && 'greenText'} ${
+                    lastInfo.awayWin < info.awayWin && 'redText'
+                }`}
+            >
+                {info.awayWin}
+            </div>
+        </>
+    );
+}
+
+function OverUnder({
+    info,
+    lastInfo
+}: {
+    info: ExponentDetailOverUnderInfo;
+    lastInfo: ExponentDetailOverUnderInfo;
+}) {
+    return (
+        <>
+            <div
+                className={`td ${lastInfo.overOdds > info.overOdds && 'greenText'} ${
+                    lastInfo.overOdds < info.overOdds && 'redText'
+                }`}
+            >
+                {info.overOdds}
+            </div>
+            <div
+                className={`td ${lastInfo.line > info.line && 'greenText'} ${
+                    lastInfo.line < info.line && 'redText'
+                }`}
+            >
+                {info.line}
+            </div>
+            <div
+                className={`td ${lastInfo.underOdds > info.underOdds && 'greenText'} ${
+                    lastInfo.underOdds < info.underOdds && 'redText'
+                }`}
+            >
+                {info.underOdds}
+            </div>
+        </>
+    );
+}
+
+function OddTable({ dataList }: { dataList: ExponentInfoListType }) {
     const tabValue = useExponentStore.use.detailSelectedKind();
+    const detailCompanyId = useExponentStore.use.detailCompanyId();
+    const isDetailLoading = useExponentStore.use.isDetailLoading();
+
+    if (isDetailLoading) {
+        return <CircularProgress className={style.loading} />;
+    } else if (typeof dataList[tabValue][detailCompanyId] === 'undefined') {
+        return (
+            <div className="tr">
+                {Array.from({ length: 5 }).map((_, idx) => (
+                    <div className="td" key={`${idx.toString()}`}>
+                        -
+                    </div>
+                ))}
+            </div>
+        );
+    }
+
+    const targetData =
+        detailCompanyId in dataList[tabValue] ? dataList[tabValue][detailCompanyId] : [];
+
+    return (
+        <>
+            {targetData.map(
+                (
+                    data:
+                        | ExponentDetailHandicapsInfo
+                        | ExponentDetailWinDrawLoseInfo
+                        | ExponentDetailOverUnderInfo,
+                    idx: number
+                ) => (
+                    <div className="tr" key={`${tabValue}_${detailCompanyId}_${idx.toString()}`}>
+                        {data.closed ? (
+                            <>
+                                <div className="td">-</div>
+                                <div className="td">封</div>
+                                <div className="td">-</div>
+                            </>
+                        ) : (
+                            <>
+                                {tabValue === 'handicap' && (
+                                    <Handicap
+                                        info={data as ExponentDetailHandicapsInfo}
+                                        lastInfo={
+                                            idx === targetData.length - 1
+                                                ? (data as ExponentDetailHandicapsInfo)
+                                                : (targetData[
+                                                      idx + 1
+                                                  ] as ExponentDetailHandicapsInfo)
+                                        }
+                                    />
+                                )}
+                                {tabValue === 'winDrawLose' && (
+                                    <WinDrawLose
+                                        info={data as ExponentDetailWinDrawLoseInfo}
+                                        lastInfo={
+                                            idx === targetData.length - 1
+                                                ? (data as ExponentDetailWinDrawLoseInfo)
+                                                : (targetData[
+                                                      idx + 1
+                                                  ] as ExponentDetailWinDrawLoseInfo)
+                                        }
+                                    />
+                                )}
+                                {tabValue !== 'handicap' && tabValue !== 'winDrawLose' && (
+                                    <OverUnder
+                                        info={data as ExponentDetailOverUnderInfo}
+                                        lastInfo={
+                                            idx === targetData.length - 1
+                                                ? (data as ExponentDetailOverUnderInfo)
+                                                : (targetData[
+                                                      idx + 1
+                                                  ] as ExponentDetailOverUnderInfo)
+                                        }
+                                    />
+                                )}
+                            </>
+                        )}
+
+                        <div className="td">{handleMatchDateTime(data.oddsChangeTime)}</div>
+                        <div className="td">
+                            {data.homeScore}-{data.awayScore}
+                        </div>
+                    </div>
+                )
+            )}
+        </>
+    );
+}
+
+function DetailTable({ dataList }: { dataList: ExponentInfoListType }) {
     const companyList = useExponentStore.use.companyList();
     const companyInfo = useExponentStore.use.companyInfo();
+    const tabValue = useExponentStore.use.detailSelectedKind();
     const detailCompanyId = useExponentStore.use.detailCompanyId();
     const setDetailCompanyId = useExponentStore.use.setDetailCompanyId();
 
@@ -87,68 +252,9 @@ function DetailTable({
                         <div className="th">{tabValue === 'corners' ? '角球' : '比分'}</div>
                     </div>
                 </div>
-                {dataList.length > 0 ? (
-                    <div className="tableBody">
-                        {dataList.map(
-                            (
-                                data:
-                                    | ExponentDetailHandicapsInfo
-                                    | ExponentDetailWinDrawLoseInfo
-                                    | ExponentDetailOverUnderInfo,
-                                idx: number
-                            ) => (
-                                <div
-                                    className="tr"
-                                    key={`${tabValue}_${detailCompanyId}_${idx.toString()}`}
-                                >
-                                    {data.closed ? (
-                                        <>
-                                            <div className="td">-</div>
-                                            <div className="td">封</div>
-                                            <div className="td">-</div>
-                                        </>
-                                    ) : (
-                                        <>
-                                            {tabValue === 'handicap' && (
-                                                <Handicap
-                                                    info={data as ExponentDetailHandicapsInfo}
-                                                />
-                                            )}
-                                            {tabValue === 'winDrawLose' && (
-                                                <WinDrawLose
-                                                    info={data as ExponentDetailWinDrawLoseInfo}
-                                                />
-                                            )}
-                                            {tabValue !== 'handicap' &&
-                                                tabValue !== 'winDrawLose' && (
-                                                    <OverUnder
-                                                        info={data as ExponentDetailOverUnderInfo}
-                                                    />
-                                                )}
-                                        </>
-                                    )}
-
-                                    <div className="td">
-                                        {handleMatchDateTime(data.oddsChangeTime)}
-                                    </div>
-                                    <div className="td">
-                                        {data.homeScore}-{data.awayScore}
-                                    </div>
-                                </div>
-                            )
-                        )}
-                    </div>
-                ) : (
-                    <div className="tableBody">
-                        <div className="tr">
-                            {Array.from({ length: 5 }).map((_, idx) => (
-                                <div className="td" key={`${idx.toString()}`}>
-                                    -
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                )}
+                <div className="tableBody">
+                    <OddTable dataList={dataList} />
+                </div>
             </div>
         </div>
     );

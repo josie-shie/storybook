@@ -68,7 +68,11 @@ const initialState = (set: (updater: (state: LiveContest) => Partial<LiveContest
     },
 
     setContestOdds: (odds: OddsRunningMqttResponse) => {
-        if (odds.type !== 1 && odds.type !== 6 && odds.type !== 2 && odds.type !== 7) return;
+        if (odds.type !== 1 && odds.type !== 6 && odds.type !== 2 && odds.type !== 7) {
+            return;
+        }
+
+        if (odds.companyId !== 8) return;
 
         set(state => {
             const newContestInfo: ContestTable = { ...state.contestInfo };
@@ -94,7 +98,7 @@ const initialState = (set: (updater: (state: LiveContest) => Partial<LiveContest
                     };
                     break;
                 default:
-                    console.error('Unknown type');
+                    console.error('Unknown type', odds);
                     break;
             }
 

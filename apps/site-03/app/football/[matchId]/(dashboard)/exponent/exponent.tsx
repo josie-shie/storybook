@@ -10,6 +10,7 @@ import type {
     CompanyInfo
 } from 'data-center';
 import { mqttService } from 'lib';
+import type { TabListType } from '@/types/exponent';
 import { createExponentStore, useExponentStore } from '../../exponentStore';
 import { useContestDetailStore } from '../../contestDetailStore';
 import style from './exponent.module.scss';
@@ -28,8 +29,6 @@ interface OddsRunningMqttResponse {
     type: number;
     modifytime: number;
 }
-
-type TabListType = 'handicap' | 'overUnder' | 'winDrawLose' | 'corners';
 
 function Exponent({
     exponentData,

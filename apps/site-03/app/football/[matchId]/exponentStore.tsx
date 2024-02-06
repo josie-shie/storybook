@@ -10,10 +10,11 @@ interface InitState {
 type TabListType = 'handicap' | 'overUnder' | 'winDrawLose' | 'corners';
 
 interface ExponentState extends InitState {
-    loading: boolean;
+    isDetailLoading: boolean;
     isDetailOpen: boolean;
     detailCompanyId: number;
     detailSelectedKind: TabListType;
+    setIsDetailLoading: (isDetailLoading: boolean) => void;
     setCompanyInfo: (companyInfo: CompanyInfo) => void;
     setIsDetailOpen: (isOpen: boolean) => void;
     setDetailSelectedKind: (detailSelectedKind: TabListType) => void;
@@ -27,10 +28,10 @@ const initialState = (
     set: (updater: (state: ExponentState) => Partial<ExponentState>) => void
 ) => ({
     companyInfo: {
-        handicap: [],
-        overUnder: [],
-        winDrawLose: [],
-        corners: []
+        handicap: {},
+        overUnder: {},
+        winDrawLose: {},
+        corners: {}
     } as CompanyInfo,
     companyList: {
         handicap: [],
@@ -38,13 +39,18 @@ const initialState = (
         winDrawLose: [],
         corners: []
     } as CompanyList,
-    loading: false,
+    isDetailLoading: false,
     isDetailOpen: false,
     detailCompanyId: 3,
     detailSelectedKind: 'handicap' as TabListType,
     setCompanyInfo: (companyInfo: CompanyInfo) => {
         set(state => {
             return { ...state, companyInfo };
+        });
+    },
+    setIsDetailLoading: (isDetailLoading: boolean) => {
+        set(state => {
+            return { ...state, isDetailLoading };
         });
     },
     setIsDetailOpen: (isOpen: boolean) => {
