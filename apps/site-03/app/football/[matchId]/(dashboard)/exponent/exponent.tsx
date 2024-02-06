@@ -30,22 +30,10 @@ interface OddsRunningMqttResponse {
     modifytime: number;
 }
 
-function Exponent({
-    exponentData,
-    matchId
-}: {
-    exponentData: GetExponentResponse;
-    matchId: number;
-}) {
-    createExponentStore({
-        companyList: exponentData.companyList,
-        companyInfo: exponentData.companyInfo
-    });
-
+function ExponentContainer({ matchId }: { matchId: number }) {
     const companyInfo = useExponentStore.use.companyInfo();
     const setCompanyInfo = useExponentStore.use.setCompanyInfo();
     const matchDetail = useContestDetailStore.use.matchDetail();
-
     const tabActive = {
         backgroundColor: '#4489FF',
         color: '#fff'
@@ -179,6 +167,21 @@ function Exponent({
             <ExponentInfoDrawer />
         </>
     );
+}
+
+function Exponent({
+    exponentData,
+    matchId
+}: {
+    exponentData: GetExponentResponse;
+    matchId: number;
+}) {
+    createExponentStore({
+        companyList: exponentData.companyList,
+        companyInfo: exponentData.companyInfo
+    });
+
+    return <ExponentContainer matchId={matchId} />;
 }
 
 export default Exponent;
