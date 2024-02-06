@@ -11,8 +11,8 @@ function AnalyzeRow({ homeType, awayType }: AnalyzeProps) {
     const highWinRateTrend = useGuessDetailStore.use.highWinRateTrend();
 
     const calculatePercentage = (a: number, b: number) => {
-        if (b === 0) {
-            return 0;
+        if (a === 0 && b === 0) {
+            return 50; // 兩邊都為 0，讓 progressbar 置中
         }
         const percentage = Math.round((a / (a + b)) * 100);
         return percentage;
