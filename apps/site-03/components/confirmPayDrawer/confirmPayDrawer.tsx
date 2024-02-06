@@ -1,10 +1,9 @@
 import { Button } from '@mui/material';
-import Image from 'next/image';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import { useUserStore } from '@/store/userStore';
 import style from './confirmPayDrawer.module.scss';
-import Soccer from './img/soccer.png';
-import Coin from './img/coin.png';
+import Soccer from './img/soccer.svg';
+import Coin from './img/coin.svg';
 
 interface ConfirmPayDrawerProps {
     title?: string;
@@ -43,19 +42,13 @@ function ConfirmPayDrawer({
         >
             <div className={style.confirmPay}>
                 <div className={style.PayHandImg}>
-                    <Image alt="" src={Soccer.src} height={80} width={80} />
+                    <Soccer />
                 </div>
                 <div className={style.payContent}>
                     <div className={style.price}>
                         <span className={style.text}>支付</span>
                         <span className={style.number}>
-                            <Image
-                                alt=""
-                                className={style.star}
-                                src={Coin.src}
-                                height={14}
-                                width={14}
-                            />
+                            <Coin className={style.star} />
                             {price}
                         </span>
                     </div>
@@ -65,7 +58,7 @@ function ConfirmPayDrawer({
                     我的余额: {userInfo.balance ? userInfo.balance : 0}金币
                 </div>
                 <Button className={style.payBtn} fullWidth onClick={onPay}>
-                    <Image alt="" className={style.star} src={Coin.src} height={14} width={14} />
+                    <Coin className={style.star} />
                     <span>支付</span>
                 </Button>
             </div>
