@@ -92,7 +92,7 @@ function Record({ individualGuessInfo }: { individualGuessInfo: MemberIndividual
                 data: [
                     {
                         value: individualGuessInfo['summary'].win,
-                        name: 'Plan3',
+                        name: 'Plan1',
                         itemStyle: {
                             color: '#e34b4b',
                             borderWidth: 6,
@@ -102,7 +102,7 @@ function Record({ individualGuessInfo }: { individualGuessInfo: MemberIndividual
                     },
                     {
                         value: individualGuessInfo['summary'].draw,
-                        name: 'Plan1',
+                        name: 'Plan2',
                         itemStyle: {
                             color: '#9fc2ff',
                             borderWidth: 6,
@@ -112,7 +112,7 @@ function Record({ individualGuessInfo }: { individualGuessInfo: MemberIndividual
                     },
                     {
                         value: individualGuessInfo['summary'].lose,
-                        name: 'Plan2',
+                        name: 'Plan3',
                         itemStyle: {
                             color: '#d9d9d9',
                             borderWidth: 6,

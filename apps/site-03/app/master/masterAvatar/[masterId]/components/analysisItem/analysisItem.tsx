@@ -123,9 +123,9 @@ function AnalysisItem({
                                 </Link>
                                 <div className={style.postTime}>
                                     <span>{timestampToTodayTime(item.createdAt)}</span>
-                                    {item.seenCounts && item.unlockCounts ? (
+                                    {item.seenCounts || item.unlockCounts ? (
                                         <div className={style.seen}>
-                                            {item.seenCounts && (
+                                            {item.seenCounts ? (
                                                 <>
                                                     <span>
                                                         <Eye />
@@ -133,13 +133,13 @@ function AnalysisItem({
                                                     </span>
                                                     <span className={style.line}>|</span>
                                                 </>
-                                            )}
-                                            {item.unlockCounts && (
+                                            ) : null}
+                                            {item.unlockCounts ? (
                                                 <span>
                                                     <LockOpenBlue />
                                                     {item.unlockCounts}
                                                 </span>
-                                            )}
+                                            ) : null}
                                         </div>
                                     ) : null}
                                 </div>

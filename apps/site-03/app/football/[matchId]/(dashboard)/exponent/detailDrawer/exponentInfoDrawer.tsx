@@ -1,98 +1,168 @@
 import Drawer from '@mui/material/Drawer';
 import { Tab, Tabs } from 'ui';
-import type { GetExponentDetailResponse } from 'data-center';
+import type {
+    ExponentDetailHandicapsInfo,
+    ExponentDetailWinDrawLoseInfo,
+    ExponentDetailOverUnderInfo
+} from 'data-center';
 import { getExponentDetail } from 'data-center';
 import { useState, useEffect } from 'react';
 import { useExponentStore } from '@/app/football/[matchId]/exponentStore';
 import { useContestDetailStore } from '@/app/football/[matchId]/contestDetailStore';
+import NoData from '@/components/baseNoData/noData';
+import type { TabListType } from '@/types/exponent';
 import BackIcon from '../img/back.svg';
 import style from './exponentInfoDrawer.module.scss';
 import DetailTable from './detailTable';
 
-type TabListType = 'handicap' | 'overUnder' | 'winDrawLose' | 'corners';
+interface ExponentInfoListType {
+    handicap: Record<number, ExponentDetailHandicapsInfo[]>;
+    overUnder: Record<number, ExponentDetailOverUnderInfo[]>;
+    winDrawLose: Record<number, ExponentDetailWinDrawLoseInfo[]>;
+    corners: Record<number, ExponentDetailOverUnderInfo[]>;
+}
 
 const infoMock = {
-    handicap: [
-        {
-            awayScore: 3,
-            homeScore: 1,
-            handicap: -0.5,
-            homeOdds: 1.9,
-            awayOdds: 1.9,
-            closed: false,
-            state: 1,
-            oddsChangeTime: 1706610600
-        },
-        {
-            awayScore: 2,
-            homeScore: 1,
-            handicap: -0.5,
-            homeOdds: 1.9,
-            awayOdds: 1.9,
-            closed: true,
-            state: 1,
-            oddsChangeTime: 1706310000
-        },
-        {
-            awayScore: 3,
-            homeScore: 1,
-            handicap: -0.5,
-            homeOdds: 1.9,
-            awayOdds: 1.9,
-            closed: false,
-            state: 1,
-            oddsChangeTime: 1706610600
-        }
-    ],
-    overUnder: [
-        {
-            homeScore: 1,
-            awayScore: 3,
-            line: 9.5,
-            overOdds: 1.9,
-            underOdds: 1.9,
-            closed: false,
-            state: 1,
-            oddsChangeTime: 1706610600
-        }
-    ],
-    winDrawLose: [
-        {
-            homeScore: 1,
-            awayScore: 3,
-            homeWin: 2.3,
-            draw: 3,
-            awayWin: 3,
-            closed: false,
-            state: 1,
-            oddsChangeTime: 1706610600
-        }
-    ],
-    corners: [
-        {
-            homeScore: 1,
-            awayScore: 3,
-            line: 9.5,
-            overOdds: 1.9,
-            underOdds: 1.9,
-            closed: false,
-            state: 1,
-            oddsChangeTime: 1706610600
-        }
-    ]
-};
-
-const listMock = {
-    3: infoMock,
-    5: infoMock,
-    7: infoMock,
-    8: infoMock,
-    10: infoMock
+    handicap: {
+        8: [
+            {
+                awayScore: 3,
+                homeScore: 1,
+                handicap: -0.5,
+                homeOdds: 1.9,
+                awayOdds: 1.9,
+                closed: false,
+                state: 1,
+                oddsChangeTime: 1706610600
+            },
+            {
+                awayScore: 2,
+                homeScore: 1,
+                handicap: -0.5,
+                homeOdds: 1.9,
+                awayOdds: 1.9,
+                closed: true,
+                state: 1,
+                oddsChangeTime: 1706310000
+            },
+            {
+                awayScore: 3,
+                homeScore: 1,
+                handicap: -0.5,
+                homeOdds: 1.9,
+                awayOdds: 1.9,
+                closed: false,
+                state: 1,
+                oddsChangeTime: 1706610600
+            }
+        ]
+    },
+    overUnder: {
+        8: [
+            {
+                awayScore: 3,
+                homeScore: 1,
+                line: -0.5,
+                overOdds: 1.9,
+                underOdds: 1.9,
+                closed: false,
+                state: 1,
+                oddsChangeTime: 1706610600
+            },
+            {
+                awayScore: 2,
+                homeScore: 1,
+                line: -0.5,
+                overOdds: 1.9,
+                underOdds: 1.9,
+                closed: true,
+                state: 1,
+                oddsChangeTime: 1706310000
+            },
+            {
+                awayScore: 3,
+                homeScore: 1,
+                line: -0.5,
+                overOdds: 1.9,
+                underOdds: 1.9,
+                closed: false,
+                state: 1,
+                oddsChangeTime: 1706610600
+            }
+        ]
+    },
+    winDrawLose: {
+        8: [
+            {
+                awayScore: 3,
+                homeScore: 1,
+                draw: -0.5,
+                homeWin: 1.9,
+                awayWin: 1.9,
+                closed: false,
+                state: 1,
+                oddsChangeTime: 1706610600
+            },
+            {
+                awayScore: 2,
+                homeScore: 1,
+                draw: -0.5,
+                homeWin: 1.9,
+                awayWin: 1.9,
+                closed: true,
+                state: 1,
+                oddsChangeTime: 1706310000
+            },
+            {
+                awayScore: 3,
+                homeScore: 1,
+                draw: -0.5,
+                homeWin: 1.9,
+                awayWin: 1.9,
+                closed: false,
+                state: 1,
+                oddsChangeTime: 1706610600
+            }
+        ]
+    },
+    corners: {
+        8: [
+            {
+                awayScore: 3,
+                homeScore: 1,
+                line: -0.5,
+                overOdds: 1.9,
+                underOdds: 1.9,
+                closed: false,
+                state: 1,
+                oddsChangeTime: 1706610600
+            },
+            {
+                awayScore: 2,
+                homeScore: 1,
+                line: -0.5,
+                overOdds: 1.9,
+                underOdds: 1.9,
+                closed: true,
+                state: 1,
+                oddsChangeTime: 1706310000
+            },
+            {
+                awayScore: 3,
+                homeScore: 1,
+                line: -0.5,
+                overOdds: 1.9,
+                underOdds: 1.9,
+                closed: false,
+                state: 1,
+                oddsChangeTime: 1706610600
+            }
+        ]
+    }
 };
 
 function ExponentInfoDrawer() {
-    const [detailList, setDetailList] =
-        useState<Record<number, GetExponentDetailResponse>>(listMock);
+    const [detailList, setDetailList] = useState<ExponentInfoListType>(infoMock);
     const isOpen = useExponentStore.use.isDetailOpen();
     const setIsOpen = useExponentStore.use.setIsDetailOpen();
     const tabValue = useExponentStore.use.detailSelectedKind();
@@ -100,6 +170,8 @@ function ExponentInfoDrawer() {
     const detailCompanyId = useExponentStore.use.detailCompanyId();
     const matchDetail = useContestDetailStore.use.matchDetail();
     const companyList = useExponentStore.use.companyList();
+    const companyInfo = useExponentStore.use.companyInfo();
+    const setIsDetailLoading = useExponentStore.use.setIsDetailLoading();
 
     const tabStyle = {
         gap: 8,
@@ -114,7 +186,43 @@ function ExponentInfoDrawer() {
         { label: '角球', value: 'corners' }
     ];
 
+    useEffect(() => {
+        const converted: ExponentInfoListType = {
+            handicap: {},
+            overUnder: {},
+            winDrawLose: {},
+            corners: {}
+        };
+
+        Object.keys(companyInfo).forEach((category: TabListType) => {
+            converted[category] = {};
+
+            Object.keys(companyInfo[category]).forEach(companyId => {
+                const numericKey = Number(companyId);
+                if (!isNaN(numericKey)) {
+                    converted[category][numericKey] = [];
+                }
+            });
+        });
+
+        setDetailList(converted);
+    }, [companyList]);
+
+    const handleChange = (tab: TabListType) => {
+        if (companyList[tab].length === 0) {
+            setDetailOption(detailCompanyId, tab);
+            return;
+        }
+
+        if (companyList[tab].includes(detailCompanyId)) {
+            setDetailOption(detailCompanyId, tab);
+        } else {
+            setDetailOption(companyList[tab][0], tab);
+        }
+    };
+
     const fetchCompanyLiveOddsDetail = async () => {
+        setIsDetailLoading(true);
         try {
             const res = await getExponentDetail(matchDetail.matchId, detailCompanyId);
 
@@ -124,23 +232,29 @@ function ExponentInfoDrawer() {
 
             setDetailList(prevValue => ({
                 ...prevValue,
-                detailCompanyId: res.data
+                ...{
+                    handicap: {
+                        [detailCompanyId]: res.data.handicap
+                    },
+                    overUnder: {
+                        [detailCompanyId]: res.data.overUnder
+                    },
+                    winDrawLose: {
+                        [detailCompanyId]: res.data.winDrawLose
+                    },
+                    corners: {
+                        [detailCompanyId]: res.data.corners
+                    }
+                }
             }));
         } catch (error) {
             console.error(error);
         }
-    };
-
-    const handleChange = async (tab: TabListType) => {
-        setDetailOption(companyList[tab][0], tab);
-
-        if (companyList[tab][0] !== detailCompanyId && !(detailCompanyId in detailList)) {
-            await fetchCompanyLiveOddsDetail();
-        }
+        setIsDetailLoading(false);
     };
 
     useEffect(() => {
-        if (isOpen && !(detailCompanyId in detailList)) {
+        if (isOpen) {
             void fetchCompanyLiveOddsDetail();
         }
     }, [isOpen, detailCompanyId]);
@@ -180,7 +294,11 @@ function ExponentInfoDrawer() {
                 >
                     {tabList.map(tab => (
                         <Tab key={tab.value} label={tab.label} value={tab.value}>
-                            <DetailTable dataList={detailList[detailCompanyId][tabValue]} />
+                            {companyList[tab.value as TabListType].length > 0 ? (
+                                <DetailTable dataList={detailList} />
+                            ) : (
+                                <NoData key={tab.value} text="暂无资料" />
+                            )}
                         </Tab>
                     ))}
                 </Tabs>

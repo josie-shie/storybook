@@ -53,7 +53,7 @@ function ArticleContent({
 
     const unlockArticle = () => {
         if (!isLogin) {
-            router.push(`/master/article/${params.articleId}?auth=login`);
+            router.push(`/master/articleDetail/${params.articleId}?auth=login`);
             return;
         }
         setOpenPaid(true);
@@ -145,6 +145,13 @@ function ArticleContent({
             <div className={style.articleLayout}>
                 <div className={style.container}>
                     <div className={style.topTitle}>
+                        <div className={style.time}>
+                            {!isNoArticleData ? (
+                                <>{timestampToTodayTime(article.createdAt)}</>
+                            ) : (
+                                <Skeleton animation="wave" height={20} variant="text" width={94} />
+                            )}
+                        </div>
                         <div className={style.leagueTeam}>
                             {!isNoArticleData ? (
                                 <>
@@ -156,13 +163,6 @@ function ArticleContent({
                                 </>
                             ) : (
                                 <Skeleton animation="wave" height={20} variant="text" width={136} />
-                            )}
-                        </div>
-                        <div className={style.time}>
-                            {!isNoArticleData ? (
-                                <>{timestampToTodayTime(article.createdAt)}</>
-                            ) : (
-                                <Skeleton animation="wave" height={20} variant="text" width={94} />
                             )}
                         </div>
                     </div>
@@ -238,9 +238,7 @@ function ArticleContent({
                                 </div>
                                 <div className={style.button} onClick={unlockArticle}>
                                     <Image alt="" className={style.image} src={Star} width={14} />
-                                    <span className={style.text}>
-                                        {article.price} 金币解锁本场预测
-                                    </span>
+                                    <span className={style.text}>{article.price} 解锁本场预测</span>
                                 </div>
                             </div>
                         ) : (

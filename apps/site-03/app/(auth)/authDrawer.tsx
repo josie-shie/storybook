@@ -123,7 +123,7 @@ function AuthDrawer() {
                 setIsDrawerOpen(true);
             }}
             propsStyle={{
-                height: '580px',
+                height: '450px',
                 backgroundColor: '#1665df',
                 borderRadius: '16px 16px 0 0'
             }}

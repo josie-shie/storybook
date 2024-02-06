@@ -90,7 +90,11 @@ function CompareOdds({
         };
     }, []);
 
-    return <p style={{ color: colorMap[color] as string }}>{value}</p>;
+    return (
+        <p style={{ color: colorMap[color] as string }} suppressHydrationWarning>
+            {value}
+        </p>
+    );
 }
 
 export { CompareOdds };

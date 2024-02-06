@@ -10,6 +10,7 @@ import type {
     CompanyInfo
 } from 'data-center';
 import { mqttService } from 'lib';
+import type { TabListType } from '@/types/exponent';
 import { createExponentStore, useExponentStore } from '../../exponentStore';
 import { useContestDetailStore } from '../../contestDetailStore';
 import style from './exponent.module.scss';
@@ -29,24 +30,10 @@ interface OddsRunningMqttResponse {
     modifytime: number;
 }
 
-type TabListType = 'handicap' | 'overUnder' | 'winDrawLose' | 'corners';
-
-function Exponent({
-    exponentData,
-    matchId
-}: {
-    exponentData: GetExponentResponse;
-    matchId: number;
-}) {
-    createExponentStore({
-        companyList: exponentData.companyList,
-        companyInfo: exponentData.companyInfo
-    });
-
+function ExponentContainer({ matchId }: { matchId: number }) {
     const companyInfo = useExponentStore.use.companyInfo();
     const setCompanyInfo = useExponentStore.use.setCompanyInfo();
     const matchDetail = useContestDetailStore.use.matchDetail();
-
     const tabActive = {
         backgroundColor: '#4489FF',
         color: '#fff'
@@ -180,6 +167,21 @@ function Exponent({
             <ExponentInfoDrawer />
         </>
     );
+}
+
+function Exponent({
+    exponentData,
+    matchId
+}: {
+    exponentData: GetExponentResponse;
+    matchId: number;
+}) {
+    createExponentStore({
+        companyList: exponentData.companyList,
+        companyInfo: exponentData.companyInfo
+    });
+
+    return <ExponentContainer matchId={matchId} />;
 }
 
 export default Exponent;

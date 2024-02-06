@@ -3,6 +3,7 @@ import { handicapToString } from 'lib';
 import type { ExponentWinDrawLoseInfo } from 'data-center';
 import Select from '@/app/football/[matchId]/(dashboard)/components/select/select';
 import NoData from '@/components/baseNoData/noData';
+import type { TabListType } from '@/types/exponent';
 import { useExponentStore } from '../../exponentStore';
 import style from './exponent.module.scss';
 import MoreIcon from './img/more.svg';
@@ -77,6 +78,13 @@ function WinLose() {
     const [oddTime, setOddTime] = useState<OddTimeType>('live');
     const companyList = useExponentStore.use.companyList().winDrawLose;
     const companyInfo = useExponentStore.use.companyInfo().winDrawLose;
+    const setDetailOption = useExponentStore.use.setDetailOption();
+    const setIsDetailOpen = useExponentStore.use.setIsDetailOpen();
+
+    const handleDetail = (detailCompanyId: number, detailSelectedKind: TabListType) => {
+        setDetailOption(detailCompanyId, detailSelectedKind);
+        setIsDetailOpen(true);
+    };
 
     return (
         <div className={style.handicap}>
@@ -99,7 +107,13 @@ function WinLose() {
                     </div>
                     <div className="tableBody">
                         {companyList.map(companyId => (
-                            <div className="tr" key={companyId}>
+                            <div
+                                className="tr"
+                                key={companyId}
+                                onClick={() => {
+                                    handleDetail(companyId, 'winDrawLose');
+                                }}
+                            >
                                 <div className="td">{companyInfo[companyId].companyName}</div>
                                 <OddBar targetData={companyInfo[companyId].initial} />
                                 <OddBar

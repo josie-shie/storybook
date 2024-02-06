@@ -17,6 +17,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            text-align: center;
             color: #8d8d8d;
             font-size: 12px;
             border-top-left-radius: 6px;
@@ -53,8 +54,12 @@
                     color: #8d8d8d;
 
                     &:nth-of-type(4) {
-                        width: 68px;
+                        width: 80px;
                         flex: initial;
+
+                        .ui-select-value {
+                            color: #8d8d8d;
+                        }
                     }
                 }
             }
@@ -73,8 +78,12 @@
                         border: none;
 
                         &:nth-of-type(4) {
-                            width: 68px;
+                            width: 80px;
                             flex: initial;
+                        }
+
+                        .odd_playing {
+                            color: #4489ff;
                         }
                     }
 
@@ -99,4 +108,11 @@
             }
         }
     }
+}
+
+.loading {
+    position: absolute;
+    top: calc((100% - 27px) / 2);
+    left: 50%;
+    transform: translate(-50%, -50%);
 }

@@ -1,11 +1,10 @@
 'use client';
 import Switch from '@mui/material/Switch';
 import { useState, useRef, useEffect } from 'react';
-import Image from 'next/image';
 import { soundList, soundMap, soundSource, soundDefault } from 'lib';
 import BottomDrawer from '@/components/drawer/bottomDrawer';
 import style from './setting.module.scss';
-import RightIcon from './img/right.png';
+import RightIcon from './img/right.svg';
 
 function SoundSelector({
     isOpen,
@@ -97,12 +96,16 @@ function Setting({
     return (
         <>
             {onMounted ? (
-                <BottomDrawer isOpen={isOpen} onClose={onClose} onOpen={onOpen}>
+                <BottomDrawer
+                    isOpen={isOpen}
+                    onClose={onClose}
+                    onOpen={onOpen}
+                    topLineDisplay="none"
+                >
                     <div className={style.setting}>
                         <div className={style.topLine} />
-                        <h2 className={style.settingTitle}>比赛设置</h2>
                         <div className={style.item}>
-                            <span>进球提示</span>
+                            <span>进球提示音</span>
                             <span>
                                 <Switch
                                     checked={openTip}
@@ -139,9 +142,9 @@ function Setting({
                                 setShowSoundList('home');
                             }}
                         >
-                            <span>主隊进球声音</span>
+                            <span>主隊进球声</span>
                             <span className={style.selector}>
-                                {soundMap[homeSound]} <Image alt="arrow" src={RightIcon} />
+                                {soundMap[homeSound]} <RightIcon />
                             </span>
                         </div>
                         <div
@@ -150,9 +153,9 @@ function Setting({
                                 setShowSoundList('away');
                             }}
                         >
-                            <span>客隊进球声音</span>
+                            <span>客隊进球声</span>
                             <span className={style.selector}>
-                                {soundMap[awaySound]} <Image alt="arrow" src={RightIcon} />
+                                {soundMap[awaySound]} <RightIcon />
                             </span>
                         </div>
                     </div>

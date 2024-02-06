@@ -18,27 +18,6 @@
                 white-space: nowrap;
             }
         }
-
-        .tr {
-            .colspan-3 {
-                flex: 3 !important;
-            }
-
-            .hidden {
-                display: none !important;
-            }
-
-            .td {
-                width: 45px;
-                flex: 1;
-            }
-
-            .td:last-child,
-            .th:last-child {
-                min-width: 82px;
-                white-space: nowrap;
-            }
-        }
     }
 
     .header {

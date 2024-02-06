@@ -39,7 +39,7 @@ export const handleGameTime = (
         return {
             state: 'playing',
             time:
-                handleStartTime(startTime, endTime) > 45
+                handleStartTime(startTime, endTime) + 1 > 45
                     ? `45+`
                     : `${handleStartTime(startTime, endTime) + 1}`
         };
@@ -51,7 +51,7 @@ export const handleGameTime = (
         return {
             state: 'playing',
             time:
-                handleStartTime(startTime, endTime) + 45 > 90
+                handleStartTime(startTime, endTime) + 45 + 1 > 90
                     ? `90+`
                     : `${handleStartTime(startTime, endTime) + 45 + 1}`
         };

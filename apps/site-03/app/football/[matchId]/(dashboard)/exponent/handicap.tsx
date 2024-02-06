@@ -3,6 +3,7 @@ import { handicapToString } from 'lib';
 import type { ExponentHandicapsInfo } from 'data-center';
 import Select from '@/app/football/[matchId]/(dashboard)/components/select/select';
 import NoData from '@/components/baseNoData/noData';
+import type { TabListType } from '@/types/exponent';
 import { useExponentStore } from '../../exponentStore';
 import style from './exponent.module.scss';
 import MoreIcon from './img/more.svg';
@@ -13,8 +14,6 @@ const oddTimeOption = [
 ];
 
 type OddTimeType = 'live' | 'beforeMatch';
-
-type TabListType = 'handicap' | 'overUnder' | 'winDrawLose' | 'corners';
 
 const getOddsClassName = (initialOdds: number, currentOdds: number): string => {
     if (initialOdds === currentOdds) return '';

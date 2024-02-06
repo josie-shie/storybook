@@ -82,6 +82,14 @@ function MasterItem({ uid, item, onFollowToggle }: FocusProps) {
                 <div className={style.about}>
                     <div className={style.top}>
                         <span>{item.username}</span>
+                        {item.tags.weekHitRecentTen > 0 && (
+                            <TagSplit
+                                isBlueBg={false}
+                                number={item.tags.weekHitRecentTen}
+                                hit={true}
+                                text="近"
+                            />
+                        )}
                         {item.tags.winMaxAccurateStreak > 3 && (
                             <Tag
                                 icon={<Image alt="fire" src={Fire} />}

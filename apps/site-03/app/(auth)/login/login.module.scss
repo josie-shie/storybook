@@ -1,9 +1,9 @@
 .login {
     .loginForm {
-        padding: 24px 24px 0;
+        padding: 16px 24px 0;
         display: flex;
         flex-direction: column;
-        gap: 16px;
+        gap: 12px;
 
         .phone {
             display: flex;
@@ -31,7 +31,7 @@
         }
 
         .aggrement {
-            padding-bottom: 102px;
+            padding-bottom: 52px;
         }
     }
 
@@ -41,8 +41,8 @@
         font-size: 14px;
         font-weight: 500;
         width: 100%;
-        padding: 10px 20px;
-        margin: 8px 0 16px;
+        padding: 8px 20px;
+        margin: 8px 0;
     }
 
     .footer {
@@ -51,7 +51,6 @@
         white-space: nowrap;
         justify-content: center;
         align-items: center;
-        margin-top: 16px;
 
         .delimiter {
             width: 1px;
@@ -63,7 +62,7 @@
         p {
             font-size: 12px;
             font-weight: 500;
-            color: #fff;
+            color: #9fc2ff;
         }
 
         .forgotPass {
@@ -71,7 +70,7 @@
             min-width: initial;
             height: 18px;
             padding: 0;
-            color: #fff;
+            color: #9fc2ff;
             white-space: nowrap;
             font-size: 12px;
             font-weight: 500;

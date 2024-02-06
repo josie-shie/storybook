@@ -80,6 +80,8 @@ function SlickNav({
                                                     ? `${style.selected} ui-slick-button-selected`
                                                     : ''
                                             }`}
+                                            disableRipple
+                                            disableTouchRipple
                                             key={item.label}
                                             onClick={() => {
                                                 swipeTo(index);

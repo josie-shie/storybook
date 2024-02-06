@@ -44,7 +44,12 @@ function QueryFormLayout() {
                     </div>
                     <div className={style.scaleUpRight}>
                         {animateLinesRight.map((line, index) => (
-                            <span key={`animationRight_${index.toString()}`}>{line}</span>
+                            <span
+                                className={style.scaleUpRightItem}
+                                key={`animationRight_${index.toString()}`}
+                            >
+                                {line}
+                            </span>
                         ))}
                     </div>
                 </div>

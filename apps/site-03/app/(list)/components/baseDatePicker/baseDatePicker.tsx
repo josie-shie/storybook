@@ -24,7 +24,7 @@ interface BaseDatePickerProps {
     defaultDate: Date;
 }
 
-const MONTH_DAY = 'MM/DD';
+const MONTH_DAY = 'M/DD';
 
 function DateLabel({ date }: { date: dayjs.Dayjs }) {
     if (date.format(MONTH_DAY) === dayjs().format(MONTH_DAY)) {
@@ -50,7 +50,11 @@ function BaseDatePicker({
     const [dates, setDates] = useState(() => {
         const arr = Array.from({ length: 6 }).map((_, index) => {
             const adjustedDay = direction === 'schedule' ? index : index - 5;
-            return dayjs().add(adjustedDay, 'day');
+            const addDate = dayjs().add(adjustedDay, 'day');
+            if (addDate.format(MONTH_DAY) === dayjs().format(MONTH_DAY)) {
+                return addDate;
+            }
+            return addDate.hour(13).minute(0).second(0);
         });
         return arr;
     });
@@ -61,6 +65,12 @@ function BaseDatePicker({
     const handleCloseModal = () => {
         setOpenModal(false);
     };
+
+    const handleDateChange = (date: Date) => {
+        date.setHours(13, 0, 0, 0);
+        setPickerDate(date);
+    };
+
     const handleDateSelection = useCallback(
         (selectedDate: Date) => {
             const selectedDay = dayjs(selectedDate);
@@ -141,8 +151,8 @@ function BaseDatePicker({
                         locale="zh-CN"
                         maxDate={maxDate}
                         minDate={minDate}
-                        onChange={date => {
-                            setPickerDate(date);
+                        onChange={(date: Date) => {
+                            handleDateChange(date);
                         }}
                         selected={pickerDate}
                     />

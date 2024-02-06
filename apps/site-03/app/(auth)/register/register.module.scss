@@ -1,8 +1,8 @@
 .register {
-    padding: 24px;
+    padding: 16px 24px;
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 12px;
 
     .phone {
         display: flex;
@@ -30,6 +30,6 @@
     }
 
     .registerButton {
-        margin-top: 20px;
+        margin-top: 16px;
     }
 }
