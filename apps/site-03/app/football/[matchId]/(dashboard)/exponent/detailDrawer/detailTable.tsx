@@ -1,11 +1,14 @@
+import { useState } from 'react';
 import type {
     ExponentDetailHandicapsInfo,
     ExponentDetailWinDrawLoseInfo,
     ExponentDetailOverUnderInfo
 } from 'data-center';
-import { handleMatchDateTime, handicapToString } from 'lib';
+import { handleMatchDateTime, handicapToString, handleGameTime } from 'lib';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useExponentStore } from '@/app/football/[matchId]/exponentStore';
+import { useContestDetailStore } from '@/app/football/[matchId]/contestDetailStore';
+import Select from '@/app/football/[matchId]/(dashboard)/components/select/select';
 import style from './detailTable.module.scss';
 
 interface ExponentInfoListType {
@@ -14,6 +17,8 @@ interface ExponentInfoListType {
     winDrawLose: Record<number, ExponentDetailWinDrawLoseInfo[]>;
     corners: Record<number, ExponentDetailOverUnderInfo[]>;
 }
+
+type OddTimeType = 'matchTime' | 'dateTime';
 
 function Handicap({
     info,
@@ -117,7 +122,34 @@ function OverUnder({
     );
 }
 
-function OddTable({ dataList }: { dataList: ExponentInfoListType }) {
+function OddDisplayTime({
+    oddTime,
+    state,
+    oddsChangeTime
+}: {
+    oddTime: OddTimeType;
+    state: number;
+    oddsChangeTime: number;
+}) {
+    const matchDetail = useContestDetailStore.use.matchDetail();
+    if (oddTime === 'dateTime') {
+        return <>{handleMatchDateTime(oddsChangeTime)}</>;
+    }
+
+    const gameTime = handleGameTime(
+        state === 1 ? matchDetail.startTime : matchDetail.halfStartTime,
+        state,
+        oddsChangeTime
+    );
+
+    if (state === 1 || state === 3) {
+        return <div className={`odd_${gameTime.state}`}>{gameTime.time}&apos;</div>;
+    }
+
+    return <div className={`odd_${gameTime.state}`}>{gameTime.text}</div>;
+}
+
+function OddTable({ dataList, oddTime }: { dataList: ExponentInfoListType; oddTime: OddTimeType }) {
     const tabValue = useExponentStore.use.detailSelectedKind();
     const detailCompanyId = useExponentStore.use.detailCompanyId();
     const isDetailLoading = useExponentStore.use.isDetailLoading();
@@ -197,7 +229,13 @@ function OddTable({ dataList }: { dataList: ExponentInfoListType }) {
                             </>
                         )}
 
-                        <div className="td">{handleMatchDateTime(data.oddsChangeTime)}</div>
+                        <div className="td">
+                            <OddDisplayTime
+                                oddTime={oddTime}
+                                oddsChangeTime={data.oddsChangeTime}
+                                state={data.state}
+                            />
+                        </div>
                         <div className="td">
                             {data.homeScore}-{data.awayScore}
                         </div>
@@ -221,6 +259,13 @@ function DetailTable({ dataList }: { dataList: ExponentInfoListType }) {
         overUnder: ['多', '走势', '少'],
         corners: ['多', '走势', '少']
     };
+
+    const oddTimeOption = [
+        { label: '开赛倒计时', value: 'matchTime' },
+        { label: '日期/时间', value: 'dateTime' }
+    ];
+
+    const [oddTime, setOddTime] = useState<OddTimeType>('matchTime');
 
     return (
         <div className={style.detailTable}>
@@ -248,12 +293,20 @@ function DetailTable({ dataList }: { dataList: ExponentInfoListType }) {
                                 {head}
                             </div>
                         ))}
-                        <div className="th">時間</div>
+                        <div className="th">
+                            <Select
+                                onChange={value => {
+                                    setOddTime(value as OddTimeType);
+                                }}
+                                options={oddTimeOption}
+                                selectedValue={oddTime}
+                            />
+                        </div>
                         <div className="th">{tabValue === 'corners' ? '角球' : '比分'}</div>
                     </div>
                 </div>
                 <div className="tableBody">
-                    <OddTable dataList={dataList} />
+                    <OddTable dataList={dataList} oddTime={oddTime} />
                 </div>
             </div>
         </div>
