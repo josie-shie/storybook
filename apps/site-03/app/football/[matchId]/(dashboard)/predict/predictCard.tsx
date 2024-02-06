@@ -25,7 +25,7 @@ function PredictCard({ predictInfo }: { predictInfo: RecommendPost }) {
         <div
             className={style.predictCard}
             onClick={() => {
-                router.push(`/master/article/${predictInfo.id}`);
+                router.push(`/master/articleDetail/${predictInfo.id}`);
             }}
         >
             <div className={style.mentor}>

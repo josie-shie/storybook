@@ -53,7 +53,7 @@ function ArticleContent({
 
     const unlockArticle = () => {
         if (!isLogin) {
-            router.push(`/master/article/${params.articleId}?auth=login`);
+            router.push(`/master/articleDetail/${params.articleId}?auth=login`);
             return;
         }
         setOpenPaid(true);

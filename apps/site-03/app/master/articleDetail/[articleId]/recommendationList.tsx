@@ -50,7 +50,7 @@ function RecommendationItem({
 
     const isOpenDialog = async (item: RecommendPost) => {
         if (!isLogin) {
-            router.push(`/master/article/${params.articleId}?auth=login`);
+            router.push(`/master/articleDetail/${params.articleId}?auth=login`);
             return;
         }
 
@@ -60,7 +60,7 @@ function RecommendationItem({
             if (!res.success) {
                 return new Error();
             }
-            router.push(`/master/article/${item.id}`);
+            router.push(`/master/articleDetail/${item.id}`);
             return;
         }
 
@@ -95,7 +95,7 @@ function RecommendationItem({
 
     const goArticleDetail = () => {
         setIsOpenPaid(false);
-        router.push(`/master/article/${articleInfo.id}`);
+        router.push(`/master/articleDetail/${articleInfo.id}`);
     };
 
     const goPayment = () => {
@@ -104,7 +104,7 @@ function RecommendationItem({
     };
 
     const goArticle = (id: number) => {
-        router.push(`/master/article/${id}`);
+        router.push(`/master/articleDetail/${id}`);
     };
 
     const getText = predictedPlay => {
