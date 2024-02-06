@@ -21,7 +21,7 @@ function GuessIndex({ todayGuess }: { todayGuess: GetTodayGuessMatchesResponse }
 
     const tabList = [
         {
-            label: '赛事',
+            label: '今日',
             status: null
         },
         {
