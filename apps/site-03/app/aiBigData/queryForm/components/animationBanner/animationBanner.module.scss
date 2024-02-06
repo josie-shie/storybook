@@ -8,6 +8,7 @@
         align-items: center;
         position: relative;
         justify-content: center;
+        overflow: hidden;
 
         .animate {
             width: 212px;
@@ -63,7 +64,7 @@
             transform-origin: right;
             animation-delay: 0.5s;
 
-            span {
+            .scaleUpRightItem {
                 &:nth-of-type(1) {
                     top: 54px;
                     right: 38px;
@@ -107,12 +108,12 @@
         @keyframes fade-in-left {
             0% {
                 opacity: 0;
-                transform: translate3d(-100%, 0, 0);
+                transform: translateX(-100%);
             }
 
             100% {
                 opacity: 1;
-                transform: translateZ(0);
+                transform: translateX(0);
             }
         }
 
@@ -123,12 +124,12 @@
         @keyframes fade-in-right {
             0% {
                 opacity: 0;
-                transform: translate3d(100%, 0, 0);
+                transform: translateX(100%);
             }
 
             100% {
                 opacity: 1;
-                transform: translateZ(0);
+                transform: translateX(0);
             }
         }
     }
