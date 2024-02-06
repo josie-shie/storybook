@@ -29,7 +29,7 @@
 
             :global {
                 .ui-button {
-                    border-radius: 8px 8px 0px 0px;
+                    border-radius: 8px 8px 0px 0px !important;
                     background: #f3f3f3;
                     color: #9b9b9b;
                     font-size: 12px;
@@ -39,7 +39,6 @@
                 .ui-active {
                     color: #fff;
                     background-color: #4489ff;
-                    border-radius: 8px 8px 0px 0px !important;
                     border: 1px solid #4489ff;
                 }
 

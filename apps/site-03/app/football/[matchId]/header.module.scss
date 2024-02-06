@@ -116,8 +116,9 @@
             .liveAnimate {
                 width: 4px;
                 height: 4px;
-                background-color: #e2ebff;
                 border-radius: 50%;
+                box-shadow: 0 0 1px 1px #4489ff;
+                background-color: #4489ff;
                 animation: flashing 1.5s linear infinite;
             }
 
@@ -176,17 +177,14 @@
 
 @keyframes flashing {
     0% {
-        box-shadow: initial;
-        background-color: #e2ebff;
+        opacity: 1;
     }
 
     50% {
-        box-shadow: 0 0 1px 1px #4489ff;
-        background-color: #4489ff;
+        opacity: 0;
     }
 
     100% {
-        box-shadow: initial;
-        background-color: #e2ebff;
+        opacity: 1;
     }
 }

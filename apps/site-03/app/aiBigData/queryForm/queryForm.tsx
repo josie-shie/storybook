@@ -110,6 +110,10 @@ function SubmitButton({ setZeroMatchList }: { setZeroMatchList: (list: number[])
     const setIsOpenPayDrawer = useQueryFormStore.use.setIsOpenPayDrawer();
     const setIsAnalysisBySearch = useQueryFormStore.use.setIsAnalysisBySearch();
     const selectedleagueIdList = useMatchFilterStore.use.selectedleagueIdList();
+
+    const teamSelected = useQueryFormStore.use.teamSelected();
+    const teamHandicapOdds = useQueryFormStore.use.teamHandicapOdds();
+    const handicapOddsSelected = useQueryFormStore.use.handicapOddsSelected();
     const startTime = useQueryFormStore.use.startDate();
     const endTime = useQueryFormStore.use.endDate();
     const setDialogContentType = useQueryFormStore.use.setDialogContentType();
@@ -152,8 +156,20 @@ function SubmitButton({ setZeroMatchList }: { setZeroMatchList: (list: number[])
     };
 
     const handleCheckMatchesCount = async () => {
+        let handicapSideValue = '';
+        if (teamSelected.length === 2) {
+            handicapSideValue = 'all';
+        } else if (teamSelected.includes('home')) {
+            handicapSideValue = 'home';
+        } else if (teamSelected.includes('away')) {
+            handicapSideValue = 'away';
+        }
         const query: CheckMatchesCountRequest = {
+            mission: 'create',
             leagues: selectedleagueIdList,
+            handicapSide: handicapSideValue,
+            handicapValues: teamHandicapOdds,
+            overUnderValues: handicapOddsSelected,
             startTime: dayjs(startTime).unix(),
             endTime: dayjs(endTime).unix()
         };

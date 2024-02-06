@@ -6,6 +6,7 @@ import { handleGameTime, soundDefault, soundSource, mqttService } from 'lib';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLiveContestStore } from '@/store/liveContestStore';
 import { useContestListGlobalStore } from '@/store/contestListGlobalStore';
+import defaultTeamLogo from '@/app/football/[matchId]/img/defaultTeamLogo.png';
 import style from './goalAlert.module.scss';
 import Football from './img/football.png';
 
@@ -42,7 +43,7 @@ function GoalAlert() {
                 if (updatedList.length <= 7) {
                     setTimeout(() => {
                         setAlertList(prevInner => prevInner.slice(1));
-                    }, 2000);
+                    }, 4500);
                 } else if (updatedList.length > 7) {
                     updatedList.shift();
                 }
@@ -117,7 +118,7 @@ function GoalAlert() {
                                                         alt="homeLogo"
                                                         className={style.footballImg}
                                                         height={20}
-                                                        src={item.homeLogo}
+                                                        src={item.homeLogo || defaultTeamLogo.src}
                                                         width={20}
                                                     />
                                                     <p className={style.score}>{item.homeScore}</p>
@@ -139,10 +140,10 @@ function GoalAlert() {
                                                 <p className={style.name}>{item.awayChs}</p>
                                                 <div className={style.scoreBar}>
                                                     <Image
-                                                        alt="homeLogo"
+                                                        alt="awayLogo"
                                                         className={style.footballImg}
                                                         height={20}
-                                                        src={item.awayLogo}
+                                                        src={item.awayLogo || defaultTeamLogo.src}
                                                         width={20}
                                                     />
                                                     <p className={style.score}>{item.awayScore}</p>

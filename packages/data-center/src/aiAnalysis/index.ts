@@ -12,7 +12,11 @@ import {
 } from './graphqlQueries';
 
 export interface CheckMatchesCountRequest {
+    mission: string;
     leagues: number[];
+    handicapSide: string;
+    handicapValues: string;
+    overUnderValues: string;
     startTime: number;
     endTime: number;
 }

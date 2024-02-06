@@ -51,16 +51,23 @@ interface PlanListPropsType {
     setAmount: (number: number) => void;
     setOpenPaid: (open: boolean) => void;
     setSelectedGameId: (gameId: number) => void;
+    handleVIPUnlock: (gameId: number) => void;
 }
 
-function MasterPlanList({ isLogin, setAmount, setOpenPaid, setSelectedGameId }: PlanListPropsType) {
+function MasterPlanList({
+    isLogin,
+    setAmount,
+    setOpenPaid,
+    setSelectedGameId,
+    handleVIPUnlock
+}: PlanListPropsType) {
     const masterPlanList = useGuessDetailStore.use.masterPlanList();
     const masterPlanPrice = useGuessDetailStore.use.masterPlanPrice();
     const setIsDrawerOpen = useAuthStore.use.setIsDrawerOpen();
     const setAuthQuery = useUserStore.use.setAuthQuery();
 
-    const handleLocalClickOpen = (gameId: number, newAmount: number) => {
-        setSelectedGameId(gameId);
+    const handleLocalClickOpen = (planId: number, newAmount: number) => {
+        setSelectedGameId(planId);
         setAmount(newAmount);
         setOpenPaid(true);
     };
@@ -70,6 +77,7 @@ function MasterPlanList({ isLogin, setAmount, setOpenPaid, setSelectedGameId }: 
         <>
             {masterPlanList.map(el => (
                 <GameCard
+                    handleVIPUnlock={handleVIPUnlock}
                     key={el.guessId}
                     onOpenPaidDialog={() => {
                         if (!isLogin) {
@@ -128,6 +136,18 @@ function MasterPlan() {
         setOpenPaid(false);
     };
 
+    // VIP 免費查看
+    const handleVIPUnlock = async (planId: number) => {
+        const res = await payForProGuess({ guessId: planId });
+        if (res.success) {
+            const data = res.data;
+            const idx = masterPlanList.findIndex(ele => ele.guessId === data.guessId);
+            const newList = [...masterPlanList];
+            newList[idx].predictedPlay = data.predictedPlay;
+            setMasterPlanList(newList);
+        }
+    };
+
     const goRechargePage = () => {
         router.push('/userInfo/subscribe');
     };
@@ -169,7 +189,7 @@ function MasterPlan() {
             <div className={style.area}>
                 <div className={style.planList}>
                     <div className={style.title}>
-                        <span>同场高手方案</span>
+                        <span>同场猜球高手方案({masterPlanList.length})</span>
                     </div>
                     {isPlanLoading ? (
                         <div className={style.planLoading}>
@@ -177,6 +197,7 @@ function MasterPlan() {
                         </div>
                     ) : (
                         <MasterPlanList
+                            handleVIPUnlock={handleVIPUnlock}
                             isLogin={isLogin}
                             setAmount={setAmount}
                             setOpenPaid={setOpenPaid}

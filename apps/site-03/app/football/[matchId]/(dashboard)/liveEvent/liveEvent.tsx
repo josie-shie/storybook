@@ -30,6 +30,7 @@ function EventContainer({
         const res = await getEventData(Number(matchId));
         if (res.success) {
             setEventList(res.data);
+            handleResetHeight();
         }
     };
 
