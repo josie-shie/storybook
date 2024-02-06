@@ -3,13 +3,22 @@ import style from './tagSplit.module.scss';
 interface PropsType {
     text?: string;
     number: number;
+    hit?: boolean;
     isBlueBg: boolean;
     border?: boolean;
     textColor?: string;
     textBackground?: string;
 }
 
-function TagSplit({ text, number, isBlueBg, border = true, textBackground, textColor }: PropsType) {
+function TagSplit({
+    text,
+    number,
+    hit = false,
+    isBlueBg,
+    border = true,
+    textBackground,
+    textColor
+}: PropsType) {
     const borderColor = () => {
         if (isBlueBg && border) {
             return 'linear-gradient(89.8deg, rgba(255, 255, 255, 0.2) -0.86%, rgba(255, 255, 255, 0.65) 99.82%),linear-gradient(90deg, #609BFF 0%, #0157E9 100%)';
@@ -28,15 +37,26 @@ function TagSplit({ text, number, isBlueBg, border = true, textBackground, textC
     };
 
     return (
-        <div className={`tagLayout ${style.tagLayout}`} style={{ background: borderColor() }}>
+        <div
+            className={`tagLayout ${style.tagLayout} ${hit ? style.hit : ''}`}
+            style={{ background: borderColor() }}
+        >
             <div className={style.tagLeft} style={{ background: leftColor() }}>
                 {text}
             </div>
             <div
-                className={style.tagRight}
+                className={`${style.tagRight} ${hit ? style.hit : ''}`}
                 style={{ background: textBackground, color: textColor }}
             >
-                榜<span className={style.tagNumber}>{number}</span>
+                {hit ? (
+                    <>
+                        10中<span className={style.tagNumber}>{number}</span>
+                    </>
+                ) : (
+                    <>
+                        榜<span className={style.tagNumber}>{number}</span>
+                    </>
+                )}
             </div>
         </div>
     );

@@ -25,7 +25,7 @@ function PredictCard({ predictInfo }: { predictInfo: RecommendPost }) {
         <div
             className={style.predictCard}
             onClick={() => {
-                router.push(`/master/article/${predictInfo.id}`);
+                router.push(`/master/articleDetail/${predictInfo.id}`);
             }}
         >
             <div className={style.mentor}>
@@ -34,6 +34,14 @@ function PredictCard({ predictInfo }: { predictInfo: RecommendPost }) {
                     <div className={style.avatarBar}>
                         <h3 className={style.mentorName}>{predictInfo.mentorName}</h3>
                         <div className={style.tag}>
+                            {predictInfo.tag.weekHitRecentTen > 0 && (
+                                <TagSplit
+                                    isBlueBg={false}
+                                    number={predictInfo.tag.weekHitRecentTen}
+                                    hit={true}
+                                    text="近"
+                                />
+                            )}
                             {predictInfo.tag.winMaxAccurateStreak > 0 && (
                                 <Tag
                                     icon={<Image alt="" height={10} src={hotIcon} width={8} />}

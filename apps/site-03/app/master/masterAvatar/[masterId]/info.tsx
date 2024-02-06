@@ -160,13 +160,20 @@ function Info({ params }: { params: { masterId: string } }) {
                                             )} ${info.mentorArticleCount.counts}場`}
                                         />
                                     )}
+                                    {info.highlights.weekHitRecentTen > 0 && (
+                                        <TagSplit
+                                            isBlueBg={false}
+                                            number={info.highlights.weekHitRecentTen}
+                                            hit={true}
+                                            text="近"
+                                        />
+                                    )}
                                     {info.highlights.winMaxAccurateStreak > 0 && (
                                         <Tag
                                             icon={<Image alt="fire" src={Fire} />}
                                             text={`${info.highlights.winMaxAccurateStreak} 連紅`}
                                         />
                                     )}
-
                                     {info.highlights.quarterRanking > 0 && (
                                         <TagSplit
                                             isBlueBg
