@@ -99,9 +99,8 @@ function Setting({
                 <BottomDrawer isOpen={isOpen} onClose={onClose} onOpen={onOpen}>
                     <div className={style.setting}>
                         <div className={style.topLine} />
-                        <h2 className={style.settingTitle}>比赛设置</h2>
                         <div className={style.item}>
-                            <span>进球提示</span>
+                            <span>进球提示音</span>
                             <span>
                                 <Switch
                                     checked={openTip}
@@ -138,7 +137,7 @@ function Setting({
                                 setShowSoundList('home');
                             }}
                         >
-                            <span>主隊进球声音</span>
+                            <span>主隊进球声</span>
                             <span className={style.selector}>
                                 {soundMap[homeSound]} <RightIcon />
                             </span>
@@ -149,7 +148,7 @@ function Setting({
                                 setShowSoundList('away');
                             }}
                         >
-                            <span>客隊进球声音</span>
+                            <span>客隊进球声</span>
                             <span className={style.selector}>
                                 {soundMap[awaySound]} <RightIcon />
                             </span>
