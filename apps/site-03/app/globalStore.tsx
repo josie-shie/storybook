@@ -8,6 +8,7 @@ import { createLiveContestStore } from '@/store/liveContestStore';
 import { createAuthStore } from '@/store/authStore';
 import { createContestListGlobalStore } from '@/store/contestListGlobalStore';
 import { createInterceptPassStore } from '@/store/interceptPassStore';
+import { createAppStateStore } from '@/store/appStateStore';
 
 function GlobalStore({ children }: { children: ReactNode }) {
     createLiveContestStore({ contestInfo: {} });
@@ -27,6 +28,10 @@ function GlobalStore({ children }: { children: ReactNode }) {
 
     createAuthStore({
         loading: false
+    });
+
+    createAppStateStore({
+        isClientSide: false
     });
 
     useEffect(() => {
