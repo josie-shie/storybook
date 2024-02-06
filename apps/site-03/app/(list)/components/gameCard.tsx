@@ -57,7 +57,7 @@ function AnimateLine({ contestInfo, matchId }: { contestInfo: ContestInfo; match
                 setTimeout(() => {
                     setShowHomeContent(false);
                 }, 1000);
-            }, 3000);
+            }, 4500);
         }
         if (syncData.awayScore !== awayScoreKeep) {
             setShowAwayContent(true);
@@ -67,7 +67,7 @@ function AnimateLine({ contestInfo, matchId }: { contestInfo: ContestInfo; match
                 setTimeout(() => {
                     setShowAwayContent(false);
                 }, 1000);
-            }, 3000);
+            }, 4500);
         }
     }, [syncData.awayScore, syncData.homeScore]);
 

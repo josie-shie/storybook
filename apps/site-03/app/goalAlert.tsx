@@ -43,7 +43,7 @@ function GoalAlert() {
                 if (updatedList.length <= 7) {
                     setTimeout(() => {
                         setAlertList(prevInner => prevInner.slice(1));
-                    }, 2000);
+                    }, 4500);
                 } else if (updatedList.length > 7) {
                     updatedList.shift();
                 }
