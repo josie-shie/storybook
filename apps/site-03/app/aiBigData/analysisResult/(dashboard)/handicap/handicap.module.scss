@@ -25,11 +25,23 @@
                         }
                     }
                 }
+
+                .loadingSkeleton {
+                    display: flex;
+                    border-top: 1px solid #f3f3f3;
+                    box-sizing: border-box;
+                    padding: 12px 0;
+                    gap: 8px;
+
+                    div {
+                        width: 100%;
+                    }
+                }
             }
 
             :global {
                 .ui-button {
-                    border-radius: 8px 8px 0px 0px !important;
+                    border-radius: 8px 8px 0 0 !important;
                     background: #f3f3f3;
                     color: #9b9b9b;
                     font-size: 12px;
