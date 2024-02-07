@@ -1,5 +1,5 @@
 'use client';
-import { useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { GetInformationResponse } from 'data-center';
 import { slickOption } from 'ui/stories/slickPro/slick';
@@ -30,7 +30,7 @@ function Neutral({ data }: { data: { content: string; importance: number }[] }) 
 
 function Information({ information }: { information: GetInformationResponse }) {
     const matchDetail = useContestDetailStore.use.matchDetail();
-    const informationData = useRef<GetInformationResponse>(information);
+    const [informationData, setInformationData] = useState<GetInformationResponse>(information);
     const tabActive = {
         backgroundColor: '#4489FF',
         color: '#fff'
@@ -39,6 +39,10 @@ function Information({ information }: { information: GetInformationResponse }) {
         backgroundColor: '#f8f8f8',
         color: '#8d8d8d'
     };
+
+    useEffect(() => {
+        setInformationData(information);
+    }, [information]);
 
     const tabList = [
         { title: matchDetail.homeChs, value: 'home' },
@@ -81,20 +85,20 @@ function Information({ information }: { information: GetInformationResponse }) {
                     transition={{ duration: 0.16 }}
                 >
                     {team === 'neutral' ? (
-                        <Neutral data={informationData.current.neutral} />
+                        <Neutral data={informationData.neutral} />
                     ) : (
                         <>
-                            {informationData.current.good[team].length === 0 &&
-                            informationData.current.bad[team].length === 0 ? (
+                            {informationData.good[team].length === 0 &&
+                            informationData.bad[team].length === 0 ? (
                                 <NoData text="暂无资料" />
                             ) : (
                                 <>
                                     <ul className={`${style.list} ${style.good}`}>
                                         <li className={style.title}>
                                             <div className={style.dot} />
-                                            有利情報（{informationData.current.good[team].length}）
+                                            有利情報（{informationData.good[team].length}）
                                         </li>
-                                        {informationData.current.good[team].map((info, idx) => (
+                                        {informationData.good[team].map((info, idx) => (
                                             <li
                                                 className={style.info}
                                                 key={`good_${idx.toString()}`}
@@ -107,9 +111,9 @@ function Information({ information }: { information: GetInformationResponse }) {
                                     <ul className={`${style.list} ${style.bed}`}>
                                         <li className={style.title}>
                                             <div className={style.dot} />
-                                            不利情報（{informationData.current.bad[team].length}）
+                                            不利情報（{informationData.bad[team].length}）
                                         </li>
-                                        {informationData.current.bad[team].map((info, idx) => (
+                                        {informationData.bad[team].map((info, idx) => (
                                             <li
                                                 className={style.info}
                                                 key={`bed_${idx.toString()}`}

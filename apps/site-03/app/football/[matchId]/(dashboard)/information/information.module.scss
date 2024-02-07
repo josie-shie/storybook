@@ -20,10 +20,10 @@
             padding-top: 10px;
             font-size: 16px;
             font-weight: 500;
-            color: #222;
+            color: #4489ff;
 
             .dot {
-                background-color: #222;
+                background-color: #4489ff;
                 width: 8px;
                 height: 8px;
                 margin: 0 8px;
@@ -37,7 +37,7 @@
             column-gap: 8px;
 
             .dot {
-                background-color: #777;
+                background-color: #4489ff;
                 width: 6px;
                 height: 6px;
                 margin: 8px;
@@ -54,22 +54,6 @@
 
         &.good {
             .title {
-                color: #4489ff;
-
-                .dot {
-                    background-color: #4489ff;
-                }
-            }
-
-            .info {
-                .dot {
-                    background-color: #4489ff;
-                }
-            }
-        }
-
-        &.bed {
-            .title {
                 color: #e95e6b;
 
                 .dot {
@@ -80,6 +64,22 @@
             .info {
                 .dot {
                     background-color: #e95e6b;
+                }
+            }
+        }
+
+        &.bed {
+            .title {
+                color: #4a4a4a;
+
+                .dot {
+                    background-color: #4a4a4a;
+                }
+            }
+
+            .info {
+                .dot {
+                    background-color: #4a4a4a;
                 }
             }
         }

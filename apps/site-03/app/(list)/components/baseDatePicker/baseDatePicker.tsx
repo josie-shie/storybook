@@ -24,7 +24,7 @@ interface BaseDatePickerProps {
     defaultDate: Date;
 }
 
-const MONTH_DAY = 'M/DD';
+const MONTH_DAY = 'M/D';
 
 function DateLabel({ date }: { date: dayjs.Dayjs }) {
     if (date.format(MONTH_DAY) === dayjs().format(MONTH_DAY)) {
