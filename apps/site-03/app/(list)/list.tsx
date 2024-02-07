@@ -21,7 +21,7 @@ function List({
     const progressRef = useRef<HTMLDivElement>(null);
     const scheduleRef = useRef<HTMLDivElement>(null);
     const resultRef = useRef<HTMLDivElement>(null);
-    const [secendRender, setSecendRender] = useState(false);
+    const [secondRender, setSecondRender] = useState(false);
     const [showScrollTop, setShowScrollTop] = useState(false);
     const setHandicapTips = useLongDragonStore.use.setHandicapTips();
     const setHintsSelectType = useLongDragonStore.use.setHintsSelectType();
@@ -29,7 +29,7 @@ function List({
     const setShowLongDragon = useLongDragonStore.use.setShowLongDragon();
 
     useEffect(() => {
-        setSecendRender(true);
+        setSecondRender(true);
     }, []);
 
     const tabList = [
@@ -55,7 +55,6 @@ function List({
 
     const onSlickEnd = (nowIndex: number) => {
         scrollTop();
-
         setCurrentStatus(tabList[nowIndex].status);
     };
 
@@ -82,7 +81,7 @@ function List({
         setShowLongDragon(true);
     };
 
-    const closeLognDragon = () => {
+    const closeLongDragon = () => {
         setShowLongDragon(false);
         setHandicapTips([]);
         setHintsSelectType('WIN');
@@ -109,7 +108,7 @@ function List({
                     />
                 </div>
                 <div className={style.largeGap}>
-                    {secendRender ? (
+                    {secondRender ? (
                         <Football
                             pinnedContest={pinnedContest}
                             ref={progressRef}
@@ -119,7 +118,7 @@ function List({
                     ) : null}
                 </div>
                 <div className={style.largeGap}>
-                    {secendRender ? (
+                    {secondRender ? (
                         <Football
                             pinnedContest={pinnedContest}
                             ref={scheduleRef}
@@ -129,7 +128,7 @@ function List({
                     ) : null}
                 </div>
                 <div className={style.largeGap}>
-                    {secendRender ? (
+                    {secondRender ? (
                         <Football
                             pinnedContest={pinnedContest}
                             ref={resultRef}
@@ -151,7 +150,7 @@ function List({
             )}
             <BottomDrawer
                 isOpen={showLongDragon}
-                onClose={closeLognDragon}
+                onClose={closeLongDragon}
                 onOpen={() => {
                     setShowLongDragon(true);
                 }}
