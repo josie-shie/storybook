@@ -2,7 +2,7 @@ import style from './tipBar.module.scss';
 import { eventStatusList } from './eventStatusMap';
 
 function TipBar() {
-    const tipList = eventStatusList.slice(0, 13);
+    const tipList = eventStatusList(16).slice(0, 13);
     return (
         <ul className={style.tipBar}>
             {tipList.map(list => (

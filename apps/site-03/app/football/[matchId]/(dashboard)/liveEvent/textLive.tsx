@@ -11,7 +11,7 @@ function TextLive({ liveList }: { liveList: GetLiveTextResponse }) {
     const matchDetail = useContestDetailStore.use.matchDetail();
 
     const isType = (type?: number) => {
-        if (type && typeof eventStatusMap[type] !== 'string') {
+        if (type && typeof eventStatusMap()[type] !== 'string') {
             return true;
         }
         return false;
@@ -29,7 +29,7 @@ function TextLive({ liveList }: { liveList: GetLiveTextResponse }) {
                             <div className={style.iconLine}>
                                 <div className={style.icon}>
                                     {live.type && isType(live.type) ? (
-                                        eventStatusMap[live.type]
+                                        eventStatusMap()[live.type]
                                     ) : (
                                         <NoticeIcon className={style.noticeIcon} />
                                     )}

@@ -66,7 +66,7 @@ function EventCard({ event }: { event: EventInfo }) {
                         {event.kind === 11
                             ? swapEvent(event.nameChs, event.nameChs2)
                             : handleNoName(event.nameChs)}
-                        <div className={style.icon}>{eventStatusMap[event.kind] || 'here'}</div>
+                        <div className={style.icon}>{eventStatusMap()[event.kind] || 'here'}</div>
                     </>
                 ) : null}
             </div>
@@ -81,7 +81,7 @@ function EventCard({ event }: { event: EventInfo }) {
                         {event.kind === 11
                             ? swapEvent(event.nameChs, event.nameChs2)
                             : handleNoName(event.nameChs)}
-                        <div className={style.icon}>{eventStatusMap[event.kind] || 'here'}</div>
+                        <div className={style.icon}>{eventStatusMap()[event.kind] || 'here'}</div>
                     </>
                 )}
             </div>
