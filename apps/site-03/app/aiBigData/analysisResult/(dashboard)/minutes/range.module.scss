@@ -9,6 +9,7 @@
         display: flex;
         justify-content: right;
         gap: 12px;
+        margin-top: 16px;
 
         span {
             display: flex;
@@ -51,6 +52,13 @@
         &:nth-child(4) {
             border-top-right-radius: 8px !important;
         }
+
+        &.highlightHeader {
+            background: #ff4343;
+            color: #fff;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+        }
     }
 
     .cell {
@@ -80,19 +88,12 @@
             border-right: 1px solid #f3f3f3;
             border-bottom-right-radius: 8px;
         }
-    }
 
-    .highlightHeader {
-        background: #ff4343;
-        color: #fff;
-        border-top-left-radius: 8px;
-        border-top-right-radius: 8px;
-    }
-
-    .hightlightCell {
-        border-radius: 0 0 8px 8px;
-        border-right: 1px solid #ff4343;
-        border-bottom: 1px solid #ff4343;
-        border-left: 1px solid #ff4343;
+        &.hightlightCell {
+            border-radius: 0 0 8px 8px;
+            border-right: 1px solid #ff4343;
+            border-bottom: 1px solid #ff4343;
+            border-left: 1px solid #ff4343;
+        }
     }
 }

@@ -106,7 +106,6 @@ function ArticleContent({
         setOpenDialog(false);
         router.push('/userInfo/subscribe');
     };
-
     const fetchData = async () => {
         const res = await getPostList({
             memberId: userInfo.uid ? userInfo.uid : 0,
@@ -127,7 +126,7 @@ function ArticleContent({
 
     useEffect(() => {
         void fetchData();
-    }, [userInfo.uid]);
+    }, [userInfo.uid, article]);
 
     const getText = predictedPlay => {
         switch (predictedPlay) {
