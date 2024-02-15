@@ -160,13 +160,16 @@ function GuessBar() {
     useEffect(() => {
         let init = true;
         async function fetchGuessProportion() {
-            const guessProportion = await getGuessProportion({ matchId, memberId: userInfo.uid });
+            const guessProportion = await getGuessProportion({
+                matchId,
+                memberId: isLogin ? userInfo.uid : 1
+            });
             if (!init) return;
             if (guessProportion.success) {
                 setGuessProportion(guessProportion.data);
             }
         }
-        if (isLogin) void fetchGuessProportion();
+        void fetchGuessProportion();
 
         return () => {
             init = false;
