@@ -31,8 +31,6 @@ function RecommendationItem({
         }
     };
 
-    console.log(recommendationList);
-
     return (
         <>
             {recommendationList.length === 0 && isNoData === null && <SkeletonLayout />}
@@ -45,8 +43,8 @@ function RecommendationItem({
                         return (
                             <Link
                                 className={style.item}
-                                key={item.id}
                                 href={`/master/articleDetail/${item.id}`}
+                                key={item.id}
                             >
                                 {item.predictionResult === 'WIN' && (
                                     <Image
