@@ -6,7 +6,7 @@ import { handleGameTime, soundDefault, soundSource, mqttService } from 'lib';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLiveContestStore } from '@/store/liveContestStore';
 import { useContestListGlobalStore } from '@/store/contestListGlobalStore';
-import defaultTeamLogo from '@/app/football/[matchId]/img/defaultTeamLogo.png';
+import TeamLogo from '@/components/teamLogo/teamLogo';
 import style from './goalAlert.module.scss';
 import Football from './img/football.png';
 
@@ -88,13 +88,13 @@ function GoalAlert() {
                                         <Image
                                             alt="football"
                                             className={style.footballImg}
-                                            height={26}
+                                            height={32}
                                             src={Football}
-                                            width={26}
+                                            width={32}
                                         />
                                         <div className={style.info}>
                                             <p>進球</p>
-                                            <p>{getStartTime(item.startTime, item.state)}</p>
+                                            <p>{getStartTime(item.startTime, item.state)}’</p>
                                         </div>
                                     </div>
                                     <div className={style.right}>
@@ -114,11 +114,11 @@ function GoalAlert() {
                                                 </div>
                                                 <p className={style.name}>{item.homeChs}</p>
                                                 <div className={style.scoreBar}>
-                                                    <Image
-                                                        alt="homeLogo"
+                                                    <TeamLogo
+                                                        alt={item.homeChs}
                                                         className={style.footballImg}
                                                         height={20}
-                                                        src={item.homeLogo || defaultTeamLogo.src}
+                                                        src={item.homeLogo}
                                                         width={20}
                                                     />
                                                     <p className={style.score}>{item.homeScore}</p>
@@ -139,11 +139,11 @@ function GoalAlert() {
                                                 </div>
                                                 <p className={style.name}>{item.awayChs}</p>
                                                 <div className={style.scoreBar}>
-                                                    <Image
-                                                        alt="awayLogo"
+                                                    <TeamLogo
+                                                        alt={item.awayChs}
                                                         className={style.footballImg}
                                                         height={20}
-                                                        src={item.awayLogo || defaultTeamLogo.src}
+                                                        src={item.awayLogo}
                                                         width={20}
                                                     />
                                                     <p className={style.score}>{item.awayScore}</p>

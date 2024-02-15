@@ -1,8 +1,8 @@
 'use client';
 import type { GetLiveTextResponse } from 'data-center';
 import NoData from '@/components/baseNoData/noData';
+import TeamLogo from '@/components/teamLogo/teamLogo';
 import { useContestDetailStore } from '../../contestDetailStore';
-import TeamLogo from '../../components/teamLogo';
 import style from './textLive.module.scss';
 import { eventStatusMap } from './eventStatusMap';
 import NoticeIcon from './img/notice.svg';

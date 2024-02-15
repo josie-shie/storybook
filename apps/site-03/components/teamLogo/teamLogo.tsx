@@ -2,16 +2,17 @@
 
 import Image from 'next/image';
 import { useState } from 'react';
-import DefaultTeamLogoIcon from '../img/defaultTeamLogo.png';
+import DefaultTeamLogoIcon from './img/defaultTeamLogo.png';
 
 interface TeamLogoType {
     src: string;
     height?: number;
     width?: number;
     alt?: string;
+    className?: string;
 }
 
-function TeamLogo({ src, height, width, alt }: TeamLogoType) {
+function TeamLogo({ src, height, width, alt, className }: TeamLogoType) {
     const [teamLogoStatus, setTeamLogoStatus] = useState(true);
     return (
         <>
@@ -20,6 +21,7 @@ function TeamLogo({ src, height, width, alt }: TeamLogoType) {
             !(!src.startsWith('/') && !src.startsWith('http://') && !src.startsWith('https://')) ? (
                 <Image
                     alt={alt || ''}
+                    className={`${className}`}
                     height={height}
                     onError={() => {
                         setTeamLogoStatus(false);

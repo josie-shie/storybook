@@ -13,7 +13,7 @@ import Player from './player';
 import PlayerList from './playerList';
 import PlayerIconList from './playerIconList';
 import NoData from '@/components/baseNoData/noData';
-import TeamLogo from '../../components/teamLogo';
+import TeamLogo from '@/components/teamLogo/teamLogo';
 
 interface CoachInfoProps {
     coachName: string;
