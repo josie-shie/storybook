@@ -1,5 +1,5 @@
 .guessLayout {
-    background-color: #1662e3;
+    background: linear-gradient(91deg, #003c9f 0.72%, #2575fc 98.56%);
 
     .guess {
         background: #fff;
@@ -9,7 +9,7 @@
 .guessIndex {
     :global {
         .ui-slick-nav {
-            background-color: #1662e3;
+            background: linear-gradient(91deg, #003c9f 0.72%, #2575fc 98.56%);
         }
 
         .ui-slick-tabs-placeholder {
