@@ -1,8 +1,8 @@
 import { getFootballStatsMatches } from 'data-center';
-import style from './handicapTable.module.scss';
 import { useNotificationStore } from '@/store/notificationStore';
 import { useAnalyticsResultStore } from '@/app/aiBigData/analysisResult/analysisResultStore';
 import { useMatchFilterStore } from '@/app/aiBigData/analysisResult/matchFilterStore';
+import style from './handicapTable.module.scss';
 
 interface TableDataType {
     topValue?: number[];
@@ -56,7 +56,7 @@ function HandicapTable({ tableData }: { tableData: TableDataType[] }) {
                 <div className={style.tableBody}>
                     <div className={style.row}>
                         {tableData.map((cell, index) => (
-                            <div key={`handicapTable_${index.toString()}`} className={style.tr}>
+                            <div className={style.tr} key={`handicapTable_${index.toString()}`}>
                                 {cell.topValue ? (
                                     <div className={style.td}>
                                         <div
@@ -98,25 +98,23 @@ function HandicapTable({ tableData }: { tableData: TableDataType[] }) {
                     </div>
                     <div className={style.row}>
                         {tableData.map((cell, index) => (
-                            <div key={`handicapTable_${index.toString()}`} className={style.tr}>
-                                {cell.bottomValue ? (
-                                    <div className={`${style.td} ${style.bottomTd}`}>
-                                        <div
-                                            onClick={() => {
-                                                openMatchListDrawer(
-                                                    cell.bottomValue,
-                                                    '全场独赢',
-                                                    cell.bottomLabel
-                                                );
-                                            }}
-                                        >
-                                            <span className={style.label}>{cell.bottomLabel}</span>
-                                            <span className={style.matchLength}>
-                                                {cell.bottomValue.length}
-                                            </span>
-                                        </div>
+                            <div className={style.tr} key={`handicapTable_${index.toString()}`}>
+                                <div className={`${style.td} ${style.bottomTd}`}>
+                                    <div
+                                        onClick={() => {
+                                            openMatchListDrawer(
+                                                cell.bottomValue,
+                                                '全场独赢',
+                                                cell.bottomLabel
+                                            );
+                                        }}
+                                    >
+                                        <span className={style.label}>{cell.bottomLabel}</span>
+                                        <span className={style.matchLength}>
+                                            {cell.bottomValue.length}
+                                        </span>
                                     </div>
-                                ) : null}
+                                </div>
                             </div>
                         ))}
                     </div>

@@ -186,7 +186,7 @@ function MasterPlan() {
             ) : (
                 <Trend />
             )}
-            <div className={style.area}>
+            <div className={`${style.area} ${style.masterPlanContainer}`}>
                 <div className={style.planList}>
                     <div className={style.title}>
                         <span>同场猜球高手方案({masterPlanList.length})</span>

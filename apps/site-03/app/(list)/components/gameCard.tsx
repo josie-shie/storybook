@@ -349,16 +349,18 @@ function TopArea({
                 </div>
             </div>
             <div className={style.right}>
-                <div className={style.corner}>
-                    <CornerIcon className={style.cornerIcon} />
-                    <span className={style.ratio}>
-                        {syncData.homeCorner || contestInfo.homeCorner}
-                    </span>
-                    -
-                    <span className={style.ratio}>
-                        {syncData.awayCorner || contestInfo.awayCorner}
-                    </span>
-                </div>
+                {(matchState > 0 || matchState === -1) && (
+                    <div className={style.corner}>
+                        <CornerIcon className={style.cornerIcon} />
+                        <span className={style.ratio}>
+                            {syncData.homeCorner || contestInfo.homeCorner}
+                        </span>
+                        -
+                        <span className={style.ratio}>
+                            {syncData.awayCorner || contestInfo.awayCorner}
+                        </span>
+                    </div>
+                )}
 
                 {status === 'result' ? (
                     <div
