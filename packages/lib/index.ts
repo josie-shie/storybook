@@ -1,7 +1,7 @@
 export { fetcher } from './src/fetcher';
 export { soundList, soundMap, soundSource, soundDefault } from './src/sound';
 export type { Sound } from './src/sound';
-export { uploadImage } from './src/uploadImage';
+export { uploadImage, uploadImageToS3 } from './src/uploadImage';
 export { initStore } from './src/store';
 export { truncateFloatingPoint, formatNumberWithCommas } from './src/formatNumber';
 export { getRandomInt } from './src/random';

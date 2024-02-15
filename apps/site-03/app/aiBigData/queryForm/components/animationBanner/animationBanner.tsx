@@ -20,7 +20,8 @@ function QueryFormLayout() {
     const animateLinesRight = [
         <AnimationLine5 key={5} />,
         <AnimationLine6 key={6} />,
-        <AnimationLine7 key={7} />
+        <AnimationLine7 key={7} />,
+        <AnimationLine4 key={8} />
     ];
 
     return (
