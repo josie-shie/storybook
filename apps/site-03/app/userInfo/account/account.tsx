@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import type { UpdateMemberInfoRequest } from 'data-center';
-import { timestampToString, uploadImage } from 'lib';
+import { timestampToString, uploadImage, uploadImageToS3 } from 'lib';
 import { updateMemberInfo } from 'data-center';
 import dayjs from 'dayjs';
 import Header from '@/components/header/headerTitleDetail';
@@ -18,6 +18,10 @@ import { useAccountStore } from './accountStore';
 
 interface UploadResponse {
     filePath: string;
+}
+
+interface UploadS3Response {
+    success: string;
 }
 
 interface FormFieldProps {
@@ -117,9 +121,12 @@ function Account() {
         reader.readAsDataURL(blob);
 
         try {
-            const data: UploadResponse = await uploadImage(blob);
-            if (data.filePath) {
-                setImgUpload(data.filePath);
+            const data: UploadResponse = await uploadImage();
+            const uploadS3Response: UploadS3Response = await uploadImageToS3(blob, data.filePath);
+            if (uploadS3Response.success) {
+                const url = new URL(data.filePath);
+                const baseUrl = `${url.protocol}//${url.host}${url.pathname}`;
+                setImgUpload(baseUrl);
             } else {
                 setIsVisible('上传失败', 'error');
             }
