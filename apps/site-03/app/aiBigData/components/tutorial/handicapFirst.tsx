@@ -23,7 +23,7 @@ function Handicap({ isShowed }: { isShowed: Record<number, number> }) {
 
     return (
         <div className={style.images}>
-            <div className={`${style.tutorialTop} ${style.handicapTop}`}>
+            {/* <div className={`${style.tutorialTop} ${style.handicapTop}`}>
                 <Image
                     alt=""
                     className={style.image}
@@ -85,21 +85,22 @@ function Handicap({ isShowed }: { isShowed: Record<number, number> }) {
                         />
                     </motion.div>
                 </div>
-            </div>
-            {/* <div className={`${style.tutorialBottom} ${style.handicapBottom}`}>
+            </div> */}
+            <Image alt="" className={style.image} width={193} height={32} src={handicapTop.src} />
+            <div className={`${style.tutorialBottom} ${style.handicapBottom}`}>
                 <div className={style.table}>
                     <motion.div
                         animate={{ opacity: 1 }}
                         initial={isShowed[0] <= 0 ? { opacity: 0 } : false}
-                        transition={{ delay: 4, duration: 1 }}
+                        transition={{ delay: 0.5, duration: 1 }}
                     >
                         <Image
-                            width={114}
+                            width={113}
                             alt=""
                             className={`${style.image} ${
                                 isShowed[0] <= 0 && style.bottomAnimation
                             }`}
-                            height={66}
+                            height={99}
                             src={handicapBottomTable.src}
                         />
                     </motion.div>
@@ -107,7 +108,7 @@ function Handicap({ isShowed }: { isShowed: Record<number, number> }) {
                     <motion.div
                         animate={{ opacity: 1 }}
                         initial={isShowed[0] <= 0 ? { opacity: 0 } : false}
-                        transition={{ delay: 5, duration: 1 }}
+                        transition={{ delay: 1, duration: 1 }}
                     >
                         <HighlightHandIcon className={style.hightlightHand} />
                     </motion.div>
@@ -117,7 +118,7 @@ function Handicap({ isShowed }: { isShowed: Record<number, number> }) {
                     <motion.div
                         animate={{ opacity: 1 }}
                         initial={isShowed[0] <= 0 ? { opacity: 0 } : false}
-                        transition={{ delay: 5, duration: 1 }}
+                        transition={{ delay: 1.5, duration: 1 }}
                     >
                         <Image
                             width={122}
@@ -128,7 +129,7 @@ function Handicap({ isShowed }: { isShowed: Record<number, number> }) {
                         />
                     </motion.div>
                 </div>
-            </div> */}
+            </div>
         </div>
     );
 }

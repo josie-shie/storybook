@@ -189,7 +189,7 @@ function ArticleCard({ article }: { article: RecommendPost }) {
                             {article.tag.weekHitRateDisplay}
                             <i>%</i>
                         </span>
-                        <span className={style.hitName}>近十命中</span>
+                        <span className={style.hitName}>命中率</span>
                     </div>
                 </div>
 

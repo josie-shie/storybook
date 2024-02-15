@@ -51,7 +51,6 @@
             flex-wrap: wrap;
             align-items: center;
             gap: 4px;
-            min-height: 20px;
 
             :global(.baseTag) {
                 margin-right: 0;
@@ -88,7 +87,7 @@
             color: #e95e6b;
             font-size: 11px;
             font-style: normal;
-            font-weight: 500;
+            font-weight: bold;
             line-height: 18px;
         }
     }
