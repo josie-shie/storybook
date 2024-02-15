@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { useState } from 'react';
 import DefaultTeamLogoIcon from './img/defaultTeamLogo.png';
+import style from './teamLogo.module.scss';
 
 interface TeamLogoType {
     src: string;
@@ -21,7 +22,7 @@ function TeamLogo({ src, height, width, alt, className }: TeamLogoType) {
             !(!src.startsWith('/') && !src.startsWith('http://') && !src.startsWith('https://')) ? (
                 <Image
                     alt={alt || ''}
-                    className={`${className}`}
+                    className={`${style.teamLogo} ${className}`}
                     height={height}
                     onError={() => {
                         setTeamLogoStatus(false);

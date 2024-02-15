@@ -127,7 +127,7 @@ function List({
                         />
                     ) : null}
                 </div>
-                <div className={style.largeGap}>
+                <div className={`${style.largeGap} ${style.result}`}>
                     {secondRender ? (
                         <Football
                             pinnedContest={pinnedContest}
