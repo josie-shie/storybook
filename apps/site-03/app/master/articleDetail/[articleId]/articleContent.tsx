@@ -17,10 +17,10 @@ import type { GuessType } from '@/types/predict';
 import DefaultLogo from '@/app/football/[matchId]/img/defaultTeamLogo.png';
 import ConfirmPayDrawer from '@/components/confirmPayDrawer/confirmPayDrawer';
 import Star from './img/star.png';
-import Push from './img/push.png';
-import Win from './img/win.png';
-import Lose from './img/lose.png';
-import Draw from './img/draw.png';
+import Push from './img/push.svg';
+import Win from './img/win.svg';
+import Lose from './img/lose.svg';
+import Draw from './img/draw.svg';
 import style from './articleContent.module.scss';
 import RecommendationList from './recommendationList';
 import Wallet from './img/wallet.png';
@@ -83,12 +83,12 @@ function ArticleContent({
         setUserInfo(res.data);
     };
 
-    const filterImage = (value: GuessType): string => {
+    const filterImage = (value: GuessType): JSX.Element => {
         const result = {
-            NONE: Push.src,
-            WIN: Win.src,
-            DRAW: Draw.src,
-            LOSE: Lose.src
+            NONE: <Push className={style.icon} />,
+            WIN: <Win className={style.icon} />,
+            DRAW: <Draw className={style.icon}/>,
+            LOSE: <Lose className={style.icon} />
         };
         return result[value];
     };
@@ -258,14 +258,7 @@ function ArticleContent({
                                                         : ''
                                                 }`}
                                             >
-                                                {article.playType === 'HOMEAWAY' && (
-                                                    <Image
-                                                        alt=""
-                                                        height={32}
-                                                        src={filterImage(article.predictionResult)}
-                                                        width={32}
-                                                    />
-                                                )}
+                                                {article.playType === 'HOMEAWAY' && filterImage(article.predictionResult)}
                                                 <div
                                                     className={`${style.header} ${
                                                         article.playType === 'HOMEAWAY'
@@ -302,14 +295,7 @@ function ArticleContent({
                                                         : ''
                                                 }`}
                                             >
-                                                {article.playType === 'OVERUNDER' && (
-                                                    <Image
-                                                        alt=""
-                                                        height={32}
-                                                        src={filterImage(article.predictionResult)}
-                                                        width={32}
-                                                    />
-                                                )}
+                                                {article.playType === 'OVERUNDER' && filterImage(article.predictionResult)}
                                                 <div
                                                     className={`${style.header} ${
                                                         article.playType === 'OVERUNDER'
@@ -351,7 +337,6 @@ function ArticleContent({
                     <div className={style.title}>Ta还推荐了... ({recommendationList.length})</div>
                     <RecommendationList
                         isNoData={isNoData}
-                        params={params}
                         recommendationList={recommendationList}
                     />
                 </div>

@@ -3,7 +3,6 @@
 import { useRouter } from 'next/navigation';
 import { timestampToTodayTime } from 'lib';
 import type { RecommendPost } from 'data-center';
-import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 import { payForPost, getMemberInfo } from 'data-center';
@@ -13,9 +12,9 @@ import Avatar from '@/components/avatar/avatar';
 import NormalDialog from '@/components/normalDialog/normalDialog';
 import { useUserStore } from '@/store/userStore';
 import ConfirmPayDrawer from '@/components/confirmPayDrawer/confirmPayDrawer';
-import Win from '../../img/win.png';
-import Lose from '../../img/lose.png';
-import Draw from '../../img/draw.png';
+import Win from '../../img/win.svg';
+import Lose from '../../img/lose.svg';
+import Draw from '../../img/draw.svg';
 import Eye from './img/eye.svg';
 import LockOpen from './img/lockOpen.svg';
 import LockOpenBlue from './img/lockOpenBlue.svg';
@@ -90,17 +89,17 @@ function ArticleCard({ article }: { article: RecommendPost }) {
             <li className={style.articleCard}>
                 {article.predictionResult === 'WIN' && (
                     <div className={style.result}>
-                        <Image alt="" height={27} src={Win} width={27} />
+                        <Win />
                     </div>
                 )}
                 {article.predictionResult === 'LOSE' && (
                     <div className={style.result}>
-                        <Image alt="" height={27} src={Lose} width={27} />
+                        <Lose />
                     </div>
                 )}
                 {article.predictionResult === 'DRAW' && (
                     <div className={style.result}>
-                        <Image alt="" height={27} src={Draw} width={27} />
+                        <Draw />
                     </div>
                 )}
 

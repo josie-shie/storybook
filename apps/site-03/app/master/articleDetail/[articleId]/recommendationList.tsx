@@ -6,14 +6,14 @@ import { type RecommendPost } from 'data-center';
 import Tag from '@/components/tag/tag';
 import NoData from '@/components/baseNoData/noData';
 import style from './recommendationList.module.scss';
-import Win from './img/win.png';
-import Draw from './img/draw.png';
-import Lose from './img/lose.png';
+import Win from './img/win.svg';
+import Draw from './img/draw.svg';
+import Lose from './img/lose.svg';
 import Eye from './img/eye.svg';
 import LockOpenBlue from './img/lockOpenBlue.svg';
 import SkeletonLayout from './components/skeleton';
 
-function RecommendationItem({
+function RecommendationItem({ 
     recommendationList,
     isNoData
 }: {
@@ -47,31 +47,13 @@ function RecommendationItem({
                                 key={item.id}
                             >
                                 {item.predictionResult === 'WIN' && (
-                                    <Image
-                                        alt=""
-                                        className={style.icon}
-                                        height={27}
-                                        src={Win}
-                                        width={27}
-                                    />
+                                    <Win className={style.icon} />
                                 )}
                                 {item.predictionResult === 'DRAW' && (
-                                    <Image
-                                        alt=""
-                                        className={style.icon}
-                                        height={27}
-                                        src={Draw}
-                                        width={27}
-                                    />
+                                    <Draw className={style.icon} />
                                 )}
                                 {item.predictionResult === 'LOSE' && (
-                                    <Image
-                                        alt=""
-                                        className={style.icon}
-                                        height={27}
-                                        src={Lose}
-                                        width={27}
-                                    />
+                                    <Lose className={style.icon} />
                                 )}
                                 <div className={style.left}>
                                     <div className={style.name}>

@@ -17,7 +17,7 @@
 
 .recommendPredict {
     background: #fff;
-    height: calc(100dvh - 108px);
+    height: 100dvh;
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
     margin-top: -6px;
@@ -30,6 +30,8 @@
 
 .listEnd {
     text-align: center;
+    padding: 12px 0 54px 0;
+    background: #fff;
 
     p {
         color: #bfbfbf;
