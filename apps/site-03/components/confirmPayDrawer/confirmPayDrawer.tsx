@@ -4,6 +4,7 @@ import { useUserStore } from '@/store/userStore';
 import style from './confirmPayDrawer.module.scss';
 import Soccer from './img/soccer.svg';
 import Coin from './img/coin.svg';
+import CloseIcon from './img/close.svg';
 
 interface ConfirmPayDrawerProps {
     title?: string;
@@ -41,6 +42,7 @@ function ConfirmPayDrawer({
             transitionDuration={{ enter: 300, exit: 200 }}
         >
             <div className={style.confirmPay}>
+                <CloseIcon className={style.closeIcon} onClick={onClose} />
                 <div className={style.PayHandImg}>
                     <Soccer />
                 </div>

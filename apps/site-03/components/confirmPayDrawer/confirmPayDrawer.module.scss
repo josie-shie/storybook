@@ -2,9 +2,15 @@
     position: relative;
     padding: 16px 16px 40px;
 
+    .closeIcon {
+        position: absolute;
+        right: 10px;
+        top: 10px;
+    }
+
     .PayHandImg {
         position: absolute;
-        top: -72px;
+        top: -60px;
         right: 50%;
         transform: translateX(50%);
     }
