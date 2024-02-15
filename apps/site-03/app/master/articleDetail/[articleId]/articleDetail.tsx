@@ -140,6 +140,8 @@ function ArticleDetail({ params }: { params: { articleId: string } }) {
         void fetchPostDetail();
     }, []);
 
+    useEffect(() => {}, [article]);
+
     return (
         <>
             <Info article={article} info={info} isNoInfoData={isNoInfoData} setInfo={setInfo} />
