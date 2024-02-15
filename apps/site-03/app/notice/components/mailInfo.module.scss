@@ -54,7 +54,7 @@
                 border: 2px solid #fff;
                 overflow: hidden;
                 border-radius: 32px;
-                box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.15);
+                box-shadow: 0 4px 10px 0 rgb(0 0 0 / 15%);
             }
 
             .name {
@@ -116,7 +116,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: linear-gradient(to right, #2c5eb2 0%, #3a82fb 100%);
+    background: linear-gradient(91deg, #003c9f 0.72%, #2575fc 98.56%);
 
     .back {
         cursor: pointer;

@@ -6,8 +6,8 @@ export default function manifest(): MetadataRoute.Manifest {
         short_name: 'fsport',
         start_url: '/',
         display: 'fullscreen',
-        theme_color: '#1055C8',
-        background_color: '#1055C8',
+        theme_color: '#134BA8',
+        background_color: '#134BA8',
         description: 'The best sport site!',
         icons: [
             {

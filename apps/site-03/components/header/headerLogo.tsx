@@ -4,7 +4,6 @@ import type { ReactNode } from 'react';
 import { useEffect } from 'react';
 import Image from 'next/image';
 import { appStateStore } from '@/store/appStateStore';
-import dotBackground from './img/dotBackground.png';
 import style from './header.module.scss';
 import LogoIconImg from './img/logoIcon.svg';
 import Profile from './components/profile/profile';
@@ -15,13 +14,11 @@ import backLeftArrowImg from './img/backLeftArrow.png';
 function HeaderLogo({
     title,
     link = '/',
-    background = false,
     children,
     back = false
 }: {
     title?: string;
     link?: string;
-    background?: boolean;
     children?: ReactNode;
     back?: boolean;
 }) {
@@ -34,17 +31,9 @@ function HeaderLogo({
         }
     }, [isClientSide]);
 
-    const headerStyle = background
-        ? {
-              background: 'linear-gradient(to right, #2c5eb2 0%, #3a82fb 100%)'
-          }
-        : {
-              backgroundImage: `url(${dotBackground.src})`
-          };
-
     return (
         <div className={style.placeholder}>
-            <div className={`${style.header} ${style.headerTransparent}`} style={headerStyle}>
+            <div className={`${style.header} ${style.headerTransparent}`}>
                 <Link className={style.logo} href={link}>
                     {back ? (
                         <Image alt="" height={24} src={backLeftArrowImg} width={24} />

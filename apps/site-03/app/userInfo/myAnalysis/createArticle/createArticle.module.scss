@@ -1,7 +1,7 @@
 @import 'variables';
 
 .createArticle {
-    background: linear-gradient(to right, #2c5eb2 0%, #3a82fb 100%);
+    background: linear-gradient(91deg, #003c9f 0.72%, #2575fc 98.56%);
 
     .step1 {
         height: calc(100vh - 139px);
@@ -92,7 +92,7 @@
             margin-top: -14px;
             padding: 32px 0 24px;
             width: 100%;
-            background: linear-gradient(to right, #2c5eb2 0%, #3a82fb 100%);
+            background: linear-gradient(91deg, #003c9f 0.72%, #2575fc 98.56%);
 
             .title {
                 display: table;
@@ -101,7 +101,7 @@
                 padding: 4px 6px;
                 font-size: 12px;
                 border-radius: 4px;
-                background: rgba(255, 255, 255, 0.15);
+                background: rgb(255 255 255 / 15%);
             }
 
             .clubInfo {
@@ -127,7 +127,7 @@
 
                 .fight {
                     color: rgba(255 255 255 / 60%);
-                    font-family: 'Staatliches', sans-serif;
+                    font-family: Staatliches, sans-serif;
                     font-size: 28px;
                     font-style: normal;
                     font-weight: 400;
@@ -367,7 +367,7 @@
 
                     .fight {
                         color: #8d8d8d;
-                        font-family: 'Vazirmatn', sans-serif;
+                        font-family: Vazirmatn, sans-serif;
                         font-size: 28px;
                         letter-spacing: 2.8px;
                     }
@@ -377,7 +377,7 @@
                     color: #8d8d8d;
                     font-size: 14px;
                     font-weight: 300;
-                    padding: 12px 0 24px 0;
+                    padding: 12px 0 24px;
                 }
             }
 
