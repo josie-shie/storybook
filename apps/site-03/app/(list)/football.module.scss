@@ -36,7 +36,19 @@
         column-gap: 4px;
         font-weight: 600;
         line-height: normal;
-        color: #4489ff;
+        color: #8d8d8d;
+    }
+
+    :global {
+        .ui-filter-button {
+            color: #8d8d8d;
+        }
+
+        .ui-filter-button-icon {
+            path {
+                stroke: #8d8d8d;
+            }
+        }
     }
 }
 

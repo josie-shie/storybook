@@ -3,11 +3,11 @@
 import type { Metadata } from 'next';
 import { useEffect, useState } from 'react';
 import { getPostDetail, getMemberProfileWithMemberId } from 'data-center';
-import { type GetPostDetailResponse, GetMemberProfileWithMemberIdResponse } from 'data-center';
+import type { GetMemberProfileWithMemberIdResponse, type GetPostDetailResponse } from 'data-center';
 import type { GuessTeam, GuessType, PredictTypeWithLock } from '@/types/predict';
+import { useUserStore } from '@/store/userStore';
 import Info from './info';
 import ArticleContent from './articleContent';
-import { useUserStore } from '@/store/userStore';
 
 export const metadata: Metadata = {
     title: '专家预测 | FutureSport'
@@ -145,9 +145,9 @@ function ArticleDetail({ params }: { params: { articleId: string } }) {
             <Info article={article} info={info} isNoInfoData={isNoInfoData} setInfo={setInfo} />
             <ArticleContent
                 article={article}
+                fetchPostDetail={fetchPostDetail}
                 info={info}
                 isNoArticleData={isNoArticleData}
-                fetchPostDetail={fetchPostDetail}
                 params={params}
             />
         </>

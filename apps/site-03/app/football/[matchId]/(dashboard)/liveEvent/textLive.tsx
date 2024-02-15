@@ -31,7 +31,7 @@ function TextLive({ liveList }: { liveList: GetLiveTextResponse }) {
                                     {live.type && isType(live.type) ? (
                                         eventStatusMap[live.type]
                                     ) : (
-                                        <NoticeIcon />
+                                        <NoticeIcon className={style.noticeIcon} />
                                     )}
                                 </div>
                             </div>

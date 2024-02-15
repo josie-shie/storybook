@@ -22,6 +22,14 @@
                 align-items: center;
                 background-color: #fff;
                 z-index: 1;
+
+                svg {
+                    transform: scale(1.2);
+                }
+
+                .noticeIcon {
+                    transform: initial;
+                }
             }
 
             &::after {
@@ -81,7 +89,7 @@
                 border-bottom: none;
 
                 .text {
-                    background-color: #e6effe;
+                    background-color: #f2f6fd;
                 }
             }
         }

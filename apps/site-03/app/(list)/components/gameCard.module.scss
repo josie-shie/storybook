@@ -80,8 +80,9 @@
                 .liveAnimate {
                     width: 4px;
                     height: 4px;
-                    background-color: #e2ebff;
                     border-radius: 50%;
+                    box-shadow: 0 0 1px 1px #4489ff;
+                    background-color: #4489ff;
                     animation: flashing 1.5s linear infinite;
                 }
             }
@@ -173,7 +174,7 @@
             font-family: Vazirmatn, sans-serif;
 
             .noYet {
-                color: #8d8d8d;
+                color: #4a4a4a;
             }
         }
     }
@@ -280,7 +281,7 @@
 
         .homeAnimate {
             text-align: right;
-            background: linear-gradient(270deg, #4489ff 50%, rgb(237 58 69 / 0%) 94.53%);
+            background: linear-gradient(270deg, #4489ff 13.64%, #c9ddff 69.55%, #fff 93.75%);
             border-top-right-radius: 100px;
             border-bottom-right-radius: 100px;
             justify-content: flex-end;
@@ -298,7 +299,7 @@
         }
 
         .awayAnimate {
-            background: linear-gradient(90deg, #4489ff 50%, rgb(237 58 69 / 0%) 94.53%);
+            background: linear-gradient(90deg, #4489ff 13.64%, #c9ddff 69.55%, #fff 93.75%);
             border-top-left-radius: 100px;
             border-bottom-left-radius: 100px;
             transform: translateX(110%);
@@ -340,17 +341,14 @@
 
 @keyframes flashing {
     0% {
-        box-shadow: initial;
-        background-color: #e2ebff;
+        opacity: 1;
     }
 
     50% {
-        box-shadow: 0 0 1px 1px #4489ff;
-        background-color: #4489ff;
+        opacity: 0;
     }
 
     100% {
-        box-shadow: initial;
-        background-color: #e2ebff;
+        opacity: 1;
     }
 }

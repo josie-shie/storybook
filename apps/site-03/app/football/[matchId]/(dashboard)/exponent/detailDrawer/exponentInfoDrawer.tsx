@@ -9,11 +9,11 @@ import { getExponentDetail } from 'data-center';
 import { useState, useEffect } from 'react';
 import { useExponentStore } from '@/app/football/[matchId]/exponentStore';
 import { useContestDetailStore } from '@/app/football/[matchId]/contestDetailStore';
+import NoData from '@/components/baseNoData/noData';
+import type { TabListType } from '@/types/exponent';
 import BackIcon from '../img/back.svg';
 import style from './exponentInfoDrawer.module.scss';
 import DetailTable from './detailTable';
-
-type TabListType = 'handicap' | 'overUnder' | 'winDrawLose' | 'corners';
 
 interface ExponentInfoListType {
     handicap: Record<number, ExponentDetailHandicapsInfo[]>;
@@ -209,7 +209,12 @@ function ExponentInfoDrawer() {
     }, [companyList]);
 
     const handleChange = (tab: TabListType) => {
-        if (detailCompanyId in companyList[tab]) {
+        if (companyList[tab].length === 0) {
+            setDetailOption(detailCompanyId, tab);
+            return;
+        }
+
+        if (companyList[tab].includes(detailCompanyId)) {
             setDetailOption(detailCompanyId, tab);
         } else {
             setDetailOption(companyList[tab][0], tab);
@@ -217,8 +222,8 @@ function ExponentInfoDrawer() {
     };
 
     const fetchCompanyLiveOddsDetail = async () => {
+        setIsDetailLoading(true);
         try {
-            setIsDetailLoading(true);
             const res = await getExponentDetail(matchDetail.matchId, detailCompanyId);
 
             if (!res.success) {
@@ -242,10 +247,10 @@ function ExponentInfoDrawer() {
                     }
                 }
             }));
-            setIsDetailLoading(false);
         } catch (error) {
             console.error(error);
         }
+        setIsDetailLoading(false);
     };
 
     useEffect(() => {
@@ -289,7 +294,11 @@ function ExponentInfoDrawer() {
                 >
                     {tabList.map(tab => (
                         <Tab key={tab.value} label={tab.label} value={tab.value}>
-                            <DetailTable dataList={detailList} />
+                            {companyList[tab.value as TabListType].length > 0 ? (
+                                <DetailTable dataList={detailList} />
+                            ) : (
+                                <NoData key={tab.value} text="暂无资料" />
+                            )}
                         </Tab>
                     ))}
                 </Tabs>

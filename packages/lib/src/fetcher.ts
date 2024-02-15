@@ -22,7 +22,7 @@ const handleUnauthorized = () => {
 const apiPath: string | undefined = process.env.NEXT_PUBLIC_API_PATH;
 
 export const fetcher = async <TResponse, TData>(
-    { method = 'POST', headers = {}, data, timeout = 10 }: Fetcher<TData>,
+    { method = 'POST', headers = {}, data, timeout = 30 }: Fetcher<TData>,
     option = {}
 ): Promise<TResponse> => {
     const controller = new AbortController();

@@ -75,7 +75,7 @@ function WinDrawLose({
                     lastInfo.draw < info.draw && 'redText'
                 }`}
             >
-                {info.draw}
+                {handicapToString(info.draw)}
             </div>
             <div
                 className={`td ${lastInfo.awayWin > info.awayWin && 'greenText'} ${
@@ -109,7 +109,7 @@ function OverUnder({
                     lastInfo.line < info.line && 'redText'
                 }`}
             >
-                {info.line}
+                {handicapToString(info.line)}
             </div>
             <div
                 className={`td ${lastInfo.underOdds > info.underOdds && 'greenText'} ${
@@ -141,6 +141,10 @@ function OddDisplayTime({
         state,
         oddsChangeTime
     );
+
+    if (state === 0) {
+        return <>{handleMatchDateTime(oddsChangeTime)}</>;
+    }
 
     if (state === 1 || state === 3) {
         return <div className={`odd_${gameTime.state}`}>{gameTime.time}&apos;</div>;

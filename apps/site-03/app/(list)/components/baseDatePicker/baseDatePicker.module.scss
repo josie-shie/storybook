@@ -30,6 +30,15 @@
 
     :global(.MuiTab-root.Mui-selected) {
         color: #4489ff;
+
+        .tabDate,
+        .tabTitle {
+            font-weight: 500;
+        }
+
+        :global .ui-today {
+            font-weight: 600;
+        }
     }
 
     :global(.MuiTabs-indicator) {

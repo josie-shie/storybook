@@ -94,7 +94,7 @@ function BarChart({ chartData }: { chartData: StatisticsCategories }) {
                                 borderBottomRightRadius: handicap.lower <= 0 ? '4px' : 0
                             }}
                         >
-                            {handicap.upper > 16 ? `${handicap.upper}%` : null}
+                            {handicap.upper > 16 ? `上${handicap.upper}%` : null}
                         </div>
                         <div
                             className={`${style.block} ${style.bottom}`}
@@ -105,7 +105,7 @@ function BarChart({ chartData }: { chartData: StatisticsCategories }) {
                                 borderTopRightRadius: handicap.upper <= 0 ? '4px' : 0
                             }}
                         >
-                            {handicap.lower > 16 ? `${handicap.lower}%` : null}
+                            {handicap.lower > 16 ? `下${handicap.lower}%` : null}
                         </div>
                     </div>
                 </li>
@@ -121,7 +121,7 @@ function BarChart({ chartData }: { chartData: StatisticsCategories }) {
                                 borderBottomRightRadius: overUnder.under <= 0 ? '4px' : 0
                             }}
                         >
-                            {overUnder.over > 16 ? `${overUnder.over}%` : null}
+                            {overUnder.over > 16 ? `大${overUnder.over}%` : null}
                         </div>
                         <div
                             className={`${style.block} ${style.bottom}`}
@@ -132,7 +132,7 @@ function BarChart({ chartData }: { chartData: StatisticsCategories }) {
                                 borderTopRightRadius: overUnder.over <= 0 ? '4px' : 0
                             }}
                         >
-                            {overUnder.under > 16 ? `${overUnder.under}%` : null}
+                            {overUnder.under > 16 ? `小${overUnder.under}%` : null}
                         </div>
                     </div>
                 </li>
@@ -145,34 +145,38 @@ function BarChart({ chartData }: { chartData: StatisticsCategories }) {
                                 height: `${moneyLine.home}%`,
                                 display: !moneyLine.home ? 'none' : 'inherit',
                                 borderBottomLeftRadius:
-                                    moneyLine.draw && moneyLine.away <= 0 ? '4px' : 0,
+                                    moneyLine.draw || moneyLine.away > 0 ? 0 : '4px',
                                 borderBottomRightRadius:
-                                    moneyLine.draw && moneyLine.away <= 0 ? '4px' : 0
+                                    moneyLine.draw || moneyLine.away > 0 ? 0 : '4px'
                             }}
                         >
-                            {moneyLine.home > 16 ? `${moneyLine.home}%` : null}
+                            {moneyLine.home > 16 ? `主${moneyLine.home}%` : null}
                         </div>
                         <div
                             className={`${style.block} ${style.middle}`}
                             style={{
-                                height: `${moneyLine.away}%`,
-                                display: !moneyLine.away ? 'none' : 'flex',
-                                borderBottomLeftRadius: moneyLine.draw <= 0 ? '4px' : 0,
-                                borderBottomRightRadius: moneyLine.draw <= 0 ? '4px' : 0,
-                                borderTopLeftRadius: moneyLine.home <= 0 ? '4px' : 0,
-                                borderTopRightRadius: moneyLine.home <= 0 ? '4px' : 0
+                                height: `${moneyLine.draw}%`,
+                                display: !moneyLine.draw ? 'none' : 'flex',
+                                borderTopLeftRadius: moneyLine.home > 0 ? 0 : '4px',
+                                borderTopRightRadius: moneyLine.home > 0 ? 0 : '4px',
+                                borderBottomLeftRadius: moneyLine.away > 0 ? 0 : '4px',
+                                borderBottomRightRadius: moneyLine.away > 0 ? 0 : '4px'
                             }}
                         >
-                            {moneyLine.away > 16 ? `${moneyLine.away}%` : null}
+                            {moneyLine.draw > 16 ? `和${moneyLine.draw}%` : null}
                         </div>
                         <div
                             className={`${style.block} ${style.bottom}`}
                             style={{
-                                height: `${moneyLine.draw}%`,
-                                display: !moneyLine.draw ? 'none' : 'flex'
+                                height: `${moneyLine.away}%`,
+                                display: !moneyLine.away ? 'none' : 'flex',
+                                borderTopLeftRadius: moneyLine.home > 0 ? 0 : '4px',
+                                borderTopRightRadius: moneyLine.home > 0 ? 0 : '4px',
+                                borderBottomLeftRadius: moneyLine.draw > 0 ? '4px' : 0,
+                                borderBottomRightRadius: moneyLine.draw > 0 ? '4px' : 0
                             }}
                         >
-                            {moneyLine.draw > 16 ? `${moneyLine.draw}%` : null}
+                            {moneyLine.away > 16 ? `客${moneyLine.away}%` : null}
                         </div>
                     </div>
                 </li>

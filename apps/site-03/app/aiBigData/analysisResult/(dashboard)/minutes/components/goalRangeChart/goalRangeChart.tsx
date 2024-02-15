@@ -87,7 +87,7 @@ function GoalRangeChart({ chartList, maxIndex }: { chartList: ChartType[]; maxIn
             tooltip: {
                 show: true,
                 trigger: 'item',
-                triggerOn: 'click',
+                triggerOn: 'none',
                 backgroundColor: 'rgba(255, 255, 255, 0.8)',
                 textStyle: {
                     color: '#000',
@@ -140,6 +140,9 @@ function GoalRangeChart({ chartList, maxIndex }: { chartList: ChartType[]; maxIn
     return (
         <div className={style.goalRangeChart}>
             <div className={style.chartContainer}>
+                <div className={style.titleRow}>
+                    <div className={style.title}>进球数区间</div>
+                </div>
                 <ReactEcharts
                     ref={echartsRef}
                     option={options}

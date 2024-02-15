@@ -1,44 +1,65 @@
 'use client';
 import { useEffect, useState } from 'react';
+import type { GetFootballStatsMatchesResponse } from 'data-center';
+import { getFootballStatsMatches } from 'data-center';
+import { Tab, Tabs } from 'ui';
+import { Skeleton } from '@mui/material';
+import MagnifyingGlass from '@/app/aiBigData/analysisResult/img/magnifyingGlass.svg';
+import { useNotificationStore } from '@/store/notificationStore';
 import { useAnalyticsResultStore } from '../../analysisResultStore';
 import { useMatchFilterStore } from '../../matchFilterStore';
-import style from './handicap.module.scss';
-import BarChart from './components/barChart/barChart';
-import '@/app/football/[matchId]/dataTable.scss';
-import HandicapTable from './components/handicapTable/handicapTable';
-import MagnifyingGlass from '@/app/aiBigData/analysisResult/img/magnifyingGlass.svg';
-import { Tab, Tabs } from 'ui';
-import MixedLineChart from './components/mixedLineChart/mixedLineChart';
-import { GetFootballStatsMatchesResponse, getFootballStatsMatches } from 'data-center';
-import { useNotificationStore } from '@/store/notificationStore';
 import ContestCard from '../../components/contestCard/contestCard';
 import Footer from '../../components/footer/footer';
+import style from './handicap.module.scss';
+import BarChart from './components/barChart/barChart';
+import HandicapTable from './components/handicapTable/handicapTable';
+import MixedLineChart from './components/mixedLineChart/mixedLineChart';
+import '@/app/football/[matchId]/dataTable.scss';
 
 function ContestList({ matchIds }: { matchIds: number[] }) {
     const [matchList, setMatchList] = useState<GetFootballStatsMatchesResponse>([]);
-    const setIsNotificationVisible = useNotificationStore.use.setIsVisible();
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
+        let ignore = false;
+        const setIsNotificationVisible = useNotificationStore.getState().setIsVisible;
+        const fetchMatchList = async () => {
+            try {
+                setIsLoading(true);
+                const res = await getFootballStatsMatches({ matchIds });
+
+                if (!res.success) {
+                    const errorMessage = res.error ? res.error : '取得资料失败，请稍后再试';
+                    setIsNotificationVisible(errorMessage, 'error');
+                    return;
+                }
+
+                if (!ignore) {
+                    setMatchList(res.data);
+                }
+            } finally {
+                setIsLoading(false);
+            }
+        };
         void fetchMatchList();
+        return () => {
+            ignore = true;
+        };
     }, [matchIds]);
-
-    const fetchMatchList = async () => {
-        const res = await getFootballStatsMatches({ matchIds: matchIds });
-
-        if (!res.success) {
-            const errorMessage = res.error ? res.error : '取得资料失败，请稍后再试';
-            setIsNotificationVisible(errorMessage, 'error');
-            return;
-        }
-
-        setMatchList(res.data);
-    };
 
     return (
         <div className={style.matchList}>
-            {matchList.map(match => (
-                <ContestCard key={match.matchId} match={match} />
-            ))}
+            {!isLoading && matchList.length > 0 ? (
+                matchList.map(match => <ContestCard key={match.matchId} match={match} />)
+            ) : (
+                <div className={style.loadingSkeleton} style={{ height: '62px' }}>
+                    <Skeleton animation="wave" height="15px" variant="text" width="40px" />
+                    <div>
+                        <Skeleton animation="wave" height="15px" variant="text" width="100%" />
+                        <Skeleton animation="wave" height="20px" variant="text" width="100%" />
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
@@ -55,9 +76,9 @@ function OverUnderTrend() {
         <>
             <MixedLineChart
                 chartData={handicapEchart.full}
-                type="overUnder"
-                setMatchIds={setMatchIds}
                 lengendLabels={labels}
+                setMatchIds={setMatchIds}
+                tabType="overUnder"
             />
             <ContestList matchIds={matchIds} />
         </>
@@ -76,9 +97,9 @@ function HandicapTrend() {
         <>
             <MixedLineChart
                 chartData={handicapEchart.full}
-                type="handicap"
-                setMatchIds={setMatchIds}
                 lengendLabels={labels}
+                setMatchIds={setMatchIds}
+                tabType="handicap"
             />
             <ContestList matchIds={matchIds} />
         </>
@@ -87,9 +108,8 @@ function HandicapTrend() {
 
 function MatchesTrend() {
     const tabStyle = {
-        gap: 0,
-        swiperOpen: false,
-        buttonRadius: 0
+        gap: 4,
+        swiperOpen: false
     };
 
     const tabList = [
@@ -115,7 +135,6 @@ function MatchesTrend() {
             </div>
             <div className={style.tabContainer}>
                 <Tabs
-                    buttonRadius={tabStyle.buttonRadius}
                     gap={tabStyle.gap}
                     position="center"
                     styling="text"
@@ -200,11 +219,11 @@ function Handicap() {
                 bottomValue: moneylineAwayMatchList,
                 topLabel: '下',
                 middleLabel: '小',
-                bottomLabel: '客'
+                bottomLabel: '和'
             },
             {
                 bottomValue: moneylineDrawMatchList,
-                bottomLabel: '和'
+                bottomLabel: '客'
             }
         ];
         setTableData(newTableData);

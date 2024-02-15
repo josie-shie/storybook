@@ -42,11 +42,18 @@ function EndTime() {
 }
 
 function EventCard({ event }: { event: EventInfo }) {
+    const handleNoName = (name: string) => {
+        if (name === '0') {
+            return '';
+        }
+        return name;
+    };
+
     const swapEvent = (name: string, offName: string) => {
         return (
             <div className={style.swapPlayer}>
-                <p className={style.name}>{name}</p>
-                <p className={style.name}>{offName}</p>
+                <p className={style.name}>{handleNoName(name)}</p>
+                <p className={style.name}>{handleNoName(offName)}</p>
             </div>
         );
     };
@@ -58,7 +65,7 @@ function EventCard({ event }: { event: EventInfo }) {
                     <>
                         {event.kind === 11
                             ? swapEvent(event.nameChs, event.nameChs2)
-                            : event.nameChs}
+                            : handleNoName(event.nameChs)}
                         <div className={style.icon}>{eventStatusMap[event.kind] || 'here'}</div>
                     </>
                 ) : null}
@@ -73,7 +80,7 @@ function EventCard({ event }: { event: EventInfo }) {
                     <>
                         {event.kind === 11
                             ? swapEvent(event.nameChs, event.nameChs2)
-                            : event.nameChs}
+                            : handleNoName(event.nameChs)}
                         <div className={style.icon}>{eventStatusMap[event.kind] || 'here'}</div>
                     </>
                 )}

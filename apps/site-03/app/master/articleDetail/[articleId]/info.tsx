@@ -156,14 +156,12 @@ function Info({ article, info, isNoInfoData, setInfo }: InfoProps) {
                                 {info.fansCount > 0 && (
                                     <span>
                                         <User />
-                                        <span>粉丝</span>
                                         {info.fansCount}{' '}
                                     </span>
                                 )}
                                 {info.unlockedCount > 0 && (
                                     <span>
                                         <LockOpen />
-                                        <span>解锁</span>
                                         {info.unlockedCount}{' '}
                                     </span>
                                 )}

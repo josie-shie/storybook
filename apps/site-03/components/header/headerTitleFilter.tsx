@@ -1,18 +1,16 @@
 import type { ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import pureBackground from './img/pureBackground.png';
 import backLeftArrowImg from './img/backLeftArrow.png';
 import style from './header.module.scss';
 
 interface HeaderProps {
     title: string;
-    background?: boolean;
     children?: ReactNode;
     backHandler?: () => void;
 }
 
-function HeaderComponent({ title, background = false, children, backHandler }: HeaderProps) {
+function HeaderComponent({ title, children, backHandler }: HeaderProps) {
     const router = useRouter();
 
     const handleBackClick = () => {
@@ -23,17 +21,9 @@ function HeaderComponent({ title, background = false, children, backHandler }: H
         }
     };
 
-    const headerStyle = background
-        ? {
-              background: 'linear-gradient(to right, #194fa8 0%,#3981fa 100%)'
-          }
-        : {
-              backgroundImage: `url(${pureBackground.src})`
-          };
-
     return (
         <div className={style.placeholder}>
-            <div className={style.header} style={headerStyle}>
+            <div className={style.header}>
                 <div className={style.title}>
                     <Image
                         alt=""

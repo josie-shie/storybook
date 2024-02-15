@@ -2,15 +2,41 @@
     padding-top: 6px;
 
     .table {
-        border-collapse: collapse;
+        position: relative;
+        overflow: hidden;
+        border-collapse: separate;
+        border-spacing: 0;
+        border-radius: 8px;
         width: 100%;
-        border: #f3f3f3;
+        border: 1px solid #f3f3f3;
+        border-bottom: 0;
 
-        td {
-            border: 1px solid #dddddd;
-            text-align: center;
+        .tableBody {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .row {
+            flex: 1;
+        }
+
+        .tr {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .td {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 122px;
+            height: 50px;
+            border: 1px solid #f3f3f3;
+            border-top: 0;
+            border-left: 0;
             padding: 8px;
-            vertical-align: middle;
             font-size: 12px;
             font-weight: 500;
 
@@ -23,6 +49,11 @@
             .matchLength {
                 color: #4489ff;
             }
+        }
+
+        .bottomTd {
+            height: 33px;
+            border-top: 0;
         }
     }
 }

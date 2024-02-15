@@ -26,16 +26,18 @@ function RenderFilterList({
     const setIsNotificationVisible = useNotificationStore.use.setIsVisible();
     const filterCounter = useMatchFilterStore.use.filterCounter();
 
+    const latestFilterCounter = useRef(filterCounter);
+    useEffect(() => {
+        latestFilterCounter.current = filterCounter;
+    }, [filterCounter]);
+
     const handleUpdateFilter = (item: string, currentGroup: GroupType) => {
-        if (
-            filterCounter[currentGroup] >= 5 &&
-            !Object.prototype.hasOwnProperty.call(filterSelected[currentGroup], item)
-        ) {
+        if (latestFilterCounter.current[currentGroup] >= 5 && !filterSelected[currentGroup][item]) {
             setIsNotificationVisible('最多可选择5联赛', 'error');
             return;
+        } else {
+            filterPick(item, currentGroup);
         }
-
-        filterPick(item, currentGroup);
     };
 
     const renderListItem = (item: string) => (
