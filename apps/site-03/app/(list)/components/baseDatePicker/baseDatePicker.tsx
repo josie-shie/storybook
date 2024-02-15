@@ -28,7 +28,7 @@ const MONTH_DAY = 'M/D';
 
 function DateLabel({ date }: { date: dayjs.Dayjs }) {
     if (date.format(MONTH_DAY) === dayjs().format(MONTH_DAY)) {
-        return <div className={style.tabDate}>今日</div>;
+        return <div className={`${style.tabDate} ui-today`}>今日</div>;
     }
 
     return (
