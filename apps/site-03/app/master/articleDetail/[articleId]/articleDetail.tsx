@@ -3,7 +3,7 @@
 import type { Metadata } from 'next';
 import { useEffect, useState } from 'react';
 import { getPostDetail, getMemberProfileWithMemberId } from 'data-center';
-import type { GetMemberProfileWithMemberIdResponse, type GetPostDetailResponse } from 'data-center';
+import type { GetMemberProfileWithMemberIdResponse, GetPostDetailResponse } from 'data-center';
 import type { GuessTeam, GuessType, PredictTypeWithLock } from '@/types/predict';
 import { useUserStore } from '@/store/userStore';
 import Info from './info';
