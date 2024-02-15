@@ -10,17 +10,24 @@
         object-fit: contain;
     }
 
+    .imageTitle {
+        object-fit: contain;
+        margin-left: 24px;
+    }
+
     .slide {
         height: 100dvh;
 
         .images {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 56px;
-            justify-content: center;
+            position: relative;
+            top: 127px;
             padding: 0 30px;
             height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: flex-start;
+            gap: 30px;
         }
     }
 
@@ -174,7 +181,7 @@
             .highLightHand {
                 position: absolute;
                 left: 85px;
-                top: 168px;
+                top: 154px;
             }
         }
 

@@ -18,7 +18,7 @@ function Bodan({ isShowed }: { isShowed: Record<number, number> }) {
                         height={58}
                         width={154}
                         src={bodanDescription1.src}
-                        className={style.image}
+                        className={`${style.image} ${style.imageTitle}`}
                     />
                     <Image
                         alt=""

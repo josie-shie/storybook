@@ -98,13 +98,7 @@ function HandicapTips({ activeFilters }: { activeFilters: string[] }) {
                         src={teamLogo && teamLogo !== '0' ? teamLogo : defaultIcon}
                         width={20}
                     />
-                    <span
-                        className={`${style.text} ${isActiveRed ? style.redActive : ''} ${
-                            isActiveGreen ? style.greenActive : ''
-                        }`}
-                    >
-                        {teamChs}
-                    </span>
+                    <span className={style.text}>{teamChs}</span>
                 </div>
                 {isActiveRed || isActiveGreen ? <div className={tagStyle}>{oddsText}</div> : null}
             </div>

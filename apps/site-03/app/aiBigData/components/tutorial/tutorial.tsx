@@ -14,6 +14,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/scrollbar';
 import 'swiper/css/effect-fade';
+import HandicapFirst from './handicapFirst';
 import Handicap from './handicap';
 import Minutes from './minutes';
 import Bodan from './bodan';
@@ -32,7 +33,8 @@ function Tutorial({
     const [isShowed, setIsShowed] = useState<Record<number, number>>({
         0: 0,
         1: 0,
-        2: 0
+        2: 0,
+        3: 0
     });
 
     const showedTutorial = useQueryFormStore.use.showedTutorial();
@@ -40,16 +42,20 @@ function Tutorial({
 
     const handleSlideChange = (swiper: SwiperClass) => {
         setCurrentIndex(swiper.activeIndex);
-        setDefaultPageIndex && setDefaultPageIndex(swiper.activeIndex);
-        setIsShowed(prevState => {
-            const currentCount = prevState[swiper.activeIndex] || 0;
-            return {
-                ...prevState,
-                [swiper.activeIndex]: currentCount + 1
-            };
-        });
+        if (swiper.activeIndex < 2) {
+            setDefaultPageIndex && setDefaultPageIndex(0);
+        } else {
+            setDefaultPageIndex && setDefaultPageIndex(swiper.activeIndex - 1);
+            setIsShowed(prevState => {
+                const currentCount = prevState[swiper.activeIndex] || 0;
+                return {
+                    ...prevState,
+                    [swiper.activeIndex]: currentCount + 1
+                };
+            });
+        }
 
-        if (swiper.activeIndex === 2) {
+        if (swiper.activeIndex === 3) {
             setBottomText('关闭');
         } else {
             setBottomText('跳过');
@@ -92,17 +98,22 @@ function Tutorial({
                 <SwiperSlide>
                     {/* 需要判斷index不然預設全部渲染就沒有動畫效果 */}
                     <div className={style.slide}>
-                        {currentIndex === 0 && <Handicap isShowed={isShowed} />}
+                        {currentIndex === 0 && <HandicapFirst isShowed={isShowed} />}
                     </div>
                 </SwiperSlide>
                 <SwiperSlide>
                     <div className={style.slide}>
-                        {currentIndex === 1 && <Minutes isShowed={isShowed} />}
+                        {currentIndex === 1 && <Handicap isShowed={isShowed} />}
                     </div>
                 </SwiperSlide>
                 <SwiperSlide>
                     <div className={style.slide}>
-                        {currentIndex === 2 && <Bodan isShowed={isShowed} />}
+                        {currentIndex === 2 && <Minutes isShowed={isShowed} />}
+                    </div>
+                </SwiperSlide>
+                <SwiperSlide>
+                    <div className={style.slide}>
+                        {currentIndex === 3 && <Bodan isShowed={isShowed} />}
                     </div>
                 </SwiperSlide>
             </Swiper>
