@@ -61,3 +61,22 @@
         }
     }
 }
+
+.locked {
+    .button {
+        .team,
+        .user {
+            color: #bfbfbf;
+        }
+    }
+
+    .progress {
+        .play {
+            .home,
+            .ing,
+            .away {
+                color: #d9d9d9;
+            }
+        }
+    }
+}
