@@ -1,12 +1,10 @@
 'use client';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { InfiniteScroll } from 'ui';
 import CircularProgress from '@mui/material/CircularProgress';
 import { timestampToString } from 'lib';
-import { getMemberInfo } from 'data-center';
 import NoData from '@/components/baseNoData/noData';
-import { useUserStore } from '@/store/userStore';
 import { useLongDragonStore } from './longDragonStore';
 import defaultIcon from './img/defaultIcon.png';
 import iconHot from './img/hot.png';
@@ -22,20 +20,6 @@ interface RenderTeamProp {
 function HandicapTips({ activeFilters }: { activeFilters: string[] }) {
     const [rows, setRows] = useState({ full: 20, notYet: 0, finish: 0 });
     const handicapTips = useLongDragonStore.use.handicapTips();
-
-    const setUserInfo = useUserStore.use.setUserInfo();
-
-    const getUser = async () => {
-        const res = await getMemberInfo();
-        if (!res.success) {
-            return new Error();
-        }
-        setUserInfo(res.data);
-    };
-
-    useEffect(() => {
-        void getUser();
-    }, []);
 
     const filterMatches = (matches: typeof handicapTips) => {
         if (activeFilters.length === 0) {

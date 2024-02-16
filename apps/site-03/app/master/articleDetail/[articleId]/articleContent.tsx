@@ -12,6 +12,7 @@ import type {
 import { getPostList, payForPost, getMemberInfo } from 'data-center';
 import Skeleton from '@mui/material/Skeleton';
 import { useUserStore } from '@/store/userStore';
+import { useAuthStore } from '@/store/authStore';
 import NormalDialog from '@/components/normalDialog/normalDialog';
 import type { GuessType } from '@/types/predict';
 import DefaultLogo from '@/app/football/[matchId]/img/defaultTeamLogo.png';
@@ -48,11 +49,14 @@ function ArticleContent({
 
     const userInfo = useUserStore.use.userInfo();
     const isLogin = useUserStore.use.isLogin();
+    const setAuthQuery = useUserStore.use.setAuthQuery();
+    const setIsDrawerOpen = useAuthStore.use.setIsDrawerOpen();
     const setUserInfo = useUserStore.use.setUserInfo();
 
     const unlockArticle = () => {
         if (!isLogin) {
-            router.push(`/master/articleDetail/${params.articleId}?auth=login`);
+            setAuthQuery('login');
+            setIsDrawerOpen(true);
             return;
         }
         setOpenPaid(true);

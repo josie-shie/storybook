@@ -4,7 +4,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, FormControl } from '@mui/material';
 import type { LoginRequest } from 'data-center';
-import { getVerificationCaptcha, login } from 'data-center';
+import { getVerificationCaptcha, login, getMemberInfo } from 'data-center';
 import { useEffect } from 'react';
 import {
     VertifyCodeByImage,
@@ -36,6 +36,8 @@ const schema = yup.object().shape({
 
 function Login() {
     const setToken = useUserStore.use.setToken();
+    const setUserInfo = useUserStore.use.setUserInfo();
+    const setIsLogin = useUserStore.use.setIsLogin();
     const loginStore = useAuthStore.use.login();
     const setIsDrawerOpen = useAuthStore.use.setIsDrawerOpen();
     const { verifyPhoto, setVerifyPhoto } = loginStore;
@@ -63,6 +65,13 @@ function Login() {
 
     const { countryCode, mobileNumber, password, verificationCode, verifyToken } = watch();
 
+    const getUserInfo = async () => {
+        const res = await getMemberInfo();
+        if (res.success) {
+            setUserInfo(res.data);
+        }
+    };
+
     const onSubmit = async (data: LoginRequest) => {
         const res = await login(data);
 
@@ -76,7 +85,8 @@ function Login() {
         setToken(res.data);
         setIsVisible('登入成功！', 'success');
         removeAuthQuery();
-        location.reload();
+        setIsLogin(true);
+        void getUserInfo();
     };
 
     const getCaptcha = async () => {

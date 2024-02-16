@@ -5,20 +5,21 @@ import { useRouter } from 'next/navigation';
 import type { CheckMatchesCountRequest, GetFootballLeagueRequest } from 'data-center';
 import { checkMatchesCount, getFootballLeague } from 'data-center';
 import { useCallback, useEffect, useState } from 'react';
+import dayjs from 'dayjs';
 import { useUserStore } from '@/store/userStore';
+import { useAuthStore } from '@/store/authStore';
 import { useNotificationStore } from '@/store/notificationStore';
+import ConfirmPayDrawer from '@/components/confirmPayDrawer/confirmPayDrawer';
 import { useQueryFormStore } from '../queryFormStore';
 import { useMatchFilterStore } from '../matchFilterStore';
 import Dialog from '../components/dialog/dialog';
+import Tutorial from '../components/tutorial/tutorial';
 import style from './queryForm.module.scss';
 import Tips from './components/tips/tips';
 import LeagueDrawer from './components/leagueDrawer/leagueDrawer';
 import Form from './components/form/form';
 import CoinIcon from './img/coin.svg';
-import dayjs from 'dayjs';
-import Tutorial from '../components/tutorial/tutorial';
 import RechargeIcon from './img/rechargeIcon.png';
-import ConfirmPayDrawer from '@/components/confirmPayDrawer/confirmPayDrawer';
 
 function RechargeAlert() {
     const router = useRouter();
@@ -105,6 +106,10 @@ function CheckLeague({ leagueIdList }: { leagueIdList: number[] }) {
 function SubmitButton({ setZeroMatchList }: { setZeroMatchList: (list: number[]) => void }) {
     const router = useRouter();
     const userInfo = useUserStore.use.userInfo();
+    const isLogin = useUserStore.use.isLogin();
+    const setAuthQuery = useUserStore.use.setAuthQuery();
+    const setIsDrawerOpen = useAuthStore.use.setIsDrawerOpen();
+
     const isVip = useUserStore.use.memberSubscribeStatus().planId; // 1是VIP
     const setOpenNormalDialog = useQueryFormStore.use.setOpenNormalDialog();
     const setIsOpenPayDrawer = useQueryFormStore.use.setIsOpenPayDrawer();
@@ -121,6 +126,11 @@ function SubmitButton({ setZeroMatchList }: { setZeroMatchList: (list: number[])
     const isOpenPayDrawer = useQueryFormStore.use.isOpenPayDrawer();
 
     const submit = async () => {
+        if (!isLogin) {
+            setAuthQuery('login');
+            setIsDrawerOpen(true);
+            return;
+        }
         if (!selectedleagueIdList.length) {
             setIsNotificationVisible('请选择联赛', 'error');
             return;
@@ -142,7 +152,6 @@ function SubmitButton({ setZeroMatchList }: { setZeroMatchList: (list: number[])
             }
 
             setIsOpenPayDrawer(true);
-            return;
         } else {
             setIsAnalysisBySearch(true);
             router.push('/aiBigData/analysisResult');
@@ -227,7 +236,7 @@ function FormContent({ setZeroMatchList }: { setZeroMatchList: (list: number[]) 
 
     return (
         <div className={style.formContent}>
-            <Tips setShowedTutorial={setShowedTutorial} setPlayTutorial={setPlayTutorial} />
+            <Tips setPlayTutorial={setPlayTutorial} setShowedTutorial={setShowedTutorial} />
             <div className={style.formSelect}>
                 <LeagueDrawer />
                 <Form />
