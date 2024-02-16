@@ -158,19 +158,14 @@ function GuessBar() {
     const liveBarRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
-        let init = true;
         async function fetchGuessProportion() {
-            const guessProportion = await getGuessProportion({ matchId, memberId: userInfo.uid });
-            if (!init) return;
-            if (guessProportion.success) {
-                setGuessProportion(guessProportion.data);
-            }
+            const guessProportion = await getGuessProportion({
+                matchId,
+                memberId: isLogin ? userInfo.uid : 1
+            });
+            if (guessProportion.success) setGuessProportion(guessProportion.data);
         }
-        if (isLogin) void fetchGuessProportion();
-
-        return () => {
-            init = false;
-        };
+        void fetchGuessProportion();
     }, [isLogin, matchId, setGuessProportion, userInfo.uid]);
 
     useEffect(() => {
