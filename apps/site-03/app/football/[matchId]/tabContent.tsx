@@ -152,7 +152,38 @@ function TabContent({
                 corners: []
             }
         } as GetExponentResponse,
-        lineUpData: {} as GetLineUpInfoResponse,
+        lineUpData: {
+            matchId: 0,
+            teams: {
+                venueId: 0,
+                venueEn: '',
+                venueZh: '',
+                home: {
+                    teamId: 0,
+                    arrayFormat: '',
+                    winRate: 0,
+                    teamColor: '',
+                    coachId: 0,
+                    coachNameEn: '',
+                    coachNameZh: '',
+                    coachNameZht: '',
+                    coachLogo: '',
+                    players: []
+                },
+                away: {
+                    teamId: 0,
+                    arrayFormat: '',
+                    winRate: 0,
+                    teamColor: '',
+                    coachId: 0,
+                    coachNameEn: '',
+                    coachNameZh: '',
+                    coachNameZht: '',
+                    coachLogo: '',
+                    players: []
+                }
+            }
+        } as GetLineUpInfoResponse,
         textLive: [] as GetLiveTextResponse,
         information: {
             bad: {

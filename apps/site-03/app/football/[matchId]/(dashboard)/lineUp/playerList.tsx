@@ -1,4 +1,5 @@
 'use client';
+import type { PlayerList } from 'data-center';
 import Coat from './img/coat.png';
 // import ChangeUp from './img/changeUp.svg';
 // import Ball from './img/ball.svg';
@@ -7,7 +8,6 @@ import Coat from './img/coat.png';
 // import Support from './img/support.svg';
 // import Winner from './img/winner.svg';
 import style from './playerList.module.scss';
-import type { PlayerList } from 'data-center';
 
 interface PlayerListProps {
     homeBackUp: PlayerList[];
@@ -22,16 +22,16 @@ interface PlayerItemProps {
     playerList: PlayerList;
     teamColor: string;
     formation: string;
-    isLeft?: boolean;
+    isRight?: boolean;
 }
 
-function PlayerItem({ playerList, teamColor, formation, isLeft = false }: PlayerItemProps) {
+function PlayerItem({ playerList, teamColor, formation, isRight = false }: PlayerItemProps) {
     const firstCharOfFormation = formation[0];
 
-    const getPositionName = (formation: string, position: number): string => {
+    const getPositionName = (format: string, position: number): string => {
         let positionsMap: string[];
 
-        switch (formation) {
+        switch (format) {
             case '3':
                 positionsMap = ['守门员', '后卫', '中场', '前锋'];
                 break;
@@ -58,7 +58,7 @@ function PlayerItem({ playerList, teamColor, formation, isLeft = false }: Player
     };
 
     return (
-        <div className={`${style.playerItem} ${isLeft ? style.rightLine : ''}`}>
+        <div className={`${style.playerItem} ${isRight ? style.leftLine : ''}`}>
             <div className={style.detail}>
                 <div className={style.left} style={{ backgroundColor: teamColor }}>
                     <div className={style.coat} style={{ backgroundImage: `url(${Coat.src})` }}>
@@ -105,21 +105,21 @@ function PlayerList({
             <div className={style.container}>
                 {homeBackUp.map(item => (
                     <PlayerItem
+                        formation={homeFormation}
                         key={item.playerId}
                         playerList={item}
                         teamColor={homeColor}
-                        formation={homeFormation}
-                        isLeft={true}
                     />
                 ))}
             </div>
             <div className={style.container}>
                 {awayBackUp.map(item => (
                     <PlayerItem
+                        formation={awayFormation}
+                        isRight
                         key={item.playerId}
                         playerList={item}
                         teamColor={awayColor}
-                        formation={awayFormation}
                     />
                 ))}
             </div>

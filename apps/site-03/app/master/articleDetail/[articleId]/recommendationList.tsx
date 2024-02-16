@@ -13,7 +13,7 @@ import Eye from './img/eye.svg';
 import LockOpenBlue from './img/lockOpenBlue.svg';
 import SkeletonLayout from './components/skeleton';
 
-function RecommendationItem({ 
+function RecommendationItem({
     recommendationList,
     isNoData
 }: {
@@ -46,9 +46,7 @@ function RecommendationItem({
                                 href={`/master/articleDetail/${item.id}`}
                                 key={item.id}
                             >
-                                {item.predictionResult === 'WIN' && (
-                                    <Win className={style.icon} />
-                                )}
+                                {item.predictionResult === 'WIN' && <Win className={style.icon} />}
                                 {item.predictionResult === 'DRAW' && (
                                     <Draw className={style.icon} />
                                 )}

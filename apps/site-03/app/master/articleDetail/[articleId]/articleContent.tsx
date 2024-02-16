@@ -87,7 +87,7 @@ function ArticleContent({
         const result = {
             NONE: <Push className={style.icon} />,
             WIN: <Win className={style.icon} />,
-            DRAW: <Draw className={style.icon}/>,
+            DRAW: <Draw className={style.icon} />,
             LOSE: <Lose className={style.icon} />
         };
         return result[value];
@@ -258,7 +258,8 @@ function ArticleContent({
                                                         : ''
                                                 }`}
                                             >
-                                                {article.playType === 'HOMEAWAY' && filterImage(article.predictionResult)}
+                                                {article.playType === 'HOMEAWAY' &&
+                                                    filterImage(article.predictionResult)}
                                                 <div
                                                     className={`${style.header} ${
                                                         article.playType === 'HOMEAWAY'
@@ -295,7 +296,8 @@ function ArticleContent({
                                                         : ''
                                                 }`}
                                             >
-                                                {article.playType === 'OVERUNDER' && filterImage(article.predictionResult)}
+                                                {article.playType === 'OVERUNDER' &&
+                                                    filterImage(article.predictionResult)}
                                                 <div
                                                     className={`${style.header} ${
                                                         article.playType === 'OVERUNDER'
