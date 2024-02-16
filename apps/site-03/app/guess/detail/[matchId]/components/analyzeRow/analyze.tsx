@@ -5,9 +5,10 @@ import style from './analyze.module.scss';
 interface AnalyzeProps {
     homeType: string;
     awayType: string;
+    isLocked: boolean;
 }
 
-function AnalyzeRow({ homeType, awayType }: AnalyzeProps) {
+function AnalyzeRow({ homeType, awayType, isLocked }: AnalyzeProps) {
     const highWinRateTrend = useGuessDetailStore.use.highWinRateTrend();
 
     const calculatePercentage = (a: number, b: number) => {
@@ -26,20 +27,20 @@ function AnalyzeRow({ homeType, awayType }: AnalyzeProps) {
     const rightPercent = 100 - leftPercent;
 
     return (
-        <div className={style.row}>
+        <div className={`${style.row} ${isLocked ? style.locked : ''}`}>
             <div className={style.button}>
                 <span className={style.team}>{homeType}</span>
                 <span className={style.user}>{leftPercent}%</span>
             </div>
             <div className={style.progress}>
                 <div className={style.play}>
-                    <span className={style.home}>{leftValue}</span>
+                    <span className={style.home}>{isLocked ? 88 : leftValue}</span>
                     <span className={style.ing}>一球/球半</span>
-                    <span className={style.away}>{rightValue}</span>
+                    <span className={style.away}>{isLocked ? 88 : rightValue}</span>
                 </div>
                 <ProgressBar
-                    background="#DCE9FF"
-                    fill="#276ce1"
+                    background={isLocked ? '#F3F3F3' : '#DCE9FF'}
+                    fill={isLocked ? '#F3F3F3' : '#276ce1'}
                     height={10}
                     radius
                     value={leftPercent}

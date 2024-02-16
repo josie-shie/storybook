@@ -16,11 +16,11 @@ import { useGuessDetailStore } from './guessDetailStore';
 
 function Trend() {
     const highWinRateTrend = useGuessDetailStore.use.highWinRateTrend();
-    const showdistributed = highWinRateTrend.memberPermission;
+    const isLocked = !highWinRateTrend.memberPermission;
 
     if (!highWinRateTrend.enoughProData) return null;
     return (
-        <div className={`${style.area} ${!showdistributed ? style.fade : ''}`}>
+        <div className={`${style.area} ${isLocked ? style.fade : ''}`}>
             <div className={style.title}>
                 <div className={style.name}>
                     <TitleIcon />
@@ -28,17 +28,17 @@ function Trend() {
                 </div>
             </div>
             <div className={style.analyze}>
-                <AnalyzeRow awayType="客" homeType="主" />
-                <AnalyzeRow awayType="小" homeType="大" />
+                <AnalyzeRow awayType="客" homeType="主" isLocked={isLocked} />
+                <AnalyzeRow awayType="小" homeType="大" isLocked={isLocked} />
             </div>
             <div className={style.masterGuess}>{highWinRateTrend.proMemberNum}位高手猜過</div>
-            {showdistributed ? null : (
+            {isLocked ? (
                 <div className={style.blurCover}>
                     <TitleIcon />
                     <span>猜球后即可解锁</span>
                     <span>高胜率玩家风向</span>
                 </div>
-            )}
+            ) : null}
             <div className={style.ruleContainer}>
                 <Rule />
             </div>
