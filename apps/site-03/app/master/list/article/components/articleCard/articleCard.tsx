@@ -103,13 +103,13 @@ function ArticleCard({ article }: { article: RecommendPost }) {
                     </div>
                 )}
 
-                {(article.isUnlocked || article.price === 0) && (
+                {article.isUnlocked || article.price === 0 ? (
                     <div className={style.unlockStatus}>
                         <span className={style.unlocked}>
-                            <LockOpenBlue width={16} height={16} />
+                            <LockOpenBlue height={16} width={16} />
                         </span>
                     </div>
-                )}
+                ) : null}
 
                 <div className={style.user}>
                     <Link
@@ -126,7 +126,7 @@ function ArticleCard({ article }: { article: RecommendPost }) {
                             {article.mentorName}
                         </Link>
                         <div className={style.tagsContainer}>
-                            {showHandicap && (
+                            {showHandicap ? (
                                 <Tag
                                     background="#f3f3f3"
                                     borderColor="#bfbfbf"
@@ -135,8 +135,8 @@ function ArticleCard({ article }: { article: RecommendPost }) {
                                         article.mentorArticleCount.counts
                                     }場`}
                                 />
-                            )}
-                            {showOverUnder && (
+                            ) : null}
+                            {showOverUnder ? (
                                 <Tag
                                     background="#f3f3f3"
                                     borderColor="#bfbfbf"
@@ -145,12 +145,12 @@ function ArticleCard({ article }: { article: RecommendPost }) {
                                         article.mentorArticleCount.counts
                                     }場`}
                                 />
-                            )}
+                            ) : null}
                             {article.tag.weekHitRecentTen > 0 && (
                                 <TagSplit
+                                    hit
                                     isBlueBg={false}
                                     number={article.tag.weekHitRecentTen}
-                                    hit={true}
                                     text="近"
                                 />
                             )}

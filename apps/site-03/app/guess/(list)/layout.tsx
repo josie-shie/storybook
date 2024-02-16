@@ -14,8 +14,8 @@ function InterceptingContent({ para }: { para: ReactNode }) {
         <>
             {params.matchId || params.masterId ? (
                 <motion.div
-                    animate={{ transform: 'translateX(0)' }}
-                    initial={{ transform: 'translateX(100%)' }}
+                    animate={{ left: '0%' }}
+                    initial={{ left: '100%' }}
                     key="interceptingContent"
                     style={{
                         background: '#fff',

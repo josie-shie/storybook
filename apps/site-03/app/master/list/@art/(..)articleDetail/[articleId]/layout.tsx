@@ -10,10 +10,12 @@ function Layout({ params }: { params: { articleId: string } }) {
     useLockBodyScroll();
 
     return (
-        <div className={style.articleLayout}>
+        <div className={style.layout}>
             <Header title="专家预测文章" />
-            <ArticleDetail params={params} />
-            <Footer />
+            <div className={style.masterAvatarLayout}>
+                <ArticleDetail params={params} />
+                <Footer />
+            </div>
         </div>
     );
 }

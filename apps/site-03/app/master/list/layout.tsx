@@ -16,8 +16,8 @@ function InterceptingArticle({ art }: { art: ReactNode }) {
         <>
             {params.articleId && isMatchedURL ? (
                 <motion.div
-                    animate={{ transform: 'translateX(0)' }}
-                    initial={{ transform: 'translateX(100%)' }}
+                    animate={{ left: '0%' }}
+                    initial={{ left: '100%' }}
                     key="modalArticleDetail"
                     style={{
                         background: '#fff',
@@ -46,8 +46,8 @@ function InterceptingExpert({ personal }: { personal: ReactNode }) {
         <>
             {params.masterId && isMatchedURL ? (
                 <motion.div
-                    animate={{ transform: 'translateX(0)' }}
-                    initial={{ transform: 'translateX(100%)' }}
+                    animate={{ left: '0%' }}
+                    initial={{ left: '100%' }}
                     key="modalMasterDetail"
                     style={{
                         background: '#fff',
