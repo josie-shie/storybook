@@ -83,6 +83,7 @@ function BettingRow({ detail, leftLabel, rightLabel }: BettingProps) {
                         away: res.data.away || 0,
                         over: res.data.over || 0,
                         under: res.data.under || 0,
+                        proMemberNum: res.data.proMemberNum || 0,
                         memberPermission: true
                     };
                     setHighWinRateTrend(newProDistrib);
@@ -99,11 +100,24 @@ function BettingRow({ detail, leftLabel, rightLabel }: BettingProps) {
             };
             const res = await addGuess({
                 matchId: Number(matchId),
-                predictedPlay: betting.toUpperCase() as 'OVER' | 'UNDER'
+                predictedPlay: betting.toUpperCase() as 'OVER' | 'UNDER',
+                needProDistrib: true
             });
             if (res.success) {
                 setGuessesLeft(res.data.remainingGuessTimes);
                 newDetail.participants = res.data.guessNum;
+                if (res.data.enoughProData) {
+                    const newProDistrib = {
+                        ...highWinRateTrend,
+                        home: res.data.home || 0,
+                        away: res.data.away || 0,
+                        over: res.data.over || 0,
+                        under: res.data.under || 0,
+                        proMemberNum: res.data.proMemberNum || 0,
+                        memberPermission: true
+                    };
+                    setHighWinRateTrend(newProDistrib);
+                }
             }
             setGuessDetail({ ...newDetail });
         }
