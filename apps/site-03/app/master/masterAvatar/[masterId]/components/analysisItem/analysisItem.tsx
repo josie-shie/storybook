@@ -81,7 +81,7 @@ function AnalysisItem({
                 <ul className={style.article}>
                     {predictArticleList.map(item => {
                         return (
-                            <li className={style.articleCard}>
+                            <li className={style.articleCard} key={item.id}>
                                 {item.predictionResult === 'WIN' && (
                                     <div className={style.result}>
                                         <Image alt="" height={27} src={IconWin} width={27} />

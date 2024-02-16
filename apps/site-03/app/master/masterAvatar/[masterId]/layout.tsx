@@ -4,7 +4,6 @@ import type { ReactNode } from 'react';
 import Header from '@/components/header/headerTransparent';
 import Info from './info';
 import style from './layout.module.scss';
-import Footer from '@/components/footer/footer';
 
 function MasterAvatarLayout({
     params,
@@ -24,7 +23,6 @@ function MasterAvatarLayout({
                 <Info params={params} />
                 {children}
             </div>
-            <Footer />
         </div>
     );
 }

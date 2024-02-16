@@ -34,7 +34,6 @@ function RenderFilterList({
     const handleUpdateFilter = (item: string, currentGroup: GroupType) => {
         if (latestFilterCounter.current[currentGroup] >= 5 && !filterSelected[currentGroup][item]) {
             setIsNotificationVisible('最多可选择5联赛', 'error');
-            return;
         } else {
             filterPick(item, currentGroup);
         }

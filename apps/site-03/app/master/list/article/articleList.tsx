@@ -55,17 +55,21 @@ function ArticleList() {
 
     return (
         <>
-            <Image alt="banner" src={banner} className={style.banner} width={390} height={60} />
+            <Image alt="banner" className={style.banner} height={60} src={banner} width={390} />
             <div className={style.recommendPredict}>
                 {articleList.length === 0 && isNoData === null && <SkeletonLayout />}
 
                 {articleList.length === 0 && isNoData ? (
                     <NoData text="暂无资料" />
                 ) : (
-                    <ul className={style.article}>
-                        {articleList.map(article => {
-                            return <ArticleCard article={article} key={article.id} />;
-                        })}
+                    <div className={style.list}>
+                        {articleList.length !== 0 ? (
+                            <ul className={style.article}>
+                                {articleList.map(article => {
+                                    return <ArticleCard article={article} key={article.id} />;
+                                })}
+                            </ul>
+                        ) : null}
                         {currentPage < totalPage ? (
                             <InfiniteScroll onVisible={loadMoreList}>
                                 <div className={style.loadMore}>
@@ -77,7 +81,7 @@ function ArticleList() {
                                 <p>已滑到底啰</p>
                             </div>
                         )}
-                    </ul>
+                    </div>
                 )}
             </div>
         </>

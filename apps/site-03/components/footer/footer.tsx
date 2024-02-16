@@ -2,8 +2,6 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { usePathname } from 'next/navigation';
-import { useUserStore } from '@/store/userStore';
-import { useAuthStore } from '@/store/authStore';
 import style from './footer.module.scss';
 import GameIcon from './img/game.svg';
 import GuessIcon from './img/guess.svg';
@@ -28,8 +26,7 @@ const CategoryList = [
         label: '智能分析',
         value: '/aiBigData/queryForm',
         includedRouters: ['/aiBigData'],
-        icon: <AnalyzeIcon className={`${style.icon} ${style.analyzeIcon}`} />,
-        validate: true
+        icon: <AnalyzeIcon className={`${style.icon} ${style.analyzeIcon}`} />
     },
     {
         label: '专家',
@@ -52,19 +49,11 @@ const CategoryList = [
 
 function FooterComponent() {
     const pathname = usePathname();
-    const isLogin = useUserStore.use.isLogin();
-    const setAuthQuery = useUserStore.use.setAuthQuery();
-    const setIsDrawerOpen = useAuthStore.use.setIsDrawerOpen();
 
     const [activeItem, setActiveItem] = useState(pathname);
 
     const updateActive = (path: string) => {
         setActiveItem(path);
-    };
-
-    const openLoginDrawer = () => {
-        setAuthQuery('login');
-        setIsDrawerOpen(true);
     };
 
     return (
@@ -78,12 +67,8 @@ function FooterComponent() {
                             }`}
                             href={menu.value}
                             key={menu.value}
-                            onClick={e => {
+                            onClick={() => {
                                 updateActive(menu.value);
-                                if (menu.validate && !isLogin) {
-                                    openLoginDrawer();
-                                    e.preventDefault();
-                                }
                             }}
                             title={menu.label}
                         >
