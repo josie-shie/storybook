@@ -1,6 +1,6 @@
 .articleItem {
     position: relative;
-    padding: 12px 12px 0 12px;
+    padding: 12px 12px 0;
     border-bottom: 1px solid #f3f3f3;
 
     &:last-child {
@@ -18,8 +18,8 @@
     position: absolute;
     top: 0;
     left: 0;
-    width: 0px;
-    height: 0px;
+    width: 0;
+    height: 0;
     border-top: 30px solid #e6effe;
     border-right: 30px solid transparent;
 
@@ -87,7 +87,7 @@
             color: #e95e6b;
             font-size: 11px;
             font-style: normal;
-            font-weight: bold;
+            font-weight: 800;
             line-height: 18px;
         }
     }

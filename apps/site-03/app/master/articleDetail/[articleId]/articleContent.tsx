@@ -4,13 +4,13 @@ import Image from 'next/image';
 import { timestampToTodayTime, convertHandicap } from 'lib';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import {
-    type GetPostDetailResponse,
+import type {
     GetMemberProfileWithMemberIdResponse,
-    getMemberInfo,
-    type RecommendPost
+    GetPostDetailResponse,
+    RecommendPost
 } from 'data-center';
-import { getPostList, payForPost } from 'data-center';
+import { getPostList, payForPost, getMemberInfo } from 'data-center';
+import Skeleton from '@mui/material/Skeleton';
 import { useUserStore } from '@/store/userStore';
 import NormalDialog from '@/components/normalDialog/normalDialog';
 import type { GuessType } from '@/types/predict';
@@ -24,7 +24,6 @@ import Draw from './img/draw.svg';
 import style from './articleContent.module.scss';
 import RecommendationList from './recommendationList';
 import Wallet from './img/wallet.png';
-import Skeleton from '@mui/material/Skeleton';
 
 interface ArticleContentProps {
     article: GetPostDetailResponse;
@@ -120,8 +119,9 @@ function ArticleContent({
         if (!res.success) {
             return new Error();
         }
-        setRecommendationList(res.data.posts);
-        setIsNoData(res.data.posts.length === 0);
+        const filterData = res.data.posts.filter(item => item.id !== Number(params.articleId));
+        setRecommendationList(filterData);
+        setIsNoData(filterData.length === 0);
     };
 
     useEffect(() => {
