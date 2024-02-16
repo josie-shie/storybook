@@ -29,7 +29,7 @@ function MqttService({ children }: { children: ReactNode }) {
         };
         mqttService.init({ memberId });
         mqttService.getMessage(syncGlobalStore);
-        mqttService.getOddsRunning(syncGlobalOddsStore);
+        mqttService.getMatchOdds(syncGlobalOddsStore);
     }, []);
 
     return <>{children}</>;

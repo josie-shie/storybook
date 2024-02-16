@@ -72,8 +72,6 @@ const initialState = (set: (updater: (state: LiveContest) => Partial<LiveContest
             return;
         }
 
-        if (odds.companyId !== 8) return;
-
         set(state => {
             const newContestInfo: ContestTable = { ...state.contestInfo };
             let updateData = {};

@@ -101,16 +101,26 @@ export interface TechnicalInfoData {
 }
 
 export interface EventInfo {
+    id?: number;
     matchId: number;
     isHome: boolean;
     kind: number;
+    kindName?: string;
+    time: string;
+    nameEn?: string;
     nameChs: string;
-    nameCht: string;
-    nameEn: string;
-    overtime: string;
+    nameCht?: string;
     playerId: string;
     playerId2: string;
-    time: string;
+    nameEn2?: string;
+    nameChs2: string;
+    nameCht2?: string;
+    overtime: string;
+}
+
+export interface MqttEventListType {
+    matchId: number;
+    event: EventInfo[];
 }
 
 export interface TextLive {

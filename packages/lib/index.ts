@@ -13,4 +13,4 @@ export * from './src/mqttService';
 export * from './src/messageWs';
 export { parseMatchInfo } from './src/formatExtraExplain';
 export * from './src/formatFilterMap';
-export * from './src/type';
+export * from './src/mqttType';
