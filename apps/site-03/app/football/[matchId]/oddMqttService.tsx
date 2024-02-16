@@ -9,7 +9,7 @@ function OddMqttService() {
         initRef.current = true;
         return () => {
             if (initRef.current) {
-                mqttService.oddRunningDeinit();
+                mqttService.oddRunningDeInit();
             }
         };
     }, []);

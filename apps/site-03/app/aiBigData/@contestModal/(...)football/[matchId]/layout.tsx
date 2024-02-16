@@ -6,7 +6,6 @@ import { getMatchDetail } from 'data-center';
 import LiveBox from '@/app/football/[matchId]/liveBox';
 import GuessBar from '@/app/football/[matchId]/guessBar';
 import TabContent from '@/app/football/[matchId]/tabContent';
-import OddMqttService from '@/app/football/[matchId]/oddMqttService';
 import { useInterceptPassStore } from '@/store/interceptPassStore';
 import { useLockBodyScroll } from '@/hooks/lockScroll';
 
@@ -62,7 +61,6 @@ function DetailLayout({ params }: { params: { matchId: number } }) {
             />
             <GuessBar />
             <TabContent initStatus="messageBoard" matchId={params.matchId} />
-            <OddMqttService />
         </>
     );
 }
