@@ -11,7 +11,7 @@ import YellowCard from './img/yellowCard.svg';
 import RedCard from './img/redCard.svg';
 import ChangePlayer from './img/changePlayer.svg';
 import YellowRedCard from './img/yellowRedCard.svg';
-import VAR from './img/VAR.svg';
+import Vars from './img/VAR.svg';
 import style from './playerIconList.module.scss';
 
 function PlayerIconList() {
@@ -71,11 +71,11 @@ function PlayerIconList() {
                     <span>两黄一红</span>
                 </div>
                 <div className={style.icon}>
-                    <VAR />
+                    <Vars />
                     <span>VAR</span>
                 </div>
-                <div className={style.icon}></div>
-                <div className={style.icon}></div>
+                <div className={style.icon} />
+                <div className={style.icon} />
             </div>
         </div>
     );

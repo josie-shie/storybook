@@ -1,23 +1,29 @@
 'use client';
 import type { GetLineUpInfoResponse } from 'data-center';
 import Image from 'next/image';
+import NoData from '@/components/baseNoData/noData';
+import TeamLogo from '@/components/teamLogo/teamLogo';
+import { useContestDetailStore } from '../../contestDetailStore';
 import Place from './img/place.svg';
 import CocahIcon from './img/coachIcon.svg';
 import CocahDefault from './img/coach.png';
 import GroundBg from './img/groundBg.png';
 import CourtTop from './img/courtTop.png';
 import CourtBottom from './img/courtBottom.png';
-import { useContestDetailStore } from '../../contestDetailStore';
 import style from './lineUp.module.scss';
 import Player from './player';
 import PlayerList from './playerList';
 import PlayerIconList from './playerIconList';
-import NoData from '@/components/baseNoData/noData';
-import TeamLogo from '@/components/teamLogo/teamLogo';
 
 interface CoachInfoProps {
     coachName: string;
     coachLogo: string;
+}
+
+interface Team {
+    coachNameZh?: string;
+    coachNameZht?: string;
+    coachNameEn?: string;
 }
 
 function CoachInfo({ coachName, coachLogo }: CoachInfoProps) {
@@ -41,47 +47,51 @@ function CoachInfo({ coachName, coachLogo }: CoachInfoProps) {
 function LineUp({ lineUpData }: { lineUpData: GetLineUpInfoResponse }) {
     const matchDetail = useContestDetailStore.use.matchDetail();
 
-    const homeStarters =
-        lineUpData?.teams?.home?.players.filter(player => player.playerStatus === 'STARTER') || [];
-    const awayStarters =
-        lineUpData?.teams?.away?.players.filter(player => player.playerStatus === 'STARTER') || [];
+    const homeStarters = lineUpData.teams.home.players.filter(
+        player => player.playerStatus === 'STARTER'
+    );
+    const awayStarters = lineUpData.teams.away.players.filter(
+        player => player.playerStatus === 'STARTER'
+    );
 
-    const homeBackUp =
-        lineUpData?.teams?.home?.players.filter(player => player.playerStatus === 'BACKUP') || [];
-    const awayBackUp =
-        lineUpData?.teams?.away?.players.filter(player => player.playerStatus === 'BACKUP') || [];
+    const homeBackUp = lineUpData.teams.home.players.filter(
+        player => player.playerStatus === 'BACKUP'
+    );
+    const awayBackUp = lineUpData.teams.away.players.filter(
+        player => player.playerStatus === 'BACKUP'
+    );
 
-    const homeFormation = lineUpData?.teams?.home?.arrayFormat;
-    const awayFormation = lineUpData?.teams?.away?.arrayFormat;
+    const homeFormation = lineUpData.teams.home.arrayFormat;
+    const awayFormation = lineUpData.teams.away.arrayFormat;
 
-    const getCoachName = team => {
-        const coachNameZh = team?.coachNameZh;
-        const coachNameZht = team?.coachNameZht;
-        const coachNameEn = team?.coachNameEn;
+    const getCoachName = (team: Team) => {
+        const coachNameZh = team.coachNameZh;
+        const coachNameZht = team.coachNameZht;
+        const coachNameEn = team.coachNameEn;
 
-        return coachNameZh && coachNameZh !== '0'
-            ? coachNameZh
-            : coachNameZht && coachNameZht !== '0'
-            ? coachNameZht
-            : coachNameEn;
+        return (
+            (coachNameZh && coachNameZh !== '0' && coachNameZh) ||
+            (coachNameZht && coachNameZht !== '0' && coachNameZht) ||
+            coachNameEn
+        );
     };
 
-    const homeCoachName = getCoachName(lineUpData?.teams?.home);
-    const awayCoachName = getCoachName(lineUpData?.teams?.away);
+    const homeCoachName = getCoachName(lineUpData.teams.home);
+    const awayCoachName = getCoachName(lineUpData.teams.away);
     const homeCoachLogo =
-        lineUpData?.teams?.home?.coachLogo !== '0'
-            ? lineUpData?.teams?.home?.coachLogo
+        lineUpData.teams.home.coachLogo !== '0'
+            ? lineUpData.teams.home.coachLogo
             : CocahDefault.src;
     const awayCoachLogo =
-        lineUpData?.teams?.away?.coachLogo !== '0'
-            ? lineUpData?.teams?.away?.coachLogo
+        lineUpData.teams.away.coachLogo !== '0'
+            ? lineUpData.teams.away.coachLogo
             : CocahDefault.src;
 
     const shouldRenderCoaches = homeCoachName && awayCoachName;
 
     return (
         <>
-            {lineUpData?.teams?.home?.players.length && lineUpData?.teams?.away?.players.length ? (
+            {lineUpData.teams.home.players.length && lineUpData.teams.away.players.length ? (
                 <div className={style.lineUp}>
                     <div className={style.title}>
                         <h6>首发阵容</h6>
@@ -95,12 +105,10 @@ function LineUp({ lineUpData }: { lineUpData: GetLineUpInfoResponse }) {
                             <Gun />
                             <span>雅莉姍大金</span>
                         </div> */}
-                        {lineUpData?.teams?.venueZh || lineUpData?.teams?.venueEn ? (
+                        {lineUpData.teams.venueZh || lineUpData.teams.venueEn ? (
                             <div className={style.groundName}>
                                 <Place />
-                                <span>
-                                    {lineUpData?.teams?.venueZh || lineUpData?.teams?.venueEn}
-                                </span>
+                                <span>{lineUpData.teams.venueZh || lineUpData.teams.venueEn}</span>
                             </div>
                         ) : null}
                     </div>
@@ -111,8 +119,8 @@ function LineUp({ lineUpData }: { lineUpData: GetLineUpInfoResponse }) {
                         >
                             <div className={style.winWorth}>
                                 <p>
-                                    <span>阵型: {lineUpData?.teams?.home?.arrayFormat}</span>
-                                    <span>阵容赢率：{lineUpData?.teams?.home?.winRate}%</span>
+                                    <span>阵型: {lineUpData.teams.home.arrayFormat}</span>
+                                    <span>阵容赢率：{lineUpData.teams.home.winRate}%</span>
                                 </p>
                                 {/* <p>
                                     <span>首发身价：1330万欧</span>
@@ -132,20 +140,20 @@ function LineUp({ lineUpData }: { lineUpData: GetLineUpInfoResponse }) {
                                         </span>
                                     </div>
                                 </div>
-                                {lineUpData?.teams?.home.coachNameZh &&
-                                lineUpData?.teams?.home.coachNameZht &&
-                                lineUpData?.teams?.home.coachNameEn ? (
+                                {lineUpData.teams.home.coachNameZh &&
+                                lineUpData.teams.home.coachNameZht &&
+                                lineUpData.teams.home.coachNameEn ? (
                                     <div className={style.coach}>
-                                        <CocahIcon width={18} height={18} />
-                                        <span>{getCoachName(lineUpData?.teams?.home)}</span>
+                                        <CocahIcon height={18} width={18} />
+                                        <span>{getCoachName(lineUpData.teams.home)}</span>
                                     </div>
                                 ) : null}
                             </div>
-                            {homeStarters.map((player, index) => (
+                            {homeStarters.map(player => (
                                 <Player
-                                    key={index}
-                                    teamColor={lineUpData?.teams?.home?.teamColor}
+                                    key={player.playerId}
                                     lineUpData={player}
+                                    teamColor={lineUpData.teams.home.teamColor}
                                 />
                             ))}
                         </div>
@@ -155,8 +163,8 @@ function LineUp({ lineUpData }: { lineUpData: GetLineUpInfoResponse }) {
                         >
                             <div className={`${style.winWorth} ${style.away}`}>
                                 <p>
-                                    <span>阵型: {lineUpData?.teams?.away?.arrayFormat}</span>
-                                    <span>阵容赢率：{lineUpData?.teams?.away?.winRate}%</span>
+                                    <span>阵型: {lineUpData.teams.away.arrayFormat}</span>
+                                    <span>阵容赢率：{lineUpData.teams.away.winRate}%</span>
                                 </p>
                                 {/* <p>
                                     <span>首发身价：1330万欧</span>
@@ -176,21 +184,21 @@ function LineUp({ lineUpData }: { lineUpData: GetLineUpInfoResponse }) {
                                         </span>
                                     </div>
                                 </div>
-                                {lineUpData?.teams?.away?.coachNameZh &&
-                                lineUpData?.teams?.away?.coachNameZht &&
-                                lineUpData?.teams?.away?.coachNameEn ? (
+                                {lineUpData.teams.away.coachNameZh &&
+                                lineUpData.teams.away.coachNameZht &&
+                                lineUpData.teams.away.coachNameEn ? (
                                     <div className={style.coach}>
-                                        <CocahIcon width={18} height={18} />
-                                        <span>{getCoachName(lineUpData?.teams?.away)}</span>
+                                        <CocahIcon height={18} width={18} />
+                                        <span>{getCoachName(lineUpData.teams.away)}</span>
                                     </div>
                                 ) : null}
                             </div>
-                            {awayStarters.map((player, index) => (
+                            {awayStarters.map(player => (
                                 <Player
-                                    key={index}
-                                    teamColor={lineUpData?.teams?.away?.teamColor}
+                                    isBottom
+                                    key={player.playerId}
                                     lineUpData={player}
-                                    isBottom={true}
+                                    teamColor={lineUpData.teams.away.teamColor}
                                 />
                             ))}
                         </div>
@@ -228,17 +236,17 @@ function LineUp({ lineUpData }: { lineUpData: GetLineUpInfoResponse }) {
                         </div>
                         {shouldRenderCoaches ? (
                             <div className={style.coachBox}>
-                                <CoachInfo coachName={homeCoachName} coachLogo={homeCoachLogo} />
-                                <CoachInfo coachName={awayCoachName} coachLogo={awayCoachLogo} />
+                                <CoachInfo coachLogo={homeCoachLogo} coachName={homeCoachName} />
+                                <CoachInfo coachLogo={awayCoachLogo} coachName={awayCoachName} />
                             </div>
                         ) : null}
                         <PlayerList
-                            homeBackUp={homeBackUp}
                             awayBackUp={awayBackUp}
-                            homeColor={lineUpData?.teams?.home?.teamColor}
-                            awayColor={lineUpData?.teams?.away?.teamColor}
-                            homeFormation={homeFormation}
+                            awayColor={lineUpData.teams.away.teamColor}
                             awayFormation={awayFormation}
+                            homeBackUp={homeBackUp}
+                            homeColor={lineUpData.teams.home.teamColor}
+                            homeFormation={homeFormation}
                         />
                         <PlayerIconList />
                     </div>

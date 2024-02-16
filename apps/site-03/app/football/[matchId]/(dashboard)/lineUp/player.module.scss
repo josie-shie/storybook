@@ -20,7 +20,7 @@
             background-position: 50%;
             border-radius: 50%;
             background-size: contain;
-            box-shadow: 0 2px 4px 0 rgba(36, 77, 0, 0.6);
+            box-shadow: 0 2px 4px 0 rgb(36 77 0 / 60%);
             margin: 0 auto;
             border-width: 2px;
             border-style: solid;
@@ -48,7 +48,7 @@
                     font-size: 9px;
                     color: #fff;
                     border-radius: 50%;
-                    background: rgba(0, 0, 0, 0.2);
+                    background: rgb(0 0 0 / 20%);
                     z-index: 20;
                 }
 
