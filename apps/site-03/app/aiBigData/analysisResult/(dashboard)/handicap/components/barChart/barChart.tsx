@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import style from './barChart.module.scss';
-import {
+import type {
     StatisticsCategories,
     Statistics
 } from '@/app/aiBigData/analysisResult/analysisResultStore';
+import style from './barChart.module.scss';
 
 const calculateHeight = (data: Record<string, Statistics>) => {
     let upper = 0;
@@ -171,9 +171,7 @@ function BarChart({ chartData }: { chartData: StatisticsCategories }) {
                                 height: `${moneyLine.away}%`,
                                 display: !moneyLine.away ? 'none' : 'flex',
                                 borderTopLeftRadius: moneyLine.home > 0 ? 0 : '4px',
-                                borderTopRightRadius: moneyLine.home > 0 ? 0 : '4px',
-                                borderBottomLeftRadius: moneyLine.draw > 0 ? '4px' : 0,
-                                borderBottomRightRadius: moneyLine.draw > 0 ? '4px' : 0
+                                borderTopRightRadius: moneyLine.home > 0 ? 0 : '4px'
                             }}
                         >
                             {moneyLine.away > 16 ? `客${moneyLine.away}%` : null}
