@@ -111,6 +111,8 @@ function AuthDrawer() {
         } else {
             closeDrawer();
         }
+
+        if (isToken && userId.uid && auth !== 'changePassword') closeDrawer();
     }, [auth]);
 
     return (
