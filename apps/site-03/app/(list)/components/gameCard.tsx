@@ -277,7 +277,7 @@ function TeamInfo({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId:
                 </div>
                 <div className={style.teamName}>{contestInfo.homeChs}</div>
             </div>
-            <div className={`${style.score}`}>
+            <div className={`${style.score} ui-game-card-score`}>
                 {(syncData.state || contestInfo.state) !== 0 ? (
                     <>
                         {syncData.homeScore || contestInfo.homeScore}-
@@ -338,7 +338,9 @@ function TopArea({
                 <div className={style.league} style={{ color: contestInfo.color }}>
                     {contestInfo.leagueChsShort}
                 </div>
-                <div className={style.time}>{contestInfo.matchTime ? currentMatchTime : null}</div>
+                <div className={`${style.time}  ui-game-card-time`}>
+                    {contestInfo.matchTime ? currentMatchTime : null}
+                </div>
             </div>
             <div className={style.mid}>
                 <div className={style.status}>
@@ -409,7 +411,7 @@ function GameCard({
     const setInterceptData = useInterceptPassStore.use.setInterceptData();
 
     return (
-        <li className={`${style.gameCard} `}>
+        <li className={`${style.gameCard} ui-game-card`}>
             <Link
                 className={style.gameCardLink}
                 href={`/football/${matchId}`}
