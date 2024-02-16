@@ -1,5 +1,5 @@
 'use client';
-import { Slick } from 'ui/stories/slickPro/slick';
+import { Slick } from 'ui';
 import { useEffect, useRef, useState } from 'react';
 import type { GetTodayGuessMatchesResponse } from 'data-center';
 import Contest from './contest/contest';

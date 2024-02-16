@@ -59,6 +59,8 @@
     }
 
     .tabButton {
+        color: #8d8d8d;
+
         &::before {
             content: '';
             position: absolute;

@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { slickOption } from 'ui/stories/slickPro/slick';
+import { slickOption } from 'ui';
 import type {
     GetExponentResponse,
     ExponentHandicapsInfo,

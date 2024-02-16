@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { GetInformationResponse } from 'data-center';
-import { slickOption } from 'ui/stories/slickPro/slick';
+import { slickOption } from 'ui';
 import NoData from '@/components/baseNoData/noData';
 import { useContestDetailStore } from '../../contestDetailStore';
 import style from './information.module.scss';

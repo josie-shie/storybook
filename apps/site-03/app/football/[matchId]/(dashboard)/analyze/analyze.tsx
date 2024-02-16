@@ -4,7 +4,7 @@ import type {
     GetLeaguePointsRankResponse,
     GetBeforeGameIndexResponse
 } from 'data-center';
-import { slickOption } from 'ui/stories/slickPro/slick';
+import { slickOption } from 'ui';
 import PageEndText from '@/components/pageEndText/pageEndText';
 import { createAnalyzeStore } from '../../analyzeStore';
 import BeforeGameTable from './beforeGameTable';

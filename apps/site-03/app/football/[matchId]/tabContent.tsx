@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Slick } from 'ui/stories/slickPro/slick';
+import { Slick } from 'ui';
 import { usePathname } from 'next/navigation';
 import type {
     WinLoseCountDate,

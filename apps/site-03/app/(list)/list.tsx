@@ -1,5 +1,5 @@
 'use client';
-import { Slick } from 'ui/stories/slickPro/slick';
+import { Slick } from 'ui';
 import { type GetContestListResponse } from 'data-center';
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';

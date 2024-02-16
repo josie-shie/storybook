@@ -1,12 +1,12 @@
 'use client';
 import type { Metadata } from 'next';
-import { Slick } from 'ui/stories/slickPro/slick';
+import { Slick } from 'ui';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import Footer from '@/components/footer/footer';
 import style from './memberAvatar.module.scss';
 import Guess from './components/guess/guess';
 import MemberItem from './components/memberItem/memberItem';
-import Footer from '@/components/footer/footer';
 
 export const metadata: Metadata = {
     title: '专家预测 | FutureSport'

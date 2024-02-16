@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import type { EventInfo, GetLiveTextResponse } from 'data-center';
 import { getEventData } from 'data-center';
-import { slickOption } from 'ui/stories/slickPro/slick';
+import { slickOption } from 'ui';
 import { motion, AnimatePresence } from 'framer-motion';
 import { mqttService } from 'lib';
 import style from './liveEvent.module.scss';

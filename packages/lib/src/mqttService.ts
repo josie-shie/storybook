@@ -112,7 +112,7 @@ export const mqttService = {
     },
     oddRunningDeInit: () => {
         // eslint-disable-next-line no-console -- Check lifecycle
-        console.log('Mqtt oddRunning deinit');
+        console.log('Mqtt oddRunning deInit');
         client.unsubscribe('updateodds_running');
     },
     getMessage: (onMessage: (data: OriginalContestInfo) => void) => {

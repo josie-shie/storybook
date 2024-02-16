@@ -2,9 +2,8 @@
 import { getContestList, type GetContestListResponse } from 'data-center';
 import type { Ref } from 'react';
 import { useEffect, useState, forwardRef } from 'react';
-import { InfiniteScroll } from 'ui';
+import { InfiniteScroll, slickOption } from 'ui';
 import CircularProgress from '@mui/material/CircularProgress';
-import { slickOption } from 'ui/stories/slickPro/slick';
 import { useLiveContestStore } from '@/store/liveContestStore';
 import type { FilterList } from '@/components/contestFilter/contestFilter';
 import NoData from '@/components/baseNoData/noData';
