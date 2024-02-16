@@ -5,21 +5,22 @@ import type {
     NotifyMessage,
     OriginalContestInfo,
     TechnicalInfoData,
-    EventInfo,
+    MqttEventListType,
     TextLive,
     TextLiveRequest,
     TextLiveResponse,
     OddsRunningType
-} from './type';
+} from './mqttType';
 
 let client: MqttClient;
 let isConnect = false;
 
 const useMessageQueue: ((data: OriginalContestInfo) => void)[] = [];
-const useEventQueue: ((data: EventInfo) => void)[] = [];
+const useEventQueue: ((data: MqttEventListType) => void)[] = [];
 const useTextLiveQueue: ((data: TextLiveResponse) => void)[] = [];
 const useTechnicalQueue: ((data: TechnicalInfoData) => void)[] = [];
 const useOddsRunningQueue: ((data: OddsRunningType) => void)[] = [];
+const useMatchOddsQueue: ((data: OddsRunningType) => void)[] = [];
 const usedNotifyMessageQueue: ((data: NotifyMessage) => void)[] = [];
 
 let init = true;
@@ -34,10 +35,10 @@ const processMessage = <T>(message: Buffer, queue: ((data: T) => void)[]) => {
 };
 
 const handleDetailEventMessage = (message: Buffer) => {
-    const messageObject = JSON.parse(textDecoder.decode(message)) as EventInfo;
+    const messageObject = JSON.parse(textDecoder.decode(message)) as MqttEventListType;
 
     for (const messageMethod of useEventQueue) {
-        messageMethod(messageObject as unknown as EventInfo);
+        messageMethod(messageObject as unknown as MqttEventListType);
     }
 };
 
@@ -66,21 +67,21 @@ export const mqttService = {
             client.on('connect', () => {
                 // eslint-disable-next-line no-console -- Check lifecycle
                 console.log('Mqtt connected');
-                client.subscribe('updatematch'); // 賽事變化
+                client.subscribe('updatematch'); // 全站賽事變化
+                client.subscribe(`sport/user_notify/${memberId}`); // 全站信息通知
+                client.subscribe('updatematch_odds'); // 賽事列表 - 賠率變化
                 client.subscribe('updateevent'); // 賽事詳情 - 重要事件
                 client.subscribe('updatetext_live'); // 賽事詳情 - 文字直播
-                client.subscribe(`sport/user_notify/${memberId}`); // 全站通知
-                client.subscribe('updateodds_running'); //賽事詳情 - 指數賠率變化
-                // client.subscribe('updatetechnic'); 技術統計 暫不做
+                // client.subscribe('updatetechnic'); // 賽事詳情 - 技術統計 暫不做
             });
 
             client.on('message', (topic, message) => {
                 if (topic === 'updatematch')
                     processMessage<OriginalContestInfo>(message, useMessageQueue);
+                if (topic === 'updatematch_odds')
+                    processMessage<OddsRunningType>(message, useMatchOddsQueue);
                 if (topic === `sport/user_notify/${memberId}`)
                     processMessage<NotifyMessage>(message, usedNotifyMessageQueue);
-                if (topic === 'updateodds_running')
-                    processMessage<OddsRunningType>(message, useOddsRunningQueue);
 
                 if (topic === 'updateevent') handleDetailEventMessage(message);
                 if (topic === 'updatetext_live') handleDetailTextLiveMessage(message);
@@ -100,7 +101,7 @@ export const mqttService = {
         if (!init) {
             // eslint-disable-next-line no-console -- Check lifecycle
             console.log('Mqtt oddRunning connected');
-            client.subscribe('updateodds_running');
+            client.subscribe('updateodds_running'); // 賽事詳情 - 指數賠率變化
 
             client.on('message', (topic, message) => {
                 if (topic === 'updateodds_running')
@@ -118,7 +119,7 @@ export const mqttService = {
     getMessage: (onMessage: (data: OriginalContestInfo) => void) => {
         useMessageQueue.push(onMessage);
     },
-    getEventList: (onMessage: (data: EventInfo) => void) => {
+    getEventList: (onMessage: (data: MqttEventListType) => void) => {
         useEventQueue.push(onMessage);
     },
     getTextLiveList: (onMessage: (data: TextLiveResponse) => void) => {
@@ -126,6 +127,9 @@ export const mqttService = {
     },
     getTechnicList: (onMessage: (data: TechnicalInfoData) => void) => {
         useTechnicalQueue.push(onMessage);
+    },
+    getMatchOdds: (onMessage: (data: OddsRunningType) => void) => {
+        useMatchOddsQueue.push(onMessage);
     },
     getOddsRunning: (onMessage: (data: OddsRunningType) => void) => {
         useOddsRunningQueue.push(onMessage);

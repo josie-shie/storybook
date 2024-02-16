@@ -4,6 +4,7 @@ import type { EventInfo, GetLiveTextResponse } from 'data-center';
 import { getEventData } from 'data-center';
 import { slickOption } from 'ui';
 import { motion, AnimatePresence } from 'framer-motion';
+import type { MqttEventListType } from 'lib';
 import { mqttService } from 'lib';
 import style from './liveEvent.module.scss';
 import TextLive from './textLive';
@@ -40,11 +41,9 @@ function EventContainer({
         }
     }, []);
 
-    const syncEvent = (message: Partial<EventInfo>) => {
+    const syncEvent = (message: Partial<MqttEventListType>) => {
         if (message.matchId === matchId) {
-            const liveEvent = JSON.parse(JSON.stringify(message)) as EventInfo;
-
-            setEventList([...eventList, liveEvent]);
+            setEventList(message.event as EventInfo[]);
             handleResetHeight();
         }
     };
