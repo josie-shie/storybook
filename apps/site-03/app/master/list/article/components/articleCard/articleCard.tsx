@@ -83,59 +83,59 @@ function ArticleCard({ article }: { article: RecommendPost }) {
         article.mentorArticleCount.predictedPlay === 'OVERUNDER' &&
         article.mentorArticleCount.counts >= 10;
 
-    const getTagsToShow = () => {
-        const tags: React.ReactElement[] = [];
-
-        if (showHandicap) {
-            tags.push(
+    const getTagsToShow = (): JSX.Element[] => {
+        const tagsData = [
+            showHandicap || showOverUnder ? (
                 <Tag
                     background="#f3f3f3"
                     borderColor="#bfbfbf"
                     color="#8d8d8d"
+                    key="playType"
                     text={`${getText(article.mentorArticleCount.predictedPlay)} ${
                         article.mentorArticleCount.counts
-                    }場`}
+                    }场`}
                 />
-            );
-        }
-
-        if (showOverUnder) {
-            tags.push(
+            ) : null,
+            article.tag.winMaxAccurateStreak > 0 ? (
                 <Tag
-                    background="#f3f3f3"
-                    borderColor="#bfbfbf"
-                    color="#8d8d8d"
-                    text={`${getText(article.mentorArticleCount.predictedPlay)} ${
-                        article.mentorArticleCount.counts
-                    }場`}
+                    icon={<Fire size={10} />}
+                    key="winStreak"
+                    text={`${article.tag.winMaxAccurateStreak} 连红`}
                 />
-            );
-        }
+            ) : null,
+            article.tag.weekHitRecentTen > 5 ? (
+                <TagSplit
+                    hit
+                    isBlueBg={false}
+                    key="hitTen"
+                    number={article.tag.weekHitRecentTen}
+                    text="近"
+                />
+            ) : null,
+            article.tag.quarterRanking > 0 ? (
+                <TagSplit
+                    isBlueBg={false}
+                    key="quarter"
+                    number={article.tag.quarterRanking}
+                    text="季"
+                />
+            ) : null,
+            article.tag.monthRanking > 0 ? (
+                <TagSplit
+                    isBlueBg={false}
+                    key="month"
+                    number={article.tag.monthRanking}
+                    text="月"
+                />
+            ) : null,
+            article.tag.weekRanking > 0 ? (
+                <TagSplit isBlueBg={false} key="week" number={article.tag.weekRanking} text="周" />
+            ) : null
+        ];
 
-        if (article.tag.winMaxAccurateStreak > 0) {
-            tags.push(
-                <Tag icon={<Fire size={10} />} text={`${article.tag.winMaxAccurateStreak} 連紅`} />
-            );
-        }
+        const filteredTags = tagsData.filter(Boolean) as JSX.Element[];
 
-        if (article.tag.weekHitRecentTen > 5) {
-            tags.push(
-                <TagSplit hit isBlueBg={false} number={article.tag.weekHitRecentTen} text="近" />
-            );
-        }
-
-        if (article.tag.quarterRanking > 0) {
-            tags.push(<TagSplit isBlueBg={false} number={article.tag.quarterRanking} text="季" />);
-        }
-
-        if (article.tag.monthRanking > 0) {
-            tags.push(<TagSplit isBlueBg={false} number={article.tag.monthRanking} text="月" />);
-        }
-
-        if (article.tag.weekRanking > 0) {
-            tags.push(<TagSplit isBlueBg={false} number={article.tag.weekRanking} text="周" />);
-        }
-        return tags.slice(0, 3);
+        return filteredTags.slice(0, 3);
     };
 
     return (
@@ -179,11 +179,7 @@ function ArticleCard({ article }: { article: RecommendPost }) {
                         >
                             {article.mentorName}
                         </Link>
-                        <div className={style.tagsContainer}>
-                            {getTagsToShow().map((tag, index) => (
-                                <React.Fragment key={index}>{tag}</React.Fragment>
-                            ))}
-                        </div>
+                        <div className={style.tagsContainer}>{getTagsToShow()}</div>
                     </div>
                     <div className={style.rate}>
                         <span className={style.hit}>
