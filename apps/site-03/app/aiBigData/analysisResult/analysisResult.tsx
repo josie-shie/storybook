@@ -1,6 +1,5 @@
 'use client';
 import Link from 'next/link';
-import Bodan from './(dashboard)/bodan/bodan';
 import { Tabs, Tab } from 'ui';
 import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
@@ -11,6 +10,7 @@ import { useUserStore } from '@/store/userStore';
 import { useQueryFormStore } from '../queryFormStore';
 import { useMatchFilterStore } from '../matchFilterStore';
 import ErrorDialog from '../components/dialog/dialog';
+import Tutorial from '../components/tutorial/tutorial';
 import style from './analysisResult.module.scss';
 import Handicap from './(dashboard)/handicap/handicap';
 import { useAnalyticsResultStore } from './analysisResultStore';
@@ -19,7 +19,7 @@ import SystemErrorImage from './img/systemError.svg';
 import EmptyDataImage from './img/emptyData.svg';
 import AnalyzeDataImage from './img/analyzeData.svg';
 import Minutes from './(dashboard)/minutes/minutes';
-import Tutorial from '../components/tutorial/tutorial';
+import Bodan from './(dashboard)/bodan/bodan';
 
 function LeaveResultPage() {
     const router = useRouter();
@@ -344,9 +344,11 @@ function AnalysisResult() {
             <div className={`${style.dashboard} ${playTutorial ? style.playTutorial : ''}`}>
                 <Tabs
                     allowSlideScroll={tabStyle.allowSlideScroll}
+                    autoHeight
                     buttonRadius={tabStyle.buttonRadius}
                     defaultValue={defaultPageIndex}
                     gap={tabStyle.gap}
+                    loadingHeight={loading}
                     onTabChange={value => {
                         handlePlanTabClick(value);
                     }}
@@ -374,19 +376,19 @@ function AnalysisResult() {
             {!showedTutorial && analysisRecord ? (
                 <div className={style.tutorialBlock}>
                     <Tutorial
+                        playTutorial={playTutorial}
                         setDefaultPageIndex={setDefaultPageIndex}
                         setPlayTutorial={setPlayTutorial}
-                        playTutorial={playTutorial}
                     />
                 </div>
             ) : null}
             <ErrorDialog
                 content={<div className={style.dialogContent}>{dialogContent}</div>}
-                onClose={() => {
-                    setOpenNormalDialog(false);
-                }}
                 customStyle={{
                     width: dialogErrorType === 'leaveResult' ? '300px' : '188px'
+                }}
+                onClose={() => {
+                    setOpenNormalDialog(false);
                 }}
                 openDialog={openNoramlDialog}
             />

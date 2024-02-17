@@ -74,6 +74,7 @@ interface TabsProps {
      * Control Tab Slide scrolling
      */
     allowSlideScroll?: boolean;
+    loadingHeight?: boolean;
 }
 
 function Tab(props: TabProps) {
@@ -92,6 +93,7 @@ function Tabs({
     buttonRadius = 50,
     onTabChange,
     allowSlideScroll = true,
+    loadingHeight = true,
     ...props
 }: TabsProps) {
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
@@ -254,6 +256,14 @@ function Tabs({
             }
         }
     }, [defaultValue, props.children]);
+
+    useEffect(() => {
+        if (!loadingHeight && swiperRef.current) {
+            setTimeout(() => {
+                swiperRef.current?.updateAutoHeight();
+            }, 0);
+        }
+    }, [loadingHeight]);
 
     return (
         <div className={`ui-tab ${style.tab} ${fullBlock && style.fullBlock} ${style[position]}`}>

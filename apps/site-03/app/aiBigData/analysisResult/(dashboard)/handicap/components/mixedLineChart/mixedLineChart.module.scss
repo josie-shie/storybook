@@ -63,7 +63,7 @@
         z-index: 2;
         width: 100px;
         height: 132px;
-        background: linear-gradient(273deg, rgba(255, 255, 255, 0) 13.83%, #fff 91.58%);
+        background: linear-gradient(273deg, rgb(255 255 255 / 0%) 13.83%, #fff 91.58%);
         justify-content: flex-start;
         align-items: center;
         pointer-events: none;
@@ -80,7 +80,7 @@
         z-index: 2;
         width: 100px;
         height: 130px;
-        background: linear-gradient(273deg, #fff 13.83%, rgba(255, 255, 255, 0) 91.58%);
+        background: linear-gradient(273deg, #fff 13.83%, rgb(255 255 255 / 0%) 91.58%);
         justify-content: flex-end;
         align-items: center;
         pointer-events: none;
