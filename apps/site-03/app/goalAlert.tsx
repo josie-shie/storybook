@@ -95,9 +95,9 @@ function GoalAlert() {
                                             <p>進球</p>
                                             <p>
                                                 {getStartTime(
-                                                    item.state < 3
-                                                        ? item.startTime
-                                                        : item.halfStartTime,
+                                                    item.state > 2
+                                                        ? item.halfStartTime
+                                                        : item.startTime,
                                                     item.state
                                                 )}
                                                 ′

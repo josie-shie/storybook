@@ -1,6 +1,6 @@
 'use client';
 
-import type { ContestInfo } from 'data-center';
+import type { ContestInfo, ContestInfoType } from 'data-center';
 import { GameStatus } from 'ui';
 import { motion } from 'framer-motion';
 import { parseMatchInfo } from 'lib';
@@ -412,7 +412,20 @@ function GameCard({
     status: Status;
     children?: ReactNode;
 }) {
-    const contestInfo = useContestListStore.use.contestInfo()[matchId];
+    const contestInfo = useContestListStore.use.contestInfo();
+    const resultContestInfo = useContestListStore.use.resultContestInfo();
+    const scheduleContestInfo = useContestListStore.use.scheduleContestInfo();
+
+    let targetContestList: ContestInfoType;
+    if (status === 'result') {
+        targetContestList = resultContestInfo;
+    } else if (status === 'schedule') {
+        targetContestList = scheduleContestInfo;
+    } else {
+        targetContestList = contestInfo;
+    }
+
+    const targetContestInfo = targetContestList[matchId];
     const setInterceptData = useInterceptPassStore.use.setInterceptData();
 
     return (
@@ -421,18 +434,22 @@ function GameCard({
                 className={style.gameCardLink}
                 href={`/football/${matchId}`}
                 onClick={() => {
-                    setInterceptData(contestInfo);
+                    setInterceptData(targetContestInfo);
                 }}
             >
-                <TopArea contestInfo={contestInfo} matchId={matchId} status={status} />
-                <TeamInfo contestInfo={contestInfo} matchId={matchId} />
+                <TopArea contestInfo={targetContestInfo} matchId={matchId} status={status} />
+                <TeamInfo contestInfo={targetContestInfo} matchId={matchId} />
                 {status !== 'result' && (
                     <>
-                        <OddsInfo contestInfo={contestInfo} matchId={matchId} status={status} />
-                        {contestInfo.state !== 0 && (
-                            <AnimateLine contestInfo={contestInfo} matchId={matchId} />
+                        <OddsInfo
+                            contestInfo={targetContestInfo}
+                            matchId={matchId}
+                            status={status}
+                        />
+                        {targetContestInfo.state !== 0 && (
+                            <AnimateLine contestInfo={targetContestInfo} matchId={matchId} />
                         )}
-                        <ExtraInfo contestInfo={contestInfo} matchId={matchId} />
+                        <ExtraInfo contestInfo={targetContestInfo} matchId={matchId} />
                     </>
                 )}
             </Link>

@@ -1,5 +1,6 @@
 'use client';
-import { getContestList, type GetContestListResponse } from 'data-center';
+import { getContestList } from 'data-center';
+import type { ContestListType, ContestInfoType, GetContestListResponse } from 'data-center';
 import type { Ref } from 'react';
 import { useEffect, useState, forwardRef } from 'react';
 import { InfiniteScroll, slickOption } from 'ui';
@@ -82,9 +83,17 @@ function ContestList({
     const [rows, setRows] = useState({ full: 10, notYet: 0, finish: 0 });
     const contestList = useContestListStore.use.contestList();
     const contestInfo = useContestListStore.use.contestInfo();
+    const scheduleContestList = useContestListStore.use.scheduleContestList();
+    const scheduleContestInfo = useContestListStore.use.scheduleContestInfo();
+    const resultContestList = useContestListStore.use.resultContestList();
+    const resultContestInfo = useContestListStore.use.resultContestInfo();
     const globalStore = useLiveContestStore.use.contestInfo();
     const setContestList = useContestListStore.use.setContestList();
     const setContestInfo = useContestListStore.use.setContestInfo();
+    const setScheduleContestList = useContestListStore.use.setScheduleContestList();
+    const setScheduleContestInfo = useContestListStore.use.setScheduleContestInfo();
+    const setResultContestList = useContestListStore.use.setResultContestList();
+    const setResultContestInfo = useContestListStore.use.setResultContestInfo();
     const pinnedContest = useContestListStore.use.pinnedContest();
     const [isMounted, setIsMounted] = useState(false);
 
@@ -120,12 +129,21 @@ function ContestList({
         const fetchContestData = async (timestamp: number) => {
             if (!secondRender) return;
             try {
-                const todayContest = await getContestList(timestamp);
-                if (!todayContest.success) {
+                const contestData = await getContestList(timestamp);
+                if (!contestData.success) {
                     return new Error();
                 }
-                setContestList({ contestList: todayContest.data.contestList });
-                setContestInfo({ contestInfo: todayContest.data.contestInfo });
+                if (status === 'result') {
+                    setResultContestList({ resultContestList: contestData.data.contestList });
+                    setResultContestInfo({ resultContestInfo: contestData.data.contestInfo });
+                } else if (status === 'schedule') {
+                    setScheduleContestList({ scheduleContestList: contestData.data.contestList });
+                    setScheduleContestInfo({ scheduleContestInfo: contestData.data.contestInfo });
+                } else {
+                    setContestList({ contestList: contestData.data.contestList });
+                    setContestInfo({ contestInfo: contestData.data.contestInfo });
+                }
+
                 updateFilterList({ group: 'league', selectedTable: {} });
                 resetRows();
                 closeLoading();
@@ -147,10 +165,20 @@ function ContestList({
 
     const filterByStatus = (list: number[], statusFunc: (state: number) => boolean) => {
         const filterGroup = filterList.group === 'league' ? 'leagueChsShort' : 'countryCn';
+
+        let targetContestInfo: ContestInfoType;
+        if (status === 'result') {
+            targetContestInfo = resultContestInfo;
+        } else if (status === 'schedule') {
+            targetContestInfo = scheduleContestInfo;
+        } else {
+            targetContestInfo = contestInfo;
+        }
+
         return list.filter(item => {
             if (
                 Object.keys(filterList.selectedTable).length > 0 &&
-                !filterList.selectedTable[contestInfo[item][filterGroup]]
+                !filterList.selectedTable[targetContestInfo[item][filterGroup]]
             ) {
                 return false;
             }
@@ -158,7 +186,7 @@ function ContestList({
                 Object.hasOwnProperty.call(globalStore, item) &&
                 globalStore[item].state !== undefined
                     ? globalStore[item].state
-                    : contestInfo[item].state;
+                    : targetContestInfo[item].state;
             return typeof state === 'number' && statusFunc(state);
         });
     };
@@ -169,10 +197,17 @@ function ContestList({
         return [...pinnedItems, ...remainingItems];
     };
 
-    const currentList =
-        status === 'all'
-            ? sortByPinned(filterByStatus(contestList, statusTable[status]), pinnedContest)
-            : filterByStatus(contestList, statusTable[status]);
+    let currentList: ContestListType;
+
+    if (status === 'all') {
+        currentList = sortByPinned(filterByStatus(contestList, statusTable[status]), pinnedContest);
+    } else if (status === 'progress') {
+        currentList = filterByStatus(contestList, statusTable[status]);
+    } else if (status === 'schedule') {
+        currentList = filterByStatus(scheduleContestList, statusTable[status]);
+    } else {
+        currentList = filterByStatus(resultContestList, statusTable[status]);
+    }
     const displayList = currentList.slice(0, rows.full);
 
     const finishList = status === 'all' ? currentList : [];
@@ -263,6 +298,7 @@ const Football = forwardRef(function Football(
         ...todayContest,
         ...{ pinnedContest }
     });
+
     const [showSetting, setShowSetting] = useState(false);
 
     const switchSetting = () => {
