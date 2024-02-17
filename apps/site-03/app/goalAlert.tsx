@@ -94,7 +94,15 @@ function GoalAlert() {
                                         />
                                         <div className={style.info}>
                                             <p>進球</p>
-                                            <p>{getStartTime(item.startTime, item.state)}’</p>
+                                            <p>
+                                                {getStartTime(
+                                                    item.state === 1
+                                                        ? item.startTime
+                                                        : item.halfStartTime,
+                                                    item.state
+                                                )}
+                                                ′
+                                            </p>
                                         </div>
                                     </div>
                                     <div className={style.right}>
