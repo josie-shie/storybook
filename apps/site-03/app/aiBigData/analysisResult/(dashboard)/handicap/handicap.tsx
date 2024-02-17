@@ -216,13 +216,13 @@ function Handicap() {
             {
                 topValue: handicapLowerMatchList,
                 middleValue: overUnderUnderMatchList,
-                bottomValue: moneylineAwayMatchList,
+                bottomValue: moneylineDrawMatchList,
                 topLabel: '下',
                 middleLabel: '小',
                 bottomLabel: '和'
             },
             {
-                bottomValue: moneylineDrawMatchList,
+                bottomValue: moneylineAwayMatchList,
                 bottomLabel: '客'
             }
         ];

@@ -26,7 +26,7 @@
         justify-content: center;
 
         a {
-            color: #222;
+            color: #fff;
         }
     }
 
@@ -53,7 +53,7 @@
         min-width: 84px;
         height: 22px;
         border-radius: 4px;
-        background: linear-gradient(to right, #ffffff 0%, #d2d2d2 100%);
+        background: linear-gradient(to right, #fff 0%, #d2d2d2 100%);
         border: 2px solid #c0c0c0;
         color: #222;
         font-size: 11px;
@@ -69,7 +69,6 @@
         .vipBalance {
             background: linear-gradient(104deg, #9a9a9a -16.25%, #413823 100%, #2d2d2d 100%);
             background-clip: text;
-            -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
     }
