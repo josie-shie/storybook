@@ -39,7 +39,6 @@ function GoalAlert() {
             }
             setAlertList(prev => {
                 const updatedList = [...prev, { ...contestInfo, ...currentContestInfo, ...data }];
-
                 if (updatedList.length <= 7) {
                     setTimeout(() => {
                         setAlertList(prevInner => prevInner.slice(1));
@@ -96,7 +95,7 @@ function GoalAlert() {
                                             <p>進球</p>
                                             <p>
                                                 {getStartTime(
-                                                    item.state === 1
+                                                    item.state < 3
                                                         ? item.startTime
                                                         : item.halfStartTime,
                                                     item.state
