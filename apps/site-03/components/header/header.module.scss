@@ -1,11 +1,11 @@
 .placeholder {
-    width: 100%;
+    width: 100vw;
     height: 54px;
 }
 
 .header,
 .headerNoBg {
-    width: 100%;
+    width: 100vw;
     height: 54px;
     padding: 16px;
     display: flex;
@@ -72,7 +72,7 @@
 
 .headerDetail {
     position: relative;
-    width: 100%;
+    width: 100vw;
     height: 54px;
     padding: 16px;
     display: flex;
