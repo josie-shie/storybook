@@ -22,7 +22,9 @@ interface MessageInfo extends InitState {
     resetNewMessageNotify: () => void;
     resetUnreadMessageNotify: () => void;
     readMailMessage: () => void;
+    getNewMailMessage: () => void;
     readChatMessage: () => void;
+    getNewChatMessage: () => void;
 }
 
 let isInit = true;
@@ -69,6 +71,17 @@ const initialState = (set: (updater: (state: MessageInfo) => Partial<MessageInfo
             return state;
         });
     },
+    getNewMailMessage: () => {
+        set(state => {
+            return {
+                unreadMessageNotify: {
+                    ...state.unreadMessageNotify,
+                    mailCount: state.unreadMessageNotify.mailCount + 1,
+                    totalCount: state.unreadMessageNotify.totalCount + 1
+                }
+            };
+        });
+    },
     readChatMessage: () => {
         set(state => {
             if (state.unreadMessageNotify.chatCount > 0) {
@@ -81,6 +94,17 @@ const initialState = (set: (updater: (state: MessageInfo) => Partial<MessageInfo
                 };
             }
             return state;
+        });
+    },
+    getNewChatMessage: () => {
+        set(state => {
+            return {
+                unreadMessageNotify: {
+                    ...state.unreadMessageNotify,
+                    chatCount: state.unreadMessageNotify.chatCount + 1,
+                    totalCount: state.unreadMessageNotify.totalCount + 1
+                }
+            };
         });
     }
 });

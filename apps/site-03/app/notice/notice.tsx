@@ -80,7 +80,7 @@ function MailList() {
                 </div>
             ) : null}
 
-            {filteredMailList.length === 0 && isNoData === null && <SkeletonLayout />}
+            {isNoData === null && <SkeletonLayout />}
 
             {filteredMailList.length === 0 && isNoData ? (
                 <NoData text="暂无资料" />
