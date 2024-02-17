@@ -341,6 +341,11 @@ function TopArea({
                 <div className={`${style.time}  ui-game-card-time`}>
                     {contestInfo.matchTime ? currentMatchTime : null}
                 </div>
+                {status === 'result' && (
+                    <div className={style.halfScore}>
+                        {contestInfo.homeHalfScore}-{contestInfo.awayHalfScore}
+                    </div>
+                )}
             </div>
             <div className={style.mid}>
                 <div className={style.status}>
