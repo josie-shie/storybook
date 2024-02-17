@@ -47,7 +47,6 @@ export interface RegisterRequest {
     mobileNumber: string;
     username: string;
     password: string;
-    parentId?: string;
     verificationCode: string;
     invitationCode?: string;
     verifyToken: string;
@@ -176,7 +175,6 @@ export const register = async ({
     mobileNumber,
     username,
     password,
-    parentId = '123', // TODO: 需改為選填，123 沒意義
     verificationCode,
     invitationCode,
     verifyToken
@@ -191,7 +189,6 @@ export const register = async ({
                         mobileNumber,
                         username,
                         password: btoa(password),
-                        parentId,
                         verificationCode,
                         invitationCode,
                         verifyToken
