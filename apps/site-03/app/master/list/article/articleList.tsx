@@ -37,7 +37,31 @@ function ArticleList() {
         if (!res.success) {
             return new Error();
         }
-        const updatedArticleList = articleList.concat(res.data.posts);
+
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        const sortPosts = (a: RecommendPost, b: RecommendPost) => {
+            const matchTimeA = new Date(a.matchTime) < today ? 0 : 1;
+            const matchTimeB = new Date(b.matchTime) < today ? 0 : 1;
+            if (matchTimeA !== matchTimeB) {
+                return matchTimeA - matchTimeB;
+            }
+
+            const createdAtA = new Date(a.createdAt).getTime();
+            const createdAtB = new Date(b.createdAt).getTime();
+            if (createdAtA !== createdAtB) {
+                return createdAtB - createdAtA;
+            }
+
+            const weekHitRateA = Number(a.tag.weekHitRateDisplay);
+            const weekHitRateB = Number(b.tag.weekHitRateDisplay);
+            return weekHitRateB - weekHitRateA;
+        };
+
+        const sortedPosts = res.data.posts.sort(sortPosts);
+
+        const updatedArticleList = articleList.concat(sortedPosts);
         setArticleList(updatedArticleList);
         setTotalPage(res.data.pagination.pageCount);
         setIsNoData(res.data.pagination.totalCount === 0);
