@@ -1,10 +1,9 @@
 'use client';
-
+import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { timestampToTodayTime } from 'lib';
 import type { RecommendPost } from 'data-center';
 import Link from 'next/link';
-import { useState } from 'react';
 import { payForPost, getMemberInfo } from 'data-center';
 import Tag from '@/components/tag/tag';
 import TagSplit from '@/components/tagSplit/tagSplit';
@@ -84,6 +83,61 @@ function ArticleCard({ article }: { article: RecommendPost }) {
         article.mentorArticleCount.predictedPlay === 'OVERUNDER' &&
         article.mentorArticleCount.counts >= 10;
 
+    const getTagsToShow = (): JSX.Element[] => {
+        const tagsData = [
+            showHandicap || showOverUnder ? (
+                <Tag
+                    background="#f3f3f3"
+                    borderColor="#bfbfbf"
+                    color="#8d8d8d"
+                    key="playType"
+                    text={`${getText(article.mentorArticleCount.predictedPlay)} ${
+                        article.mentorArticleCount.counts
+                    }场`}
+                />
+            ) : null,
+            article.tag.winMaxAccurateStreak > 0 ? (
+                <Tag
+                    icon={<Fire size={10} />}
+                    key="winStreak"
+                    text={`${article.tag.winMaxAccurateStreak} 连红`}
+                />
+            ) : null,
+            article.tag.weekHitRecentTen > 5 ? (
+                <TagSplit
+                    hit
+                    isBlueBg={false}
+                    key="hitTen"
+                    number={article.tag.weekHitRecentTen}
+                    text="近"
+                />
+            ) : null,
+            article.tag.quarterRanking > 0 ? (
+                <TagSplit
+                    isBlueBg={false}
+                    key="quarter"
+                    number={article.tag.quarterRanking}
+                    text="季"
+                />
+            ) : null,
+            article.tag.monthRanking > 0 ? (
+                <TagSplit
+                    isBlueBg={false}
+                    key="month"
+                    number={article.tag.monthRanking}
+                    text="月"
+                />
+            ) : null,
+            article.tag.weekRanking > 0 ? (
+                <TagSplit isBlueBg={false} key="week" number={article.tag.weekRanking} text="周" />
+            ) : null
+        ];
+
+        const filteredTags = tagsData.filter(Boolean) as JSX.Element[];
+
+        return filteredTags.slice(0, 3);
+    };
+
     return (
         <>
             <li className={style.articleCard}>
@@ -125,67 +179,11 @@ function ArticleCard({ article }: { article: RecommendPost }) {
                         >
                             {article.mentorName}
                         </Link>
-                        <div className={style.tagsContainer}>
-                            {showHandicap ? (
-                                <Tag
-                                    background="#f3f3f3"
-                                    borderColor="#bfbfbf"
-                                    color="#8d8d8d"
-                                    text={`${getText(article.mentorArticleCount.predictedPlay)} ${
-                                        article.mentorArticleCount.counts
-                                    }場`}
-                                />
-                            ) : null}
-                            {showOverUnder ? (
-                                <Tag
-                                    background="#f3f3f3"
-                                    borderColor="#bfbfbf"
-                                    color="#8d8d8d"
-                                    text={`${getText(article.mentorArticleCount.predictedPlay)} ${
-                                        article.mentorArticleCount.counts
-                                    }場`}
-                                />
-                            ) : null}
-                            {article.tag.weekHitRecentTen > 0 && (
-                                <TagSplit
-                                    hit
-                                    isBlueBg={false}
-                                    number={article.tag.weekHitRecentTen}
-                                    text="近"
-                                />
-                            )}
-                            {article.tag.winMaxAccurateStreak > 0 && (
-                                <Tag
-                                    icon={<Fire size={10} />}
-                                    text={`${article.tag.winMaxAccurateStreak} 連紅`}
-                                />
-                            )}
-                            {article.tag.quarterRanking > 0 && (
-                                <TagSplit
-                                    isBlueBg={false}
-                                    number={article.tag.quarterRanking}
-                                    text="季"
-                                />
-                            )}
-                            {article.tag.monthRanking > 0 && (
-                                <TagSplit
-                                    isBlueBg={false}
-                                    number={article.tag.monthRanking}
-                                    text="月"
-                                />
-                            )}
-                            {article.tag.weekRanking > 0 && (
-                                <TagSplit
-                                    isBlueBg={false}
-                                    number={article.tag.weekRanking}
-                                    text="周"
-                                />
-                            )}
-                        </div>
+                        <div className={style.tagsContainer}>{getTagsToShow()}</div>
                     </div>
                     <div className={style.rate}>
                         <span className={style.hit}>
-                            {article.tag.weekHitRateDisplay}
+                            {parseFloat(article.tag.weekHitRateDisplay).toFixed(1)}
                             <i>%</i>
                         </span>
                         <span className={style.hitName}>命中率</span>
