@@ -29,7 +29,7 @@ function BettingRow({ detail, leftLabel, rightLabel }: BettingProps) {
     const matchId = useParams().matchId;
     const [openGuessDialog, setOpenGuessDialog] = useState(false);
     const [direction, setDirection] = useState<'right' | 'left'>('left');
-    const [isGuessingLoading, setIsGuessingLoading] = useState(false);
+    const [isShowGuessingLoading, setIsShowGuessingLoading] = useState(false);
 
     const leftPercent =
         leftLabel === '主'
@@ -71,7 +71,7 @@ function BettingRow({ detail, leftLabel, rightLabel }: BettingProps) {
 
     const handleConfirmGuess = async () => {
         setOpenGuessDialog(false);
-        setIsGuessingLoading(true);
+        setIsShowGuessingLoading(true);
         if (leftLabel === '主') {
             const betting = direction === 'left' ? 'home' : 'away';
             const newDetail: DetailType = {
@@ -134,7 +134,7 @@ function BettingRow({ detail, leftLabel, rightLabel }: BettingProps) {
             }
             setGuessDetail({ ...newDetail });
         }
-        setIsGuessingLoading(false);
+        setIsShowGuessingLoading(false);
     };
 
     return (
@@ -185,7 +185,7 @@ function BettingRow({ detail, leftLabel, rightLabel }: BettingProps) {
                         }`}
                     >
                         <span className={style.team}>{leftLabel}</span>
-                        {isGuessingLoading ? (
+                        {isShowGuessingLoading ? (
                             <div className={style.planLoading}>
                                 <CircularProgress size={12} style={{ color: '#b3c4d5' }} />
                             </div>
@@ -220,7 +220,7 @@ function BettingRow({ detail, leftLabel, rightLabel }: BettingProps) {
                         }`}
                     >
                         <span className={style.team}>{rightLabel}</span>
-                        {isGuessingLoading ? (
+                        {isShowGuessingLoading ? (
                             <div className={style.planLoading}>
                                 <CircularProgress size={12} style={{ color: '#b3c4d5' }} />
                             </div>
