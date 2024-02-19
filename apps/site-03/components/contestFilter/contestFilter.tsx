@@ -252,7 +252,12 @@ function Filter({
     return (
         <>
             {onMounted ? (
-                <BottomDrawer isOpen={isOpen} onClose={onClose} onOpen={onOpen}>
+                <BottomDrawer
+                    isOpen={isOpen}
+                    onClose={onClose}
+                    onOpen={onOpen}
+                    topLineDisplay="none"
+                >
                     <div className={style.filter}>
                         <h2>赛事筛选</h2>
                         <div className={style.tab}>

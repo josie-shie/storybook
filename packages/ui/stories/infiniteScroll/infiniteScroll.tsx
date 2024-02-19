@@ -10,7 +10,7 @@ interface InfiniteScrollProps {
 function InfiniteScroll({
     onVisible,
     children,
-    rootMargin = '0px',
+    rootMargin = '840px',
     threshold = 0.1
 }: InfiniteScrollProps) {
     const ref = useRef<HTMLDivElement | null>(null);
