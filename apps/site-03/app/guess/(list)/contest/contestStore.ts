@@ -10,6 +10,7 @@ interface InitState {
 interface ContestList extends InitState {
     setContestGuessList: ({ contestGuessList }: { contestGuessList: ContestGuessList }) => void;
     setContestGuessInfo: ({ contestGuessInfo }: { contestGuessInfo: ContestGuessInfo }) => void;
+    setTotalNum: ({ matchId, totalNum }: { matchId: number; totalNum: number }) => void;
 }
 
 let isInit = true;
@@ -23,6 +24,14 @@ const initialState = (set: (updater: (state: ContestList) => Partial<ContestList
     },
     setContestGuessInfo: ({ contestGuessInfo }: { contestGuessInfo: ContestGuessInfo }) => {
         set(() => ({ contestGuessInfo }));
+    },
+    setTotalNum: ({ matchId, totalNum }: { matchId: number; totalNum: number }) => {
+        set(state => ({
+            contestGuessInfo: {
+                ...state.contestGuessInfo,
+                [matchId]: { ...state.contestGuessInfo[matchId], totalNum }
+            }
+        }));
     }
 });
 

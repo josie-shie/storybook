@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation';
 import Image from 'next/image';
 import { useAuthStore } from '@/store/authStore';
 import { useUserStore } from '@/store/userStore';
+import { useGuessContestListStore } from '@/app/guess/(list)/contest/contestStore';
 import selectDecoration from '../../img/select.png';
 import GuessDialog from '../guessDialog/guessDialog';
 import type { DetailType } from '../../guessDetailStore';
@@ -39,6 +40,13 @@ function BettingRow({ detail, leftLabel, rightLabel }: BettingProps) {
 
     const isLogin = useUserStore.use.isLogin();
     const highWinRateTrend = useGuessDetailStore.use.highWinRateTrend();
+    const setTotalNum =
+        typeof useGuessContestListStore === 'object'
+            ? useGuessContestListStore.use.setTotalNum()
+            : () => {
+                  /* 不執行 set function */
+              };
+
     const setGuessDetail = useGuessDetailStore.use.setDetail();
     const setGuessesLeft = useGuessDetailStore.use.setGuessesLeft();
     const setHighWinRateTrend = useGuessDetailStore.use.setHighWinRateTrend();
@@ -76,6 +84,7 @@ function BettingRow({ detail, leftLabel, rightLabel }: BettingProps) {
             if (res.success) {
                 setGuessesLeft(res.data.remainingGuessTimes);
                 newDetail.participants = res.data.guessNum;
+                setTotalNum({ matchId: Number(matchId), totalNum: res.data.guessNum });
                 if (res.data.enoughProData) {
                     const newProDistrib = {
                         ...highWinRateTrend,
@@ -106,6 +115,7 @@ function BettingRow({ detail, leftLabel, rightLabel }: BettingProps) {
             if (res.success) {
                 setGuessesLeft(res.data.remainingGuessTimes);
                 newDetail.participants = res.data.guessNum;
+                setTotalNum({ matchId: Number(matchId), totalNum: res.data.guessNum });
                 if (res.data.enoughProData) {
                     const newProDistrib = {
                         ...highWinRateTrend,
