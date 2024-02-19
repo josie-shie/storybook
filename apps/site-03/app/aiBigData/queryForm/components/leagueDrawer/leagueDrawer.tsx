@@ -171,7 +171,12 @@ function MatchFilterDrawer({
     return (
         <>
             {onMounted ? (
-                <BottomDrawer isOpen={isOpen} onClose={onClose} onOpen={onOpen}>
+                <BottomDrawer
+                    isOpen={isOpen}
+                    onClose={onClose}
+                    onOpen={onOpen}
+                    topLineDisplay="none"
+                >
                     <div className={style.matchFilter}>
                         <div className={style.title}>
                             <h2>赛事筛选</h2>
