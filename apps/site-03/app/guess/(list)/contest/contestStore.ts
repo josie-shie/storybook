@@ -13,7 +13,7 @@ interface ContestList extends InitState {
     setTotalNum: ({ matchId, totalNum }: { matchId: number; totalNum: number }) => void;
 }
 
-export let isInit = true;
+let isInit = true;
 let useGuessContestListStore: StoreWithSelectors<ContestList>;
 
 const initialState = (set: (updater: (state: ContestList) => Partial<ContestList>) => void) => ({
