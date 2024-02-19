@@ -9,6 +9,13 @@ import AnalyzeIcon from './img/analyze.svg';
 import RecommendIcon from './img/recommend.svg';
 import DataIcon from './img/data.svg';
 
+interface CategoryItem {
+    label: string;
+    value: string;
+    includedRouters: string[];
+    icon: JSX.Element;
+}
+
 const CategoryList = [
     {
         label: '赛事',
@@ -31,12 +38,7 @@ const CategoryList = [
     {
         label: '专家',
         value: '/master/list/article',
-        includedRouters: [
-            '/master/article',
-            '/master/expert',
-            '/master/masterAvatar',
-            '/master/memberAvatar'
-        ],
+        includedRouters: ['/master/articleDetail', '/master/masterAvatar', '/master/memberAvatar'],
         icon: <RecommendIcon className={`${style.icon} ${style.recommendIcon}`} />
     },
     {
@@ -52,6 +54,14 @@ function FooterComponent() {
 
     const [activeItem, setActiveItem] = useState(pathname);
 
+    const isActive = (menu: CategoryItem): boolean => {
+        if (activeItem === menu.value) return true;
+        return menu.includedRouters.some(routerPath => {
+            const regex = new RegExp(`^${routerPath}(/|$|\\?)`);
+            return regex.test(activeItem);
+        });
+    };
+
     const updateActive = (path: string) => {
         setActiveItem(path);
     };
@@ -62,9 +72,7 @@ function FooterComponent() {
                 {CategoryList.map(menu => {
                     return (
                         <Link
-                            className={`${style.listItem} ${
-                                activeItem === menu.value ? style.active : ''
-                            }`}
+                            className={`${style.listItem} ${isActive(menu) ? style.active : ''}`}
                             href={menu.value}
                             key={menu.value}
                             onClick={() => {
