@@ -125,7 +125,7 @@ function GameCard({ plan, onOpenPaidDialog, handleVIPUnlock }: GameCardProps) {
                                 </>
                             )}
                         </div>
-                        <div className={style.play}>一球/球半</div>
+                        <div className={style.play}>{playWayLabel}</div>
                     </>
                 ) : (
                     <div className={style.hit}>
