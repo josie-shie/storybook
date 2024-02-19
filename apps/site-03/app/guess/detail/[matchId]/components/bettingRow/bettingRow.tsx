@@ -11,6 +11,7 @@ import GuessDialog from '../guessDialog/guessDialog';
 import type { DetailType } from '../../guessDetailStore';
 import { useGuessDetailStore } from '../../guessDetailStore';
 import style from './bettingRow.module.scss';
+import { CircularProgress } from '@mui/material';
 
 interface BettingProps {
     detail: DetailType;
@@ -28,6 +29,7 @@ function BettingRow({ detail, leftLabel, rightLabel }: BettingProps) {
     const matchId = useParams().matchId;
     const [openGuessDialog, setOpenGuessDialog] = useState(false);
     const [direction, setDirection] = useState<'right' | 'left'>('left');
+    const [isGuessingLoading, setIsGuessingLoading] = useState(false);
 
     const leftPercent =
         leftLabel === '主'
@@ -69,6 +71,7 @@ function BettingRow({ detail, leftLabel, rightLabel }: BettingProps) {
 
     const handleConfirmGuess = async () => {
         setOpenGuessDialog(false);
+        setIsGuessingLoading(true);
         if (leftLabel === '主') {
             const betting = direction === 'left' ? 'home' : 'away';
             const newDetail: DetailType = {
@@ -131,6 +134,7 @@ function BettingRow({ detail, leftLabel, rightLabel }: BettingProps) {
             }
             setGuessDetail({ ...newDetail });
         }
+        setIsGuessingLoading(false);
     };
 
     return (
@@ -181,7 +185,13 @@ function BettingRow({ detail, leftLabel, rightLabel }: BettingProps) {
                         }`}
                     >
                         <span className={style.team}>{leftLabel}</span>
-                        <span className={style.user}>{leftPercent}%</span>
+                        {isGuessingLoading ? (
+                            <div className={style.planLoading}>
+                                <CircularProgress size={12} style={{ color: '#b3c4d5' }} />
+                            </div>
+                        ) : (
+                            <span className={style.user}>{rightPercent}%</span>
+                        )}{' '}
                         {(guessStatus === 'home' || guessStatus === 'over') && (
                             <Image alt="" height={20} src={selectDecoration} width={20} />
                         )}
@@ -210,7 +220,13 @@ function BettingRow({ detail, leftLabel, rightLabel }: BettingProps) {
                         }`}
                     >
                         <span className={style.team}>{rightLabel}</span>
-                        <span className={style.user}>{rightPercent}%</span>
+                        {isGuessingLoading ? (
+                            <div className={style.planLoading}>
+                                <CircularProgress size={12} style={{ color: '#b3c4d5' }} />
+                            </div>
+                        ) : (
+                            <span className={style.user}>{rightPercent}%</span>
+                        )}
                         {(guessStatus === 'away' || guessStatus === 'under') && (
                             <Image alt="" height={20} src={selectDecoration} width={20} />
                         )}
