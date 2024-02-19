@@ -33,7 +33,7 @@ function ExtraInfo({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId
     return (
         <div className={style.extraInfo}>
             {extraObj.regularTime?.minutes ? `${extraObj.regularTime.minutes} 分钟` : ''} [
-            {extraObj.regularTime?.score}]{' '}
+            {extraObj.regularTime?.score}]
             {extraObj.extraTime?.type ? `${extraObj.extraTime.type},` : ''}
             {extraObj.extraTime?.score ? `, 现在比分[${extraObj.extraTime.score}]` : ''}
         </div>
