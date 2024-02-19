@@ -209,6 +209,9 @@ function Slick({
                 spaceBetween={50}
             >
                 {Children.map(children, child => {
+                    if (!child) {
+                        return null;
+                    }
                     return <SwiperSlide>{child}</SwiperSlide>;
                 })}
             </SwiperClass>

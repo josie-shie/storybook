@@ -14,38 +14,20 @@ interface PlayerListProps {
     awayBackUp: PlayerList[];
     homeColor: string;
     awayColor: string;
-    homeFormation: string;
-    awayFormation: string;
 }
 
 interface PlayerItemProps {
     playerList: PlayerList;
     teamColor: string;
-    formation: string;
-    isRight?: boolean;
 }
 
-function PlayerItem({ playerList, teamColor, formation, isRight = false }: PlayerItemProps) {
-    const firstCharOfFormation = formation[0];
-
-    const getPositionName = (format: string, position: number): string => {
-        let positionsMap: string[];
-
-        switch (format) {
-            case '3':
-                positionsMap = ['守门员', '后卫', '中场', '前锋'];
-                break;
-            case '4':
-                positionsMap = ['守门员', '后卫', '后腰', '前腰', '前锋'];
-                break;
-            case '5':
-                positionsMap = ['守门员', '后卫', '后腰', '中场', '前腰', '前锋'];
-                break;
-            default:
-                positionsMap = [''];
-        }
-
-        return positionsMap[position] || '';
+function PlayerItem({ playerList, teamColor }: PlayerItemProps) {
+    const getPositionName = {
+        0: '守门员',
+        1: '后卫',
+        2: '中场',
+        3: '前锋',
+        255: ''
     };
 
     const shortName = (name: string) => {
@@ -58,7 +40,7 @@ function PlayerItem({ playerList, teamColor, formation, isRight = false }: Playe
     };
 
     return (
-        <div className={`${style.playerItem} ${isRight ? style.leftLine : ''}`}>
+        <div className={style.playerItem}>
             <div className={style.detail}>
                 <div className={style.left} style={{ backgroundColor: teamColor }}>
                     <div className={style.coat} style={{ backgroundImage: `url(${Coat.src})` }}>
@@ -73,9 +55,7 @@ function PlayerItem({ playerList, teamColor, formation, isRight = false }: Playe
                                 : playerList.nameEn}
                         </p>
                         <div className={style.score}>
-                            <p className={style.position}>
-                                {getPositionName(firstCharOfFormation, playerList.position)}
-                            </p>
+                            <p className={style.position}>{getPositionName[playerList.position]}</p>
                             {/* <div className={style.tag} style={{ backgroundColor: teamColor }}>
                                 {score}
                             </div> */}
@@ -92,35 +72,18 @@ function PlayerItem({ playerList, teamColor, formation, isRight = false }: Playe
     );
 }
 
-function PlayerList({
-    homeBackUp,
-    awayBackUp,
-    homeColor,
-    awayColor,
-    homeFormation,
-    awayFormation
-}: PlayerListProps) {
+function PlayerList({ homeBackUp, awayBackUp, homeColor, awayColor }: PlayerListProps) {
     return (
         <div className={style.playerList}>
             <div className={style.container}>
                 {homeBackUp.map(item => (
-                    <PlayerItem
-                        formation={homeFormation}
-                        key={item.playerId}
-                        playerList={item}
-                        teamColor={homeColor}
-                    />
+                    <PlayerItem key={item.playerId} playerList={item} teamColor={homeColor} />
                 ))}
             </div>
+            <div className={style.line} />
             <div className={style.container}>
                 {awayBackUp.map(item => (
-                    <PlayerItem
-                        formation={awayFormation}
-                        isRight
-                        key={item.playerId}
-                        playerList={item}
-                        teamColor={awayColor}
-                    />
+                    <PlayerItem key={item.playerId} playerList={item} teamColor={awayColor} />
                 ))}
             </div>
         </div>

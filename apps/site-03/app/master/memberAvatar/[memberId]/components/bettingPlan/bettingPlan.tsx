@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import { timestampToString } from 'lib';
 import { InfiniteScroll } from 'ui';
 import CircularProgress from '@mui/material/CircularProgress';
-import { useRouter } from 'next/navigation';
 import NoData from '@/components/baseNoData/noData';
 import IconWin from './img/win.png';
 import IconLose from './img/lose.png';
@@ -141,9 +140,9 @@ function BettingPlan({
                                                   item.handicapInChinese
                                               }`}{' '}
                                         {item.predictedPlay === 'OVER' &&
-                                            `${item.overUnderOdds} 小`}
-                                        {item.predictedPlay === 'UNDER' &&
                                             `${item.overUnderOdds} 大`}
+                                        {item.predictedPlay === 'UNDER' &&
+                                            `${item.overUnderOdds} 小`}
                                         {item.predictedPlay === 'HOME' && item.homeTeamName}
                                         {item.predictedPlay === 'AWAY' && item.awayTeamName}
                                     </div>
