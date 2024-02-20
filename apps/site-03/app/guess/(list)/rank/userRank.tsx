@@ -46,9 +46,7 @@ function UserRank({ status }: { status: 'week' | 'month' | 'season' }) {
             />
             <div className={style.ranking} style={{ background: periodTagColor }}>
                 {periodMap[status]}排名
-                <span>
-                    {memberInfo.ranking === 0 || memberInfo.ranking > 50 ? '-' : memberInfo.ranking}
-                </span>
+                <span>{memberInfo.ranking === 0 ? '-' : memberInfo.ranking}</span>
             </div>
             <div className={style.container}>
                 <div className={style.avatarContainer}>

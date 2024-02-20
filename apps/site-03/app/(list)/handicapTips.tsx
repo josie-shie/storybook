@@ -9,6 +9,7 @@ import { useLongDragonStore } from './longDragonStore';
 import defaultIcon from './img/defaultIcon.png';
 import iconHot from './img/hot.png';
 import style from './handicapTip.module.scss';
+import Link from 'next/link';
 
 interface RenderTeamProp {
     longOddsType: string;
@@ -18,6 +19,7 @@ interface RenderTeamProp {
 }
 
 function HandicapTips({ activeFilters }: { activeFilters: string[] }) {
+    const setShowLongDragon = useLongDragonStore.use.setShowLongDragon();
     const [rows, setRows] = useState({ full: 20, notYet: 0, finish: 0 });
     const handicapTips = useLongDragonStore.use.handicapTips();
 
@@ -94,7 +96,11 @@ function HandicapTips({ activeFilters }: { activeFilters: string[] }) {
             {scrollList.length ? (
                 <>
                     {scrollList.map(item => (
-                        <div
+                        <Link
+                            href={`/football/${item.matchId}`}
+                            onClick={() => {
+                                setShowLongDragon(false);
+                            }}
                             className={style.handicapTips}
                             key={`${item.longOddsTeamId}-${item.matchId}`}
                         >
@@ -139,7 +145,7 @@ function HandicapTips({ activeFilters }: { activeFilters: string[] }) {
                                         item.longOddsTeamId === item.awayId
                                     )}
                             </div>
-                        </div>
+                        </Link>
                     ))}
                     {rows.full < scrollList.length ? (
                         <InfiniteScroll onVisible={loadMoreList}>

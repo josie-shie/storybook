@@ -46,7 +46,7 @@
 
             .item {
                 border-radius: 6px;
-                border: 1px #bfbfbf solid;
+                background-color: #f3f3f3;
                 text-align: center;
                 line-height: 32px;
                 font-size: 14px;
@@ -64,7 +64,8 @@
 
     .tool {
         display: flex;
-        margin-top: 12px;
+        margin: 12px 0;
+        align-items: center;
 
         .functionButton {
             display: flex;
@@ -75,10 +76,11 @@
                 border-radius: 30px;
                 border: 1px #4489ff solid;
                 color: #4489ff;
-                padding: 6px 12px;
+                padding: 0 12px;
                 background-color: #fff;
                 font-size: 14px;
                 font-weight: 500;
+                height: 28px;
             }
         }
 
@@ -99,10 +101,12 @@
             flex: 1;
             color: #fff;
             background-color: #4489ff;
-            line-height: 34px;
+            line-height: 28px;
             border-radius: 30px;
             text-align: center;
             width: 100%;
+            height: 28px;
+            font-size: 14px;
         }
 
         .disabled {
