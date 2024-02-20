@@ -301,6 +301,9 @@ const PlayerListSchema = z.object({
     nameEn: z.string(),
     nameChs: z.string(),
     nameCht: z.string(),
+    nameChsShort: z.string(),
+    nameChtShort: z.string(),
+    nameEnShort: z.string(),
     number: z.number(),
     position: z.number(),
     playerStatus: z.string(),
@@ -322,6 +325,8 @@ const TeamsDetailSchema = z.object({
     coachNameZh: z.string(),
     coachNameZht: z.string(),
     coachLogo: z.string(),
+    starterValue: z.number(),
+    backupValue: z.number(),
     players: z.array(PlayerListSchema)
 });
 

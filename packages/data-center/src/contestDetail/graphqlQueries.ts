@@ -142,11 +142,16 @@ export const GET_LINE_UP_QUERY = `
                         coachNameZh
                         coachNameZht
                         coachLogo
+                        starterValue
+                        backupValue
                         players {
                             playerId
                             nameChs
                             nameCht
                             nameEn
+                            nameChsShort
+                            nameChtShort
+                            nameEnShort
                             number
                             position
                             playerStatus
@@ -166,11 +171,16 @@ export const GET_LINE_UP_QUERY = `
                         coachNameZh
                         coachNameZht
                         coachLogo
+                        starterValue
+                        backupValue
                         players {
                             playerId
                             nameChs
                             nameCht
                             nameEn
+                            nameChsShort
+                            nameChtShort
+                            nameEnShort
                             number
                             position
                             playerStatus

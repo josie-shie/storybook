@@ -105,7 +105,7 @@ function Setting({
                     <div className={style.setting}>
                         <div className={style.topLine} />
                         <div className={style.item}>
-                            <span>进球提示音</span>
+                            <span>进球提示</span>
                             <span>
                                 <Switch
                                     checked={openTip}

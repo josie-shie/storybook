@@ -1,18 +1,19 @@
 'use client';
 import { unFollow, updateFollow } from 'data-center';
-import { type GetPostDetailResponse, GetMemberProfileWithMemberIdResponse } from 'data-center';
+import type { GetMemberProfileWithMemberIdResponse, GetPostDetailResponse } from 'data-center';
 import type { Dispatch, SetStateAction } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { truncateFloatingPoint } from 'lib';
 import Avatar from '@/components/avatar/avatar';
 import Tag from '@/components/tag/tag';
 import TagSplit from '@/components/tagSplit/tagSplit';
 import Fire from '@/app/img/fire.png';
+import { useUserStore } from '@/store/userStore';
+import { useAuthStore } from '@/store/authStore';
 import User from './img/user.svg';
 import LockOpen from './img/lockOpen.svg';
-import { useUserStore } from '@/store/userStore';
 import style from './info.module.scss';
-import { truncateFloatingPoint } from 'lib';
 import Skeleton from './components/infoSkeleton/skeleton';
 
 interface InfoProps {
@@ -25,12 +26,15 @@ interface InfoProps {
 function Info({ article, info, isNoInfoData, setInfo }: InfoProps) {
     const userInfo = useUserStore.use.userInfo();
     const isLogin = useUserStore.use.isLogin();
+    const setIsDrawerOpen = useAuthStore.use.setIsDrawerOpen();
+    const setAuthQuery = useUserStore.use.setAuthQuery();
 
     const router = useRouter();
 
     const onIsFocused = async (id: number, follow: boolean) => {
         if (!isLogin) {
-            router.push(`/master/masterAvatar/${article.id}?status=analysis&auth=login?auth=login`);
+            setAuthQuery('login');
+            setIsDrawerOpen(true);
             return;
         }
         const res = follow
@@ -89,7 +93,7 @@ function Info({ article, info, isNoInfoData, setInfo }: InfoProps) {
                                 <span className={style.name}>{article.mentorName}</span>
                             </div>
                             <div className={style.tagsContainer}>
-                                {showHandicap && (
+                                {showHandicap ? (
                                     <Tag
                                         background="rgba(255, 255, 255, 0.30)"
                                         borderColor="#6e94d4"
@@ -97,8 +101,8 @@ function Info({ article, info, isNoInfoData, setInfo }: InfoProps) {
                                             info.mentorArticleCount.counts
                                         }場`}
                                     />
-                                )}
-                                {showOverUnder && (
+                                ) : null}
+                                {showOverUnder ? (
                                     <Tag
                                         background="rgba(255, 255, 255, 0.30)"
                                         borderColor="#6e94d4"
@@ -106,12 +110,12 @@ function Info({ article, info, isNoInfoData, setInfo }: InfoProps) {
                                             info.mentorArticleCount.counts
                                         }場`}
                                     />
-                                )}
+                                ) : null}
                                 {info.highlights.weekHitRecentTen > 0 && (
                                     <TagSplit
+                                        hit
                                         isBlueBg={false}
                                         number={info.highlights.weekHitRecentTen}
-                                        hit={true}
                                         text="近"
                                     />
                                 )}
@@ -123,32 +127,32 @@ function Info({ article, info, isNoInfoData, setInfo }: InfoProps) {
                                 )}
                                 {info.highlights.quarterRanking > 0 && (
                                     <TagSplit
-                                        isBlueBg
                                         border={false}
+                                        isBlueBg
                                         number={info.highlights.quarterRanking}
+                                        text="季"
                                         textBackground="rgba(255, 255, 255, 0.30)"
                                         textColor="#fff"
-                                        text="季"
                                     />
                                 )}
                                 {info.highlights.monthRanking > 0 && (
                                     <TagSplit
-                                        isBlueBg
                                         border={false}
+                                        isBlueBg
                                         number={info.highlights.monthRanking}
+                                        text="月"
                                         textBackground="rgba(255, 255, 255, 0.30)"
                                         textColor="#fff"
-                                        text="月"
                                     />
                                 )}
                                 {info.highlights.weekRanking > 0 && (
                                     <TagSplit
-                                        isBlueBg
                                         border={false}
+                                        isBlueBg
                                         number={info.highlights.weekRanking}
+                                        text="周"
                                         textBackground="rgba(255, 255, 255, 0.30)"
                                         textColor="#fff"
-                                        text="周"
                                     />
                                 )}
                             </div>

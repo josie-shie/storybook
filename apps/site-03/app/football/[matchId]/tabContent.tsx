@@ -60,14 +60,14 @@ function TabContent({
     const status = route[route.length - 1] === matchId.toString() ? null : route[route.length - 1];
     const tabList = [
         {
-            label: '直播',
-            href: `/football/${matchId}/liveEvent`,
-            status: 'liveEvent'
-        },
-        {
             label: '聊天',
             href: `/football/${matchId}/messageBoard`,
             status: 'messageBoard'
+        },
+        {
+            label: '直播',
+            href: `/football/${matchId}/liveEvent`,
+            status: 'liveEvent'
         },
         {
             label: '预测',
@@ -168,6 +168,8 @@ function TabContent({
                     coachNameZh: '',
                     coachNameZht: '',
                     coachLogo: '',
+                    starterValue: 0,
+                    backupValue: 0,
                     players: []
                 },
                 away: {
@@ -180,6 +182,8 @@ function TabContent({
                     coachNameZh: '',
                     coachNameZht: '',
                     coachLogo: '',
+                    starterValue: 0,
+                    backupValue: 0,
                     players: []
                 }
             }
@@ -292,6 +296,29 @@ function TabContent({
     }, [secondRender]);
 
     const initialSlide = status ? tabList.findIndex(tab => tab.status === status) : 0;
+    const shouldShowPredict = fetchData.predict.posts.length > 0;
+    const shouldShowLineUp =
+        fetchData.lineUpData.teams.home.players.length > 0 ||
+        fetchData.lineUpData.teams.away.players.length > 0;
+    const shouldShowInformation =
+        fetchData.information.bad.home.length > 0 ||
+        fetchData.information.good.home.length > 0 ||
+        fetchData.information.bad.away.length > 0 ||
+        fetchData.information.good.away.length > 0 ||
+        fetchData.information.neutral.length > 0;
+
+    const filteredTabList = tabList.filter(tab => {
+        switch (tab.status) {
+            case 'predict':
+                return shouldShowPredict;
+            case 'lineUp':
+                return shouldShowLineUp;
+            case 'information':
+                return shouldShowInformation;
+            default:
+                return true;
+        }
+    });
 
     const onSlickEnd = () => {
         window.scrollTo({
@@ -309,8 +336,13 @@ function TabContent({
                 onSlickEnd={onSlickEnd}
                 resetHeightKey="contestInfo"
                 styling="underline"
-                tabs={tabList}
+                tabs={filteredTabList}
             >
+                <div className={`${style.largeGap} ${style.rimless}`}>
+                    {secondRender || !status || status === 'messageBoard' ? (
+                        <MessageBoard matchId={matchId} />
+                    ) : null}
+                </div>
                 <div className={style.largeGap}>
                     {secondRender || status === 'liveEvent' ? (
                         <LiveBox
@@ -319,24 +351,25 @@ function TabContent({
                         />
                     ) : null}
                 </div>
-                <div className={`${style.largeGap} ${style.rimless}`}>
-                    {secondRender || !status || status === 'messageBoard' ? (
-                        <MessageBoard matchId={matchId} />
-                    ) : null}
-                </div>
-                <div className={style.largeGap}>
-                    {secondRender || status === 'predict' ? (
-                        <Predict
-                            matchId={matchId}
-                            predictData={fetchInitData?.predict || fetchData.predict}
-                        />
-                    ) : null}
-                </div>
-                <div className={`${style.largeGap} ${style.rimless}`}>
-                    {secondRender || status === 'lineUp' ? (
-                        <LineUp lineUpData={fetchInitData?.lineUpData || fetchData.lineUpData} />
-                    ) : null}
-                </div>
+                {shouldShowPredict ? (
+                    <div className={style.largeGap}>
+                        {secondRender || status === 'predict' ? (
+                            <Predict
+                                matchId={matchId}
+                                predictData={fetchInitData?.predict || fetchData.predict}
+                            />
+                        ) : null}
+                    </div>
+                ) : null}
+                {shouldShowLineUp ? (
+                    <div className={`${style.largeGap} ${style.rimless}`}>
+                        {secondRender || status === 'lineUp' ? (
+                            <LineUp
+                                lineUpData={fetchInitData?.lineUpData || fetchData.lineUpData}
+                            />
+                        ) : null}
+                    </div>
+                ) : null}
                 <div className={style.largeGap}>
                     {secondRender || status === 'exponent' ? (
                         <Exponent
@@ -345,13 +378,15 @@ function TabContent({
                         />
                     ) : null}
                 </div>
-                <div className={style.largeGap}>
-                    {secondRender || status === 'information' ? (
-                        <Information
-                            information={fetchInitData?.information || fetchData.information}
-                        />
-                    ) : null}
-                </div>
+                {shouldShowInformation ? (
+                    <div className={style.largeGap}>
+                        {secondRender || status === 'information' ? (
+                            <Information
+                                information={fetchInitData?.information || fetchData.information}
+                            />
+                        ) : null}
+                    </div>
+                ) : null}
                 {/* <div className={style.largeGap}>
                     {secondRender || status === 'analyze' ? (
                         <Analyze
