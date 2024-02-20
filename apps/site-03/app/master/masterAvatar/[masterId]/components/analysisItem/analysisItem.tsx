@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import { timestampToTodayTime } from 'lib';
 import { type RecommendPost } from 'data-center';
 import { useEffect, useState } from 'react';
@@ -9,9 +8,10 @@ import CircularProgress from '@mui/material/CircularProgress';
 import NoData from '@/components/baseNoData/noData';
 import { useUserStore } from '@/store/userStore';
 import style from './analysisItem.module.scss';
-import IconWin from './img/win.png';
-import IconDraw from './img/draw.png';
-import IconLose from './img/lose.png';
+import IconWin from './img/win.svg';
+import IconDraw from './img/draw.svg';
+import IconLose from './img/lose.svg';
+import IconPush from './img/push.svg';
 import Eye from './img/eye.svg';
 import LockOpenBlue from './img/lockOpenBlue.svg';
 import SkeletonLayout from './components/skeleton';
@@ -71,6 +71,13 @@ function AnalysisItem({
         }
     };
 
+    const IconMap = {
+        PUSH: <IconPush />,
+        LOSE: <IconLose />,
+        DRAW: <IconDraw />,
+        WIN: <IconWin />
+    };
+
     return (
         <>
             {predictArticleList.length === 0 && isNoData === null && <SkeletonLayout />}
@@ -82,22 +89,7 @@ function AnalysisItem({
                     {predictArticleList.map(item => {
                         return (
                             <li className={style.articleCard} key={item.id}>
-                                {item.predictionResult === 'WIN' && (
-                                    <div className={style.result}>
-                                        <Image alt="" height={27} src={IconWin} width={27} />
-                                    </div>
-                                )}
-                                {item.predictionResult === 'LOSE' && (
-                                    <div className={style.result}>
-                                        <Image alt="" height={27} src={IconLose} width={27} />
-                                    </div>
-                                )}
-                                {item.predictionResult === 'DRAW' && (
-                                    <div className={style.result}>
-                                        <Image alt="" height={27} src={IconDraw} width={27} />
-                                    </div>
-                                )}
-
+                                <div className={style.result}>{IconMap[item.predictionResult]}</div>
                                 <div className={style.user}>
                                     <div className={style.userInfo}>
                                         <div className={style.userName}>

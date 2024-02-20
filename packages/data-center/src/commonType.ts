@@ -4,7 +4,8 @@ export const PredictionResultSchema = z.union([
     z.literal('WIN'),
     z.literal('LOSE'),
     z.literal('DRAW'),
-    z.literal('NONE')
+    z.literal('NONE'),
+    z.literal('PUSH')
 ]);
 
 export type PredictionResult = z.infer<typeof PredictionResultSchema>;
