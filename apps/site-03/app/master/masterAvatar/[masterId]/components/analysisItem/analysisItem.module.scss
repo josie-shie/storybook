@@ -1,9 +1,10 @@
 .article {
     margin-top: 12px;
 }
+
 .articleCard {
     position: relative;
-    padding: 12px 12px 0 12px;
+    padding: 12px 12px 0;
     margin-bottom: 8px;
     border-radius: 8px;
     border: 1px solid #dadada;
@@ -18,8 +19,8 @@
         position: absolute;
         top: 0;
         left: 0;
-        width: 0px;
-        height: 0px;
+        width: 0;
+        height: 0;
         border-top: 30px solid #e6effe;
         border-right: 30px solid transparent;
 
