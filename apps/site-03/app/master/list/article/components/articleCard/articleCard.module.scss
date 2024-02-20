@@ -2,11 +2,12 @@
     position: relative;
     padding: 12px 12px 0;
     border-bottom: 1px solid #f3f3f3;
+    overflow: hidden;
 
     .result {
         position: absolute;
-        top: 3px;
-        right: 3px;
+        top: -8px;
+        right: -8px;
     }
 
     .unlockStatus {
