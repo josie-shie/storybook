@@ -10,6 +10,7 @@ interface AnalyzeProps {
 
 function AnalyzeRow({ homeType, awayType, isLocked }: AnalyzeProps) {
     const highWinRateTrend = useGuessDetailStore.use.highWinRateTrend();
+    const detail = useGuessDetailStore.use.detail();
 
     const calculatePercentage = (a: number, b: number) => {
         if (a === 0 && b === 0) {
@@ -25,6 +26,7 @@ function AnalyzeRow({ homeType, awayType, isLocked }: AnalyzeProps) {
             ? calculatePercentage(highWinRateTrend.home, highWinRateTrend.away)
             : calculatePercentage(highWinRateTrend.over, highWinRateTrend.under);
     const rightPercent = 100 - leftPercent;
+    const playWayText = homeType === '主' ? detail.handicapInChinese : detail.overUnder;
 
     return (
         <div className={`${style.row} ${isLocked ? style.locked : ''}`}>
@@ -35,7 +37,7 @@ function AnalyzeRow({ homeType, awayType, isLocked }: AnalyzeProps) {
             <div className={style.progress}>
                 <div className={style.play}>
                     <span className={style.home}>{isLocked ? 88 : leftValue}</span>
-                    <span className={style.ing}>一球/球半</span>
+                    <span className={style.ing}>{playWayText}</span>
                     <span className={style.away}>{isLocked ? 88 : rightValue}</span>
                 </div>
                 <ProgressBar
