@@ -22,6 +22,7 @@ interface TagProps {
 }
 
 function HighlightTag({ type, value }: TagProps) {
+    if (value > 50) return null;
     //戰績標籤類別 0:週 1:月 2:季 3:連紅
     const periodMap = {
         0: '周',
