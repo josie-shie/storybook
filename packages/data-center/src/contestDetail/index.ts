@@ -287,7 +287,7 @@ const TextLiveSchema = z.object({
 const GetLiveTextResultSchema = z.object({
     soccerLive: z.object({
         getTextLive: z.object({
-            textLive: z.string()
+            textLive: z.array(TextLiveSchema)
         })
     })
 });
@@ -491,10 +491,7 @@ export const getLiveText = async (matchId: number): Promise<ReturnData<GetLiveTe
 
         throwErrorMessage(errors);
 
-        const res =
-            data.soccerLive.getTextLive.textLive !== ''
-                ? (JSON.parse(data.soccerLive.getTextLive.textLive) as GetLiveTextResponse)
-                : ([] as GetLiveTextResponse);
+        const res = data.soccerLive.getTextLive.textLive;
         return {
             success: true,
             data: res

@@ -117,7 +117,13 @@ export const GET_TEXT_LIVE_QUERY = `
     query getTextLive($matchId: Int!) {
         soccerLive {
             getTextLive(input:{ matchId: $matchId }) {
-                textLive
+                textLive {
+                    data
+                    position
+                    time
+                    type
+                    main
+                }
             }
         }
     }
