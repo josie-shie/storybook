@@ -60,14 +60,14 @@ function TabContent({
     const status = route[route.length - 1] === matchId.toString() ? null : route[route.length - 1];
     const tabList = [
         {
-            label: '直播',
-            href: `/football/${matchId}/liveEvent`,
-            status: 'liveEvent'
-        },
-        {
             label: '聊天',
             href: `/football/${matchId}/messageBoard`,
             status: 'messageBoard'
+        },
+        {
+            label: '直播',
+            href: `/football/${matchId}/liveEvent`,
+            status: 'liveEvent'
         },
         {
             label: '预测',
@@ -168,6 +168,8 @@ function TabContent({
                     coachNameZh: '',
                     coachNameZht: '',
                     coachLogo: '',
+                    starterValue: 0,
+                    backupValue: 0,
                     players: []
                 },
                 away: {
@@ -180,6 +182,8 @@ function TabContent({
                     coachNameZh: '',
                     coachNameZht: '',
                     coachLogo: '',
+                    starterValue: 0,
+                    backupValue: 0,
                     players: []
                 }
             }
@@ -334,17 +338,17 @@ function TabContent({
                 styling="underline"
                 tabs={filteredTabList}
             >
+                <div className={`${style.largeGap} ${style.rimless}`}>
+                    {secondRender || !status || status === 'messageBoard' ? (
+                        <MessageBoard matchId={matchId} />
+                    ) : null}
+                </div>
                 <div className={style.largeGap}>
                     {secondRender || status === 'liveEvent' ? (
                         <LiveBox
                             matchId={matchId}
                             textLive={fetchInitData?.textLive || fetchData.textLive}
                         />
-                    ) : null}
-                </div>
-                <div className={`${style.largeGap} ${style.rimless}`}>
-                    {secondRender || !status || status === 'messageBoard' ? (
-                        <MessageBoard matchId={matchId} />
                     ) : null}
                 </div>
                 {shouldShowPredict ? (

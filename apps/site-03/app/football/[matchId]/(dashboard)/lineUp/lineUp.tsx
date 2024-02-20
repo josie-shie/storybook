@@ -126,9 +126,12 @@ function LineUp({ lineUpData }: { lineUpData: GetLineUpInfoResponse }) {
                                             <span>阵型: {lineUpData.teams.home.arrayFormat}</span>
                                             {/* <span>阵容赢率：{lineUpData.teams.home.winRate}%</span> */}
                                         </p>
-                                        {/* <p>
-                                            <span>首发身价：1330万欧</span>
-                                        </p> */}
+                                        <p>
+                                            <span>
+                                                首发身价：
+                                                {lineUpData.teams.home.starterValue / 10000}万欧
+                                            </span>
+                                        </p>
                                     </div>
                                     <div className={style.lineUpTeam}>
                                         <div className={style.leftTeam}>
@@ -170,9 +173,12 @@ function LineUp({ lineUpData }: { lineUpData: GetLineUpInfoResponse }) {
                                             <span>阵型: {lineUpData.teams.away.arrayFormat}</span>
                                             {/* <span>阵容赢率：{lineUpData.teams.away.winRate}%</span> */}
                                         </p>
-                                        {/* <p>
-                                            <span>首发身价：1330万欧</span>
-                                        </p> */}
+                                        <p>
+                                            <span>
+                                                首发身价：
+                                                {lineUpData.teams.away.starterValue / 10000}万欧
+                                            </span>
+                                        </p>
                                     </div>
                                     <div className={`${style.lineUpTeam} ${style.away}`}>
                                         <div className={style.leftTeam}>
@@ -220,7 +226,10 @@ function LineUp({ lineUpData }: { lineUpData: GetLineUpInfoResponse }) {
                                     />
                                     <div className={style.text}>
                                         <div className={style.name}>{matchDetail.homeChs}</div>
-                                        {/* <div className={style.extra}>替补身价：757.5万欧</div> */}
+                                        <div className={style.extra}>
+                                            首发身价：{lineUpData.teams.home.starterValue / 10000}
+                                            万欧
+                                        </div>
                                     </div>
                                 </div>
                                 <div className={style.container}>
@@ -232,7 +241,10 @@ function LineUp({ lineUpData }: { lineUpData: GetLineUpInfoResponse }) {
                                     />
                                     <div className={style.text}>
                                         <div className={style.name}>{matchDetail.awayChs}</div>
-                                        {/* <div className={style.extra}>替补身价：537.5万欧</div> */}
+                                        <div className={style.extra}>
+                                            首发身价：{lineUpData.teams.away.starterValue / 10000}
+                                            万欧
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -273,7 +285,10 @@ function LineUp({ lineUpData }: { lineUpData: GetLineUpInfoResponse }) {
                                         />
                                         <div className={style.text}>
                                             <div className={style.name}>{matchDetail.homeChs}</div>
-                                            {/* <div className={style.extra}>替补身价：757.5万欧</div> */}
+                                            <div className={style.extra}>
+                                                替补身价：
+                                                {lineUpData.teams.home.backupValue / 10000}万欧
+                                            </div>
                                         </div>
                                     </div>
                                     <div className={style.container}>
@@ -285,7 +300,10 @@ function LineUp({ lineUpData }: { lineUpData: GetLineUpInfoResponse }) {
                                         />
                                         <div className={style.text}>
                                             <div className={style.name}>{matchDetail.awayChs}</div>
-                                            {/* <div className={style.extra}>替补身价：537.5万欧</div> */}
+                                            <div className={style.extra}>
+                                                替补身价：
+                                                {lineUpData.teams.away.backupValue / 10000}万欧
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
