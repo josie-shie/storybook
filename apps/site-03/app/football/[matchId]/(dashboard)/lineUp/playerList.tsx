@@ -77,13 +77,21 @@ function PlayerList({ homeBackUp, awayBackUp, homeColor, awayColor }: PlayerList
         <div className={style.playerList}>
             <div className={style.container}>
                 {homeBackUp.map(item => (
-                    <PlayerItem key={item.playerId} playerList={item} teamColor={homeColor} />
+                    <PlayerItem
+                        key={`${item.playerId}-${item.number}`}
+                        playerList={item}
+                        teamColor={homeColor}
+                    />
                 ))}
             </div>
             <div className={style.line} />
             <div className={style.container}>
                 {awayBackUp.map(item => (
-                    <PlayerItem key={item.playerId} playerList={item} teamColor={awayColor} />
+                    <PlayerItem
+                        key={`${item.playerId}-${item.number}`}
+                        playerList={item}
+                        teamColor={awayColor}
+                    />
                 ))}
             </div>
         </div>
