@@ -1,4 +1,9 @@
-import { getSingleMatchId, getRecentMatchData, getRecentMatchSchedule } from 'data-center';
+import {
+    getSingleMatchId,
+    getRecentMatchData,
+    getRecentMatchSchedule,
+    getHalfFullWinCounts
+} from 'data-center';
 import TabContent from '../../tabContent';
 
 async function Page({ params }: { params: { matchId: number } }) {
@@ -15,18 +20,22 @@ async function Page({ params }: { params: { matchId: number } }) {
     }
     const { matchId, homeId, awayId } = matchInfo.data;
 
-    const [recentMatchData, recentMatchSchedule] = await Promise.all([
+    const [recentMatchData, recentMatchSchedule, halfFullWinCounts] = await Promise.all([
         getRecentMatchData({
             matchId,
             homeId,
             awayId
         }),
-        getRecentMatchSchedule(matchId)
+        getRecentMatchSchedule(matchId),
+        getHalfFullWinCounts({
+            matchId
+        })
     ]);
 
-    if (!recentMatchData.success || !recentMatchSchedule.success) {
+    if (!recentMatchData.success || !recentMatchSchedule.success || !halfFullWinCounts.success) {
         console.error(recentMatchData);
         console.error(recentMatchSchedule);
+        console.error(halfFullWinCounts);
     }
 
     return (
@@ -36,6 +45,9 @@ async function Page({ params }: { params: { matchId: number } }) {
                     recentMatchData: recentMatchData.success ? recentMatchData.data : undefined,
                     recentMatchSchedule: recentMatchSchedule.success
                         ? recentMatchSchedule.data
+                        : undefined,
+                    halfFullWinCounts: halfFullWinCounts.success
+                        ? halfFullWinCounts.data
                         : undefined
                 }
             }}

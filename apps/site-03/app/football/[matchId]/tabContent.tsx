@@ -10,7 +10,8 @@ import type {
     GetLiveTextResponse,
     GetLineUpInfoResponse,
     GetRecentMatchResponse,
-    GetRecentMatchScheduleResponse
+    GetRecentMatchScheduleResponse,
+    GetHalfFullWinCountsResponse
 } from 'data-center';
 import {
     getPostList,
@@ -19,7 +20,8 @@ import {
     getInformation,
     getExponent,
     getRecentMatchData,
-    getRecentMatchSchedule
+    getRecentMatchSchedule,
+    getHalfFullWinCounts
 } from 'data-center';
 import style from './tabContent.module.scss';
 import LiveBox from './(dashboard)/liveEvent/liveEvent';
@@ -35,6 +37,7 @@ interface FetchInitData {
     data?: {
         recentMatchData?: GetRecentMatchResponse;
         recentMatchSchedule?: GetRecentMatchScheduleResponse;
+        halfFullWinCounts?: GetHalfFullWinCountsResponse;
     };
     predict?: GetPostListResponse;
     exponent?: GetExponentResponse;
@@ -146,7 +149,8 @@ function TabContent({
             recentMatchSchedule: {
                 home: [],
                 away: []
-            } as GetRecentMatchScheduleResponse
+            } as GetRecentMatchScheduleResponse,
+            halfFullWinCounts: {} as GetHalfFullWinCountsResponse
         },
         predict: {
             posts: [],
@@ -221,16 +225,23 @@ function TabContent({
 
     const handleSecondFetch = {
         data: async () => {
-            const [recentMatchData, recentMatchSchedule] = await Promise.all([
+            const [recentMatchData, recentMatchSchedule, halfFullWinCounts] = await Promise.all([
                 getRecentMatchData({
                     matchId: matchDetail.matchId,
                     homeId: matchDetail.homeId,
                     awayId: matchDetail.awayId
                 }),
-                getRecentMatchSchedule(Number(matchId))
+                getRecentMatchSchedule(Number(matchId)),
+                getHalfFullWinCounts({
+                    matchId: matchDetail.matchId
+                })
             ]);
 
-            if (!recentMatchData.success || !recentMatchSchedule.success) {
+            if (
+                !recentMatchData.success ||
+                !recentMatchSchedule.success ||
+                !halfFullWinCounts.success
+            ) {
                 return {
                     success: false,
                     error: ''
@@ -241,7 +252,8 @@ function TabContent({
                 success: true,
                 data: {
                     recentMatchData: recentMatchData.data,
-                    recentMatchSchedule: recentMatchSchedule.data
+                    recentMatchSchedule: recentMatchSchedule.data,
+                    halfFullWinCounts: halfFullWinCounts.data
                 }
             };
         },
@@ -398,6 +410,10 @@ function TabContent({
                 <div className={style.largeGap}>
                     {secondRender || status === 'data' ? (
                         <Data
+                            halfFullWinCounts={
+                                fetchInitData?.data?.halfFullWinCounts ||
+                                fetchData.data.halfFullWinCounts
+                            }
                             recentMatchData={
                                 fetchInitData?.data?.recentMatchData ||
                                 fetchData.data.recentMatchData

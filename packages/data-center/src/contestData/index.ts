@@ -5,7 +5,8 @@ import type { ReturnData, FetchResultData } from '../common';
 import {
     GET_RECENT_MATCH_QUERY,
     GET_MATCH_ID_QUERY,
-    GET_RECENT_MATCH_SCHEDULE_QUERY
+    GET_RECENT_MATCH_SCHEDULE_QUERY,
+    GET_HALF_FULL_WIN_COUNTS_QUERY
 } from './graphqlQueries';
 
 const SingleMatchIdSchema = z.object({
@@ -147,6 +148,67 @@ const GetRecentMatchScheduleResultSchema = z.object({
 export type GetRecentMatchScheduleResult = z.infer<typeof GetRecentMatchScheduleResultSchema>;
 
 export type GetRecentMatchScheduleResponse = z.infer<typeof MatchScheduleSchema>;
+
+type TeamType = 'home' | 'away';
+type FieldType = 'homeField' | 'awayField' | 'allField';
+
+const HalfFullWinCountsInfoSchema = z.object({
+    victoryVictory: z.number(),
+    victoryDraw: z.number(),
+    victoryDefeat: z.number(),
+    drawVictory: z.number(),
+    drawDraw: z.number(),
+    drawDefeat: z.number(),
+    defeatVictory: z.number(),
+    defeatDraw: z.number(),
+    defeatDefeat: z.number()
+});
+
+const HalfFullWinCountsTeamSchema = z.object({
+    homeField: HalfFullWinCountsInfoSchema,
+    awayField: HalfFullWinCountsInfoSchema,
+    allField: HalfFullWinCountsInfoSchema
+});
+
+const HalfFullWinCountsSchema = z.object({
+    home: HalfFullWinCountsTeamSchema,
+    away: HalfFullWinCountsTeamSchema
+});
+
+export type HalfFullWinCounts = z.infer<typeof HalfFullWinCountsSchema>;
+
+const HalfFullWinCountsTotalSchema = z.object({
+    home: z.object({
+        homeField: z.number(),
+        awayField: z.number(),
+        allField: z.number()
+    }),
+    away: z.object({
+        homeField: z.number(),
+        awayField: z.number(),
+        allField: z.number()
+    })
+});
+
+export type HalfFullWinCountsTotal = z.infer<typeof HalfFullWinCountsTotalSchema>;
+
+const GetHalfFullWinCountsResultSchema = z.object({
+    soccerData: z.object({
+        getHalfFullWinCounts: z.object({
+            home: HalfFullWinCountsTeamSchema,
+            away: HalfFullWinCountsTeamSchema
+        })
+    })
+});
+
+export type GetHalfFullWinCountsResult = z.infer<typeof GetHalfFullWinCountsResultSchema>;
+
+const GetHalfFullWinCountsResponseSchema = z.object({
+    data: HalfFullWinCountsSchema,
+    total: HalfFullWinCountsTotalSchema
+});
+
+export type GetHalfFullWinCountsResponse = z.infer<typeof GetHalfFullWinCountsResponseSchema>;
 
 /**
  * 取得指定賽事 ID
@@ -437,6 +499,73 @@ export const getRecentMatchSchedule = async (
         return {
             success: true,
             data: data.soccerData.getRecentMatchSchedule
+        };
+    } catch (error) {
+        return handleApiError(error);
+    }
+};
+
+/**
+ * 取得半全場勝負
+ * - params : (matchId: number)
+ * - returns : {@link GetHalfFullWinCountsResponse}
+ */
+export const getHalfFullWinCounts = async ({
+    matchId,
+    homeAway = 0,
+    leagueId = 0,
+    dataCount = 10
+}: {
+    matchId: number;
+    homeAway?: number;
+    leagueId?: number;
+    dataCount?: number;
+}): Promise<ReturnData<GetHalfFullWinCountsResponse>> => {
+    try {
+        const { data, errors } = await fetcher<
+            FetchResultData<GetHalfFullWinCountsResult>,
+            unknown
+        >(
+            {
+                data: {
+                    query: GET_HALF_FULL_WIN_COUNTS_QUERY,
+                    variables: {
+                        matchId,
+                        homeAway,
+                        leagueId,
+                        dataCount
+                    }
+                }
+            },
+            { cache: 'no-store' }
+        );
+
+        throwErrorMessage(errors);
+
+        const resData = data.soccerData.getHalfFullWinCounts;
+
+        const totalCount: Record<TeamType, Record<FieldType, number>> = {
+            home: { homeField: 0, awayField: 0, allField: 0 },
+            away: { homeField: 0, awayField: 0, allField: 0 }
+        };
+
+        Object.keys(resData).forEach(teamKey => {
+            const team = teamKey as TeamType;
+            Object.keys(resData[team]).forEach(fieldKey => {
+                const field = fieldKey as FieldType;
+                totalCount[team][field] = Object.values(resData[team][field]).reduce(
+                    (acc, curr) => acc + curr,
+                    0
+                );
+            });
+        });
+
+        return {
+            success: true,
+            data: {
+                data: data.soccerData.getHalfFullWinCounts,
+                total: totalCount
+            }
         };
     } catch (error) {
         return handleApiError(error);

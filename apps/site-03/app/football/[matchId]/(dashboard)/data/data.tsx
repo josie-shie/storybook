@@ -1,18 +1,24 @@
 'use client';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import type { GetRecentMatchResponse, GetRecentMatchScheduleResponse } from 'data-center';
+import type {
+    GetRecentMatchResponse,
+    GetRecentMatchScheduleResponse,
+    GetHalfFullWinCountsResponse
+} from 'data-center';
 import { slickOption } from 'ui';
 import { createDataStore } from '../../dataStore';
 import style from './data.module.scss';
 import TeamMatchHistoryDetail from './teamMatchHistory/teamMatchHistoryDetail';
 import MatchSchedule from './matchSchedule/matchSchedule';
+import HalfFullWinLose from './halfFullWinLose/halfFullWinLose';
 
 function DetailsContainer() {
     return (
         <div className={style.detailsContainer}>
             <TeamMatchHistoryDetail />
             <MatchSchedule />
+            <HalfFullWinLose />
         </div>
     );
 }
@@ -79,12 +85,19 @@ function DataContainer() {
 
 function Data({
     recentMatchData,
-    recentMatchSchedule
+    recentMatchSchedule,
+    halfFullWinCounts
 }: {
     recentMatchData: GetRecentMatchResponse;
     recentMatchSchedule: GetRecentMatchScheduleResponse;
+    halfFullWinCounts: GetHalfFullWinCountsResponse;
 }) {
-    createDataStore({ recentMatchData, recentMatchSchedule });
+    createDataStore({
+        recentMatchData,
+        recentMatchSchedule,
+        halfFullWinCounts: halfFullWinCounts.data,
+        halfFullWinTotal: halfFullWinCounts.total
+    });
     return <DataContainer />;
 }
 

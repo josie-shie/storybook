@@ -132,3 +132,85 @@ export const GET_RECENT_MATCH_SCHEDULE_QUERY = `
         }
     }
 `; // 近期賽程
+
+export const GET_HALF_FULL_WIN_COUNTS_QUERY = `
+    query getHalfFullWinCounts($matchId:Int!,$homeAway:Int!,$leagueId:Int!,$dataCount:Int!) {
+        soccerData {
+            getHalfFullWinCounts(
+              input: { matchId: $matchId, homeAway: $homeAway, leagueId: $leagueId, dataCount: $dataCount }
+            ) {
+                home {
+                    homeField {
+                        victoryVictory
+                        victoryDraw
+                        victoryDefeat
+                        drawVictory
+                        drawDraw
+                        drawDefeat
+                        defeatVictory
+                        defeatDraw
+                        defeatDefeat
+                    }
+                    awayField {
+                        victoryVictory
+                        victoryDraw
+                        victoryDefeat
+                        drawVictory
+                        drawDraw
+                        drawDefeat
+                        defeatVictory
+                        defeatDraw
+                        defeatDefeat
+                    }
+                    allField {
+                        victoryVictory
+                        victoryDraw
+                        victoryDefeat
+                        drawVictory
+                        drawDraw
+                        drawDefeat
+                        defeatVictory
+                        defeatDraw
+                        defeatDefeat
+                    }
+                }
+                        
+                away {
+                    homeField {
+                        victoryVictory
+                        victoryDraw
+                        victoryDefeat
+                        drawVictory
+                        drawDraw
+                        drawDefeat
+                        defeatVictory
+                        defeatDraw
+                        defeatDefeat
+                    }
+                    awayField {
+                        victoryVictory
+                        victoryDraw
+                        victoryDefeat
+                        drawVictory
+                        drawDraw
+                        drawDefeat
+                        defeatVictory
+                        defeatDraw
+                        defeatDefeat
+                    }
+                    allField {
+                        victoryVictory
+                        victoryDraw
+                        victoryDefeat
+                        drawVictory
+                        drawDraw
+                        drawDefeat
+                        defeatVictory
+                        defeatDraw
+                        defeatDefeat
+                    }
+                }
+            }
+        }
+    }
+`; // 半全場勝負

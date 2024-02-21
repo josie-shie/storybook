@@ -1,19 +1,33 @@
 import { initStore } from 'lib';
 import type { StoreWithSelectors } from 'lib';
-import type { GetRecentMatchResponse, GetRecentMatchScheduleResponse } from 'data-center';
+import type {
+    GetRecentMatchResponse,
+    GetRecentMatchScheduleResponse,
+    HalfFullWinCounts,
+    HalfFullWinCountsTotal
+} from 'data-center';
+
+interface OptionType {
+    homeAway: number;
+    leagueId: number;
+    dataCount: number;
+}
 
 interface RecentMatchOptionType {
-    homeOption: { homeAway: number; leagueId: number; dataCount: number };
-    awayOption: { homeAway: number; leagueId: number; dataCount: number };
+    homeOption: OptionType;
+    awayOption: OptionType;
 }
 
 interface InitState {
     recentMatchData: GetRecentMatchResponse;
     recentMatchSchedule: GetRecentMatchScheduleResponse;
+    halfFullWinCounts: HalfFullWinCounts;
+    halfFullWinTotal: HalfFullWinCountsTotal;
 }
 
 interface DataState extends InitState {
     recentMatchOption: RecentMatchOptionType;
+    halfFullWinCountsOption: OptionType;
     setRecentMatchOption: ({
         team,
         target,
@@ -30,6 +44,15 @@ interface DataState extends InitState {
         target: 'home' | 'away';
         matchData: GetRecentMatchResponse;
     }) => void;
+    setHalfFullWinCountsOption: ({
+        target,
+        newValue
+    }: {
+        target: 'homeAway' | 'leagueId' | 'dataCount';
+        newValue: number;
+    }) => void;
+    setHalfFullWinCounts: ({ newValue }: { newValue: HalfFullWinCounts }) => void;
+    setHalfFullWinTotal: ({ newValue }: { newValue: HalfFullWinCountsTotal }) => void;
 }
 
 let useDataStore: StoreWithSelectors<DataState>;
@@ -99,6 +122,16 @@ const initialState = (set: (updater: (state: DataState) => Partial<DataState>) =
         home: [],
         away: []
     },
+    halfFullWinCounts: {} as HalfFullWinCounts,
+    halfFullWinTotal: {
+        home: { homeField: 0, awayField: 0, allField: 0 },
+        away: { homeField: 0, awayField: 0, allField: 0 }
+    } as HalfFullWinCountsTotal,
+    halfFullWinCountsOption: {
+        homeAway: 0,
+        leagueId: 0,
+        dataCount: 10
+    },
     setRecentMatchOption: ({
         team,
         target,
@@ -134,6 +167,30 @@ const initialState = (set: (updater: (state: DataState) => Partial<DataState>) =
             newData.dashboard[target] = matchData.dashboard[target];
 
             return { ...state, recentMatchData: newData };
+        });
+    },
+    setHalfFullWinCountsOption: ({
+        target,
+        newValue
+    }: {
+        target: 'homeAway' | 'leagueId' | 'dataCount';
+        newValue: number;
+    }) => {
+        set(state => {
+            const newData = JSON.parse(JSON.stringify(state.halfFullWinCountsOption)) as OptionType;
+            newData[target] = newValue;
+
+            return { ...state, halfFullWinCountsOption: newData };
+        });
+    },
+    setHalfFullWinCounts: ({ newValue }: { newValue: HalfFullWinCounts }) => {
+        set(state => {
+            return { ...state, halfFullWinCounts: newValue };
+        });
+    },
+    setHalfFullWinTotal: ({ newValue }: { newValue: HalfFullWinCountsTotal }) => {
+        set(state => {
+            return { ...state, halfFullWinTotal: newValue };
         });
     }
 });
