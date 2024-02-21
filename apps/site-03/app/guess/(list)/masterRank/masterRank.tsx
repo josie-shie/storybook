@@ -14,29 +14,8 @@ import Streak from '../components/hotStreak/img/whiteStreak.png';
 import { useRankStore } from '../rankStore';
 import style from './masterRank.module.scss';
 
-function UserMasterRank({ setIsLoading }: { setIsLoading: (status: boolean) => void }) {
-    const isLogin = useUserStore.use.isLogin();
-    const userInfo = useUserStore.use.userInfo();
+function UserMasterRank() {
     const memberInfo = useRankStore.use.memberMasterRank();
-    const setMember = useRankStore.use.setMemberMasterRank();
-    const setMasterRankList = useRankStore.use.setMasterRankList();
-
-    useEffect(() => {
-        async function fetchMasterRank() {
-            setIsLoading(true);
-            const masterRank = await getGuessRank({
-                memberId: isLogin ? userInfo.uid : 1,
-                rankType: 3
-            });
-            if (masterRank.success) {
-                const data = masterRank.data;
-                setMember(data.memberRank);
-                setMasterRankList(data.guessRank);
-            }
-            setIsLoading(false);
-        }
-        void fetchMasterRank();
-    }, [isLogin, userInfo.uid, setIsLoading, setMasterRankList, setMember]);
 
     return (
         <div className={style.userHotStreak}>
@@ -76,8 +55,29 @@ function UserMasterRank({ setIsLoading }: { setIsLoading: (status: boolean) => v
 }
 
 const RankList = forwardRef(function RankList(_, ref: Ref<HTMLDivElement>) {
-    const isLogin = useUserStore.use.isLogin();
     const [isLoading, setIsLoading] = useState(false);
+
+    const isLogin = useUserStore.use.isLogin();
+    const userInfo = useUserStore.use.userInfo();
+    const setMember = useRankStore.use.setMemberMasterRank();
+    const setMasterRankList = useRankStore.use.setMasterRankList();
+
+    useEffect(() => {
+        async function fetchMasterRank() {
+            setIsLoading(true);
+            const masterRank = await getGuessRank({
+                memberId: isLogin ? userInfo.uid : 1,
+                rankType: 3
+            });
+            if (masterRank.success) {
+                const data = masterRank.data;
+                setMember(data.memberRank);
+                setMasterRankList(data.guessRank);
+            }
+            setIsLoading(false);
+        }
+        void fetchMasterRank();
+    }, [isLogin, userInfo.uid, setIsLoading, setMasterRankList, setMember]);
 
     return (
         <div className={style.masterRank} ref={ref}>
@@ -92,7 +92,7 @@ const RankList = forwardRef(function RankList(_, ref: Ref<HTMLDivElement>) {
                     <Rule />
                 </div>
             </div>
-            {isLogin ? <UserMasterRank setIsLoading={setIsLoading} /> : null}
+            {isLogin ? <UserMasterRank /> : null}
             <HotStreakListItem isLoading={isLoading} />
         </div>
     );
