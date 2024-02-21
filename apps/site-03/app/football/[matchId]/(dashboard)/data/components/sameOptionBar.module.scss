@@ -1,0 +1,22 @@
+.sameOption {
+    display: flex;
+    align-items: center;
+    column-gap: 12px;
+
+    .button {
+        padding: 4px 12px;
+        border-radius: 30px;
+        background-color: #f3f3f3;
+        color: #8d8d8d;
+        text-align: center;
+        font-size: 12px;
+        font-weight: 500;
+        border: 1px solid #f3f3f3;
+    }
+
+    .isActive {
+        color: #4489ff;
+        background-color: #e6effe;
+        border-color: #4489ff;
+    }
+}

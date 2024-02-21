@@ -3,9 +3,20 @@ export { soundList, soundMap, soundSource, soundDefault } from './src/sound';
 export type { Sound } from './src/sound';
 export { uploadImage, uploadImageToS3 } from './src/uploadImage';
 export { initStore } from './src/store';
-export { truncateFloatingPoint, formatNumberWithCommas } from './src/formatNumber';
+export {
+    truncateFloatingPoint,
+    formatNumberWithCommas,
+    formatNumberWithPercent
+} from './src/formatNumber';
 export { getRandomInt } from './src/random';
-export { handicapToString, convertHandicap, convertOdds } from './src/formatHandicap';
+export {
+    handicapToString,
+    convertHandicap,
+    convertOdds,
+    overUnderResult,
+    victoryMinusResult,
+    handicapResult
+} from './src/formatHandicap';
 export type { StoreWithSelectors } from './src/store';
 export { timestampToString, timestampToMonthDay, timestampToTodayTime } from './src/timeFormat';
 export { handleStartTime, handleGameTime, handleMatchDateTime } from './src/gameStatus';

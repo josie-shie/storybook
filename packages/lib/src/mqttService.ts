@@ -99,8 +99,6 @@ export const mqttService = {
     },
     oddRunningInit: () => {
         if (!init) {
-            // eslint-disable-next-line no-console -- Check lifecycle
-            console.log('Mqtt oddRunning connected');
             client.subscribe('updateodds_running'); // 賽事詳情 - 指數賠率變化
 
             client.on('message', (topic, message) => {
@@ -112,8 +110,6 @@ export const mqttService = {
         }
     },
     oddRunningDeInit: () => {
-        // eslint-disable-next-line no-console -- Check lifecycle
-        console.log('Mqtt oddRunning deInit');
         client.unsubscribe('updateodds_running');
     },
     getMessage: (onMessage: (data: OriginalContestInfo) => void) => {

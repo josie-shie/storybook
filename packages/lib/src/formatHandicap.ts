@@ -68,3 +68,41 @@ export const convertOdds = (odds: number): [number, number] => {
             return [floorValue, floorValue];
     }
 };
+
+/**
+ * 進球盤口結果
+ * - param (odds: number)
+ */
+
+export const overUnderResult = (
+    homeScore: number,
+    awayScore: number,
+    overUnder: number
+): string => {
+    const totalGoal = homeScore + awayScore;
+    if (overUnder > totalGoal) {
+        return 'small';
+    } else if (overUnder < totalGoal) {
+        return 'big';
+    }
+    return 'go';
+};
+
+export const victoryMinusResult = (homeScore: number, awayScore: number): string => {
+    if (homeScore > awayScore) {
+        return 'victory';
+    } else if (homeScore < awayScore) {
+        return 'minus';
+    }
+    return 'tie';
+};
+
+export const handicapResult = (homeScore: number, awayScore: number, handicap: number): string => {
+    const targetValue = awayScore + handicap;
+    if (homeScore > targetValue) {
+        return 'win';
+    } else if (homeScore < targetValue) {
+        return 'lose';
+    }
+    return 'go';
+};

@@ -15,3 +15,15 @@ export function truncateFloatingPoint(target: number, decimalPlaces: number) {
 export function formatNumberWithCommas(total: number): string {
     return total.toString().replace(/\B(?=(?<temp1>\d{3})+(?!\d))/g, ',');
 }
+
+/**
+ * 百分比
+ * - param (target:number,total: number)
+ * - (total: 目標值)
+ */
+export function formatNumberWithPercent(target: number, total: number): number {
+    if (total === 0) {
+        return 0;
+    }
+    return Math.round((target / total) * 100);
+}

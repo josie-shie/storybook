@@ -4,41 +4,33 @@ import { useEffect, useState } from 'react';
 import { Slick } from 'ui';
 import { usePathname } from 'next/navigation';
 import type {
-    WinLoseCountDate,
-    GetAnalysisOthersResponse,
-    GetLeaguePointsRankResponse,
-    GetBeforeGameIndexResponse,
     GetPostListResponse,
     GetExponentResponse,
     GetInformationResponse,
     GetLiveTextResponse,
-    GetLineUpInfoResponse
+    GetLineUpInfoResponse,
+    GetRecentMatchResponse
 } from 'data-center';
 import {
-    // getAnalysisOthers,
-    // getBeforeGameIndex,
-    // getLeaguePointsRank,
     getPostList,
     getLiveText,
     getLineup,
     getInformation,
-    getExponent
+    getExponent,
+    getRecentMatchData
 } from 'data-center';
 import style from './tabContent.module.scss';
 import LiveBox from './(dashboard)/liveEvent/liveEvent';
 import MessageBoard from './(dashboard)/messageBoard/messageBoard';
 import LineUp from './(dashboard)/lineUp/lineUp';
 import Predict from './(dashboard)/predict/predict';
-// import Analyze from './(dashboard)/analyze/analyze';
+import Data from './(dashboard)/data/data';
 import Exponent from './(dashboard)/exponent/exponent';
 import Information from './(dashboard)/information/information';
+import { useContestDetailStore } from './contestDetailStore';
 
 interface FetchInitData {
-    analyze?: {
-        analysisData?: GetAnalysisOthersResponse;
-        beforeGameData?: GetBeforeGameIndexResponse;
-        leaguePointsRank?: GetLeaguePointsRankResponse;
-    };
+    data?: { recentMatchData?: GetRecentMatchResponse };
     predict?: GetPostListResponse;
     exponent?: GetExponentResponse;
     information?: GetInformationResponse;
@@ -56,6 +48,7 @@ function TabContent({
     initStatus: string;
 }) {
     const [secondRender, setSecondRender] = useState(false);
+    const matchDetail = useContestDetailStore.use.matchDetail();
     const route = usePathname().split('/');
     const status = route[route.length - 1] === matchId.toString() ? null : route[route.length - 1];
     const tabList = [
@@ -88,48 +81,63 @@ function TabContent({
             label: '情报',
             href: `/football/${matchId}/information`,
             status: 'information'
+        },
+        {
+            label: '数据',
+            href: `/football/${matchId}/data`,
+            status: 'data'
         }
-        // {
-        //     label: '数据',
-        //     href: `/football/${matchId}/analyze`,
-        //     status: 'analyze'
-        // }
     ];
     const [fetchData, setFetchData] = useState({
-        analyze: {
-            analysisData: {
-                LastMatches: {
-                    away: {},
-                    home: {}
-                },
-                teamInfo: {},
-                leagueTrendData: {},
-                winLoseCountData: {
-                    data: [] as WinLoseCountDate[],
-                    totalCount: {
-                        homeHome: 0,
-                        homeAway: 0,
-                        awayHome: 0,
-                        awayAway: 0
+        data: {
+            recentMatchData: {
+                homeMatch: [],
+                awayMatch: [],
+                dashboard: {
+                    home: {
+                        goalMissRate: {
+                            goal: 0,
+                            miss: 0
+                        },
+                        victoryMinusRate: {
+                            victory: 0,
+                            minus: 0,
+                            tie: 0
+                        },
+                        winLoseRate: {
+                            win: 0,
+                            lose: 0,
+                            go: 0
+                        },
+                        bigSmallRate: {
+                            big: 0,
+                            small: 0,
+                            go: 0
+                        }
+                    },
+                    away: {
+                        goalMissRate: {
+                            goal: 0,
+                            miss: 0
+                        },
+                        victoryMinusRate: {
+                            victory: 0,
+                            minus: 0,
+                            tie: 0
+                        },
+                        winLoseRate: {
+                            win: 0,
+                            lose: 0,
+                            go: 0
+                        },
+                        bigSmallRate: {
+                            big: 0,
+                            small: 0,
+                            go: 0
+                        }
                     }
-                },
-                battleRecordData: {}
-            } as GetAnalysisOthersResponse,
-            beforeGameData: [] as GetBeforeGameIndexResponse,
-            leaguePointsRank: {
-                homeTeam: {
-                    total: {},
-                    home: {},
-                    away: {},
-                    recent: {}
-                },
-                awayTeam: {
-                    total: {},
-                    home: {},
-                    away: {},
-                    recent: {}
                 }
-            } as GetLeaguePointsRankResponse
+            } as GetRecentMatchResponse
         },
         predict: {
             posts: [],
@@ -201,42 +209,31 @@ function TabContent({
             neutral: []
         } as GetInformationResponse
     });
-    // const [analysisDataLoading, setAnalysisDataLoading] = useState(false);
-    // const [beforeGameDataLoading, setBeforeGameDataLoading] = useState(false);
-    // const [leaguePointsRankLoading, setLeaguePointsRankLoading] = useState(false);
 
     const handleSecondFetch = {
-        // analyze: async () => {
-        //     setAnalysisDataLoading(true);
-        //     setBeforeGameDataLoading(true);
-        //     setLeaguePointsRankLoading(true);
+        data: async () => {
+            const [recentMatchData] = await Promise.all([
+                getRecentMatchData({
+                    matchId: matchDetail.matchId,
+                    homeId: matchDetail.homeId,
+                    awayId: matchDetail.awayId
+                })
+            ]);
 
-        //     const [analysisData, beforeGameData, leaguePointsRank] = await Promise.all([
-        //         getAnalysisOthers(matchId),
-        //         getBeforeGameIndex(matchId, 3),
-        //         getLeaguePointsRank(matchId)
-        //     ]);
+            if (!recentMatchData.success) {
+                return {
+                    success: false,
+                    error: ''
+                };
+            }
 
-        //     setAnalysisDataLoading(false);
-        //     setBeforeGameDataLoading(false);
-        //     setLeaguePointsRankLoading(false);
-
-        //     if (!analysisData.success || !beforeGameData.success || !leaguePointsRank.success) {
-        //         return {
-        //             success: false,
-        //             error: ''
-        //         };
-        //     }
-
-        //     return {
-        //         success: true,
-        //         data: {
-        //             analysisData: analysisData.data,
-        //             beforeGameData: beforeGameData.data,
-        //             leaguePointsRank: leaguePointsRank.data
-        //         }
-        //     };
-        // },
+            return {
+                success: true,
+                data: {
+                    recentMatchData: recentMatchData.data
+                }
+            };
+        },
         predict: async () => {
             const predictData = await getPostList({
                 memberId: 1,
@@ -273,7 +270,7 @@ function TabContent({
 
     useEffect(() => {
         const fetchSecondRenderData = () => {
-            if (!secondRender) return;
+            if (!secondRender || typeof matchDetail.matchId === 'undefined') return;
 
             Object.entries(handleSecondFetch).forEach(async ([key, func]) => {
                 if (key !== initStatus) {
@@ -293,7 +290,7 @@ function TabContent({
         };
 
         fetchSecondRenderData();
-    }, [secondRender]);
+    }, [secondRender, matchDetail]);
 
     const initialSlide = status ? tabList.findIndex(tab => tab.status === status) : 0;
     const shouldShowPredict = fetchData.predict.posts.length > 0;
@@ -387,27 +384,16 @@ function TabContent({
                         ) : null}
                     </div>
                 ) : null}
-                {/* <div className={style.largeGap}>
-                    {secondRender || status === 'analyze' ? (
-                        <Analyze
-                            analysisData={
-                                fetchInitData?.analyze?.analysisData ||
-                                fetchData.analyze.analysisData
+                <div className={style.largeGap}>
+                    {secondRender || status === 'data' ? (
+                        <Data
+                            recentMatchData={
+                                fetchInitData?.data?.recentMatchData ||
+                                fetchData.data.recentMatchData
                             }
-                            analysisDataLoading={analysisDataLoading}
-                            beforeGameData={
-                                fetchInitData?.analyze?.beforeGameData ||
-                                fetchData.analyze.beforeGameData
-                            }
-                            beforeGameDataLoading={beforeGameDataLoading}
-                            leaguePointsRank={
-                                fetchInitData?.analyze?.leaguePointsRank ||
-                                fetchData.analyze.leaguePointsRank
-                            }
-                            leaguePointsRankLoading={leaguePointsRankLoading}
                         />
                     ) : null}
-                </div> */}
+                </div>
             </Slick>
         </div>
     );

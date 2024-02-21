@@ -1,0 +1,157 @@
+.teamMatchHistoryDetail {
+    width: 100%;
+
+    .option {
+        margin: 16px 0 12px;
+        display: flex;
+        align-items: center;
+        column-gap: 12px;
+    }
+
+    .dashboard {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        column-gap: 4px;
+        margin-bottom: 8px;
+
+        .countBox {
+            width: 48px;
+            display: flex;
+            flex-direction: column;
+            border-radius: 4px;
+            font-size: 12px;
+            overflow: hidden;
+
+            .text {
+                background-color: #f3f3f3;
+                text-align: center;
+            }
+
+            .count {
+                text-align: center;
+                font-weight: 500;
+                border: 1px solid #f3f3f3;
+                border-radius: 0 0 4px 4px;
+            }
+        }
+
+        .dashboardCard {
+            flex: 1;
+
+            .rateBox {
+                display: flex;
+                justify-content: center;
+                align-items: baseline;
+                column-gap: 4px;
+                font-size: 12px;
+
+                .rate {
+                    font-size: 16px;
+                    color: #f85640;
+                }
+            }
+
+            .totalBox {
+                text-align: center;
+                font-size: 12px;
+                color: #8d8d8d;
+            }
+        }
+    }
+
+    .full {
+        flex: 1;
+        text-align: right;
+    }
+
+    :global {
+        .topBar {
+            flex-direction: column;
+            justify-content: initial;
+            align-items: initial;
+        }
+
+        .tableHead {
+            .tr {
+                .th {
+                    flex: initial;
+                    width: 32px;
+
+                    &:first-of-type {
+                        width: 84px;
+                    }
+
+                    &:nth-of-type(2) {
+                        flex: 1;
+                        column-gap: 4px;
+                    }
+                }
+            }
+        }
+
+        .tableBody {
+            .tr {
+                .td {
+                    flex-direction: column;
+                    flex: initial;
+                    width: 32px;
+                    font-size: 12px;
+
+                    &:first-of-type {
+                        width: 84px;
+                    }
+
+                    &:nth-of-type(2) {
+                        flex-direction: row;
+                        flex: 1;
+                        justify-content: center;
+                        column-gap: 4px;
+                        color: #8d8d8d;
+
+                        .scoreBox {
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: center;
+                            align-items: center;
+
+                            .score {
+                                font-size: 14px;
+                            }
+                        }
+
+                        .homeName {
+                            flex: 1;
+                            text-align: right;
+                        }
+
+                        .awayName {
+                            flex: 1;
+                        }
+
+                        .isHome {
+                            color: #222;
+                        }
+                    }
+                }
+
+                .win,
+                .big,
+                .victory {
+                    color: #ff4343;
+                }
+
+                .lose,
+                .small,
+                .minus {
+                    color: #00b976;
+                }
+
+                .go,
+                .tie {
+                    color: #4489ff;
+                }
+            }
+        }
+    }
+}

@@ -14,7 +14,6 @@ export const timestampToTodayTime = (unixTimestamp: number) => {
 
     if (date.isSame(today, 'day')) {
         return `今天 ${date.format('HH:mm')}截止`;
-    } else {
-        return date.format('MM-DD HH:mm');
     }
+    return date.format('MM-DD HH:mm');
 };

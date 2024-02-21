@@ -1,0 +1,25 @@
+.matchCountBar {
+    display: inline-flex;
+    justify-content: flex-end;
+    align-items: center;
+    background-color: #f3f3f3;
+    border-radius: 16px;
+    padding: 2px 4px;
+
+    .button {
+        height: 24px;
+        line-height: 24px;
+        background-color: initial;
+        border: none;
+        color: #4489ff;
+        font-size: 12px;
+        border-radius: 16px;
+        padding: 0 12px;
+        text-align: center;
+    }
+
+    .isActive {
+        background-color: #4489ff;
+        color: #fff;
+    }
+}
