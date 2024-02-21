@@ -1,4 +1,4 @@
-import { getRecentMatchData, getSingleMatchId } from 'data-center';
+import { getSingleMatchId, getRecentMatchData, getRecentMatchSchedule } from 'data-center';
 import TabContent from '../../tabContent';
 
 async function Page({ params }: { params: { matchId: number } }) {
@@ -15,21 +15,28 @@ async function Page({ params }: { params: { matchId: number } }) {
     }
     const { matchId, homeId, awayId } = matchInfo.data;
 
-    const recentMatchData = await getRecentMatchData({
-        matchId,
-        homeId,
-        awayId
-    });
+    const [recentMatchData, recentMatchSchedule] = await Promise.all([
+        getRecentMatchData({
+            matchId,
+            homeId,
+            awayId
+        }),
+        getRecentMatchSchedule(matchId)
+    ]);
 
-    if (!recentMatchData.success) {
-        console.error(recentMatchData.error);
+    if (!recentMatchData.success || !recentMatchSchedule.success) {
+        console.error(recentMatchData);
+        console.error(recentMatchSchedule);
     }
 
     return (
         <TabContent
             fetchInitData={{
                 data: {
-                    recentMatchData: recentMatchData.success ? recentMatchData.data : undefined
+                    recentMatchData: recentMatchData.success ? recentMatchData.data : undefined,
+                    recentMatchSchedule: recentMatchSchedule.success
+                        ? recentMatchSchedule.data
+                        : undefined
                 }
             }}
             initStatus="analyze"

@@ -85,3 +85,50 @@ export const GET_RECENT_MATCH_QUERY = `
           }
     }
 `; // 近期战绩
+
+export const GET_RECENT_MATCH_SCHEDULE_QUERY = `
+    query getRecentMatchSchedule($matchId:Int!) {
+        soccerData {
+            getRecentMatchSchedule(input: { matchId: $matchId }) {
+                home {
+                    matchId
+                    leagueId
+                    leagueEn
+                    leagueChs
+                    leagueCht
+                    matchTime
+                    status
+                    homeEn
+                    homeChs
+                    homeCht
+                    awayEn
+                    awayChs
+                    awayCht
+                    homeId
+                    awayId
+                    homeScore
+                    awayScore
+                }
+                away {
+                    matchId
+                    leagueId
+                    leagueEn
+                    leagueChs
+                    leagueCht
+                    matchTime
+                    status
+                    homeEn
+                    homeChs
+                    homeCht
+                    awayEn
+                    awayChs
+                    awayCht
+                    homeId
+                    awayId
+                    homeScore
+                    awayScore
+                }
+            }
+        }
+    }
+`; // 近期賽程

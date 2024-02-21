@@ -9,7 +9,8 @@ import type {
     GetInformationResponse,
     GetLiveTextResponse,
     GetLineUpInfoResponse,
-    GetRecentMatchResponse
+    GetRecentMatchResponse,
+    GetRecentMatchScheduleResponse
 } from 'data-center';
 import {
     getPostList,
@@ -17,7 +18,8 @@ import {
     getLineup,
     getInformation,
     getExponent,
-    getRecentMatchData
+    getRecentMatchData,
+    getRecentMatchSchedule
 } from 'data-center';
 import style from './tabContent.module.scss';
 import LiveBox from './(dashboard)/liveEvent/liveEvent';
@@ -30,7 +32,10 @@ import Information from './(dashboard)/information/information';
 import { useContestDetailStore } from './contestDetailStore';
 
 interface FetchInitData {
-    data?: { recentMatchData?: GetRecentMatchResponse };
+    data?: {
+        recentMatchData?: GetRecentMatchResponse;
+        recentMatchSchedule?: GetRecentMatchScheduleResponse;
+    };
     predict?: GetPostListResponse;
     exponent?: GetExponentResponse;
     information?: GetInformationResponse;
@@ -137,7 +142,11 @@ function TabContent({
                         }
                     }
                 }
-            } as GetRecentMatchResponse
+            } as GetRecentMatchResponse,
+            recentMatchSchedule: {
+                home: [],
+                away: []
+            } as GetRecentMatchScheduleResponse
         },
         predict: {
             posts: [],
@@ -212,15 +221,16 @@ function TabContent({
 
     const handleSecondFetch = {
         data: async () => {
-            const [recentMatchData] = await Promise.all([
+            const [recentMatchData, recentMatchSchedule] = await Promise.all([
                 getRecentMatchData({
                     matchId: matchDetail.matchId,
                     homeId: matchDetail.homeId,
                     awayId: matchDetail.awayId
-                })
+                }),
+                getRecentMatchSchedule(Number(matchId))
             ]);
 
-            if (!recentMatchData.success) {
+            if (!recentMatchData.success || !recentMatchSchedule.success) {
                 return {
                     success: false,
                     error: ''
@@ -230,7 +240,8 @@ function TabContent({
             return {
                 success: true,
                 data: {
-                    recentMatchData: recentMatchData.data
+                    recentMatchData: recentMatchData.data,
+                    recentMatchSchedule: recentMatchSchedule.data
                 }
             };
         },
@@ -390,6 +401,10 @@ function TabContent({
                             recentMatchData={
                                 fetchInitData?.data?.recentMatchData ||
                                 fetchData.data.recentMatchData
+                            }
+                            recentMatchSchedule={
+                                fetchInitData?.data?.recentMatchSchedule ||
+                                fetchData.data.recentMatchSchedule
                             }
                         />
                     ) : null}

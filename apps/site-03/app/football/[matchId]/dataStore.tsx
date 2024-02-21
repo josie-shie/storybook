@@ -1,6 +1,6 @@
 import { initStore } from 'lib';
 import type { StoreWithSelectors } from 'lib';
-import type { GetRecentMatchResponse } from 'data-center';
+import type { GetRecentMatchResponse, GetRecentMatchScheduleResponse } from 'data-center';
 
 interface RecentMatchOptionType {
     homeOption: { homeAway: number; leagueId: number; dataCount: number };
@@ -9,6 +9,7 @@ interface RecentMatchOptionType {
 
 interface InitState {
     recentMatchData: GetRecentMatchResponse;
+    recentMatchSchedule: GetRecentMatchScheduleResponse;
 }
 
 interface DataState extends InitState {
@@ -93,6 +94,10 @@ const initialState = (set: (updater: (state: DataState) => Partial<DataState>) =
             leagueId: 0,
             dataCount: 10
         }
+    },
+    recentMatchSchedule: {
+        home: [],
+        away: []
     },
     setRecentMatchOption: ({
         team,

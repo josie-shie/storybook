@@ -17,3 +17,13 @@ export const timestampToTodayTime = (unixTimestamp: number) => {
     }
     return date.format('MM-DD HH:mm');
 };
+
+export const daysFromToday = (unixTimestamp: number, targetUnixTimestamp?: number): string => {
+    const date = dayjs.unix(unixTimestamp);
+    const targetDate = targetUnixTimestamp ? dayjs.unix(targetUnixTimestamp) : dayjs();
+
+    const diffDays = targetDate.diff(date, 'day');
+    const result = `${Math.abs(diffDays)}天`;
+
+    return result;
+};

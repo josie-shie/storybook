@@ -18,7 +18,12 @@ export {
     handicapResult
 } from './src/formatHandicap';
 export type { StoreWithSelectors } from './src/store';
-export { timestampToString, timestampToMonthDay, timestampToTodayTime } from './src/timeFormat';
+export {
+    timestampToString,
+    timestampToMonthDay,
+    timestampToTodayTime,
+    daysFromToday
+} from './src/timeFormat';
 export { handleStartTime, handleGameTime, handleMatchDateTime } from './src/gameStatus';
 export * from './src/mqttService';
 export * from './src/messageWs';

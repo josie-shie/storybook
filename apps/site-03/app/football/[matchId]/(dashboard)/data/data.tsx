@@ -1,16 +1,18 @@
 'use client';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import type { GetRecentMatchResponse } from 'data-center';
+import type { GetRecentMatchResponse, GetRecentMatchScheduleResponse } from 'data-center';
 import { slickOption } from 'ui';
 import { createDataStore } from '../../dataStore';
 import style from './data.module.scss';
 import TeamMatchHistoryDetail from './teamMatchHistory/teamMatchHistoryDetail';
+import MatchSchedule from './matchSchedule/matchSchedule';
 
 function DetailsContainer() {
     return (
         <div className={style.detailsContainer}>
             <TeamMatchHistoryDetail />
+            <MatchSchedule />
         </div>
     );
 }
@@ -75,8 +77,14 @@ function DataContainer() {
     );
 }
 
-function Data({ recentMatchData }: { recentMatchData: GetRecentMatchResponse }) {
-    createDataStore({ recentMatchData });
+function Data({
+    recentMatchData,
+    recentMatchSchedule
+}: {
+    recentMatchData: GetRecentMatchResponse;
+    recentMatchSchedule: GetRecentMatchScheduleResponse;
+}) {
+    createDataStore({ recentMatchData, recentMatchSchedule });
     return <DataContainer />;
 }
 

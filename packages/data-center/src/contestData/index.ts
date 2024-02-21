@@ -2,7 +2,11 @@ import { fetcher, overUnderResult, victoryMinusResult, handicapResult } from 'li
 import { z } from 'zod';
 import { handleApiError, throwErrorMessage } from '../common';
 import type { ReturnData, FetchResultData } from '../common';
-import { GET_RECENT_MATCH_QUERY, GET_MATCH_ID_QUERY } from './graphqlQueries';
+import {
+    GET_RECENT_MATCH_QUERY,
+    GET_MATCH_ID_QUERY,
+    GET_RECENT_MATCH_SCHEDULE_QUERY
+} from './graphqlQueries';
 
 const SingleMatchIdSchema = z.object({
     matchId: z.number(),
@@ -106,6 +110,43 @@ const GetRecentMatchResponseSchema = z.object({
 });
 
 export type GetRecentMatchResponse = z.infer<typeof GetRecentMatchResponseSchema>;
+
+const MatchScheduleInfoSchema = z.object({
+    matchId: z.number(),
+    leagueId: z.number(),
+    leagueEn: z.string(),
+    leagueChs: z.string(),
+    leagueCht: z.string(),
+    matchTime: z.number(),
+    status: z.number(),
+    homeEn: z.string(),
+    homeChs: z.string(),
+    homeCht: z.string(),
+    awayEn: z.string(),
+    awayChs: z.string(),
+    awayCht: z.string(),
+    homeId: z.number(),
+    awayId: z.number(),
+    homeScore: z.number(),
+    awayScore: z.number()
+});
+
+export type MatchScheduleInfo = z.infer<typeof MatchScheduleInfoSchema>;
+
+const MatchScheduleSchema = z.object({
+    home: z.array(MatchScheduleInfoSchema),
+    away: z.array(MatchScheduleInfoSchema)
+});
+
+const GetRecentMatchScheduleResultSchema = z.object({
+    soccerData: z.object({
+        getRecentMatchSchedule: MatchScheduleSchema
+    })
+});
+
+export type GetRecentMatchScheduleResult = z.infer<typeof GetRecentMatchScheduleResultSchema>;
+
+export type GetRecentMatchScheduleResponse = z.infer<typeof MatchScheduleSchema>;
 
 /**
  * 取得指定賽事 ID
@@ -361,6 +402,41 @@ export const getRecentMatchData = async ({
                 awayMatch: matchList.away,
                 dashboard
             }
+        };
+    } catch (error) {
+        return handleApiError(error);
+    }
+};
+
+/**
+ * 取得兩對近期賽程
+ * - params : (matchId: number)
+ * - returns : {@link GetRecentMatchScheduleResponse}
+ */
+export const getRecentMatchSchedule = async (
+    matchId: number
+): Promise<ReturnData<GetRecentMatchScheduleResponse>> => {
+    try {
+        const { data, errors } = await fetcher<
+            FetchResultData<GetRecentMatchScheduleResult>,
+            unknown
+        >(
+            {
+                data: {
+                    query: GET_RECENT_MATCH_SCHEDULE_QUERY,
+                    variables: {
+                        matchId
+                    }
+                }
+            },
+            { cache: 'no-store' }
+        );
+
+        throwErrorMessage(errors);
+
+        return {
+            success: true,
+            data: data.soccerData.getRecentMatchSchedule
         };
     } catch (error) {
         return handleApiError(error);

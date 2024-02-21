@@ -1,11 +1,11 @@
 'use client';
 import { getRecentMatchData } from 'data-center';
 import type { RecentMatch, RecentMatchDashboardInfo } from 'data-center';
-import { timestampToString, formatNumberWithPercent } from 'lib';
+import { timestampToString, formatNumberWithPercent, handicapToString } from 'lib';
 import { useEffect, useState } from 'react';
 import { useContestDetailStore } from '@/app/football/[matchId]/contestDetailStore';
 import TeamLogo from '@/components/teamLogo/teamLogo';
-import { useDataStore } from '../../../dataStore';
+import { useDataStore } from '@/app/football/[matchId]/dataStore';
 import SameOptionBar from '../components/sameOptionBar';
 import MatchCountOptionBar from '../components/matchCountOptionBar';
 import style from './teamMatchHistory.module.scss';
@@ -125,7 +125,7 @@ function TableRow({ match, homeName }: { match: RecentMatch; homeName: string })
                 </p>
             </div>
             <div className={`td ${match.handicapResult}`}>
-                <p>{match.handicapCurrent}</p>
+                <p>{handicapToString(match.handicapCurrent)}</p>
                 <p>{resultNameMap[match.handicapResult as ResultName]}</p>
             </div>
             <div className={`td ${match.overUnderResult}`}>

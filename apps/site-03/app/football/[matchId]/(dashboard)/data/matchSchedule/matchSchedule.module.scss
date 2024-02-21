@@ -1,0 +1,79 @@
+.matchSchedule {
+    width: 100%;
+
+    .teamInfo {
+        display: flex;
+        align-items: center;
+        column-gap: 8px;
+        margin: 8px 0 12px;
+
+        .teamName {
+            font-size: 12px;
+        }
+    }
+
+    :global {
+        .tableHead {
+            .tr {
+                .th {
+                    flex: initial;
+
+                    &:first-of-type {
+                        width: 84px;
+                    }
+
+                    &:nth-of-type(2) {
+                        flex: 1;
+                        column-gap: 4px;
+                    }
+
+                    &:last-of-type {
+                        width: 48px;
+                    }
+                }
+            }
+        }
+
+        .tableBody {
+            .tr {
+                .td {
+                    flex: initial;
+                    font-weight: initial;
+
+                    &:first-of-type {
+                        flex-direction: column;
+                        width: 84px;
+                    }
+
+                    &:nth-of-type(2) {
+                        flex-direction: row;
+                        flex: 1;
+                        justify-content: center;
+                        column-gap: 4px;
+
+                        .homeName {
+                            flex: 1;
+                            text-align: right;
+                        }
+
+                        .awayName {
+                            flex: 1;
+                        }
+                    }
+
+                    &:last-of-type {
+                        width: 48px;
+                    }
+                }
+
+                &.thisMatch {
+                    :global {
+                        .td {
+                            color: #ff4343;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
