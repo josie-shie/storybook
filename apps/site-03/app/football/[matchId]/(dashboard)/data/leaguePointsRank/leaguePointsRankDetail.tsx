@@ -62,7 +62,7 @@ function LeagueRankTable({ isHome }: { isHome: boolean }) {
                 <div className="tableBody greyRow">
                     {rows.map(
                         (item, idx) =>
-                            typeof leagueData[item.target] !== 'undefined' && (
+                            typeof leagueData.total !== 'undefined' && (
                                 <div className="tr" key={`league_rank_${idx.toString()}`}>
                                     <div className="td">{item.desc}</div>
                                     <div className="td">
