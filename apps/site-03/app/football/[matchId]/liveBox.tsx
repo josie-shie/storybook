@@ -13,6 +13,11 @@ import style from './liveBox.module.scss';
 import bgImage from './img/bg.jpg';
 import BackIcon from './img/back.svg';
 import Football from './img/football.png';
+import CloudyIcon from './img/cloudy.svg';
+import ThunderIcon from './img/thunder.svg';
+import RainIcon from './img/rain.svg';
+import SnowIcon from './img/snow.svg';
+import SunIcon from './img/sun.svg';
 
 const statusStyleMap = {
     '0': 'notYet',
@@ -207,6 +212,34 @@ function LiveBox({
         }
     };
 
+    //1:局部有云
+    //2:多云
+    //3:局部有云/雨
+    //4:雪
+    //5:晴
+    //6:阴有雨/局部有雷暴
+    //7:阴
+    //8:薄雾
+    //9:阴有雨
+    //10:多云有雨
+    //11:多云有雨/局部有雷暴
+    //12:局部有云/雨和雷暴
+    //13:雾
+    const getWeatherIcon = (id: number) => {
+        if ([1, 2, 3, 7, 8, 13].includes(id)) {
+            return { icon: <CloudyIcon />, display: '雲' };
+        } else if ([9, 10].includes(id)) {
+            return { icon: <RainIcon />, display: '雨' };
+        } else if ([6, 11, 12].includes(id)) {
+            return { icon: <ThunderIcon />, display: '雷' };
+        } else if (id === 4) {
+            return { icon: <SnowIcon />, display: '雪' };
+        } else if (id === 5) {
+            return { icon: <SunIcon />, display: '晴' };
+        }
+        return { icon: null, display: '' };
+    };
+
     return (
         <div className={style.liveBox} style={{ backgroundImage: `url(${bgImage.src})` }}>
             <Header back={back} interceptData={interceptData} matchId={matchId} />
@@ -242,6 +275,18 @@ function LiveBox({
                         </p>
                     </div>
                 </div>
+            </div>
+            <div className={style.weatherInfo}>
+                {matchDetail.weather && (
+                    <>
+                        {getWeatherIcon(matchDetail.weather).icon}
+                        <div> {getWeatherIcon(matchDetail.weather).display}，</div>
+                    </>
+                )}
+                <div>气温{matchDetail.temperature}，</div>
+                <div>风速{matchDetail.wind}，</div>
+                <div>气压{matchDetail.pressure}，</div>
+                <div>濕度{matchDetail.humidity}</div>
             </div>
             <Animate />
             <GoalAnimation contestDetail={contestDetail} matchId={matchId} />
