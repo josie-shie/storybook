@@ -44,7 +44,13 @@ const ContestInfoSchema = z.object({
     status: z.number(),
     leagueLevel: z.number(),
     mobileLiveUrl: z.string(),
-    pcLiveUrl: z.string()
+    pcLiveUrl: z.string(),
+    hasIntelligence: z.boolean(),
+    weather: z.number(),
+    temperature: z.string(),
+    wind: z.string(),
+    pressure: z.string(),
+    humidity: z.string()
 });
 
 export type OriginalContestInfo = z.infer<typeof ContestInfoSchema>;

@@ -17,7 +17,6 @@ import { CompareOdds } from './compareOdds';
 import Soccer from './img/soccer.png';
 // import VideoIcon from './img/video.svg';
 import CornerIcon from './img/corner.svg';
-import LiveIcon from './img/live.svg';
 import UpIcon from './img/up.svg';
 
 type Status = 'all' | 'progress' | 'schedule' | 'result';
@@ -386,12 +385,17 @@ function TopArea({
                     </div>
                 ) : (
                     <>
-                        {contestInfo.mobileLiveUrl ? (
-                            <div className={style.live}>
-                                <div className={style.liveAnimate} />
-                                <LiveIcon />
-                            </div>
-                        ) : null}
+                        <div className={style.information}>
+                            {contestInfo.hasLineup !== '0' ? (
+                                <div className={style.text}>阵容</div>
+                            ) : null}
+                            {contestInfo.hasLineup && contestInfo.hasIntelligence ? (
+                                <div className={style.line} />
+                            ) : null}
+                            {contestInfo.hasIntelligence ? (
+                                <div className={style.text}>情报</div>
+                            ) : null}
+                        </div>
                         {/* 目前無動畫暫隱藏
                             {contestInfo.hasAnimation ? (
                             <VideoIcon className={style.videoIcon} />
