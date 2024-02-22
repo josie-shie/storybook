@@ -237,7 +237,7 @@ function LeagueDrawer() {
                                       </span>
                                   );
                               })
-                            : '选择联赛'}
+                            : '全部联赛'}
                     </p>
                 </div>
 

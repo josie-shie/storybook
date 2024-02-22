@@ -81,7 +81,7 @@ const initialState = (
             return { ...state, analysisError };
         });
     },
-    startDate: dayjs().subtract(7, 'day').format('YYYY-M-D'),
+    startDate: dayjs().subtract(14, 'day').format('YYYY-M-D'),
     setStartDate: (startDate: string) => {
         set(state => {
             return { ...state, startDate };
@@ -333,7 +333,7 @@ const initialState = (
     },
     resetQuery: () => {
         set(() => ({
-            startDate: dayjs().subtract(7, 'day').format('YYYY-M-D'),
+            startDate: dayjs().subtract(14, 'day').format('YYYY-M-D'),
             endDate: dayjs().subtract(1, 'day').format('YYYY-M-D'),
             teamSelected: ['home'],
             teamHandicapOdds: '0.5',

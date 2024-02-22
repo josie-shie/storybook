@@ -8,7 +8,6 @@ import { useCallback, useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 import { useUserStore } from '@/store/userStore';
 import { useAuthStore } from '@/store/authStore';
-import { useNotificationStore } from '@/store/notificationStore';
 import ConfirmPayDrawer from '@/components/confirmPayDrawer/confirmPayDrawer';
 import { useQueryFormStore } from '../queryFormStore';
 import { useMatchFilterStore } from '../matchFilterStore';
@@ -122,17 +121,12 @@ function SubmitButton({ setZeroMatchList }: { setZeroMatchList: (list: number[])
     const startTime = useQueryFormStore.use.startDate();
     const endTime = useQueryFormStore.use.endDate();
     const setDialogContentType = useQueryFormStore.use.setDialogContentType();
-    const setIsNotificationVisible = useNotificationStore.use.setIsVisible();
     const isOpenPayDrawer = useQueryFormStore.use.isOpenPayDrawer();
 
     const submit = async () => {
         if (!isLogin) {
             setAuthQuery('login');
             setIsDrawerOpen(true);
-            return;
-        }
-        if (!selectedleagueIdList.length) {
-            setIsNotificationVisible('请选择联赛', 'error');
             return;
         }
 
@@ -165,6 +159,7 @@ function SubmitButton({ setZeroMatchList }: { setZeroMatchList: (list: number[])
     };
 
     const handleCheckMatchesCount = async () => {
+        if (selectedleagueIdList.length) return;
         let handicapSideValue = '';
         if (teamSelected.length === 2) {
             handicapSideValue = 'all';
@@ -184,9 +179,7 @@ function SubmitButton({ setZeroMatchList }: { setZeroMatchList: (list: number[])
         };
 
         const res = await checkMatchesCount(query);
-
         if (!res.success) return;
-
         const zeroMatchList: number[] = [];
 
         res.data.forEach(item => {
@@ -194,7 +187,6 @@ function SubmitButton({ setZeroMatchList }: { setZeroMatchList: (list: number[])
                 zeroMatchList.push(item.leagueId);
             }
         });
-
         return zeroMatchList;
     };
 
