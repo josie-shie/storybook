@@ -297,6 +297,32 @@ export interface GetFootballStatsMatchesRequest {
     matchIds: number[];
 }
 
+const GetAiAnalyzeMatch = z.object({
+    matchId: z.number(),
+    matchTime: z.number(),
+    leagueId: z.number(),
+    leagueEn: z.string(),
+    leagueChs: z.string(),
+    leagueCht: z.string(),
+    homeEn: z.string(),
+    homeChs: z.string(),
+    homeCht: z.string(),
+    awayEn: z.string(),
+    awayChs: z.string(),
+    awayCht: z.string(),
+    homeId: z.number(),
+    awayId: z.number(),
+    predict: z.string(),
+    summery: z.string(),
+    homeStrategicAnalysis: z.string(),
+    awayStrategicAnalysis: z.string(),
+    homeTacticalPerspective: z.string(),
+    awayTacticalPerspective: z.string(),
+    updatedAt: z.number()
+});
+
+export type GetAiAnalyzeMatchResponse = z.infer<typeof GetAiAnalyzeMatch>;
+
 /**
  * 分析紀錄列表API
  * - params : {@link GetFootballStatsRecordRequest}

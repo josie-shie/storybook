@@ -1,0 +1,72 @@
+.aiTab {
+    .detail {
+        padding: 24px 8px 8px;
+        font-size: 14px;
+        font-weight: 500;
+        color: #4a4a4a;
+    }
+
+    .info {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        padding: 26px 8px;
+        border-bottom: 1px solid #f3f3f3;
+
+        &:last-child {
+            border-bottom: none;
+        }
+
+        .title {
+            position: relative;
+            padding-left: 16px;
+            color: #222;
+            font-size: 16px;
+            font-weight: 500;
+
+            &::before {
+                content: '';
+                position: absolute;
+                top: 50%;
+                left: 0;
+                transform: translateY(-50%);
+                width: 8px;
+                height: 8px;
+                background: #4a4a4a;
+                border-radius: 2px;
+            }
+        }
+
+        .titleLogo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+
+            span {
+                font-size: 16px;
+                font-weight: 500;
+                color: #4a4a4a;
+            }
+        }
+
+        .content {
+            position: relative;
+            padding-left: 28px;
+            color: #4a4a4a;
+            font-size: 14px;
+            font-weight: 500;
+
+            &::before {
+                content: '';
+                position: absolute;
+                top: 50%;
+                left: 7px;
+                transform: translateY(-50%);
+                width: 6px;
+                height: 6px;
+                background: #222;
+                border-radius: 2px;
+            }
+        }
+    }
+}

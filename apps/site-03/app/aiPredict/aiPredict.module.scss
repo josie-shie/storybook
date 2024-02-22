@@ -1,0 +1,273 @@
+.aiPredict {
+    .title {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 54px;
+        color: #fff;
+        font-size: 18px;
+        font-weight: 600;
+    }
+
+    .content {
+        position: relative;
+        width: 100%;
+        height: calc(100dvh - 162px);
+        padding: 48px 0 10px;
+        overflow-y: auto;
+        touch-action: pan-y;
+        background: #fff;
+        border-radius: 16px 16px 0 0;
+
+        .welcome {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            height: 160px;
+
+            .text {
+                width: 16em;
+                color: #4a4a4a;
+                font-size: 18px;
+                font-weight: 500;
+                animation:
+                    typing 2.5s steps(16),
+                    blink 0.5s step-end infinite alternate;
+                white-space: nowrap;
+                overflow: hidden;
+                border-right: 1px solid;
+            }
+        }
+
+        .analyze {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding: 12px;
+
+            .teamTitle {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 4px;
+                padding: 16px 10px;
+                border: 1px solid #e6eeee;
+                border-radius: 8px;
+
+                .time {
+                    color: #8d8d8d;
+                    font-size: 12px;
+                    font-weight: 500;
+                }
+
+                .name {
+                    color: #222;
+                    font-size: 14px;
+                    font-weight: 500;
+                }
+            }
+
+            .message {
+                display: flex;
+                align-items: flex-start;
+                gap: 8px;
+
+                .icon {
+                    min-width: 24px;
+                }
+
+                .text {
+                    width: 47em;
+                    font-size: 14px;
+                    font-weight: 500;
+                    color: #4a4a4a;
+                    overflow: hidden;
+
+                    span {
+                        color: #4489ff;
+                    }
+
+                    .typing {
+                        border-right: 1px solid #222;
+                        animation: blink 0.5s step-end infinite alternate;
+                    }
+                }
+            }
+
+            .information {
+                width: 100%;
+                min-height: calc(100dvh - 60vw - 107px);
+                border: 1px solid #f3f3f3;
+                border-radius: 12px;
+                padding: 8px;
+
+                .minTabBar {
+                    display: flex;
+                    align-items: center;
+                    column-gap: 8px;
+
+                    .tab {
+                        width: calc((100% - 16px) / 3);
+                        height: 36px;
+                        line-height: 36px;
+                        text-align: center;
+                        padding: 0 12px;
+                        flex: 1;
+                        background-color: #f8f8f8;
+                        color: #8d8d8d;
+                        font-size: 14px;
+                        font-weight: 500;
+                        border-radius: 8px 8px 0 0;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                    }
+                }
+            }
+        }
+
+        .chat {
+            margin: 48px 0;
+
+            &.fadeIn {
+                animation: fadein 1s ease forwards;
+            }
+
+            &.hidden {
+                opacity: 0;
+            }
+
+            .title {
+                position: relative;
+                width: 100%;
+                height: 40px;
+                padding: 0 12px;
+                font-size: 12px;
+                font-weight: 500;
+                color: #4a4a4a;
+
+                &::before {
+                    content: '';
+                    position: absolute;
+                    top: 50%;
+                    left: 12px;
+                    width: 148px;
+                    height: 1px;
+                    background: #f3f3f3;
+                }
+
+                &::after {
+                    content: '';
+                    position: absolute;
+                    top: 50%;
+                    right: 12px;
+                    width: 148px;
+                    height: 1px;
+                    background: #f3f3f3;
+                }
+            }
+
+            .wrapper {
+                padding-left: 12px;
+
+                &.scrolledToRight {
+                    padding-right: 12px;
+                }
+            }
+
+            .contestList {
+                display: flex;
+                flex-direction: column;
+                overflow-x: auto;
+                white-space: nowrap;
+
+                .row {
+                    display: flex;
+                    gap: 4px;
+                    margin-bottom: 10px;
+                }
+
+                .item {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 6px;
+                    min-width: 164px;
+                    border: 1px solid #e6eeee;
+                    border-radius: 8px;
+                    padding: 10px;
+
+                    .league {
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        font-size: 12px;
+                        font-weight: 600;
+
+                        .name {
+                            color: #6cf;
+                        }
+
+                        .time {
+                            color: #8d8d8d;
+                        }
+                    }
+
+                    .team {
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                        gap: 4px;
+
+                        .name {
+                            display: flex;
+                            align-items: center;
+                            gap: 2px;
+                            font-size: 14px;
+                            font-weight: 500;
+                            color: #4a4a4a;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@keyframes fadein {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes typing {
+    from {
+        width: 0;
+    }
+}
+
+@keyframes blink {
+    50% {
+        border-color: transparent;
+    }
+}
+
+@keyframes blinktype {
+    0% {
+        border-color: transparent;
+    }
+
+    50% {
+        border-color: black;
+    }
+
+    100% {
+        border-color: transparent;
+    }
+}

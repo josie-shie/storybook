@@ -7,7 +7,8 @@ import GameIcon from './img/game.svg';
 import GuessIcon from './img/guess.svg';
 import AnalyzeIcon from './img/analyze.svg';
 import RecommendIcon from './img/recommend.svg';
-import DataIcon from './img/data.svg';
+import AiPredictIcon from './img/aiPredict.svg';
+// import DataIcon from './img/data.svg';
 
 interface CategoryItem {
     label: string;
@@ -24,29 +25,35 @@ const CategoryList = [
         icon: <GameIcon className={`${style.icon} ${style.gameIcon}`} />
     },
     {
-        label: '猜球',
-        value: '/guess',
-        includedRouters: ['/guess'],
-        icon: <GuessIcon className={`${style.icon} ${style.guessIcon}`} />
-    },
-    {
-        label: '智能分析',
-        value: '/aiBigData/queryForm',
-        includedRouters: ['/aiBigData'],
-        icon: <AnalyzeIcon className={`${style.icon} ${style.analyzeIcon}`} />
-    },
-    {
         label: '专家',
         value: '/master/list/article',
         includedRouters: ['/master/articleDetail', '/master/masterAvatar', '/master/memberAvatar'],
         icon: <RecommendIcon className={`${style.icon} ${style.recommendIcon}`} />
     },
     {
-        label: '数据',
-        value: '/analytics',
-        includedRouters: ['/analytics'],
-        icon: <DataIcon className={`${style.icon} ${style.dataIcon}`} />
+        label: 'FutureAI',
+        value: '/aiPredict',
+        includedRouters: ['/aiPredict'],
+        icon: <AiPredictIcon className={`${style.icon} ${style.aiPredictIcon}`} />
+    },
+    {
+        label: '数据分析',
+        value: '/aiBigData/queryForm',
+        includedRouters: ['/aiBigData'],
+        icon: <AnalyzeIcon className={`${style.icon} ${style.analyzeIcon}`} />
+    },
+    {
+        label: '猜球',
+        value: '/guess',
+        includedRouters: ['/guess'],
+        icon: <GuessIcon className={`${style.icon} ${style.guessIcon}`} />
     }
+    // {
+    //     label: '数据',
+    //     value: '/analytics',
+    //     includedRouters: ['/analytics'],
+    //     icon: <DataIcon className={`${style.icon} ${style.dataIcon}`} />
+    // }
 ];
 
 function FooterComponent() {
