@@ -78,6 +78,23 @@
                 font-weight: 500;
             }
 
+            .information {
+                display: flex;
+                align-items: center;
+                column-gap: 4px;
+
+                .text {
+                    font-size: 12px;
+                    color: #bfbfbf;
+                }
+
+                .line {
+                    width: 1px;
+                    height: 6px;
+                    background: #bfbfbf;
+                }
+            }
+
             .live {
                 display: flex;
                 align-items: center;

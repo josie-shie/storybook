@@ -82,6 +82,12 @@ export const GET_CONTEST_LIST_QUERY = `
                 leagueLevel
                 mobileLiveUrl
                 pcLiveUrl
+                hasIntelligence
+                weather
+                temperature
+                wind
+                pressure
+                humidity
             }
         }
     }
