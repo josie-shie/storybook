@@ -25,19 +25,17 @@ function LeagueRankTables() {
 function LeagueRankTable({ isHome }: { isHome: boolean }) {
     const matchDetail = useContestDetailStore.use.matchDetail();
     const leaguePointsRank = useDataStore.use.leaguePointsRank();
-
-    if (typeof leaguePointsRank === 'undefined') {
-        return null;
-    }
-
-    const leagueData = isHome ? leaguePointsRank.homeTeam : leaguePointsRank.awayTeam;
-
     const rows: { desc: string; target: 'total' | 'home' | 'away' | 'recent' }[] = [
         { desc: '总', target: 'total' },
         { desc: '主', target: 'home' },
         { desc: '客', target: 'away' },
         { desc: '近', target: 'recent' }
     ];
+
+    if (typeof leaguePointsRank === 'undefined') {
+        return null;
+    }
+    const leagueData = isHome ? leaguePointsRank.homeTeam : leaguePointsRank.awayTeam;
 
     return (
         <div className={style.leagueRankTables}>
@@ -64,38 +62,35 @@ function LeagueRankTable({ isHome }: { isHome: boolean }) {
                         <div className="th">排名</div>
                     </div>
                 </div>
-                <div className="tableBody greyRow">
-                    {rows.map(
-                        (item, idx) =>
-                            typeof leagueData.total !== 'undefined' && (
-                                <div className="tr" key={`league_rank_${idx.toString()}`}>
-                                    <div className="td">{item.desc}</div>
-                                    <div className="td">
-                                        {leagueData[item.target].totalCount || '-'}
-                                    </div>
-                                    <div className="td">
-                                        <p>
-                                            {leagueData[item.target].winCount || '-'}/
-                                            {leagueData[item.target].drawCount || '-'}/
-                                            {leagueData[item.target].loseCount || '-'}
-                                        </p>
-                                    </div>
-                                    <div className="td">
-                                        <p>
-                                            {leagueData[item.target].getScore || '-'}/
-                                            {leagueData[item.target].loseScore || '-'}
-                                        </p>
-                                    </div>
-                                    <div className="td">
-                                        {leagueData[item.target].integral || '-'}
-                                    </div>
-                                    <div className={`td ${style.highlight}`}>
-                                        {leagueData[item.target].rank || '-'}
-                                    </div>
+                {typeof leaguePointsRank !== 'undefined' && (
+                    <div className="tableBody greyRow">
+                        {rows.map((item, idx) => (
+                            <div className="tr" key={`league_rank_${idx.toString()}`}>
+                                <div className="td">{item.desc}</div>
+                                <div className="td">
+                                    {leagueData[item.target].totalCount || '-'}
                                 </div>
-                            )
-                    )}
-                </div>
+                                <div className="td">
+                                    <p>
+                                        {leagueData[item.target].winCount || '-'}/
+                                        {leagueData[item.target].drawCount || '-'}/
+                                        {leagueData[item.target].loseCount || '-'}
+                                    </p>
+                                </div>
+                                <div className="td">
+                                    <p>
+                                        {leagueData[item.target].getScore || '-'}/
+                                        {leagueData[item.target].loseScore || '-'}
+                                    </p>
+                                </div>
+                                <div className="td">{leagueData[item.target].integral || '-'}</div>
+                                <div className={`td ${style.highlight}`}>
+                                    {leagueData[item.target].rank || '-'}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                )}
             </div>
         </div>
     );
