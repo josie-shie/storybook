@@ -141,9 +141,9 @@ function BettingPlan({
                                                   item.handicapInChinese
                                               }`}{' '}
                                         {item.predictedPlay === 'OVER' &&
-                                            `${item.overUnderOdds} 小`}
-                                        {item.predictedPlay === 'UNDER' &&
                                             `${item.overUnderOdds} 大`}
+                                        {item.predictedPlay === 'UNDER' &&
+                                            `${item.overUnderOdds} 小`}
                                         {item.predictedPlay === 'HOME' && item.homeTeamName}
                                         {item.predictedPlay === 'AWAY' && item.awayTeamName}
                                     </div>
