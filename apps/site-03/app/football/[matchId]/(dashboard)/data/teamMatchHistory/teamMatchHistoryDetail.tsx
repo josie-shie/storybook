@@ -209,7 +209,7 @@ function HomeHistory() {
                     />
                 </div>
             </div>
-            <Dashboard count={dataCount} dashboard={dashboard} />
+            <Dashboard count={homeMatch.length} dashboard={dashboard} />
             <div className="dataTable">
                 <TableHead />
                 <div className="tableBody">
@@ -299,7 +299,7 @@ function AwayHistory() {
                     />
                 </div>
             </div>
-            <Dashboard count={dataCount} dashboard={dashboard} />
+            <Dashboard count={awayMatch.length} dashboard={dashboard} />
             <div className="dataTable">
                 <TableHead />
                 <div className="tableBody">

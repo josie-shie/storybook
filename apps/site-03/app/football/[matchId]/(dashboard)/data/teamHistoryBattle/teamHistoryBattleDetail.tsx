@@ -208,7 +208,7 @@ function BattleHistory() {
                     />
                 </div>
             </div>
-            <Dashboard count={dataCount} dashboard={dashboard} />
+            <Dashboard count={matchList.length} dashboard={dashboard} />
             <div className="dataTable">
                 <TableHead />
                 <div className="tableBody">
