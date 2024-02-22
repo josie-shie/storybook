@@ -25,6 +25,11 @@ function LeagueRankTables() {
 function LeagueRankTable({ isHome }: { isHome: boolean }) {
     const matchDetail = useContestDetailStore.use.matchDetail();
     const leaguePointsRank = useDataStore.use.leaguePointsRank();
+
+    if (typeof leaguePointsRank === 'undefined') {
+        return null;
+    }
+
     const leagueData = isHome ? leaguePointsRank.homeTeam : leaguePointsRank.awayTeam;
 
     const rows: { desc: string; target: 'total' | 'home' | 'away' | 'recent' }[] = [
