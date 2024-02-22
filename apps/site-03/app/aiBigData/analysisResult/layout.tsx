@@ -123,19 +123,30 @@ function QueryInfo({ children }: { children: ReactNode }) {
                     <div className={style.row}>
                         <span className={style.title}>联赛</span>
                         <span className={style.name}>
-                            {selectedleagueIdList.map(id => {
-                                return (
-                                    <Chip
-                                        className={style.tag}
-                                        deleteIcon={<CloseIcon />}
-                                        key={id}
-                                        label={contestInfo[id].leagueChsShort}
-                                        onDelete={() => {
-                                            void handleDelete(contestInfo[id].leagueChsShort, id);
-                                        }}
-                                    />
-                                );
-                            })}
+                            {selectedleagueIdList.length ? (
+                                selectedleagueIdList.map(id => {
+                                    return (
+                                        <Chip
+                                            className={style.tag}
+                                            deleteIcon={<CloseIcon />}
+                                            key={id}
+                                            label={contestInfo[id].leagueChsShort}
+                                            onDelete={() => {
+                                                void handleDelete(
+                                                    contestInfo[id].leagueChsShort,
+                                                    id
+                                                );
+                                            }}
+                                        />
+                                    );
+                                })
+                            ) : (
+                                <Chip
+                                    className={style.tag}
+                                    deleteIcon={<CloseIcon />}
+                                    label="全部联赛"
+                                />
+                            )}
                         </span>
                     </div>
                     <div className={style.row}>
