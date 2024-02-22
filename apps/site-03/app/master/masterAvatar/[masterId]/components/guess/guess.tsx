@@ -126,7 +126,7 @@ function InfoTabs({ params }: { params: { masterId: string } }) {
                                 handlePlanTabClick(1);
                             }}
                         >
-                            总胜负
+                            胜负
                         </span>
                         <span
                             className={planActiveTab === 2 ? style.active : ''}
