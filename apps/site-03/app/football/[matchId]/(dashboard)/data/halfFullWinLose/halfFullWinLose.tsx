@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { getHalfFullWinCounts } from 'data-center';
 import { useContestDetailStore } from '@/app/football/[matchId]/contestDetailStore';
-import { useDataStore } from '@/app/football/[matchId]/dataStore';
+import { useDataStore } from '@/app/football/[matchId]/dataDetailStore';
 import TeamLogo from '@/components/teamLogo/teamLogo';
 import SameOptionBar from '../components/sameOptionBar';
 import MatchCountOptionBar from '../components/matchCountOptionBar';

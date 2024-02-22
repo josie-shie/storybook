@@ -1,5 +1,5 @@
 'use client';
-import { useDataStore } from '@/app/football/[matchId]/dataStore';
+import { useDataStore } from '@/app/football/[matchId]/dataDetailStore';
 import { useContestDetailStore } from '@/app/football/[matchId]/contestDetailStore';
 import TeamLogo from '@/components/teamLogo/teamLogo';
 import style from './leaguePointsRank.module.scss';

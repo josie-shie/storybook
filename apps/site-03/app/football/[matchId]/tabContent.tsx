@@ -13,7 +13,9 @@ import type {
     GetRecentBattleMatchResponse,
     GetRecentMatchResponse,
     GetRecentMatchScheduleResponse,
-    GetHalfFullWinCountsResponse
+    GetHalfFullWinCountsResponse,
+    GetRecentMatchCompareResponse,
+    GetBattleMatchCompareResponse
 } from 'data-center';
 import {
     getPostList,
@@ -25,7 +27,9 @@ import {
     getRecentBattleMatch,
     getRecentMatchData,
     getRecentMatchSchedule,
-    getHalfFullWinCounts
+    getHalfFullWinCounts,
+    getBattleMatchCompare,
+    getRecentMatchCompare
 } from 'data-center';
 import style from './tabContent.module.scss';
 import LiveBox from './(dashboard)/liveEvent/liveEvent';
@@ -44,6 +48,8 @@ interface FetchInitData {
         recentMatchData?: GetRecentMatchResponse;
         recentMatchSchedule?: GetRecentMatchScheduleResponse;
         halfFullWinCounts?: GetHalfFullWinCountsResponse;
+        battleMatchCompare?: GetBattleMatchCompareResponse;
+        recentMatchCompare?: GetRecentMatchCompareResponse;
     };
     predict?: GetPostListResponse;
     exponent?: GetExponentResponse;
@@ -181,7 +187,9 @@ function TabContent({
                 home: [],
                 away: []
             } as GetRecentMatchScheduleResponse,
-            halfFullWinCounts: {} as GetHalfFullWinCountsResponse
+            halfFullWinCounts: {} as GetHalfFullWinCountsResponse,
+            battleMatchCompare: {} as GetBattleMatchCompareResponse,
+            recentMatchCompare: {} as GetRecentMatchCompareResponse
         },
         predict: {
             posts: [],
@@ -259,30 +267,40 @@ function TabContent({
             const [
                 leaguePointsRank,
                 recentBattleMatch,
+                battleMatchCompare,
                 recentMatchData,
+                recentMatchCompare,
                 recentMatchSchedule,
                 halfFullWinCounts
             ] = await Promise.all([
-                getLeaguePointsRank(matchDetail.matchId),
+                getLeaguePointsRank(matchDetail.matchId), // 積分排名
                 getRecentBattleMatch({
                     matchId: matchDetail.matchId,
                     homeId: matchDetail.homeId
-                }),
+                }), // 詳情 - 歷史交鋒
+                getBattleMatchCompare({
+                    matchId: matchDetail.matchId
+                }), // 對比 - 歷史交鋒
                 getRecentMatchData({
                     matchId: matchDetail.matchId,
                     homeId: matchDetail.homeId,
                     awayId: matchDetail.awayId
-                }),
-                getRecentMatchSchedule(Number(matchId)),
+                }), // 詳情 - 近期戰績
+                getRecentMatchCompare({
+                    matchId: matchDetail.matchId
+                }), // 對比 - 近期戰績
+                getRecentMatchSchedule(Number(matchId)), //近期賽程
                 getHalfFullWinCounts({
                     matchId: matchDetail.matchId
-                })
+                }) // 半全場勝負
             ]);
 
             if (
                 !leaguePointsRank.success ||
                 !recentBattleMatch.success ||
+                !battleMatchCompare.success ||
                 !recentMatchData.success ||
+                !recentMatchCompare.success ||
                 !recentMatchSchedule.success ||
                 !halfFullWinCounts.success
             ) {
@@ -297,7 +315,9 @@ function TabContent({
                 data: {
                     leaguePointsRank: leaguePointsRank.data,
                     recentBattleMatch: recentBattleMatch.data,
+                    battleMatchCompare: battleMatchCompare.data,
                     recentMatchData: recentMatchData.data,
+                    recentMatchCompare: recentMatchCompare.data,
                     recentMatchSchedule: recentMatchSchedule.data,
                     halfFullWinCounts: halfFullWinCounts.data
                 }
@@ -456,6 +476,10 @@ function TabContent({
                 <div className={style.largeGap}>
                     {secondRender || status === 'data' ? (
                         <Data
+                            battleMatchCompare={
+                                fetchInitData?.data?.battleMatchCompare ||
+                                fetchData.data.battleMatchCompare
+                            }
                             halfFullWinCounts={
                                 fetchInitData?.data?.halfFullWinCounts ||
                                 fetchData.data.halfFullWinCounts
@@ -467,6 +491,10 @@ function TabContent({
                             recentBattleMatch={
                                 fetchInitData?.data?.recentBattleMatch ||
                                 fetchData.data.recentBattleMatch
+                            }
+                            recentMatchCompare={
+                                fetchInitData?.data?.recentMatchCompare ||
+                                fetchData.data.recentMatchCompare
                             }
                             recentMatchData={
                                 fetchInitData?.data?.recentMatchData ||

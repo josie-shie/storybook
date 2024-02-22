@@ -50,7 +50,7 @@ export const GET_RECENT_BATTLE_MATCH_QUERY = `
             }
         }
     }
-`; // 歷史交鋒
+`; // 詳情 - 歷史交鋒
 
 export const GET_RECENT_MATCH_QUERY = `
     query getRecentMatch($matchId:Int!,$homeAway:Int!,$leagueId:Int!,$dataCount:Int!) {
@@ -128,7 +128,7 @@ export const GET_RECENT_MATCH_QUERY = `
             }
           }
     }
-`; // 近期战绩
+`; // 詳情 - 近期战绩
 
 export const GET_RECENT_MATCH_SCHEDULE_QUERY = `
     query getRecentMatchSchedule($matchId:Int!) {
@@ -175,7 +175,7 @@ export const GET_RECENT_MATCH_SCHEDULE_QUERY = `
             }
         }
     }
-`; // 近期賽程
+`; // 詳情 - 近期賽程
 
 export const GET_HALF_FULL_WIN_COUNTS_QUERY = `
     query getHalfFullWinCounts($matchId:Int!,$homeAway:Int!,$leagueId:Int!,$dataCount:Int!) {
@@ -257,4 +257,89 @@ export const GET_HALF_FULL_WIN_COUNTS_QUERY = `
             }
         }
     }
-`; // 半全場勝負
+`; // 詳情 - 半全場勝負
+
+export const GET_RECENT_MATCH_COMPARE_QUERY = `
+    query getRecentMatchCompare($matchId:Int!,$homeAway:Int!,$leagueId:Int!,$dataCount:Int!) {
+        soccerData {
+            getRecentMatchCompare(
+                input: { matchId: $matchId, homeAway: $homeAway, leagueId: $leagueId, dataCount: $dataCount }
+            ) {
+                home {
+                    matchCount
+                    handicapWinRate
+                    overUnderWinRate
+                    handicapWin
+                    handicapLose
+                    handicapDraw
+                    overUnderWin
+                    overUnderLose
+                    overUnderDraw
+                    handicapTrend
+                    overUnderTrend
+                    matchTrend
+                    winRate
+                    goal
+                    goalAgainst
+                }
+                away {
+                    matchCount
+                    handicapWinRate
+                    overUnderWinRate
+                    handicapWin
+                    handicapLose
+                    handicapDraw
+                    overUnderWin
+                    overUnderLose
+                    overUnderDraw
+                    handicapTrend
+                    overUnderTrend
+                    matchTrend
+                    winRate
+                    goal
+                    goalAgainst
+                }
+            }
+        }
+    }
+`; // 對比 - 近期战绩
+
+export const GET_BATTLE_MATCH_COMPARE_QUERY = `
+    query getBattleMatchCompare($matchId:Int!,$homeAway:Int!,$leagueId:Int!,$dataCount:Int!) {
+        soccerData {
+            getBattleMatchCompare(
+                input: { matchId: $matchId, homeAway: $homeAway, leagueId: $leagueId, dataCount: $dataCount }
+            ) {
+                matchCount
+                handicapWinRate
+                overUnderWinRate
+                handicapWin
+                handicapLose
+                handicapDraw
+                overUnderWin
+                overUnderLose
+                overUnderDraw
+                handicapTrend
+                overUnderTrend
+                homeCompare {
+                    id
+                    winRate
+                    win
+                    draw
+                    lose
+                    goal
+                    goalAgainst
+                }
+                awayCompare {
+                    id
+                    winRate
+                    win
+                    draw
+                    lose
+                    goal
+                    goalAgainst
+                }
+            }
+        }
+    }
+`; // 對比 - 歷史交鋒

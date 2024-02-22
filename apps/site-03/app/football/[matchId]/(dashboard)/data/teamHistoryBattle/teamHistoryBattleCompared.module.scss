@@ -1,0 +1,100 @@
+.teamHistoryBattleCompared {
+    width: 100%;
+
+    .option {
+        margin: 16px 0 12px;
+        display: flex;
+        align-items: center;
+        column-gap: 12px;
+    }
+
+    .full {
+        flex: 1;
+        text-align: right;
+    }
+
+    .teamInfo {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .team {
+            display: flex;
+            align-items: center;
+            column-gap: 8px;
+            margin: 8px 0 12px;
+        }
+
+        .teamName {
+            font-size: 12px;
+        }
+    }
+
+    .pointChart {
+        display: flex;
+        flex-direction: column;
+        row-gap: 18px;
+
+        .pointCard {
+            display: flex;
+            flex-direction: column;
+            row-gap: 12px;
+
+            .pointTop {
+                display: flex;
+                align-items: center;
+
+                .title {
+                    font-size: 14px;
+                }
+
+                .subTitle {
+                    color: #8d8d8d;
+                    font-size: 12px;
+                }
+            }
+
+            .pointBar {
+                width: 100%;
+                height: 12px;
+                position: relative;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+
+                &::after {
+                    content: '';
+                    position: absolute;
+                    left: 0;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    width: 100%;
+                    height: 1px;
+                    background-color: #f3f3f3;
+                    z-index: -1;
+                }
+
+                .point {
+                    width: 12px;
+                    height: 12px;
+                    border-radius: 50%;
+
+                    &.win,
+                    &.over {
+                        background-color: #e95e6b;
+                    }
+
+                    &.push,
+                    &.draw {
+                        background-color: #f2d122;
+                    }
+
+                    &.lose,
+                    &.under {
+                        background-color: #8d8d8d;
+                    }
+                }
+            }
+        }
+    }
+}

@@ -6,27 +6,35 @@ import type {
     GetRecentBattleMatchResponse,
     GetRecentMatchResponse,
     GetRecentMatchScheduleResponse,
-    GetHalfFullWinCountsResponse
+    GetHalfFullWinCountsResponse,
+    GetBattleMatchCompareResponse,
+    GetRecentMatchCompareResponse
 } from 'data-center';
 import { slickOption } from 'ui';
-import { createDataStore } from '../../dataStore';
+import { createDataStore } from '../../dataDetailStore';
+import { createDataComparedStore } from '../../dataComparedStore';
 import style from './data.module.scss';
 import TeamMatchHistoryDetail from './teamMatchHistory/teamMatchHistoryDetail';
 import MatchSchedule from './matchSchedule/matchSchedule';
 import HalfFullWinLose from './halfFullWinLose/halfFullWinLose';
-import TeamHistoryBattle from './teamHistoryBattle/teamHistoryBattle';
+import TeamHistoryBattleDetail from './teamHistoryBattle/teamHistoryBattleDetail';
 import LeaguePointsRankDetail from './leaguePointsRank/leaguePointsRankDetail';
+// import TeamHistoryBattleCompared from './teamHistoryBattle/teamHistoryBattleCompared';
 
 function DetailsContainer() {
     return (
         <div className={style.detailsContainer}>
             <LeaguePointsRankDetail />
-            <TeamHistoryBattle />
+            <TeamHistoryBattleDetail />
             <TeamMatchHistoryDetail />
             <MatchSchedule />
             <HalfFullWinLose />
         </div>
     );
+}
+
+function ComparedContainer() {
+    return <div className={style.comparedContainer}>{/* <TeamHistoryBattleCompared /> */}</div>;
 }
 
 function DataContainer() {
@@ -45,10 +53,10 @@ function DataContainer() {
     ];
     const selectedMap = {
         details: <DetailsContainer />,
-        compared: <p>对比</p>
+        compared: <ComparedContainer />
     };
 
-    const [selectedOption, setSelectedOption] = useState('details');
+    const [selectedOption, setSelectedOption] = useState('compared');
 
     const handleResetHeight = () => {
         slickOption.contestInfoResetHeight();
@@ -94,13 +102,17 @@ function Data({
     recentBattleMatch,
     recentMatchData,
     recentMatchSchedule,
-    halfFullWinCounts
+    halfFullWinCounts,
+    battleMatchCompare,
+    recentMatchCompare
 }: {
     leaguePointsRank: GetLeaguePointsRankResponse;
     recentBattleMatch: GetRecentBattleMatchResponse;
     recentMatchData: GetRecentMatchResponse;
     recentMatchSchedule: GetRecentMatchScheduleResponse;
     halfFullWinCounts: GetHalfFullWinCountsResponse;
+    battleMatchCompare: GetBattleMatchCompareResponse;
+    recentMatchCompare: GetRecentMatchCompareResponse;
 }) {
     createDataStore({
         leaguePointsRank,
@@ -110,6 +122,12 @@ function Data({
         halfFullWinCounts: halfFullWinCounts.data,
         halfFullWinTotal: halfFullWinCounts.total
     });
+
+    createDataComparedStore({
+        battleMatchCompare,
+        recentMatchCompare
+    });
+
     return <DataContainer />;
 }
 

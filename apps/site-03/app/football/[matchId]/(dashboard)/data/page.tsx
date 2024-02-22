@@ -2,9 +2,11 @@ import {
     getLeaguePointsRank,
     getSingleMatchId,
     getRecentMatchData,
+    getRecentMatchCompare,
     getRecentMatchSchedule,
     getHalfFullWinCounts,
-    getRecentBattleMatch
+    getRecentBattleMatch,
+    getBattleMatchCompare
 } from 'data-center';
 import TabContent from '../../tabContent';
 
@@ -25,7 +27,9 @@ async function Page({ params }: { params: { matchId: number } }) {
     const [
         leaguePointsRank,
         recentBattleMatch,
+        battleMatchCompare,
         recentMatchData,
+        recentMatchCompare,
         recentMatchSchedule,
         halfFullWinCounts
     ] = await Promise.all([
@@ -33,12 +37,18 @@ async function Page({ params }: { params: { matchId: number } }) {
         getRecentBattleMatch({
             matchId,
             homeId
-        }), // 歷史交鋒
+        }), // 詳情 - 歷史交鋒
+        getBattleMatchCompare({
+            matchId
+        }), // 對比 - 歷史交鋒
         getRecentMatchData({
             matchId,
             homeId,
             awayId
-        }), // 近期戰績
+        }), // 詳情 - 近期戰績
+        getRecentMatchCompare({
+            matchId
+        }), // 對比 - 近期戰績
         getRecentMatchSchedule(matchId), //近期賽程
         getHalfFullWinCounts({
             matchId
@@ -48,12 +58,16 @@ async function Page({ params }: { params: { matchId: number } }) {
     if (
         !leaguePointsRank.success ||
         !recentBattleMatch.success ||
+        !battleMatchCompare.success ||
         !recentMatchData.success ||
+        !recentMatchCompare.success ||
         !recentMatchSchedule.success ||
         !halfFullWinCounts.success
     ) {
+        console.error(leaguePointsRank);
         console.error(recentBattleMatch);
         console.error(recentMatchData);
+        console.error(recentMatchCompare);
         console.error(recentMatchSchedule);
         console.error(halfFullWinCounts);
     }
@@ -72,6 +86,12 @@ async function Page({ params }: { params: { matchId: number } }) {
                         : undefined,
                     halfFullWinCounts: halfFullWinCounts.success
                         ? halfFullWinCounts.data
+                        : undefined,
+                    battleMatchCompare: battleMatchCompare.success
+                        ? battleMatchCompare.data
+                        : undefined,
+                    recentMatchCompare: recentMatchCompare.success
+                        ? recentMatchCompare.data
                         : undefined
                 }
             }}

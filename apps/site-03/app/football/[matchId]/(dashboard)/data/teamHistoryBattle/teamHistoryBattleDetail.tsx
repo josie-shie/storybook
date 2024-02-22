@@ -5,7 +5,7 @@ import { timestampToString, formatNumberWithPercent, handicapToString } from 'li
 import { useEffect, useState } from 'react';
 import { useContestDetailStore } from '@/app/football/[matchId]/contestDetailStore';
 import TeamLogo from '@/components/teamLogo/teamLogo';
-import { useDataStore } from '@/app/football/[matchId]/dataStore';
+import { useDataStore } from '@/app/football/[matchId]/dataDetailStore';
 import SameOptionBar from '../components/sameOptionBar';
 import MatchCountOptionBar from '../components/matchCountOptionBar';
 import style from './teamHistoryBattle.module.scss';

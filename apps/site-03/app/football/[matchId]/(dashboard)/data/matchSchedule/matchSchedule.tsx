@@ -3,7 +3,7 @@
 import type { MatchScheduleInfo } from 'data-center';
 import { timestampToString, daysFromToday } from 'lib';
 import { useContestDetailStore } from '@/app/football/[matchId]/contestDetailStore';
-import { useDataStore } from '@/app/football/[matchId]/dataStore';
+import { useDataStore } from '@/app/football/[matchId]/dataDetailStore';
 import TeamLogo from '@/components/teamLogo/teamLogo';
 import style from './matchSchedule.module.scss';
 

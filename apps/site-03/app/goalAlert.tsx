@@ -29,6 +29,8 @@ function GoalAlert() {
                 awaySound: localStorage.getItem('awaySound') || soundDefault.awaySound
             };
             if ((!data.awayScore && !data.homeScore) || !soundData.openTip) return;
+            // eslint-disable-next-line no-console -- Check goal event
+            console.log('goal', data);
             const globalStore = useContestListGlobalStore.getState().contestInfo;
             const liveContestStore = useLiveContestStore.getState().contestInfo;
             const contestInfo = globalStore[data.matchId];

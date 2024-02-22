@@ -7,7 +7,9 @@ import {
     GET_MATCH_ID_QUERY,
     GET_RECENT_MATCH_SCHEDULE_QUERY,
     GET_HALF_FULL_WIN_COUNTS_QUERY,
-    GET_RECENT_BATTLE_MATCH_QUERY
+    GET_RECENT_BATTLE_MATCH_QUERY,
+    GET_RECENT_MATCH_COMPARE_QUERY,
+    GET_BATTLE_MATCH_COMPARE_QUERY
 } from './graphqlQueries';
 
 const SingleMatchIdSchema = z.object({
@@ -93,7 +95,7 @@ const RecentBattleMatchSchema = z.object({
 const GetRecentBattleMatchResultSchema = z.object({
     soccerData: z.object({
         getRecentBattleMatch: z.object({
-            list: z.array(RecentBattleMatchSchema)
+            list: z.array(RecentBattleMatchSchema).or(z.null())
         })
     })
 });
@@ -265,6 +267,96 @@ const GetHalfFullWinCountsResponseSchema = z.object({
 
 export type GetHalfFullWinCountsResponse = z.infer<typeof GetHalfFullWinCountsResponseSchema>;
 
+const RecentMatchCompareInfoSchema = z.object({
+    matchCount: z.number(),
+    handicapWinRate: z.number(),
+    overUnderWinRate: z.number(),
+    handicapWin: z.number(),
+    handicapLose: z.number(),
+    handicapDraw: z.number(),
+    overUnderWin: z.number(),
+    overUnderLose: z.number(),
+    overUnderDraw: z.number(),
+    handicapTrend: z.string(),
+    overUnderTrend: z.string(),
+    matchTrend: z.string(),
+    winRate: z.number(),
+    goal: z.number(),
+    goalAgainst: z.number()
+});
+
+const RecentMatchCompareListSchema = z.object({
+    home: RecentMatchCompareInfoSchema,
+    away: RecentMatchCompareInfoSchema
+});
+
+const GetRecentMatchCompareResultSchema = z.object({
+    soccerData: z.object({
+        getRecentMatchCompare: RecentMatchCompareListSchema
+    })
+});
+
+export type GetRecentMatchCompareResult = z.infer<typeof GetRecentMatchCompareResultSchema>;
+
+export type GetRecentMatchCompareResponse = z.infer<typeof RecentMatchCompareListSchema>;
+
+const TeamBattleComparedSchema = z.object({
+    id: z.number(),
+    winRate: z.number(),
+    win: z.number(),
+    draw: z.number(),
+    lose: z.number(),
+    goal: z.number(),
+    goalAgainst: z.number()
+});
+
+const MatchBattleComparedInfoSchema = z.object({
+    matchCount: z.number(),
+    handicapWinRate: z.number(),
+    overUnderWinRate: z.number(),
+    handicapWin: z.number(),
+    handicapLose: z.number(),
+    handicapDraw: z.number(),
+    overUnderWin: z.number(),
+    overUnderLose: z.number(),
+    overUnderDraw: z.number(),
+    handicapTrend: z.string(),
+    overUnderTrend: z.string(),
+    homeCompare: TeamBattleComparedSchema,
+    awayCompare: TeamBattleComparedSchema
+});
+
+const MatchBattleComparedInfoResponseSchema = z.object({
+    matchCount: z.number(),
+    handicapWinRate: z.number(),
+    overUnderWinRate: z.number(),
+    handicapWin: z.number(),
+    handicapLose: z.number(),
+    handicapDraw: z.number(),
+    overUnderWin: z.number(),
+    overUnderLose: z.number(),
+    overUnderDraw: z.number(),
+    handicapTrend: z.array(z.string()),
+    overUnderTrend: z.array(z.string()),
+    homeCompare: TeamBattleComparedSchema,
+    awayCompare: TeamBattleComparedSchema
+});
+
+export type MatchBattleComparedInfoSchema = z.infer<typeof MatchBattleComparedInfoSchema>;
+export type MatchBattleComparedInfoResponseSchema = z.infer<
+    typeof MatchBattleComparedInfoResponseSchema
+>;
+
+const GetBattleMatchCompareResultSchema = z.object({
+    soccerData: z.object({
+        getBattleMatchCompare: MatchBattleComparedInfoSchema
+    })
+});
+
+export type GetBattleMatchCompareResult = z.infer<typeof GetBattleMatchCompareResultSchema>;
+
+export type GetBattleMatchCompareResponse = z.infer<typeof MatchBattleComparedInfoResponseSchema>;
+
 /**
  * 取得指定賽事 ID
  * - params : (matchId: number)
@@ -300,7 +392,7 @@ export const getSingleMatchId = async (
 };
 
 /**
- * 取得兩對歷史交鋒
+ * 取得詳情歷史交鋒
  * - params : (matchId: number)
  * - returns : {@link GetRecentBattleMatchResponse}
  */
@@ -338,7 +430,7 @@ export const getRecentBattleMatch = async ({
 
         throwErrorMessage(errors);
 
-        const matchList = data.soccerData.getRecentBattleMatch.list;
+        const matchList = data.soccerData.getRecentBattleMatch.list || [];
 
         const dashboard = {
             goalMissRate: {
@@ -774,6 +866,107 @@ export const getHalfFullWinCounts = async ({
                 data: data.soccerData.getHalfFullWinCounts,
                 total: totalCount
             }
+        };
+    } catch (error) {
+        return handleApiError(error);
+    }
+};
+
+/**
+ * 取得對比近期戰績
+ * - params : (matchId: number)
+ * - returns : {@link GetRecentMatchCompareResponse}
+ */
+export const getRecentMatchCompare = async ({
+    matchId,
+    homeAway = 0,
+    leagueId = 0,
+    dataCount = 10
+}: {
+    matchId: number;
+    homeAway?: number;
+    leagueId?: number;
+    dataCount?: number;
+}): Promise<ReturnData<GetRecentMatchCompareResponse>> => {
+    try {
+        const { data, errors } = await fetcher<
+            FetchResultData<GetRecentMatchCompareResult>,
+            unknown
+        >(
+            {
+                data: {
+                    query: GET_RECENT_MATCH_COMPARE_QUERY,
+                    variables: {
+                        matchId,
+                        homeAway,
+                        leagueId,
+                        dataCount
+                    }
+                }
+            },
+            { cache: 'no-store' }
+        );
+
+        throwErrorMessage(errors);
+
+        return {
+            success: true,
+            data: data.soccerData.getRecentMatchCompare
+        };
+    } catch (error) {
+        return handleApiError(error);
+    }
+};
+
+/**
+ * 取得對比歷史交鋒
+ * - params : (matchId: number)
+ * - returns : {@link GetBattleMatchCompareResponse}
+ */
+export const getBattleMatchCompare = async ({
+    matchId,
+    homeAway = 0,
+    leagueId = 0,
+    dataCount = 10
+}: {
+    matchId: number;
+    homeAway?: number;
+    leagueId?: number;
+    dataCount?: number;
+}): Promise<ReturnData<GetBattleMatchCompareResponse>> => {
+    try {
+        const { data, errors } = await fetcher<
+            FetchResultData<GetBattleMatchCompareResult>,
+            unknown
+        >(
+            {
+                data: {
+                    query: GET_BATTLE_MATCH_COMPARE_QUERY,
+                    variables: {
+                        matchId,
+                        homeAway,
+                        leagueId,
+                        dataCount
+                    }
+                }
+            },
+            { cache: 'no-store' }
+        );
+
+        throwErrorMessage(errors);
+
+        const resDate = data.soccerData.getBattleMatchCompare;
+
+        const newData = {
+            ...resDate,
+            handicapTrend: resDate.handicapTrend.length > 0 ? resDate.handicapTrend.split(',') : [],
+            overUnderTrend:
+                resDate.overUnderTrend.length > 0 ? resDate.overUnderTrend.split(',') : []
+        };
+
+        return {
+            success: true,
+            data: newData
         };
     } catch (error) {
         return handleApiError(error);
