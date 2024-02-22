@@ -60,29 +60,36 @@ function LeagueRankTable({ isHome }: { isHome: boolean }) {
                     </div>
                 </div>
                 <div className="tableBody greyRow">
-                    {rows.map((item, idx) => (
-                        <div className="tr" key={`league_rank_${idx.toString()}`}>
-                            <div className="td">{item.desc}</div>
-                            <div className="td">{leagueData[item.target].totalCount || '-'}</div>
-                            <div className="td">
-                                <p>
-                                    {leagueData[item.target].winCount || '-'}/
-                                    {leagueData[item.target].drawCount || '-'}/
-                                    {leagueData[item.target].loseCount || '-'}
-                                </p>
-                            </div>
-                            <div className="td">
-                                <p>
-                                    {leagueData[item.target].getScore || '-'}/
-                                    {leagueData[item.target].loseScore || '-'}
-                                </p>
-                            </div>
-                            <div className="td">{leagueData[item.target].integral || '-'}</div>
-                            <div className={`td ${style.highlight}`}>
-                                {leagueData[item.target].rank || '-'}
-                            </div>
-                        </div>
-                    ))}
+                    {rows.map(
+                        (item, idx) =>
+                            typeof leagueData[item.target] !== 'undefined' && (
+                                <div className="tr" key={`league_rank_${idx.toString()}`}>
+                                    <div className="td">{item.desc}</div>
+                                    <div className="td">
+                                        {leagueData[item.target].totalCount || '-'}
+                                    </div>
+                                    <div className="td">
+                                        <p>
+                                            {leagueData[item.target].winCount || '-'}/
+                                            {leagueData[item.target].drawCount || '-'}/
+                                            {leagueData[item.target].loseCount || '-'}
+                                        </p>
+                                    </div>
+                                    <div className="td">
+                                        <p>
+                                            {leagueData[item.target].getScore || '-'}/
+                                            {leagueData[item.target].loseScore || '-'}
+                                        </p>
+                                    </div>
+                                    <div className="td">
+                                        {leagueData[item.target].integral || '-'}
+                                    </div>
+                                    <div className={`td ${style.highlight}`}>
+                                        {leagueData[item.target].rank || '-'}
+                                    </div>
+                                </div>
+                            )
+                    )}
                 </div>
             </div>
         </div>
