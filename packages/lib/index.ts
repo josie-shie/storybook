@@ -30,3 +30,4 @@ export * from './src/messageWs';
 export { parseMatchInfo } from './src/formatExtraExplain';
 export * from './src/formatFilterMap';
 export * from './src/mqttType';
+export { formatRate, sizeAndHandicapWinRate } from './src/formatRate';

@@ -11,6 +11,7 @@ import Loading from '@/components/loading/loading';
 import { useUserStore } from '@/store/userStore';
 import { useMyGuessStore } from './myGuessStore';
 import style from './myGuess.module.scss';
+import { formatRate, sizeAndHandicapWinRate } from 'lib';
 
 const dateActiveMap = {
     byWeek: { display: '周', value: 'byWeek' },
@@ -33,7 +34,10 @@ function ReactEchartsComponent({
             showContent: false
         },
         title: {
-            text: `{win|胜率}{large|${myGuessData.summary.play}}{point|%} \n{small|共${myGuessData.summary.play}场}`,
+            text: `{win|胜率}{large|${sizeAndHandicapWinRate(
+                Number(formatRate(myGuessData.size.lose, myGuessData.size.win)),
+                Number(formatRate(myGuessData.handicap.lose, myGuessData.handicap.win))
+            )}}{point|%} \n{small|共${myGuessData.summary.play}场}`,
             left: '46%',
             top: '47%',
             textAlign: 'center',
@@ -152,11 +156,6 @@ function PerformanceBar({
     guessDetail: IndividualGuessRecordDetail;
     title?: string;
 }) {
-    const formatRate = (lose: number, win: number) => {
-        if (lose === 0 && win === 0) return 0;
-        const winRate = (win / (lose + win)) * 100;
-        return Number.isInteger(winRate) ? winRate : Number(winRate.toFixed(1));
-    };
     return (
         <>
             <div className={style.top}>
