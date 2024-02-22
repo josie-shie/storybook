@@ -73,10 +73,6 @@ function HalfFullWinLose() {
         }
     }, [leagueId, homeAway, dataCount]);
 
-    if (typeof halfFullWinCounts.home === 'undefined') {
-        return null;
-    }
-
     return (
         <div className={style.matchSchedule}>
             <div className="topBar">
@@ -144,11 +140,12 @@ function HalfFullWinLose() {
                         <div className="tr">
                             {teamList.map((team: TeamListType) => (
                                 <div className="td" key={`home_${team}`}>
-                                    {typeList.map(type => (
-                                        <div className="block" key={`home_${team}_${type}`}>
-                                            {halfFullWinCounts.home[team][type]}
-                                        </div>
-                                    ))}
+                                    {typeof halfFullWinCounts.home !== 'undefined' &&
+                                        typeList.map(type => (
+                                            <div className="block" key={`home_${team}_${type}`}>
+                                                {halfFullWinCounts.home[team][type]}
+                                            </div>
+                                        ))}
                                 </div>
                             ))}
                             <div className="td">
@@ -160,11 +157,12 @@ function HalfFullWinLose() {
                             </div>
                             {teamList.map((team: TeamListType) => (
                                 <div className="td" key={`home_${team}`}>
-                                    {typeList.map(type => (
-                                        <div className="block" key={`home_${team}_${type}`}>
-                                            {halfFullWinCounts.away[team][type]}
-                                        </div>
-                                    ))}
+                                    {typeof halfFullWinCounts.away !== 'undefined' &&
+                                        typeList.map(type => (
+                                            <div className="block" key={`home_${team}_${type}`}>
+                                                {halfFullWinCounts.away[team][type]}
+                                            </div>
+                                        ))}
                                 </div>
                             ))}
                         </div>
