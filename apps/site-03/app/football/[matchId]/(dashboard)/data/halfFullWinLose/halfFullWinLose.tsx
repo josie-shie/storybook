@@ -37,7 +37,7 @@ type TeamListType = 'homeField' | 'awayField' | 'allField';
 
 function HalfFullWinLose() {
     const matchDetail = useContestDetailStore.use.matchDetail();
-    const { home, away } = useDataStore.use.halfFullWinCounts();
+    const halfFullWinCounts = useDataStore.use.halfFullWinCounts();
     const halfFullWinTotal = useDataStore.use.halfFullWinTotal();
     const setHalfFullWinCountsOption = useDataStore.use.setHalfFullWinCountsOption();
     const setHalfFullWinCounts = useDataStore.use.setHalfFullWinCounts();
@@ -72,6 +72,10 @@ function HalfFullWinLose() {
             setSecondRender(true);
         }
     }, [leagueId, homeAway, dataCount]);
+
+    if (typeof halfFullWinCounts.home === 'undefined') {
+        return null;
+    }
 
     return (
         <div className={style.matchSchedule}>
@@ -142,7 +146,7 @@ function HalfFullWinLose() {
                                 <div className="td" key={`home_${team}`}>
                                     {typeList.map(type => (
                                         <div className="block" key={`home_${team}_${type}`}>
-                                            {home[team][type]}
+                                            {halfFullWinCounts.home[team][type]}
                                         </div>
                                     ))}
                                 </div>
@@ -158,7 +162,7 @@ function HalfFullWinLose() {
                                 <div className="td" key={`home_${team}`}>
                                     {typeList.map(type => (
                                         <div className="block" key={`home_${team}_${type}`}>
-                                            {away[team][type]}
+                                            {halfFullWinCounts.away[team][type]}
                                         </div>
                                     ))}
                                 </div>

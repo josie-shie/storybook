@@ -122,7 +122,7 @@ const initialState = (set: (updater: (state: DataState) => Partial<DataState>) =
         home: [],
         away: []
     },
-    halfFullWinCounts: { home: {}, away: {} } as HalfFullWinCounts,
+    halfFullWinCounts: {} as HalfFullWinCounts,
     halfFullWinTotal: {
         home: { homeField: 0, awayField: 0, allField: 0 },
         away: { homeField: 0, awayField: 0, allField: 0 }
