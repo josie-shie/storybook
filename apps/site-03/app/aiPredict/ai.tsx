@@ -16,7 +16,9 @@ function Ai({ match, onUnlockArticle }: AiProps) {
         <>
             {payLock ? (
                 <div className={style.paidButton}>
-                    <div className={style.content}>预测</div>
+                    <div className={style.content}>
+                        <div className={style.title}>预测</div>
+                    </div>
                     <div className={style.buttonArea}>
                         <div className={style.backDrop} />
                         <div className={style.text}>

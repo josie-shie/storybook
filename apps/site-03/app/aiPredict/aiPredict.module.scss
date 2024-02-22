@@ -48,6 +48,14 @@
             gap: 20px;
             padding: 12px;
 
+            &.fadeIn {
+                animation: fadein 1s ease forwards;
+            }
+
+            &.hidden {
+                opacity: 0;
+            }
+
             .teamTitle {
                 display: flex;
                 flex-direction: column;

@@ -8,14 +8,14 @@ import ConfirmPayDrawer from '@/components/confirmPayDrawer/confirmPayDrawer';
 import NormalDialog from '@/components/normalDialog/normalDialog';
 import { useUserStore } from '@/store/userStore';
 import { useAuthStore } from '@/store/authStore';
-import { useAiPredictStore } from './aiPredictStore';
-import style from './aiPredict.module.scss';
-import AiAvatar from './img/aiAvatar.svg';
-import AiAvatarSmall from './img/aiAvatarSmall.svg';
-import Ai from './ai';
-import Analyze from './analyze';
-import Cornor from './cornor';
-import Wallet from './img/wallet.png';
+import { useAiPredictStore } from '../aiPredictStore';
+import Ai from '../ai';
+import Analyze from '../analyze';
+import Cornor from '../cornor';
+import Wallet from '../img/wallet.png';
+import AiAvatarSmall from '../img/aiAvatarSmall.svg';
+import AiAvatar from '../img/aiAvatar.svg';
+import style from '../aiPredict.module.scss';
 
 interface MatchTab {
     matchId: number;
@@ -77,9 +77,8 @@ function MatchItem({
     );
 }
 
-function AiPredict() {
+function AiPredictDetail({ params }: { params: { matchId: string } }) {
     const matchRefs = useRef<Record<number, React.RefObject<HTMLDivElement>>>({});
-
     const router = useRouter();
 
     const aiPredictList = useAiPredictStore.use.aiPredictList();
@@ -145,6 +144,25 @@ function AiPredict() {
             matchRef.current?.scrollIntoView({ behavior: 'smooth' });
         }
     }, [selectedMatches]);
+
+    useEffect(() => {
+        const paramMatchId = parseInt(params.matchId);
+        const matchedItem = aiPredictList.find(item => item.matchId === paramMatchId);
+
+        if (matchedItem) {
+            setTimeout(() => {
+                setSelectedMatches(prevMatches => {
+                    const isMatchExists = prevMatches.some(
+                        match => match.matchId === matchedItem.matchId
+                    );
+                    if (!isMatchExists) {
+                        return [...prevMatches, matchedItem];
+                    }
+                    return prevMatches;
+                });
+            }, 2500);
+        }
+    }, [params.matchId, aiPredictList]);
 
     const handleUnlockArticle = (matchId: number) => {
         if (!isLogin) {
@@ -228,31 +246,6 @@ function AiPredict() {
                         <AiAvatar />
                         <div className={style.text}>您好，为您推荐以下赛事预测分析：</div>
                     </div>
-                    <div className={`${style.chat} ${showChat ? style.fadeIn : style.hidden}`}>
-                        <div className={style.title}>精选赛事</div>
-                        <div className={style.wrapper}>
-                            <div className={style.contestList}>
-                                <div className={style.row}>
-                                    {firstHalfMatches.map(match => (
-                                        <MatchItem
-                                            handleSelectMatch={handleSelectMatch}
-                                            key={match.matchId}
-                                            match={match}
-                                        />
-                                    ))}
-                                </div>
-                                <div className={style.row}>
-                                    {secondHalfMatches.map(match => (
-                                        <MatchItem
-                                            handleSelectMatch={handleSelectMatch}
-                                            key={match.matchId}
-                                            match={match}
-                                        />
-                                    ))}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
                     {selectedMatches.map(match => {
                         const currentTabKey = getMatchTabKey(match.matchId);
@@ -315,33 +308,31 @@ function AiPredict() {
                         );
                     })}
 
-                    {selectedMatches.length > 0 ? (
-                        <div className={`${style.chat} ${showChat ? style.fadeIn : style.hidden}`}>
-                            <div className={style.title}>精选赛事</div>
-                            <div className={style.wrapper}>
-                                <div className={style.contestList}>
-                                    <div className={style.row}>
-                                        {firstHalfMatches.map(match => (
-                                            <MatchItem
-                                                handleSelectMatch={handleSelectMatch}
-                                                key={match.matchId}
-                                                match={match}
-                                            />
-                                        ))}
-                                    </div>
-                                    <div className={style.row}>
-                                        {secondHalfMatches.map(match => (
-                                            <MatchItem
-                                                handleSelectMatch={handleSelectMatch}
-                                                key={match.matchId}
-                                                match={match}
-                                            />
-                                        ))}
-                                    </div>
+                    <div className={`${style.chat} ${showChat ? style.fadeIn : style.hidden}`}>
+                        <div className={style.title}>精选赛事</div>
+                        <div className={style.wrapper}>
+                            <div className={style.contestList}>
+                                <div className={style.row}>
+                                    {firstHalfMatches.map(match => (
+                                        <MatchItem
+                                            handleSelectMatch={handleSelectMatch}
+                                            key={match.matchId}
+                                            match={match}
+                                        />
+                                    ))}
+                                </div>
+                                <div className={style.row}>
+                                    {secondHalfMatches.map(match => (
+                                        <MatchItem
+                                            handleSelectMatch={handleSelectMatch}
+                                            key={match.matchId}
+                                            match={match}
+                                        />
+                                    ))}
                                 </div>
                             </div>
                         </div>
-                    ) : null}
+                    </div>
                 </div>
             </div>
             <ConfirmPayDrawer
@@ -369,4 +360,4 @@ function AiPredict() {
     );
 }
 
-export default AiPredict;
+export default AiPredictDetail;

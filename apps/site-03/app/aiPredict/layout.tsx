@@ -9,7 +9,7 @@ function AiPredictPageLayout({ children }: { children: ReactNode }) {
     creatAiPredictStore({
         aiPredictList: [
             {
-                matchId: 123,
+                matchId: 4085841,
                 matchTime: 1708509600,
                 leagueId: 603,
                 leagueEn: 'AUS VPL U21',
@@ -33,7 +33,7 @@ function AiPredictPageLayout({ children }: { children: ReactNode }) {
                 updatedAt: 1708509600
             },
             {
-                matchId: 124,
+                matchId: 4085252,
                 matchTime: 1708509600,
                 leagueId: 603,
                 leagueEn: 'AUS VPL U21',
