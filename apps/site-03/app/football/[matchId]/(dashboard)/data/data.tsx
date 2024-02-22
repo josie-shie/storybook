@@ -19,7 +19,8 @@ import MatchSchedule from './matchSchedule/matchSchedule';
 import HalfFullWinLose from './halfFullWinLose/halfFullWinLose';
 import TeamHistoryBattleDetail from './teamHistoryBattle/teamHistoryBattleDetail';
 import LeaguePointsRankDetail from './leaguePointsRank/leaguePointsRankDetail';
-// import TeamHistoryBattleCompared from './teamHistoryBattle/teamHistoryBattleCompared';
+import TeamHistoryBattleCompared from './teamHistoryBattle/teamHistoryBattleCompared';
+import TeamMatchHistoryCompared from './teamMatchHistory/teamMatchHistoryCompared';
 
 function DetailsContainer() {
     return (
@@ -34,7 +35,12 @@ function DetailsContainer() {
 }
 
 function ComparedContainer() {
-    return <div className={style.comparedContainer}>{/* <TeamHistoryBattleCompared /> */}</div>;
+    return (
+        <div className={style.comparedContainer}>
+            <TeamHistoryBattleCompared />
+            <TeamMatchHistoryCompared />
+        </div>
+    );
 }
 
 function DataContainer() {
@@ -56,7 +62,7 @@ function DataContainer() {
         compared: <ComparedContainer />
     };
 
-    const [selectedOption, setSelectedOption] = useState('compared');
+    const [selectedOption, setSelectedOption] = useState('details');
 
     const handleResetHeight = () => {
         slickOption.contestInfoResetHeight();
