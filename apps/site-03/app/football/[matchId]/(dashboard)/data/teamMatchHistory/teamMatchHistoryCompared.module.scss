@@ -1,5 +1,6 @@
-.teamHistoryBattleCompared {
+.teamMatchHistoryCompared {
     width: 100%;
+    margin-top: 20px;
 
     .option {
         margin: 16px 0 12px;
@@ -26,58 +27,6 @@
         }
 
         .teamName {
-            font-size: 12px;
-        }
-    }
-
-    .circleProgressBar {
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        margin: 8px 0 16px;
-    }
-
-    .comparedCircleProgress {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        align-items: center;
-        row-gap: 4px;
-        font-size: 0;
-
-        .title {
-            font-size: 12px;
-        }
-
-        .circleProgressBox {
-            position: relative;
-            background-color: #f3f3f3;
-            border-radius: 50%;
-
-            .circleProgress {
-                transform: rotateY(-180deg);
-            }
-
-            .value {
-                width: calc(100% - 6px);
-                height: calc(100% - 6px);
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                background-color: #fff;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                color: #276ce1;
-                font-size: 16px;
-                font-weight: 600;
-                border-radius: 50%;
-            }
-        }
-
-        .total {
-            color: #8d8d8d;
             font-size: 12px;
         }
     }

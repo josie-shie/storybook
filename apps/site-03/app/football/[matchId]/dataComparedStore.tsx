@@ -29,11 +29,9 @@ interface DataState extends InitState {
         battleMatchCompare: GetBattleMatchCompareResponse;
     }) => void;
     setRecentMatchOption: ({
-        team,
         target,
         newValue
     }: {
-        team: 'homeOption' | 'awayOption';
         target: 'homeAway' | 'leagueId' | 'dataCount';
         newValue: number;
     }) => void;
