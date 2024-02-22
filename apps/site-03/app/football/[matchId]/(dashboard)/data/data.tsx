@@ -62,7 +62,7 @@ function DataContainer() {
         compared: <ComparedContainer />
     };
 
-    const [selectedOption, setSelectedOption] = useState('compared');
+    const [selectedOption, setSelectedOption] = useState('details');
 
     const handleResetHeight = () => {
         slickOption.contestInfoResetHeight();

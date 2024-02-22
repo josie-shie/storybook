@@ -133,6 +133,66 @@ function ComparedProgress() {
                     </div>
                 </div>
             </div>
+            <div className={style.progressCard}>
+                <div className={style.topBar}>
+                    <div className={style.value}>
+                        {recentMatchCompare.home.handicapWinRate}(
+                        {formatNumberWithPercent(
+                            recentMatchCompare.home.handicapLose,
+                            recentMatchCompare.home.matchCount
+                        )}
+                        )
+                    </div>
+                    <div className={style.title}>赢（输）%</div>
+                    <div className={style.value}>
+                        (
+                        {formatNumberWithPercent(
+                            recentMatchCompare.away.handicapLose,
+                            recentMatchCompare.away.matchCount
+                        )}
+                        ){recentMatchCompare.away.handicapWinRate}
+                    </div>
+                </div>
+                <div className={style.progressBar}>
+                    <div className={style.homeProgressBar}>
+                        <LinearProgress
+                            className={style.homeProgress}
+                            value={recentMatchCompare.home.handicapWinRate}
+                            variant="determinate"
+                        />
+                    </div>
+                    <div className={style.awayProgressBar}>
+                        <LinearProgress
+                            className={style.awayProgress}
+                            value={recentMatchCompare.away.handicapWinRate}
+                            variant="determinate"
+                        />
+                    </div>
+                </div>
+            </div>
+            <div className={style.progressCard}>
+                <div className={style.topBar}>
+                    <div className={style.value}>{recentMatchCompare.home.overUnderWinRate}</div>
+                    <div className={style.title}>大率%</div>
+                    <div className={style.value}>{recentMatchCompare.away.overUnderWinRate}</div>
+                </div>
+                <div className={style.progressBar}>
+                    <div className={style.homeProgressBar}>
+                        <LinearProgress
+                            className={style.homeProgress}
+                            value={recentMatchCompare.home.overUnderWinRate}
+                            variant="determinate"
+                        />
+                    </div>
+                    <div className={style.awayProgressBar}>
+                        <LinearProgress
+                            className={style.awayProgress}
+                            value={recentMatchCompare.away.overUnderWinRate}
+                            variant="determinate"
+                        />
+                    </div>
+                </div>
+            </div>
         </div>
     );
 }
