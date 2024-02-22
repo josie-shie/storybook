@@ -126,15 +126,17 @@ function HalfFullWinLose() {
                 </div>
                 <div className="dataTable">
                     <div className="tableHead">
-                        <div className="tr">
-                            <div className="th">主({halfFullWinTotal.home.homeField})</div>
-                            <div className="th">客({halfFullWinTotal.home.awayField})</div>
-                            <div className="th">总({halfFullWinTotal.home.allField})</div>
-                            <div className="th">全场</div>
-                            <div className="th">主({halfFullWinTotal.away.homeField})</div>
-                            <div className="th">客({halfFullWinTotal.away.awayField})</div>
-                            <div className="th">总({halfFullWinTotal.away.allField})</div>
-                        </div>
+                        {typeof halfFullWinTotal !== 'undefined' && (
+                            <div className="tr">
+                                <div className="th">主({halfFullWinTotal.home.homeField})</div>
+                                <div className="th">客({halfFullWinTotal.home.awayField})</div>
+                                <div className="th">总({halfFullWinTotal.home.allField})</div>
+                                <div className="th">全场</div>
+                                <div className="th">主({halfFullWinTotal.away.homeField})</div>
+                                <div className="th">客({halfFullWinTotal.away.awayField})</div>
+                                <div className="th">总({halfFullWinTotal.away.allField})</div>
+                            </div>
+                        )}
                     </div>
                     <div className="tableBody">
                         <div className="tr">
