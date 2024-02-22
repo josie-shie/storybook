@@ -16,7 +16,7 @@ function NoData({
 }) {
     return (
         <div className={`ui-no-data ${isFlex ? style.noDataFlex : style.noDataBox} ${className}`}>
-            <div className={`ui-no-data-content  ${style.content}`}>
+            <div className={`ui-no-data-content ${style.content}`}>
                 <Image alt="" className={style.image} height={100} src={NoDataIcon} width={100} />
                 <div className={style.text}>{text}</div>
                 {textSecond ? <div>{textSecond}</div> : null}
