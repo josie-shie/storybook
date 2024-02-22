@@ -1,5 +1,9 @@
 import dayjs from 'dayjs';
 
+export const timestampToStringCh = (unixTimestamp: number, dateFormat = 'YYYY年MM月DD日') => {
+    return dayjs.unix(unixTimestamp).format(dateFormat);
+};
+
 export const timestampToString = (unixTimestamp: number, dateFormat = 'YYYY-MM-DD HH:mm:ss') => {
     return dayjs.unix(unixTimestamp).format(dateFormat);
 };

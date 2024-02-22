@@ -1,3 +1,74 @@
+.paidButton {
+    position: relative;
+    padding: 24px 8px 8px;
+
+    .content {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 8px;
+        font-size: 16px;
+        font-weight: 500;
+        color: #4a4a4a;
+    }
+
+    .button {
+        position: absolute;
+        bottom: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        gap: 4px;
+        padding: 6px;
+        border: 1px solid #4489ff;
+        background: transparent;
+        border-radius: 30px;
+
+        .text {
+            color: #4489ff;
+            font-size: 14px;
+            font-weight: 500;
+        }
+    }
+
+    .buttonArea {
+        position: relative;
+        width: 100%;
+        height: 116px;
+
+        .backDrop {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backdrop-filter: blur(4px);
+        }
+
+        .text {
+            color: #4a4a4a;
+            font-size: 14px;
+            font-weight: 400;
+            padding: 4px 8px;
+        }
+    }
+}
+
+.paidArea {
+    .play {
+        font-size: 14px;
+        font-weight: 500;
+        color: #222;
+        margin-bottom: 4px;
+    }
+
+    .content {
+        margin: 10px 0 32px;
+        color: #4a4a4a;
+        font-size: 14px;
+        font-weight: 400;
+    }
+}
+
 .aiTab {
     .detail {
         padding: 24px 8px 8px;
