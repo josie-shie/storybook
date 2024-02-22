@@ -15,6 +15,6 @@ export function formatRate(lose: number, win: number) {
  * - (sizeRate: 總進球勝率, handicapRate: 總勝負的勝率)
  */
 export function sizeAndHandicapWinRate(sizeRate: number, handicapRate: number) {
-    const result = (Number(sizeRate) + Number(handicapRate)) / 2;
+    const result = (sizeRate + handicapRate) / 2;
     return Number.isInteger(result) ? result : Number(result.toFixed(1));
 }
