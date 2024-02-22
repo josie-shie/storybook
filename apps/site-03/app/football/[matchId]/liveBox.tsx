@@ -227,17 +227,42 @@ function LiveBox({
     //13:雾
     const getWeatherIcon = (id: number) => {
         if ([1, 2, 3, 7, 8, 13].includes(id)) {
-            return { icon: <CloudyIcon />, display: '雲' };
+            return (
+                <>
+                    <CloudyIcon />
+                    <p>雲</p>
+                </>
+            );
         } else if ([9, 10].includes(id)) {
-            return { icon: <RainIcon />, display: '雨' };
+            return (
+                <>
+                    <RainIcon />
+                    <p>雨</p>
+                </>
+            );
         } else if ([6, 11, 12].includes(id)) {
-            return { icon: <ThunderIcon />, display: '雷' };
+            return (
+                <>
+                    <ThunderIcon />
+                    <p>雷</p>
+                </>
+            );
         } else if (id === 4) {
-            return { icon: <SnowIcon />, display: '雪' };
+            return (
+                <>
+                    <SnowIcon />
+                    <p>雪</p>
+                </>
+            );
         } else if (id === 5) {
-            return { icon: <SunIcon />, display: '晴' };
+            return (
+                <>
+                    <SunIcon />
+                    <p>晴</p>
+                </>
+            );
         }
-        return { icon: null, display: '' };
+        return null;
     };
 
     return (
@@ -277,12 +302,7 @@ function LiveBox({
                 </div>
             </div>
             <div className={style.weatherInfo}>
-                {matchDetail.weather && (
-                    <>
-                        {getWeatherIcon(matchDetail.weather).icon}
-                        <div> {getWeatherIcon(matchDetail.weather).display}，</div>
-                    </>
-                )}
+                {matchDetail.weather && getWeatherIcon(matchDetail.weather)}，
                 <div>气温{matchDetail.temperature}，</div>
                 <div>风速{matchDetail.wind}，</div>
                 <div>气压{matchDetail.pressure}，</div>
