@@ -1,0 +1,63 @@
+.leaguePointsRankDetail {
+    display: flex;
+    flex-direction: column;
+
+    .teamInfo {
+        display: flex;
+        align-items: center;
+        column-gap: 8px;
+        margin: 8px 0 12px;
+
+        .teamName {
+            font-size: 12px;
+        }
+    }
+
+    .highlight {
+        color: #f85640 !important;
+    }
+
+    :global {
+        .tableHead {
+            .tr {
+                .th {
+                    width: 40px;
+                    flex: initial;
+
+                    &:first-of-type {
+                        flex: 1;
+                    }
+
+                    &:nth-of-type(3) {
+                        width: 80px;
+                    }
+
+                    &:nth-of-type(4) {
+                        width: 60px;
+                    }
+                }
+            }
+        }
+
+        .tableBody {
+            .tr {
+                .td {
+                    flex: initial;
+                    width: 40px;
+
+                    &:first-of-type {
+                        flex: 1;
+                    }
+
+                    &:nth-of-type(3) {
+                        width: 80px;
+                    }
+
+                    &:nth-of-type(4) {
+                        width: 60px;
+                    }
+                }
+            }
+        }
+    }
+}

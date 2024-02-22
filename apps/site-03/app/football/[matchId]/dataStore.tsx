@@ -1,6 +1,7 @@
 import { initStore } from 'lib';
 import type { StoreWithSelectors } from 'lib';
 import type {
+    GetLeaguePointsRankResponse,
     GetRecentBattleMatchResponse,
     GetRecentMatchResponse,
     GetRecentMatchScheduleResponse,
@@ -20,6 +21,7 @@ interface RecentMatchOptionType {
 }
 
 interface InitState {
+    leaguePointsRank: GetLeaguePointsRankResponse;
     recentBattleMatch: GetRecentBattleMatchResponse;
     recentMatchData: GetRecentMatchResponse;
     recentMatchSchedule: GetRecentMatchScheduleResponse;
@@ -73,6 +75,7 @@ interface DataState extends InitState {
 let useDataStore: StoreWithSelectors<DataState>;
 
 const initialState = (set: (updater: (state: DataState) => Partial<DataState>) => void) => ({
+    leaguePointsRank: {} as GetLeaguePointsRankResponse,
     recentBattleMatch: {
         matchList: [],
         dashboard: {

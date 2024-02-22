@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type {
+    GetLeaguePointsRankResponse,
     GetRecentBattleMatchResponse,
     GetRecentMatchResponse,
     GetRecentMatchScheduleResponse,
@@ -14,10 +15,12 @@ import TeamMatchHistoryDetail from './teamMatchHistory/teamMatchHistoryDetail';
 import MatchSchedule from './matchSchedule/matchSchedule';
 import HalfFullWinLose from './halfFullWinLose/halfFullWinLose';
 import TeamHistoryBattle from './teamHistoryBattle/teamHistoryBattle';
+import LeaguePointsRankDetail from './leaguePointsRank/leaguePointsRankDetail';
 
 function DetailsContainer() {
     return (
         <div className={style.detailsContainer}>
+            <LeaguePointsRankDetail />
             <TeamHistoryBattle />
             <TeamMatchHistoryDetail />
             <MatchSchedule />
@@ -87,17 +90,20 @@ function DataContainer() {
 }
 
 function Data({
+    leaguePointsRank,
     recentBattleMatch,
     recentMatchData,
     recentMatchSchedule,
     halfFullWinCounts
 }: {
+    leaguePointsRank: GetLeaguePointsRankResponse;
     recentBattleMatch: GetRecentBattleMatchResponse;
     recentMatchData: GetRecentMatchResponse;
     recentMatchSchedule: GetRecentMatchScheduleResponse;
     halfFullWinCounts: GetHalfFullWinCountsResponse;
 }) {
     createDataStore({
+        leaguePointsRank,
         recentBattleMatch,
         recentMatchData,
         recentMatchSchedule,

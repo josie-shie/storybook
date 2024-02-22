@@ -9,6 +9,7 @@ import type {
     GetInformationResponse,
     GetLiveTextResponse,
     GetLineUpInfoResponse,
+    GetLeaguePointsRankResponse,
     GetRecentBattleMatchResponse,
     GetRecentMatchResponse,
     GetRecentMatchScheduleResponse,
@@ -20,6 +21,8 @@ import {
     getLineup,
     getInformation,
     getExponent,
+    getLeaguePointsRank,
+    getRecentBattleMatch,
     getRecentMatchData,
     getRecentMatchSchedule,
     getHalfFullWinCounts
@@ -36,6 +39,7 @@ import { useContestDetailStore } from './contestDetailStore';
 
 interface FetchInitData {
     data?: {
+        leaguePointsRank?: GetLeaguePointsRankResponse;
         recentBattleMatch?: GetRecentBattleMatchResponse;
         recentMatchData?: GetRecentMatchResponse;
         recentMatchSchedule?: GetRecentMatchScheduleResponse;
@@ -100,6 +104,7 @@ function TabContent({
     ];
     const [fetchData, setFetchData] = useState({
         data: {
+            leaguePointsRank: {} as GetLeaguePointsRankResponse,
             recentBattleMatch: {
                 matchList: [],
                 dashboard: {
@@ -251,7 +256,18 @@ function TabContent({
 
     const handleSecondFetch = {
         data: async () => {
-            const [recentMatchData, recentMatchSchedule, halfFullWinCounts] = await Promise.all([
+            const [
+                leaguePointsRank,
+                recentBattleMatch,
+                recentMatchData,
+                recentMatchSchedule,
+                halfFullWinCounts
+            ] = await Promise.all([
+                getLeaguePointsRank(matchDetail.matchId),
+                getRecentBattleMatch({
+                    matchId: matchDetail.matchId,
+                    homeId: matchDetail.homeId
+                }),
                 getRecentMatchData({
                     matchId: matchDetail.matchId,
                     homeId: matchDetail.homeId,
@@ -264,6 +280,8 @@ function TabContent({
             ]);
 
             if (
+                !leaguePointsRank.success ||
+                !recentBattleMatch.success ||
                 !recentMatchData.success ||
                 !recentMatchSchedule.success ||
                 !halfFullWinCounts.success
@@ -277,6 +295,8 @@ function TabContent({
             return {
                 success: true,
                 data: {
+                    leaguePointsRank: leaguePointsRank.data,
+                    recentBattleMatch: recentBattleMatch.data,
                     recentMatchData: recentMatchData.data,
                     recentMatchSchedule: recentMatchSchedule.data,
                     halfFullWinCounts: halfFullWinCounts.data
@@ -439,6 +459,10 @@ function TabContent({
                             halfFullWinCounts={
                                 fetchInitData?.data?.halfFullWinCounts ||
                                 fetchData.data.halfFullWinCounts
+                            }
+                            leaguePointsRank={
+                                fetchInitData?.data?.leaguePointsRank ||
+                                fetchData.data.leaguePointsRank
                             }
                             recentBattleMatch={
                                 fetchInitData?.data?.recentBattleMatch ||

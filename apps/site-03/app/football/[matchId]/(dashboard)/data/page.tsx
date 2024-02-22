@@ -1,4 +1,5 @@
 import {
+    getLeaguePointsRank,
     getSingleMatchId,
     getRecentMatchData,
     getRecentMatchSchedule,
@@ -21,24 +22,31 @@ async function Page({ params }: { params: { matchId: number } }) {
     }
     const { matchId, homeId, awayId } = matchInfo.data;
 
-    const [recentBattleMatch, recentMatchData, recentMatchSchedule, halfFullWinCounts] =
-        await Promise.all([
-            getRecentBattleMatch({
-                matchId,
-                homeId
-            }),
-            getRecentMatchData({
-                matchId,
-                homeId,
-                awayId
-            }),
-            getRecentMatchSchedule(matchId),
-            getHalfFullWinCounts({
-                matchId
-            })
-        ]);
+    const [
+        leaguePointsRank,
+        recentBattleMatch,
+        recentMatchData,
+        recentMatchSchedule,
+        halfFullWinCounts
+    ] = await Promise.all([
+        getLeaguePointsRank(params.matchId), // 積分排名
+        getRecentBattleMatch({
+            matchId,
+            homeId
+        }), // 歷史交鋒
+        getRecentMatchData({
+            matchId,
+            homeId,
+            awayId
+        }), // 近期戰績
+        getRecentMatchSchedule(matchId), //近期賽程
+        getHalfFullWinCounts({
+            matchId
+        }) // 半全場勝負
+    ]);
 
     if (
+        !leaguePointsRank.success ||
         !recentBattleMatch.success ||
         !recentMatchData.success ||
         !recentMatchSchedule.success ||
@@ -54,6 +62,7 @@ async function Page({ params }: { params: { matchId: number } }) {
         <TabContent
             fetchInitData={{
                 data: {
+                    leaguePointsRank: leaguePointsRank.success ? leaguePointsRank.data : undefined,
                     recentBattleMatch: recentBattleMatch.success
                         ? recentBattleMatch.data
                         : undefined,
