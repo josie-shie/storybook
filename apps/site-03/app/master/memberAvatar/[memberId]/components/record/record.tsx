@@ -11,10 +11,8 @@ function Record({ individualGuessInfo }: { individualGuessInfo: MemberIndividual
         },
         title: {
             text: `{win|胜率}{large|${sizeAndHandicapWinRate(
-                Number(formatRate(individualGuessInfo.size.lose, individualGuessInfo.size.win)),
-                Number(
-                    formatRate(individualGuessInfo.handicap.lose, individualGuessInfo.handicap.win)
-                )
+                formatRate(individualGuessInfo.size.lose, individualGuessInfo.size.win),
+                formatRate(individualGuessInfo.handicap.lose, individualGuessInfo.handicap.win)
             )}}{point|%} \n{small|共${individualGuessInfo.summary.play}场}`,
             left: '46%',
             top: '47%',

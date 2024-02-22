@@ -35,8 +35,8 @@ function ReactEchartsComponent({
         },
         title: {
             text: `{win|胜率}{large|${sizeAndHandicapWinRate(
-                Number(formatRate(myGuessData.size.lose, myGuessData.size.win)),
-                Number(formatRate(myGuessData.handicap.lose, myGuessData.handicap.win))
+                formatRate(myGuessData.size.lose, myGuessData.size.win),
+                formatRate(myGuessData.handicap.lose, myGuessData.handicap.win)
             )}}{point|%} \n{small|共${myGuessData.summary.play}场}`,
             left: '46%',
             top: '47%',
