@@ -142,7 +142,7 @@ function HalfFullWinLose() {
                         <div className="tr">
                             {teamList.map((team: TeamListType) => (
                                 <div className="td" key={`home_${team}`}>
-                                    {typeof halfFullWinCounts.home !== 'undefined' &&
+                                    {typeof halfFullWinCounts !== 'undefined' &&
                                         typeList.map(type => (
                                             <div className="block" key={`home_${team}_${type}`}>
                                                 {halfFullWinCounts.home[team][type]}
@@ -159,7 +159,7 @@ function HalfFullWinLose() {
                             </div>
                             {teamList.map((team: TeamListType) => (
                                 <div className="td" key={`home_${team}`}>
-                                    {typeof halfFullWinCounts.away !== 'undefined' &&
+                                    {typeof halfFullWinCounts !== 'undefined' &&
                                         typeList.map(type => (
                                             <div className="block" key={`home_${team}_${type}`}>
                                                 {halfFullWinCounts.away[team][type]}
