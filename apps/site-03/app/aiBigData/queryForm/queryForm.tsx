@@ -74,7 +74,7 @@ function CheckLeague({ leagueIdList }: { leagueIdList: number[] }) {
                         return (
                             <span key={id}>
                                 {contestInfo[id].leagueChsShort}
-                                {index !== leagueIdList.length - 1 && ','}
+                                {index !== leagueIdList.length - 1 && '、'}
                             </span>
                         );
                     })}
