@@ -8,6 +8,50 @@ export const GET_MATCH_ID_QUERY = `
     }  
 `;
 
+export const GET_RECENT_BATTLE_MATCH_QUERY = `
+    query getRecentBattleMatch($matchId:Int!,$homeAway:Int!,$leagueId:Int!,$dataCount:Int!) {
+        soccerData {
+        getRecentBattleMatch(
+            input: { matchId: $matchId, homeAway: $homeAway, leagueId: $leagueId, dataCount: $dataCount }
+            ) {
+                list {
+                    matchId
+                    leagueId
+                    leagueEn
+                    leagueChs
+                    leagueCht
+                    matchTime
+                    homeEn
+                    homeChs
+                    homeCht
+                    awayEn
+                    awayChs
+                    awayCht
+                    homeId
+                    awayId
+                    homeScore
+                    awayScore
+                    homeHalfScore
+                    awayHalfScore
+                    homeRed
+                    awayRed
+                    homeCorner
+                    awayCorner
+                    handicapCurrent
+                    handicapHomeCurrentOdds
+                    handicapAwayCurrentOdds
+                    overUnderCurrent
+                    overUnderOverCurrentOdds
+                    overUnderUnderCurrentOdds
+                    status
+                    hasAnimation
+                    leagueLevel
+                }
+            }
+        }
+    }
+`; // 歷史交鋒
+
 export const GET_RECENT_MATCH_QUERY = `
     query getRecentMatch($matchId:Int!,$homeAway:Int!,$leagueId:Int!,$dataCount:Int!) {
         soccerData {

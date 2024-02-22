@@ -1,6 +1,7 @@
 import { initStore } from 'lib';
 import type { StoreWithSelectors } from 'lib';
 import type {
+    GetRecentBattleMatchResponse,
     GetRecentMatchResponse,
     GetRecentMatchScheduleResponse,
     HalfFullWinCounts,
@@ -19,6 +20,7 @@ interface RecentMatchOptionType {
 }
 
 interface InitState {
+    recentBattleMatch: GetRecentBattleMatchResponse;
     recentMatchData: GetRecentMatchResponse;
     recentMatchSchedule: GetRecentMatchScheduleResponse;
     halfFullWinCounts: HalfFullWinCounts;
@@ -26,8 +28,21 @@ interface InitState {
 }
 
 interface DataState extends InitState {
+    recentBattleMatchOption: OptionType;
     recentMatchOption: RecentMatchOptionType;
     halfFullWinCountsOption: OptionType;
+    setRecentBattleMatchOption: ({
+        target,
+        newValue
+    }: {
+        target: 'homeAway' | 'leagueId' | 'dataCount';
+        newValue: number;
+    }) => void;
+    setRecentBattleMatch: ({
+        recentBattleMatch
+    }: {
+        recentBattleMatch: GetRecentBattleMatchResponse;
+    }) => void;
     setRecentMatchOption: ({
         team,
         target,
@@ -58,6 +73,35 @@ interface DataState extends InitState {
 let useDataStore: StoreWithSelectors<DataState>;
 
 const initialState = (set: (updater: (state: DataState) => Partial<DataState>) => void) => ({
+    recentBattleMatch: {
+        matchList: [],
+        dashboard: {
+            goalMissRate: {
+                goal: 0,
+                miss: 0
+            },
+            victoryMinusRate: {
+                victory: 0,
+                minus: 0,
+                tie: 0
+            },
+            winLoseRate: {
+                win: 0,
+                lose: 0,
+                go: 0
+            },
+            bigSmallRate: {
+                big: 0,
+                small: 0,
+                go: 0
+            }
+        }
+    } as GetRecentBattleMatchResponse,
+    recentBattleMatchOption: {
+        homeAway: 0,
+        leagueId: 0,
+        dataCount: 10
+    },
     recentMatchData: {
         homeMatch: [],
         awayMatch: [],
@@ -131,6 +175,29 @@ const initialState = (set: (updater: (state: DataState) => Partial<DataState>) =
         homeAway: 0,
         leagueId: 0,
         dataCount: 10
+    },
+    setRecentBattleMatchOption: ({
+        target,
+        newValue
+    }: {
+        target: 'homeAway' | 'leagueId' | 'dataCount';
+        newValue: number;
+    }) => {
+        set(state => {
+            const newData = JSON.parse(JSON.stringify(state.recentBattleMatchOption)) as OptionType;
+            newData[target] = newValue;
+
+            return { ...state, recentBattleMatchOption: newData };
+        });
+    },
+    setRecentBattleMatch: ({
+        recentBattleMatch
+    }: {
+        recentBattleMatch: GetRecentBattleMatchResponse;
+    }) => {
+        set(state => {
+            return { ...state, recentBattleMatch };
+        });
     },
     setRecentMatchOption: ({
         team,

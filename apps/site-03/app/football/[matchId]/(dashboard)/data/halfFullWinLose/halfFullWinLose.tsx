@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, useEffect } from 'react';
 import { getHalfFullWinCounts } from 'data-center';
 import { useContestDetailStore } from '@/app/football/[matchId]/contestDetailStore';

@@ -1,3 +1,5 @@
+'use client';
+
 import type { MatchScheduleInfo } from 'data-center';
 import { timestampToString, daysFromToday } from 'lib';
 import { useContestDetailStore } from '@/app/football/[matchId]/contestDetailStore';

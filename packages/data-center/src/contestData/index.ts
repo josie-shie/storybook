@@ -6,7 +6,8 @@ import {
     GET_RECENT_MATCH_QUERY,
     GET_MATCH_ID_QUERY,
     GET_RECENT_MATCH_SCHEDULE_QUERY,
-    GET_HALF_FULL_WIN_COUNTS_QUERY
+    GET_HALF_FULL_WIN_COUNTS_QUERY,
+    GET_RECENT_BATTLE_MATCH_QUERY
 } from './graphqlQueries';
 
 const SingleMatchIdSchema = z.object({
@@ -22,6 +23,89 @@ const GetSingleMatchIdResultSchema = z.object({
 export type GetSingleMatchIdResult = z.infer<typeof GetSingleMatchIdResultSchema>;
 
 export type GetSingleMatchIdResponse = z.infer<typeof SingleMatchIdSchema>;
+
+const RecentMatchDashboardInfoSchema = z.object({
+    goalMissRate: z.object({
+        goal: z.number(),
+        miss: z.number()
+    }),
+    victoryMinusRate: z.object({
+        victory: z.number(),
+        minus: z.number(),
+        tie: z.number()
+    }),
+    winLoseRate: z.object({
+        win: z.number(),
+        lose: z.number(),
+        go: z.number()
+    }),
+    bigSmallRate: z.object({
+        big: z.number(),
+        small: z.number(),
+        go: z.number()
+    })
+});
+
+export type RecentMatchDashboardInfo = z.infer<typeof RecentMatchDashboardInfoSchema>;
+
+const RecentMatchDashboardSchema = z.object({
+    home: RecentMatchDashboardInfoSchema,
+    away: RecentMatchDashboardInfoSchema
+});
+
+const RecentBattleMatchSchema = z.object({
+    matchId: z.number(),
+    leagueId: z.number(),
+    leagueEn: z.string(),
+    leagueChs: z.string(),
+    leagueCht: z.string(),
+    matchTime: z.number(),
+    homeEn: z.string(),
+    homeChs: z.string(),
+    homeCht: z.string(),
+    awayEn: z.string(),
+    awayChs: z.string(),
+    awayCht: z.string(),
+    homeId: z.number(),
+    awayId: z.number(),
+    homeScore: z.number(),
+    awayScore: z.number(),
+    homeHalfScore: z.number(),
+    awayHalfScore: z.number(),
+    homeRed: z.number(),
+    awayRed: z.number(),
+    homeCorner: z.number(),
+    awayCorner: z.number(),
+    handicapCurrent: z.number(),
+    handicapHomeCurrentOdds: z.number(),
+    handicapAwayCurrentOdds: z.number(),
+    overUnderCurrent: z.number(),
+    overUnderOverCurrentOdds: z.number(),
+    overUnderUnderCurrentOdds: z.number(),
+    status: z.number(),
+    hasAnimation: z.boolean(),
+    leagueLevel: z.number(),
+    matchResult: z.string().optional(),
+    handicapResult: z.string().optional(),
+    overUnderResult: z.string().optional()
+});
+
+const GetRecentBattleMatchResultSchema = z.object({
+    soccerData: z.object({
+        getRecentBattleMatch: z.object({
+            list: z.array(RecentBattleMatchSchema)
+        })
+    })
+});
+
+const GetRecentBattleMatchResponseSchema = z.object({
+    matchList: z.array(RecentBattleMatchSchema),
+    dashboard: RecentMatchDashboardInfoSchema
+});
+
+export type GetRecentBattleMatchResult = z.infer<typeof GetRecentBattleMatchResultSchema>;
+
+export type GetRecentBattleMatchResponse = z.infer<typeof GetRecentBattleMatchResponseSchema>;
 
 const RecentMatchSchema = z.object({
     matchId: z.number(),
@@ -72,35 +156,6 @@ const GetRecentMatchResultSchema = z.object({
 });
 
 type GetRecentMatchResult = z.infer<typeof GetRecentMatchResultSchema>;
-
-const RecentMatchDashboardInfoSchema = z.object({
-    goalMissRate: z.object({
-        goal: z.number(),
-        miss: z.number()
-    }),
-    victoryMinusRate: z.object({
-        victory: z.number(),
-        minus: z.number(),
-        tie: z.number()
-    }),
-    winLoseRate: z.object({
-        win: z.number(),
-        lose: z.number(),
-        go: z.number()
-    }),
-    bigSmallRate: z.object({
-        big: z.number(),
-        small: z.number(),
-        go: z.number()
-    })
-});
-
-export type RecentMatchDashboardInfo = z.infer<typeof RecentMatchDashboardInfoSchema>;
-
-const RecentMatchDashboardSchema = z.object({
-    home: RecentMatchDashboardInfoSchema,
-    away: RecentMatchDashboardInfoSchema
-});
 
 export type RecentMatchDashboard = z.infer<typeof RecentMatchDashboardSchema>;
 
@@ -238,6 +293,159 @@ export const getSingleMatchId = async (
         return {
             success: true,
             data: data.getSingleMatch
+        };
+    } catch (error) {
+        return handleApiError(error);
+    }
+};
+
+/**
+ * 取得兩對歷史交鋒
+ * - params : (matchId: number)
+ * - returns : {@link GetRecentBattleMatchResponse}
+ */
+export const getRecentBattleMatch = async ({
+    matchId,
+    homeId,
+    homeAway = 0,
+    leagueId = 0,
+    dataCount = 10
+}: {
+    matchId: number;
+    homeId: number;
+    homeAway?: number;
+    leagueId?: number;
+    dataCount?: number;
+}): Promise<ReturnData<GetRecentBattleMatchResponse>> => {
+    try {
+        const { data, errors } = await fetcher<
+            FetchResultData<GetRecentBattleMatchResult>,
+            unknown
+        >(
+            {
+                data: {
+                    query: GET_RECENT_BATTLE_MATCH_QUERY,
+                    variables: {
+                        matchId,
+                        homeAway,
+                        leagueId,
+                        dataCount
+                    }
+                }
+            },
+            { cache: 'no-store' }
+        );
+
+        throwErrorMessage(errors);
+
+        const matchList = data.soccerData.getRecentBattleMatch.list;
+
+        const dashboard = {
+            goalMissRate: {
+                goal: 0,
+                miss: 0
+            },
+            victoryMinusRate: {
+                victory: 0,
+                minus: 0,
+                tie: 0
+            },
+            winLoseRate: {
+                win: 0,
+                lose: 0,
+                go: 0
+            },
+            bigSmallRate: {
+                big: 0,
+                small: 0,
+                go: 0
+            }
+        };
+
+        const victoryMinusFactory = {
+            victory: () => {
+                dashboard.victoryMinusRate.victory += 1;
+            },
+            minus: () => {
+                dashboard.victoryMinusRate.minus += 1;
+            },
+            tie: () => {
+                dashboard.victoryMinusRate.tie += 1;
+            }
+        };
+        const bigSmallFactory = {
+            big: () => {
+                dashboard.bigSmallRate.big += 1;
+            },
+            small: () => {
+                dashboard.bigSmallRate.small += 1;
+            },
+            go: () => {
+                dashboard.bigSmallRate.go += 1;
+            }
+        };
+        const winLoseFactory = {
+            win: () => {
+                dashboard.winLoseRate.win += 1;
+            },
+            lose: () => {
+                dashboard.winLoseRate.lose += 1;
+            },
+            go: () => {
+                dashboard.winLoseRate.go += 1;
+            }
+        };
+
+        for (const match of matchList) {
+            if (match.homeId === homeId) {
+                // 進失球
+                dashboard.goalMissRate.goal += match.homeScore;
+                dashboard.goalMissRate.miss += match.awayScore;
+
+                // 勝率 - 勝負平
+                match.matchResult = victoryMinusResult(match.homeScore, match.awayScore);
+                victoryMinusFactory[match.matchResult as 'victory' | 'minus' | 'tie'];
+
+                // 贏率 - 贏輸走
+                match.handicapResult = handicapResult(
+                    match.homeScore,
+                    match.awayScore,
+                    match.handicapCurrent
+                );
+                winLoseFactory[match.handicapResult as 'win' | 'lose' | 'go'];
+            } else {
+                // 進失球
+                dashboard.goalMissRate.goal += match.awayScore;
+                dashboard.goalMissRate.miss += match.homeScore;
+
+                // 勝率 - 勝負平
+                match.matchResult = victoryMinusResult(match.awayScore, match.homeScore);
+                victoryMinusFactory[match.matchResult as 'victory' | 'minus' | 'tie'];
+
+                // 贏率 - 贏輸走
+                match.handicapResult = handicapResult(
+                    match.awayScore,
+                    match.homeScore,
+                    match.handicapCurrent
+                );
+                winLoseFactory[match.handicapResult as 'win' | 'lose' | 'go'];
+            }
+
+            // 進球 - 大小走
+            match.overUnderResult = overUnderResult(
+                match.homeScore,
+                match.awayScore,
+                match.overUnderCurrent
+            );
+            bigSmallFactory[match.overUnderResult as 'big' | 'small' | 'go'];
+        }
+
+        return {
+            success: true,
+            data: {
+                matchList,
+                dashboard
+            }
         };
     } catch (error) {
         return handleApiError(error);

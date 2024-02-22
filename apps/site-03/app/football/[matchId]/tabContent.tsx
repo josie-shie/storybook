@@ -9,6 +9,7 @@ import type {
     GetInformationResponse,
     GetLiveTextResponse,
     GetLineUpInfoResponse,
+    GetRecentBattleMatchResponse,
     GetRecentMatchResponse,
     GetRecentMatchScheduleResponse,
     GetHalfFullWinCountsResponse
@@ -35,6 +36,7 @@ import { useContestDetailStore } from './contestDetailStore';
 
 interface FetchInitData {
     data?: {
+        recentBattleMatch?: GetRecentBattleMatchResponse;
         recentMatchData?: GetRecentMatchResponse;
         recentMatchSchedule?: GetRecentMatchScheduleResponse;
         halfFullWinCounts?: GetHalfFullWinCountsResponse;
@@ -98,6 +100,30 @@ function TabContent({
     ];
     const [fetchData, setFetchData] = useState({
         data: {
+            recentBattleMatch: {
+                matchList: [],
+                dashboard: {
+                    goalMissRate: {
+                        goal: 0,
+                        miss: 0
+                    },
+                    victoryMinusRate: {
+                        victory: 0,
+                        minus: 0,
+                        tie: 0
+                    },
+                    winLoseRate: {
+                        win: 0,
+                        lose: 0,
+                        go: 0
+                    },
+                    bigSmallRate: {
+                        big: 0,
+                        small: 0,
+                        go: 0
+                    }
+                }
+            } as GetRecentBattleMatchResponse,
             recentMatchData: {
                 homeMatch: [],
                 awayMatch: [],
@@ -413,6 +439,10 @@ function TabContent({
                             halfFullWinCounts={
                                 fetchInitData?.data?.halfFullWinCounts ||
                                 fetchData.data.halfFullWinCounts
+                            }
+                            recentBattleMatch={
+                                fetchInitData?.data?.recentBattleMatch ||
+                                fetchData.data.recentBattleMatch
                             }
                             recentMatchData={
                                 fetchInitData?.data?.recentMatchData ||

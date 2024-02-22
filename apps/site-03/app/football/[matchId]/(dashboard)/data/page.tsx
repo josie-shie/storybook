@@ -2,7 +2,8 @@ import {
     getSingleMatchId,
     getRecentMatchData,
     getRecentMatchSchedule,
-    getHalfFullWinCounts
+    getHalfFullWinCounts,
+    getRecentBattleMatch
 } from 'data-center';
 import TabContent from '../../tabContent';
 
@@ -20,19 +21,30 @@ async function Page({ params }: { params: { matchId: number } }) {
     }
     const { matchId, homeId, awayId } = matchInfo.data;
 
-    const [recentMatchData, recentMatchSchedule, halfFullWinCounts] = await Promise.all([
-        getRecentMatchData({
-            matchId,
-            homeId,
-            awayId
-        }),
-        getRecentMatchSchedule(matchId),
-        getHalfFullWinCounts({
-            matchId
-        })
-    ]);
+    const [recentBattleMatch, recentMatchData, recentMatchSchedule, halfFullWinCounts] =
+        await Promise.all([
+            getRecentBattleMatch({
+                matchId,
+                homeId
+            }),
+            getRecentMatchData({
+                matchId,
+                homeId,
+                awayId
+            }),
+            getRecentMatchSchedule(matchId),
+            getHalfFullWinCounts({
+                matchId
+            })
+        ]);
 
-    if (!recentMatchData.success || !recentMatchSchedule.success || !halfFullWinCounts.success) {
+    if (
+        !recentBattleMatch.success ||
+        !recentMatchData.success ||
+        !recentMatchSchedule.success ||
+        !halfFullWinCounts.success
+    ) {
+        console.error(recentBattleMatch);
         console.error(recentMatchData);
         console.error(recentMatchSchedule);
         console.error(halfFullWinCounts);
@@ -42,6 +54,9 @@ async function Page({ params }: { params: { matchId: number } }) {
         <TabContent
             fetchInitData={{
                 data: {
+                    recentBattleMatch: recentBattleMatch.success
+                        ? recentBattleMatch.data
+                        : undefined,
                     recentMatchData: recentMatchData.success ? recentMatchData.data : undefined,
                     recentMatchSchedule: recentMatchSchedule.success
                         ? recentMatchSchedule.data
