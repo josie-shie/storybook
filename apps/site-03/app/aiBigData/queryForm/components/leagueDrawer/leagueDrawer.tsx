@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { Tab, Tabs } from 'ui';
 import { motion } from 'framer-motion';
 import { useMatchFilterStore } from '@/app/aiBigData/matchFilterStore';
 import BottomDrawer from '@/components/drawer/bottomDrawer';
@@ -155,6 +156,18 @@ function MatchFilterDrawer({
         setOnMounted(true);
     }, []);
 
+    const tabStyle = {
+        gap: 8,
+        swiperOpen: true,
+        buttonRadius: 30
+    };
+
+    const tabActive = useRef(0);
+
+    const saveTabStatus = (tab: string) => {
+        tabActive.current = tab === 'contest' ? 0 : 1;
+    };
+
     return (
         <>
             {onMounted ? (
@@ -169,7 +182,24 @@ function MatchFilterDrawer({
                             <h2>赛事筛选</h2>
                             <p className={style.remark}>最多可选择5联赛</p>
                         </div>
-                        <FilterSection group="league" onClose={onClose} />
+                        <div className={style.tab}>
+                            <Tabs
+                                buttonRadius={tabStyle.buttonRadius}
+                                defaultValue={tabActive.current}
+                                gap={tabStyle.gap}
+                                onTabChange={saveTabStatus}
+                                position="center"
+                                styling="underline"
+                                swiperOpen={tabStyle.swiperOpen}
+                            >
+                                <Tab label="赛事" value="contest">
+                                    <FilterSection group="league" onClose={onClose} />
+                                </Tab>
+                                <Tab label="国家" value="country">
+                                    <FilterSection group="country" onClose={onClose} />
+                                </Tab>
+                            </Tabs>
+                        </div>
                     </div>
                 </BottomDrawer>
             ) : null}
