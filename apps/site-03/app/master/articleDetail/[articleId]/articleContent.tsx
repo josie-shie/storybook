@@ -232,7 +232,12 @@ function ArticleContent({
 
                         {article.predictedPlay === 'LOCK' && article.price !== 0 ? (
                             <div className={style.paidButton}>
-                                <div className={style.content}>{article.shortAnalysisContent}</div>
+                                <div
+                                    className={style.content}
+                                    dangerouslySetInnerHTML={{
+                                        __html: article.shortAnalysisContent
+                                    }}
+                                />
                                 <div className={style.buttonArea}>
                                     <div className={style.backDrop} />
                                     <div className={style.text}>
@@ -246,9 +251,10 @@ function ArticleContent({
                             </div>
                         ) : (
                             <div className={style.paidArea}>
-                                <article className={style.content}>
-                                    {article.analysisContent}
-                                </article>
+                                <article
+                                    className={style.content}
+                                    dangerouslySetInnerHTML={{ __html: article.analysisContent }}
+                                />
                                 {!isNoArticleData ? (
                                     <>
                                         <div className={style.play}>
