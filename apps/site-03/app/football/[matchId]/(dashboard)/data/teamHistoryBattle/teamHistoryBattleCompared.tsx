@@ -214,7 +214,7 @@ function TeamHistoryBattleCompared() {
                     <div className={style.pointTop}>
                         <p className={style.title}>走势</p>
                         <p className={style.subTitle}>
-                            （近{battleMatchCompare.matchCount}场，由近及远）
+                            （近{battleMatchCompare.matchCount}场，由远及近）
                         </p>
                     </div>
                     {typeof battleMatchCompare.handicapTrend !== 'undefined' && (
@@ -225,7 +225,7 @@ function TeamHistoryBattleCompared() {
                     <div className={style.pointTop}>
                         <p className={style.title}>进球</p>
                         <p className={style.subTitle}>
-                            （近{battleMatchCompare.matchCount}场，由近及远）
+                            （近{battleMatchCompare.matchCount}场，由远及近）
                         </p>
                     </div>
                     {typeof battleMatchCompare.overUnderTrend !== 'undefined' && (

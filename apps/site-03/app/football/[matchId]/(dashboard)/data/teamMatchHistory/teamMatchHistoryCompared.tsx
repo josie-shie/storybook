@@ -4,11 +4,61 @@ import { getRecentMatchCompare } from 'data-center';
 import { useEffect, useState } from 'react';
 import { useContestDetailStore } from '@/app/football/[matchId]/contestDetailStore';
 import { useDataComparedStore } from '@/app/football/[matchId]/dataComparedStore';
+import TeamLogo from '@/components/teamLogo/teamLogo';
 import ComparedTeamBar from '../components/comparedTeamBar';
 import SameOptionBar from '../components/sameOptionBar';
 import MatchCountOptionBar from '../components/matchCountOptionBar';
 import ComparedLineProgress from '../components/comparedLineProgress';
+import ComparedLinePoint from '../components/comparedLinePoint';
 import style from './teamMatchHistoryCompared.module.scss';
+
+function ComparedPointLine({
+    title,
+    matchCount,
+    homeTrend,
+    awayTrend
+}: {
+    title: string;
+    matchCount: number;
+    homeTrend: string[];
+    awayTrend: string[];
+}) {
+    const matchDetail = useContestDetailStore.use.matchDetail();
+    return (
+        <div className={style.pointChart}>
+            <div className={style.pointCard}>
+                <div className={style.pointTop}>
+                    <p className={style.title}>{title}</p>
+                    <p className={style.subTitle}>（近{matchCount}场，由远及近）</p>
+                </div>
+                <div className={style.teamPoint}>
+                    <TeamLogo
+                        alt={matchDetail.homeChs}
+                        className={style.teamLogo}
+                        height={16}
+                        src={matchDetail.homeLogo}
+                        width={16}
+                    />
+                    {typeof homeTrend !== 'undefined' && (
+                        <ComparedLinePoint pointList={homeTrend} />
+                    )}
+                </div>
+                <div className={style.teamPoint}>
+                    <TeamLogo
+                        alt={matchDetail.awayChs}
+                        className={style.teamLogo}
+                        height={16}
+                        src={matchDetail.awayLogo}
+                        width={16}
+                    />
+                    {typeof awayTrend !== 'undefined' && (
+                        <ComparedLinePoint pointList={awayTrend} />
+                    )}
+                </div>
+            </div>
+        </div>
+    );
+}
 
 function ComparedProgress() {
     const recentMatchCompare = useDataComparedStore.use.recentMatchCompare();
@@ -60,6 +110,14 @@ function ComparedProgress() {
                 homeValue={`${recentMatchCompare.home.winRate}`}
                 title="胜率%"
             />
+
+            <ComparedPointLine
+                awayTrend={recentMatchCompare.away.matchTrend}
+                homeTrend={recentMatchCompare.home.matchTrend}
+                matchCount={recentMatchCompare.home.matchCount}
+                title="胜率"
+            />
+
             <ComparedLineProgress
                 awayProgress={recentMatchCompare.away.handicapWinRate}
                 awayValue={`(${formatNumberWithPercent(
@@ -73,12 +131,26 @@ function ComparedProgress() {
                 )})`}
                 title="赢（输）%"
             />
+            <ComparedPointLine
+                awayTrend={recentMatchCompare.away.handicapTrend}
+                homeTrend={recentMatchCompare.home.handicapTrend}
+                matchCount={recentMatchCompare.home.matchCount}
+                title="赢率"
+            />
+
             <ComparedLineProgress
                 awayProgress={recentMatchCompare.away.overUnderWinRate}
                 awayValue={`${recentMatchCompare.away.overUnderWinRate}`}
                 homeProgress={recentMatchCompare.home.handicapWinRate}
                 homeValue={`${recentMatchCompare.home.handicapWinRate}`}
                 title="大率%"
+            />
+
+            <ComparedPointLine
+                awayTrend={recentMatchCompare.away.overUnderTrend}
+                homeTrend={recentMatchCompare.home.overUnderTrend}
+                matchCount={recentMatchCompare.home.matchCount}
+                title="大率"
             />
         </div>
     );
