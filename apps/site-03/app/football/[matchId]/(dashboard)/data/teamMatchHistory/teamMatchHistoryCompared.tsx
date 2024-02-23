@@ -2,6 +2,8 @@
 import { formatNumberWithPercent, truncateFloatingPoint } from 'lib';
 import { getRecentMatchCompare } from 'data-center';
 import { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
+import { slickOption } from 'ui';
 import { useContestDetailStore } from '@/app/football/[matchId]/contestDetailStore';
 import { useDataComparedStore } from '@/app/football/[matchId]/dataComparedStore';
 import TeamLogo from '@/components/teamLogo/teamLogo';
@@ -62,6 +64,31 @@ function ComparedPointLine({
 
 function ComparedProgress() {
     const recentMatchCompare = useDataComparedStore.use.recentMatchCompare();
+    const [winStatus, setWinStatus] = useState(false);
+    const [handicapStatus, setHandicapStatus] = useState(false);
+    const [overUnderStatus, setOverUnderStatus] = useState(true);
+
+    const show = {
+        opacity: 1,
+        display: 'block'
+    };
+
+    const hide = {
+        opacity: 0,
+        transitionEnd: {
+            display: 'none'
+        }
+    };
+
+    const handleResetHeight = () => {
+        setTimeout(() => {
+            slickOption.contestInfoResetHeight();
+        }, 400);
+    };
+
+    useEffect(() => {
+        handleResetHeight();
+    }, [winStatus, handicapStatus, overUnderStatus]);
 
     if (typeof recentMatchCompare.home === 'undefined') {
         return null;
@@ -103,55 +130,78 @@ function ComparedProgress() {
                 )})`}
                 title="失球"
             />
-            <ComparedLineProgress
-                awayProgress={recentMatchCompare.away.winRate}
-                awayValue={`${recentMatchCompare.away.winRate}`}
-                homeProgress={recentMatchCompare.home.winRate}
-                homeValue={`${recentMatchCompare.home.winRate}`}
-                title="胜率%"
-            />
+            <div
+                onClick={() => {
+                    setWinStatus(!winStatus);
+                }}
+            >
+                <ComparedLineProgress
+                    awayProgress={recentMatchCompare.away.winRate}
+                    awayValue={`${recentMatchCompare.away.winRate}`}
+                    homeProgress={recentMatchCompare.home.winRate}
+                    homeValue={`${recentMatchCompare.home.winRate}`}
+                    title="胜率%"
+                />
+            </div>
+            <motion.div animate={winStatus ? show : hide} className="box">
+                <ComparedPointLine
+                    awayTrend={recentMatchCompare.away.matchTrend}
+                    homeTrend={recentMatchCompare.home.matchTrend}
+                    matchCount={recentMatchCompare.home.matchCount}
+                    title="胜率"
+                />
+            </motion.div>
+            <div
+                onClick={() => {
+                    setHandicapStatus(!handicapStatus);
+                }}
+            >
+                <ComparedLineProgress
+                    awayProgress={recentMatchCompare.away.handicapWinRate}
+                    awayValue={`(${formatNumberWithPercent(
+                        recentMatchCompare.away.handicapLose,
+                        recentMatchCompare.away.matchCount
+                    )})${recentMatchCompare.away.handicapWinRate}`}
+                    homeProgress={recentMatchCompare.home.handicapWinRate}
+                    homeValue={`${
+                        recentMatchCompare.home.handicapWinRate
+                    }(${formatNumberWithPercent(
+                        recentMatchCompare.home.handicapLose,
+                        recentMatchCompare.home.matchCount
+                    )})`}
+                    title="赢（输）%"
+                />
+            </div>
+            <motion.div animate={handicapStatus ? show : hide} className="box">
+                <ComparedPointLine
+                    awayTrend={recentMatchCompare.away.handicapTrend}
+                    homeTrend={recentMatchCompare.home.handicapTrend}
+                    matchCount={recentMatchCompare.home.matchCount}
+                    title="赢率"
+                />
+            </motion.div>
+            <div
+                onClick={() => {
+                    setOverUnderStatus(!overUnderStatus);
+                }}
+            >
+                <ComparedLineProgress
+                    awayProgress={recentMatchCompare.away.overUnderWinRate}
+                    awayValue={`${recentMatchCompare.away.overUnderWinRate}`}
+                    homeProgress={recentMatchCompare.home.handicapWinRate}
+                    homeValue={`${recentMatchCompare.home.handicapWinRate}`}
+                    title="大率%"
+                />
+            </div>
 
-            <ComparedPointLine
-                awayTrend={recentMatchCompare.away.matchTrend}
-                homeTrend={recentMatchCompare.home.matchTrend}
-                matchCount={recentMatchCompare.home.matchCount}
-                title="胜率"
-            />
-
-            <ComparedLineProgress
-                awayProgress={recentMatchCompare.away.handicapWinRate}
-                awayValue={`(${formatNumberWithPercent(
-                    recentMatchCompare.away.handicapLose,
-                    recentMatchCompare.away.matchCount
-                )})${recentMatchCompare.away.handicapWinRate}`}
-                homeProgress={recentMatchCompare.home.handicapWinRate}
-                homeValue={`${recentMatchCompare.home.handicapWinRate}(${formatNumberWithPercent(
-                    recentMatchCompare.home.handicapLose,
-                    recentMatchCompare.home.matchCount
-                )})`}
-                title="赢（输）%"
-            />
-            <ComparedPointLine
-                awayTrend={recentMatchCompare.away.handicapTrend}
-                homeTrend={recentMatchCompare.home.handicapTrend}
-                matchCount={recentMatchCompare.home.matchCount}
-                title="赢率"
-            />
-
-            <ComparedLineProgress
-                awayProgress={recentMatchCompare.away.overUnderWinRate}
-                awayValue={`${recentMatchCompare.away.overUnderWinRate}`}
-                homeProgress={recentMatchCompare.home.handicapWinRate}
-                homeValue={`${recentMatchCompare.home.handicapWinRate}`}
-                title="大率%"
-            />
-
-            <ComparedPointLine
-                awayTrend={recentMatchCompare.away.overUnderTrend}
-                homeTrend={recentMatchCompare.home.overUnderTrend}
-                matchCount={recentMatchCompare.home.matchCount}
-                title="大率"
-            />
+            <motion.div animate={overUnderStatus ? show : hide} className="box">
+                <ComparedPointLine
+                    awayTrend={recentMatchCompare.away.overUnderTrend}
+                    homeTrend={recentMatchCompare.home.overUnderTrend}
+                    matchCount={recentMatchCompare.home.matchCount}
+                    title="大率"
+                />
+            </motion.div>
         </div>
     );
 }

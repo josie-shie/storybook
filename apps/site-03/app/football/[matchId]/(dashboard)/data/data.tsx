@@ -67,7 +67,9 @@ function DataContainer() {
     const [selectedOption, setSelectedOption] = useState('details');
 
     const handleResetHeight = () => {
-        slickOption.contestInfoResetHeight();
+        setTimeout(() => {
+            slickOption.contestInfoResetHeight();
+        }, 600);
     };
 
     return (

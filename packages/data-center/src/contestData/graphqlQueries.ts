@@ -8,6 +8,99 @@ export const GET_MATCH_ID_QUERY = `
     }  
 `;
 
+export const GET_LEAGUE_STANDINGS_QUERY = `
+    query getLeagueStandings($input: GetLeagueStandingsInput!) {
+      getLeagueStandings(request: $input) {
+        homeTeamStandings {
+          teamId
+          totalCount
+          winCount
+          drawCount
+          loseCount
+          getScore
+          loseScore
+          goalDifference
+          integral
+          rank
+          winRate
+          homeTotalCount
+          homeWinCount
+          homeDrawCount
+          homeLoseCount
+          homeGetScore
+          homeLoseScore
+          homeGoalDifference
+          homeIntegral
+          homeRank
+          homeWinRate
+          awayTotalCount
+          awayWinCount
+          awayDrawCount
+          awayLoseCount
+          awayGetScore
+          awayLoseScore
+          awayGoalDifference
+          awayIntegral
+          awayRank
+          awayWinRate
+          recentTotalCount
+          recentWinCount
+          recentDrawCount
+          recentLoseCount
+          recentGetScore
+          recentLoseScore
+          recentGoalDifference
+          recentIntegral
+          recentWinRate
+          teamName
+        }
+        awayTeamStandings {
+          teamId
+          totalCount
+          winCount
+          drawCount
+          loseCount
+          getScore
+          loseScore
+          goalDifference
+          integral
+          rank
+          winRate
+          homeTotalCount
+          homeWinCount
+          homeDrawCount
+          homeLoseCount
+          homeGetScore
+          homeLoseScore
+          homeGoalDifference
+          homeIntegral
+          homeRank
+          homeWinRate
+          awayTotalCount
+          awayWinCount
+          awayDrawCount
+          awayLoseCount
+          awayGetScore
+          awayLoseScore
+          awayGoalDifference
+          awayIntegral
+          awayRank
+          awayWinRate
+          recentTotalCount
+          recentWinCount
+          recentDrawCount
+          recentLoseCount
+          recentGetScore
+          recentLoseScore
+          recentGoalDifference
+          recentIntegral
+          recentWinRate
+          teamName
+        }
+      }    
+    }
+`; // 積分排名
+
 export const GET_RECENT_BATTLE_MATCH_QUERY = `
     query getRecentBattleMatch($matchId:Int!,$homeAway:Int!,$leagueId:Int!,$dataCount:Int!) {
         soccerData {

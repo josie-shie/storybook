@@ -1,4 +1,10 @@
-import { fetcher, overUnderResult, victoryMinusResult, handicapResult } from 'lib';
+import {
+    fetcher,
+    overUnderResult,
+    victoryMinusResult,
+    handicapResult,
+    truncateFloatingPoint
+} from 'lib';
 import { z } from 'zod';
 import { handleApiError, throwErrorMessage } from '../common';
 import type { ReturnData, FetchResultData } from '../common';
@@ -9,7 +15,8 @@ import {
     GET_HALF_FULL_WIN_COUNTS_QUERY,
     GET_RECENT_BATTLE_MATCH_QUERY,
     GET_RECENT_MATCH_COMPARE_QUERY,
-    GET_BATTLE_MATCH_COMPARE_QUERY
+    GET_BATTLE_MATCH_COMPARE_QUERY,
+    GET_LEAGUE_STANDINGS_QUERY
 } from './graphqlQueries';
 
 const SingleMatchIdSchema = z.object({
@@ -369,6 +376,84 @@ function splitTrendData(trendData: string): string[] {
     return trendData.length > 0 ? trendData.split(',') : [];
 }
 
+const LeagueStandingsSchema = z.object({
+    teamId: z.number(),
+    totalCount: z.number(),
+    winCount: z.number(),
+    drawCount: z.number(),
+    loseCount: z.number(),
+    getScore: z.number(),
+    loseScore: z.number(),
+    goalDifference: z.number(),
+    integral: z.number(),
+    rank: z.number(),
+    winRate: z.number(),
+    homeTotalCount: z.number(),
+    homeWinCount: z.number(),
+    homeDrawCount: z.number(),
+    homeLoseCount: z.number(),
+    homeGetScore: z.number(),
+    homeLoseScore: z.number(),
+    homeGoalDifference: z.number(),
+    homeIntegral: z.number(),
+    homeRank: z.number(),
+    homeWinRate: z.number(),
+    awayTotalCount: z.number(),
+    awayWinCount: z.number(),
+    awayDrawCount: z.number(),
+    awayLoseCount: z.number(),
+    awayGetScore: z.number(),
+    awayLoseScore: z.number(),
+    awayGoalDifference: z.number(),
+    awayIntegral: z.number(),
+    awayRank: z.number(),
+    awayWinRate: z.number(),
+    recentTotalCount: z.number(),
+    recentWinCount: z.number(),
+    recentDrawCount: z.number(),
+    recentLoseCount: z.number(),
+    recentGetScore: z.number(),
+    recentLoseScore: z.number(),
+    recentGoalDifference: z.number(),
+    recentIntegral: z.number(),
+    recentWinRate: z.number(),
+    teamName: z.string()
+});
+
+const GetLeaguePointsRankSchema = z.object({
+    getLeagueStandings: z.object({
+        homeTeamStandings: z.nullable(LeagueStandingsSchema),
+        awayTeamStandings: z.nullable(LeagueStandingsSchema)
+    })
+});
+
+type GetLeaguePointsRankResult = z.infer<typeof GetLeaguePointsRankSchema>;
+
+export interface LeaguePointsRankInfo {
+    totalCount: number;
+    winCount: number;
+    drawCount: number;
+    loseCount: number;
+    getScore: number;
+    loseScore: number;
+    goalDifference: number;
+    integral: number;
+    rank: number | string;
+    winRate: number;
+}
+
+export interface LeaguePointsRank {
+    total: LeaguePointsRankInfo;
+    home: LeaguePointsRankInfo;
+    away: LeaguePointsRankInfo;
+    recent: LeaguePointsRankInfo;
+}
+
+export interface GetLeaguePointsRankResponse {
+    homeTeam: LeaguePointsRank | Record<'total' | 'home' | 'away' | 'recent', never>;
+    awayTeam: LeaguePointsRank | Record<'total' | 'home' | 'away' | 'recent', never>;
+}
+
 /**
  * 取得指定賽事 ID
  * - params : (matchId: number)
@@ -508,7 +593,7 @@ export const getRecentBattleMatch = async ({
 
                 // 勝率 - 勝負平
                 match.matchResult = victoryMinusResult(match.homeScore, match.awayScore);
-                victoryMinusFactory[match.matchResult as 'victory' | 'minus' | 'tie'];
+                victoryMinusFactory[match.matchResult as 'victory' | 'minus' | 'tie']();
 
                 // 贏率 - 贏輸走
                 match.handicapResult = handicapResult(
@@ -516,7 +601,7 @@ export const getRecentBattleMatch = async ({
                     match.awayScore,
                     match.handicapInit
                 );
-                winLoseFactory[match.handicapResult as 'win' | 'lose' | 'go'];
+                winLoseFactory[match.handicapResult as 'win' | 'lose' | 'go']();
             } else {
                 // 進失球
                 dashboard.goalMissRate.goal += match.awayScore;
@@ -524,7 +609,7 @@ export const getRecentBattleMatch = async ({
 
                 // 勝率 - 勝負平
                 match.matchResult = victoryMinusResult(match.awayScore, match.homeScore);
-                victoryMinusFactory[match.matchResult as 'victory' | 'minus' | 'tie'];
+                victoryMinusFactory[match.matchResult as 'victory' | 'minus' | 'tie']();
 
                 // 贏率 - 贏輸走
                 match.handicapResult = handicapResult(
@@ -532,7 +617,7 @@ export const getRecentBattleMatch = async ({
                     match.homeScore,
                     match.handicapInit
                 );
-                winLoseFactory[match.handicapResult as 'win' | 'lose' | 'go'];
+                winLoseFactory[match.handicapResult as 'win' | 'lose' | 'go']();
             }
 
             // 進球 - 大小走
@@ -541,7 +626,7 @@ export const getRecentBattleMatch = async ({
                 match.awayScore,
                 match.overUnderInit
             );
-            bigSmallFactory[match.overUnderResult as 'big' | 'small' | 'go'];
+            bigSmallFactory[match.overUnderResult as 'big' | 'small' | 'go']();
         }
 
         return {
@@ -995,6 +1080,157 @@ export const getBattleMatchCompare = async ({
         return {
             success: true,
             data: newData
+        };
+    } catch (error) {
+        return handleApiError(error);
+    }
+};
+
+/**
+ * 取得聯賽積分排名
+ * - TODO: 排名API
+ * - param (matchId: number)
+ * - returns : {@link GetLeaguePointsRankResponse}
+ * -  {@link GetBeforeGameIndex} {@link SingleMatchTeamName}
+ */
+export const getLeaguePointsRank = async (
+    matchId: number
+): Promise<ReturnData<GetLeaguePointsRankResponse>> => {
+    try {
+        const { data, errors } = await fetcher<FetchResultData<GetLeaguePointsRankResult>, unknown>(
+            {
+                data: {
+                    query: GET_LEAGUE_STANDINGS_QUERY,
+                    variables: {
+                        input: {
+                            matchId
+                        }
+                    }
+                }
+            },
+            { cache: 'no-store' }
+        );
+
+        throwErrorMessage(errors);
+        GetLeaguePointsRankSchema.parse(data);
+
+        const { homeTeamStandings, awayTeamStandings } = data.getLeagueStandings;
+
+        if (!homeTeamStandings || !awayTeamStandings) {
+            return {
+                success: true,
+                data: {
+                    homeTeam: {} as Record<string, never>,
+                    awayTeam: {} as Record<string, never>
+                }
+            };
+        }
+
+        const homeTeam = {
+            total: {
+                totalCount: homeTeamStandings.totalCount,
+                winCount: homeTeamStandings.winCount,
+                drawCount: homeTeamStandings.drawCount,
+                loseCount: homeTeamStandings.loseCount,
+                getScore: homeTeamStandings.getScore,
+                loseScore: homeTeamStandings.loseScore,
+                goalDifference: homeTeamStandings.goalDifference,
+                integral: homeTeamStandings.integral,
+                rank: homeTeamStandings.rank,
+                winRate: truncateFloatingPoint(homeTeamStandings.winRate, 1)
+            },
+            home: {
+                totalCount: homeTeamStandings.homeTotalCount,
+                winCount: homeTeamStandings.homeWinCount,
+                drawCount: homeTeamStandings.homeDrawCount,
+                loseCount: homeTeamStandings.homeLoseCount,
+                getScore: homeTeamStandings.homeGetScore,
+                loseScore: homeTeamStandings.homeLoseScore,
+                goalDifference: homeTeamStandings.homeGoalDifference,
+                integral: homeTeamStandings.homeIntegral,
+                rank: homeTeamStandings.homeRank,
+                winRate: truncateFloatingPoint(homeTeamStandings.homeWinRate, 1)
+            },
+            away: {
+                totalCount: homeTeamStandings.awayTotalCount,
+                winCount: homeTeamStandings.awayWinCount,
+                drawCount: homeTeamStandings.awayDrawCount,
+                loseCount: homeTeamStandings.awayLoseCount,
+                getScore: homeTeamStandings.awayGetScore,
+                loseScore: homeTeamStandings.awayLoseScore,
+                goalDifference: homeTeamStandings.awayGoalDifference,
+                integral: homeTeamStandings.awayIntegral,
+                rank: homeTeamStandings.awayRank,
+                winRate: truncateFloatingPoint(homeTeamStandings.awayWinRate, 1)
+            },
+            recent: {
+                totalCount: homeTeamStandings.recentTotalCount,
+                winCount: homeTeamStandings.recentWinCount,
+                drawCount: homeTeamStandings.recentDrawCount,
+                loseCount: homeTeamStandings.recentLoseCount,
+                getScore: homeTeamStandings.recentGetScore,
+                loseScore: homeTeamStandings.recentLoseScore,
+                goalDifference: homeTeamStandings.recentGoalDifference,
+                integral: homeTeamStandings.recentIntegral,
+                rank: '-',
+                winRate: truncateFloatingPoint(homeTeamStandings.recentWinRate, 1)
+            }
+        };
+
+        const awayTeam = {
+            total: {
+                totalCount: awayTeamStandings.totalCount,
+                winCount: awayTeamStandings.winCount,
+                drawCount: awayTeamStandings.drawCount,
+                loseCount: awayTeamStandings.loseCount,
+                getScore: awayTeamStandings.getScore,
+                loseScore: awayTeamStandings.loseScore,
+                goalDifference: awayTeamStandings.goalDifference,
+                integral: awayTeamStandings.integral,
+                rank: awayTeamStandings.rank,
+                winRate: truncateFloatingPoint(awayTeamStandings.winRate, 1)
+            },
+            home: {
+                totalCount: awayTeamStandings.homeTotalCount,
+                winCount: awayTeamStandings.homeWinCount,
+                drawCount: awayTeamStandings.homeDrawCount,
+                loseCount: awayTeamStandings.homeLoseCount,
+                getScore: awayTeamStandings.homeGetScore,
+                loseScore: awayTeamStandings.homeLoseScore,
+                goalDifference: awayTeamStandings.homeGoalDifference,
+                integral: awayTeamStandings.homeIntegral,
+                rank: awayTeamStandings.homeRank,
+                winRate: truncateFloatingPoint(awayTeamStandings.homeWinRate, 1)
+            },
+            away: {
+                totalCount: awayTeamStandings.awayTotalCount,
+                winCount: awayTeamStandings.awayWinCount,
+                drawCount: awayTeamStandings.awayDrawCount,
+                loseCount: awayTeamStandings.awayLoseCount,
+                getScore: awayTeamStandings.awayGetScore,
+                loseScore: awayTeamStandings.awayLoseScore,
+                goalDifference: awayTeamStandings.awayGoalDifference,
+                integral: awayTeamStandings.awayIntegral,
+                rank: awayTeamStandings.awayRank,
+                winRate: truncateFloatingPoint(awayTeamStandings.awayWinRate, 1)
+            },
+            recent: {
+                totalCount: awayTeamStandings.recentTotalCount,
+                winCount: awayTeamStandings.recentWinCount,
+                drawCount: awayTeamStandings.recentDrawCount,
+                loseCount: awayTeamStandings.recentLoseCount,
+                getScore: awayTeamStandings.recentGetScore,
+                loseScore: awayTeamStandings.recentLoseScore,
+                goalDifference: awayTeamStandings.recentGoalDifference,
+                integral: awayTeamStandings.recentIntegral,
+                rank: '-',
+                winRate: truncateFloatingPoint(awayTeamStandings.recentWinRate, 1)
+            }
+        };
+
+        return {
+            success: true,
+            data: { homeTeam, awayTeam }
         };
     } catch (error) {
         return handleApiError(error);
