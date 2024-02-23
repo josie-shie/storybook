@@ -18,6 +18,11 @@
         .ui-no-data {
             min-height: calc(100dvh - 60vw - 249px);
         }
+
+        .ui-no-data-content {
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
     }
 }
 

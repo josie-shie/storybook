@@ -5,6 +5,7 @@ export { uploadImage, uploadImageToS3 } from './src/uploadImage';
 export { initStore } from './src/store';
 export {
     truncateFloatingPoint,
+    roundToDecimalPlace,
     formatNumberWithCommas,
     formatNumberWithPercent
 } from './src/formatNumber';
@@ -31,3 +32,4 @@ export * from './src/messageWs';
 export { parseMatchInfo } from './src/formatExtraExplain';
 export * from './src/formatFilterMap';
 export * from './src/mqttType';
+export { formatRate, sizeAndHandicapWinRate } from './src/formatRate';

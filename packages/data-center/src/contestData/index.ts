@@ -78,9 +78,13 @@ const RecentBattleMatchSchema = z.object({
     awayRed: z.number(),
     homeCorner: z.number(),
     awayCorner: z.number(),
+    handicapInit: z.number(),
+    handicapHalfInit: z.number(),
     handicapCurrent: z.number(),
     handicapHomeCurrentOdds: z.number(),
     handicapAwayCurrentOdds: z.number(),
+    overUnderInit: z.number(),
+    overUnderHalfInit: z.number(),
     overUnderCurrent: z.number(),
     overUnderOverCurrentOdds: z.number(),
     overUnderUnderCurrentOdds: z.number(),
@@ -132,9 +136,13 @@ const RecentMatchSchema = z.object({
     awayRed: z.number(),
     homeCorner: z.number(),
     awayCorner: z.number(),
+    handicapInit: z.number(),
+    handicapHalfInit: z.number(),
     handicapCurrent: z.number(),
     handicapHomeCurrentOdds: z.number(),
     handicapAwayCurrentOdds: z.number(),
+    overUnderInit: z.number(),
+    overUnderHalfInit: z.number(),
     overUnderCurrent: z.number(),
     overUnderOverCurrentOdds: z.number(),
     overUnderUnderCurrentOdds: z.number(),
@@ -502,7 +510,7 @@ export const getRecentBattleMatch = async ({
                 match.handicapResult = handicapResult(
                     match.homeScore,
                     match.awayScore,
-                    match.handicapCurrent
+                    match.handicapInit
                 );
                 winLoseFactory[match.handicapResult as 'win' | 'lose' | 'go'];
             } else {
@@ -518,7 +526,7 @@ export const getRecentBattleMatch = async ({
                 match.handicapResult = handicapResult(
                     match.awayScore,
                     match.homeScore,
-                    match.handicapCurrent
+                    match.handicapInit
                 );
                 winLoseFactory[match.handicapResult as 'win' | 'lose' | 'go'];
             }
@@ -527,7 +535,7 @@ export const getRecentBattleMatch = async ({
             match.overUnderResult = overUnderResult(
                 match.homeScore,
                 match.awayScore,
-                match.overUnderCurrent
+                match.overUnderInit
             );
             bigSmallFactory[match.overUnderResult as 'big' | 'small' | 'go'];
         }
@@ -545,9 +553,9 @@ export const getRecentBattleMatch = async ({
 };
 
 /**
- * 取得單一隊伍近期赛程
+ * 取得詳細近期戰績
  * - params : (matchId: number)
- * - returns : {@link GetEventDataResponse}
+ * - returns : {@link GetRecentMatchResponse}
  */
 export const getRecentMatchData = async ({
     matchId,
@@ -680,7 +688,7 @@ export const getRecentMatchData = async ({
                     match.handicapResult = handicapResult(
                         match.homeScore,
                         match.awayScore,
-                        match.handicapCurrent
+                        match.handicapInit
                     );
                     winLoseFactory[match.handicapResult as 'win' | 'lose' | 'go']('home');
                 } else {
@@ -696,7 +704,7 @@ export const getRecentMatchData = async ({
                     match.handicapResult = handicapResult(
                         match.awayScore,
                         match.homeScore,
-                        match.handicapCurrent
+                        match.handicapInit
                     );
                     winLoseFactory[match.handicapResult as 'win' | 'lose' | 'go']('home');
                 }
@@ -705,7 +713,7 @@ export const getRecentMatchData = async ({
                 match.overUnderResult = overUnderResult(
                     match.homeScore,
                     match.awayScore,
-                    match.overUnderCurrent
+                    match.overUnderInit
                 );
                 bigSmallFactory[match.overUnderResult as 'big' | 'small' | 'go']('home');
             }
@@ -726,7 +734,7 @@ export const getRecentMatchData = async ({
                     match.handicapResult = handicapResult(
                         match.awayScore,
                         match.homeScore,
-                        match.handicapCurrent
+                        match.handicapInit
                     );
                     winLoseFactory[match.handicapResult as 'win' | 'lose' | 'go']('away');
                 } else {
@@ -742,7 +750,7 @@ export const getRecentMatchData = async ({
                     match.handicapResult = handicapResult(
                         match.homeScore,
                         match.awayScore,
-                        match.handicapCurrent
+                        match.handicapInit
                     );
                     winLoseFactory[match.handicapResult as 'win' | 'lose' | 'go']('away');
                 }
@@ -751,7 +759,7 @@ export const getRecentMatchData = async ({
                 match.overUnderResult = overUnderResult(
                     match.homeScore,
                     match.awayScore,
-                    match.overUnderCurrent
+                    match.overUnderInit
                 );
                 bigSmallFactory[match.overUnderResult as 'big' | 'small' | 'go']('away');
             }

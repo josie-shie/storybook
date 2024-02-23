@@ -13,6 +13,11 @@ import style from './liveBox.module.scss';
 import bgImage from './img/bg.jpg';
 import BackIcon from './img/back.svg';
 import Football from './img/football.png';
+import CloudyIcon from './img/cloudy.svg';
+import ThunderIcon from './img/thunder.svg';
+import RainIcon from './img/rain.svg';
+import SnowIcon from './img/snow.svg';
+import SunIcon from './img/sun.svg';
 
 const statusStyleMap = {
     '0': 'notYet',
@@ -207,6 +212,59 @@ function LiveBox({
         }
     };
 
+    //1:局部有云
+    //2:多云
+    //3:局部有云/雨
+    //4:雪
+    //5:晴
+    //6:阴有雨/局部有雷暴
+    //7:阴
+    //8:薄雾
+    //9:阴有雨
+    //10:多云有雨
+    //11:多云有雨/局部有雷暴
+    //12:局部有云/雨和雷暴
+    //13:雾
+    const getWeatherIcon = (id: number) => {
+        if ([1, 2, 3, 7, 8, 13].includes(id)) {
+            return (
+                <>
+                    <CloudyIcon />
+                    <p>雲</p>
+                </>
+            );
+        } else if ([9, 10].includes(id)) {
+            return (
+                <>
+                    <RainIcon />
+                    <p>雨</p>
+                </>
+            );
+        } else if ([6, 11, 12].includes(id)) {
+            return (
+                <>
+                    <ThunderIcon />
+                    <p>雷</p>
+                </>
+            );
+        } else if (id === 4) {
+            return (
+                <>
+                    <SnowIcon />
+                    <p>雪</p>
+                </>
+            );
+        } else if (id === 5) {
+            return (
+                <>
+                    <SunIcon />
+                    <p>晴</p>
+                </>
+            );
+        }
+        return null;
+    };
+
     return (
         <div className={style.liveBox} style={{ backgroundImage: `url(${bgImage.src})` }}>
             <Header back={back} interceptData={interceptData} matchId={matchId} />
@@ -242,6 +300,13 @@ function LiveBox({
                         </p>
                     </div>
                 </div>
+            </div>
+            <div className={style.weatherInfo}>
+                {matchDetail.weather && getWeatherIcon(matchDetail.weather)}，
+                <div>气温{matchDetail.temperature}，</div>
+                <div>风速{matchDetail.wind}，</div>
+                <div>气压{matchDetail.pressure}，</div>
+                <div>濕度{matchDetail.humidity}</div>
             </div>
             <Animate />
             <GoalAnimation contestDetail={contestDetail} matchId={matchId} />

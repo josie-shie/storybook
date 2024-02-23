@@ -21,6 +21,7 @@ import TeamHistoryBattleDetail from './teamHistoryBattle/teamHistoryBattleDetail
 import LeaguePointsRankDetail from './leaguePointsRank/leaguePointsRankDetail';
 import TeamHistoryBattleCompared from './teamHistoryBattle/teamHistoryBattleCompared';
 import TeamMatchHistoryCompared from './teamMatchHistory/teamMatchHistoryCompared';
+import LeaguePointsRankCompared from './leaguePointsRank/leaguePointsRankCompared';
 
 function DetailsContainer() {
     return (
@@ -37,6 +38,7 @@ function DetailsContainer() {
 function ComparedContainer() {
     return (
         <div className={style.comparedContainer}>
+            <LeaguePointsRankCompared />
             <TeamHistoryBattleCompared />
             <TeamMatchHistoryCompared />
         </div>

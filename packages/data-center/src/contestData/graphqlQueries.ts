@@ -11,8 +11,8 @@ export const GET_MATCH_ID_QUERY = `
 export const GET_RECENT_BATTLE_MATCH_QUERY = `
     query getRecentBattleMatch($matchId:Int!,$homeAway:Int!,$leagueId:Int!,$dataCount:Int!) {
         soccerData {
-        getRecentBattleMatch(
-            input: { matchId: $matchId, homeAway: $homeAway, leagueId: $leagueId, dataCount: $dataCount }
+            getRecentBattleMatch(
+                input: { matchId: $matchId, homeAway: $homeAway, leagueId: $leagueId, dataCount: $dataCount }
             ) {
                 list {
                     matchId
@@ -37,9 +37,13 @@ export const GET_RECENT_BATTLE_MATCH_QUERY = `
                     awayRed
                     homeCorner
                     awayCorner
+                    handicapInit
+                    handicapHalfInit
                     handicapCurrent
                     handicapHomeCurrentOdds
                     handicapAwayCurrentOdds
+                    overUnderInit
+                    overUnderHalfInit
                     overUnderCurrent
                     overUnderOverCurrentOdds
                     overUnderUnderCurrentOdds
@@ -81,9 +85,13 @@ export const GET_RECENT_MATCH_QUERY = `
                     awayRed
                     homeCorner
                     awayCorner
+                    handicapInit
+                    handicapHalfInit
                     handicapCurrent
                     handicapHomeCurrentOdds
                     handicapAwayCurrentOdds
+                    overUnderInit
+                    overUnderHalfInit
                     overUnderCurrent
                     overUnderOverCurrentOdds
                     overUnderUnderCurrentOdds
@@ -115,9 +123,13 @@ export const GET_RECENT_MATCH_QUERY = `
                     awayRed
                     homeCorner
                     awayCorner
+                    handicapInit
+                    handicapHalfInit
                     handicapCurrent
                     handicapHomeCurrentOdds
                     handicapAwayCurrentOdds
+                    overUnderInit
+                    overUnderHalfInit
                     overUnderCurrent
                     overUnderOverCurrentOdds
                     overUnderUnderCurrentOdds
