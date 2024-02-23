@@ -304,9 +304,20 @@ const GetRecentMatchCompareResultSchema = z.object({
     })
 });
 
+const RecentMatchCompareInfoResponseSchema = RecentMatchCompareInfoSchema.extend({
+    handicapTrend: z.array(z.string()),
+    overUnderTrend: z.array(z.string()),
+    matchTrend: z.array(z.string())
+});
+
+const RecentMatchCompareListResponseSchema = z.object({
+    home: RecentMatchCompareInfoResponseSchema,
+    away: RecentMatchCompareInfoResponseSchema
+});
+
 export type GetRecentMatchCompareResult = z.infer<typeof GetRecentMatchCompareResultSchema>;
 
-export type GetRecentMatchCompareResponse = z.infer<typeof RecentMatchCompareListSchema>;
+export type GetRecentMatchCompareResponse = z.infer<typeof RecentMatchCompareListResponseSchema>;
 
 const TeamBattleComparedSchema = z.object({
     id: z.number(),
@@ -334,20 +345,9 @@ const MatchBattleComparedInfoSchema = z.object({
     awayCompare: TeamBattleComparedSchema
 });
 
-const MatchBattleComparedInfoResponseSchema = z.object({
-    matchCount: z.number(),
-    handicapWinRate: z.number(),
-    overUnderWinRate: z.number(),
-    handicapWin: z.number(),
-    handicapLose: z.number(),
-    handicapDraw: z.number(),
-    overUnderWin: z.number(),
-    overUnderLose: z.number(),
-    overUnderDraw: z.number(),
+const MatchBattleComparedInfoResponseSchema = MatchBattleComparedInfoSchema.extend({
     handicapTrend: z.array(z.string()),
-    overUnderTrend: z.array(z.string()),
-    homeCompare: TeamBattleComparedSchema,
-    awayCompare: TeamBattleComparedSchema
+    overUnderTrend: z.array(z.string())
 });
 
 export type MatchBattleComparedInfoSchema = z.infer<typeof MatchBattleComparedInfoSchema>;
@@ -364,6 +364,10 @@ const GetBattleMatchCompareResultSchema = z.object({
 export type GetBattleMatchCompareResult = z.infer<typeof GetBattleMatchCompareResultSchema>;
 
 export type GetBattleMatchCompareResponse = z.infer<typeof MatchBattleComparedInfoResponseSchema>;
+
+function splitTrendData(trendData: string): string[] {
+    return trendData.length > 0 ? trendData.split(',') : [];
+}
 
 /**
  * 取得指定賽事 ID
@@ -917,9 +921,26 @@ export const getRecentMatchCompare = async ({
 
         throwErrorMessage(errors);
 
+        const resDate = data.soccerData.getRecentMatchCompare;
+
+        const newData = {
+            home: {
+                ...resDate.home,
+                handicapTrend: splitTrendData(resDate.home.handicapTrend),
+                overUnderTrend: splitTrendData(resDate.home.overUnderTrend),
+                matchTrend: splitTrendData(resDate.home.matchTrend)
+            },
+            away: {
+                ...resDate.away,
+                handicapTrend: splitTrendData(resDate.away.handicapTrend),
+                overUnderTrend: splitTrendData(resDate.away.overUnderTrend),
+                matchTrend: splitTrendData(resDate.away.matchTrend)
+            }
+        };
+
         return {
             success: true,
-            data: data.soccerData.getRecentMatchCompare
+            data: newData
         };
     } catch (error) {
         return handleApiError(error);
@@ -967,9 +988,8 @@ export const getBattleMatchCompare = async ({
 
         const newData = {
             ...resDate,
-            handicapTrend: resDate.handicapTrend.length > 0 ? resDate.handicapTrend.split(',') : [],
-            overUnderTrend:
-                resDate.overUnderTrend.length > 0 ? resDate.overUnderTrend.split(',') : []
+            handicapTrend: splitTrendData(resDate.handicapTrend),
+            overUnderTrend: splitTrendData(resDate.overUnderTrend)
         };
 
         return {

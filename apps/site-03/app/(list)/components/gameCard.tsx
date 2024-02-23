@@ -15,7 +15,7 @@ import { useContestListStore } from '../contestListStore';
 import style from './gameCard.module.scss';
 import { CompareOdds } from './compareOdds';
 import Soccer from './img/soccer.png';
-// import VideoIcon from './img/video.svg';
+import VideoIcon from './img/video.svg';
 import CornerIcon from './img/corner.svg';
 import UpIcon from './img/up.svg';
 
@@ -389,17 +389,16 @@ function TopArea({
                             {contestInfo.hasLineup !== '0' ? (
                                 <div className={style.text}>阵容</div>
                             ) : null}
-                            {contestInfo.hasLineup && contestInfo.hasIntelligence ? (
+                            {contestInfo.hasLineup !== '0' && contestInfo.hasIntelligence ? (
                                 <div className={style.line} />
                             ) : null}
                             {contestInfo.hasIntelligence ? (
                                 <div className={style.text}>情报</div>
                             ) : null}
                         </div>
-                        {/* 目前無動畫暫隱藏
-                            {contestInfo.hasAnimation ? (
+                        {contestInfo.hasAnimation ? (
                             <VideoIcon className={style.videoIcon} />
-                        ) : null} */}
+                        ) : null}
                     </>
                 )}
             </div>

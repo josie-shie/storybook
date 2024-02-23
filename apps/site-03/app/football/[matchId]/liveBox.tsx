@@ -99,6 +99,7 @@ function GameDetail({
 function Animate() {
     const showAnimate = useContestDetailStore.use.showAnimate();
     const setShowAnimate = useContestDetailStore.use.setShowAnimate();
+    const matchDetail = useContestDetailStore.use.matchDetail();
 
     const back = () => {
         setShowAnimate('');
@@ -106,7 +107,7 @@ function Animate() {
 
     return (
         <>
-            {showAnimate ? (
+            {showAnimate && matchDetail.hasAnimation ? (
                 <div className={style.animateBox}>
                     <iframe src={showAnimate} title="sport animate" />
                     <BackIcon className={style.backIcon} onClick={back} />
@@ -302,7 +303,7 @@ function LiveBox({
                 </div>
             </div>
             <div className={style.weatherInfo}>
-                {matchDetail.weather && getWeatherIcon(matchDetail.weather)}，
+                {matchDetail.weather ? getWeatherIcon(matchDetail.weather) : null}，
                 <div>气温{matchDetail.temperature}，</div>
                 <div>风速{matchDetail.wind}，</div>
                 <div>气压{matchDetail.pressure}，</div>
