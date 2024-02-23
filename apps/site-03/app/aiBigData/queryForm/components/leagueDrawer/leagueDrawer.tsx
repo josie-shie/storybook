@@ -158,7 +158,7 @@ function MatchFilterDrawer({
 
     const tabStyle = {
         gap: 8,
-        swiperOpen: true,
+        swiperOpen: false,
         buttonRadius: 30
     };
 
