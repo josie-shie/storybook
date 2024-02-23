@@ -2,12 +2,12 @@
 import { formatNumberWithPercent, truncateFloatingPoint } from 'lib';
 import { getRecentMatchCompare } from 'data-center';
 import { useEffect, useState } from 'react';
-import LinearProgress from '@mui/material/LinearProgress';
 import { useContestDetailStore } from '@/app/football/[matchId]/contestDetailStore';
 import { useDataComparedStore } from '@/app/football/[matchId]/dataComparedStore';
 import ComparedTeamBar from '../components/comparedTeamBar';
 import SameOptionBar from '../components/sameOptionBar';
 import MatchCountOptionBar from '../components/matchCountOptionBar';
+import ComparedLineProgress from '../components/comparedLineProgress';
 import style from './teamMatchHistoryCompared.module.scss';
 
 function ComparedProgress() {
@@ -20,179 +20,66 @@ function ComparedProgress() {
     const totalGoal = recentMatchCompare.home.goal + recentMatchCompare.away.goal;
 
     return (
-        <div className={style.comparedProgress}>
-            <div className={style.progressCard}>
-                <div className={style.topBar}>
-                    <div className={style.value}>
-                        {recentMatchCompare.home.goal}(
-                        {truncateFloatingPoint(
-                            recentMatchCompare.home.goal / recentMatchCompare.home.matchCount,
-                            2
-                        )}
-                        )
-                    </div>
-                    <div className={style.title}>进球</div>
-                    <div className={style.value}>
-                        (
-                        {truncateFloatingPoint(
-                            recentMatchCompare.away.goal / recentMatchCompare.home.matchCount,
-                            2
-                        )}
-                        ){recentMatchCompare.away.goal}
-                    </div>
-                </div>
-                <div className={style.progressBar}>
-                    <div className={style.homeProgressBar}>
-                        <LinearProgress
-                            className={style.homeProgress}
-                            value={formatNumberWithPercent(
-                                recentMatchCompare.home.goal || 0,
-                                totalGoal
-                            )}
-                            variant="determinate"
-                        />
-                    </div>
-                    <div className={style.awayProgressBar}>
-                        <LinearProgress
-                            className={style.awayProgress}
-                            value={formatNumberWithPercent(
-                                recentMatchCompare.away.goal || 0,
-                                totalGoal
-                            )}
-                            variant="determinate"
-                        />
-                    </div>
-                </div>
-            </div>
-
-            <div className={style.progressCard}>
-                <div className={style.topBar}>
-                    <div className={style.value}>
-                        {recentMatchCompare.home.goalAgainst}(
-                        {truncateFloatingPoint(
-                            recentMatchCompare.home.goalAgainst /
-                                recentMatchCompare.away.matchCount,
-                            2
-                        )}
-                        )
-                    </div>
-                    <div className={style.title}>失球</div>
-                    <div className={style.value}>
-                        (
-                        {truncateFloatingPoint(
-                            recentMatchCompare.away.goalAgainst /
-                                recentMatchCompare.away.matchCount,
-                            2
-                        )}
-                        ){recentMatchCompare.away.goalAgainst}
-                    </div>
-                </div>
-                <div className={style.progressBar}>
-                    <div className={style.homeProgressBar}>
-                        <LinearProgress
-                            className={style.homeProgress}
-                            value={formatNumberWithPercent(
-                                recentMatchCompare.home.goalAgainst || 0,
-                                totalGoal
-                            )}
-                            variant="determinate"
-                        />
-                    </div>
-                    <div className={style.awayProgressBar}>
-                        <LinearProgress
-                            className={style.awayProgress}
-                            value={formatNumberWithPercent(
-                                recentMatchCompare.away.goalAgainst || 0,
-                                totalGoal
-                            )}
-                            variant="determinate"
-                        />
-                    </div>
-                </div>
-            </div>
-            <div className={style.progressCard}>
-                <div className={style.topBar}>
-                    <div className={style.value}>{recentMatchCompare.home.winRate}</div>
-                    <div className={style.title}>胜率%</div>
-                    <div className={style.value}>{recentMatchCompare.away.winRate}</div>
-                </div>
-                <div className={style.progressBar}>
-                    <div className={style.homeProgressBar}>
-                        <LinearProgress
-                            className={style.homeProgress}
-                            value={recentMatchCompare.home.winRate}
-                            variant="determinate"
-                        />
-                    </div>
-                    <div className={style.awayProgressBar}>
-                        <LinearProgress
-                            className={style.awayProgress}
-                            value={recentMatchCompare.away.winRate}
-                            variant="determinate"
-                        />
-                    </div>
-                </div>
-            </div>
-            <div className={style.progressCard}>
-                <div className={style.topBar}>
-                    <div className={style.value}>
-                        {recentMatchCompare.home.handicapWinRate}(
-                        {formatNumberWithPercent(
-                            recentMatchCompare.home.handicapLose,
-                            recentMatchCompare.home.matchCount
-                        )}
-                        )
-                    </div>
-                    <div className={style.title}>赢（输）%</div>
-                    <div className={style.value}>
-                        (
-                        {formatNumberWithPercent(
-                            recentMatchCompare.away.handicapLose,
-                            recentMatchCompare.away.matchCount
-                        )}
-                        ){recentMatchCompare.away.handicapWinRate}
-                    </div>
-                </div>
-                <div className={style.progressBar}>
-                    <div className={style.homeProgressBar}>
-                        <LinearProgress
-                            className={style.homeProgress}
-                            value={recentMatchCompare.home.handicapWinRate}
-                            variant="determinate"
-                        />
-                    </div>
-                    <div className={style.awayProgressBar}>
-                        <LinearProgress
-                            className={style.awayProgress}
-                            value={recentMatchCompare.away.handicapWinRate}
-                            variant="determinate"
-                        />
-                    </div>
-                </div>
-            </div>
-            <div className={style.progressCard}>
-                <div className={style.topBar}>
-                    <div className={style.value}>{recentMatchCompare.home.overUnderWinRate}</div>
-                    <div className={style.title}>大率%</div>
-                    <div className={style.value}>{recentMatchCompare.away.overUnderWinRate}</div>
-                </div>
-                <div className={style.progressBar}>
-                    <div className={style.homeProgressBar}>
-                        <LinearProgress
-                            className={style.homeProgress}
-                            value={recentMatchCompare.home.overUnderWinRate}
-                            variant="determinate"
-                        />
-                    </div>
-                    <div className={style.awayProgressBar}>
-                        <LinearProgress
-                            className={style.awayProgress}
-                            value={recentMatchCompare.away.overUnderWinRate}
-                            variant="determinate"
-                        />
-                    </div>
-                </div>
-            </div>
+        <div className={style.progressContainer}>
+            <ComparedLineProgress
+                awayProgress={formatNumberWithPercent(recentMatchCompare.away.goal || 0, totalGoal)}
+                awayValue={`(${truncateFloatingPoint(
+                    recentMatchCompare.away.goal / recentMatchCompare.home.matchCount,
+                    1
+                )})${recentMatchCompare.away.goal}`}
+                homeProgress={formatNumberWithPercent(recentMatchCompare.home.goal || 0, totalGoal)}
+                homeValue={`${recentMatchCompare.home.goal}(${truncateFloatingPoint(
+                    recentMatchCompare.home.goal / recentMatchCompare.home.matchCount,
+                    1
+                )})`}
+                title="进球"
+            />
+            <ComparedLineProgress
+                awayProgress={formatNumberWithPercent(
+                    recentMatchCompare.away.goalAgainst || 0,
+                    totalGoal
+                )}
+                awayValue={`(${truncateFloatingPoint(
+                    recentMatchCompare.away.goalAgainst / recentMatchCompare.away.matchCount,
+                    1
+                )})${recentMatchCompare.away.goalAgainst}`}
+                homeProgress={formatNumberWithPercent(
+                    recentMatchCompare.home.goalAgainst || 0,
+                    totalGoal
+                )}
+                homeValue={`${recentMatchCompare.home.goalAgainst}(${truncateFloatingPoint(
+                    recentMatchCompare.home.goalAgainst / recentMatchCompare.away.matchCount,
+                    1
+                )})`}
+                title="失球"
+            />
+            <ComparedLineProgress
+                awayProgress={recentMatchCompare.away.winRate}
+                awayValue={`${recentMatchCompare.away.winRate}`}
+                homeProgress={recentMatchCompare.home.winRate}
+                homeValue={`${recentMatchCompare.home.winRate}`}
+                title="胜率%"
+            />
+            <ComparedLineProgress
+                awayProgress={recentMatchCompare.away.handicapWinRate}
+                awayValue={`(${formatNumberWithPercent(
+                    recentMatchCompare.away.handicapLose,
+                    recentMatchCompare.away.matchCount
+                )})${recentMatchCompare.away.handicapWinRate}`}
+                homeProgress={recentMatchCompare.home.handicapWinRate}
+                homeValue={`${recentMatchCompare.home.handicapWinRate}(${formatNumberWithPercent(
+                    recentMatchCompare.home.handicapLose,
+                    recentMatchCompare.home.matchCount
+                )})`}
+                title="赢（输）%"
+            />
+            <ComparedLineProgress
+                awayProgress={recentMatchCompare.away.overUnderWinRate}
+                awayValue={`${recentMatchCompare.away.overUnderWinRate}`}
+                homeProgress={recentMatchCompare.home.handicapWinRate}
+                homeValue={`${recentMatchCompare.home.handicapWinRate}`}
+                title="大率%"
+            />
         </div>
     );
 }

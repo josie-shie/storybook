@@ -78,10 +78,10 @@ function LeagueRankTables() {
                             awayTeam.total.getScore,
                             homeTeam.total.getScore + awayTeam.total.getScore
                         )}
-                        awayValue={`${awayTeam.total.getScore}(${roundToDecimalPlace(
+                        awayValue={`(${roundToDecimalPlace(
                             awayTeam.total.totalCount / awayTeam.total.getScore,
                             1
-                        )})`}
+                        )})${awayTeam.total.getScore}`}
                         homeProgress={formatNumberWithPercent(
                             homeTeam.total.getScore,
                             homeTeam.total.getScore + awayTeam.total.getScore
@@ -97,10 +97,10 @@ function LeagueRankTables() {
                             awayTeam.total.loseScore,
                             homeTeam.total.loseScore + awayTeam.total.loseScore
                         )}
-                        awayValue={`${awayTeam.total.loseScore}(${roundToDecimalPlace(
+                        awayValue={`(${roundToDecimalPlace(
                             awayTeam.total.totalCount / awayTeam.total.loseScore,
                             1
-                        )})`}
+                        )})${awayTeam.total.loseScore}`}
                         homeProgress={formatNumberWithPercent(
                             homeTeam.total.loseScore,
                             homeTeam.total.loseScore + awayTeam.total.loseScore
