@@ -112,6 +112,14 @@
                 border-radius: 12px;
                 padding: 8px;
 
+                &.fadeIn {
+                    animation: fadein 1s ease forwards;
+                }
+
+                &.hidden {
+                    opacity: 0;
+                }
+
                 .minTabBar {
                     display: flex;
                     align-items: center;
