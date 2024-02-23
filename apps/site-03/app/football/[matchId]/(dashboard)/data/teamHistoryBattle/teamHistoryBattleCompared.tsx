@@ -9,6 +9,7 @@ import SameOptionBar from '../components/sameOptionBar';
 import MatchCountOptionBar from '../components/matchCountOptionBar';
 import ComparedTeamBar from '../components/comparedTeamBar';
 import ComparedLineProgress from '../components/comparedLineProgress';
+import ComparedLinePoint from '../components/comparedLinePoint';
 import style from './teamHistoryBattleCompared.module.scss';
 
 function ComparedLineProgressBar() {
@@ -217,17 +218,7 @@ function TeamHistoryBattleCompared() {
                         </p>
                     </div>
                     {typeof battleMatchCompare.handicapTrend !== 'undefined' && (
-                        <div className={style.pointBar}>
-                            {battleMatchCompare.handicapTrend.map(
-                                (point, idx) =>
-                                    point.length > 0 && (
-                                        <div
-                                            className={`${style.point} ${style[point]}`}
-                                            key={`${point}_${idx.toString()}`}
-                                        />
-                                    )
-                            )}
-                        </div>
+                        <ComparedLinePoint pointList={battleMatchCompare.handicapTrend} />
                     )}
                 </div>
                 <div className={style.pointCard}>
@@ -238,17 +229,7 @@ function TeamHistoryBattleCompared() {
                         </p>
                     </div>
                     {typeof battleMatchCompare.overUnderTrend !== 'undefined' && (
-                        <div className={style.pointBar}>
-                            {battleMatchCompare.overUnderTrend.map(
-                                (point, idx) =>
-                                    point.length > 0 && (
-                                        <div
-                                            className={`${style.point} ${style[point]}`}
-                                            key={`${point}_${idx.toString()}`}
-                                        />
-                                    )
-                            )}
-                        </div>
+                        <ComparedLinePoint pointList={battleMatchCompare.overUnderTrend} />
                     )}
                 </div>
             </div>
