@@ -140,7 +140,7 @@ function ComparedProgress() {
                     awayValue={`${recentMatchCompare.away.winRate}`}
                     homeProgress={recentMatchCompare.home.winRate}
                     homeValue={`${recentMatchCompare.home.winRate}`}
-                    title="胜率%"
+                    title={`胜率% ${winStatus ? '▼' : '▲'}`}
                 />
             </div>
             <motion.div animate={winStatus ? show : hide} className="box">
@@ -169,7 +169,7 @@ function ComparedProgress() {
                         recentMatchCompare.home.handicapLose,
                         recentMatchCompare.home.matchCount
                     )})`}
-                    title="赢（输）%"
+                    title={`赢（输）% ${handicapStatus ? '▼' : '▲'}`}
                 />
             </div>
             <motion.div animate={handicapStatus ? show : hide} className="box">
@@ -190,7 +190,7 @@ function ComparedProgress() {
                     awayValue={`${recentMatchCompare.away.overUnderWinRate}`}
                     homeProgress={recentMatchCompare.home.handicapWinRate}
                     homeValue={`${recentMatchCompare.home.handicapWinRate}`}
-                    title="大率%"
+                    title={`大率% ${overUnderStatus ? '▼' : '▲'}`}
                 />
             </div>
 
