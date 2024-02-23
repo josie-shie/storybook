@@ -99,7 +99,7 @@ function Header({
     };
 
     const handleAnimate = () => {
-        const url = `https://widget.namitiyu.com/mlive/old-ls.html?id=${matchId}`;
+        const url = `https://tracker.namitiyu.com/zh/version_3d/football?profile=28PpikHDYCpHm&id=${matchId}`;
         setShowAnimate(url);
     };
 
