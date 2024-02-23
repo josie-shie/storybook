@@ -114,6 +114,8 @@ function SubmitButton({ setZeroMatchList }: { setZeroMatchList: (list: number[])
     const setIsOpenPayDrawer = useQueryFormStore.use.setIsOpenPayDrawer();
     const setIsAnalysisBySearch = useQueryFormStore.use.setIsAnalysisBySearch();
     const selectedleagueIdList = useMatchFilterStore.use.selectedleagueIdList();
+    const checkboxState = useQueryFormStore.use.checkboxState();
+    const { handicap, overUnder } = checkboxState;
 
     const teamSelected = useQueryFormStore.use.teamSelected();
     const teamHandicapOdds = useQueryFormStore.use.teamHandicapOdds();
@@ -172,8 +174,8 @@ function SubmitButton({ setZeroMatchList }: { setZeroMatchList: (list: number[])
             mission: 'create',
             leagues: selectedleagueIdList,
             handicapSide: handicapSideValue,
-            handicapValues: teamHandicapOdds,
-            overUnderValues: handicapOddsSelected,
+            handicapValues: handicap ? teamHandicapOdds : '',
+            overUnderValues: overUnder ? handicapOddsSelected : '',
             startTime: dayjs(startTime).unix(),
             endTime: dayjs(endTime).unix()
         };

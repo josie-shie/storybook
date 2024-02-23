@@ -244,14 +244,22 @@ function AnalysisResult() {
 
     const fetchData = async () => {
         // API完成後需要傳的參數
+        let handicapSideValue = '';
+        if (teamSelected.length === 2) {
+            handicapSideValue = 'all';
+        } else if (teamSelected.includes('home')) {
+            handicapSideValue = 'home';
+        } else if (teamSelected.includes('away')) {
+            handicapSideValue = 'away';
+        }
         const query: GetFootballStatsRequest = {
             mission: 'create',
             leagues: leagueIds,
             startTime: dayjs(startDate).unix(),
-            endTime: dayjs(endDate).unix()
+            endTime: dayjs(endDate).unix(),
+            handicapSide: handicapSideValue
         };
         if (handicap) {
-            query.handicapSide = teamSelected.length >= 2 ? 'all' : teamSelected[0];
             query.handicapValues = teamHandicapOdds;
         }
         if (overUnder) {
