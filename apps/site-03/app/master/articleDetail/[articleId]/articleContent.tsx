@@ -3,7 +3,6 @@
 import Image from 'next/image';
 import { timestampToTodayTime, convertHandicap } from 'lib';
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
 import type {
     GetMemberProfileWithMemberIdResponse,
     GetPostDetailResponse,
@@ -13,7 +12,7 @@ import { getPostList, payForPost, getMemberInfo } from 'data-center';
 import Skeleton from '@mui/material/Skeleton';
 import { useUserStore } from '@/store/userStore';
 import { useAuthStore } from '@/store/authStore';
-import NormalDialog from '@/components/normalDialog/normalDialog';
+import RechargeDialog from '@/components/rechargeDialog/rechargeDialog';
 import type { GuessType } from '@/types/predict';
 import DefaultLogo from '@/app/football/[matchId]/img/defaultTeamLogo.png';
 import ConfirmPayDrawer from '@/components/confirmPayDrawer/confirmPayDrawer';
@@ -24,7 +23,6 @@ import Lose from './img/lose.svg';
 import Draw from './img/draw.svg';
 import style from './articleContent.module.scss';
 import RecommendationList from './recommendationList';
-import Wallet from './img/wallet.png';
 
 interface ArticleContentProps {
     article: GetPostDetailResponse;
@@ -41,12 +39,9 @@ function ArticleContent({
     fetchPostDetail
 }: ArticleContentProps) {
     const [openPaid, setOpenPaid] = useState(false);
-    const [openDialog, setOpenDialog] = useState(false);
+    const [isOpenRechargeDialog, setIsOpenRechargeDialog] = useState(false);
     const [recommendationList, setRecommendationList] = useState<RecommendPost[]>([]);
     const [isNoData, setIsNoData] = useState<boolean | null>(null);
-
-    const router = useRouter();
-
     const userInfo = useUserStore.use.userInfo();
     const isLogin = useUserStore.use.isLogin();
     const setAuthQuery = useUserStore.use.setAuthQuery();
@@ -65,7 +60,7 @@ function ArticleContent({
     const onSubmit = async () => {
         if (userInfo.balance < article.price) {
             setOpenPaid(false);
-            setOpenDialog(true);
+            setIsOpenRechargeDialog(true);
             return;
         }
         const res = await payForPost({ postId: Number(params.articleId) });
@@ -91,7 +86,8 @@ function ArticleContent({
             NONE: <Push className={style.icon} />,
             WIN: <Win className={style.icon} />,
             DRAW: <Draw className={style.icon} />,
-            LOSE: <Lose className={style.icon} />
+            LOSE: <Lose className={style.icon} />,
+            PUSH: <Push className={style.icon} />
         };
         return result[value];
     };
@@ -105,10 +101,6 @@ function ArticleContent({
         }
     };
 
-    const goSubscribe = () => {
-        setOpenDialog(false);
-        router.push('/userInfo/subscribe');
-    };
     const fetchData = async () => {
         const res = await getPostList({
             memberId: userInfo.uid ? userInfo.uid : 0,
@@ -358,15 +350,9 @@ function ArticleContent({
                 onPay={onSubmit}
                 price={article.price}
             />
-            <NormalDialog
-                confirmText="去充值"
-                content={<div>余额不足，请充值</div>}
-                onClose={() => {
-                    setOpenDialog(false);
-                }}
-                onConfirm={goSubscribe}
-                openDialog={openDialog}
-                srcImage={Wallet}
+            <RechargeDialog
+                openDialog={isOpenRechargeDialog}
+                setRechargeDialogClose={setIsOpenRechargeDialog}
             />
         </div>
     );

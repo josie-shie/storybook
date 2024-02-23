@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { getProDistrib, getProGuess, payForProGuess } from 'data-center';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import CircularProgress from '@mui/material/CircularProgress';
 import ConfirmPayDrawer from '@/components/confirmPayDrawer/confirmPayDrawer';
 import { useUserStore } from '@/store/userStore';
@@ -13,6 +13,7 @@ import AnalyzeRow from './components/analyzeRow/analyze';
 import TitleIcon from './img/title.svg';
 import style from './masterPlan.module.scss';
 import { useGuessDetailStore } from './guessDetailStore';
+import RechargeDialog from '@/components/rechargeDialog/rechargeDialog';
 
 function Trend() {
     const highWinRateTrend = useGuessDetailStore.use.highWinRateTrend();
@@ -50,6 +51,7 @@ interface PlanListPropsType {
     isLogin: boolean;
     setAmount: (number: number) => void;
     setOpenPaid: (open: boolean) => void;
+    setIsOpenRechargeDialog: (open: boolean) => void;
     setSelectedGameId: (gameId: number) => void;
     handleVIPUnlock: (gameId: number) => void;
 }
@@ -58,6 +60,7 @@ function MasterPlanList({
     isLogin,
     setAmount,
     setOpenPaid,
+    setIsOpenRechargeDialog,
     setSelectedGameId,
     handleVIPUnlock
 }: PlanListPropsType) {
@@ -65,8 +68,13 @@ function MasterPlanList({
     const masterPlanPrice = useGuessDetailStore.use.masterPlanPrice();
     const setIsDrawerOpen = useAuthStore.use.setIsDrawerOpen();
     const setAuthQuery = useUserStore.use.setAuthQuery();
+    const userInfo = useUserStore.use.userInfo();
 
     const handleLocalClickOpen = (planId: number, newAmount: number) => {
+        if (userInfo.balance < newAmount) {
+            setIsOpenRechargeDialog(true);
+            return;
+        }
         setSelectedGameId(planId);
         setAmount(newAmount);
         setOpenPaid(true);
@@ -95,17 +103,16 @@ function MasterPlanList({
 }
 
 function MasterPlan() {
-    const router = useRouter();
     const matchId = useParams().matchId;
     const [isProDistribLoading, setIsProDistribLoading] = useState(true);
     const [isPlanLoading, setIsPlanLoading] = useState(true);
     const [selectedGameId, setSelectedGameId] = useState<number | null>(null);
     const [openPaid, setOpenPaid] = useState(false);
+    const [isOpenRechargeDialog, setIsOpenRechargeDialog] = useState(false);
     const [amount, setAmount] = useState(0);
 
     const isLogin = useUserStore.use.isLogin();
     const userInfo = useUserStore.use.userInfo();
-    const userBalance = userInfo.balance;
     const masterPlanList = useGuessDetailStore.use.masterPlanList();
 
     const setUserInfo = useUserStore.use.setUserInfo();
@@ -114,12 +121,6 @@ function MasterPlan() {
     const setMasterPlanList = useGuessDetailStore.use.setMasterPlanList();
 
     const handleConfirm = async () => {
-        if (userBalance <= 0) {
-            setSelectedGameId(null);
-            setOpenPaid(false);
-            goRechargePage();
-            return;
-        }
         if (typeof selectedGameId === 'number') {
             // 解鎖高手方案
             const res = await payForProGuess({ guessId: selectedGameId });
@@ -146,10 +147,6 @@ function MasterPlan() {
             newList[idx].predictedPlay = data.predictedPlay;
             setMasterPlanList(newList);
         }
-    };
-
-    const goRechargePage = () => {
-        router.push('/userInfo/subscribe');
     };
 
     useEffect(() => {
@@ -201,6 +198,7 @@ function MasterPlan() {
                             isLogin={isLogin}
                             setAmount={setAmount}
                             setOpenPaid={setOpenPaid}
+                            setIsOpenRechargeDialog={setIsOpenRechargeDialog}
                             setSelectedGameId={setSelectedGameId}
                         />
                     )}
@@ -216,6 +214,10 @@ function MasterPlan() {
                 }}
                 onPay={handleConfirm}
                 price={amount}
+            />
+            <RechargeDialog
+                setRechargeDialogClose={setIsOpenRechargeDialog}
+                openDialog={isOpenRechargeDialog}
             />
         </div>
     );
