@@ -1,4 +1,4 @@
-.masterAvatar {
+.memberAvatar {
     padding: 8px 12px 0;
     border-radius: 16px 16px 0 0;
     background: #fff;
@@ -16,7 +16,7 @@
         }
 
         .largeGap {
-            height: calc(100dvh - 204px);
+            height: 100%;
         }
     }
 }
