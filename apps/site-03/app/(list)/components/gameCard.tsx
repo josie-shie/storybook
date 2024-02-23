@@ -389,7 +389,7 @@ function TopArea({
                             {contestInfo.hasLineup !== '0' ? (
                                 <div className={style.text}>阵容</div>
                             ) : null}
-                            {contestInfo.hasLineup && contestInfo.hasIntelligence ? (
+                            {contestInfo.hasLineup !== '0' && contestInfo.hasIntelligence ? (
                                 <div className={style.line} />
                             ) : null}
                             {contestInfo.hasIntelligence ? (
