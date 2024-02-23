@@ -37,7 +37,7 @@ function ComparedLineProgressBar() {
                     totalGoal
                 )}
                 awayValue={`(${roundToDecimalPlace(
-                    battleMatchCompare.awayCompare.goal / battleMatchCompare.matchCount,
+                    battleMatchCompare.awayCompare.goal / battleMatchCompare.matchCount || 0,
                     1
                 )})${battleMatchCompare.awayCompare.goal}`}
                 homeProgress={formatNumberWithPercent(
@@ -45,7 +45,7 @@ function ComparedLineProgressBar() {
                     totalGoal
                 )}
                 homeValue={`${battleMatchCompare.homeCompare.goal}(${roundToDecimalPlace(
-                    battleMatchCompare.homeCompare.goal / battleMatchCompare.matchCount,
+                    battleMatchCompare.homeCompare.goal / battleMatchCompare.matchCount || 0,
                     1
                 )})`}
                 title="进球"
@@ -56,7 +56,7 @@ function ComparedLineProgressBar() {
                     totalGoal
                 )}
                 awayValue={`(${roundToDecimalPlace(
-                    battleMatchCompare.awayCompare.goalAgainst / battleMatchCompare.matchCount,
+                    battleMatchCompare.awayCompare.goalAgainst / battleMatchCompare.matchCount || 0,
                     1
                 )})${battleMatchCompare.awayCompare.goalAgainst}`}
                 homeProgress={formatNumberWithPercent(
@@ -64,7 +64,7 @@ function ComparedLineProgressBar() {
                     totalGoal
                 )}
                 homeValue={`${battleMatchCompare.homeCompare.goalAgainst}(${roundToDecimalPlace(
-                    battleMatchCompare.homeCompare.goalAgainst / battleMatchCompare.matchCount,
+                    battleMatchCompare.homeCompare.goalAgainst / battleMatchCompare.matchCount || 0,
                     1
                 )})`}
                 title="失球"
@@ -135,7 +135,10 @@ function TeamHistoryBattleCompared() {
         }
     }, [leagueId, homeAway, dataCount]);
 
-    if (typeof battleMatchCompare.homeCompare === 'undefined') {
+    if (
+        typeof battleMatchCompare.homeCompare === 'undefined' ||
+        battleMatchCompare.matchCount === 0
+    ) {
         return null;
     }
 

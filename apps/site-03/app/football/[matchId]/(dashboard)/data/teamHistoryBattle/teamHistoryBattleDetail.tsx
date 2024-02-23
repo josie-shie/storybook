@@ -227,6 +227,10 @@ function BattleHistory() {
 }
 
 function TeamMatchHistoryDetail() {
+    const matchList = useDataStore.use.recentBattleMatch().matchList;
+
+    if (typeof matchList === 'undefined' || matchList.length === 0) return null;
+
     return (
         <div className={style.teamMatchHistoryDetail}>
             <div className="topBar">
