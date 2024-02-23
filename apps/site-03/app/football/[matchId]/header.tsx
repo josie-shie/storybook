@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { GameStatus } from 'ui';
-import md5 from 'crypto-js/md5';
 import type { ContestInfo } from 'data-center';
 import { useSearchParams } from 'next/navigation';
 import { useLiveContestStore } from '@/store/liveContestStore';
@@ -11,7 +10,7 @@ import { useContestDetailStore } from './contestDetailStore';
 import style from './header.module.scss';
 import BackIcon from './img/back.svg';
 import ShareIcon from './img/share.svg';
-// import VideoIcon from './img/video.svg';
+import VideoIcon from './img/video.svg';
 import LiveIcon from './img/live.svg';
 
 const statusStyleMap = {
@@ -100,12 +99,7 @@ function Header({
     };
 
     const handleAnimate = () => {
-        const ts = Math.floor(Date.now());
-        const accessKey = 'ADG41H3Wfx7V3JlAaVZX1klyXvBhYQGu1GuV';
-        const secretKey = 'ubAdfpqlPmbWeSjh7iDaqYRsQhRPq3W7dRAR';
-        const auth = md5(accessKey + ts + secretKey) as unknown as string;
-
-        const url = `https://zhibo.feijing88.com/animation/?matchId=${matchId}&accessKey=${accessKey}&ts=${ts}&auth=${auth}`;
+        const url = `https://widget.namitiyu.com/mlive/old-ls.html?id=${matchId}`;
         setShowAnimate(url);
     };
 
@@ -144,11 +138,12 @@ function Header({
                             </>
                         ) : null}
 
-                        {/* 目前無動畫暫隱藏
-                        <div className={style.video} onClick={handleAnimate}>
-                            <VideoIcon />
-                            <p className={style.videoText}>动画</p>
-                        </div> */}
+                        {matchDetail.hasAnimation ? (
+                            <div className={style.video} onClick={handleAnimate}>
+                                <VideoIcon />
+                                <p className={style.videoText}>动画</p>
+                            </div>
+                        ) : null}
                         <div className={style.share}>
                             <ShareIcon onClick={handleShare} />
                         </div>
@@ -163,7 +158,10 @@ function Header({
                 <div className={style.scoreBar}>
                     <TeamLogo alt="" height={24} src={matchDetail.homeLogo} width={24} />
                     <p className={style.score}>
-                        {syncData.homeScore || matchDetail.homeScore || interceptData?.homeScore}
+                        {syncData.homeScore ||
+                            matchDetail.homeScore ||
+                            interceptData?.homeScore ||
+                            0}
                     </p>
                     <GameStatus
                         className={`gameTime ${
@@ -173,7 +171,10 @@ function Header({
                         status={liveState}
                     />
                     <p className={style.score}>
-                        {syncData.awayScore || matchDetail.awayScore || interceptData?.awayScore}
+                        {syncData.awayScore ||
+                            matchDetail.awayScore ||
+                            interceptData?.awayScore ||
+                            0}
                     </p>
                     <TeamLogo alt="" height={24} src={matchDetail.awayLogo} width={24} />
                 </div>
