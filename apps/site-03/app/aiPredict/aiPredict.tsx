@@ -24,7 +24,17 @@ interface MatchTab {
     value: string;
 }
 
-function TypingText({ matchTime, home, away }: { matchTime: number; home: string; away: string }) {
+function TypingText({
+    matchTime,
+    home,
+    away,
+    onTypingDone
+}: {
+    matchTime: number;
+    home: string;
+    away: string;
+    onTypingDone: () => void;
+}) {
     const [text, setText] = useState('');
     useEffect(() => {
         let currentText = '';
@@ -37,6 +47,8 @@ function TypingText({ matchTime, home, away }: { matchTime: number; home: string
                 currentText = message.substring(0, currentText.length + 1);
                 setText(currentText);
                 setTimeout(type, 50);
+            } else {
+                onTypingDone();
             }
         };
 
@@ -100,6 +112,7 @@ function AiPredict() {
 
     const [showChat, setShowChat] = useState(false);
     const [selectedMatches, setSelectedMatches] = useState<GetPredicativeAnalysisMatchResponse>([]);
+    const [showInformation, setShowInformation] = useState<Record<number, boolean>>({});
     const [matchTabs, setMatchTabs] = useState<MatchTab[]>([]);
 
     useEffect(() => {
@@ -237,6 +250,10 @@ function AiPredict() {
         return components[key];
     };
 
+    const handleTypingDone = (matchId: number) => {
+        setShowInformation(prev => ({ ...prev, [matchId]: true }));
+    };
+
     return (
         <>
             <div className={style.aiPredict}>
@@ -297,11 +314,18 @@ function AiPredict() {
                                             away={match.awayChs}
                                             home={match.homeChs}
                                             matchTime={match.matchTime}
+                                            onTypingDone={() => {
+                                                handleTypingDone(match.matchId);
+                                            }}
                                         />
                                     </div>
                                 </div>
 
-                                <div className={style.information}>
+                                <div
+                                    className={`${style.information} ${
+                                        showInformation[match.matchId] ? style.fadeIn : style.hidden
+                                    }`}
+                                >
                                     <div className={style.minTabBar}>
                                         {tabList.map(tab => (
                                             <motion.div

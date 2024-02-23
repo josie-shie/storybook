@@ -9,6 +9,7 @@ import { timestampToString, timestampToStringCh } from 'lib';
 // import NormalDialog from '@/components/normalDialog/normalDialog';
 // import { useUserStore } from '@/store/userStore';
 // import { useAuthStore } from '@/store/authStore';
+import TeamLogo from '@/components/teamLogo/teamLogo';
 import { useAiPredictStore } from '../aiPredictStore';
 import Ai from '../ai';
 import Analyze from '../analyze';
@@ -23,7 +24,17 @@ interface MatchTab {
     value: string;
 }
 
-function TypingText({ matchTime, home, away }: { matchTime: number; home: string; away: string }) {
+function TypingText({
+    matchTime,
+    home,
+    away,
+    onTypingDone
+}: {
+    matchTime: number;
+    home: string;
+    away: string;
+    onTypingDone: () => void;
+}) {
     const [text, setText] = useState('');
     useEffect(() => {
         let currentText = '';
@@ -36,6 +47,8 @@ function TypingText({ matchTime, home, away }: { matchTime: number; home: string
                 currentText = message.substring(0, currentText.length + 1);
                 setText(currentText);
                 setTimeout(type, 50);
+            } else {
+                onTypingDone();
             }
         };
 
@@ -71,7 +84,10 @@ function MatchItem({
                 </span>
             </div>
             <div className={style.team}>
-                <span className={style.name}>{match.homeChs}</span>
+                <span className={style.name}>
+                    <TeamLogo alt={match.homeChs} height={20} src={match.homeLogo} width={20} />
+                    {match.homeChs}
+                </span>
                 <span className={style.name}>VS {match.awayChs}</span>
             </div>
         </div>
@@ -93,6 +109,7 @@ function AiPredictDetail({ params }: { params: { matchId: string } }) {
     // const setIsDrawerOpen = useAuthStore.use.setIsDrawerOpen();
 
     const [showChat, setShowChat] = useState(false);
+    const [showInformation, setShowInformation] = useState<Record<number, boolean>>({});
     const [selectedMatches, setSelectedMatches] = useState<GetPredicativeAnalysisMatchResponse>([]);
     const [matchTabs, setMatchTabs] = useState<MatchTab[]>([]);
 
@@ -253,6 +270,10 @@ function AiPredictDetail({ params }: { params: { matchId: string } }) {
         return components[key];
     };
 
+    const handleTypingDone = (matchId: number) => {
+        setShowInformation(prev => ({ ...prev, [matchId]: true }));
+    };
+
     return (
         <>
             <div className={style.aiPredict}>
@@ -288,11 +309,18 @@ function AiPredictDetail({ params }: { params: { matchId: string } }) {
                                             away={match.awayChs}
                                             home={match.homeChs}
                                             matchTime={match.matchTime}
+                                            onTypingDone={() => {
+                                                handleTypingDone(match.matchId);
+                                            }}
                                         />
                                     </div>
                                 </div>
 
-                                <div className={style.information}>
+                                <div
+                                    className={`${style.information} ${
+                                        showInformation[match.matchId] ? style.fadeIn : style.hidden
+                                    }`}
+                                >
                                     <div className={style.minTabBar}>
                                         {tabList.map(tab => (
                                             <motion.div
