@@ -4,8 +4,8 @@ import { getRecentMatchCompare } from 'data-center';
 import { useEffect, useState } from 'react';
 import LinearProgress from '@mui/material/LinearProgress';
 import { useContestDetailStore } from '@/app/football/[matchId]/contestDetailStore';
-import TeamLogo from '@/components/teamLogo/teamLogo';
 import { useDataComparedStore } from '@/app/football/[matchId]/dataComparedStore';
+import ComparedTeamBar from '../components/comparedTeamBar';
 import SameOptionBar from '../components/sameOptionBar';
 import MatchCountOptionBar from '../components/matchCountOptionBar';
 import style from './teamMatchHistoryCompared.module.scss';
@@ -260,28 +260,7 @@ function TeamMatchHistoryCompared() {
                     />
                 </div>
             </div>
-            <div className={style.teamInfo}>
-                <div className={`${style.team} ${style.home}`}>
-                    <TeamLogo
-                        alt={matchDetail.homeChs}
-                        className={style.teamLogo}
-                        height={24}
-                        src={matchDetail.homeLogo}
-                        width={24}
-                    />
-                    <p className={style.teamName}>{matchDetail.homeChs}</p>
-                </div>
-                <div className={`${style.team} ${style.away}`}>
-                    <p className={style.teamName}>{matchDetail.awayChs}</p>
-                    <TeamLogo
-                        alt={matchDetail.awayChs}
-                        className={style.teamLogo}
-                        height={24}
-                        src={matchDetail.awayLogo}
-                        width={24}
-                    />
-                </div>
-            </div>
+            <ComparedTeamBar />
             <ComparedProgress />
         </div>
     );

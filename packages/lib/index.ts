@@ -5,6 +5,7 @@ export { uploadImage, uploadImageToS3 } from './src/uploadImage';
 export { initStore } from './src/store';
 export {
     truncateFloatingPoint,
+    roundToDecimalPlace,
     formatNumberWithCommas,
     formatNumberWithPercent
 } from './src/formatNumber';

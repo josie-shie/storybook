@@ -5,13 +5,13 @@ import { useEffect, useState } from 'react';
 import LinearProgress from '@mui/material/LinearProgress';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useContestDetailStore } from '@/app/football/[matchId]/contestDetailStore';
-import TeamLogo from '@/components/teamLogo/teamLogo';
 import { useDataComparedStore } from '@/app/football/[matchId]/dataComparedStore';
 import SameOptionBar from '../components/sameOptionBar';
 import MatchCountOptionBar from '../components/matchCountOptionBar';
+import ComparedTeamBar from '../components/comparedTeamBar';
 import style from './teamHistoryBattleCompared.module.scss';
 
-function ComparedLineProgress({ dataCount }: { dataCount: number }) {
+function ComparedLineProgress() {
     const battleMatchCompare = useDataComparedStore.use.battleMatchCompare();
 
     if (typeof battleMatchCompare.homeCompare === 'undefined') {
@@ -50,11 +50,19 @@ function ComparedLineProgress({ dataCount }: { dataCount: number }) {
                 <div className={style.topBar}>
                     <div className={style.value}>
                         {battleMatchCompare.homeCompare.goal}(
-                        {truncateFloatingPoint(battleMatchCompare.homeCompare.goal / dataCount, 2)})
+                        {truncateFloatingPoint(
+                            battleMatchCompare.homeCompare.goal / battleMatchCompare.matchCount,
+                            2
+                        )}
+                        )
                     </div>
                     <div className={style.title}>进球</div>
                     <div className={style.value}>
-                        ({truncateFloatingPoint(battleMatchCompare.awayCompare.goal / dataCount, 2)}
+                        (
+                        {truncateFloatingPoint(
+                            battleMatchCompare.awayCompare.goal / battleMatchCompare.matchCount,
+                            2
+                        )}
                         ){battleMatchCompare.awayCompare.goal}
                     </div>
                 </div>
@@ -87,7 +95,8 @@ function ComparedLineProgress({ dataCount }: { dataCount: number }) {
                     <div className={style.value}>
                         {battleMatchCompare.homeCompare.goalAgainst}(
                         {truncateFloatingPoint(
-                            battleMatchCompare.homeCompare.goalAgainst / dataCount,
+                            battleMatchCompare.homeCompare.goalAgainst /
+                                battleMatchCompare.matchCount,
                             2
                         )}
                         )
@@ -96,7 +105,8 @@ function ComparedLineProgress({ dataCount }: { dataCount: number }) {
                     <div className={style.value}>
                         (
                         {truncateFloatingPoint(
-                            battleMatchCompare.awayCompare.goalAgainst / dataCount,
+                            battleMatchCompare.awayCompare.goalAgainst /
+                                battleMatchCompare.matchCount,
                             2
                         )}
                         ){battleMatchCompare.awayCompare.goalAgainst}
@@ -223,28 +233,7 @@ function TeamHistoryBattleCompared() {
                     />
                 </div>
             </div>
-            <div className={style.teamInfo}>
-                <div className={`${style.team} ${style.home}`}>
-                    <TeamLogo
-                        alt={matchDetail.homeChs}
-                        className={style.teamLogo}
-                        height={24}
-                        src={matchDetail.homeLogo}
-                        width={24}
-                    />
-                    <p className={style.teamName}>{matchDetail.homeChs}</p>
-                </div>
-                <div className={`${style.team} ${style.away}`}>
-                    <p className={style.teamName}>{matchDetail.awayChs}</p>
-                    <TeamLogo
-                        alt={matchDetail.awayChs}
-                        className={style.teamLogo}
-                        height={24}
-                        src={matchDetail.awayLogo}
-                        width={24}
-                    />
-                </div>
-            </div>
+            <ComparedTeamBar />
             <div className={style.circleProgressBar}>
                 <ComparedCircleProgress
                     percent={formatNumberWithPercent(
@@ -285,7 +274,7 @@ function TeamHistoryBattleCompared() {
                     value={battleMatchCompare.overUnderWinRate}
                 />
             </div>
-            <ComparedLineProgress dataCount={battleMatchCompare.matchCount} />
+            <ComparedLineProgress />
             <div className={style.pointChart}>
                 <div className={style.pointCard}>
                     <div className={style.pointTop}>
