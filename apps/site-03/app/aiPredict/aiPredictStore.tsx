@@ -1,27 +1,21 @@
 import { initStore } from 'lib';
 import type { StoreWithSelectors } from 'lib';
-import type { GetAiAnalyzeMatchResponse } from 'data-center';
+import type { GetPredicativeAnalysisMatchResponse } from 'data-center';
 
 interface InitState {
-    aiPredictList: GetAiAnalyzeMatchResponse[];
+    aiPredictList: GetPredicativeAnalysisMatchResponse;
 }
 
 interface AiPredictState extends InitState {
-    setAiPredictList: (aiPredictList: GetAiAnalyzeMatchResponse[]) => void;
-    payLock: boolean;
-    setPayLock: (payLock: boolean) => void;
+    setAiPredictList: (aiPredictList: GetPredicativeAnalysisMatchResponse) => void;
 }
 
 let useAiPredictStore: StoreWithSelectors<AiPredictState>;
 
 const initialState = (set: (data: Partial<AiPredictState>) => void) => ({
     aiPredictList: [],
-    setAiPredictList: (aiPredictList: GetAiAnalyzeMatchResponse[]) => {
+    setAiPredictList: (aiPredictList: GetPredicativeAnalysisMatchResponse) => {
         set({ aiPredictList });
-    },
-    payLock: true,
-    setPayLock: (payLock: boolean) => {
-        set({ payLock });
     }
 });
 

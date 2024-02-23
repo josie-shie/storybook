@@ -1,18 +1,19 @@
 'use client';
 import { useEffect, useRef, useState, createRef } from 'react';
-import { useRouter } from 'next/navigation';
+// import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import type { GetAiAnalyzeMatchResponse } from 'data-center';
+import { getPredicativeAnalysisMatch } from 'data-center';
+import type { GetPredicativeAnalysisMatchResponse, GetPredicativeAnalysisMatch } from 'data-center';
 import { timestampToString, timestampToStringCh } from 'lib';
-import ConfirmPayDrawer from '@/components/confirmPayDrawer/confirmPayDrawer';
-import NormalDialog from '@/components/normalDialog/normalDialog';
-import { useUserStore } from '@/store/userStore';
-import { useAuthStore } from '@/store/authStore';
+// import ConfirmPayDrawer from '@/components/confirmPayDrawer/confirmPayDrawer';
+// import NormalDialog from '@/components/normalDialog/normalDialog';
+// import { useUserStore } from '@/store/userStore';
+// import { useAuthStore } from '@/store/authStore';
 import { useAiPredictStore } from '../aiPredictStore';
 import Ai from '../ai';
 import Analyze from '../analyze';
 import Cornor from '../cornor';
-import Wallet from '../img/wallet.png';
+// import Wallet from '../img/wallet.png';
 import AiAvatarSmall from '../img/aiAvatarSmall.svg';
 import AiAvatar from '../img/aiAvatar.svg';
 import style from '../aiPredict.module.scss';
@@ -52,8 +53,8 @@ function MatchItem({
     match,
     handleSelectMatch
 }: {
-    match: GetAiAnalyzeMatchResponse;
-    handleSelectMatch: (match: GetAiAnalyzeMatchResponse) => void;
+    match: GetPredicativeAnalysisMatch;
+    handleSelectMatch: (match: GetPredicativeAnalysisMatch) => void;
 }) {
     return (
         <div
@@ -79,23 +80,38 @@ function MatchItem({
 
 function AiPredictDetail({ params }: { params: { matchId: string } }) {
     const matchRefs = useRef<Record<number, React.RefObject<HTMLDivElement>>>({});
-    const router = useRouter();
+    // const router = useRouter();
 
     const aiPredictList = useAiPredictStore.use.aiPredictList();
-    const setPayLock = useAiPredictStore.use.setPayLock();
+    const setAiPredictList = useAiPredictStore.use.setAiPredictList();
 
-    const [openPaid, setOpenPaid] = useState(false);
-    const [openDialog, setOpenDialog] = useState(false);
-    const userInfo = useUserStore.use.userInfo();
-    const isLogin = useUserStore.use.isLogin();
-    const setAuthQuery = useUserStore.use.setAuthQuery();
-    const setIsDrawerOpen = useAuthStore.use.setIsDrawerOpen();
+    // const [openPaid, setOpenPaid] = useState(false);
+    // const [openDialog, setOpenDialog] = useState(false);
+    // const userInfo = useUserStore.use.userInfo();
+    // const isLogin = useUserStore.use.isLogin();
+    // const setAuthQuery = useUserStore.use.setAuthQuery();
+    // const setIsDrawerOpen = useAuthStore.use.setIsDrawerOpen();
 
     const [showChat, setShowChat] = useState(false);
-    const [selectedMatches, setSelectedMatches] = useState<GetAiAnalyzeMatchResponse[]>([]);
+    const [selectedMatches, setSelectedMatches] = useState<GetPredicativeAnalysisMatchResponse>([]);
     const [matchTabs, setMatchTabs] = useState<MatchTab[]>([]);
 
-    const handleSelectMatch = (match: GetAiAnalyzeMatchResponse) => {
+    useEffect(() => {
+        const getPredicativeAnalysisList = async () => {
+            const res = await getPredicativeAnalysisMatch({
+                matchId: 0,
+                matchTime: 0
+            });
+
+            if (!res.success) {
+                return new Error();
+            }
+            setAiPredictList(res.data);
+        };
+        void getPredicativeAnalysisList();
+    }, []);
+
+    const handleSelectMatch = (match: GetPredicativeAnalysisMatch) => {
         setSelectedMatches(prevSelectedMatches => {
             const isMatchExists = prevSelectedMatches.some(
                 existingMatch => existingMatch.matchId === match.matchId
@@ -130,7 +146,7 @@ function AiPredictDetail({ params }: { params: { matchId: string } }) {
     useEffect(() => {
         const timer = setTimeout(() => {
             setShowChat(true);
-        }, 2500);
+        }, 5000);
 
         return () => {
             clearTimeout(timer);
@@ -164,29 +180,29 @@ function AiPredictDetail({ params }: { params: { matchId: string } }) {
         }
     }, [params.matchId, aiPredictList]);
 
-    const handleUnlockArticle = (matchId: number) => {
-        if (!isLogin) {
-            setAuthQuery('login');
-            setIsDrawerOpen(true);
-            return;
-        }
-        setOpenPaid(true);
-    };
+    // const handleUnlockArticle = (matchId: number) => {
+    //     if (!isLogin) {
+    //         setAuthQuery('login');
+    //         setIsDrawerOpen(true);
+    //         return;
+    //     }
+    //     setOpenPaid(true);
+    // };
 
-    const onSubmit = () => {
-        if (userInfo.balance < 80) {
-            setOpenPaid(false);
-            setOpenDialog(true);
-            return;
-        }
-        setOpenPaid(false);
-        setPayLock(false);
-    };
+    // const onSubmit = () => {
+    //     if (userInfo.balance < 80) {
+    //         setOpenPaid(false);
+    //         setOpenDialog(true);
+    //         return;
+    //     }
+    //     setOpenPaid(false);
+    //     setPayLock(false);
+    // };
 
-    const goSubscribe = () => {
-        setOpenDialog(false);
-        router.push('/userInfo/subscribe');
-    };
+    // const goSubscribe = () => {
+    //     setOpenDialog(false);
+    //     router.push('/userInfo/subscribe');
+    // };
 
     const halfLength = Math.ceil(aiPredictList.length / 2);
     const firstHalfMatches = aiPredictList.slice(0, halfLength);
@@ -207,30 +223,30 @@ function AiPredictDetail({ params }: { params: { matchId: string } }) {
         { title: '战术角度', value: 'cornor' }
     ];
 
-    const getSelectedComponent = (key: string, match: GetAiAnalyzeMatchResponse) => {
+    const getSelectedComponent = (key: string, match: GetPredicativeAnalysisMatch) => {
         const components: Record<string, JSX.Element> = {
             ai: (
                 <Ai
                     match={match}
-                    onUnlockArticle={() => {
-                        handleUnlockArticle(match.matchId);
-                    }}
+                    // onUnlockArticle={() => {
+                    //     handleUnlockArticle(match.matchId);
+                    // }}
                 />
             ),
             analyze: (
                 <Analyze
                     match={match}
-                    onUnlockArticle={() => {
-                        handleUnlockArticle(match.matchId);
-                    }}
+                    // onUnlockArticle={() => {
+                    //     handleUnlockArticle(match.matchId);
+                    // }}
                 />
             ),
             cornor: (
                 <Cornor
                     match={match}
-                    onUnlockArticle={() => {
-                        handleUnlockArticle(match.matchId);
-                    }}
+                    // onUnlockArticle={() => {
+                    //     handleUnlockArticle(match.matchId);
+                    // }}
                 />
             )
         };
@@ -335,7 +351,7 @@ function AiPredictDetail({ params }: { params: { matchId: string } }) {
                     </div>
                 </div>
             </div>
-            <ConfirmPayDrawer
+            {/* <ConfirmPayDrawer
                 isOpen={openPaid}
                 onClose={() => {
                     setOpenPaid(false);
@@ -355,7 +371,7 @@ function AiPredictDetail({ params }: { params: { matchId: string } }) {
                 onConfirm={goSubscribe}
                 openDialog={openDialog}
                 srcImage={Wallet}
-            />
+            /> */}
         </>
     );
 }

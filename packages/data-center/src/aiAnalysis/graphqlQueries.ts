@@ -219,3 +219,38 @@ export const CHECK_MATCHES_COUNT_QUERY = `
     }
   }
 `;
+
+export const GET_PREDICATIVE_ANALYSIS_MATCH_QUERY = `
+    query getPredicativeAnalysisMatch($input: GetPredicativeAnalysisMatchInput!) {
+      soccerAi {
+        getPredicativeAnalysisMatch(input: $input) {
+          list {
+            matchId
+            matchTime
+            leagueId
+            leagueEn
+            leagueChs
+            leagueCht
+            leagueType
+            homeId
+            homeEn
+            homeChs
+            homeCht
+            awayId
+            awayEn
+            awayChs
+            awayCht
+            homeLogo
+            awayLogo
+            predict
+            summary
+            homeStrategicAnalysis
+            awayStrategicAnalysis
+            homeTacticalPerspective
+            awayTacticalPerspective
+            updatedAt
+          } 
+        }
+      }
+    }
+`;

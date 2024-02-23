@@ -8,7 +8,8 @@ import {
     GET_FOOTBALL_STATS_QUERY,
     GET_FOOTBALL_STATS_MATCHES_QUERY,
     GET_FOOTBALL_LEAGUE_QUERY,
-    CHECK_MATCHES_COUNT_QUERY
+    CHECK_MATCHES_COUNT_QUERY,
+    GET_PREDICATIVE_ANALYSIS_MATCH_QUERY
 } from './graphqlQueries';
 
 export interface CheckMatchesCountRequest {
@@ -297,23 +298,31 @@ export interface GetFootballStatsMatchesRequest {
     matchIds: number[];
 }
 
-const GetAiAnalyzeMatch = z.object({
+export interface GetPredicativeAnalysisMatchRequest {
+    matchId: number;
+    matchTime: number;
+}
+
+const GetPredicativeAnalysisMatchSchema = z.object({
     matchId: z.number(),
     matchTime: z.number(),
     leagueId: z.number(),
     leagueEn: z.string(),
     leagueChs: z.string(),
     leagueCht: z.string(),
+    leagueType: z.number(),
+    homeId: z.number(),
     homeEn: z.string(),
     homeChs: z.string(),
     homeCht: z.string(),
+    awayId: z.number(),
     awayEn: z.string(),
     awayChs: z.string(),
     awayCht: z.string(),
-    homeId: z.number(),
-    awayId: z.number(),
+    homeLogo: z.string(),
+    awayLogo: z.string(),
     predict: z.string(),
-    summery: z.string(),
+    summary: z.string(),
     homeStrategicAnalysis: z.string(),
     awayStrategicAnalysis: z.string(),
     homeTacticalPerspective: z.string(),
@@ -321,7 +330,21 @@ const GetAiAnalyzeMatch = z.object({
     updatedAt: z.number()
 });
 
-export type GetAiAnalyzeMatchResponse = z.infer<typeof GetAiAnalyzeMatch>;
+export type GetPredicativeAnalysisMatch = z.infer<typeof GetPredicativeAnalysisMatchSchema>;
+
+const GetPredicativeAnalysisMatchResultSchema = z.object({
+    soccerAi: z.object({
+        getPredicativeAnalysisMatch: z.object({
+            list: z.array(GetPredicativeAnalysisMatchSchema)
+        })
+    })
+});
+
+export type GetPredicativeAnalysisMatchResult = z.infer<
+    typeof GetPredicativeAnalysisMatchResultSchema
+>;
+
+export type GetPredicativeAnalysisMatchResponse = GetPredicativeAnalysisMatch[];
 
 /**
  * 分析紀錄列表API
@@ -554,6 +577,43 @@ export const checkMatchesCount = async (
         return {
             success: true,
             data: data.checkMatchesCount.list
+        };
+    } catch (error) {
+        return handleApiError(error);
+    }
+};
+
+/**
+ * ai預測數據
+ * - params : {@link GetPredicativeAnalysisMatchRequest}
+ * - returns : {@link GetPredicativeAnalysisMatchResponse}
+ * - {@link GetAiAnalyzeMatch}
+ */
+export const getPredicativeAnalysisMatch = async (
+    input: GetPredicativeAnalysisMatchRequest
+): Promise<ReturnData<GetPredicativeAnalysisMatchResponse>> => {
+    try {
+        const { data, errors } = await fetcher<
+            FetchResultData<GetPredicativeAnalysisMatchResult>,
+            unknown
+        >(
+            {
+                data: {
+                    query: GET_PREDICATIVE_ANALYSIS_MATCH_QUERY,
+                    variables: {
+                        input
+                    }
+                }
+            },
+            { cache: 'no-store' }
+        );
+
+        throwErrorMessage(errors);
+        GetPredicativeAnalysisMatchResultSchema.parse(data);
+
+        return {
+            success: true,
+            data: data.soccerAi.getPredicativeAnalysisMatch.list
         };
     } catch (error) {
         return handleApiError(error);
