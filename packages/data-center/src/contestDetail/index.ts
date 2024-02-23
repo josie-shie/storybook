@@ -82,7 +82,12 @@ const SingleMatchSchema = z.object({
     hasAnimation: z.boolean(),
     leagueLevel: z.number(),
     mobileLiveUrl: z.string(),
-    pcLiveUrl: z.string()
+    pcLiveUrl: z.string(),
+    weather: z.number(),
+    temperature: z.string(),
+    wind: z.string(),
+    pressure: z.string(),
+    humidity: z.string()
 });
 
 const GetSingleMatchResultSchema = z.object({

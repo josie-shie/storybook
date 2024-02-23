@@ -73,6 +73,11 @@ export const GET_SINGLE_MATCH_QUERY = `
             leagueLevel
             mobileLiveUrl
             pcLiveUrl
+            weather
+            temperature
+            wind
+            pressure
+            humidity
         } 
     }  
 `;
