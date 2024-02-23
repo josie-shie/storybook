@@ -39,6 +39,12 @@
             color: #4489ff;
             margin-left: 12px;
 
+            .aiTitle {
+                display: flex;
+                align-items: center;
+                margin-bottom: 16px;
+            }
+
             .text {
                 font-size: 12px;
                 font-weight: 500;

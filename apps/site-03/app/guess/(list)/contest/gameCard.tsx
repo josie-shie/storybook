@@ -5,6 +5,7 @@ import { useLiveContestStore } from '@/store/liveContestStore';
 import { useFormattedTime } from '@/hooks/useFormattedTime';
 import defaultTeamLogo from '@/app/football/[matchId]/img/defaultTeamLogo.png';
 import MasterIcon from '../img/master.svg';
+import AiIcon from '../img/aiButtom.svg';
 import { CompareOdds } from './compareOdds';
 import { useGuessContestListStore } from './contestStore';
 import style from './gameCard.module.scss';
@@ -81,6 +82,11 @@ function GameCard({ matchId }: { matchId: number }) {
                             </div>
                         </div>
                         <div className={style.playerPredict}>
+                            <div className={style.aiTitle}>
+                                <Link href={`/aiPredict/${matchId}`}>
+                                    <AiIcon />
+                                </Link>
+                            </div>
                             <div className={style.text}>玩家预测</div>
                             <div className={style.people}>
                                 <MasterIcon />

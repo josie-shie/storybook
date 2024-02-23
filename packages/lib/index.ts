@@ -20,6 +20,7 @@ export {
 } from './src/formatHandicap';
 export type { StoreWithSelectors } from './src/store';
 export {
+    timestampToStringCh,
     timestampToString,
     timestampToMonthDay,
     timestampToTodayTime,
