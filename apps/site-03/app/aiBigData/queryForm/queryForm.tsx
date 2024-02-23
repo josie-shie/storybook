@@ -159,7 +159,7 @@ function SubmitButton({ setZeroMatchList }: { setZeroMatchList: (list: number[])
     };
 
     const handleCheckMatchesCount = async () => {
-        if (selectedleagueIdList.length) return;
+        if (!selectedleagueIdList.length) return;
         let handicapSideValue = '';
         if (teamSelected.length === 2) {
             handicapSideValue = 'all';
