@@ -1,12 +1,7 @@
 import ReactEcharts from 'echarts-for-react';
 import { type MemberIndividualGuessRecord } from 'data-center';
 import style from './record.module.scss';
-
-const formatRate = (lose: number, win: number) => {
-    if (lose === 0 && win === 0) return 0;
-    const winRate = (win / (lose + win)) * 100;
-    return Number.isInteger(winRate) ? winRate : winRate.toFixed(1);
-};
+import { formatRate, sizeAndHandicapWinRate } from 'lib';
 
 function Record({ individualGuessInfo }: { individualGuessInfo: MemberIndividualGuessRecord }) {
     const chartOption = {
@@ -15,7 +10,10 @@ function Record({ individualGuessInfo }: { individualGuessInfo: MemberIndividual
             showContent: false
         },
         title: {
-            text: `{win|胜率}{large|${individualGuessInfo.summary.play}}{point|%} \n{small|共${individualGuessInfo.summary.play}场}`,
+            text: `{win|胜率}{large|${sizeAndHandicapWinRate(
+                formatRate(individualGuessInfo.size.lose, individualGuessInfo.size.win),
+                formatRate(individualGuessInfo.handicap.lose, individualGuessInfo.handicap.win)
+            )}}{point|%} \n{small|共${individualGuessInfo.summary.play}场}`,
             left: '46%',
             top: '47%',
             textAlign: 'center',
@@ -91,7 +89,7 @@ function Record({ individualGuessInfo }: { individualGuessInfo: MemberIndividual
                 },
                 data: [
                     {
-                        value: individualGuessInfo['summary'].win,
+                        value: individualGuessInfo.summary.win,
                         name: 'Plan1',
                         itemStyle: {
                             color: '#e34b4b',
@@ -101,7 +99,7 @@ function Record({ individualGuessInfo }: { individualGuessInfo: MemberIndividual
                         }
                     },
                     {
-                        value: individualGuessInfo['summary'].draw,
+                        value: individualGuessInfo.summary.draw,
                         name: 'Plan2',
                         itemStyle: {
                             color: '#9fc2ff',
@@ -111,7 +109,7 @@ function Record({ individualGuessInfo }: { individualGuessInfo: MemberIndividual
                         }
                     },
                     {
-                        value: individualGuessInfo['summary'].lose,
+                        value: individualGuessInfo.summary.lose,
                         name: 'Plan3',
                         itemStyle: {
                             color: '#d9d9d9',
