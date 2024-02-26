@@ -67,8 +67,8 @@ async function RootLayout({ children }: { children: ReactNode }) {
                 <link href="/logo/launch_192.png" rel="apple-touch-icon" sizes="192x192" />
                 <link href="/logo/launch_192.png" rel="apple-touch-startup-image" sizes="192x192" />
                 <link href="/logo/launch_512.png" rel="apple-touch-startup-image" sizes="512x512" />
+                <link href="/logo/launch_512.png" rel="apple-touch-startup-image" />
                 <meta content="yes" name="apple-mobile-web-app-capable" />
-                <meta content="black-translucent" name="apple-mobile-web-app-status-bar-style" />
                 <meta content="fsport" name="apple-mobile-web-app-title" />
                 <meta content="#134BA8" name="theme-color" />
             </head>
