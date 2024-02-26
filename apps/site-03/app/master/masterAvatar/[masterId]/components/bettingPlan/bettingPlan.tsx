@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { timestampToString } from 'lib';
 import { InfiniteScroll } from 'ui';
 import CircularProgress from '@mui/material/CircularProgress';
+import Link from 'next/link';
 import NoData from '@/components/baseNoData/noData';
 import IconWin from './img/win.svg';
 import IconLose from './img/lose.svg';
@@ -92,14 +93,17 @@ function BettingPlan({
     return (
         <>
             {guessMatchesList.length === 0 && isNoData === null && <SkeletonLayout />}
-
             {guessMatchesList.length === 0 && isNoData ? (
                 <NoData text="暂无资料" />
             ) : (
                 <ul className={style.bettingPlanList}>
                     {guessMatchesList.map(item => {
                         return (
-                            <li className={style.bettingPlanCard} key={item.id}>
+                            <Link
+                                className={style.bettingPlanCard}
+                                href={`/football/${item.matchId}`}
+                                key={item.id}
+                            >
                                 <div className={style.iconBox}>
                                     {filterIcon[item.predictionResult]}
                                 </div>
@@ -148,7 +152,7 @@ function BettingPlan({
                                         {item.predictedPlay === 'AWAY' && item.awayTeamName}
                                     </div>
                                 </div>
-                            </li>
+                            </Link>
                         );
                     })}
                     {guessMatchesList.length < totalPage ? (

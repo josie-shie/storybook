@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import { timestampToString } from 'lib';
 import { type MemberIndividualGuessMatch } from 'data-center';
+import Link from 'next/link';
 import BigGone from '../img/bigGone.png';
 import BigWin from '../img/bigWin.png';
 import BigLose from '../img/bigLose.png';
@@ -49,12 +50,12 @@ const getPredictedPlayName = (predictedPlay: string) => {
 
 function BettingPlan({ rowData }: PropsType) {
     return (
-        <div className={style.bettingPlan}>
+        <Link className={style.bettingPlan} href={`/football/${rowData.matchId}`}>
             {iconMap[rowData.predictionResult]}
             <div className={style.top}>
                 {rowData.leagueName}{' '}
                 <span className={style.time}>
-                    | {timestampToString(rowData.matchTime, 'MM-DD HH:mm')}
+                    ß | {timestampToString(rowData.matchTime, 'MM-DD HH:mm')}
                 </span>
             </div>
             <div className={style.mid}>
@@ -74,7 +75,7 @@ function BettingPlan({ rowData }: PropsType) {
                     {messageFormat(rowData.predictedPlay, rowData)}
                 </div>
             </div>
-        </div>
+        </Link>
     );
 }
 
