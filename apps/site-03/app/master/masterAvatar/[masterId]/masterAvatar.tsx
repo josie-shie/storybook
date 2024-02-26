@@ -22,14 +22,14 @@ function MasterAvatar({ params }: { params: { masterId: string } }) {
 
     const tabList = [
         {
-            label: `预测文章(${articleLength})`,
-            href: `/master/masterAvatar/${params.masterId}?status=analysis`,
-            status: 'analysis'
-        },
-        {
             label: '猜球',
             href: `/master/masterAvatar/${params.masterId}?status=guess`,
             status: 'guess'
+        },
+        {
+            label: `预测文章(${articleLength})`,
+            href: `/master/masterAvatar/${params.masterId}?status=analysis`,
+            status: 'analysis'
         },
         {
             label: '关注',
