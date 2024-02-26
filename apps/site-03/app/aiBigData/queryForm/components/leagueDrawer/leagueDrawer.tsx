@@ -120,6 +120,7 @@ function FilterSection({ group, onClose }: PropsType) {
     return (
         <>
             <div className={style.list}>{filterList}</div>
+            <div className={style.line} />
             <div className={style.tool}>
                 <div className={style.functionButton}>
                     <motion.button
