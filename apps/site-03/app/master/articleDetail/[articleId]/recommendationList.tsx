@@ -9,7 +9,7 @@ import Win from './img/win.svg';
 import Draw from './img/draw.svg';
 import Lose from './img/lose.svg';
 import Eye from './img/eye.svg';
-import LockOpenBlue from './img/lockOpenBlue.svg';
+import LockOpen from './img/lockOpen.svg';
 import SkeletonLayout from './components/skeleton';
 
 function RecommendationItem({
@@ -106,7 +106,7 @@ function RecommendationItem({
                                                 ) : null}
                                                 {item.unlockCounts ? (
                                                     <span>
-                                                        <LockOpenBlue />
+                                                        <LockOpen />
                                                         {item.unlockCounts}
                                                     </span>
                                                 ) : null}
