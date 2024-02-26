@@ -72,84 +72,86 @@
             align-items: initial;
         }
 
-        .tableHead {
-            .tr {
-                .th {
-                    flex: initial;
-                    width: 40px;
+        .dataTable {
+            .tableHead {
+                .tr {
+                    .th {
+                        flex: initial;
+                        width: 40px;
 
-                    &:first-of-type {
-                        width: 84px;
-                    }
+                        &:first-of-type {
+                            width: 84px;
+                        }
 
-                    &:nth-of-type(2) {
-                        flex: 1;
-                        column-gap: 4px;
+                        &:nth-of-type(2) {
+                            flex: 1;
+                            column-gap: 4px;
+                        }
                     }
                 }
             }
-        }
 
-        .tableBody {
-            .tr {
-                .td {
-                    flex-direction: column;
-                    flex: initial;
-                    width: 40px;
-                    font-size: 12px;
+            .tableBody {
+                .tr {
+                    .td {
+                        flex-direction: column;
+                        flex: initial;
+                        width: 40px;
+                        font-size: 12px;
 
-                    &:first-of-type {
-                        width: 84px;
-                    }
+                        &:first-of-type {
+                            width: 84px;
+                        }
 
-                    &:nth-of-type(2) {
-                        flex-direction: row;
-                        flex: 1;
-                        justify-content: center;
-                        column-gap: 4px;
-                        color: #8d8d8d;
-
-                        .scoreBox {
-                            display: flex;
-                            flex-direction: column;
+                        &:nth-of-type(2) {
+                            flex-direction: row;
+                            flex: 1;
                             justify-content: center;
-                            align-items: center;
+                            column-gap: 4px;
+                            color: #8d8d8d;
 
-                            .score {
-                                font-size: 14px;
+                            .scoreBox {
+                                display: flex;
+                                flex-direction: column;
+                                justify-content: center;
+                                align-items: center;
+
+                                .score {
+                                    font-size: 14px;
+                                }
+                            }
+
+                            .homeName {
+                                flex: 1;
+                                text-align: right;
+                            }
+
+                            .awayName {
+                                flex: 1;
+                            }
+
+                            .isHome {
+                                color: #222;
                             }
                         }
-
-                        .homeName {
-                            flex: 1;
-                            text-align: right;
-                        }
-
-                        .awayName {
-                            flex: 1;
-                        }
-
-                        .isHome {
-                            color: #222;
-                        }
                     }
-                }
 
-                .win,
-                .big,
-                .victory {
-                    color: #ff4343;
-                }
+                    .win,
+                    .big,
+                    .victory {
+                        color: #ff4343;
+                    }
 
-                .lose,
-                .small,
-                .minus {
-                    color: #00b976;
-                }
+                    .lose,
+                    .small,
+                    .minus {
+                        color: #00b976;
+                    }
 
-                .go,
-                .tie {
-                    color: #4489ff;
+                    .go,
+                    .tie {
+                        color: #4489ff;
+                    }
                 }
             }
         }

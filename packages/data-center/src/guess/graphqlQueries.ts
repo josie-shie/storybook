@@ -4,6 +4,7 @@ export const GET_TODAY_GUESS_MATCHES_QUERY = `
             matches {
                 matchId
                 leagueId
+                color
                 leagueName
                 homeId
                 homeName

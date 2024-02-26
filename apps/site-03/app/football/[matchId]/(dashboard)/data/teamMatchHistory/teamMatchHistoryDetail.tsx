@@ -125,11 +125,11 @@ function TableRow({ match, homeName }: { match: RecentMatch; homeName: string })
                 </p>
             </div>
             <div className={`td ${match.handicapResult}`}>
-                <p>{handicapToString(match.handicapCurrent)}</p>
+                <p>{handicapToString(match.handicapInit)}</p>
                 <p>{resultNameMap[match.handicapResult as ResultName]}</p>
             </div>
             <div className={`td ${match.overUnderResult}`}>
-                <p>{match.overUnderCurrent}</p>
+                <p>{match.overUnderInit}</p>
                 <p>{resultNameMap[match.overUnderResult as ResultName]}</p>
             </div>
             <div className="td">{match.homeCorner + match.awayCorner}</div>

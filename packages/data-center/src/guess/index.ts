@@ -22,6 +22,7 @@ import {
 const GetTodayGuessMatchSchema = z.object({
     matchId: z.number(),
     leagueId: z.number(),
+    color: z.string(),
     leagueName: z.string(),
     homeId: z.number(),
     homeName: z.string(),

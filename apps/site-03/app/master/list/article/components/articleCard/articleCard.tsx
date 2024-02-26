@@ -8,7 +8,7 @@ import { payForPost, getMemberInfo } from 'data-center';
 import Tag from '@/components/tag/tag';
 import TagSplit from '@/components/tagSplit/tagSplit';
 import Avatar from '@/components/avatar/avatar';
-import NormalDialog from '@/components/normalDialog/normalDialog';
+import RechargeDialog from '@/components/rechargeDialog/rechargeDialog';
 import { useUserStore } from '@/store/userStore';
 import ConfirmPayDrawer from '@/components/confirmPayDrawer/confirmPayDrawer';
 import Win from '../../img/win.svg';
@@ -19,11 +19,10 @@ import LockOpen from './img/lockOpen.svg';
 import LockOpenBlue from './img/lockOpenBlue.svg';
 import Fire from './img/fire.svg';
 import style from './articleCard.module.scss';
-import Wallet from './img/wallet.png';
 
 function ArticleCard({ article }: { article: RecommendPost }) {
     const [isOpenPaid, setIsOpenPaid] = useState(false);
-    const [isOpenRecharge, setIsOpenRecharge] = useState(false);
+    const [isOpenRechargeDialog, setIsOpenRechargeDialog] = useState(false);
 
     const router = useRouter();
 
@@ -41,7 +40,7 @@ function ArticleCard({ article }: { article: RecommendPost }) {
     const onSubmit = async () => {
         if (userInfo.balance < article.price) {
             setIsOpenPaid(false);
-            setIsOpenRecharge(true);
+            setIsOpenRechargeDialog(true);
             return;
         }
 
@@ -53,11 +52,6 @@ function ArticleCard({ article }: { article: RecommendPost }) {
         goArticleDetail();
         void getUser();
         setIsOpenPaid(false);
-    };
-
-    const goSubscribe = () => {
-        setIsOpenRecharge(false);
-        router.push('/userInfo/subscribe');
     };
 
     const goArticleDetail = () => {
@@ -236,15 +230,9 @@ function ArticleCard({ article }: { article: RecommendPost }) {
                 onPay={onSubmit}
                 price={article.price}
             />
-            <NormalDialog
-                confirmText="去充值"
-                content={<div>余额不足，请充值</div>}
-                onClose={() => {
-                    setIsOpenRecharge(false);
-                }}
-                onConfirm={goSubscribe}
-                openDialog={isOpenRecharge}
-                srcImage={Wallet}
+            <RechargeDialog
+                setRechargeDialogClose={setIsOpenRechargeDialog}
+                openDialog={isOpenRechargeDialog}
             />
         </>
     );

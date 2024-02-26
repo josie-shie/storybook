@@ -67,23 +67,23 @@ function LeagueRankTable({ isHome }: { isHome: boolean }) {
                     {rows.map((item, idx) => (
                         <div className="tr" key={`league_rank_${idx.toString()}`}>
                             <div className="td">{item.desc}</div>
-                            <div className="td">{leagueData?.[item.target]?.totalCount || '-'}</div>
+                            <div className="td">{leagueData?.[item.target]?.totalCount || '0'}</div>
                             <div className="td">
                                 <p>
-                                    {leagueData?.[item.target]?.winCount || '-'}/
-                                    {leagueData?.[item.target]?.drawCount || '-'}/
-                                    {leagueData?.[item.target]?.loseCount || '-'}
+                                    {leagueData?.[item.target]?.winCount || '0'}/
+                                    {leagueData?.[item.target]?.drawCount || '0'}/
+                                    {leagueData?.[item.target]?.loseCount || '0'}
                                 </p>
                             </div>
                             <div className="td">
                                 <p>
-                                    {leagueData?.[item.target]?.getScore || '-'}/
-                                    {leagueData?.[item.target]?.loseScore || '-'}
+                                    {leagueData?.[item.target]?.getScore || '0'}/
+                                    {leagueData?.[item.target]?.loseScore || '0'}
                                 </p>
                             </div>
-                            <div className="td">{leagueData?.[item.target]?.integral || '-'}</div>
+                            <div className="td">{leagueData?.[item.target]?.integral || '0'}</div>
                             <div className={`td ${style.highlight}`}>
-                                {leagueData?.[item.target]?.rank || '-'}
+                                {leagueData?.[item.target]?.rank || '0'}
                             </div>
                         </div>
                     ))}

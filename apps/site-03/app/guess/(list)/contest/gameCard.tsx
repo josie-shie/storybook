@@ -26,8 +26,12 @@ function GameCard({ matchId }: { matchId: number }) {
                 <div className={style.gameCard}>
                     <div className={style.left}>
                         <div className={style.gameTitle}>
-                            {contestInfo.leagueName}
-                            <span> {contestInfo.matchTime ? currentMatchTime : null}</span>
+                            <span style={{ color: contestInfo.color }}>
+                                {contestInfo.leagueName}
+                            </span>
+                            <span className={style.time}>
+                                {contestInfo.matchTime ? currentMatchTime : null}
+                            </span>
                         </div>
                         <div className={style.team}>
                             <div className={style.homeTeamName}>

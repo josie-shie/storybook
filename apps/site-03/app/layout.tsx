@@ -12,6 +12,7 @@ import MqttService from './mqttService';
 import WebsocketService from './websocketService';
 import GoalAlert from './goalAlert';
 import NewMessageAlert from './newMessageAlert';
+import Pwa from './pwa';
 
 export const metadata: Metadata = {
     title: '未来体育 | FutureSport',
@@ -75,6 +76,7 @@ async function RootLayout({ children }: { children: ReactNode }) {
                     </MqttService>
                 </GlobalStore>
                 <GoogleAnalytics />
+                <Pwa />
             </body>
         </html>
     );

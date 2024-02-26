@@ -23,7 +23,6 @@ function ContestList() {
             if (!todayGuess.success) {
                 return new Error();
             }
-
             setContestList({ contestGuessList: todayGuess.data.contestGuessList });
             setContestInfo({ contestGuessInfo: todayGuess.data.contestGuessInfo });
         } catch (error) {

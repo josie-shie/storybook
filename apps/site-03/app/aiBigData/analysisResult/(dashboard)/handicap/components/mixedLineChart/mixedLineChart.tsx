@@ -167,6 +167,14 @@ function MixedLineChart({
     const startDate = useQueryFormStore.use.startDate();
     const endDate = useQueryFormStore.use.endDate();
 
+    const formatMatchList = (data: Statistics, type: TimeValue): number[] => {
+        const matchIds =
+            type === 'week'
+                ? data.totalMatchIds || []
+                : [...(data.lowerMatchIds || []), ...(data.upperMatchIds || [])];
+        return Array.from(new Set(matchIds));
+    };
+
     const handleClick = (event: ChartEvent, elements: ActiveElement[], chart: ChartJS) => {
         if (elements[2].index < 0) return;
 
@@ -198,12 +206,7 @@ function MixedLineChart({
         const data = chartData[periodSwitch][tabType][
             Object.keys(chartData[periodSwitch][tabType])[dataIndex]
         ] as Statistics;
-
-        const matchList = Array.from(
-            new Set([...(data.lowerMatchIds || []), ...(data.upperMatchIds || [])])
-        );
-
-        setMatchIds(matchList);
+        setMatchIds(formatMatchList(data, periodSwitch));
     };
 
     const options = {
@@ -339,13 +342,7 @@ function MixedLineChart({
             if (currentPeriodKeys.length > 0) {
                 const currentPeriod = currentPeriodKeys[0] as unknown as keyof CurrentDataType;
                 const firstBarData: Statistics = currentData[currentPeriod];
-                const matchList = Array.from(
-                    new Set([
-                        ...(firstBarData.lowerMatchIds || []),
-                        ...(firstBarData.upperMatchIds || [])
-                    ])
-                );
-                setMatchIds(matchList);
+                setMatchIds(formatMatchList(firstBarData, periodSwitch));
             }
         }
     }, [labels, periodSwitch, tabType, chartData]);
