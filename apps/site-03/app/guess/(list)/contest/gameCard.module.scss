@@ -70,9 +70,13 @@
             font-size: 14px;
             margin-top: 4px;
 
-            span {
-                font-size: 12px;
+            .time {
                 color: #8d8d8d;
+            }
+
+            span {
+                font-weight: 600;
+                color: #4489ff;
             }
         }
 
