@@ -9,7 +9,7 @@ import Win from './img/win.svg';
 import Draw from './img/draw.svg';
 import Lose from './img/lose.svg';
 import Eye from './img/eye.svg';
-import LockOpenBlue from './img/lockOpenBlue.svg';
+import LockOpen from './img/lockOpen.svg';
 import SkeletonLayout from './components/skeleton';
 
 function RecommendationItem({
@@ -93,25 +93,25 @@ function RecommendationItem({
                                         <div className={style.time}>
                                             {timestampToTodayTime(item.createdAt)}
                                         </div>
-                                        {item.seenCounts || item.unlockCounts ? (
-                                            <div className={style.seen}>
-                                                {item.seenCounts ? (
-                                                    <>
-                                                        <span>
-                                                            <Eye />
-                                                            {item.seenCounts}
-                                                        </span>
-                                                        <span className={style.line}>|</span>
-                                                    </>
-                                                ) : null}
-                                                {item.unlockCounts ? (
-                                                    <span>
-                                                        <LockOpenBlue />
-                                                        {item.unlockCounts}
-                                                    </span>
-                                                ) : null}
-                                            </div>
-                                        ) : null}
+                                        <div className={style.seen}>
+                                            {item.seenCounts ? (
+                                                <span>
+                                                    <Eye />
+                                                    {item.seenCounts}
+                                                </span>
+                                            ) : null}
+
+                                            {item.seenCounts && item.unlockCounts ? (
+                                                <span className={style.line}>|</span>
+                                            ) : null}
+
+                                            {item.unlockCounts ? (
+                                                <span>
+                                                    <LockOpen />
+                                                    {item.unlockCounts}
+                                                </span>
+                                            ) : null}
+                                        </div>
                                     </div>
                                 </div>
                             </Link>

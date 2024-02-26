@@ -16,7 +16,6 @@ import Lose from '../../img/lose.svg';
 import Draw from '../../img/draw.svg';
 import Eye from './img/eye.svg';
 import LockOpen from './img/lockOpen.svg';
-import LockOpenBlue from './img/lockOpenBlue.svg';
 import Fire from './img/fire.svg';
 import style from './articleCard.module.scss';
 
@@ -154,7 +153,7 @@ function ArticleCard({ article }: { article: RecommendPost }) {
                 {article.isUnlocked || article.price === 0 ? (
                     <div className={style.unlockStatus}>
                         <span className={style.unlocked}>
-                            <LockOpenBlue height={16} width={16} />
+                            <LockOpen height={16} width={16} />
                         </span>
                     </div>
                 ) : null}
@@ -201,19 +200,20 @@ function ArticleCard({ article }: { article: RecommendPost }) {
                     {article.seenCounts || article.unlockCounts ? (
                         <div className={style.seen}>
                             {article.seenCounts ? (
-                                <>
-                                    <span>
-                                        <Eye />
-                                        {article.seenCounts}
-                                    </span>
-                                    <span className={style.line}>|</span>
-                                </>
+                                <span>
+                                    <Eye />
+                                    {article.seenCounts}
+                                </span>
                             ) : null}
                             {article.unlockCounts ? (
-                                <span>
-                                    <LockOpen />
-                                    {article.unlockCounts}
-                                </span>
+                                <>
+                                    <span className={style.line}>|</span>
+
+                                    <span>
+                                        <LockOpen />
+                                        {article.unlockCounts}
+                                    </span>
+                                </>
                             ) : null}
                         </div>
                     ) : null}
@@ -231,8 +231,8 @@ function ArticleCard({ article }: { article: RecommendPost }) {
                 price={article.price}
             />
             <RechargeDialog
-                setRechargeDialogClose={setIsOpenRechargeDialog}
                 openDialog={isOpenRechargeDialog}
+                setRechargeDialogClose={setIsOpenRechargeDialog}
             />
         </>
     );

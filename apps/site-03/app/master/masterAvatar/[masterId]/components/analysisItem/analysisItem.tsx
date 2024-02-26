@@ -13,7 +13,7 @@ import IconDraw from './img/draw.svg';
 import IconLose from './img/lose.svg';
 import IconPush from './img/push.svg';
 import Eye from './img/eye.svg';
-import LockOpenBlue from './img/lockOpenBlue.svg';
+import LockOpen from './img/lockOpen.svg';
 import SkeletonLayout from './components/skeleton';
 
 function AnalysisItem({
@@ -118,17 +118,19 @@ function AnalysisItem({
                                     {item.seenCounts || item.unlockCounts ? (
                                         <div className={style.seen}>
                                             {item.seenCounts ? (
-                                                <>
-                                                    <span>
-                                                        <Eye />
-                                                        {item.seenCounts}
-                                                    </span>
-                                                    <span className={style.line}>|</span>
-                                                </>
+                                                <span>
+                                                    <Eye />
+                                                    {item.seenCounts}
+                                                </span>
                                             ) : null}
+
+                                            {item.seenCounts && item.unlockCounts ? (
+                                                <span className={style.line}>|</span>
+                                            ) : null}
+
                                             {item.unlockCounts ? (
                                                 <span>
-                                                    <LockOpenBlue />
+                                                    <LockOpen />
                                                     {item.unlockCounts}
                                                 </span>
                                             ) : null}
