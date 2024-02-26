@@ -63,12 +63,12 @@ function MasterAvatar({ params }: { params: { masterId: string } }) {
                     tabs={tabList}
                 >
                     <div className={`${style.largeGap}`}>
+                        {secondRender || status === 'guess' ? <Guess params={params} /> : null}
+                    </div>
+                    <div className={`${style.largeGap}`}>
                         {secondRender || status === 'analysis' ? (
                             <AnalysisItem params={params} setArticleLength={setArticleLength} />
                         ) : null}
-                    </div>
-                    <div className={`${style.largeGap}`}>
-                        {secondRender || status === 'guess' ? <Guess params={params} /> : null}
                     </div>
                     <div className={`${style.largeGap}`}>
                         {secondRender || status === 'focus' ? <MasterItem params={params} /> : null}
