@@ -8,6 +8,7 @@ import { Skeleton } from '@mui/material';
 import { useNotificationStore } from '@/store/notificationStore';
 import { useUserStore } from '@/store/userStore';
 import NoData from '@/components/baseNoData/noData';
+import ScrollTop from '@/components/scrollTop/scrollTop';
 import backLeftArrowImg from '../img/backLeftArrow.png';
 import { useFansMemberStore } from './myFansStore';
 import MasterItem from './components/masterItem/masterItem';
@@ -43,6 +44,7 @@ function MyFocusSkeleton() {
 
 function MyFocus() {
     const router = useRouter();
+    const scrollFanRef = useRef<HTMLDivElement>(null);
     const debounceTimer = useRef<ReturnType<typeof setTimeout>>();
     const [searchTerm, setSearchTerm] = useState<string>('');
     const setIsVisible = useNotificationStore.use.setIsVisible();
@@ -146,7 +148,7 @@ function MyFocus() {
                 </div>
             </div>
 
-            <div className={style.myFans}>
+            <div className={style.myFans} ref={scrollFanRef}>
                 <div className={style.search}>
                     <input
                         onChange={onSearch}
@@ -157,6 +159,8 @@ function MyFocus() {
                 </div>
                 {renderContent()}
             </div>
+
+            <ScrollTop scrollContainerRef={scrollFanRef} />
         </>
     );
 }

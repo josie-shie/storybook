@@ -27,7 +27,7 @@ function HotStreakListItem({ isLoading }: { isLoading: boolean }) {
                 return (
                     <Link
                         className={style.hotStreakListItem}
-                        href={`/master/masterAvatar/${item.memberId}?status=analysis`}
+                        href={`/master/memberAvatar/${item.memberId}?status=guess`}
                         key={item.memberId}
                     >
                         <div className={style.rankingFlag}>

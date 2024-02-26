@@ -175,7 +175,9 @@ function ContestList({
             targetContestInfo = contestInfo;
         }
 
-        return list.filter(item => {
+        const resultStateValue = -1;
+
+        const filteredList = list.filter(item => {
             if (
                 Object.keys(filterList.selectedTable).length > 0 &&
                 !filterList.selectedTable[targetContestInfo[item][filterGroup]]
@@ -189,6 +191,14 @@ function ContestList({
                     : targetContestInfo[item].state;
             return typeof state === 'number' && statusFunc(state);
         });
+
+        const others = filteredList.filter(
+            item => targetContestInfo[item].state !== resultStateValue
+        );
+        const results = filteredList.filter(
+            item => targetContestInfo[item].state === resultStateValue
+        );
+        return [...others, ...results];
     };
 
     const sortByPinned = (list: number[], pinned: number[]): number[] => {

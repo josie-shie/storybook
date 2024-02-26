@@ -139,7 +139,7 @@ function List({
                 </div>
             </Slick>
             {(currentStatus === null || currentStatus === 'progress') && (
-                <div className={`${style.longDragonTop} ${showScrollTop ? style.active : ''}`}>
+                <div className={`${style.scrollWrapper} ${showScrollTop ? style.active : ''}`}>
                     <div className={style.longDragon} onClick={isOpenLongDragon}>
                         <span>今日长龙</span>
                     </div>
@@ -148,6 +148,13 @@ function List({
                     </div>
                 </div>
             )}
+
+            <div className={`${style.scrollWrapper} ${showScrollTop ? style.active : ''}`}>
+                <div className={style.goTop} onClick={scrollTop}>
+                    <Image alt="goTop" className={style.arrow} src={ArrowIcon} />
+                </div>
+            </div>
+
             <BottomDrawer
                 isOpen={showLongDragon}
                 onClose={closeLongDragon}

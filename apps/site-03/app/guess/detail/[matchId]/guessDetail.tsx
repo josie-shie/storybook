@@ -2,6 +2,7 @@
 import type { Metadata } from 'next';
 import { useRouter } from 'next/navigation';
 import Header from '@/components/header/headerTransparent';
+import ScrollTop from '@/components/scrollTop/scrollTop';
 import style from './guessDetail.module.scss';
 import VsBox from './vsBox';
 import MasterPlan from './masterPlan';
@@ -30,14 +31,17 @@ function GuessDetail({ backHistory }: { backHistory: boolean }) {
     createGuessDetailStore({ masterPlanList: [] });
 
     return (
-        <div className={style.guessDetail}>
-            <Hints />
-            <Header backHandler={back} title={headerProps.title} />
-            <div className={style.container}>
-                <VsBox />
-                <MasterPlan />
+        <>
+            <div className={style.guessDetail}>
+                <Hints />
+                <Header backHandler={back} title={headerProps.title} />
+                <div className={style.container}>
+                    <VsBox />
+                    <MasterPlan />
+                </div>
             </div>
-        </div>
+            <ScrollTop />
+        </>
     );
 }
 

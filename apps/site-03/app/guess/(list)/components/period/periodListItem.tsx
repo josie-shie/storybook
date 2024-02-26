@@ -52,7 +52,7 @@ function PeriodListItem({
                 return (
                     <Link
                         className={style.periodListItem}
-                        href={`/master/masterAvatar/${item.memberId}?status=analysis`}
+                        href={`/master/memberAvatar/${item.memberId}?status=guess`}
                         key={item.memberId}
                     >
                         <div className={style.rankingFlag}>

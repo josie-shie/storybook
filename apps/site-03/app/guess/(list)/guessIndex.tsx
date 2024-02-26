@@ -2,6 +2,7 @@
 import { Slick } from 'ui';
 import { useEffect, useRef, useState } from 'react';
 import type { GetTodayGuessMatchesResponse } from 'data-center';
+import ScrollTop from '@/components/scrollTop/scrollTop';
 import Contest from './contest/contest';
 import Rank from './rank/rank';
 import MasterRank from './masterRank/masterRank';
@@ -49,22 +50,25 @@ function GuessIndex({ todayGuess }: { todayGuess: GetTodayGuessMatchesResponse }
     };
 
     return (
-        <Slick
-            autoHeight
-            className={style.guessIndex}
-            fixedTabs
-            initialSlide={0}
-            onSlickEnd={onSlickEnd}
-            resetHeightKey="guessIndex"
-            styling="button"
-            tabs={tabList}
-        >
-            <Contest ref={gameListRef} todayGuess={todayGuess} />
-            {secendRender ? <Rank ref={weekRankRef} status="week" /> : null}
-            {secendRender ? <Rank ref={monthRankRef} status="month" /> : null}
-            {secendRender ? <Rank ref={seasonRankRef} status="season" /> : null}
-            {secendRender ? <MasterRank ref={masterRankRef} /> : null}
-        </Slick>
+        <>
+            <Slick
+                autoHeight
+                className={style.guessIndex}
+                fixedTabs
+                initialSlide={0}
+                onSlickEnd={onSlickEnd}
+                resetHeightKey="guessIndex"
+                styling="button"
+                tabs={tabList}
+            >
+                <Contest ref={gameListRef} todayGuess={todayGuess} />
+                {secendRender ? <Rank ref={weekRankRef} status="week" /> : null}
+                {secendRender ? <Rank ref={monthRankRef} status="month" /> : null}
+                {secendRender ? <Rank ref={seasonRankRef} status="season" /> : null}
+                {secendRender ? <MasterRank ref={masterRankRef} /> : null}
+            </Slick>
+            <ScrollTop />
+        </>
     );
 }
 

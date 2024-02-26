@@ -1,0 +1,36 @@
+.scrollWrapper {
+    position: fixed;
+    bottom: 71px;
+    right: 16px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    z-index: 1001;
+    transform: translateX(38px);
+    transition: all 0.25s ease;
+
+    .goTop {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 34px;
+        height: 34px;
+        opacity: 0;
+        border-radius: 50%;
+        background: rgb(0 0 0 / 20%);
+        transition: all 0.25s ease;
+
+        .arrow {
+            width: 14px;
+            height: 8px;
+        }
+    }
+
+    &.active {
+        transform: translateX(0);
+
+        .goTop {
+            opacity: 1;
+        }
+    }
+}
