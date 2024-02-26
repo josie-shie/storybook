@@ -64,11 +64,56 @@ async function RootLayout({ children }: { children: ReactNode }) {
     return (
         <html lang="cn">
             <head>
+                <meta content="yes" name="apple-mobile-web-app-capable" />
                 <link href="/logo/launch_192.png" rel="apple-touch-icon" sizes="192x192" />
                 <link href="/logo/launch_192.png" rel="apple-touch-startup-image" sizes="192x192" />
                 <link href="/logo/launch_512.png" rel="apple-touch-startup-image" sizes="512x512" />
                 <link href="/logo/launch_512.png" rel="apple-touch-startup-image" />
-                <meta content="yes" name="apple-mobile-web-app-capable" />
+                <link
+                    href="/logo/launch_512.png"
+                    media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3)"
+                    rel="apple-touch-startup-image"
+                />
+                <link
+                    href="/logo/launch_512.png"
+                    media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2)"
+                    rel="apple-touch-startup-image"
+                />
+                <link
+                    href="/logo/launch_512.png"
+                    media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)"
+                    rel="apple-touch-startup-image"
+                />
+                <link
+                    href="/logo/launch_512.png"
+                    media="(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3)"
+                    rel="apple-touch-startup-image"
+                />
+                <link
+                    href="/logo/launch_512.png"
+                    media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)"
+                    rel="apple-touch-startup-image"
+                />
+                <link
+                    href="/logo/launch_512.png"
+                    media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2)"
+                    rel="apple-touch-startup-image"
+                />
+                <link
+                    href="/logo/launch_512.png"
+                    media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2)"
+                    rel="apple-touch-startup-image"
+                />
+                <link
+                    href="/logo/launch_512.png"
+                    media="(device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2)"
+                    rel="apple-touch-startup-image"
+                />
+                <link
+                    href="/logo/launch_512.png"
+                    media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2)"
+                    rel="apple-touch-startup-image"
+                />
                 <meta content="fsport" name="apple-mobile-web-app-title" />
                 <meta content="#134BA8" name="theme-color" />
             </head>
