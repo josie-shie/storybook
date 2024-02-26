@@ -123,14 +123,16 @@ function AnalysisItem({
                                                     {item.seenCounts}
                                                 </span>
                                             ) : null}
+
+                                            {item.seenCounts && item.unlockCounts ? (
+                                                <span className={style.line}>|</span>
+                                            ) : null}
+
                                             {item.unlockCounts ? (
-                                                <>
-                                                    <span className={style.line}>|</span>
-                                                    <span>
-                                                        <LockOpen />
-                                                        {item.unlockCounts}
-                                                    </span>
-                                                </>
+                                                <span>
+                                                    <LockOpen />
+                                                    {item.unlockCounts}
+                                                </span>
                                             ) : null}
                                         </div>
                                     ) : null}

@@ -93,25 +93,25 @@ function RecommendationItem({
                                         <div className={style.time}>
                                             {timestampToTodayTime(item.createdAt)}
                                         </div>
-                                        {item.seenCounts || item.unlockCounts ? (
-                                            <div className={style.seen}>
-                                                {item.seenCounts ? (
-                                                    <>
-                                                        <span>
-                                                            <Eye />
-                                                            {item.seenCounts}
-                                                        </span>
-                                                        <span className={style.line}>|</span>
-                                                    </>
-                                                ) : null}
-                                                {item.unlockCounts ? (
-                                                    <span>
-                                                        <LockOpen />
-                                                        {item.unlockCounts}
-                                                    </span>
-                                                ) : null}
-                                            </div>
-                                        ) : null}
+                                        <div className={style.seen}>
+                                            {item.seenCounts ? (
+                                                <span>
+                                                    <Eye />
+                                                    {item.seenCounts}
+                                                </span>
+                                            ) : null}
+
+                                            {item.seenCounts && item.unlockCounts ? (
+                                                <span className={style.line}>|</span>
+                                            ) : null}
+
+                                            {item.unlockCounts ? (
+                                                <span>
+                                                    <LockOpen />
+                                                    {item.unlockCounts}
+                                                </span>
+                                            ) : null}
+                                        </div>
                                     </div>
                                 </div>
                             </Link>
