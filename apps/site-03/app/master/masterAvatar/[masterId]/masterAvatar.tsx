@@ -22,14 +22,14 @@ function MasterAvatar({ params }: { params: { masterId: string } }) {
 
     const tabList = [
         {
-            label: `预测文章(${articleLength})`,
-            href: `/master/masterAvatar/${params.masterId}?status=analysis`,
-            status: 'analysis'
-        },
-        {
             label: '猜球',
             href: `/master/masterAvatar/${params.masterId}?status=guess`,
             status: 'guess'
+        },
+        {
+            label: `预测文章(${articleLength})`,
+            href: `/master/masterAvatar/${params.masterId}?status=analysis`,
+            status: 'analysis'
         },
         {
             label: '关注',
@@ -63,12 +63,12 @@ function MasterAvatar({ params }: { params: { masterId: string } }) {
                     tabs={tabList}
                 >
                     <div className={`${style.largeGap}`}>
+                        {secondRender || status === 'guess' ? <Guess params={params} /> : null}
+                    </div>
+                    <div className={`${style.largeGap}`}>
                         {secondRender || status === 'analysis' ? (
                             <AnalysisItem params={params} setArticleLength={setArticleLength} />
                         ) : null}
-                    </div>
-                    <div className={`${style.largeGap}`}>
-                        {secondRender || status === 'guess' ? <Guess params={params} /> : null}
                     </div>
                     <div className={`${style.largeGap}`}>
                         {secondRender || status === 'focus' ? <MasterItem params={params} /> : null}
