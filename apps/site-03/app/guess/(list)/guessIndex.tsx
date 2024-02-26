@@ -42,11 +42,8 @@ function GuessIndex({ todayGuess }: { todayGuess: GetTodayGuessMatchesResponse }
             status: 'hotStreak'
         }
     ];
-
-    const onSlickEnd = (nowIndex, prevIndex: number) => {
-        const tabRef = [gameListRef, weekRankRef, monthRankRef, seasonRankRef, masterRankRef];
-        const currentRef = tabRef[prevIndex].current;
-        if (currentRef) currentRef.scrollTop = 0;
+    const onSlickEnd = () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
     return (
