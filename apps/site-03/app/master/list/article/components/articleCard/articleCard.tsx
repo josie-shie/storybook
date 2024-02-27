@@ -176,7 +176,9 @@ function ArticleCard({ article }: { article: RecommendPost }) {
                     </div>
                     <div className={style.rate}>
                         <span className={style.hit}>
-                            {parseFloat(article.tag.weekHitRateDisplay).toFixed(1)}
+                            {article.tag.weekHitRateDisplay
+                                ? parseFloat(article.tag.weekHitRateDisplay).toFixed(1)
+                                : '0.0'}
                             <i>%</i>
                         </span>
                         <span className={style.hitName}>命中率</span>

@@ -119,7 +119,8 @@ const OddsHintSchema = z.object({
     longOddsTeamId: z.number(),
     longOddsType: z.string(),
     longOddsTimes: z.number(),
-    leagueLevel: z.number()
+    leagueLevel: z.number(),
+    color: z.string()
 });
 
 export type OddsHintsType = 'WIN' | 'LOSE' | 'OVER' | 'UNDER';
@@ -311,6 +312,7 @@ const GetPredicativeAnalysisMatchSchema = z.object({
     leagueChs: z.string(),
     leagueCht: z.string(),
     leagueType: z.number(),
+    Color: z.string(),
     homeId: z.number(),
     homeEn: z.string(),
     homeChs: z.string(),

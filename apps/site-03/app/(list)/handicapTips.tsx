@@ -4,12 +4,12 @@ import { useState } from 'react';
 import { InfiniteScroll } from 'ui';
 import CircularProgress from '@mui/material/CircularProgress';
 import { timestampToString } from 'lib';
+import Link from 'next/link';
 import NoData from '@/components/baseNoData/noData';
 import { useLongDragonStore } from './longDragonStore';
 import defaultIcon from './img/defaultIcon.png';
 import iconHot from './img/hot.png';
 import style from './handicapTip.module.scss';
-import Link from 'next/link';
 
 interface RenderTeamProp {
     longOddsType: string;
@@ -32,7 +32,7 @@ function HandicapTips({ activeFilters }: { activeFilters: string[] }) {
                 if (filter === '3rd') return match.longOddsTimes === 3;
                 if (filter === '4rd') return match.longOddsTimes === 4;
                 if (filter === '4rdUp') return match.longOddsTimes > 4;
-                if (filter === 'hot') return match.leagueLevel === 1 || match.leagueLevel === 2;
+                if (filter === 'hot') return match.leagueLevel >= 1 && match.leagueLevel <= 100;
                 return false;
             });
         });
@@ -97,16 +97,18 @@ function HandicapTips({ activeFilters }: { activeFilters: string[] }) {
                 <>
                     {scrollList.map(item => (
                         <Link
+                            className={style.handicapTips}
                             href={`/football/${item.matchId}`}
+                            key={`${item.longOddsTeamId}-${item.matchId}`}
                             onClick={() => {
                                 setShowLongDragon(false);
                             }}
-                            className={style.handicapTips}
-                            key={`${item.longOddsTeamId}-${item.matchId}`}
                         >
                             <div className={style.title}>
                                 <div className={style.league}>
-                                    <div className={style.name}>{item.leagueChsShort}</div>
+                                    <div className={style.name} style={{ color: item.color }}>
+                                        {item.leagueChsShort}
+                                    </div>
                                     <div className={style.time}>
                                         {timestampToString(item.startTime, 'MM-DD HH:mm')}
                                     </div>
@@ -115,7 +117,7 @@ function HandicapTips({ activeFilters }: { activeFilters: string[] }) {
                                     </div>
                                 </div>
                                 <div className={style.play}>
-                                    {item.leagueLevel === 1 || item.leagueLevel === 2 ? (
+                                    {item.leagueLevel >= 1 && item.leagueLevel <= 10 ? (
                                         <div className={style.hot}>
                                             <Image alt="" className={style.image} src={iconHot} />
                                             <span>热</span>

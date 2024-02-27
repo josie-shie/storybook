@@ -86,11 +86,13 @@ function GameCard({ matchId }: { matchId: number }) {
                             </div>
                         </div>
                         <div className={style.playerPredict}>
-                            <div className={style.aiTitle}>
-                                <Link href={`/aiPredict/${matchId}`}>
-                                    <AiIcon />
-                                </Link>
-                            </div>
+                            {contestInfo.hasAiPredict ? (
+                                <div className={style.aiTitle}>
+                                    <Link href={`/aiPredict/${matchId}`}>
+                                        <AiIcon />
+                                    </Link>
+                                </div>
+                            ) : null}
                             <div className={style.text}>玩家预测</div>
                             <div className={style.people}>
                                 <MasterIcon />

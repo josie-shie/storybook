@@ -15,6 +15,8 @@ interface InitState {
 export type PlayTypeCheckBox = 'handicap' | 'overUnder';
 interface QueryFormState extends InitState {
     setLoading: (loading: boolean) => void;
+    loadingHeight: boolean;
+    setLoadingHeight: (loadingHeight: boolean) => void;
     dialogContentType: string;
     dialogContent: ReactNode;
     isOpenPayDrawer: boolean;
@@ -154,6 +156,15 @@ const initialState = (
             return {
                 ...state,
                 loading
+            };
+        });
+    },
+    loadingHeight: false,
+    setLoadingHeight: (loadingHeight: boolean) => {
+        set(state => {
+            return {
+                ...state,
+                loadingHeight
             };
         });
     },

@@ -8,6 +8,7 @@ import MagnifyingGlass from '@/app/aiBigData/analysisResult/img/magnifyingGlass.
 import { useNotificationStore } from '@/store/notificationStore';
 import { useAnalyticsResultStore } from '../../analysisResultStore';
 import { useMatchFilterStore } from '../../matchFilterStore';
+import { useQueryFormStore } from '../../../queryFormStore';
 import ContestCard from '../../components/contestCard/contestCard';
 import Footer from '../../components/footer/footer';
 import style from './handicap.module.scss';
@@ -19,6 +20,7 @@ import '@/app/football/[matchId]/dataTable.scss';
 function ContestList({ matchIds }: { matchIds: number[] }) {
     const [matchList, setMatchList] = useState<GetFootballStatsMatchesResponse>([]);
     const [isLoading, setIsLoading] = useState(false);
+    const setLoadingHeight = useQueryFormStore.use.setLoadingHeight();
 
     useEffect(() => {
         let ignore = false;
@@ -36,6 +38,7 @@ function ContestList({ matchIds }: { matchIds: number[] }) {
 
                 if (!ignore) {
                     setMatchList(res.data);
+                    setLoadingHeight(false);
                 }
             } finally {
                 setIsLoading(false);
@@ -44,6 +47,7 @@ function ContestList({ matchIds }: { matchIds: number[] }) {
         void fetchMatchList();
         return () => {
             ignore = true;
+            setLoadingHeight(true);
         };
     }, [matchIds]);
 

@@ -338,7 +338,10 @@ function ArticleContent({
                 </div>
 
                 <div className={style.otherList}>
-                    <div className={style.title}>Ta还推荐了... ({recommendationList.length})</div>
+                    <div className={style.title}>
+                        Ta还推荐了...
+                        {recommendationList.length > 0 ? recommendationList.length : null}
+                    </div>
                     <RecommendationList
                         isNoData={isNoData}
                         recommendationList={recommendationList}

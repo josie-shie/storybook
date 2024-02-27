@@ -162,7 +162,7 @@ function List({
                     setShowLongDragon(true);
                 }}
                 propsStyle={{
-                    height: 'calc(100dvh - 54px)'
+                    height: 'calc(100dvh - 152px)'
                 }}
             >
                 <LongDragonResult showLongDragon={showLongDragon} />

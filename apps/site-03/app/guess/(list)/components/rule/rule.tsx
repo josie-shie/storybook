@@ -1,5 +1,5 @@
 'use client';
-import { ButtonBase, Dialog, DialogTitle } from '@mui/material';
+import { ButtonBase, Dialog } from '@mui/material';
 import { useState } from 'react';
 import style from './rule.module.scss';
 
@@ -21,18 +21,56 @@ function Rule() {
                     <span onClick={handleClickOpen}>规则</span>
                 </div>
             </ButtonBase>
-            <Dialog onClose={handleClose} open={open}>
-                <DialogTitle>规则说明</DialogTitle>
+            <Dialog
+                PaperProps={{
+                    style: {
+                        borderRadius: '15px',
+                        width: '90%'
+                    }
+                }}
+                onClose={handleClose}
+                open={open}
+            >
                 <div className={style.ruleContent}>
+                    <div className={style.title}>规则</div>
                     <p>
-                        周榜：统计当天起前7日的方案，需发布15场以上（不含15场），按胜率排行。
-                        <br />
-                        月榜：统计当天起前30日的方案，需发布30场以上（不含30场），按胜率排行。
-                        <br />
-                        季榜：统计当天起前90日的方案，需发布90场以上（不含90场），按胜率排行。
-                        <br />
-                        连红榜：统计当天起前7日的方案，当用户竞猜≥5连红时即可上榜，且获得收费查看资格。
+                        排行榜分为【周】【月】【季】【连红】，所有榜单于每日中午12:00更新，根据胜率或连红次数排名（只统计已结算的方案）。
                     </p>
+                    <div className={style.row}>
+                        <h1>周榜</h1>
+                        <ul>
+                            <li>本榜单统计至当天起前7日内的竞猜方案。</li>
+                            <li>上榜条件：需发布超过15场（含）方案，胜率高于50％（含）以上。</li>
+                            <li>排序标准：按照胜率高低进行排行。</li>
+                        </ul>
+                    </div>
+                    <div className={style.row}>
+                        <h1>季榜</h1>
+                        <ul>
+                            <li>本榜单统计至当天起前7日内的竞猜方案。</li>
+                            <li>上榜条件：需发布超过15场（含）方案，胜率高于50％（含）以上。</li>
+                            <li>排序标准：按照胜率高低进行排行。</li>
+                        </ul>
+                    </div>
+                    <div className={style.row}>
+                        <h1>月榜</h1>
+                        <ul>
+                            <li>本榜单统计至当天起前7日内的竞猜方案。</li>
+                            <li>上榜条件：需发布超过15场（含）方案，胜率高于50％（含）以上。</li>
+                            <li>排序标准：按照胜率高低进行排行。</li>
+                        </ul>
+                    </div>
+                    <div className={style.row}>
+                        <h1>连红榜</h1>
+                        <ul>
+                            <li>本榜单统计至当天起前7日内的竞猜方案。</li>
+                            <li>上榜条件：需发布超过15场（含）方案，胜率高于50％（含）以上。</li>
+                            <li>排序标准：按照胜率高低进行排行。</li>
+                        </ul>
+                    </div>
+                    <button className={style.close} onClick={handleClose} type="button">
+                        关闭
+                    </button>
                 </div>
             </Dialog>
         </>
