@@ -38,7 +38,7 @@ function LeagueRankTables() {
     return (
         <div className={style.leaguePointsRankDetail}>
             <div className="topBar">
-                <h6 className="title">积分排名</h6>
+                <h6 className="title">积分排名(赛季/场均)</h6>
             </div>
             <ComparedTeamBar />
             {typeof awayTeam !== 'undefined' && (
@@ -79,7 +79,7 @@ function LeagueRankTables() {
                             homeTeam.total.getScore + awayTeam.total.getScore
                         )}
                         awayValue={`(${roundToDecimalPlace(
-                            awayTeam.total.totalCount / awayTeam.total.getScore,
+                            awayTeam.total.getScore / awayTeam.total.totalCount,
                             1
                         )})${awayTeam.total.getScore}`}
                         homeProgress={formatNumberWithPercent(
@@ -87,7 +87,7 @@ function LeagueRankTables() {
                             homeTeam.total.getScore + awayTeam.total.getScore
                         )}
                         homeValue={`${homeTeam.total.getScore}(${roundToDecimalPlace(
-                            homeTeam.total.totalCount / homeTeam.total.getScore,
+                            homeTeam.total.getScore / homeTeam.total.totalCount,
                             1
                         )})`}
                         title="进球"
@@ -98,7 +98,7 @@ function LeagueRankTables() {
                             homeTeam.total.loseScore + awayTeam.total.loseScore
                         )}
                         awayValue={`(${roundToDecimalPlace(
-                            awayTeam.total.totalCount / awayTeam.total.loseScore,
+                            awayTeam.total.loseScore / awayTeam.total.totalCount,
                             1
                         )})${awayTeam.total.loseScore}`}
                         homeProgress={formatNumberWithPercent(
@@ -106,7 +106,7 @@ function LeagueRankTables() {
                             homeTeam.total.loseScore + awayTeam.total.loseScore
                         )}
                         homeValue={`${homeTeam.total.loseScore}(${roundToDecimalPlace(
-                            homeTeam.total.totalCount / homeTeam.total.loseScore,
+                            homeTeam.total.loseScore / homeTeam.total.totalCount,
                             1
                         )})`}
                         title="失球"
