@@ -26,7 +26,7 @@ function GameCard({ matchId }: { matchId: number }) {
                 <div className={style.gameCard}>
                     <div className={style.left}>
                         <div className={style.gameTitle}>
-                            <span style={{ color: contestInfo.color }}>
+                            <span className={style.leagueName} style={{ color: contestInfo.color }}>
                                 {contestInfo.leagueName}
                             </span>
                             <span className={style.time}>
