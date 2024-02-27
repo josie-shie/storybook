@@ -34,13 +34,15 @@
 }
 
 .matchFilter {
-    padding: 12px;
+    padding: 16px;
+    padding-bottom: 0;
     position: relative;
 
     .title {
         display: flex;
         align-items: center;
         gap: 4px;
+        padding: 0 10px;
     }
 
     :global(.ui-tab-header) {
@@ -74,7 +76,7 @@
     }
 
     .tab {
-        margin-top: 8px;
+        margin-top: 6px;
     }
 
     .list {
@@ -87,6 +89,10 @@
             font-weight: 500;
             font-size: 12px;
             width: 100%;
+        }
+
+        & > div:first-of-type h3 {
+            margin-top: 0;
         }
 
         ul {
@@ -112,6 +118,13 @@
                 border-color: #4489ff;
             }
         }
+    }
+
+    .line {
+        position: absolute;
+        left: 0;
+        width: 100vw;
+        border-top: 1px solid #f3f3f3;
     }
 
     .tool {
