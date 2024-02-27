@@ -1,6 +1,5 @@
 'use client';
-import dayjs from 'dayjs';
-import { timestampToStringWeek } from 'lib';
+import { timestampToStringWeek, timestampToString } from 'lib';
 import type { ReactElement, Ref } from 'react';
 import { getContestList } from 'data-center';
 import type { ContestListType, ContestInfoType, GetContestListResponse } from 'data-center';
@@ -103,8 +102,7 @@ function ContestList({
     });
     const [isMounted, setIsMounted] = useState(false);
     const [isStreamline, setIsStreamline] = useState(true);
-    const endOfDayTimestamp = dayjs().endOf('day').unix();
-    let changeDayLine = true;
+    let changeDayLine: string | null = null;
     let matchFinishLine = true;
 
     const updateFilterList = (newList: FilterList) => {
@@ -315,10 +313,10 @@ function ContestList({
                             const state = contestInfo[matchId].state;
                             const content: ReactElement[] = [];
 
-                            if (
-                                status === 'all' &&
-                                changeDayLine &&
-                                matchTime > endOfDayTimestamp
+                            if (changeDayLine === null) {
+                                changeDayLine = timestampToString(matchTime, 'YYYY-MM-DD');
+                            } else if (
+                                timestampToString(matchTime, 'YYYY-MM-DD') !== changeDayLine
                             ) {
                                 content.push(
                                     <div
@@ -329,7 +327,7 @@ function ContestList({
                                     </div>
                                 );
 
-                                changeDayLine = false;
+                                changeDayLine = timestampToString(matchTime, 'YYYY-MM-DD');
                             }
 
                             if (status === 'all' && matchFinishLine && state === -1) {
