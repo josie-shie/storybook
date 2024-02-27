@@ -1,7 +1,8 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import Image from 'next/image';
+import ScrollTop from '@/components/scrollTop/scrollTop';
 import backLeftArrowImg from '../img/backLeftArrow.png';
 import GuessRecord from './guessRecord/guessRecord';
 import style from './myGuess.module.scss';
@@ -10,6 +11,7 @@ import MyGuessMyPlans from './myGuessMyPlans';
 
 function MyGuess() {
     const router = useRouter();
+    const scrollGuessRef = useRef<HTMLDivElement>(null);
     const [isOpenRecord, setIsOpenRecord] = useState(false);
 
     return (
@@ -31,11 +33,12 @@ function MyGuess() {
                 </div>
             </div>
 
-            <div className={style.myGuess}>
+            <div className={style.myGuess} ref={scrollGuessRef}>
                 <RecentPerformance />
                 <MyGuessMyPlans setIsOpenRecord={setIsOpenRecord} />
             </div>
             <GuessRecord isOpenRecord={isOpenRecord} setIsOpenRecord={setIsOpenRecord} />
+            <ScrollTop scrollContainerRef={scrollGuessRef} />
         </>
     );
 }

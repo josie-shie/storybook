@@ -175,20 +175,47 @@ function ContestList({
             targetContestInfo = contestInfo;
         }
 
-        return list.filter(item => {
-            if (
-                Object.keys(filterList.selectedTable).length > 0 &&
-                !filterList.selectedTable[targetContestInfo[item][filterGroup]]
-            ) {
-                return false;
-            }
-            const state =
-                Object.hasOwnProperty.call(globalStore, item) &&
-                globalStore[item].state !== undefined
-                    ? globalStore[item].state
-                    : targetContestInfo[item].state;
-            return typeof state === 'number' && statusFunc(state);
-        });
+        const resultStateValue = -1;
+
+        return list
+            .filter(item => {
+                if (
+                    Object.keys(filterList.selectedTable).length > 0 &&
+                    !filterList.selectedTable[targetContestInfo[item][filterGroup]]
+                ) {
+                    return false;
+                }
+                const state =
+                    Object.hasOwnProperty.call(globalStore, item) &&
+                    globalStore[item].state !== undefined
+                        ? globalStore[item].state
+                        : targetContestInfo[item].state;
+                return typeof state === 'number' && statusFunc(state);
+            })
+            .sort((a, b) => {
+                const stateA =
+                    Object.hasOwnProperty.call(globalStore, a) && globalStore[a].state !== undefined
+                        ? globalStore[a].state
+                        : targetContestInfo[a].state;
+                const stateB =
+                    Object.hasOwnProperty.call(globalStore, b) && globalStore[b].state !== undefined
+                        ? globalStore[b].state
+                        : targetContestInfo[b].state;
+
+                if (stateA === resultStateValue && stateB === resultStateValue) {
+                    const timestampA = targetContestInfo[a].matchTime;
+                    const timestampB = targetContestInfo[b].matchTime;
+                    return timestampA - timestampB;
+                }
+
+                if (stateA === resultStateValue && stateB !== resultStateValue) {
+                    return 1;
+                } else if (stateB === resultStateValue && stateA !== resultStateValue) {
+                    return -1;
+                }
+
+                return 0;
+            });
     };
 
     const sortByPinned = (list: number[], pinned: number[]): number[] => {

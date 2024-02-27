@@ -46,6 +46,10 @@ function UserInfoLayout({ children }: { children: ReactNode }) {
                     exit="exit"
                     initial="initial"
                     key={params}
+                    style={{
+                        width: '100%',
+                        position: 'fixed'
+                    }}
                     variants={pageTransitionVariants}
                 >
                     <FrozenRouter>{children}</FrozenRouter>

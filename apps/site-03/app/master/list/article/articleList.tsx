@@ -8,6 +8,7 @@ import { InfiniteScroll } from 'ui';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useUserStore } from '@/store/userStore';
 import NoData from '@/components/baseNoData/noData';
+import ScrollTop from '@/components/scrollTop/scrollTop';
 import style from './articleList.module.scss';
 import { creatArticleStore } from './articleStore';
 import ArticleCard from './components/articleCard/articleCard';
@@ -108,6 +109,7 @@ function ArticleList() {
                     </div>
                 )}
             </div>
+            <ScrollTop />
         </>
     );
 }

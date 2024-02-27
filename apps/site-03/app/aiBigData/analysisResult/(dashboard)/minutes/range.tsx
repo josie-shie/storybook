@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
-import GoalRangeChart from './components/goalRangeChart/goalRangeChart';
-import style from './range.module.scss';
+import { getFootballStatsMatches } from 'data-center';
+import { useNotificationStore } from '@/store/notificationStore';
 import { useMatchFilterStore } from '../../matchFilterStore';
 import { useAnalyticsResultStore } from '../../analysisResultStore';
-import { useNotificationStore } from '@/store/notificationStore';
-import { getFootballStatsMatches } from 'data-center';
+import GoalRangeChart from './components/goalRangeChart/goalRangeChart';
+import style from './range.module.scss';
 
 interface HeaderType {
     legend: string;
@@ -145,7 +145,7 @@ function Range() {
                 <GoalRangeChart chartList={headers} maxIndex={maxIndex} />
                 <div className={style.legend}>
                     {headers.map(header => (
-                        <span style={{ color: header.color }} key={header.legend}>
+                        <span key={header.legend} style={{ color: header.color }}>
                             <div className={style.dot} style={{ backgroundColor: header.color }} />
                             {header.legend}
                         </span>
@@ -165,12 +165,12 @@ function Range() {
                 ))}
                 {headers.map((header, index) => (
                     <TableCell
+                        cellIndex={index}
                         cellValue={header.value}
                         key={header.label}
+                        maxIndex={maxIndex}
                         openMatchListDrawer={openMatchListDrawer}
                         selectedType={header.label}
-                        cellIndex={index}
-                        maxIndex={maxIndex}
                     />
                 ))}
             </div>

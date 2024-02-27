@@ -4,6 +4,7 @@ import { Slick } from 'ui';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Footer from '@/components/footer/footer';
+import ScrollTop from '@/components/scrollTop/scrollTop';
 import style from './masterAvatar.module.scss';
 import Guess from './components/guess/guess';
 import MasterItem from './components/masterItem/masterItem';
@@ -76,6 +77,7 @@ function MasterAvatar({ params }: { params: { masterId: string } }) {
                 </Slick>
             </div>
             <Footer />
+            <ScrollTop />
         </>
     );
 }

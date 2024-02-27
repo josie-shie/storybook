@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import { Slick } from 'ui';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import ScrollTop from '@/components/scrollTop/scrollTop';
 import style from './memberAvatar.module.scss';
 import Guess from './components/guess/guess';
 import MemberItem from './components/memberItem/memberItem';
@@ -43,23 +44,26 @@ function MasterAvatar({ params }: { params: { memberId: string } }) {
         setSecondRender(true);
     }, []);
     return (
-        <div className={style.memberAvatar}>
-            <Slick
-                autoHeight
-                className={style.slick}
-                initialSlide={initialSlide}
-                onSlickEnd={onSlickEnd}
-                styling="underline"
-                tabs={tabList}
-            >
-                <div className={`${style.largeGap}`}>
-                    {secondRender || status === 'guess' ? <Guess params={params} /> : null}
-                </div>
-                <div className={`${style.largeGap}`}>
-                    {secondRender || status === 'focus' ? <MemberItem params={params} /> : null}
-                </div>
-            </Slick>
-        </div>
+        <>
+            <div className={style.memberAvatar}>
+                <Slick
+                    autoHeight
+                    className={style.slick}
+                    initialSlide={initialSlide}
+                    onSlickEnd={onSlickEnd}
+                    styling="underline"
+                    tabs={tabList}
+                >
+                    <div className={`${style.largeGap}`}>
+                        {secondRender || status === 'guess' ? <Guess params={params} /> : null}
+                    </div>
+                    <div className={`${style.largeGap}`}>
+                        {secondRender || status === 'focus' ? <MemberItem params={params} /> : null}
+                    </div>
+                </Slick>
+            </div>
+            <ScrollTop />
+        </>
     );
 }
 

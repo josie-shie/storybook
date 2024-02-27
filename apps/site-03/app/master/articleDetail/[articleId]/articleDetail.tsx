@@ -6,6 +6,7 @@ import { getPostDetail, getMemberProfileWithMemberId } from 'data-center';
 import type { GetMemberProfileWithMemberIdResponse, GetPostDetailResponse } from 'data-center';
 import type { GuessTeam, GuessType, PredictTypeWithLock } from '@/types/predict';
 import { useUserStore } from '@/store/userStore';
+import ScrollTop from '@/components/scrollTop/scrollTop';
 import Info from './info';
 import ArticleContent from './articleContent';
 
@@ -150,6 +151,7 @@ function ArticleDetail({ params }: { params: { articleId: string } }) {
                 isNoArticleData={isNoArticleData}
                 params={params}
             />
+            <ScrollTop />
         </>
     );
 }

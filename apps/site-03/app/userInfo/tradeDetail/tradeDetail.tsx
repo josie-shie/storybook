@@ -1,9 +1,9 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { getMemberTransactionList, type ChangeTypeCategory } from 'data-center';
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Skeleton } from '@mui/material';
+import ScrollTop from '@/components/scrollTop/scrollTop';
 import Header from '@/components/header/headerTitleDetail';
 import style from './tradeDetail.module.scss';
 import FilterIcon from './img/filterIcon.svg';
@@ -35,6 +35,7 @@ function DetailSkeleton() {
 
 function TradeDetail() {
     const router = useRouter();
+    const scrollTradeRef = useRef<HTMLDivElement>(null);
     const back = () => {
         router.push('/userInfo');
     };
@@ -80,7 +81,7 @@ function TradeDetail() {
     return (
         <>
             <Header back={back} title="交易明细" />
-            <div className={style.tradeDetail}>
+            <div className={style.tradeDetail} ref={scrollTradeRef}>
                 <p>交易明细</p>
                 <div className={style.selectBlock}>
                     <div
@@ -138,6 +139,7 @@ function TradeDetail() {
                     tradeType={tradeType}
                 />
             </div>
+            <ScrollTop scrollContainerRef={scrollTradeRef} />
         </>
     );
 }

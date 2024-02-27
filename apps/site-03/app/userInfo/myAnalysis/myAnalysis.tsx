@@ -1,12 +1,13 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { getUnlockedPost } from 'data-center';
 import { InfiniteScroll } from 'ui';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useUserStore } from '@/store/userStore';
 import NoData from '@/components/baseNoData/noData';
+import ScrollTop from '@/components/scrollTop/scrollTop';
 import backLeftArrowImg from '../img/backLeftArrow.png';
 import ArticleItem from './components/articleItem/articleItem';
 import style from './myAnalysis.module.scss';
@@ -15,6 +16,7 @@ import SkeletonLayout from './components/skeleton/skeleton';
 
 function MyAnalysis() {
     const router = useRouter();
+    const scrollAnalysisRef = useRef<HTMLDivElement>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
     const userInfo = useUserStore.use.userInfo();
@@ -61,7 +63,7 @@ function MyAnalysis() {
     const renderContent = () => {
         if (isLoading) {
             return (
-                <div className={style.main}>
+                <div className={style.main} ref={scrollAnalysisRef}>
                     <SkeletonLayout />
                 </div>
             );
@@ -69,7 +71,7 @@ function MyAnalysis() {
 
         if (articleList.length > 0) {
             return (
-                <div className={style.main}>
+                <div className={style.main} ref={scrollAnalysisRef}>
                     {articleList.map(item => (
                         <ArticleItem item={item} key={item.postId} />
                     ))}
@@ -89,7 +91,7 @@ function MyAnalysis() {
         }
 
         return (
-            <div className={style.main}>
+            <div className={style.main} ref={scrollAnalysisRef}>
                 <NoData text="暂无资料" />
             </div>
         );
@@ -114,6 +116,7 @@ function MyAnalysis() {
                 </div>
             </div>
             {renderContent()}
+            <ScrollTop scrollContainerRef={scrollAnalysisRef} />
         </>
     );
 }
