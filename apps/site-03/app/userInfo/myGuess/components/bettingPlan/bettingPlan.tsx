@@ -18,15 +18,41 @@ const iconMap = {
 };
 
 const messageFormat = (predictedPlay: string, item: MemberIndividualGuessMatch) => {
+    const commonSpan = (text: string) => (
+        <span className={item.predictionResult === 'WIN' ? style.red : style.gray}> {text}</span>
+    );
+
     switch (predictedPlay) {
         case 'OVER':
-            return `${item.overUnderOdds} 大`;
+            return (
+                <>
+                    <span>{item.overUnderOdds}</span>
+                    {commonSpan('大')}
+                </>
+            );
         case 'UNDER':
-            return `${item.overUnderOdds} 小`;
+            return (
+                <>
+                    <span>{item.overUnderOdds}</span>
+                    {commonSpan('小')}
+                </>
+            );
         case 'HOME':
-            return `${item.handicapInChinese} ${item.homeTeamName}`;
+            return (
+                <>
+                    <span>{item.handicapInChinese}</span>
+                    {commonSpan(item.homeTeamName)}
+                </>
+            );
         case 'AWAY':
-            return `${item.handicapInChinese} ${item.awayTeamName}`;
+            return (
+                <>
+                    <span>{item.handicapInChinese}</span>
+                    {commonSpan(item.awayTeamName)}
+                </>
+            );
+        default:
+            return null;
     }
 };
 
@@ -66,13 +92,7 @@ function BettingPlan({ rowData }: PropsType) {
                 </div>
             </div>
             <div className={style.bot}>
-                <div
-                    className={`${style.message} ${
-                        rowData.predictionResult === 'WIN' && style.red
-                    }`}
-                >
-                    {messageFormat(rowData.predictedPlay, rowData)}
-                </div>
+                <div className={style.message}>{messageFormat(rowData.predictedPlay, rowData)}</div>
             </div>
         </div>
     );
