@@ -7,54 +7,6 @@
     padding: 8px;
     border-bottom: 1px solid #f3f3f3;
 
-    .title {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        width: 100%;
-
-        .league {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-
-            .name {
-                color: #66ccff;
-                font-size: 14px;
-            }
-
-            .time {
-                color: #8d8d8d;
-                font-size: 14px;
-            }
-
-            .team {
-                color: #8d8d8d;
-                font-size: 12px;
-            }
-        }
-
-        .play {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-
-            .hot {
-                display: flex;
-                align-items: center;
-                gap: 2px;
-                font-size: 12px;
-                font-weight: 500;
-                color: #f85640;
-
-                .image {
-                    width: 10px;
-                    height: 12px;
-                }
-            }
-        }
-    }
-
     .content {
         display: flex;
         flex-direction: column;
@@ -103,6 +55,53 @@
         }
     }
 
+    .title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+
+        .league {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+
+            .name {
+                font-size: 14px;
+            }
+
+            .time {
+                color: #8d8d8d;
+                font-size: 14px;
+            }
+
+            .team {
+                color: #8d8d8d;
+                font-size: 12px;
+            }
+        }
+
+        .play {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+
+            .hot {
+                display: flex;
+                align-items: center;
+                gap: 2px;
+                font-size: 12px;
+                font-weight: 500;
+                color: #f85640;
+
+                .image {
+                    width: 10px;
+                    height: 12px;
+                }
+            }
+        }
+    }
+
     &:last-child {
         border-bottom: none;
     }
@@ -120,6 +119,6 @@
     p {
         color: #bfbfbf;
         font-size: 12px;
-        padding: 8px 0 18px 0;
+        padding: 8px 0 18px;
     }
 }

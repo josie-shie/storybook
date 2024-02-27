@@ -26,16 +26,12 @@
         .MuiTabs-root {
             min-height: 24px;
         }
-    }
 
-    :global {
         .MuiTabs-flexContainer {
             align-items: center;
             gap: 16px;
         }
-    }
 
-    :global {
         .MuiButtonBase-root {
             padding: 0;
             color: #8d8d8d;
@@ -44,15 +40,11 @@
             min-width: initial;
             min-height: 20px;
         }
-    }
 
-    :global {
         .MuiTab-root.Mui-selected {
             color: #4489ff;
         }
-    }
 
-    :global {
         .MuiTabs-indicator {
             background-color: #4489ff;
         }
@@ -61,7 +53,7 @@
 
 .wrapper {
     width: 100%;
-    height: calc(100dvh - 168px);
+    height: calc(100dvh - 266px);
     overflow: scroll;
 
     .analyze {

@@ -89,10 +89,15 @@ function LongDragonResult({ showLongDragon }: { showLongDragon: boolean }) {
         }
 
         const sortList = res.data.sort((a, b) => {
-            if (a.leagueLevel === 1 || b.leagueLevel === 1) {
-                return a.leagueLevel === 1 ? -1 : 1;
-            } else if (a.leagueLevel === 2 || b.leagueLevel === 2) {
-                return a.leagueLevel === 2 ? -1 : 1;
+            if (a.leagueLevel === 0 && b.leagueLevel !== 0) {
+                return 1;
+            } else if (a.leagueLevel !== 0 && b.leagueLevel === 0) {
+                return -1;
+            } else if (a.leagueLevel === 0 && b.leagueLevel === 0) {
+                return a.startTime - b.startTime;
+            }
+            if (a.leagueLevel !== b.leagueLevel) {
+                return a.leagueLevel - b.leagueLevel;
             }
             return a.startTime - b.startTime;
         });

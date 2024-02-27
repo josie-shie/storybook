@@ -34,6 +34,7 @@ export const GET_ODDS_HINT_LIST_QUERY = `
                 longOddsType
                 longOddsTimes
                 leagueLevel
+                color
             }
         }
     }
