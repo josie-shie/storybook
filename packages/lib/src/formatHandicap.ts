@@ -97,12 +97,24 @@ export const victoryMinusResult = (homeScore: number, awayScore: number): string
     return 'tie';
 };
 
-export const handicapResult = (homeScore: number, awayScore: number, handicap: number): string => {
+export const handicapResult = (
+    homeScore: number,
+    awayScore: number,
+    handicap: number,
+    isHomeTeam = true
+): string => {
     const targetValue = awayScore + handicap;
-    if (homeScore > targetValue) {
-        return 'win';
-    } else if (homeScore < targetValue) {
+    if (isHomeTeam) {
+        if (homeScore > targetValue) {
+            return 'win';
+        } else if (homeScore < targetValue) {
+            return 'lose';
+        }
+    } else if (homeScore > targetValue) {
         return 'lose';
+    } else if (homeScore < targetValue) {
+        return 'win';
     }
+
     return 'go';
 };

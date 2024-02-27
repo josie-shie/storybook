@@ -791,9 +791,10 @@ export const getRecentMatchData = async ({
 
                     // 贏率 - 贏輸走
                     match.handicapResult = handicapResult(
-                        match.awayScore,
                         match.homeScore,
-                        match.handicapInit
+                        match.awayScore,
+                        match.handicapInit,
+                        false
                     );
                     winLoseFactory[match.handicapResult as 'win' | 'lose' | 'go']('home');
                 }
@@ -810,7 +811,7 @@ export const getRecentMatchData = async ({
 
         if (single !== 'away') {
             for (const match of matchList.away) {
-                if (match.awayId === awayId) {
+                if (match.homeId === awayId) {
                     // 進失球
                     dashboard.away.goalMissRate.goal += match.awayScore;
                     dashboard.away.goalMissRate.miss += match.homeScore;
@@ -821,8 +822,8 @@ export const getRecentMatchData = async ({
 
                     // 贏率 - 贏輸走
                     match.handicapResult = handicapResult(
-                        match.awayScore,
                         match.homeScore,
+                        match.awayScore,
                         match.handicapInit
                     );
                     winLoseFactory[match.handicapResult as 'win' | 'lose' | 'go']('away');
@@ -839,7 +840,8 @@ export const getRecentMatchData = async ({
                     match.handicapResult = handicapResult(
                         match.homeScore,
                         match.awayScore,
-                        match.handicapInit
+                        match.handicapInit,
+                        false
                     );
                     winLoseFactory[match.handicapResult as 'win' | 'lose' | 'go']('away');
                 }

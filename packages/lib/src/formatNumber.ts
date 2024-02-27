@@ -14,7 +14,7 @@ export function truncateFloatingPoint(target: number, decimalPlaces: number) {
  */
 
 export function roundToDecimalPlace(target: number, decimalPlaces: number) {
-    if (!target || !decimalPlaces) {
+    if (!target) {
         return 0;
     }
     return Number(target.toFixed(decimalPlaces));
