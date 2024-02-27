@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { getGuessProportion, addGuess } from 'data-center';
 import { useParams } from 'next/navigation';
 import { ProgressBar } from 'ui';
@@ -149,13 +149,12 @@ function GuessBar() {
     const userInfo = useUserStore.use.userInfo();
     const isLogin = useUserStore.use.isLogin();
     const matchId = Number(useParams().matchId);
+    const [isShowGuessBar, setIsShowGuessBar] = useState(true);
 
     const showNotification = useContestDetailStore.use.showNotification();
     const notificationMessage = useContestDetailStore.use.notificationMessage();
     const setGuessProportion = useContestDetailStore.use.setGuessProportion();
-    const setCoveredType = useContestDetailStore.use.setCoveredType();
     const setShowNotification = useContestDetailStore.use.setShowNotification();
-    const liveBarRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
         async function fetchGuessProportion() {
@@ -163,35 +162,19 @@ function GuessBar() {
                 matchId,
                 memberId: isLogin ? userInfo.uid : 1
             });
-            if (guessProportion.success) setGuessProportion(guessProportion.data);
+            if (guessProportion.success) {
+                setGuessProportion(guessProportion.data);
+                setIsShowGuessBar(
+                    guessProportion.data.handicapInChinese !== '平手' ||
+                        guessProportion.data.overUnder.toString() !== '0'
+                );
+            }
         }
         void fetchGuessProportion();
     }, [isLogin, matchId, setGuessProportion, userInfo.uid]);
 
-    useEffect(() => {
-        const currentRef = liveBarRef.current;
-        const observer = new IntersectionObserver(
-            ([entry]) => {
-                setCoveredType(entry.isIntersecting);
-            },
-            {
-                threshold: 0.3
-            }
-        );
-
-        if (currentRef) {
-            observer.observe(currentRef);
-        }
-
-        return () => {
-            if (currentRef) {
-                observer.unobserve(currentRef);
-            }
-        };
-    }, [setCoveredType]);
-
-    return (
-        <div className={style.guessBar} ref={liveBarRef}>
+    return isShowGuessBar ? (
+        <div className={style.guessBar}>
             <Notification
                 handleClose={() => {
                     setShowNotification(false);
@@ -203,7 +186,7 @@ function GuessBar() {
             <Guess isLogin={isLogin} play="HANDICAP" />
             <Guess isLogin={isLogin} play="OVERUNDER" />
         </div>
-    );
+    ) : null;
 }
 
 export default GuessBar;
