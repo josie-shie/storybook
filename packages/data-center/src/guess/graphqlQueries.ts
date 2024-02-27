@@ -24,6 +24,7 @@ export const GET_TODAY_GUESS_MATCHES_QUERY = `
                 state
                 homeLogo
                 awayLogo
+                hasAiPredict
             }
         }
     }

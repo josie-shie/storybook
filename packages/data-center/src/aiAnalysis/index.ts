@@ -311,6 +311,7 @@ const GetPredicativeAnalysisMatchSchema = z.object({
     leagueChs: z.string(),
     leagueCht: z.string(),
     leagueType: z.number(),
+    Color: z.string(),
     homeId: z.number(),
     homeEn: z.string(),
     homeChs: z.string(),

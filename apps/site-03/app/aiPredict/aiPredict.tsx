@@ -78,7 +78,9 @@ function MatchItem({
             }}
         >
             <div className={style.league}>
-                <span className={style.name}>{match.leagueChs}</span>
+                <span className={style.name} style={{ color: match.Color }}>
+                    {match.leagueChs}
+                </span>
                 <span className={style.time}>
                     {timestampToString(match.matchTime, 'MM-DD HH:mm')}
                 </span>

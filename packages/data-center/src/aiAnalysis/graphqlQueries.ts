@@ -232,6 +232,7 @@ export const GET_PREDICATIVE_ANALYSIS_MATCH_QUERY = `
             leagueChs
             leagueCht
             leagueType
+            Color
             homeId
             homeEn
             homeChs

@@ -41,7 +41,8 @@ const GetTodayGuessMatchSchema = z.object({
     guessed: z.boolean(),
     state: z.number(),
     homeLogo: z.string(),
-    awayLogo: z.string()
+    awayLogo: z.string(),
+    hasAiPredict: z.boolean()
 });
 
 export type GetTodayGuessMatch = z.infer<typeof GetTodayGuessMatchSchema>;
