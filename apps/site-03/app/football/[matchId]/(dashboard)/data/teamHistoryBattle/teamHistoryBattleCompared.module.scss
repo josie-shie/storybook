@@ -39,6 +39,12 @@
 
             .circleProgress {
                 transform: rotateY(-180deg);
+
+                :global {
+                    .MuiCircularProgress-circle {
+                        color: #276ce1;
+                    }
+                }
             }
 
             .value {
