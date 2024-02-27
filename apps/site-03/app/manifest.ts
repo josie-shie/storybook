@@ -11,24 +11,28 @@ export default function manifest(): MetadataRoute.Manifest {
         description: 'The best sport site!',
         icons: [
             {
-                src: '/logo/launch_48.png',
-                sizes: '48x48',
-                type: 'image/png'
-            },
-            {
-                src: '/logo/launch_72.png',
-                sizes: '72x72',
-                type: 'image/png'
-            },
-            {
-                src: '/logo/launch_192.png',
+                src: '/logo/manifest-icon-192.maskable.png',
                 sizes: '192x192',
-                type: 'image/png'
+                type: 'image/png',
+                purpose: 'any'
             },
             {
-                src: '/logo/launch_512.png',
+                src: '/logo/manifest-icon-192.maskable.png',
+                sizes: '192x192',
+                type: 'image/png',
+                purpose: 'maskable'
+            },
+            {
+                src: '/logo/manifest-icon-512.maskable.png',
                 sizes: '512x512',
-                type: 'image/png'
+                type: 'image/png',
+                purpose: 'any'
+            },
+            {
+                src: '/logo/manifest-icon-512.maskable.png',
+                sizes: '512x512',
+                type: 'image/png',
+                purpose: 'maskable'
             }
         ]
     };
