@@ -1,6 +1,6 @@
 'use client';
 import Image from 'next/image';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import type { GetSingleMatchResponse, ContestInfo } from 'data-center';
 import { GameStatus } from 'ui';
@@ -277,6 +277,30 @@ function LiveBox({
         return weatherInfo.length > 0 ? <div>{weatherInfo.join('，')}</div> : null;
     };
 
+    const liveBarRef = useRef<HTMLDivElement | null>(null);
+    const setCoveredType = useContestDetailStore.use.setCoveredType();
+    useEffect(() => {
+        const currentRef = liveBarRef.current;
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                setCoveredType(entry.isIntersecting);
+            },
+            {
+                threshold: 0.3
+            }
+        );
+
+        if (currentRef) {
+            observer.observe(currentRef);
+        }
+
+        return () => {
+            if (currentRef) {
+                observer.unobserve(currentRef);
+            }
+        };
+    }, [setCoveredType]);
+
     return (
         <div className={style.liveBox} style={{ backgroundImage: `url(${bgImage.src})` }}>
             <Header back={back} interceptData={interceptData} matchId={matchId} />
@@ -313,7 +337,7 @@ function LiveBox({
                     </div>
                 </div>
             </div>
-            <div className={style.weatherInfo}>
+            <div className={style.weatherInfo} ref={liveBarRef}>
                 {matchDetail.weather ? getWeatherIcon(matchDetail.weather) : null}
                 {formatWeatherInfo()}
             </div>
