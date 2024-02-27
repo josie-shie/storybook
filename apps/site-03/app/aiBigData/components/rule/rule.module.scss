@@ -1,7 +1,12 @@
 .rule {
-    color: #4489ff;
+    position: absolute;
+    top: 166px;
+    right: 16px;
+    color: #fff;
+    padding: 8px;
     font-size: 12px;
     font-weight: 500;
+    z-index: 1000;
 }
 
 .ruleContent {

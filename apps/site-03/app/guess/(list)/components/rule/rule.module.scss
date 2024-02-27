@@ -5,6 +5,58 @@
 }
 
 .ruleContent {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
     font-size: 14px;
-    padding: 0 14px 14px;
+    padding: 16px;
+
+    .title {
+        font-size: 18px;
+        font-weight: 600;
+        color: #222;
+    }
+
+    p {
+        font-size: 12px;
+        font-weight: 400;
+        color: #4a4a4a;
+    }
+
+    .row {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        width: 100%;
+
+        h1 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #4a4a4a;
+        }
+
+        ul {
+            padding-left: 20px;
+
+            li {
+                font-size: 12px;
+                font-weight: 400;
+                color: #4a4a4a;
+                list-style-type: disc;
+            }
+        }
+    }
+}
+
+.close {
+    width: 100%;
+    padding: 5px 20px;
+    color: #4489ff;
+    font-size: 14px;
+    font-weight: 500;
+    background: transparent;
+    border: 1px solid #4489ff;
+    border-radius: 50px;
 }
