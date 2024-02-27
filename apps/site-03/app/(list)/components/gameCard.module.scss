@@ -166,12 +166,14 @@
                 flex: 1;
 
                 .card {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
                     min-width: 10px;
-                    height: 12px;
-                    border-radius: 2px;
-                    text-align: center;
+                    height: 14px;
                     font-size: 11px;
                     font-family: Staatliches, sans-serif;
+                    border-radius: 2px;
                 }
 
                 .redCard {
