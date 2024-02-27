@@ -231,39 +231,50 @@ function LiveBox({
             return (
                 <>
                     <CloudyIcon />
-                    <p>雲</p>
+                    <p>雲，</p>
                 </>
             );
         } else if ([9, 10].includes(id)) {
             return (
                 <>
                     <RainIcon />
-                    <p>雨</p>
+                    <p>雨，</p>
                 </>
             );
         } else if ([6, 11, 12].includes(id)) {
             return (
                 <>
                     <ThunderIcon />
-                    <p>雷</p>
+                    <p>雷，</p>
                 </>
             );
         } else if (id === 4) {
             return (
                 <>
                     <SnowIcon />
-                    <p>雪</p>
+                    <p>雪，</p>
                 </>
             );
         } else if (id === 5) {
             return (
                 <>
                     <SunIcon />
-                    <p>晴</p>
+                    <p>晴，</p>
                 </>
             );
         }
         return null;
+    };
+
+    const formatWeatherInfo = () => {
+        const { temperature, wind, pressure } = matchDetail;
+        const weatherInfo = [
+            temperature && `气温${temperature}`,
+            wind && `风速${wind}`,
+            pressure && `气压${pressure}`
+        ].filter(Boolean);
+
+        return weatherInfo.length > 0 ? <div>{weatherInfo.join('，')}</div> : null;
     };
 
     return (
@@ -303,11 +314,8 @@ function LiveBox({
                 </div>
             </div>
             <div className={style.weatherInfo}>
-                {matchDetail.weather ? getWeatherIcon(matchDetail.weather) : null}，
-                <div>气温{matchDetail.temperature}，</div>
-                <div>风速{matchDetail.wind}，</div>
-                <div>气压{matchDetail.pressure}，</div>
-                <div>濕度{matchDetail.humidity}</div>
+                {matchDetail.weather ? getWeatherIcon(matchDetail.weather) : null}
+                {formatWeatherInfo()}
             </div>
             <Animate />
             <GoalAnimation contestDetail={contestDetail} matchId={matchId} />
