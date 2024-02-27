@@ -55,7 +55,7 @@ function BettingPlan({ rowData }: PropsType) {
             <div className={style.top}>
                 {rowData.leagueName}{' '}
                 <span className={style.time}>
-                    ß | {timestampToString(rowData.matchTime, 'MM-DD HH:mm')}
+                    | {timestampToString(rowData.matchTime, 'MM-DD HH:mm')}
                 </span>
             </div>
             <div className={style.mid}>
