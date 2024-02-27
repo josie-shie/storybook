@@ -360,7 +360,6 @@ function ContestFilter({
         <>
             <div className={`${style.filterButton} ui-filter-button`} onClick={onOpen}>
                 <FilterIcon className={`${style.filterIcon} ui-filter-button-icon`} />
-                赛事筛选
             </div>
             <Filter
                 initCountry={country}

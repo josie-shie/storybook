@@ -35,3 +35,10 @@ export const daysFromToday = (unixTimestamp: number, targetUnixTimestamp?: numbe
 
     return result;
 };
+
+export const timestampToStringWeek = (unixTimestamp: number) => {
+    const weekdays = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
+    const week = weekdays[new Date(unixTimestamp * 1000).getDay()];
+
+    return `${dayjs.unix(unixTimestamp).format('YYYY-MM-DD')} ${week}`;
+};

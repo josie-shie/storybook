@@ -1,7 +1,9 @@
 'use client';
+import dayjs from 'dayjs';
+import { timestampToStringWeek } from 'lib';
+import type { ReactElement, Ref } from 'react';
 import { getContestList } from 'data-center';
 import type { ContestListType, ContestInfoType, GetContestListResponse } from 'data-center';
-import type { Ref } from 'react';
 import { useEffect, useState, forwardRef } from 'react';
 import { InfiniteScroll, slickOption } from 'ui';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -95,12 +97,15 @@ function ContestList({
     const setResultContestList = useContestListStore.use.setResultContestList();
     const setResultContestInfo = useContestListStore.use.setResultContestInfo();
     const pinnedContest = useContestListStore.use.pinnedContest();
-    const [isMounted, setIsMounted] = useState(false);
-
     const [filterList, setFilterList] = useState<FilterList>({
         group: 'league',
         selectedTable: {}
     });
+    const [isMounted, setIsMounted] = useState(false);
+    const [isStreamline, setIsStreamline] = useState(true);
+    const endOfDayTimestamp = dayjs().endOf('day').unix();
+    let changeDayLine = true;
+    let matchFinishLine = true;
 
     const updateFilterList = (newList: FilterList) => {
         setFilterList(newList);
@@ -185,6 +190,15 @@ function ContestList({
                 ) {
                     return false;
                 }
+
+                if (
+                    isStreamline &&
+                    targetContestInfo[item].hasHandicapOdd &&
+                    targetContestInfo[item].hasOverUnderOdd
+                ) {
+                    return false;
+                }
+
                 const state =
                     Object.hasOwnProperty.call(globalStore, item) &&
                     globalStore[item].state !== undefined
@@ -265,13 +279,28 @@ function ContestList({
     return (
         <>
             <div className={style.toolbar}>
-                <FootballFilter
-                    statusFunc={statusTable[status]}
-                    updateFilterList={updateFilterList}
-                />
-                <div className={style.setting} onClick={switchSetting}>
-                    <SettingIcon className={style.settingIcon} />
-                    设置
+                <div
+                    className={style.streamlineBar}
+                    onClick={() => {
+                        setIsStreamline(!isStreamline);
+                    }}
+                >
+                    <div className={`${style.streamlineOption} ${isStreamline && style.active}`}>
+                        精简
+                    </div>
+                    <div className={style.divider} />
+                    <div className={`${style.streamlineOption} ${!isStreamline && style.active}`}>
+                        完整
+                    </div>
+                </div>
+                <div className={style.optionBar}>
+                    <FootballFilter
+                        statusFunc={statusTable[status]}
+                        updateFilterList={updateFilterList}
+                    />
+                    <div className={style.setting} onClick={switchSetting}>
+                        <SettingIcon className={style.settingIcon} />
+                    </div>
                 </div>
             </div>
             {isLoading ? (
@@ -282,13 +311,49 @@ function ContestList({
                 <>
                     <ul className={style.contestList}>
                         {displayList.map((matchId, index) => {
-                            return (
+                            const matchTime = contestInfo[matchId].matchTime;
+                            const state = contestInfo[matchId].state;
+                            const content: ReactElement[] = [];
+
+                            if (
+                                status === 'all' &&
+                                changeDayLine &&
+                                matchTime > endOfDayTimestamp
+                            ) {
+                                content.push(
+                                    <div
+                                        className={style.dividerBar}
+                                        key={`date_${index.toString()}`}
+                                    >
+                                        {timestampToStringWeek(matchTime)}
+                                    </div>
+                                );
+
+                                changeDayLine = false;
+                            }
+
+                            if (status === 'all' && matchFinishLine && state === -1) {
+                                content.push(
+                                    <div
+                                        className={style.dividerBar}
+                                        key={`date_${index.toString()}`}
+                                    >
+                                        已结束
+                                    </div>
+                                );
+
+                                matchFinishLine = false;
+                            }
+
+                            content.push(
                                 <GameCard key={matchId} matchId={matchId} status={status}>
                                     {status === 'all' && index === 3 && (
                                         <BaseBanner className={style.banner} />
                                     )}
                                 </GameCard>
                             );
+
+                            return content;
                         })}
                         {status !== 'all' && displayList.length === 0 && <NoData text="暂无资料" />}
                     </ul>

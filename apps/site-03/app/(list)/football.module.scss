@@ -29,14 +29,44 @@
     align-items: center;
     padding: 0 12px;
 
-    .setting {
+    .streamlineBar {
         display: flex;
         align-items: center;
-        font-size: 14px;
         column-gap: 4px;
-        font-weight: 600;
-        line-height: normal;
-        color: #8d8d8d;
+
+        .divider {
+            width: 1px;
+            height: 8px;
+            background-color: #8d8d8d;
+            border-radius: 10px;
+        }
+
+        .streamlineOption {
+            position: relative;
+            font-size: 14px;
+            font-weight: 500;
+            color: #8d8d8d;
+
+            &.active {
+                color: #4489ff;
+            }
+        }
+    }
+
+    .optionBar {
+        display: flex;
+        align-items: center;
+        column-gap: 16px;
+
+        .setting {
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+            column-gap: 4px;
+            font-weight: 600;
+            line-height: normal;
+            color: #8d8d8d;
+        }
     }
 
     :global {
@@ -61,6 +91,17 @@
 .contestList {
     display: flex;
     flex-direction: column;
+
+    .dividerBar {
+        height: 24px;
+        background-color: #f3f3f3;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #8d8d8d;
+        font-size: 12px;
+        font-weight: 500;
+    }
 }
 
 .dateHolder {
