@@ -16,7 +16,7 @@ import headerBg from './components/authComponent/img/headerBg.jpeg';
 import closeIcon from './components/authComponent/img/closeIcon.png';
 import style from './authDrawer.module.scss';
 import backIcon from './components/authComponent/img/backIcon.png';
-import titleIcon from './img/title.png';
+import TitleIcon from './img/title.svg';
 
 function AuthDrawer() {
     const pathname = usePathname();
@@ -43,7 +43,7 @@ function AuthDrawer() {
             setTitle(<p>注册</p>);
         } else if (authQuery === 'login') {
             setAuthContent(<Login />);
-            setTitle(<Image alt="" height={40} src={titleIcon} width={116} />);
+            setTitle(<TitleIcon />);
         } else if (authQuery === 'forgetPassword') {
             setAuthContent(<ForgetPassword />);
             setTitle(<p>忘记密码</p>);
