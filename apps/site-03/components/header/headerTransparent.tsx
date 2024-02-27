@@ -7,10 +7,11 @@ import style from './header.module.scss';
 import backLeftArrowImg from './img/backLeftArrow.png';
 import Profile from './components/profile/profile';
 import Notice from './components/notice/notice';
-import UserIcon from './img/user.svg';
+import LogoIcon from './img/logoIcon.svg';
+import Logo from './img/logo.svg';
 
 interface HeaderProps {
-    title: string;
+    title?: string;
     srcPath?: string;
     backHandler?: () => void;
     children?: ReactNode;
@@ -77,10 +78,10 @@ function HeaderTransparent({ title, srcPath, backHandler, children, back = true 
                             width={24}
                         />
                     ) : (
-                        <UserIcon />
+                        <LogoIcon />
                     )}
 
-                    <div className={style.text}>{title}</div>
+                    {title ? <div className={style.text}>{title}</div> : <Logo />}
                 </div>
                 {isClientSide
                     ? children || (
