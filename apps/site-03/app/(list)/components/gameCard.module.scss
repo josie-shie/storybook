@@ -228,6 +228,10 @@
                 column-gap: 8px;
                 font-size: 14px;
                 font-weight: 500;
+
+                &.closeOdd {
+                    color: #bfbfbf;
+                }
             }
 
             &.left {

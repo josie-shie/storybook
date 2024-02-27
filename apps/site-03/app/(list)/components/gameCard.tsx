@@ -182,7 +182,7 @@ function OddsInfo({
                         </motion.button>
                     )}
                 </div>
-                <span className={style.odd}>
+                <span className={`${style.odd} ${HandicapIsClose && style.closeOdd}`}>
                     {!contestInfo.hasHandicapOdd && (
                         <>
                             {HandicapIsClose ? (
@@ -229,7 +229,7 @@ function OddsInfo({
                 </p>
             </div>
             <div className={`${style.oddBox} ${style.right}`}>
-                <span className={style.odd}>
+                <span className={`${style.odd} ${OverUnderIsClose && style.closeOdd}`}>
                     {!contestInfo.hasOverUnderOdd && (
                         <>
                             {OverUnderIsClose ? (
