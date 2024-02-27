@@ -184,6 +184,7 @@ function AnalysisResult() {
     const handicapOddsSelected = useQueryFormStore.use.handicapOddsSelected();
     const loading = useQueryFormStore.use.loading();
     const setLoading = useQueryFormStore.use.setLoading();
+    const loadingHeight = useQueryFormStore.use.loadingHeight();
     const setAnalysisResultData = useAnalyticsResultStore.use.setAnalysisResultData();
     const setHandicapEchart = useAnalyticsResultStore.use.setHandicapEchart();
     const isAnalysisBySearch = useQueryFormStore.use.isAnalysisBySearch();
@@ -356,7 +357,7 @@ function AnalysisResult() {
                     buttonRadius={tabStyle.buttonRadius}
                     defaultValue={defaultPageIndex}
                     gap={tabStyle.gap}
-                    loadingHeight={loading}
+                    loadingHeight={loadingHeight}
                     onTabChange={value => {
                         handlePlanTabClick(value);
                     }}
