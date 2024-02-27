@@ -65,7 +65,7 @@ async function RootLayout({ children }: { children: ReactNode }) {
         <html lang="cn">
             <head>
                 <meta content="yes" name="apple-mobile-web-app-capable" />
-                <link href="/logo/apple-icon-180.png" rel="apple-touch-icon" />
+                <link href="/logo/launch.png" rel="apple-touch-icon" />
                 <link
                     href="/logo/apple-splash-2048-2732.jpg"
                     media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)"
