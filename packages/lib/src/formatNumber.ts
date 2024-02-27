@@ -14,7 +14,7 @@ export function truncateFloatingPoint(target: number, decimalPlaces: number) {
  */
 
 export function roundToDecimalPlace(target: number, decimalPlaces: number) {
-    if (target === 0) {
+    if (!target || !decimalPlaces) {
         return 0;
     }
     return Number(target.toFixed(decimalPlaces));
@@ -35,7 +35,7 @@ export function formatNumberWithCommas(total: number): string {
  * - (total: 目標值)
  */
 export function formatNumberWithPercent(target: number, total: number): number {
-    if (total === 0) {
+    if (!target || !total) {
         return 0;
     }
     return Math.round((target / total) * 100);
