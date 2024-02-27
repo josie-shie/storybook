@@ -3,7 +3,7 @@
 import type { ContestInfo, ContestInfoType } from 'data-center';
 import { GameStatus } from 'ui';
 import { motion } from 'framer-motion';
-import { parseMatchInfo } from 'lib';
+import { parseMatchInfo, handicapResult, convertHandicap } from 'lib';
 import Link from 'next/link';
 import Image from 'next/image';
 import type { MouseEvent, ReactNode } from 'react';
@@ -20,6 +20,32 @@ import CornerIcon from './img/corner.svg';
 import UpIcon from './img/up.svg';
 
 type Status = 'all' | 'progress' | 'schedule' | 'result';
+
+enum ResultName {
+    Lose = 'lose',
+    Minus = 'minus',
+    Win = 'win',
+    Victory = 'victory',
+    Go = 'go',
+    Tie = 'tie',
+    Goal = 'goal',
+    Miss = 'miss',
+    Big = 'big',
+    Small = 'small'
+}
+
+const resultNameMap = {
+    [ResultName.Lose]: '输',
+    [ResultName.Minus]: '负',
+    [ResultName.Win]: '赢',
+    [ResultName.Victory]: '胜',
+    [ResultName.Go]: '走',
+    [ResultName.Tie]: '平',
+    [ResultName.Goal]: '进',
+    [ResultName.Miss]: '失',
+    [ResultName.Big]: '大',
+    [ResultName.Small]: '小'
+};
 
 function ExtraInfo({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId: number }) {
     const globalStore = useLiveContestStore.use.contestInfo();
@@ -128,16 +154,6 @@ function OddsInfo({
         setPinnedContest({ matchId });
     };
 
-    const hideHandicap =
-        contestInfo.handicapHomeCurrentOdds === 0 &&
-        contestInfo.handicapCurrent === '0' &&
-        contestInfo.handicapAwayCurrentOdds === 0;
-
-    const hideOverUnder =
-        contestInfo.overUnderOverCurrentOdds === 0 &&
-        contestInfo.overUnderCurrent === '0' &&
-        contestInfo.overUnderUnderCurrentOdds === 0;
-
     const HandicapIsClose =
         (typeof syncData.handicapClosed !== 'undefined' && syncData.handicapClosed) ||
         contestInfo.handicapClosed;
@@ -167,7 +183,7 @@ function OddsInfo({
                     )}
                 </div>
                 <span className={style.odd}>
-                    {!hideHandicap && (
+                    {!contestInfo.hasHandicapOdd && (
                         <>
                             {HandicapIsClose ? (
                                 <>
@@ -214,7 +230,7 @@ function OddsInfo({
             </div>
             <div className={`${style.oddBox} ${style.right}`}>
                 <span className={style.odd}>
-                    {!hideOverUnder && (
+                    {!contestInfo.hasOverUnderOdd && (
                         <>
                             {OverUnderIsClose ? (
                                 <>
@@ -322,11 +338,6 @@ function TopArea({
         formattedString: 'HH:mm'
     });
 
-    const hideHandicap =
-        contestInfo.handicapHomeCurrentOdds === 0 &&
-        contestInfo.handicapCurrent === '0' &&
-        contestInfo.handicapAwayCurrentOdds === 0;
-
     const matchState = syncData.state || contestInfo.state;
     const matchStartTime = syncData.startTime || contestInfo.startTime;
     const matchHalfStartTime = syncData.halfStartTime || contestInfo.halfStartTime;
@@ -371,14 +382,30 @@ function TopArea({
                 {status === 'result' ? (
                     <div
                         className={`${style.resultBar} ${
-                            contestInfo.homeScore > contestInfo.awayScore && style.win
+                            style[
+                                handicapResult(
+                                    contestInfo.homeScore,
+                                    contestInfo.awayScore,
+                                    contestInfo.handicapInit
+                                )
+                            ]
                         }`}
                     >
-                        {hideHandicap ? null : (
+                        {contestInfo.hasHandicapInit ? null : (
                             <>
-                                <p className={style.handicap}>{contestInfo.handicapCurrent}</p>
+                                <p className={style.handicap}>
+                                    {convertHandicap(contestInfo.handicapInit)}
+                                </p>
                                 <p className={style.result}>
-                                    {contestInfo.homeScore > contestInfo.awayScore ? '赢' : '输'}
+                                    {
+                                        resultNameMap[
+                                            handicapResult(
+                                                contestInfo.homeScore,
+                                                contestInfo.awayScore,
+                                                contestInfo.handicapInit
+                                            )
+                                        ]
+                                    }
                                 </p>
                             </>
                         )}

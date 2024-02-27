@@ -50,14 +50,27 @@ const ContestInfoSchema = z.object({
     temperature: z.string(),
     wind: z.string(),
     pressure: z.string(),
-    humidity: z.string()
+    humidity: z.string(),
+    handicapInit: z.number(),
+    handicapHomeInitOdds: z.number(),
+    handicapAwayInitOdds: z.number(),
+    overUnderInit: z.number(),
+    overUnderOverInitOdds: z.number(),
+    overUnderUnderInitOdds: z.number()
 });
 
 export type OriginalContestInfo = z.infer<typeof ContestInfoSchema>;
 
-export type ContestInfo = Omit<OriginalContestInfo, 'handicapCurrent' | 'overUnderCurrent'> & {
+export type ContestInfo = Omit<
+    OriginalContestInfo,
+    'handicapCurrent' | 'overUnderCurrent' | 'overUnderInit'
+> & {
     handicapCurrent: string;
     overUnderCurrent: string;
+    overUnderInit: string;
+    hasHandicapOdd: boolean;
+    hasOverUnderOdd: boolean;
+    hasHandicapInit: boolean;
 };
 
 const GetContestListResultSchema = z.object({
@@ -116,7 +129,24 @@ export const getContestList = async (
                 overUnderOverCurrentOdds: truncateFloatingPoint(item.overUnderOverCurrentOdds, 2),
                 overUnderUnderCurrentOdds: truncateFloatingPoint(item.overUnderUnderCurrentOdds, 2),
                 handicapAwayCurrentOdds: truncateFloatingPoint(item.handicapAwayCurrentOdds, 2),
-                handicapHomeCurrentOdds: truncateFloatingPoint(item.handicapHomeCurrentOdds, 2)
+                handicapHomeCurrentOdds: truncateFloatingPoint(item.handicapHomeCurrentOdds, 2),
+                handicapHomeInitOdds: truncateFloatingPoint(item.handicapHomeInitOdds, 2),
+                handicapAwayInitOdds: truncateFloatingPoint(item.handicapAwayInitOdds, 2),
+                overUnderInit: convertHandicap(item.overUnderInit),
+                overUnderOverInitOdds: truncateFloatingPoint(item.overUnderOverInitOdds, 2),
+                overUnderUnderInitOdds: truncateFloatingPoint(item.overUnderUnderInitOdds, 2),
+                hasHandicapOdd:
+                    item.handicapCurrent === 0 &&
+                    item.handicapHomeCurrentOdds === 0 &&
+                    item.handicapAwayCurrentOdds === 0,
+                hasOverUnderOdd:
+                    item.overUnderCurrent === 0 &&
+                    item.overUnderOverCurrentOdds === 0 &&
+                    item.overUnderUnderCurrentOdds === 0,
+                hasHandicapInit:
+                    item.handicapInit === 0 &&
+                    item.handicapHomeInitOdds === 0 &&
+                    item.handicapAwayInitOdds === 0
             };
         }
         return {

@@ -116,12 +116,19 @@
             justify-items: flex-end;
             align-items: center;
             column-gap: 8px;
-            color: #00b976;
             font-size: 12px;
             font-weight: 500;
 
             &.win {
                 color: #e95e6b;
+            }
+
+            &.lose {
+                color: #00b976;
+            }
+
+            &.go {
+                color: #4489ff;
             }
         }
     }

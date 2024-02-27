@@ -88,6 +88,12 @@ export const GET_CONTEST_LIST_QUERY = `
                 wind
                 pressure
                 humidity
+                handicapInit
+                handicapHomeInitOdds
+                handicapAwayInitOdds
+                overUnderInit
+                overUnderOverInitOdds
+                overUnderUnderInitOdds
             }
         }
     }
