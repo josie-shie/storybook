@@ -66,17 +66,19 @@
 
     .left {
         .gameTitle {
-            color: #6cf;
+            display: flex;
             font-size: 14px;
             margin-top: 4px;
+            font-weight: 600;
+            color: #4489ff;
+
+            .leagueName {
+                min-width: 60px;
+                margin-right: 6px;
+            }
 
             .time {
                 color: #8d8d8d;
-            }
-
-            span {
-                font-weight: 600;
-                color: #4489ff;
             }
         }
 
