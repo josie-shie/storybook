@@ -18,27 +18,20 @@ function IsVipProfile() {
     };
 
     return (
-        <div className={style.profile}>
+        <div
+            className={style.profile}
+            onClick={() => {
+                isLogin ? router.push('/userInfo') : openLoginDrawer();
+            }}
+        >
             <StarIcon className={style.icon} />
             <div className={style.totalNumber}>
                 {isLogin && typeof userInfo.balance === 'number' ? (
-                    <div
-                        className={style.loginButton}
-                        onClick={() => {
-                            router.push('/userInfo');
-                        }}
-                    >
+                    <div className={style.loginButton}>
                         {formatNumberWithCommas(userInfo.balance)}
                     </div>
                 ) : (
-                    <div
-                        className={style.loginButton}
-                        onClick={() => {
-                            openLoginDrawer();
-                        }}
-                    >
-                        登入注册
-                    </div>
+                    <div className={style.loginButton}>登入注册</div>
                 )}
             </div>
         </div>
