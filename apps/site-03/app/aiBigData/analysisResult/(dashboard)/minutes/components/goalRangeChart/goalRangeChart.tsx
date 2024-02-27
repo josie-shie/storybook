@@ -79,7 +79,16 @@ function GoalRangeChart({ chartList, maxIndex }: { chartList: ChartType[]; maxIn
                 return {
                     value: item.value.length,
                     name: item.label,
-                    itemStyle: { borderWidth: 2, borderColor: '#fff', color: item.color }
+                    itemStyle: { borderWidth: 2, borderColor: '#fff', color: item.color },
+                    label: {
+                        show: true,
+                        position: 'outside'
+                    },
+                    emphasis: {
+                        label: {
+                            show: false
+                        }
+                    }
                 };
             });
 
@@ -96,7 +105,7 @@ function GoalRangeChart({ chartList, maxIndex }: { chartList: ChartType[]; maxIn
                 borderColor: '#FF4343',
                 borderWidth: 1,
                 padding: 0,
-                formatter: function (params: TooltipParams) {
+                formatter(params: TooltipParams) {
                     return ActivedTooltip({
                         label: params.name
                     });
@@ -108,7 +117,7 @@ function GoalRangeChart({ chartList, maxIndex }: { chartList: ChartType[]; maxIn
             },
             series: [
                 {
-                    name: '進球數區間',
+                    name: '进球数区间',
                     type: 'pie',
                     radius: ['35%', '65%'],
                     data: seriesList,
@@ -130,6 +139,11 @@ function GoalRangeChart({ chartList, maxIndex }: { chartList: ChartType[]; maxIn
         if (echartsRef.current) {
             const chartInstance = echartsRef.current.getEchartsInstance();
             chartInstance.dispatchAction({
+                type: 'highlight',
+                seriesIndex: 0,
+                dataIndex: maxIndex
+            });
+            chartInstance.dispatchAction({
                 type: 'showTip',
                 seriesIndex: 0,
                 dataIndex: maxIndex
@@ -144,8 +158,8 @@ function GoalRangeChart({ chartList, maxIndex }: { chartList: ChartType[]; maxIn
                     <div className={style.title}>进球数区间</div>
                 </div>
                 <ReactEcharts
-                    ref={echartsRef}
                     option={options}
+                    ref={echartsRef}
                     style={{ width: '100%', height: '200px' }}
                 />
             </div>

@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react';
-import style from './minutes.module.scss';
+import type { GoalsIn15MinsType } from 'data-center';
+import { getFootballStatsMatches } from 'data-center';
+import { useNotificationStore } from '@/store/notificationStore';
 import { useMatchFilterStore } from '../../matchFilterStore';
 import { useAnalyticsResultStore } from '../../analysisResultStore';
-import { useNotificationStore } from '@/store/notificationStore';
-import { GoalsIn15MinsType, getFootballStatsMatches } from 'data-center';
+import Footer from '../../components/footer/footer';
+import style from './minutes.module.scss';
 import FifteenMinutesChart from './components/fifteenMinutesChart/fifteenMinutesChart';
 import MinutesTable from './components/minutesTable/minutesTable';
 import Range from './range';
-import Footer from '../../components/footer/footer';
 
 function MinutesContent({
     list,
@@ -70,13 +71,13 @@ function MinutesContent({
             <div className={style.contaniner}>
                 {list.map((item, index) => (
                     <MinutesTable
+                        currentIndex={index}
                         key={headers[index]}
                         label={headers[index]}
                         lower={item.goalsUnder}
+                        maxIndexList={maxOverValueIndex}
                         openMatchListDrawer={openMatchListDrawer}
                         upper={item.goalsOver}
-                        currentIndex={index}
-                        maxIndexList={maxOverValueIndex}
                     />
                 ))}
             </div>
@@ -114,13 +115,11 @@ function Minutes() {
     }, [analysisRecord]);
 
     return (
-        <>
-            <div className={style.minutes}>
-                <MinutesContent list={list} maxOverValueIndex={maxOverValueIndex} />
-                <Range />
-                <Footer />
-            </div>
-        </>
+        <div className={style.minutes}>
+            <MinutesContent list={list} maxOverValueIndex={maxOverValueIndex} />
+            <Range />
+            <Footer />
+        </div>
     );
 }
 
