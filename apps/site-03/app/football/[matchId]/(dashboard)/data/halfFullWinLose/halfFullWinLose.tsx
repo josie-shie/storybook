@@ -30,7 +30,7 @@ const typeListMap = {
     drawDefeat: '平负',
     defeatVictory: '负胜',
     defeatDraw: '负平',
-    defeatDefeat: '负胜'
+    defeatDefeat: '负负'
 };
 
 const teamList = ['homeField', 'awayField', 'allField'];

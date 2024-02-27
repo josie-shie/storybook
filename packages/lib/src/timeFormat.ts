@@ -24,7 +24,11 @@ export const timestampToTodayTime = (unixTimestamp: number) => {
 
 export const daysFromToday = (unixTimestamp: number, targetUnixTimestamp?: number): string => {
     const date = dayjs.unix(unixTimestamp);
-    const targetDate = targetUnixTimestamp ? dayjs.unix(targetUnixTimestamp) : dayjs();
+    let targetDate = targetUnixTimestamp ? dayjs.unix(targetUnixTimestamp) : dayjs();
+
+    if (date.isAfter(targetDate)) {
+        targetDate = targetDate.add(1, 'day');
+    }
 
     const diffDays = targetDate.diff(date, 'day');
     const result = `${Math.abs(diffDays)}天`;

@@ -58,7 +58,7 @@ function ScheduleTable({
                                 <div className="td">
                                     <p className={`homeName `}>{match.homeChs}</p>
                                     <p className="scoreBox">
-                                        {match.status > 0 || match.status === -1
+                                        {match.status === -1
                                             ? `${match.homeScore}-${match.awayScore}`
                                             : 'VS'}
                                     </p>
