@@ -264,6 +264,8 @@ function MixedLineChart({
             x: {
                 display: true,
                 ticks: {
+                    maxRotation: 0,
+                    minRotation: 0,
                     color({ index }: { index: number }) {
                         if (index === clickedLabel) {
                             return 'red';
