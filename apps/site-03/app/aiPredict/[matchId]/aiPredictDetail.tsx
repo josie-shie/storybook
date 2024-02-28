@@ -56,12 +56,7 @@ function TypingText({
 
         type();
     }, [matchTime, home, away]);
-    return (
-        <>
-            {text}
-            <span className={style.typing} />
-        </>
-    );
+    return <>{text}</>;
 }
 
 function MatchItem({
@@ -279,10 +274,12 @@ function AiPredictDetail({ params }: { params: { matchId: string } }) {
     return (
         <>
             <div className={style.aiPredict}>
-                <div className={style.title}>FutureAI 2.0</div>
                 <div className={style.content}>
                     <div className={style.welcome}>
-                        <AiAvatar />
+                        <div className={style.row}>
+                            <AiAvatar />
+                            <div className={style.title}>FutureAI 1.5</div>
+                        </div>
                         <div className={style.text}>您好，为您推荐以下赛事预测分析：</div>
                     </div>
 
