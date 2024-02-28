@@ -73,7 +73,7 @@ function MasterItem({ params }: { params: { masterId } }) {
             return;
         }
 
-        router.push(`/master/masterAvatar/${id}?status=analysis`);
+        router.push(`/master/masterAvatar/${id}?status=guess`);
     };
 
     useEffect(() => {

@@ -51,7 +51,7 @@ function Info({ article, info, isNoInfoData, setInfo }: InfoProps) {
     };
 
     const goMasterPredict = (id: number) => {
-        router.push(`/master/masterAvatar/${id}?status=analysis`);
+        router.push(`/master/masterAvatar/${id}?status=guess`);
     };
 
     const getText = predictedPlay => {

@@ -161,14 +161,14 @@ function ArticleCard({ article }: { article: RecommendPost }) {
                 <div className={style.user}>
                     <Link
                         className={style.avatarContainer}
-                        href={`/master/masterAvatar/${article.mentorId}?status=analysis`}
+                        href={`/master/masterAvatar/${article.mentorId}?status=guess`}
                     >
                         <Avatar borderColor="#4489FF" src={article.avatarPath} />
                     </Link>
                     <div className={style.userInfo}>
                         <Link
                             className={style.userName}
-                            href={`/master/masterAvatar/${article.mentorId}?status=analysis`}
+                            href={`/master/masterAvatar/${article.mentorId}?status=guess`}
                         >
                             {article.mentorName}
                         </Link>

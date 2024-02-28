@@ -62,7 +62,7 @@ function RecordCard({ recordItem }: { recordItem: MemberGuessViewingRecord }) {
             <div className={style.detail}>
                 <Link
                     className={style.avatar}
-                    href={`/master/masterAvatar/${recordItem.recordMemberId}?status=analysis`}
+                    href={`/master/masterAvatar/${recordItem.recordMemberId}?status=guess`}
                 >
                     <Avatar />
                 </Link>

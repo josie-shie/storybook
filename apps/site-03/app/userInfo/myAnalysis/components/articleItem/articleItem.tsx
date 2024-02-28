@@ -121,14 +121,14 @@ function ArticleItem({ item }: GetUnlockPostProps) {
             <div className={style.user}>
                 <Link
                     className={style.avatarContainer}
-                    href={`/master/masterAvatar/${item.mentorId}?status=analysis`}
+                    href={`/master/masterAvatar/${item.mentorId}?status=guess`}
                 >
                     <Avatar borderColor="#4489FF" src={item.avatarPath} />
                 </Link>
                 <div className={style.userInfo}>
                     <Link
                         className={style.userName}
-                        href={`/master/masterAvatar/${item.mentorId}?status=analysis`}
+                        href={`/master/masterAvatar/${item.mentorId}?status=guess`}
                     >
                         {item.mentorName}
                     </Link>
