@@ -23,16 +23,25 @@ function GameCard({ matchId }: { matchId: number }) {
     return (
         <section>
             <Link href={`/guess/detail/${matchId}`}>
+                <div className={style.gameTitle}>
+                    <div>
+                        <span className={style.leagueName} style={{ color: contestInfo.color }}>
+                            {contestInfo.leagueName}
+                        </span>
+                        <span className={style.time}>
+                            {contestInfo.matchTime ? currentMatchTime : null}
+                        </span>
+                    </div>
+                    {contestInfo.hasAiPredict ? (
+                        <div className={style.aiTitle}>
+                            <Link href={`/aiPredict/${matchId}`}>
+                                <AiIcon />
+                            </Link>
+                        </div>
+                    ) : null}
+                </div>
                 <div className={style.gameCard}>
                     <div className={style.left}>
-                        <div className={style.gameTitle}>
-                            <span className={style.leagueName} style={{ color: contestInfo.color }}>
-                                {contestInfo.leagueName}
-                            </span>
-                            <span className={style.time}>
-                                {contestInfo.matchTime ? currentMatchTime : null}
-                            </span>
-                        </div>
                         <div className={style.team}>
                             <div className={style.homeTeamName}>
                                 <Image
@@ -86,13 +95,6 @@ function GameCard({ matchId }: { matchId: number }) {
                             </div>
                         </div>
                         <div className={style.playerPredict}>
-                            {contestInfo.hasAiPredict ? (
-                                <div className={style.aiTitle}>
-                                    <Link href={`/aiPredict/${matchId}`}>
-                                        <AiIcon />
-                                    </Link>
-                                </div>
-                            ) : null}
                             <div className={style.text}>玩家预测</div>
                             <div className={style.people}>
                                 <MasterIcon />
