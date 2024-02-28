@@ -292,7 +292,11 @@ function TeamInfo({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId:
                 </div>
                 <div className={style.teamName}>{contestInfo.homeChs}</div>
             </div>
-            <div className={`${style.score} ui-game-card-score`}>
+            <div
+                className={`${style.score} ${
+                    syncData.state === -1 || (contestInfo.state === -1 && style.finishScore)
+                } ui-game-card-score`}
+            >
                 {(syncData.state || contestInfo.state) !== 0 ? (
                     <>
                         {syncData.homeScore || contestInfo.homeScore}-
