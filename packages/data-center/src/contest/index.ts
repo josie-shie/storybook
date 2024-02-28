@@ -5,7 +5,12 @@ import type { ReturnData, FetchResultData } from '../common';
 import { GET_CONTEST_LIST_QUERY } from './graphqlQueries';
 
 const ContestInfoSchema = z.object({
+    leagueId: z.number(),
+    leagueEn: z.string(),
+    leagueEnShort: z.string(),
     leagueChsShort: z.string(),
+    leagueChtShort: z.string(),
+    leagueLevel: z.number(),
     awayChs: z.string(),
     awayCorner: z.number(),
     awayHalfScore: z.number(),
@@ -42,7 +47,6 @@ const ContestInfoSchema = z.object({
     homeLogo: z.string(),
     awayLogo: z.string(),
     status: z.number(),
-    leagueLevel: z.number(),
     mobileLiveUrl: z.string(),
     pcLiveUrl: z.string(),
     hasIntelligence: z.boolean(),

@@ -184,27 +184,28 @@ function ContestList({
         const resultStateValue = -1;
 
         let resultData = list
-            .filter(item => {
+            .filter(matchId => {
                 if (
                     Object.keys(filterList.selectedTable).length > 0 &&
-                    !filterList.selectedTable[targetContestInfoMap[status][item][filterGroup]]
+                    !filterList.selectedTable[targetContestInfoMap[status][matchId][filterGroup]]
                 ) {
                     return false;
                 }
 
                 if (
                     isStreamline &&
-                    targetContestInfoMap[status][item].hasHandicapOdd &&
-                    targetContestInfoMap[status][item].hasOverUnderOdd
+                    typeof targetContestInfoMap[status][matchId] !== 'undefined' &&
+                    targetContestInfoMap[status][matchId].hasHandicapOdd &&
+                    targetContestInfoMap[status][matchId].hasOverUnderOdd
                 ) {
                     return false;
                 }
 
                 const state =
-                    Object.hasOwnProperty.call(globalStore, item) &&
-                    globalStore[item].state !== undefined
-                        ? globalStore[item].state
-                        : targetContestInfoMap[status][item].state;
+                    Object.hasOwnProperty.call(globalStore, matchId) &&
+                    globalStore[matchId].state !== undefined
+                        ? globalStore[matchId].state
+                        : targetContestInfoMap[status][matchId].state;
                 return typeof state === 'number' && statusFunc(state);
             })
             .sort((a, b) => {

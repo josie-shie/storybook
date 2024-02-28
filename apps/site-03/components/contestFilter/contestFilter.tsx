@@ -2,7 +2,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Tab, Tabs } from 'ui';
-import type { ContestInfoType } from 'data-center';
+import type { ContestInfoType, ContestInfo } from 'data-center';
 import { formatFilterMap, type FilterMap } from 'lib';
 import BottomDrawer from '@/components/drawer/bottomDrawer';
 import style from './contestFilter.module.scss';
@@ -24,7 +24,8 @@ function FilterSection({
     filterSubmit,
     selectAll,
     revertFilter,
-    filterCounter
+    filterCounter,
+    filterHotLeagueInfo
 }: {
     group: 'league' | 'country';
     onClose: () => void;
@@ -35,6 +36,7 @@ function FilterSection({
     selectAll: (group: GroupType) => void;
     revertFilter: (group: GroupType) => void;
     filterCounter: { league: number; country: number };
+    filterHotLeagueInfo?: ContestInfo[];
 }) {
     const submit = () => {
         if (filterCounter[group] < 1) return;
@@ -70,6 +72,32 @@ function FilterSection({
 
     return (
         <>
+            {filterHotLeagueInfo ? (
+                <div className={style.list}>
+                    <div>
+                        <h3>热门</h3>
+                        <ul>
+                            {filterHotLeagueInfo.map((hotLeague, idx) => (
+                                <motion.li
+                                    className={`${style.item} ${
+                                        filterSelected[group][hotLeague.leagueChsShort]
+                                            ? style.selected
+                                            : ''
+                                    }`}
+                                    key={`${group}_${hotLeague.leagueId}_${idx.toString()}`}
+                                    onClick={() => {
+                                        filterPick(hotLeague.leagueChsShort, group);
+                                    }}
+                                    whileTap={{ scale: 0.9 }}
+                                >
+                                    {hotLeague.leagueChsShort}
+                                </motion.li>
+                            ))}
+                        </ul>
+                    </div>
+                </div>
+            ) : null}
+
             <div className={style.list}>{filterList}</div>
             <div className={style.tool}>
                 <div className={style.functionButton}>
@@ -118,6 +146,7 @@ function Filter({
     initFilterSelected,
     initFilterCounter,
     initLeague,
+    initHotLeague,
     initCountry
 }: {
     isOpen: boolean;
@@ -126,6 +155,7 @@ function Filter({
     updateFilterList: (newList: FilterList) => void;
     initFilterSelected: { league: Record<string, boolean>; country: Record<string, boolean> };
     initFilterCounter: { league: number; country: number };
+    initHotLeague: ContestInfo[];
     initLeague: FilterMap;
     initCountry: FilterMap;
 }) {
@@ -273,6 +303,7 @@ function Filter({
                                 <Tab label="赛事" value="contest">
                                     <FilterSection
                                         filterCounter={filterCounter}
+                                        filterHotLeagueInfo={initHotLeague}
                                         filterInfo={filterInfo}
                                         filterPick={filterPick}
                                         filterSelected={filterSelected}
@@ -347,14 +378,29 @@ function ContestFilter({
     };
 
     const initFilter = (contestInfoParams: ContestInfoType) => {
+        const selectedLeagueIds = new Set<number>();
+        const hotLeagues: ContestInfo[] = [];
+
+        const sortedContestsByLeagueLevel = Object.values(contestInfoParams).sort(
+            (a, b) => a.leagueLevel - b.leagueLevel
+        );
+
+        for (const contest of sortedContestsByLeagueLevel) {
+            if (hotLeagues.length >= 9) break;
+            if (!selectedLeagueIds.has(contest.leagueId)) {
+                selectedLeagueIds.add(contest.leagueId);
+                hotLeagues.push(contest);
+            }
+        }
+
         const league = formatFilterMap(contestInfoParams, 'leagueChsShort');
         const country = formatFilterMap(contestInfoParams, 'countryCn');
         const { filterSelected, filterCounter } = formatCounterAndSelected(league, country);
 
-        return { filterSelected, filterCounter, league, country };
+        return { filterSelected, filterCounter, league, country, hotLeagues };
     };
 
-    const { filterSelected, filterCounter, league, country } = initFilter(contestInfo);
+    const { filterSelected, filterCounter, league, country, hotLeagues } = initFilter(contestInfo);
 
     return (
         <>
@@ -365,6 +411,7 @@ function ContestFilter({
                 initCountry={country}
                 initFilterCounter={filterCounter}
                 initFilterSelected={filterSelected}
+                initHotLeague={hotLeagues}
                 initLeague={league}
                 isOpen={isOpen}
                 onClose={onClose}
