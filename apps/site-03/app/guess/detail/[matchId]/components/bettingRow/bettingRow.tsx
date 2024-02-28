@@ -63,7 +63,7 @@ function BettingRow({ detail, leftLabel, rightLabel }: BettingProps) {
             return;
         }
 
-        if (isShowGuessPresent) {
+        if (isShowGuessPercent) {
             const isHomeAwayGuessed = leftLabel === '主' && detail.guessHomeAway !== 'none';
             const isBigSmallGuessed = leftLabel !== '主' && detail.guessBigSmall !== 'none';
 
