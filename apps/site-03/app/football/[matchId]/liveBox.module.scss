@@ -167,11 +167,18 @@
         min-height: 100%;
     }
 
-    .backIcon {
+    .backBox {
         position: absolute;
-        top: 16px;
-        left: 12px;
+        top: 13px;
+        left: 9px;
         z-index: 100;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #00000080;
+        border-radius: 50%;
     }
 }
 

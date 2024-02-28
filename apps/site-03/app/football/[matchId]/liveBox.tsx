@@ -110,7 +110,9 @@ function Animate() {
             {showAnimate && matchDetail.hasAnimation ? (
                 <div className={style.animateBox}>
                     <iframe src={showAnimate} title="sport animate" />
-                    <BackIcon className={style.backIcon} onClick={back} />
+                    <div className={style.backBox}>
+                        <BackIcon className={style.backIcon} onClick={back} />
+                    </div>
                 </div>
             ) : null}
         </>
