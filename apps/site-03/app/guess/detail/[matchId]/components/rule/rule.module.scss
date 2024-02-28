@@ -24,6 +24,7 @@
         flex-direction: column;
         gap: 8px;
         width: 100%;
+        line-height: normal;
 
         h1 {
             font-size: 16px;
@@ -39,6 +40,10 @@
                 font-weight: 400;
                 color: #4a4a4a;
                 list-style-type: disc;
+
+                &.number {
+                    list-style-type: auto;
+                }
             }
         }
     }
