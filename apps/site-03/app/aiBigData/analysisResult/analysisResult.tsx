@@ -41,7 +41,7 @@ function LeaveResultPage() {
                             router.push('/aiBigData/queryForm');
                         }}
                     >
-                        返回AI智能分析主页
+                        返回AI数据分析主页
                     </div>
                 </div>
 

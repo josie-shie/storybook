@@ -1,9 +1,9 @@
 import { getFootballStatsMatches } from 'data-center';
-import { useAnalyticsResultStore } from '../../analysisResultStore';
-import style from './bodan.module.scss';
-import { useNotificationStore } from '@/store/notificationStore';
-import { useMatchFilterStore } from '../../matchFilterStore';
 import { useEffect, useState } from 'react';
+import { useNotificationStore } from '@/store/notificationStore';
+import { useAnalyticsResultStore } from '../../analysisResultStore';
+import { useMatchFilterStore } from '../../matchFilterStore';
+import style from './bodan.module.scss';
 
 interface ItemType {
     score: string;
@@ -120,35 +120,35 @@ function Bodan() {
         setHighlightValues(newHighLightValue);
         setScore([
             { score: '1-0', matches: newScoreListMapping['1-0'] || [] },
-            { score: '0-1', matches: newScoreListMapping['0-1'] || [] },
             { score: '0-0', matches: newScoreListMapping['0-0'] || [] },
+            { score: '0-1', matches: newScoreListMapping['0-1'] || [] },
             { score: '2-0', matches: newScoreListMapping['2-0'] || [] },
-            { score: '0-2', matches: newScoreListMapping['0-2'] || [] },
             { score: '1-1', matches: newScoreListMapping['1-1'] || [] },
+            { score: '0-2', matches: newScoreListMapping['0-2'] || [] },
             { score: '2-1', matches: newScoreListMapping['2-1'] || [] },
-            { score: '1-2', matches: newScoreListMapping['1-2'] || [] },
             { score: '2-2', matches: newScoreListMapping['2-2'] || [] },
+            { score: '1-2', matches: newScoreListMapping['1-2'] || [] },
             { score: '3-0', matches: newScoreListMapping['3-0'] || [] },
-            { score: '0-3', matches: newScoreListMapping['0-3'] || [] },
             { score: '3-3', matches: newScoreListMapping['3-3'] || [] },
+            { score: '0-3', matches: newScoreListMapping['0-3'] || [] },
             { score: '3-1', matches: newScoreListMapping['3-1'] || [] },
-            { score: '1-3', matches: newScoreListMapping['1-3'] || [] },
             { score: '4-4', matches: newScoreListMapping['4-4'] || [] },
+            { score: '1-3', matches: newScoreListMapping['1-3'] || [] },
             { score: '3-2', matches: newScoreListMapping['3-2'] || [] },
-            { score: '2-3', matches: newScoreListMapping['2-3'] || [] },
             { score: '其他', matches: newScoreListMapping.else || [] },
+            { score: '2-3', matches: newScoreListMapping['2-3'] || [] },
             { score: '4-0', matches: newScoreListMapping['4-0'] || [] },
+            { score: '', matches: [] },
             { score: '0-4', matches: newScoreListMapping['0-4'] || [] },
-            { score: '', matches: [] },
             { score: '4-1', matches: newScoreListMapping['4-1'] || [] },
+            { score: '', matches: [] },
             { score: '1-4', matches: newScoreListMapping['1-4'] || [] },
-            { score: '', matches: [] },
             { score: '4-2', matches: newScoreListMapping['4-2'] || [] },
-            { score: '2-4', matches: newScoreListMapping['2-4'] || [] },
             { score: '', matches: [] },
+            { score: '2-4', matches: newScoreListMapping['2-4'] || [] },
             { score: '4-3', matches: newScoreListMapping['4-3'] || [] },
-            { score: '3-4', matches: newScoreListMapping['3-4'] || [] },
-            { score: '', matches: [] }
+            { score: '', matches: [] },
+            { score: '3-4', matches: newScoreListMapping['3-4'] || [] }
         ]);
     }, [analysisRecord]);
 
