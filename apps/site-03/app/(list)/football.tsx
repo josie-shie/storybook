@@ -3,8 +3,8 @@ import { timestampToStringWeek, timestampToString } from 'lib';
 import dayjs from 'dayjs';
 import type { ReactElement, Ref } from 'react';
 import { getContestList } from 'data-center';
-import type { ContestListType, ContestInfoType, GetContestListResponse } from 'data-center';
-import { useEffect, useState, forwardRef } from 'react';
+import type { ContestListType } from 'data-center';
+import { useEffect, useState, forwardRef, useCallback, useRef } from 'react';
 import { InfiniteScroll, slickOption } from 'ui';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useLiveContestStore } from '@/store/liveContestStore';
@@ -12,7 +12,7 @@ import type { FilterList } from '@/components/contestFilter/contestFilter';
 import NoData from '@/components/baseNoData/noData';
 import GameCard from './components/gameCard';
 import style from './football.module.scss';
-import { createContestListStore, useContestListStore } from './contestListStore';
+import { useContestListStore } from './contestListStore';
 import BaseDatePicker from './components/baseDatePicker/baseDatePicker';
 import SettingIcon from './img/setting.svg';
 import Setting from './components/setting';
@@ -40,9 +40,9 @@ function DatePicker({
 
     return (
         <>
-            {(status === 'schedule' || status === 'result') && (
+            {(status === 'schedule' || status === 'result') && isMounted ? (
                 <div className={style.dateHolder}>
-                    {status === 'schedule' && isMounted ? (
+                    {status === 'schedule' ? (
                         <BaseDatePicker
                             defaultDate={new Date(Number(scheduleDate))}
                             direction="schedule"
@@ -51,7 +51,7 @@ function DatePicker({
                             }}
                         />
                     ) : null}
-                    {status === 'result' && isMounted ? (
+                    {status === 'result' ? (
                         <BaseDatePicker
                             defaultDate={new Date(Number(resultsDate))}
                             direction="result"
@@ -61,7 +61,7 @@ function DatePicker({
                         />
                     ) : null}
                 </div>
-            )}
+            ) : null}
         </>
     );
 }
@@ -81,8 +81,6 @@ function ContestList({
     isLoading: boolean;
     closeLoading: () => void;
 }) {
-    const [secondRender, setSecondRender] = useState(false);
-    const [rows, setRows] = useState({ full: 10, notYet: 0, finish: 0 });
     const contestList = useContestListStore.use.contestList();
     const contestInfo = useContestListStore.use.contestInfo();
     const scheduleContestList = useContestListStore.use.scheduleContestList();
@@ -97,23 +95,24 @@ function ContestList({
     const setResultContestList = useContestListStore.use.setResultContestList();
     const setResultContestInfo = useContestListStore.use.setResultContestInfo();
     const pinnedContest = useContestListStore.use.pinnedContest();
+
+    const [rows, setRows] = useState({ full: 10, notYet: 0, finish: 0 });
     const [filterList, setFilterList] = useState<FilterList>({
         group: 'league',
         selectedTable: {}
     });
     const [isMounted, setIsMounted] = useState(false);
     const [isStreamline, setIsStreamline] = useState(true);
-    const [changeDayLine, setChangeDayLine] = useState<string | null>(null);
-    const [matchFinishLine, setMatchFinishLine] = useState<boolean>(true);
+    const changeDayLine = useRef<string | null>(null);
+    const matchFinishLine = useRef<boolean>(true);
     const todayDate = dayjs().format('YYYY-MM-DD');
-    let targetContestList: ContestInfoType;
-    if (status === 'result') {
-        targetContestList = resultContestInfo;
-    } else if (status === 'schedule') {
-        targetContestList = scheduleContestInfo;
-    } else {
-        targetContestList = contestInfo;
-    }
+
+    const targetContestInfoMap = {
+        all: contestInfo,
+        progress: contestInfo,
+        schedule: scheduleContestInfo,
+        result: resultContestInfo
+    };
 
     const updateFilterList = (newList: FilterList) => {
         setFilterList(newList);
@@ -128,10 +127,6 @@ function ContestList({
     };
 
     useEffect(() => {
-        setSecondRender(true);
-    }, []);
-
-    useEffect(() => {
         if (typeof slickOption.contestListResetHeight !== 'undefined') {
             slickOption.contestListResetHeight();
         }
@@ -140,7 +135,7 @@ function ContestList({
     useEffect(() => {
         const dateString = (status === 'result' ? resultsDate : scheduleDate) || Date.now();
         const fetchContestData = async (timestamp: number) => {
-            if (!secondRender) return;
+            if (!isMounted) return;
             try {
                 const contestData = await getContestList(timestamp);
                 if (!contestData.success) {
@@ -165,44 +160,42 @@ function ContestList({
                 return new Error();
             }
         };
+
         void fetchContestData(Math.floor(Number(dateString) / 1000));
-    }, [resultsDate, scheduleDate, setContestList, setContestInfo]);
+    }, [resultsDate, scheduleDate]);
 
     const statusTable: Record<string, (state: number) => boolean> = {
         all: state => state >= -1 && state <= 5,
         progress: state => state >= 1 && state <= 5,
-        notyet: state => state === 0, // 未開賽
+        notYet: state => state === 0, // 未開賽
         schedule: state => state === 0,
         result: state => state === -1
     };
 
+    const sortByPinned = useCallback((list: number[], pinned: number[]): number[] => {
+        const pinnedItems = pinned.filter(pinnedId => list.includes(pinnedId));
+        const remainingItems = list.filter(item => !pinned.includes(item));
+        return [...pinnedItems, ...remainingItems];
+    }, []);
+
     const filterByStatus = (list: number[], statusFunc: (state: number) => boolean) => {
         const filterGroup = filterList.group === 'league' ? 'leagueChsShort' : 'countryCn';
 
-        let targetContestInfo: ContestInfoType;
-        if (status === 'result') {
-            targetContestInfo = resultContestInfo;
-        } else if (status === 'schedule') {
-            targetContestInfo = scheduleContestInfo;
-        } else {
-            targetContestInfo = contestInfo;
-        }
-
         const resultStateValue = -1;
 
-        return list
+        let resultData = list
             .filter(item => {
                 if (
                     Object.keys(filterList.selectedTable).length > 0 &&
-                    !filterList.selectedTable[targetContestInfo[item][filterGroup]]
+                    !filterList.selectedTable[targetContestInfoMap[status][item][filterGroup]]
                 ) {
                     return false;
                 }
 
                 if (
                     isStreamline &&
-                    targetContestInfo[item].hasHandicapOdd &&
-                    targetContestInfo[item].hasOverUnderOdd
+                    targetContestInfoMap[status][item].hasHandicapOdd &&
+                    targetContestInfoMap[status][item].hasOverUnderOdd
                 ) {
                     return false;
                 }
@@ -211,22 +204,22 @@ function ContestList({
                     Object.hasOwnProperty.call(globalStore, item) &&
                     globalStore[item].state !== undefined
                         ? globalStore[item].state
-                        : targetContestInfo[item].state;
+                        : targetContestInfoMap[status][item].state;
                 return typeof state === 'number' && statusFunc(state);
             })
             .sort((a, b) => {
                 const stateA =
                     Object.hasOwnProperty.call(globalStore, a) && globalStore[a].state !== undefined
                         ? globalStore[a].state
-                        : targetContestInfo[a].state;
+                        : targetContestInfoMap[status][a].state;
                 const stateB =
                     Object.hasOwnProperty.call(globalStore, b) && globalStore[b].state !== undefined
                         ? globalStore[b].state
-                        : targetContestInfo[b].state;
+                        : targetContestInfoMap[status][b].state;
 
                 if (stateA === resultStateValue && stateB === resultStateValue) {
-                    const timestampA = targetContestInfo[a].matchTime;
-                    const timestampB = targetContestInfo[b].matchTime;
+                    const timestampA = targetContestInfoMap[status][a].matchTime;
+                    const timestampB = targetContestInfoMap[status][b].matchTime;
                     return timestampA - timestampB;
                 }
 
@@ -238,18 +231,18 @@ function ContestList({
 
                 return 0;
             });
-    };
 
-    const sortByPinned = (list: number[], pinned: number[]): number[] => {
-        const pinnedItems = pinned.filter(pinnedId => list.includes(pinnedId));
-        const remainingItems = list.filter(item => !pinned.includes(item));
-        return [...pinnedItems, ...remainingItems];
+        if (status === 'all') {
+            resultData = sortByPinned(resultData, pinnedContest);
+        }
+
+        return resultData;
     };
 
     let currentList: ContestListType;
 
     if (status === 'all') {
-        currentList = sortByPinned(filterByStatus(contestList, statusTable[status]), pinnedContest);
+        currentList = filterByStatus(contestList, statusTable[status]);
     } else if (status === 'progress') {
         currentList = filterByStatus(contestList, statusTable[status]);
     } else if (status === 'schedule') {
@@ -302,10 +295,14 @@ function ContestList({
                     </div>
                 </div>
                 <div className={style.optionBar}>
-                    <FootballFilter
-                        statusFunc={statusTable[status]}
-                        updateFilterList={updateFilterList}
-                    />
+                    {isMounted ? (
+                        <FootballFilter
+                            statusFunc={statusTable[status]}
+                            tabStatus={status}
+                            updateFilterList={updateFilterList}
+                        />
+                    ) : null}
+
                     <div className={style.setting} onClick={switchSetting}>
                         <SettingIcon className={style.settingIcon} />
                     </div>
@@ -319,14 +316,12 @@ function ContestList({
                 <>
                     <ul className={style.contestList}>
                         {displayList.map((matchId, index) => {
-                            const matchTime = targetContestList[matchId].matchTime;
+                            const matchTime = targetContestInfoMap[status][matchId].matchTime;
                             const matchDate = timestampToString(matchTime, 'YYYY-MM-DD');
-                            const state = targetContestList[matchId].state;
+                            const state = targetContestInfoMap[status][matchId].state;
                             const content: ReactElement[] = [];
 
-                            if (changeDayLine === null) {
-                                setChangeDayLine(matchDate);
-                            } else if (matchDate !== changeDayLine && matchDate !== todayDate) {
+                            if (matchDate !== changeDayLine.current && matchDate !== todayDate) {
                                 content.push(
                                     <div
                                         className={style.dividerBar}
@@ -335,11 +330,11 @@ function ContestList({
                                         {timestampToStringWeek(matchTime)}
                                     </div>
                                 );
-
-                                setChangeDayLine(matchDate);
                             }
 
-                            if (status === 'all' && matchFinishLine && state === -1) {
+                            changeDayLine.current = matchDate;
+
+                            if (status === 'all' && matchFinishLine.current && state === -1) {
                                 content.push(
                                     <div
                                         className={style.dividerBar}
@@ -349,7 +344,7 @@ function ContestList({
                                     </div>
                                 );
 
-                                setMatchFinishLine(false);
+                                matchFinishLine.current = false;
                             }
 
                             content.push(
@@ -383,21 +378,12 @@ function ContestList({
 
 const Football = forwardRef(function Football(
     {
-        todayContest,
-        status,
-        pinnedContest
+        status
     }: {
-        todayContest: GetContestListResponse;
         status: Status;
-        pinnedContest: number[];
     },
     ref: Ref<HTMLDivElement>
 ) {
-    createContestListStore({
-        ...todayContest,
-        ...{ pinnedContest }
-    });
-
     const [showSetting, setShowSetting] = useState(false);
 
     const switchSetting = () => {

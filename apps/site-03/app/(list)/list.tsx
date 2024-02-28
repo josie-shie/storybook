@@ -9,61 +9,35 @@ import { useLongDragonStore } from './longDragonStore';
 import Football from './football';
 import ArrowIcon from './img/arrow.png';
 import style from './list.module.scss';
+import { createContestListStore } from './contestListStore';
 
-function List({
-    todayContest,
-    pinnedContest
+type Status = 'all' | 'progress' | 'schedule' | 'result';
+
+function FixedButton({
+    currentStatus,
+    scrollTop
 }: {
-    todayContest: GetContestListResponse;
-    pinnedContest: number[];
+    currentStatus: Status | null;
+    scrollTop: () => void;
 }) {
-    const allRef = useRef<HTMLDivElement>(null);
-    const progressRef = useRef<HTMLDivElement>(null);
-    const scheduleRef = useRef<HTMLDivElement>(null);
-    const resultRef = useRef<HTMLDivElement>(null);
-    const [secondRender, setSecondRender] = useState(false);
     const [showScrollTop, setShowScrollTop] = useState(false);
     const setHandicapTips = useLongDragonStore.use.setHandicapTips();
     const setHintsSelectType = useLongDragonStore.use.setHintsSelectType();
     const showLongDragon = useLongDragonStore.use.showLongDragon();
     const setShowLongDragon = useLongDragonStore.use.setShowLongDragon();
 
-    useEffect(() => {
-        setSecondRender(true);
-    }, []);
-
-    const tabList = [
-        {
-            label: '全部',
-            status: null
-        },
-        {
-            label: '已开赛',
-            status: 'progress'
-        },
-        {
-            label: '赛程',
-            status: 'schedule'
-        },
-        {
-            label: '完场',
-            status: 'result'
-        }
-    ];
-
-    const [currentStatus, setCurrentStatus] = useState(tabList[0].status);
-
-    const onSlickEnd = (nowIndex: number) => {
-        scrollTop();
-        setCurrentStatus(tabList[nowIndex].status);
-    };
-
-    const scrollTop = () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    };
-
     const handleScroll = () => {
         setShowScrollTop(window.scrollY > 600);
+    };
+
+    const isOpenLongDragon = () => {
+        setShowLongDragon(true);
+    };
+
+    const closeLongDragon = () => {
+        setShowLongDragon(false);
+        setHandicapTips([]);
+        setHintsSelectType('WIN');
     };
 
     useEffect(() => {
@@ -77,67 +51,8 @@ function List({
         };
     }, []);
 
-    const isOpenLongDragon = () => {
-        setShowLongDragon(true);
-    };
-
-    const closeLongDragon = () => {
-        setShowLongDragon(false);
-        setHandicapTips([]);
-        setHintsSelectType('WIN');
-    };
-
     return (
         <>
-            <Slick
-                autoHeight
-                className={style.slick}
-                fixedTabs
-                initialSlide={0}
-                onSlickEnd={onSlickEnd}
-                resetHeightKey="contestList"
-                styling="button"
-                tabs={tabList}
-            >
-                <div className={style.largeGap}>
-                    <Football
-                        pinnedContest={pinnedContest}
-                        ref={allRef}
-                        status="all"
-                        todayContest={todayContest}
-                    />
-                </div>
-                <div className={style.largeGap}>
-                    {secondRender ? (
-                        <Football
-                            pinnedContest={pinnedContest}
-                            ref={progressRef}
-                            status="progress"
-                            todayContest={todayContest}
-                        />
-                    ) : null}
-                </div>
-                <div className={style.largeGap}>
-                    {secondRender ? (
-                        <Football
-                            pinnedContest={pinnedContest}
-                            ref={scheduleRef}
-                            status="schedule"
-                            todayContest={todayContest}
-                        />
-                    ) : null}
-                </div>
-                <div className={`${style.largeGap} ${style.result}`}>
-                    {secondRender ? (
-                        <Football
-                            pinnedContest={pinnedContest}
-                            ref={resultRef}
-                            status="result"
-                            todayContest={todayContest}
-                        />
-                    ) : null}
-                </div>
-            </Slick>
             {(currentStatus === null || currentStatus === 'progress') && (
                 <div className={`${style.scrollWrapper} ${showScrollTop ? style.active : ''}`}>
                     <div className={style.longDragon} onClick={isOpenLongDragon}>
@@ -167,6 +82,88 @@ function List({
             >
                 <LongDragonResult showLongDragon={showLongDragon} />
             </BottomDrawer>
+        </>
+    );
+}
+
+function List({
+    todayContest,
+    pinnedContest
+}: {
+    todayContest: GetContestListResponse;
+    pinnedContest: number[];
+}) {
+    createContestListStore({
+        ...todayContest,
+        ...{ pinnedContest }
+    });
+
+    const tabList = [
+        {
+            label: '全部',
+            status: null
+        },
+        {
+            label: '已开赛',
+            status: 'progress'
+        },
+        {
+            label: '赛程',
+            status: 'schedule'
+        },
+        {
+            label: '完场',
+            status: 'result'
+        }
+    ];
+    const allRef = useRef<HTMLDivElement>(null);
+    const progressRef = useRef<HTMLDivElement>(null);
+    const scheduleRef = useRef<HTMLDivElement>(null);
+    const resultRef = useRef<HTMLDivElement>(null);
+    const [secondRender, setSecondRender] = useState(false);
+    const [currentStatus, setCurrentStatus] = useState<Status | null>(null);
+
+    useEffect(() => {
+        if (!secondRender) {
+            setSecondRender(true);
+        }
+    }, []);
+
+    const scrollTop = () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    const onSlickEnd = (nowIndex: number) => {
+        scrollTop();
+        setCurrentStatus(tabList[nowIndex].status as Status);
+    };
+
+    return (
+        <>
+            <Slick
+                autoHeight
+                className={style.slick}
+                fixedTabs
+                initialSlide={0}
+                onSlickEnd={onSlickEnd}
+                resetHeightKey="contestList"
+                styling="button"
+                tabs={tabList}
+            >
+                <div className={style.largeGap}>
+                    <Football ref={allRef} status="all" />
+                </div>
+                <div className={style.largeGap}>
+                    {secondRender ? <Football ref={progressRef} status="progress" /> : null}
+                </div>
+                <div className={style.largeGap}>
+                    {secondRender ? <Football ref={scheduleRef} status="schedule" /> : null}
+                </div>
+                <div className={`${style.largeGap} ${style.result}`}>
+                    {secondRender ? <Football ref={resultRef} status="result" /> : null}
+                </div>
+            </Slick>
+            <FixedButton currentStatus={currentStatus} scrollTop={scrollTop} />
         </>
     );
 }
