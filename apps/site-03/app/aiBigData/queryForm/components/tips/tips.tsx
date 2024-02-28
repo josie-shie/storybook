@@ -18,7 +18,7 @@ function Tips({
         <div className={style.tips}>
             <div className={style.tipsShort}>
                 <MagnifyingGlass />
-                <span className={style.title}>使用AI智能分析您可获得...</span>
+                <span className={style.title}>使用AI数据分析您可获得...</span>
             </div>
             <div className={style.content}>
                 <p className={style.description}>

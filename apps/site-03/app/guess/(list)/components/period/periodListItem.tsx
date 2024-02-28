@@ -36,7 +36,7 @@ function PeriodListItem({
     return (
         <>
             {rankList.map(item => {
-                if (onlyShowToday && !item.today) return null;
+                if (onlyShowToday && !item.today) return <BaseNoData text="暂无资料" />;
                 const hasHighWinRate = item.ranking <= 10;
 
                 return (
