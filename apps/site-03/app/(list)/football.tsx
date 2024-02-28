@@ -1,5 +1,6 @@
 'use client';
 import { timestampToStringWeek, timestampToString } from 'lib';
+import dayjs from 'dayjs';
 import type { ReactElement, Ref } from 'react';
 import { getContestList } from 'data-center';
 import type { ContestListType, ContestInfoType, GetContestListResponse } from 'data-center';
@@ -102,8 +103,17 @@ function ContestList({
     });
     const [isMounted, setIsMounted] = useState(false);
     const [isStreamline, setIsStreamline] = useState(true);
-    let changeDayLine: string | null = null;
-    let matchFinishLine = true;
+    const [changeDayLine, setChangeDayLine] = useState<string | null>(null);
+    const [matchFinishLine, setMatchFinishLine] = useState<boolean>(true);
+    const todayDate = dayjs().format('YYYY-MM-DD');
+    let targetContestList: ContestInfoType;
+    if (status === 'result') {
+        targetContestList = resultContestInfo;
+    } else if (status === 'schedule') {
+        targetContestList = scheduleContestInfo;
+    } else {
+        targetContestList = contestInfo;
+    }
 
     const updateFilterList = (newList: FilterList) => {
         setFilterList(newList);
@@ -309,25 +319,24 @@ function ContestList({
                 <>
                     <ul className={style.contestList}>
                         {displayList.map((matchId, index) => {
-                            const matchTime = contestInfo[matchId].matchTime;
-                            const state = contestInfo[matchId].state;
+                            const matchTime = targetContestList[matchId].matchTime;
+                            const matchDate = timestampToString(matchTime, 'YYYY-MM-DD');
+                            const state = targetContestList[matchId].state;
                             const content: ReactElement[] = [];
 
                             if (changeDayLine === null) {
-                                changeDayLine = timestampToString(matchTime, 'YYYY-MM-DD');
-                            } else if (
-                                timestampToString(matchTime, 'YYYY-MM-DD') !== changeDayLine
-                            ) {
+                                setChangeDayLine(matchDate);
+                            } else if (matchDate !== changeDayLine && matchDate !== todayDate) {
                                 content.push(
                                     <div
                                         className={style.dividerBar}
-                                        key={`date_${index.toString()}`}
+                                        key={`date_${index.toString()}_${matchId}`}
                                     >
                                         {timestampToStringWeek(matchTime)}
                                     </div>
                                 );
 
-                                changeDayLine = timestampToString(matchTime, 'YYYY-MM-DD');
+                                setChangeDayLine(matchDate);
                             }
 
                             if (status === 'all' && matchFinishLine && state === -1) {
@@ -340,7 +349,7 @@ function ContestList({
                                     </div>
                                 );
 
-                                matchFinishLine = false;
+                                setMatchFinishLine(false);
                             }
 
                             content.push(
