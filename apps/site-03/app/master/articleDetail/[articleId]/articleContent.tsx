@@ -340,7 +340,7 @@ function ArticleContent({
                 <div className={style.otherList}>
                     <div className={style.title}>
                         Ta还推荐了...
-                        {recommendationList.length > 0 ? recommendationList.length : null}
+                        {recommendationList.length > 0 ? `(${recommendationList.length})` : null}
                     </div>
                     <RecommendationList
                         isNoData={isNoData}
