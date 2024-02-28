@@ -72,8 +72,8 @@ function FilterSection({
 
     return (
         <>
-            {filterHotLeagueInfo ? (
-                <div className={style.list}>
+            <div className={style.list}>
+                {filterHotLeagueInfo ? (
                     <div>
                         <h3>热门</h3>
                         <ul>
@@ -95,10 +95,9 @@ function FilterSection({
                             ))}
                         </ul>
                     </div>
-                </div>
-            ) : null}
-
-            <div className={style.list}>{filterList}</div>
+                ) : null}
+                {filterList}
+            </div>
             <div className={style.tool}>
                 <div className={style.functionButton}>
                     <motion.button
