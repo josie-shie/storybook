@@ -62,7 +62,7 @@ function Guess({ play, isLogin }: GuessProps) {
             setIsDrawerOpen(true);
             return;
         }
-        if (isShowGuessPresent) {
+        if (isShowGuessPercent) {
             const isHomeAwayGuessed = play === 'HANDICAP' && guessProportion.home.itemType !== '';
             const isBigSmallGuessed = play !== 'HANDICAP' && guessProportion.over.itemType !== '';
 
