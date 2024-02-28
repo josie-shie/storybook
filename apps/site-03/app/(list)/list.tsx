@@ -79,6 +79,7 @@ function FixedButton({
                 propsStyle={{
                     height: 'calc(100dvh - 152px)'
                 }}
+                topLineDisplay="none"
             >
                 <LongDragonResult showLongDragon={showLongDragon} />
             </BottomDrawer>
