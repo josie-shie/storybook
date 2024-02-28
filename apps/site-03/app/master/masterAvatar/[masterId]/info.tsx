@@ -79,7 +79,7 @@ function Info({ params }: { params: { masterId: string } }) {
 
     const onIsFocused = async (id: number, follow: boolean) => {
         if (!isLogin) {
-            router.push(`/master/masterAvatar/${params.masterId}?status=analysis&auth=login`);
+            router.push(`/master/masterAvatar/${params.masterId}?status=guess&auth=login`);
             return;
         }
         const res = follow

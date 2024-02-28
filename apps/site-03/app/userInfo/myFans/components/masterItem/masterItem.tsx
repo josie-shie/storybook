@@ -70,7 +70,7 @@ function MasterItem({ uid, item, onFollowToggle }: FansProps) {
     };
 
     const goMasterPredict = (id: number) => {
-        router.push(`/master/masterAvatar/${id}?status=analysis`);
+        router.push(`/master/masterAvatar/${id}?status=guess`);
     };
 
     return (

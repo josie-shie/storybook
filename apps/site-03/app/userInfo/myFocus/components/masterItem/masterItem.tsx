@@ -71,7 +71,7 @@ function MasterItem({ uid, item, onFollowToggle }: FocusProps) {
         <div className={style.masterItem} key={item.memberId}>
             <div className={style.info}>
                 <div className={style.avatarContainer}>
-                    <Link href={`/master/masterAvatar/${item.memberId}?status=analysis`}>
+                    <Link href={`/master/masterAvatar/${item.memberId}?status=guess`}>
                         <Avatar
                             borderColor="#4489FF"
                             size={46}
