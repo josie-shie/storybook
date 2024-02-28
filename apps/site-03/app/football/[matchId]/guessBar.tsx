@@ -41,10 +41,11 @@ function Guess({ play, isLogin }: GuessProps) {
     const setIsDrawerOpen = useAuthStore.use.setIsDrawerOpen();
     const setAuthQuery = useUserStore.use.setAuthQuery();
 
-    const noGuess =
-        play === 'HANDICAP'
-            ? guessProportion.home.itemType === ''
-            : guessProportion.over.itemType === '';
+    const isMatchStart = [1, 2, 3, 4, 5, -1, -12, -13].includes(matchDetail.state);
+    const isShowGuessPercent =
+        guessProportion.home.itemType !== '' ||
+        guessProportion.over.itemType !== '' ||
+        isMatchStart;
     const leftBox = play === 'HANDICAP' ? guessProportion.home : guessProportion.over;
     const rightBox = play === 'HANDICAP' ? guessProportion.away : guessProportion.under;
     const guessLabel =
@@ -60,6 +61,14 @@ function Guess({ play, isLogin }: GuessProps) {
             setAuthQuery('login');
             setIsDrawerOpen(true);
             return;
+        }
+        if (isShowGuessPercent) {
+            const isHomeAwayGuessed = play === 'HANDICAP' && guessProportion.home.itemType !== '';
+            const isBigSmallGuessed = play !== 'HANDICAP' && guessProportion.over.itemType !== '';
+
+            if (isHomeAwayGuessed || isBigSmallGuessed) {
+                return;
+            }
         }
         setDirection(direct);
         setOpenGuessDialog(true);
@@ -113,13 +122,11 @@ function Guess({ play, isLogin }: GuessProps) {
                 }}
             >
                 <div>{guessTypeLabel[play].left}</div>
-                {noGuess ? null : <div className={style.percentage}>{leftPercent}%</div>}
+                {isShowGuessPercent ? <div className={style.percentage}>{leftPercent}%</div> : null}
             </div>
             <div className={style.middle}>
                 <p className={style.lable}>{guessLabel}</p>
-                {noGuess ? (
-                    <div className={style.lineBar} />
-                ) : (
+                {isShowGuessPercent ? (
                     <ProgressBar
                         background="#8D8D8D"
                         fill="#fff"
@@ -128,6 +135,8 @@ function Guess({ play, isLogin }: GuessProps) {
                         radius
                         value={leftPercent}
                     />
+                ) : (
+                    <div className={style.lineBar} />
                 )}
             </div>
             <div
@@ -139,7 +148,9 @@ function Guess({ play, isLogin }: GuessProps) {
                 }}
             >
                 <div>{guessTypeLabel[play].right}</div>
-                {noGuess ? null : <div className={style.percentage}>{rightPercent}%</div>}
+                {isShowGuessPercent ? (
+                    <div className={style.percentage}>{rightPercent}%</div>
+                ) : null}
             </div>
         </div>
     );
