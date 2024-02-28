@@ -54,12 +54,7 @@ function TypingText({
 
         type();
     }, [matchTime, home, away]);
-    return (
-        <>
-            {text}
-            <span className={style.typing} />
-        </>
-    );
+    return <>{text}</>;
 }
 
 function MatchItem({
@@ -130,18 +125,16 @@ function AiPredict() {
     }, []);
 
     const handleSelectMatch = (match: GetPredicativeAnalysisMatch) => {
-        setSelectedMatches(prevSelectedMatches => {
-            const isMatchExists = prevSelectedMatches.some(
-                existingMatch => existingMatch.matchId === match.matchId
-            );
+        const isMatchExists = selectedMatches.some(
+            existingMatch => existingMatch.matchId === match.matchId
+        );
 
-            if (!isMatchExists) {
-                return [...prevSelectedMatches, match];
-            }
+        if (!isMatchExists) {
+            setSelectedMatches(prevSelectedMatches => [...prevSelectedMatches, match]);
+        } else {
             const matchRef = matchRefs.current[match.matchId];
             matchRef.current?.scrollIntoView({ behavior: 'smooth' });
-            return prevSelectedMatches;
-        });
+        }
     };
 
     const handleSetTabKey = (matchId: number, value: string) => {
@@ -259,10 +252,12 @@ function AiPredict() {
     return (
         <>
             <div className={style.aiPredict}>
-                <div className={style.title}>FutureAI 2.0</div>
                 <div className={style.content}>
                     <div className={style.welcome}>
-                        <AiAvatar />
+                        <div className={style.row}>
+                            <AiAvatar />
+                            <div className={style.title}>FutureAI 1.5</div>
+                        </div>
                         <div className={style.text}>您好，为您推荐以下赛事预测分析：</div>
                     </div>
                     <div className={`${style.chat} ${showChat ? style.fadeIn : style.hidden}`}>

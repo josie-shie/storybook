@@ -149,7 +149,7 @@ function HandicapTips({ activeFilters }: { activeFilters: string[] }) {
                             </div>
                         </Link>
                     ))}
-                    {rows.full < scrollList.length ? (
+                    {rows.full < displayList.length ? (
                         <InfiniteScroll onVisible={loadMoreList}>
                             <div className={style.loadMore}>
                                 <CircularProgress size={24} />
