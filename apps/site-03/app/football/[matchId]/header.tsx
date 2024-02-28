@@ -139,10 +139,13 @@ function Header({
                         ) : null}
 
                         {matchDetail.hasAnimation ? (
-                            <div className={style.video} onClick={handleAnimate}>
-                                <VideoIcon />
-                                <p className={style.videoText}>动画</p>
-                            </div>
+                            <>
+                                <div className={style.video} onClick={handleAnimate}>
+                                    <VideoIcon />
+                                    <p className={style.videoText}>动画</p>
+                                </div>
+                                <div className={style.line} />
+                            </>
                         ) : null}
                         <div className={style.share}>
                             <ShareIcon onClick={handleShare} />
