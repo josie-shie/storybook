@@ -43,8 +43,8 @@ function Rule() {
                     <div className={style.row}>
                         <h1>竞猜玩法</h1>
                         <ul>
-                            <li>猜胜负：预测比赛的胜方或是否平局。</li>
-                            <li>猜总进球：预测比赛的总进球数量。</li>
+                            <li className={style.number}>猜胜负：预测比赛的胜方或是否平局。</li>
+                            <li className={style.number}>猜总进球：预测比赛的总进球数量。</li>
                             <li>每场比赛的个别玩法限竞猜一次。</li>
                         </ul>
                     </div>
