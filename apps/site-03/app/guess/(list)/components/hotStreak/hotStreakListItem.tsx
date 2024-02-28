@@ -31,7 +31,9 @@ function HotStreakListItem({ isLoading }: { isLoading: boolean }) {
                         key={item.memberId}
                     >
                         <div className={style.rankingFlag}>
-                            <Image alt="" height={24} src={Rank} width={24} />
+                            {item.ranking < 50 && (
+                                <Image alt="" height={24} src={Rank} width={24} />
+                            )}
                             <span>{item.ranking}</span>
                         </div>
                         <div className={style.avatarContainer}>
