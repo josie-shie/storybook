@@ -1,3 +1,22 @@
+.gameTitle {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    margin-top: 4px;
+    font-weight: 600;
+    color: #4489ff;
+
+    .leagueName {
+        display: inline-block;
+        min-width: 60px;
+        margin-right: 6px;
+    }
+
+    .time {
+        color: #8d8d8d;
+    }
+}
+
 .gameCard {
     display: flex;
     justify-content: space-between;
@@ -65,23 +84,6 @@
     }
 
     .left {
-        .gameTitle {
-            display: flex;
-            font-size: 14px;
-            margin-top: 4px;
-            font-weight: 600;
-            color: #4489ff;
-
-            .leagueName {
-                min-width: 60px;
-                margin-right: 6px;
-            }
-
-            .time {
-                color: #8d8d8d;
-            }
-        }
-
         .team {
             font-size: 14px;
             font-weight: 500;
