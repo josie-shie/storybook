@@ -7,7 +7,8 @@ export {
     truncateFloatingPoint,
     roundToDecimalPlace,
     formatNumberWithCommas,
-    formatNumberWithPercent
+    formatNumberWithPercent,
+    truncateFloatingPointToString
 } from './src/formatNumber';
 export { getRandomInt } from './src/random';
 export {

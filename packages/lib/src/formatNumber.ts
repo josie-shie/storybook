@@ -7,6 +7,12 @@ export function truncateFloatingPoint(target: number, decimalPlaces: number) {
     return Math.floor(target * Math.pow(10, decimalPlaces)) / Math.pow(10, decimalPlaces);
 }
 
+export function truncateFloatingPointToString(target: number, decimalPlaces: number): string {
+    const truncated =
+        Math.floor(target * Math.pow(10, decimalPlaces)) / Math.pow(10, decimalPlaces);
+    return truncated.toFixed(decimalPlaces);
+}
+
 /**
  * 四捨五入到小數點後第 n 位
  * - param (target: number, decimalPlaces: number)

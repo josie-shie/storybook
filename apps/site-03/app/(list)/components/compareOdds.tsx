@@ -1,4 +1,5 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
+import { truncateFloatingPointToString } from 'lib';
 
 const convertStringToNumber = (input: string): number => {
     if (input.includes('/')) {
@@ -92,7 +93,7 @@ function CompareOdds({
 
     return (
         <p style={{ color: colorMap[color] as string }} suppressHydrationWarning>
-            {value}
+            {typeof value === 'number' ? truncateFloatingPointToString(value, 2) : value}
         </p>
     );
 }
