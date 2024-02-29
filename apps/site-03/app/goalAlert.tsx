@@ -39,6 +39,10 @@ function GoalAlert() {
                 if (data.homeScore) void soundSourceMap[soundData.homeSound].play();
                 if (data.awayScore) void soundSourceMap[soundData.awaySound].play();
             }
+
+            if (typeof contestInfo === 'undefined') {
+                return;
+            }
             setAlertList(prev => {
                 const updatedList = [...prev, { ...contestInfo, ...currentContestInfo, ...data }];
                 if (updatedList.length <= 7) {
