@@ -4,6 +4,7 @@
 
 .articleCard {
     position: relative;
+    overflow: hidden;
     padding: 12px 12px 0;
     margin-bottom: 8px;
     border-radius: 8px;
@@ -11,8 +12,8 @@
 
     .result {
         position: absolute;
-        top: 3px;
-        right: 3px;
+        top: -6px;
+        right: -6px;
     }
 
     .unlockStatus {
