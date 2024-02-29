@@ -59,13 +59,6 @@ function RenderFilterList({
         </div>
     ) : null;
 
-    const firstClassContent = data?.firstClass ? (
-        <div key="firstClass">
-            <h3>一级赛事</h3>
-            <ul>{data.firstClass.map(item => renderListItem(item))}</ul>
-        </div>
-    ) : null;
-
     const otherContent = Object.entries(data || {})
         .sort((a, b) => a[0].localeCompare(b[0]))
         .map(([key, value]) => {
@@ -80,7 +73,6 @@ function RenderFilterList({
     return (
         <>
             {hotContent}
-            {firstClassContent}
             {otherContent}
         </>
     );
