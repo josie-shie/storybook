@@ -25,7 +25,8 @@ function BottomDrawer({
                 style: {
                     ...propsStyle,
                     borderTopLeftRadius: '16px',
-                    borderTopRightRadius: '16px'
+                    borderTopRightRadius: '16px',
+                    paddingBottom: '21px'
                 }
             }}
             anchor="bottom"

@@ -100,6 +100,7 @@ function Notice() {
         <>
             <MailList />
             <MailInfo />
+            <div className={style.homeIndicatorPlaceHolder} />
         </>
     );
 }
