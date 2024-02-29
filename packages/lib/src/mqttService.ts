@@ -97,6 +97,9 @@ export const mqttService = {
         }
         return client;
     },
+    close: () => {
+        client.end();
+    },
     oddRunningInit: () => {
         if (!init) {
             client.subscribe('updateodds_running'); // 賽事詳情 - 指數賠率變化
