@@ -1,5 +1,4 @@
 .item {
-    position: relative;
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
@@ -8,12 +7,12 @@
     border-radius: 8px;
     margin-bottom: 8px;
     position: relative;
+    overflow: hidden;
 
     .icon {
         position: absolute;
-        top: 3px;
-        right: 3px;
-        opacity: 0.4;
+        top: -6px;
+        right: -6px;
     }
 
     .left {

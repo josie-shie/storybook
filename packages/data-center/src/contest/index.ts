@@ -60,7 +60,10 @@ const ContestInfoSchema = z.object({
     handicapAwayInitOdds: z.number(),
     overUnderInit: z.number(),
     overUnderOverInitOdds: z.number(),
-    overUnderUnderInitOdds: z.number()
+    overUnderUnderInitOdds: z.number(),
+    isBJSingle: z.boolean(),
+    isCompFoot: z.boolean(),
+    isTradFoot: z.boolean()
 });
 
 export type OriginalContestInfo = z.infer<typeof ContestInfoSchema>;

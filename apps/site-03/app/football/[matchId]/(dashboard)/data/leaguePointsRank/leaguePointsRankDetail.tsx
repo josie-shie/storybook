@@ -48,14 +48,14 @@ function LeagueRankTable({ isHome }: { isHome: boolean }) {
                     src={isHome ? matchDetail.homeLogo : matchDetail.awayLogo}
                     width={24}
                 />
-                <p className={style.teamName}>{matchDetail.leagueChsShort}</p>
+                <p className={style.teamName}>
+                    {isHome ? matchDetail.homeChs : matchDetail.awayChs}
+                </p>
             </div>
             <div className="dataTable">
                 <div className="tableHead">
                     <div className="tr">
-                        <div className="th">
-                            {isHome ? matchDetail.homeChs : matchDetail.awayChs}
-                        </div>
+                        <div className="th">{matchDetail.leagueChsShort}</div>
                         <div className="th">赛</div>
                         <div className="th">胜/平/负</div>
                         <div className="th">进/失</div>

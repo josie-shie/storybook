@@ -7,7 +7,7 @@ import Coat from './img/coat.png';
 // import YellowCard from './img/yellowCard.svg';
 // import Support from './img/support.svg';
 // import Winner from './img/winner.svg';
-import style from './playerList.module.scss';
+import style from './playList.module.scss';
 
 interface PlayerListProps {
     homeBackUp: PlayerList[];

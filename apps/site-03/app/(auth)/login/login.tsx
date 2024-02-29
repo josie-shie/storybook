@@ -6,6 +6,7 @@ import { Button, FormControl } from '@mui/material';
 import type { LoginRequest } from 'data-center';
 import { getVerificationCaptcha, login, getMemberInfo } from 'data-center';
 import { useEffect } from 'react';
+import { initWebSocket, messageService, mqttService } from 'lib';
 import {
     VertifyCodeByImage,
     Aggrement,
@@ -69,6 +70,10 @@ function Login() {
         const res = await getMemberInfo();
         if (res.success) {
             setUserInfo(res.data);
+            mqttService.close();
+            setTimeout(() => {
+                mqttService.init({ memberId: res.data.uid });
+            }, 400);
         }
     };
 
@@ -86,6 +91,19 @@ function Login() {
         setIsVisible('登入成功！', 'success');
         removeAuthQuery();
         setIsLogin(true);
+
+        messageService.closeWS();
+        setTimeout(() => {
+            initWebSocket({
+                url: process.env.NEXT_PUBLIC_MESSAGE_PATH || '',
+                onOpen: () => {
+                    void messageService.send({
+                        action: 'init',
+                        token: res.data
+                    });
+                }
+            });
+        }, 400);
         void getUserInfo();
     };
 

@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { Tab, Tabs } from 'ui';
+import { Slick } from 'ui';
 import type { ContestInfoType, ContestInfo } from 'data-center';
 import { formatFilterMap, type FilterMap } from 'lib';
 import BottomDrawer from '@/components/drawer/bottomDrawer';
@@ -9,6 +9,7 @@ import style from './contestFilter.module.scss';
 import FilterIcon from './img/filter.svg';
 
 type GroupType = 'league' | 'country';
+type LeagueOptionType = 'all' | 'isBJSingle' | 'isCompFoot' | 'isTradFoot';
 
 export interface FilterList {
     group: GroupType;
@@ -25,7 +26,9 @@ function FilterSection({
     selectAll,
     revertFilter,
     filterCounter,
-    filterHotLeagueInfo
+    filterHotLeagueInfo,
+    leagueOption,
+    setLeagueOption
 }: {
     group: 'league' | 'country';
     onClose: () => void;
@@ -37,12 +40,20 @@ function FilterSection({
     revertFilter: (group: GroupType) => void;
     filterCounter: { league: number; country: number };
     filterHotLeagueInfo?: ContestInfo[];
+    leagueOption?: LeagueOptionType;
+    setLeagueOption?: (leagueOption: LeagueOptionType) => void;
 }) {
     const submit = () => {
         if (filterCounter[group] < 1) return;
         filterSubmit(group);
         onClose();
     };
+    const optionList = [
+        { label: '全部', value: 'all' },
+        { label: '北单', value: 'isBJSingle' },
+        { label: '竞足', value: 'isCompFoot' },
+        { label: '传足', value: 'isTradFoot' }
+    ];
 
     const filterList = Object.entries(filterInfo[group].infoObj)
         .sort((a, b) => a[0].localeCompare(b[0]))
@@ -72,7 +83,7 @@ function FilterSection({
 
     return (
         <>
-            <div className={style.list}>
+            <div className={style.list} style={{ height: group === 'league' ? '400px' : '444px' }}>
                 {filterHotLeagueInfo ? (
                     <div>
                         <h3>热门</h3>
@@ -98,6 +109,24 @@ function FilterSection({
                 ) : null}
                 {filterList}
             </div>
+
+            {group === 'league' && setLeagueOption ? (
+                <div className={style.optionBar}>
+                    {optionList.map((option, idx) => (
+                        <div
+                            className={`${style.option} ${
+                                option.value === leagueOption && style.selected
+                            }`}
+                            key={`${option.value}_${idx.toString()}`}
+                            onClick={() => {
+                                setLeagueOption(option.value as LeagueOptionType);
+                            }}
+                        >
+                            {option.label}
+                        </div>
+                    ))}
+                </div>
+            ) : null}
             <div className={style.tool}>
                 <div className={style.functionButton}>
                     <motion.button
@@ -146,7 +175,9 @@ function Filter({
     initFilterCounter,
     initLeague,
     initHotLeague,
-    initCountry
+    initCountry,
+    leagueOption,
+    setLeagueOption
 }: {
     isOpen: boolean;
     onOpen: () => void;
@@ -157,12 +188,25 @@ function Filter({
     initHotLeague: ContestInfo[];
     initLeague: FilterMap;
     initCountry: FilterMap;
+    leagueOption: LeagueOptionType;
+    setLeagueOption: (leagueOption: LeagueOptionType) => void;
 }) {
     const [onMounted, setOnMounted] = useState(false);
     const tabActive = useRef(0);
 
     const [filterSelected, setFilterSelected] = useState(initFilterSelected);
     const [filterCounter, setFilterCounter] = useState(initFilterCounter);
+
+    const tabList = [
+        {
+            label: '赛事',
+            status: 'contest'
+        },
+        {
+            label: '国家',
+            status: 'country'
+        }
+    ];
 
     const filterInfo = {
         league: initLeague,
@@ -265,17 +309,20 @@ function Filter({
     };
 
     useEffect(() => {
+        selectAll('league');
+    }, [leagueOption]);
+
+    useEffect(() => {
         setOnMounted(true);
     }, []);
 
-    const tabStyle = {
-        gap: 8,
-        swiperOpen: true,
-        buttonRadius: 30
+    const scrollTop = () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
-    const saveTabStatus = (tab: string) => {
-        tabActive.current = tab === 'contest' ? 0 : 1;
+    const onSlickEnd = (nowIndex: number) => {
+        scrollTop();
+        tabActive.current = nowIndex;
     };
 
     return (
@@ -290,43 +337,41 @@ function Filter({
                     <div className={style.filter}>
                         <h2>赛事筛选</h2>
                         <div className={style.tab}>
-                            <Tabs
-                                buttonRadius={tabStyle.buttonRadius}
-                                defaultValue={tabActive.current}
-                                gap={tabStyle.gap}
-                                onTabChange={saveTabStatus}
-                                position="center"
+                            <Slick
+                                autoHeight
+                                className={style.slick}
+                                initialSlide={0}
+                                onSlickEnd={onSlickEnd}
+                                resetHeightKey="contestFilter"
                                 styling="underline"
-                                swiperOpen={tabStyle.swiperOpen}
+                                tabs={tabList}
                             >
-                                <Tab label="赛事" value="contest">
-                                    <FilterSection
-                                        filterCounter={filterCounter}
-                                        filterHotLeagueInfo={initHotLeague}
-                                        filterInfo={filterInfo}
-                                        filterPick={filterPick}
-                                        filterSelected={filterSelected}
-                                        filterSubmit={filterSubmit}
-                                        group="league"
-                                        onClose={onClose}
-                                        revertFilter={revertFilter}
-                                        selectAll={selectAll}
-                                    />
-                                </Tab>
-                                <Tab label="国家" value="country">
-                                    <FilterSection
-                                        filterCounter={filterCounter}
-                                        filterInfo={filterInfo}
-                                        filterPick={filterPick}
-                                        filterSelected={filterSelected}
-                                        filterSubmit={filterSubmit}
-                                        group="country"
-                                        onClose={onClose}
-                                        revertFilter={revertFilter}
-                                        selectAll={selectAll}
-                                    />
-                                </Tab>
-                            </Tabs>
+                                <FilterSection
+                                    filterCounter={filterCounter}
+                                    filterHotLeagueInfo={initHotLeague}
+                                    filterInfo={filterInfo}
+                                    filterPick={filterPick}
+                                    filterSelected={filterSelected}
+                                    filterSubmit={filterSubmit}
+                                    group="league"
+                                    leagueOption={leagueOption}
+                                    onClose={onClose}
+                                    revertFilter={revertFilter}
+                                    selectAll={selectAll}
+                                    setLeagueOption={setLeagueOption}
+                                />
+                                <FilterSection
+                                    filterCounter={filterCounter}
+                                    filterInfo={filterInfo}
+                                    filterPick={filterPick}
+                                    filterSelected={filterSelected}
+                                    filterSubmit={filterSubmit}
+                                    group="country"
+                                    onClose={onClose}
+                                    revertFilter={revertFilter}
+                                    selectAll={selectAll}
+                                />
+                            </Slick>
                         </div>
                     </div>
                 </BottomDrawer>
@@ -337,18 +382,27 @@ function Filter({
 
 function ContestFilter({
     contestInfo,
-    updateFilterList
+    updateFilterList,
+    scheduleDate,
+    resultsDate
 }: {
     contestInfo: ContestInfoType;
     updateFilterList: (newList: FilterList) => void;
+    scheduleDate: number;
+    resultsDate: number;
 }) {
     const [isOpen, setIsOpen] = useState(false);
+    const [leagueOption, setLeagueOption] = useState<LeagueOptionType>('all');
     const onClose = () => {
         setIsOpen(false);
     };
     const onOpen = () => {
         setIsOpen(true);
     };
+
+    useEffect(() => {
+        setLeagueOption('all');
+    }, [scheduleDate, resultsDate]);
 
     const formatCounterAndSelected = (league: FilterMap, country: FilterMap) => {
         const filterSelected = {
@@ -386,13 +440,15 @@ function ContestFilter({
 
         for (const contest of sortedContestsByLeagueLevel) {
             if (hotLeagues.length >= 9) break;
+            if (leagueOption !== 'all' && !contest[leagueOption]) continue;
+
             if (!selectedLeagueIds.has(contest.leagueId)) {
                 selectedLeagueIds.add(contest.leagueId);
                 hotLeagues.push(contest);
             }
         }
 
-        const league = formatFilterMap(contestInfoParams, 'leagueChsShort');
+        const league = formatFilterMap(contestInfoParams, 'leagueChsShort', leagueOption);
         const country = formatFilterMap(contestInfoParams, 'countryCn');
         const { filterSelected, filterCounter } = formatCounterAndSelected(league, country);
 
@@ -413,8 +469,10 @@ function ContestFilter({
                 initHotLeague={hotLeagues}
                 initLeague={league}
                 isOpen={isOpen}
+                leagueOption={leagueOption}
                 onClose={onClose}
                 onOpen={onOpen}
+                setLeagueOption={setLeagueOption}
                 updateFilterList={updateFilterList}
             />
         </>

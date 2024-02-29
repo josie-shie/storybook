@@ -4,6 +4,9 @@ export interface ContestInfoType {
     leagueChsShort: string;
     countryCn: string;
     rating?: number;
+    isBJSingle?: boolean;
+    isCompFoot?: boolean;
+    isTradFoot?: boolean;
 }
 
 export interface FilterMap {
@@ -19,7 +22,13 @@ export type FilterInfo = Record<string, ContestInfoType>;
 
 type ContestArr = { title: string; list: string[] }[];
 
-export const formatFilterMap = (currentInfo: FilterInfo, filterKey: keyof ContestInfoType) => {
+type ExcludeKeyType = 'all' | 'isBJSingle' | 'isCompFoot' | 'isTradFoot';
+
+export const formatFilterMap = (
+    currentInfo: FilterInfo,
+    filterKey: keyof ContestInfoType,
+    excludeKey?: ExcludeKeyType
+) => {
     const infoObj: FilterMap['infoObj'] = {};
     const countMap: FilterMap['countMap'] = {};
     const doubleTable: Record<string, boolean> = {};
@@ -44,6 +53,14 @@ export const formatFilterMap = (currentInfo: FilterInfo, filterKey: keyof Contes
             countMap[filterValue] = 1;
         }
 
+        if (
+            typeof excludeKey !== 'undefined' &&
+            excludeKey !== 'all' &&
+            !currentInfo[key][excludeKey]
+        ) {
+            continue;
+        }
+
         if (filterKey in value) {
             const newKey = value[filterKey];
             if (typeof newKey === 'string' || typeof newKey === 'number') {
@@ -63,7 +80,7 @@ export const formatFilterMap = (currentInfo: FilterInfo, filterKey: keyof Contes
             infoObj[words] = [newObj];
         }
 
-        if (value.rating !== undefined && value.rating <= 2) {
+        if (value.rating !== undefined && value.rating <= 80) {
             if (Object.hasOwnProperty.call(extraMap, 'hot')) {
                 extraMap.hot.push(newObj);
             } else {

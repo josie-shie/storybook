@@ -97,6 +97,13 @@ export const mqttService = {
         }
         return client;
     },
+    close: () => {
+        // eslint-disable-next-line no-console -- Check lifecycle
+        console.log('Mqtt end');
+        isConnect = false;
+        init = true;
+        client.end();
+    },
     oddRunningInit: () => {
         if (!init) {
             client.subscribe('updateodds_running'); // 賽事詳情 - 指數賠率變化
