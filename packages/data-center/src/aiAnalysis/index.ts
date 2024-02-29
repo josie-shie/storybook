@@ -329,6 +329,8 @@ const GetPredicativeAnalysisMatchSchema = z.object({
     awayStrategicAnalysis: z.string(),
     homeTacticalPerspective: z.string(),
     awayTacticalPerspective: z.string(),
+    predictResult: z.string(),
+    predictMatchResult: z.number(),
     updatedAt: z.number()
 });
 

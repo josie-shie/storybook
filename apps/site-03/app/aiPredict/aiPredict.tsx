@@ -12,11 +12,14 @@ import { timestampToString, timestampToStringCh } from 'lib';
 import TeamLogo from '@/components/teamLogo/teamLogo';
 import { useAiPredictStore } from './aiPredictStore';
 import style from './aiPredict.module.scss';
+import Win from './img/aiWin.svg';
+import Draw from './img/aiDraw.svg';
 import AiAvatar from './img/aiAvatar.svg';
 import AiAvatarSmall from './img/aiAvatarSmall.svg';
 import Ai from './ai';
 import Analyze from './analyze';
 import Cornor from './cornor';
+import Tutorial from './components/turorial/turorial';
 // import Wallet from './img/wallet.png';
 
 interface MatchTab {
@@ -37,26 +40,45 @@ function TypingText({
     league: string;
     onTypingDone: () => void;
 }) {
-    const [text, setText] = useState('');
+    const [typedText, setTypedText] = useState('');
+
     useEffect(() => {
-        let currentText = '';
-        const message = `以下是我分析即将进行的${timestampToStringCh(
+        const fullMessage = `以下是我分析即将进行的${timestampToStringCh(
             matchTime,
             'YYYY年MM月DD日'
         )}${league}足球赛中 ${home} 对 ${away} 的比赛。`;
-        const type = () => {
-            if (currentText.length < message.length) {
-                currentText = message.substring(0, currentText.length + 1);
-                setText(currentText);
-                setTimeout(type, 50);
+        let currentText = '';
+        let currentIndex = 0;
+
+        const typeCharacter = () => {
+            if (currentIndex < fullMessage.length) {
+                currentText += fullMessage[currentIndex];
+                setTypedText(currentText);
+                currentIndex++;
+                setTimeout(typeCharacter, 50);
             } else {
                 onTypingDone();
             }
         };
 
-        type();
-    }, [matchTime, home, away]);
-    return <>{text}</>;
+        typeCharacter();
+    }, [matchTime, home, away, league]);
+
+    const parts = typedText.split(new RegExp(`(${home}|${away})`));
+
+    return (
+        <>
+            {parts.map(part =>
+                part === home || part === away ? (
+                    <span key={part} style={{ color: '#4489ff' }}>
+                        {part}
+                    </span>
+                ) : (
+                    part
+                )
+            )}
+        </>
+    );
 }
 
 function MatchItem({
@@ -258,7 +280,6 @@ function AiPredict() {
                     <div className={style.welcome}>
                         <div className={style.row}>
                             <AiAvatar />
-                            <div className={style.title}>FutureAI 1.5</div>
                         </div>
                         <div className={style.text}>您好，为您推荐以下赛事预测分析：</div>
                     </div>
@@ -288,6 +309,10 @@ function AiPredict() {
                         </div>
                     </div>
 
+                    {selectedMatches.length > 0 ? (
+                        <div className={style.start}>开始分析</div>
+                    ) : null}
+
                     {selectedMatches.map(match => {
                         const currentTabKey = getMatchTabKey(match.matchId);
                         matchRefs.current[match.matchId] = createRef<HTMLDivElement>();
@@ -297,15 +322,6 @@ function AiPredict() {
                                 key={match.matchId}
                                 ref={matchRefs.current[match.matchId]}
                             >
-                                <div className={style.teamTitle}>
-                                    <div className={style.time}>
-                                        {timestampToString(match.matchTime, 'MM-DD HH:mm')}
-                                    </div>
-                                    <div className={style.name}>
-                                        {match.homeChs} vs {match.awayChs}
-                                    </div>
-                                </div>
-
                                 <div className={style.message}>
                                     <AiAvatarSmall className={style.icon} />
                                     <div className={style.text}>
@@ -318,6 +334,49 @@ function AiPredict() {
                                                 handleTypingDone(match.matchId);
                                             }}
                                         />
+                                    </div>
+                                </div>
+
+                                <div
+                                    className={`${style.teamTitle} ${
+                                        showInformation[match.matchId] ? style.fadeIn : style.hidden
+                                    }`}
+                                >
+                                    <div
+                                        className={`${style.name} ${
+                                            match.predictMatchResult === 1 ? style.win : ''
+                                        } ${match.predictMatchResult === 0 ? style.active : ''}`}
+                                    >
+                                        {match.predictMatchResult === 1 ? (
+                                            <Win className={style.icon} />
+                                        ) : null}
+
+                                        <TeamLogo
+                                            alt={match.homeChs}
+                                            height={30}
+                                            src={match.homeLogo}
+                                            width={30}
+                                        />
+                                        <span>{match.homeChs}</span>
+                                    </div>
+                                    {match.predictMatchResult === 0 ? (
+                                        <Draw className={style.draw} />
+                                    ) : null}
+                                    <div
+                                        className={`${style.name} ${
+                                            match.predictMatchResult === 2 ? style.win : ''
+                                        } ${match.predictMatchResult === 0 ? style.active : ''}`}
+                                    >
+                                        {match.predictMatchResult === 2 ? (
+                                            <Win className={style.icon} />
+                                        ) : null}
+                                        <TeamLogo
+                                            alt={match.awayChs}
+                                            height={30}
+                                            src={match.awayLogo}
+                                            width={30}
+                                        />
+                                        <span>{match.awayChs}</span>
                                     </div>
                                 </div>
 
@@ -360,6 +419,7 @@ function AiPredict() {
                         );
                     })}
                 </div>
+                <Tutorial />
             </div>
             {/* <ConfirmPayDrawer
                 isOpen={openPaid}

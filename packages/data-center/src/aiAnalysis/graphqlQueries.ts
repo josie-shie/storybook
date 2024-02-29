@@ -250,6 +250,8 @@ export const GET_PREDICATIVE_ANALYSIS_MATCH_QUERY = `
             awayStrategicAnalysis
             homeTacticalPerspective
             awayTacticalPerspective
+            predictResult
+            predictMatchResult
             updatedAt
           } 
         }
