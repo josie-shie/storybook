@@ -9,7 +9,7 @@ import AnimationBanner from './components/animationBanner/animationBanner';
 function QueryFormLayout({ children }: { children: ReactNode }) {
     return (
         <div className={style.queryFormLayout}>
-            <Header back={false} title="智能分析" />
+            <Header back={false} title="数据分析" />
             <Rule />
             <AnimationBanner />
             {children}

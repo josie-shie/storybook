@@ -80,9 +80,9 @@ function Invite() {
                         <Image alt="friend" height={104} src={Friend} width={260} />
                         <div className={style.title}>
                             <span className={style.friend}>
-                                <Image alt="line" src={LeftLine} width={28} height={4} />
+                                <Image alt="line" height={4} src={LeftLine} width={28} />
                                 <span>邀请好友领福利</span>
-                                <Image alt="line" src={RightLine} width={28} height={4} />
+                                <Image alt="line" height={4} src={RightLine} width={28} />
                             </span>
                             <span>多邀多得无上限</span>
                             <span>
@@ -112,7 +112,7 @@ function Invite() {
                                 const host = window.location.host;
                                 const baseUrl = `${protocol}//${host}`;
                                 void copyLink(
-                                    `${userInfo.username}邀请您一起获得<未来体育平台(站名)>200元红包,点击网址后注册加入即可获得最新赛事预测、赛事智能分析服务: ${baseUrl}/?auth=register&inviteCode=${inviteCode}`
+                                    `${userInfo.username}邀请您一起获得<未来体育平台(站名)>200元红包,点击网址后注册加入即可获得最新赛事预测、赛事数据分析服务: ${baseUrl}/?auth=register&inviteCode=${inviteCode}`
                                 );
                             }}
                         >
