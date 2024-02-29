@@ -75,7 +75,7 @@ function ContestDrawerList({
                 isOpen={isOpen}
                 onClose={onClose}
                 onOpen={onOpen}
-                propsStyle={{ height: 'calc(100dvh - 54px)' }}
+                propsStyle={{ height: 'calc(100dvh - 75px)' }}
             >
                 <div className={style.contestDrawerList}>
                     <div className={style.header}>

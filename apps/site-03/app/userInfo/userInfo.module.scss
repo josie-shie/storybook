@@ -7,14 +7,14 @@
 }
 
 .userInfo {
-    height: calc(100dvh - 54px);
+    height: calc(100dvh - 75px);
 
     .container {
         display: flex;
         align-items: flex-start;
         justify-content: space-between;
         flex-direction: column;
-        padding: 12px 12px 48px 12px;
+        padding: 12px 12px 48px;
 
         .outer {
             width: 100%;
@@ -62,7 +62,7 @@
 
                 .middle {
                     min-height: 20px;
-                    color: rgba(255, 255, 255, 0.7);
+                    color: rgb(255 255 255 / 70%);
                     font-size: 12px;
                     font-weight: 500;
                 }
@@ -94,7 +94,7 @@
                 span {
                     font-size: 12px;
                     font-weight: 500;
-                    color: rgba(255, 255, 255, 0.7);
+                    color: rgb(255 255 255 / 70%);
 
                     &:last-child {
                         color: #fff;
@@ -197,7 +197,7 @@
             padding: 4px 24px;
             background: #fff;
             border-radius: 8px;
-            box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 0 8px 0 rgb(0 0 0 / 15%);
 
             .item {
                 padding: 12px 0;
