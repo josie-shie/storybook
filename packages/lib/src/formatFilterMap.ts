@@ -4,6 +4,9 @@ export interface ContestInfoType {
     leagueChsShort: string;
     countryCn: string;
     rating?: number;
+    isBJSingle?: boolean;
+    isCompFoot?: boolean;
+    isTradFoot?: boolean;
 }
 
 export interface FilterMap {
@@ -19,7 +22,13 @@ export type FilterInfo = Record<string, ContestInfoType>;
 
 type ContestArr = { title: string; list: string[] }[];
 
-export const formatFilterMap = (currentInfo: FilterInfo, filterKey: keyof ContestInfoType) => {
+type ExcludeKeyType = 'all' | 'isBJSingle' | 'isCompFoot' | 'isTradFoot';
+
+export const formatFilterMap = (
+    currentInfo: FilterInfo,
+    filterKey: keyof ContestInfoType,
+    excludeKey?: ExcludeKeyType
+) => {
     const infoObj: FilterMap['infoObj'] = {};
     const countMap: FilterMap['countMap'] = {};
     const doubleTable: Record<string, boolean> = {};
@@ -42,6 +51,14 @@ export const formatFilterMap = (currentInfo: FilterInfo, filterKey: keyof Contes
             countMap[filterValue] += 1;
         } else {
             countMap[filterValue] = 1;
+        }
+
+        if (
+            typeof excludeKey !== 'undefined' &&
+            excludeKey !== 'all' &&
+            !currentInfo[key][excludeKey]
+        ) {
+            continue;
         }
 
         if (filterKey in value) {

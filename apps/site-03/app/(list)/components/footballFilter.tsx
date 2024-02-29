@@ -8,11 +8,15 @@ type Status = 'all' | 'progress' | 'schedule' | 'result';
 function FootballFilter({
     updateFilterList,
     tabStatus,
-    statusFunc
+    statusFunc,
+    scheduleDate,
+    resultsDate
 }: {
     updateFilterList: (newList: FilterList) => void;
     tabStatus: Status;
     statusFunc: (status: number) => boolean;
+    scheduleDate: number;
+    resultsDate: number;
 }) {
     const contestInfo = useContestListStore.use.contestInfo();
     const scheduleContestInfo = useContestListStore.use.scheduleContestInfo();
@@ -28,7 +32,14 @@ function FootballFilter({
         statusFunc(item.state)
     );
 
-    return <ContestFilter contestInfo={currentInfo} updateFilterList={updateFilterList} />;
+    return (
+        <ContestFilter
+            contestInfo={currentInfo}
+            resultsDate={resultsDate}
+            scheduleDate={scheduleDate}
+            updateFilterList={updateFilterList}
+        />
+    );
 }
 
 export default FootballFilter;

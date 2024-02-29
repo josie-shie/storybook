@@ -94,6 +94,9 @@ export const GET_CONTEST_LIST_QUERY = `
                 overUnderInit
                 overUnderOverInitOdds
                 overUnderUnderInitOdds
+                isBJSingle
+                isCompFoot
+                isTradFoot
             }
         }
     }

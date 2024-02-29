@@ -1,5 +1,5 @@
 .filter {
-    padding: 12px;
+    padding-top: 16px;
     position: relative;
 
     :global(.ui-tabs-header) {
@@ -8,31 +8,27 @@
         justify-content: space-between !important;
     }
 
-    :global(.swiper-slide) {
-        padding: 0 !important;
+    :global(.ui-slick-nav) {
+        padding: 14px 16px 2px;
     }
 
-    :global(.ui-tabs-header-label) {
-        font-size: 14px;
-        font-weight: 500;
+    :global(.ui-slick-tabs-container) {
+        padding: 0;
     }
 
     h2 {
+        padding: 0 16px;
         color: #222;
         font-size: 14px;
         font-weight: 500;
     }
 
-    .tab {
-        margin-top: 8px;
-    }
-
     .list {
-        max-height: 400px;
         overflow-y: auto;
+        padding: 4px 16px 8px;
 
         h3 {
-            margin: 8px 0;
+            margin: 8px 0 6px;
             color: #222;
             font-weight: 500;
             font-size: 12px;
@@ -45,13 +41,18 @@
             gap: 8px;
 
             .item {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                min-height: 32px;
+                padding: 6px 4px;
                 border-radius: 6px;
                 background-color: #f3f3f3;
                 text-align: center;
-                line-height: 32px;
                 font-size: 14px;
                 color: #8d8d8d;
                 font-weight: 500;
+                word-wrap: break-word;
                 border: 1px solid #f3f3f3;
             }
 
@@ -63,10 +64,33 @@
         }
     }
 
+    .optionBar {
+        height: 44px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 32px;
+        border-top: 1px solid #f3f3f3;
+
+        .option {
+            height: 26px;
+            line-height: 26px;
+            padding: 0 12px;
+            color: #8d8d8d;
+            font-size: 14px;
+            font-weight: 500;
+
+            &.selected {
+                color: #4489ff;
+            }
+        }
+    }
+
     .tool {
         display: flex;
-        margin: 12px 0;
+        padding: 16px;
         align-items: center;
+        border-top: 1px solid #f3f3f3;
 
         .functionButton {
             display: flex;
@@ -90,7 +114,7 @@
             font-size: 12px;
             font-weight: 500;
             color: #8d8d8d;
-            line-height: 34px;
+            line-height: 28px;
             text-align: center;
 
             .blue {

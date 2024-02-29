@@ -296,6 +296,8 @@ function ContestList({
                 <div className={style.optionBar}>
                     {isMounted ? (
                         <FootballFilter
+                            resultsDate={resultsDate}
+                            scheduleDate={scheduleDate}
                             statusFunc={statusTable[status]}
                             tabStatus={status}
                             updateFilterList={updateFilterList}
