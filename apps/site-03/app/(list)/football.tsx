@@ -1,10 +1,9 @@
 'use client';
 import { timestampToStringWeek, timestampToString } from 'lib';
-import dayjs from 'dayjs';
 import type { ReactElement, Ref } from 'react';
 import { getContestList } from 'data-center';
 import type { ContestListType } from 'data-center';
-import { useEffect, useState, forwardRef, useCallback, useRef } from 'react';
+import { useEffect, useState, forwardRef, useCallback } from 'react';
 import { InfiniteScroll, slickOption } from 'ui';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useLiveContestStore } from '@/store/liveContestStore';
@@ -103,9 +102,8 @@ function ContestList({
     });
     const [isMounted, setIsMounted] = useState(false);
     const [isStreamline, setIsStreamline] = useState(true);
-    const changeDayLine = useRef<string | null>(null);
-    const matchFinishLine = useRef<boolean>(true);
-    const todayDate = dayjs().format('YYYY-MM-DD');
+    let changeDayLine: string | null = null;
+    let matchFinishLine = true;
 
     const targetContestInfoMap = {
         all: contestInfo,
@@ -322,7 +320,20 @@ function ContestList({
                             const state = targetContestInfoMap[status][matchId].state;
                             const content: ReactElement[] = [];
 
-                            if (matchDate !== changeDayLine.current && matchDate !== todayDate) {
+                            if (status === 'all' && matchFinishLine && state === -1) {
+                                content.push(
+                                    <div
+                                        className={style.dividerBar}
+                                        key={`date_${index.toString()}`}
+                                    >
+                                        已结束
+                                    </div>
+                                );
+
+                                matchFinishLine = false;
+                            }
+
+                            if (matchDate !== changeDayLine && changeDayLine !== null) {
                                 content.push(
                                     <div
                                         className={style.dividerBar}
@@ -333,20 +344,7 @@ function ContestList({
                                 );
                             }
 
-                            changeDayLine.current = matchDate;
-
-                            if (status === 'all' && matchFinishLine.current && state === -1) {
-                                content.push(
-                                    <div
-                                        className={style.dividerBar}
-                                        key={`date_${index.toString()}`}
-                                    >
-                                        已结束
-                                    </div>
-                                );
-
-                                matchFinishLine.current = false;
-                            }
+                            changeDayLine = matchDate;
 
                             content.push(
                                 <GameCard key={matchId} matchId={matchId} status={status}>
