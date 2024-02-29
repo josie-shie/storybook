@@ -116,7 +116,7 @@ function MyAnalysis() {
                 </div>
             </div>
             {renderContent()}
-            <ScrollTop scrollContainerRef={scrollAnalysisRef} />
+            <ScrollTop hasFooter={false} scrollContainerRef={scrollAnalysisRef} />
         </>
     );
 }

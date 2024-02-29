@@ -133,3 +133,18 @@
         }
     }
 }
+
+@media all and (display-mode: fullscreen) {
+    .chat {
+        :global {
+            .bfRoomContent {
+                height: calc(100% - 85px);
+                background-color: #f3f3f3;
+            }
+
+            .bfRoomBottom {
+                padding: 16px 16px 21px;
+            }
+        }
+    }
+}

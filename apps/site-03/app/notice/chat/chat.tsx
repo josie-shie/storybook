@@ -78,6 +78,7 @@ function Chat() {
         <>
             <ChatList />
             <ChatInfo />
+            <div className={style.homeIndicatorPlaceHolder} />
         </>
     );
 }

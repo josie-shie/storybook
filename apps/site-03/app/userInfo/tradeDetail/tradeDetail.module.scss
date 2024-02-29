@@ -84,3 +84,11 @@
         }
     }
 }
+
+@media all and (display-mode: fullscreen) {
+    .listEnd {
+        p {
+            padding: 16px 0 38px;
+        }
+    }
+}

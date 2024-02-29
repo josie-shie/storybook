@@ -5,10 +5,11 @@ import style from './scrollTop.module.scss';
 import ArrowIcon from './img/arrow.png';
 
 interface ScrollTopProps {
+    hasFooter?: boolean;
     scrollContainerRef?: RefObject<HTMLElement>;
 }
 
-function ScrollTop({ scrollContainerRef }: ScrollTopProps) {
+function ScrollTop({ scrollContainerRef, hasFooter = true }: ScrollTopProps) {
     const [showScrollTop, setShowScrollTop] = useState(false);
 
     const scrollTop = () => {
@@ -40,7 +41,11 @@ function ScrollTop({ scrollContainerRef }: ScrollTopProps) {
     }, [scrollContainerRef]);
 
     return (
-        <div className={`${style.scrollWrapper} ${showScrollTop ? style.active : ''}`}>
+        <div
+            className={`${style.scrollWrapper} ${showScrollTop ? style.active : ''}  ${
+                hasFooter && style.bottomHasFooter
+            }`}
+        >
             <div className={style.goTop} onClick={scrollTop}>
                 <Image alt="goTop" className={style.arrow} src={ArrowIcon} />
             </div>

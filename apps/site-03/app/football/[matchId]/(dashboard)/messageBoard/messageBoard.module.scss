@@ -119,3 +119,9 @@
         color: #9b9b9b;
     }
 }
+
+@media all and (display-mode: fullscreen) {
+    .messageBoard {
+        height: calc(100dvh - (100vw * 234 / 390) - 108px);
+    }
+}

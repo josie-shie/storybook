@@ -1,3 +1,7 @@
+.homeIndicatorPlaceHolder {
+    height: 0;
+}
+
 .noticeList {
     width: 100%;
     display: flex;
@@ -54,5 +58,11 @@
             transform: translate(-50%, -50%) scaleX(1);
             opacity: 1;
         }
+    }
+}
+
+@media all and (display-mode: fullscreen) {
+    .homeIndicatorPlaceHolder {
+        height: 21px;
     }
 }

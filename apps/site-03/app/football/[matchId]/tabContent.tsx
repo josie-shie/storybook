@@ -508,6 +508,7 @@ function TabContent({
                     ) : null}
                 </div>
             </Slick>
+            <div className={style.homeIndicatorPlaceHolder} />
         </div>
     );
 }

@@ -1,6 +1,10 @@
 .tabContent {
     width: 100%;
 
+    .homeIndicatorPlaceHolder {
+        height: 0;
+    }
+
     .slick {
         width: 100%;
 
@@ -29,6 +33,14 @@
                     }
                 }
             }
+        }
+    }
+}
+
+@media all and (display-mode: fullscreen) {
+    .tabContent {
+        .homeIndicatorPlaceHolder {
+            height: 21px;
         }
     }
 }

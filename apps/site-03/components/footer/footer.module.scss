@@ -14,7 +14,7 @@
         align-items: center;
         z-index: 9;
         background-color: #fff;
-        border: 1px solid #bfbfbf;
+        border-top: 1px solid #bfbfbf;
 
         .listItem {
             flex-direction: column;
@@ -158,6 +158,17 @@
 
                 /* stylelint-enable no-descending-specificity */
             }
+        }
+    }
+}
+
+@media all and (display-mode: fullscreen) {
+    .footerPlaceholder {
+        height: 75px;
+
+        .footer {
+            height: 75px;
+            padding-bottom: 21px;
         }
     }
 }

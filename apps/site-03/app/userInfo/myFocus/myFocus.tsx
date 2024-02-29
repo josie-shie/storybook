@@ -159,7 +159,7 @@ function MyFocus() {
                 </div>
                 {renderContent()}
             </div>
-            <ScrollTop scrollContainerRef={scrollFocusRef} />
+            <ScrollTop hasFooter={false} scrollContainerRef={scrollFocusRef} />
         </>
     );
 }

@@ -86,3 +86,9 @@
         }
     }
 }
+
+@media all and (display-mode: fullscreen) {
+    .scrollWrapper {
+        bottom: 92px;
+    }
+}

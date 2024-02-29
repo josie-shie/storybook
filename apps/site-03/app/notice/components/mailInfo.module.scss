@@ -136,3 +136,9 @@
         }
     }
 }
+
+@media all and (display-mode: fullscreen) {
+    .outer {
+        height: calc(100dvh - 75px);
+    }
+}
