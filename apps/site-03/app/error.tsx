@@ -9,7 +9,6 @@ import ErrorImage from './img/error.jpg';
 
 export default function Error({ error }: { error: Error & { digest?: string } }) {
     useEffect(() => {
-        // Log the error to an error reporting service
         console.error(error);
     }, [error]);
 
