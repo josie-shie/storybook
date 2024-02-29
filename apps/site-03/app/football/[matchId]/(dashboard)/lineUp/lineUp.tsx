@@ -1,5 +1,5 @@
 'use client';
-import type { GetLineUpInfoResponse } from 'data-center';
+import type { GetLineUpInfoResponse, PlayerList } from 'data-center';
 import Image from 'next/image';
 import NoData from '@/components/baseNoData/noData';
 import TeamLogo from '@/components/teamLogo/teamLogo';
@@ -12,7 +12,7 @@ import CourtTop from './img/courtTop.png';
 import CourtBottom from './img/courtBottom.png';
 import style from './lineUp.module.scss';
 import Player from './player';
-import PlayerList from './playerList';
+import PlayList from './playList';
 import PlayerIconList from './playerIconList';
 
 interface CoachInfoProps {
@@ -73,8 +73,14 @@ function LineUp({ lineUpData }: { lineUpData: GetLineUpInfoResponse }) {
         );
     };
 
-    const homeArrayFormat = lineUpData.teams.home.arrayFormat;
-    const awayArrayFormat = lineUpData.teams.away.arrayFormat;
+    const checkPositions = (list: PlayerList[]): boolean => {
+        return list.every(({ positionX, positionY }) => positionX !== 0 || positionY !== 0);
+    };
+
+    const homePlayList: PlayerList[] = lineUpData.teams.home.players;
+    const homePositionResult: boolean = checkPositions(homePlayList);
+    const awayPlayList: PlayerList[] = lineUpData.teams.away.players;
+    const awayPositionResult: boolean = checkPositions(awayPlayList);
 
     const homeCoachName = getCoachName(lineUpData.teams.home);
     const awayCoachName = getCoachName(lineUpData.teams.away);
@@ -97,7 +103,7 @@ function LineUp({ lineUpData }: { lineUpData: GetLineUpInfoResponse }) {
                         <h6>首发阵容</h6>
                         <p>（点击球员/教练/裁判查看数据）</p>
                     </div>
-                    {homeArrayFormat !== '0' && awayArrayFormat !== '0' ? (
+                    {homePositionResult && awayPositionResult ? (
                         <>
                             <div
                                 className={style.ground}
@@ -260,7 +266,7 @@ function LineUp({ lineUpData }: { lineUpData: GetLineUpInfoResponse }) {
                                     />
                                 </div>
                             ) : null}
-                            <PlayerList
+                            <PlayList
                                 awayBackUp={awayStarters}
                                 awayColor={lineUpData.teams.away.teamColor}
                                 homeBackUp={homeStarters}
@@ -319,7 +325,7 @@ function LineUp({ lineUpData }: { lineUpData: GetLineUpInfoResponse }) {
                                         />
                                     </div>
                                 ) : null}
-                                <PlayerList
+                                <PlayList
                                     awayBackUp={awayBackUp}
                                     awayColor={lineUpData.teams.away.teamColor}
                                     homeBackUp={homeBackUp}

@@ -28,11 +28,13 @@ function TypingText({
     matchTime,
     home,
     away,
+    league,
     onTypingDone
 }: {
     matchTime: number;
     home: string;
     away: string;
+    league: string;
     onTypingDone: () => void;
 }) {
     const [text, setText] = useState('');
@@ -41,7 +43,7 @@ function TypingText({
         const message = `以下是我分析即将进行的${timestampToStringCh(
             matchTime,
             'YYYY年MM月DD日'
-        )}亚洲杯足球赛中 ${home} 对 ${away} 的比赛。`;
+        )}${league}足球赛中 ${home} 对 ${away} 的比赛。`;
         const type = () => {
             if (currentText.length < message.length) {
                 currentText = message.substring(0, currentText.length + 1);
@@ -310,6 +312,7 @@ function AiPredict() {
                                         <TypingText
                                             away={match.awayChs}
                                             home={match.homeChs}
+                                            league={match.leagueChs}
                                             matchTime={match.matchTime}
                                             onTypingDone={() => {
                                                 handleTypingDone(match.matchId);
