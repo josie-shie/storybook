@@ -41,11 +41,12 @@ function ScrollTop({ scrollContainerRef, hasFooter = true }: ScrollTopProps) {
     }, [scrollContainerRef]);
 
     return (
-        <div className={`${style.scrollWrapper} ${showScrollTop ? style.active : ''}`}>
-            <div
-                className={`${style.goTop} ${hasFooter && style.bottomHasFooter}`}
-                onClick={scrollTop}
-            >
+        <div
+            className={`${style.scrollWrapper} ${showScrollTop ? style.active : ''}  ${
+                hasFooter && style.bottomHasFooter
+            }`}
+        >
+            <div className={style.goTop} onClick={scrollTop}>
                 <Image alt="goTop" className={style.arrow} src={ArrowIcon} />
             </div>
         </div>

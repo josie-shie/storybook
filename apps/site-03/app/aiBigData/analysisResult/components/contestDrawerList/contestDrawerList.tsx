@@ -4,12 +4,12 @@ import type { GetFootballStatsMatch } from 'data-center';
 import BottomDrawer from '@/components/drawer/bottomDrawer';
 import NoData from '@/components/baseNoData/noData';
 // import MatchFilterDrawer from '../matchFilterDrawer/matchFilterDrawer';
+import { useQueryFormStore } from '@/app/aiBigData/queryFormStore';
 import { useMatchFilterStore } from '../../matchFilterStore';
-import style from './contestDrawerList.module.scss';
 // import iconFilter from './img/filterIcon.png';
 import ContestCard from '../contestCard/contestCard';
-import { useQueryFormStore } from '@/app/aiBigData/queryFormStore';
 import Footer from '../footer/footer';
+import style from './contestDrawerList.module.scss';
 
 function ContestDrawerList({
     isOpen,
@@ -71,12 +71,7 @@ function ContestDrawerList({
 
     return (
         <>
-            <BottomDrawer
-                isOpen={isOpen}
-                onClose={onClose}
-                onOpen={onOpen}
-                propsStyle={{ height: 'calc(100dvh - 75px)' }}
-            >
+            <BottomDrawer isOpen={isOpen} onClose={onClose} onOpen={onOpen}>
                 <div className={style.contestDrawerList}>
                     <div className={style.header}>
                         <h2>

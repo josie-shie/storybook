@@ -255,7 +255,6 @@
             color: #bfbfbf;
             font-size: 12px;
             padding-top: 16px;
-            padding-bottom: 38px;
         }
     }
 }
@@ -285,6 +284,20 @@
                 transform: translateX(-50%);
                 color: #fff;
                 font-size: 14px;
+            }
+        }
+    }
+}
+
+@media all and (display-mode: fullscreen) {
+    .myGuess {
+        .loadMore {
+            padding: 8px 8px 21px;
+        }
+
+        .listEnd {
+            p {
+                padding-bottom: 38px;
             }
         }
     }

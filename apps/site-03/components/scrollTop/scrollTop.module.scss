@@ -9,10 +9,6 @@
     transform: translateX(38px);
     transition: all 0.25s ease;
 
-    .bottomHasFooter {
-        bottom: 92px;
-    }
-
     .goTop {
         display: flex;
         align-items: center;
@@ -36,5 +32,19 @@
         .goTop {
             opacity: 1;
         }
+    }
+}
+
+.bottomHasFooter {
+    bottom: 71px;
+}
+
+@media all and (display-mode: fullscreen) {
+    .scrollWrapper {
+        bottom: 38px;
+    }
+
+    .bottomHasFooter {
+        bottom: 92px;
     }
 }

@@ -37,7 +37,7 @@
 
 .scrollWrapper {
     position: fixed;
-    bottom: 92px;
+    bottom: 71px;
     right: 16px;
     display: flex;
     align-items: center;
@@ -84,5 +84,11 @@
         .goTop {
             opacity: 1;
         }
+    }
+}
+
+@media all and (display-mode: fullscreen) {
+    .scrollWrapper {
+        bottom: 92px;
     }
 }

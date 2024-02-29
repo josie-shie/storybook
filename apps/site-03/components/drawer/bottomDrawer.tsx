@@ -1,4 +1,5 @@
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
+import { useEffect, useState } from 'react';
 import type { ReactNode } from 'react';
 import style from './bottomDrawer.module.scss';
 
@@ -19,6 +20,20 @@ function BottomDrawer({
     topLineDisplay?: string;
     swipeAreaWidth?: number; // 在屏幕边缘多少可以被滑动出來
 }) {
+    const [isFullscreen, setIsFullscreen] = useState(false);
+
+    useEffect(() => {
+        const mediaQuery = window.matchMedia('(display-mode: fullscreen)');
+        const handleMediaChange = (e: MediaQueryListEvent) => {
+            setIsFullscreen(e.matches);
+        };
+        mediaQuery.addEventListener('change', handleMediaChange);
+        handleMediaChange(mediaQuery as MediaQueryListEvent);
+
+        return () => {
+            mediaQuery.removeEventListener('change', handleMediaChange);
+        };
+    }, []);
     return (
         <SwipeableDrawer
             PaperProps={{
@@ -26,7 +41,7 @@ function BottomDrawer({
                     ...propsStyle,
                     borderTopLeftRadius: '16px',
                     borderTopRightRadius: '16px',
-                    paddingBottom: '21px'
+                    paddingBottom: isFullscreen ? '21px' : '0'
                 }
             }}
             anchor="bottom"

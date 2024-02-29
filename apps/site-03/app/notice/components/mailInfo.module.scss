@@ -3,7 +3,7 @@
 }
 
 .outer {
-    height: calc(100dvh - 75px);
+    height: calc(100dvh - 54px);
     padding: 24px 12px;
     background-color: #f3f3f3;
     overflow: auto;
@@ -134,5 +134,11 @@
             color: #fff;
             font-size: 14px;
         }
+    }
+}
+
+@media all and (display-mode: fullscreen) {
+    .outer {
+        height: calc(100dvh - 75px);
     }
 }

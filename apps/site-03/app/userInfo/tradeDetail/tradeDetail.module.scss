@@ -39,7 +39,7 @@
     p {
         color: #bfbfbf;
         font-size: 12px;
-        padding: 16px 0 38px;
+        padding: 16px 0;
     }
 }
 
@@ -81,6 +81,14 @@
             text-align: right;
             gap: 4px;
             color: #8d8d8d;
+        }
+    }
+}
+
+@media all and (display-mode: fullscreen) {
+    .listEnd {
+        p {
+            padding: 16px 0 38px;
         }
     }
 }
