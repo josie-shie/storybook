@@ -6,6 +6,7 @@ import { Button, FormControl } from '@mui/material';
 import type { LoginRequest } from 'data-center';
 import { getVerificationCaptcha, login, getMemberInfo } from 'data-center';
 import { useEffect } from 'react';
+import { initWebSocket, messageService } from 'lib';
 import {
     VertifyCodeByImage,
     Aggrement,
@@ -86,6 +87,17 @@ function Login() {
         setIsVisible('登入成功！', 'success');
         removeAuthQuery();
         setIsLogin(true);
+
+        messageService.closeWS();
+        initWebSocket({
+            url: process.env.NEXT_PUBLIC_MESSAGE_PATH || '',
+            onOpen: () => {
+                void messageService.send({
+                    action: 'init',
+                    token: res.data
+                });
+            }
+        });
         void getUserInfo();
     };
 
