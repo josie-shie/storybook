@@ -80,7 +80,7 @@ export const formatFilterMap = (
             infoObj[words] = [newObj];
         }
 
-        if (value.rating !== undefined && value.rating <= 2) {
+        if (value.rating !== undefined && value.rating <= 80) {
             if (Object.hasOwnProperty.call(extraMap, 'hot')) {
                 extraMap.hot.push(newObj);
             } else {
