@@ -37,7 +37,7 @@
 
     :global {
         .bfRoomContent {
-            height: calc(100% - 85px);
+            height: calc(100% - 64px);
             background-color: #f3f3f3;
         }
 
@@ -72,7 +72,7 @@
 
         .bfRoomBottom {
             height: 64px;
-            padding: 16px 16px 21px;
+            padding: 16px;
             background-color: #fff;
             box-shadow: 0 -1px 0 0 #d9d9d9;
             column-gap: 0;
@@ -130,6 +130,21 @@
 
         .bfPicture .bfPhoto {
             color: #4a4a4a;
+        }
+    }
+}
+
+@media all and (display-mode: fullscreen) {
+    .chat {
+        :global {
+            .bfRoomContent {
+                height: calc(100% - 85px);
+                background-color: #f3f3f3;
+            }
+
+            .bfRoomBottom {
+                padding: 16px 16px 21px;
+            }
         }
     }
 }
