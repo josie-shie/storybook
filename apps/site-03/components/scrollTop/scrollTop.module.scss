@@ -1,13 +1,17 @@
 .scrollWrapper {
     position: fixed;
-    bottom: 92px;
     right: 16px;
+    bottom: 38px;
     display: flex;
     align-items: center;
     gap: 4px;
     z-index: 1001;
     transform: translateX(38px);
     transition: all 0.25s ease;
+
+    .bottomHasFooter {
+        bottom: 92px;
+    }
 
     .goTop {
         display: flex;

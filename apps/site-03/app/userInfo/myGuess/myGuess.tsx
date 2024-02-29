@@ -38,7 +38,7 @@ function MyGuess() {
                 <MyGuessMyPlans setIsOpenRecord={setIsOpenRecord} />
             </div>
             <GuessRecord isOpenRecord={isOpenRecord} setIsOpenRecord={setIsOpenRecord} />
-            <ScrollTop scrollContainerRef={scrollGuessRef} />
+            <ScrollTop hasFooter={false} scrollContainerRef={scrollGuessRef} />
         </>
     );
 }

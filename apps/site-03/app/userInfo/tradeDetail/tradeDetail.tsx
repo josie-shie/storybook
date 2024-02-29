@@ -139,7 +139,7 @@ function TradeDetail() {
                     tradeType={tradeType}
                 />
             </div>
-            <ScrollTop scrollContainerRef={scrollTradeRef} />
+            <ScrollTop hasFooter={false} scrollContainerRef={scrollTradeRef} />
         </>
     );
 }
