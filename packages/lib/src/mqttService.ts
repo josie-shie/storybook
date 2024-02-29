@@ -98,6 +98,10 @@ export const mqttService = {
         return client;
     },
     close: () => {
+        // eslint-disable-next-line no-console -- Check lifecycle
+        console.log('Mqtt end');
+        isConnect = false;
+        init = true;
         client.end();
     },
     oddRunningInit: () => {

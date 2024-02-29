@@ -71,7 +71,9 @@ function Login() {
         if (res.success) {
             setUserInfo(res.data);
             mqttService.close();
-            mqttService.init({ memberId: res.data.uid });
+            setTimeout(() => {
+                mqttService.init({ memberId: res.data.uid });
+            }, 400);
         }
     };
 
@@ -91,15 +93,17 @@ function Login() {
         setIsLogin(true);
 
         messageService.closeWS();
-        initWebSocket({
-            url: process.env.NEXT_PUBLIC_MESSAGE_PATH || '',
-            onOpen: () => {
-                void messageService.send({
-                    action: 'init',
-                    token: res.data
-                });
-            }
-        });
+        setTimeout(() => {
+            initWebSocket({
+                url: process.env.NEXT_PUBLIC_MESSAGE_PATH || '',
+                onOpen: () => {
+                    void messageService.send({
+                        action: 'init',
+                        token: res.data
+                    });
+                }
+            });
+        }, 400);
         void getUserInfo();
     };
 
