@@ -24,15 +24,7 @@ function BottomDrawer({
 
     useEffect(() => {
         const mediaQuery = window.matchMedia('(display-mode: fullscreen)');
-        const handleMediaChange = (e: MediaQueryListEvent) => {
-            setIsFullscreen(e.matches);
-        };
-        mediaQuery.addEventListener('change', handleMediaChange);
-        handleMediaChange(mediaQuery as MediaQueryListEvent);
-
-        return () => {
-            mediaQuery.removeEventListener('change', handleMediaChange);
-        };
+        setIsFullscreen(mediaQuery.matches);
     }, []);
     return (
         <SwipeableDrawer
