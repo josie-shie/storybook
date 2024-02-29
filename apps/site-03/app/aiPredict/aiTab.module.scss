@@ -108,6 +108,14 @@
             border-bottom: none;
         }
 
+        .future {
+            font-size: 16px;
+            font-weight: 500;
+            background: linear-gradient(180deg, #03d9f7 0%, #4e8efc 100%);
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
         .title {
             position: relative;
             padding-left: 16px;
@@ -150,9 +158,8 @@
             &::before {
                 content: '';
                 position: absolute;
-                top: 50%;
+                top: 6px;
                 left: 7px;
-                transform: translateY(-50%);
                 width: 6px;
                 height: 6px;
                 background: #222;
