@@ -26,7 +26,7 @@
             align-items: center;
             justify-content: center;
             gap: 16px;
-            height: 160px;
+            height: 161px;
 
             .row {
                 display: flex;
@@ -34,6 +34,13 @@
                 align-items: center;
                 justify-content: center;
                 gap: 8px;
+            }
+
+            .title {
+                height: 24px;
+                background: linear-gradient(121deg, #03d9f7 31.01%, #4e8efc 71.87%);
+                background-clip: text;
+                -webkit-text-fill-color: transparent;
             }
 
             .text {

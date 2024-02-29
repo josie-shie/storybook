@@ -300,6 +300,7 @@ function AiPredictDetail({ params }: { params: { matchId: string } }) {
                     <div className={style.welcome}>
                         <div className={style.row}>
                             <AiAvatar />
+                            <div className={style.title}>FutureAI</div>
                         </div>
                         <div className={style.text}>您好，为您推荐以下赛事预测分析：</div>
                     </div>
