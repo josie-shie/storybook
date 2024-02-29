@@ -28,15 +28,6 @@ const filterPlay = {
     OVERUNDER: '总进球'
 };
 
-const filterOdds = {
-    HOME: 'handicap',
-    AWAY: 'handicap',
-    OVER: 'overUnder',
-    UNDER: 'overUnder',
-    HANDICAP: 'handicap',
-    OVERUNDER: 'overUnder'
-};
-
 function BettingPlan({
     planActiveTab,
     setGuessLength,
@@ -78,6 +69,48 @@ function BettingPlan({
     const loadMoreList = () => {
         if (currentPage <= Math.round(guessMatchesList.length / 30) && currentPage < totalPage) {
             setCurrentPage(prevData => prevData + 1);
+        }
+    };
+
+    const messageFormat = (predictedPlay: string, item: MemberIndividualGuessMatch) => {
+        const commonSpan = (text: string) => (
+            <span className={item.predictionResult === 'WIN' ? style.win : style.gray}>
+                {' '}
+                {text}
+            </span>
+        );
+
+        switch (predictedPlay) {
+            case 'OVER':
+                return (
+                    <>
+                        <span>{item.overUnderOdds}</span>
+                        {commonSpan('大')}
+                    </>
+                );
+            case 'UNDER':
+                return (
+                    <>
+                        <span>{item.overUnderOdds}</span>
+                        {commonSpan('小')}
+                    </>
+                );
+            case 'HOME':
+                return (
+                    <>
+                        <span>{item.handicapInChinese}</span>
+                        {commonSpan(item.homeTeamName)}
+                    </>
+                );
+            case 'AWAY':
+                return (
+                    <>
+                        <span>{item.handicapInChinese}</span>
+                        {commonSpan(item.awayTeamName)}
+                    </>
+                );
+            default:
+                return null;
         }
     };
 
@@ -129,22 +162,8 @@ function BettingPlan({
                                     </div>
                                 </div>
                                 <div className={style.bot}>
-                                    <div
-                                        className={`${style.message} ${
-                                            item.predictionResult === 'WIN' && style.win
-                                        }`}
-                                    >
-                                        {filterOdds[item.predictedPlay] === 'overUnder'
-                                            ? ''
-                                            : `${item.handicapOdds > 0 ? '让球' : '受让'}${
-                                                  item.handicapInChinese
-                                              }`}{' '}
-                                        {item.predictedPlay === 'OVER' &&
-                                            `${item.overUnderOdds} 大`}
-                                        {item.predictedPlay === 'UNDER' &&
-                                            `${item.overUnderOdds} 小`}
-                                        {item.predictedPlay === 'HOME' && item.homeTeamName}
-                                        {item.predictedPlay === 'AWAY' && item.awayTeamName}
+                                    <div className={style.message}>
+                                        {messageFormat(item.predictedPlay, item)}
                                     </div>
                                 </div>
                             </li>
