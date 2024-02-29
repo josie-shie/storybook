@@ -62,7 +62,7 @@ async function RootLayout({ children }: { children: ReactNode }) {
     }
 
     return (
-        <html lang="cn">
+        <html lang="zh-Hans">
             <head>
                 <meta content="yes" name="apple-mobile-web-app-capable" />
                 <link href="/logo/launch-192.png" rel="apple-touch-icon" />
