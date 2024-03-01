@@ -111,9 +111,13 @@
         .future {
             font-size: 16px;
             font-weight: 500;
-            background: linear-gradient(180deg, #03d9f7 0%, #4e8efc 100%);
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #4f8ffd;
+
+            .text {
+                background: linear-gradient(121deg, #03d9f7 31.01%, #4e8efc 71.87%);
+                background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
         }
 
         .title {

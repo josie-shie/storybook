@@ -15,7 +15,9 @@ function Ai() {
     return (
         <div className={style.aiTab}>
             <div className={style.info}>
-                <div className={style.future}>FutureAI 预测</div>
+                <div className={style.future}>
+                    <span className={style.text}>FutureAI</span> 预测
+                </div>
                 <div className={style.content}>
                     根据目前的形势和球队的表现，预测这场比赛将是一场激烈的对决。队伍001可能会以小比分胜出，但队伍001也有机会展示他们的实力和战术能力。预计队伍001以1-0战胜队伍002的。
                 </div>
@@ -138,7 +140,7 @@ function Tutorial() {
                     <span>关闭</span>
                 </div>
                 <div className={style.tutorialContent}>
-                    <div className={style.watermark}>
+                    <div className={style.tutorialBox}>
                         <div className={style.message}>
                             <AiAvatarSmall className={style.icon} />
                             <div className={style.text}>
