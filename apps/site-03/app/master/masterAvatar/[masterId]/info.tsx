@@ -7,6 +7,7 @@ import {
 import { unFollow, updateFollow } from 'data-center';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { truncateFloatingPoint } from 'lib';
 import Avatar from '@/components/avatar/avatar';
 import Tag from '@/components/tag/tag';
 import TagSplit from '@/components/tagSplit/tagSplit';
@@ -16,7 +17,6 @@ import User from './img/user.svg';
 import LockOpen from './img/lockOpen.svg';
 import style from './info.module.scss';
 import Skeleton from './components/skeleton/skeleton';
-import { truncateFloatingPoint } from 'lib';
 
 function Info({ params }: { params: { masterId: string } }) {
     const [info, setInfo] = useState({
@@ -112,7 +112,7 @@ function Info({ params }: { params: { masterId: string } }) {
             case 'HANDICAP':
                 return '胜负';
             case 'OVERUNDER':
-                return '總進球';
+                return '總进球';
             default:
                 return '';
         }
@@ -142,7 +142,7 @@ function Info({ params }: { params: { masterId: string } }) {
                             <div className={style.content}>
                                 <span className={style.name}>{info.username}</span>
                                 <div className={style.tagsContainer}>
-                                    {showHandicap && (
+                                    {showHandicap ? (
                                         <Tag
                                             background="rgba(255, 255, 255, 0.30)"
                                             borderColor="#6e94d4"
@@ -150,8 +150,8 @@ function Info({ params }: { params: { masterId: string } }) {
                                                 info.mentorArticleCount.predictedPlay
                                             )} ${info.mentorArticleCount.counts}場`}
                                         />
-                                    )}
-                                    {showOverUnder && (
+                                    ) : null}
+                                    {showOverUnder ? (
                                         <Tag
                                             background="rgba(255, 255, 255, 0.30)"
                                             borderColor="#6e94d4"
@@ -159,12 +159,12 @@ function Info({ params }: { params: { masterId: string } }) {
                                                 info.mentorArticleCount.predictedPlay
                                             )} ${info.mentorArticleCount.counts}場`}
                                         />
-                                    )}
+                                    ) : null}
                                     {info.highlights.weekHitRecentTen > 0 && (
                                         <TagSplit
+                                            hit
                                             isBlueBg={false}
                                             number={info.highlights.weekHitRecentTen}
-                                            hit={true}
                                             text="近"
                                         />
                                     )}

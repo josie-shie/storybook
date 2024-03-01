@@ -53,7 +53,7 @@ function FifteenMinutesChart({
             type: 'pie',
             radius: '30%',
             center: chartPosition[index],
-            encode: { itemName: '進球', value: header },
+            encode: { itemName: '进球', value: header },
             label: { show: false },
             itemStyle: { borderWidth: 2, borderColor: '#FFF' },
             color: ['#1762E3', '#9FC2FF'],
@@ -73,7 +73,7 @@ function FifteenMinutesChart({
         },
         dataset: {
             source: [
-                ['進球', ...headers],
+                ['进球', ...headers],
                 ['大', ...upperList],
                 ['小', ...lowerList]
             ]
