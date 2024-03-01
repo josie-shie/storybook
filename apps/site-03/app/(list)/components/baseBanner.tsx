@@ -53,11 +53,16 @@ function BaseBanner({ className }: { className: string }) {
 
     return (
         <div className={`${style.baseBanner} ${className}`}>
-            <Link className={style.banner} href={randomMap?.link || defaultConfig.link}>
+            <Link
+                className={style.banner}
+                href={randomMap?.link || defaultConfig.link}
+                suppressHydrationWarning
+            >
                 <Image
                     alt={randomMap?.label || defaultConfig.label}
                     priority
                     src={randomMap?.image || defaultConfig.image}
+                    suppressHydrationWarning
                 />
             </Link>
         </div>

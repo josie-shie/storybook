@@ -183,7 +183,10 @@ function OddsInfo({
                         </motion.button>
                     )}
                 </div>
-                <span className={`${style.odd} ${HandicapIsClose && style.closeOdd}`}>
+                <div
+                    className={`${style.odd} ${HandicapIsClose && style.closeOdd}`}
+                    suppressHydrationWarning
+                >
                     {!contestInfo.hasHandicapOdd && (
                         <>
                             {HandicapIsClose ? (
@@ -216,10 +219,10 @@ function OddsInfo({
                             )}
                         </>
                     )}
-                </span>
+                </div>
             </div>
             <div className={style.mid}>
-                <p className={style.halfScore}>
+                <p className={style.halfScore} suppressHydrationWarning>
                     {(syncData.state || contestInfo.state) < 0 ||
                     (syncData.state || contestInfo.state) > 2 ? (
                         <>
@@ -230,7 +233,10 @@ function OddsInfo({
                 </p>
             </div>
             <div className={`${style.oddBox} ${style.right}`}>
-                <span className={`${style.odd} ${OverUnderIsClose && style.closeOdd}`}>
+                <div
+                    className={`${style.odd} ${OverUnderIsClose && style.closeOdd}`}
+                    suppressHydrationWarning
+                >
                     {!contestInfo.hasOverUnderOdd && (
                         <>
                             {OverUnderIsClose ? (
@@ -264,7 +270,7 @@ function OddsInfo({
                             )}
                         </>
                     )}
-                </span>
+                </div>
                 <div className={style.IconHolder} />
             </div>
         </div>
@@ -291,7 +297,9 @@ function TeamInfo({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId:
                         </p>
                     ) : null}
                 </div>
-                <div className={style.teamName}>{contestInfo.homeChs}</div>
+                <div className={style.teamName} suppressHydrationWarning>
+                    {contestInfo.homeChs}
+                </div>
             </div>
             <div
                 className={`${style.score} ${
@@ -308,16 +316,18 @@ function TeamInfo({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId:
                 )}
             </div>
             <div className={`${style.awayTeam} ${style.team}`}>
-                <div className={style.teamName}>{contestInfo.awayChs}</div>
+                <div className={style.teamName} suppressHydrationWarning>
+                    {contestInfo.awayChs}
+                </div>
                 <div className={style.cards}>
                     {(syncData.awayRed && syncData.awayRed > 0) || contestInfo.awayRed > 0 ? (
-                        <p className={`${style.redCard} ${style.card}`}>
+                        <p className={`${style.redCard} ${style.card}`} suppressHydrationWarning>
                             {syncData.awayRed || contestInfo.awayRed}
                         </p>
                     ) : null}
                     {(syncData.awayYellow && syncData.awayYellow > 0) ||
                     contestInfo.awayYellow > 0 ? (
-                        <p className={`${style.yellowCard} ${style.card}`}>
+                        <p className={`${style.yellowCard} ${style.card}`} suppressHydrationWarning>
                             {syncData.awayYellow || contestInfo.awayYellow}
                         </p>
                     ) : null}
@@ -350,14 +360,18 @@ function TopArea({
     return (
         <div className={style.topArea}>
             <div className={style.left}>
-                <div className={style.league} style={{ color: contestInfo.color }}>
+                <div
+                    className={style.league}
+                    style={{ color: contestInfo.color }}
+                    suppressHydrationWarning
+                >
                     {contestInfo.leagueChsShort}
                 </div>
                 <div className={`${style.time}  ui-game-card-time`}>
                     {contestInfo.matchTime ? currentMatchTime : null}
                 </div>
                 {status === 'result' && (
-                    <div className={style.halfScore}>
+                    <div className={style.halfScore} suppressHydrationWarning>
                         {contestInfo.homeHalfScore}-{contestInfo.awayHalfScore}
                     </div>
                 )}
@@ -374,11 +388,11 @@ function TopArea({
                 {(matchState > 0 || matchState === -1) && (
                     <div className={style.corner}>
                         <CornerIcon className={style.cornerIcon} />
-                        <span className={style.ratio}>
+                        <span className={style.ratio} suppressHydrationWarning>
                             {syncData.homeCorner || contestInfo.homeCorner}
                         </span>
                         -
-                        <span className={style.ratio}>
+                        <span className={style.ratio} suppressHydrationWarning>
                             {syncData.awayCorner || contestInfo.awayCorner}
                         </span>
                     </div>
@@ -417,19 +431,23 @@ function TopArea({
                     </div>
                 ) : (
                     <>
-                        <div className={style.information}>
+                        <div className={style.information} suppressHydrationWarning>
                             {contestInfo.hasLineup !== '0' ? (
-                                <div className={style.text}>阵容</div>
+                                <div className={style.text} suppressHydrationWarning>
+                                    阵容
+                                </div>
                             ) : null}
                             {contestInfo.hasLineup !== '0' && contestInfo.hasIntelligence ? (
-                                <div className={style.line} />
+                                <div className={style.line} suppressHydrationWarning />
                             ) : null}
                             {contestInfo.hasIntelligence ? (
-                                <div className={style.text}>情报</div>
+                                <div className={style.text} suppressHydrationWarning>
+                                    情报
+                                </div>
                             ) : null}
                         </div>
                         {contestInfo.hasAnimation ? (
-                            <VideoIcon className={style.videoIcon} />
+                            <VideoIcon className={style.videoIcon} suppressHydrationWarning />
                         ) : null}
                     </>
                 )}
