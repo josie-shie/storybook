@@ -36,6 +36,13 @@
                 gap: 8px;
             }
 
+            .title {
+                height: 24px;
+                background: linear-gradient(121deg, #03d9f7 31.01%, #4e8efc 71.87%);
+                background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+
             .text {
                 width: 16em;
                 color: #4a4a4a;
