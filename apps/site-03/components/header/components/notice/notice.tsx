@@ -13,7 +13,7 @@ function Notice() {
     return (
         <>
             {isLogin ? (
-                <Link className={style.notice} href="/notice">
+                <Link aria-label="消息" className={style.notice} href="/notice">
                     <Badge badgeContent={unreadMessageNotify.totalCount} color="primary">
                         <NoticeIcon />
                     </Badge>
