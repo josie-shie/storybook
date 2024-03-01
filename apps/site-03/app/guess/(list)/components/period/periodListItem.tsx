@@ -48,7 +48,7 @@ function PeriodListItem({
                         key={item.memberId}
                     >
                         <div className={style.rankingFlag}>
-                            {item.ranking < 50 && (
+                            {item.ranking <= 50 && (
                                 <Image alt="" height={24} src={Rank} width={24} />
                             )}
                             <span>{item.ranking}</span>
