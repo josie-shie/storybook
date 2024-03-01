@@ -1,7 +1,7 @@
 import Link from 'next/link';
-import style from './contestCard.module.scss';
 import { handleGameTime, timestampToString } from 'lib';
 import type { GetFootballStatsMatch } from 'data-center';
+import style from './contestCard.module.scss';
 import CornerIcon from './img/corner.svg';
 
 function ContestCard({ match }: { match: GetFootballStatsMatch }) {
@@ -17,15 +17,15 @@ function ContestCard({ match }: { match: GetFootballStatsMatch }) {
                             <div className={style.time}>
                                 {timestampToString(match.matchTime, 'YYYY-MM-DD')}
                             </div>
-                            <div className={style.halfScore}>
-                                {match.homeHalfScore}-{match.awayHalfScore}
-                            </div>
                         </div>
                     </div>
                     <div className={style.state}>
                         {handleGameTime(match.startTime, match.state).text}
                     </div>
                     <div className={style.rightInfo}>
+                        <div className={style.halfScore}>
+                            {match.homeHalfScore}-{match.awayHalfScore}
+                        </div>
                         <div className={style.corner}>
                             <CornerIcon />
                             {match.homeCorner}-{match.awayCorner}
