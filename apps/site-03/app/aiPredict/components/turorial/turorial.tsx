@@ -137,7 +137,7 @@ function Tutorial() {
             >
                 <div className={style.close}>
                     <Close onClick={handleClose} />
-                    <span>關閉</span>
+                    <span>关闭</span>
                 </div>
                 <div className={style.tutorialContent}>
                     <div className={style.message}>
