@@ -5,8 +5,8 @@ import Link from 'next/link';
 import Skeleton from '@mui/material/Skeleton';
 import { useUserStore } from '@/store/userStore';
 import style from './baseBanner.module.scss';
-import GuessBannerImage from './img/guessBanner.png';
-import RegisterBannerImage from './img/registerBanner.png';
+import GuessBannerImage from './img/guessBanner.jpg';
+import RegisterBannerImage from './img/registerBanner.jpg';
 
 const defaultConfig = {
     label: 'guessBanner',
