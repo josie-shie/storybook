@@ -324,12 +324,12 @@ function ContestList({
 
                             if (status === 'all' && matchFinishLine && state === -1) {
                                 content.push(
-                                    <div
+                                    <li
                                         className={style.dividerBar}
                                         key={`date_${index.toString()}`}
                                     >
                                         已结束
-                                    </div>
+                                    </li>
                                 );
 
                                 matchFinishLine = false;
@@ -337,12 +337,12 @@ function ContestList({
 
                             if (matchDate !== changeDayLine && changeDayLine !== null) {
                                 content.push(
-                                    <div
+                                    <li
                                         className={style.dividerBar}
                                         key={`date_${index.toString()}_${matchId}`}
                                     >
                                         {timestampToStringWeek(matchTime)}
-                                    </div>
+                                    </li>
                                 );
                             }
 
@@ -365,7 +365,7 @@ function ContestList({
                     isMounted ? (
                         <InfiniteScroll onVisible={loadMoreList}>
                             <div className={style.loadMore}>
-                                <CircularProgress size={24} />
+                                <CircularProgress aria-label="Loading" size={24} />
                             </div>
                         </InfiniteScroll>
                     ) : (
