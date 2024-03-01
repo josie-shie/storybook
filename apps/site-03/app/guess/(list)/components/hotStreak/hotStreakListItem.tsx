@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import CircularProgress from '@mui/material/CircularProgress';
+import type { GuessRank } from 'data-center';
 import Avatar from '@/components/avatar/avatar';
 import BaseNoData from '@/components/baseNoData/noData';
 import { useRankStore } from '../../rankStore';
@@ -11,6 +12,9 @@ import Rank from './img/rank.png';
 function HotStreakListItem({ isLoading }: { isLoading: boolean }) {
     const masterRankList = useRankStore.use.masterRankList();
     const onlyShowToday = useRankStore.use.onlyShowToday();
+    const filteredRankList = onlyShowToday
+        ? masterRankList.filter((item: GuessRank) => item.today)
+        : masterRankList;
 
     if (isLoading)
         return (
@@ -18,12 +22,10 @@ function HotStreakListItem({ isLoading }: { isLoading: boolean }) {
                 <CircularProgress size={24} />
             </div>
         );
-    if (masterRankList.length === 0) return <BaseNoData text="暂无资料" />;
+    if (filteredRankList.length === 0) return <BaseNoData text="暂无资料" />;
     return (
         <>
-            {masterRankList.map(item => {
-                if (onlyShowToday && !item.today) return null;
-
+            {filteredRankList.map(item => {
                 return (
                     <Link
                         className={style.hotStreakListItem}
