@@ -419,6 +419,34 @@ function AiPredict() {
                             </div>
                         );
                     })}
+
+                    {selectedMatches.length > 0 ? (
+                        <div className={`${style.chat} ${showChat ? style.fadeIn : style.hidden}`}>
+                            <div className={style.title}>精选赛事</div>
+                            <div className={style.wrapper}>
+                                <div className={style.contestList}>
+                                    <div className={style.row}>
+                                        {firstHalfMatches.map(match => (
+                                            <MatchItem
+                                                handleSelectMatch={handleSelectMatch}
+                                                key={`${match.matchId}-${match.leagueType}`}
+                                                match={match}
+                                            />
+                                        ))}
+                                    </div>
+                                    <div className={style.row}>
+                                        {secondHalfMatches.map(match => (
+                                            <MatchItem
+                                                handleSelectMatch={handleSelectMatch}
+                                                key={`${match.matchId}-${match.leagueType}`}
+                                                match={match}
+                                            />
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    ) : null}
                 </div>
                 <Tutorial />
             </div>
