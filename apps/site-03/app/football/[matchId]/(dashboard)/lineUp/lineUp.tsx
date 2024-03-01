@@ -77,9 +77,9 @@ function LineUp({ lineUpData }: { lineUpData: GetLineUpInfoResponse }) {
         return list.every(({ positionX, positionY }) => positionX !== 0 || positionY !== 0);
     };
 
-    const homePlayList: PlayerList[] = lineUpData.teams.home.players;
+    const homePlayList: PlayerList[] = homeStarters;
     const homePositionResult: boolean = checkPositions(homePlayList);
-    const awayPlayList: PlayerList[] = lineUpData.teams.away.players;
+    const awayPlayList: PlayerList[] = awayStarters;
     const awayPositionResult: boolean = checkPositions(awayPlayList);
 
     const homeCoachName = getCoachName(lineUpData.teams.home);
