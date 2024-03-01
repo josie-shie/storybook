@@ -98,7 +98,7 @@ function GoalAlert() {
                                             width={32}
                                         />
                                         <div className={style.info}>
-                                            <p>進球</p>
+                                            <p>进球</p>
                                             <p>
                                                 {getStartTime(
                                                     item.state > 2

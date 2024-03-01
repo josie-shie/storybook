@@ -55,22 +55,30 @@ function calculatePercentages(data: Record<string, Statistics>) {
 function groupSameWeek(dayListData: Record<string, Statistics>) {
     const weeklyData = {} as Record<string, Statistics>;
 
-    Object.keys(dayListData).forEach(dateStr => {
-        const timestampInSeconds = parseInt(dateStr);
-        const date = dayjs(timestampInSeconds * 1000);
+    const sortedDates = Object.keys(dayListData)
+        .map(Number)
+        .sort((a, b) => a - b);
+    let currentWeek = 0;
+    let lastDate: dayjs.Dayjs | null = null;
 
-        const weekNumber = date.isoWeek();
+    sortedDates.forEach(dateStr => {
+        const timestampInSeconds = dateStr;
+        const date = dayjs.unix(timestampInSeconds);
+
+        if (lastDate === null || date.diff(lastDate, 'day') >= 7) {
+            currentWeek += 1;
+            lastDate = date;
+        }
+
         const totalMatchIds = [
             ...(dayListData[dateStr].upperMatchIds || []),
             ...(dayListData[dateStr].lowerMatchIds || []),
             ...(dayListData[dateStr].drawMatchIds || [])
         ];
-        const uniqueMatchIds = totalMatchIds.filter((value, index, self) => {
-            return self.indexOf(value) === index;
-        });
+        const uniqueMatchIds = Array.from(new Set(totalMatchIds));
 
-        if (!Object.prototype.hasOwnProperty.call(weeklyData, weekNumber)) {
-            weeklyData[weekNumber] = {
+        if (!Object.hasOwnProperty.call(weeklyData, currentWeek.toString())) {
+            weeklyData[currentWeek] = {
                 upper: 0,
                 lower: 0,
                 draw: 0,
@@ -79,11 +87,22 @@ function groupSameWeek(dayListData: Record<string, Statistics>) {
                 lowerPercentage: 0,
                 totalMatchIds: uniqueMatchIds
             };
+        } else {
+            weeklyData[currentWeek].totalMatchIds = Array.from(
+                new Set([...(weeklyData[currentWeek].totalMatchIds || []), ...uniqueMatchIds])
+            );
         }
 
-        weeklyData[weekNumber].upper += dayListData[dateStr].upper;
-        weeklyData[weekNumber].lower += dayListData[dateStr].lower;
-        weeklyData[weekNumber].draw += dayListData[dateStr].draw;
+        weeklyData[currentWeek].upper += dayListData[dateStr].upper;
+        weeklyData[currentWeek].lower += dayListData[dateStr].lower;
+        weeklyData[currentWeek].draw += dayListData[dateStr].draw;
+    });
+
+    Object.values(weeklyData).forEach(week => {
+        const total = week.upper + week.lower + week.draw;
+        week.upperPercentage = (week.upper / total) * 100;
+        week.lowerPercentage = (week.lower / total) * 100;
+        week.drawPercentage = (week.draw / total) * 100;
     });
 
     return weeklyData;
