@@ -111,7 +111,10 @@ function MatchItem({
                     <TeamLogo alt={match.homeChs} height={20} src={match.homeLogo} width={20} />
                     {match.homeChs}
                 </span>
-                <span className={style.name}>VS {match.awayChs}</span>
+                <span className={style.name}>
+                    <TeamLogo alt={match.awayChs} height={20} src={match.awayLogo} width={20} />{' '}
+                    {match.awayChs}
+                </span>
             </div>
         </div>
     );
