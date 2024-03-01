@@ -82,7 +82,7 @@ function Header({
         if (typeof navigator.share !== 'undefined') {
             await navigator
                 .share({
-                    title: '未来体育 | FutureSport',
+                    title: '智球网 - AI足球预测与全球即时比分 - 精准快速',
                     url: `${location.origin}/football/${matchId}`
                 })
                 .then(() => {

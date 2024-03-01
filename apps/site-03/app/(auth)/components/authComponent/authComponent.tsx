@@ -74,9 +74,7 @@ export function SubmitButton({ label, disabled }: SubmitButtonPropsType) {
 }
 
 export function Aggrement() {
-    return (
-        <p className={style.agreement}>{`登入即同意<未来体育隐私条款>、<未来体育用户服务协议>`}</p>
-    );
+    return <p className={style.agreement}>{`登入即同意<智球网隐私条款>、<智球网用户服务协议>`}</p>;
 }
 
 export function VertifyCode({

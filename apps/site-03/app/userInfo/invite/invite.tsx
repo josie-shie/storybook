@@ -112,7 +112,7 @@ function Invite() {
                                 const host = window.location.host;
                                 const baseUrl = `${protocol}//${host}`;
                                 void copyLink(
-                                    `${userInfo.username}邀请您一起获得<未来体育平台(站名)>200元红包,点击网址后注册加入即可获得最新赛事预测、赛事数据分析服务: ${baseUrl}/?auth=register&inviteCode=${inviteCode}`
+                                    `${userInfo.username}邀请您一起获得<智球网平台(站名)>200元红包,点击网址后注册加入即可获得最新赛事预测、赛事数据分析服务: ${baseUrl}/?auth=register&inviteCode=${inviteCode}`
                                 );
                             }}
                         >
