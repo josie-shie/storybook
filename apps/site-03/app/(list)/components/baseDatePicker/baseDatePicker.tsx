@@ -129,7 +129,7 @@ function BaseDatePicker({
                         <Tab key={index} label={<DateLabel date={date} />} />
                     ))}
                 </Tabs>
-                <IconButton onClick={handleOpenModal}>
+                <IconButton aria-label="Date" onClick={handleOpenModal}>
                     <DateIcon />
                 </IconButton>
             </Box>

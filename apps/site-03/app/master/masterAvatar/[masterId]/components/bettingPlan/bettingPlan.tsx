@@ -137,9 +137,7 @@ function BettingPlan({
                                     <div className={style.message}>
                                         {filterOdds[item.predictedPlay] === 'overUnder'
                                             ? ''
-                                            : `${item.handicapOdds > 0 ? '让球' : '受让'}${
-                                                  item.handicapInChinese
-                                              }`}{' '}
+                                            : item.handicapInChinese}{' '}
                                         <span
                                             className={`${
                                                 item.predictionResult === 'WIN'

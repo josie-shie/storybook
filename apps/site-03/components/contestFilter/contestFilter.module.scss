@@ -35,6 +35,13 @@
             width: 100%;
         }
 
+        .hotLeague {
+            display: flex;
+            align-items: center;
+            column-gap: 4px;
+            color: #f85640;
+        }
+
         ul {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -69,19 +76,23 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 8px 32px;
+        padding: 8px 16px;
         border-top: 1px solid #f3f3f3;
 
         .option {
-            height: 26px;
-            line-height: 26px;
+            width: 25%;
+            height: 28px;
+            text-align: center;
+            line-height: 28px;
             padding: 0 12px;
-            color: #8d8d8d;
+            color: #e95e6bb3;
             font-size: 14px;
             font-weight: 500;
 
             &.selected {
-                color: #4489ff;
+                color: #e95e6b;
+                border-radius: 6px;
+                background: rgb(233 94 107 / 10%);
             }
         }
     }

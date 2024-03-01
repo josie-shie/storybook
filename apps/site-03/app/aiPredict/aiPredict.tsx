@@ -27,6 +27,8 @@ interface MatchTab {
     value: string;
 }
 
+type ColorType = `#${string}`;
+
 function TypingText({
     matchTime,
     home,
@@ -97,7 +99,7 @@ function MatchItem({
             }}
         >
             <div className={style.league}>
-                <span className={style.name} style={{ color: match.Color }}>
+                <span className={style.name} style={{ color: match.Color as ColorType }}>
                     {match.leagueChs}
                 </span>
                 <span className={style.time}>
@@ -285,7 +287,7 @@ function AiPredict() {
                         <div className={style.text}>您好，为您推荐以下赛事预测分析：</div>
                     </div>
                     <div className={`${style.chat} ${showChat ? style.fadeIn : style.hidden}`}>
-                        <div className={style.title}>精选赛事</div>
+                        <div className={style.title}>今日精选赛事</div>
                         <div className={style.wrapper}>
                             <div className={style.contestList}>
                                 <div className={style.row}>
@@ -422,7 +424,7 @@ function AiPredict() {
 
                     {selectedMatches.length > 0 ? (
                         <div className={`${style.chat} ${showChat ? style.fadeIn : style.hidden}`}>
-                            <div className={style.title}>精选赛事</div>
+                            <div className={style.title}>其他推荐赛事</div>
                             <div className={style.wrapper}>
                                 <div className={style.contestList}>
                                     <div className={style.row}>

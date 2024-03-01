@@ -91,8 +91,14 @@
             width: 100%;
         }
 
-        & > div:first-of-type h3 {
-            margin-top: 0;
+        .hotLeague {
+            h3 {
+                margin-top: 0;
+                display: flex;
+                align-items: center;
+                column-gap: 4px;
+                color: #f85640;
+            }
         }
 
         ul {

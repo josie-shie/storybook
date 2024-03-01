@@ -83,11 +83,11 @@ function ArticleContent({
 
     const filterImage = (value: GuessType): JSX.Element => {
         const result = {
-            NONE: <Push className={style.icon} />,
-            WIN: <Win className={style.icon} />,
-            DRAW: <Draw className={style.icon} />,
-            LOSE: <Lose className={style.icon} />,
-            PUSH: <Push className={style.icon} />
+            NONE: <Push className={style.icon} height="36" width="36" />,
+            WIN: <Win className={style.icon} height="36" width="36" />,
+            DRAW: <Draw className={style.icon} height="36" width="36" />,
+            LOSE: <Lose className={style.icon} height="36" width="36" />,
+            PUSH: <Push className={style.icon} height="36" width="36" />
         };
         return result[value];
     };

@@ -79,7 +79,6 @@ function BettingPlan({
                 {text}
             </span>
         );
-
         switch (predictedPlay) {
             case 'OVER':
                 return (

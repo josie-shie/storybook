@@ -45,12 +45,14 @@ function RecommendationItem({
                                 href={`/master/articleDetail/${item.id}`}
                                 key={item.id}
                             >
-                                {item.predictionResult === 'WIN' && <Win className={style.icon} />}
+                                {item.predictionResult === 'WIN' && (
+                                    <Win className={style.icon} height="45" width="45" />
+                                )}
                                 {item.predictionResult === 'DRAW' && (
-                                    <Draw className={style.icon} />
+                                    <Draw className={style.icon} height="45" width="45" />
                                 )}
                                 {item.predictionResult === 'LOSE' && (
-                                    <Lose className={style.icon} />
+                                    <Lose className={style.icon} height="45" width="45" />
                                 )}
                                 <div className={style.left}>
                                     <div className={style.name}>
@@ -78,7 +80,6 @@ function RecommendationItem({
                                             )}
                                         <span>{item.mentorName}</span>
                                     </div>
-
                                     <div className={style.leagueName}>
                                         <span className={style.name}>{item.leagueName}</span>
                                         <span>|</span>

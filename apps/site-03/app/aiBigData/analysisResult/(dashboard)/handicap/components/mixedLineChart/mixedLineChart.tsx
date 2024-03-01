@@ -300,9 +300,10 @@ function MixedLineChart({
             if (Object.prototype.hasOwnProperty.call(chartData[periodSwitch][tabType], key)) {
                 const dateItem = chartData[periodSwitch][tabType][key];
 
-                const matchList = Array.from(
-                    new Set([...(dateItem.upperMatchIds || []), ...(dateItem.lowerMatchIds || [])])
-                );
+                const matchList =
+                    periodSwitch === 'week'
+                        ? dateItem.totalMatchIds || []
+                        : [...(dateItem.lowerMatchIds || []), ...(dateItem.upperMatchIds || [])];
 
                 totalMatchCount += matchList.length;
 

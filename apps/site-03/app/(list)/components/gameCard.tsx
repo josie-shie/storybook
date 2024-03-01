@@ -167,6 +167,7 @@ function OddsInfo({
                 <div className={style.IconHolder}>
                     {status === 'all' && (
                         <motion.button
+                            aria-label="置顶"
                             className={style.pinToTop}
                             onClick={event => {
                                 handlePinToTop(event);

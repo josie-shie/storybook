@@ -7,6 +7,7 @@ import { formatFilterMap, type FilterMap } from 'lib';
 import BottomDrawer from '@/components/drawer/bottomDrawer';
 import style from './contestFilter.module.scss';
 import FilterIcon from './img/filter.svg';
+import HotLeagueIcon from './img/hotLeague.svg';
 
 type GroupType = 'league' | 'country';
 type LeagueOptionType = 'all' | 'isBJSingle' | 'isCompFoot' | 'isTradFoot';
@@ -86,7 +87,10 @@ function FilterSection({
             <div className={style.list} style={{ height: group === 'league' ? '400px' : '444px' }}>
                 {filterHotLeagueInfo ? (
                     <div>
-                        <h3>热门</h3>
+                        <h3 className={style.hotLeague}>
+                            <HotLeagueIcon />
+                            热门
+                        </h3>
                         <ul>
                             {filterHotLeagueInfo.map((hotLeague, idx) => (
                                 <motion.li

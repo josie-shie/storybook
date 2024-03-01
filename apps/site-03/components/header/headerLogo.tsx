@@ -34,7 +34,7 @@ function HeaderLogo({
     return (
         <div className={style.placeholder}>
             <div className={`${style.header} ${style.headerTransparent}`}>
-                <Link className={style.logo} href={link}>
+                <Link aria-label="智球网" className={style.logo} href={link}>
                     {back ? (
                         <Image alt="" height={24} src={backLeftArrowImg} width={24} />
                     ) : (

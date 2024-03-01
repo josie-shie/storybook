@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import CircularProgress from '@mui/material/CircularProgress';
+import type { GuessRank } from 'data-center';
 import Avatar from '@/components/avatar/avatar';
 import BaseNoData from '@/components/baseNoData/noData';
 import { useRankStore } from '../../rankStore';
@@ -25,6 +26,9 @@ function PeriodListItem({
     };
     const rankList = rankListMap[status];
     const onlyShowToday = useRankStore.use.onlyShowToday();
+    const filteredRankList = onlyShowToday
+        ? rankList.filter((item: GuessRank) => item.today)
+        : rankList;
 
     if (isLoading)
         return (
@@ -32,13 +36,11 @@ function PeriodListItem({
                 <CircularProgress size={24} />
             </div>
         );
-    if (rankList.length === 0) return <BaseNoData text="暂无资料" />;
+    if (filteredRankList.length === 0) return <BaseNoData text="暂无资料" />;
     return (
         <>
-            {rankList.map(item => {
-                if (onlyShowToday && !item.today) return <BaseNoData text="暂无资料" />;
+            {filteredRankList.map(item => {
                 const hasHighWinRate = item.ranking <= 10;
-
                 return (
                     <Link
                         className={style.periodListItem}
