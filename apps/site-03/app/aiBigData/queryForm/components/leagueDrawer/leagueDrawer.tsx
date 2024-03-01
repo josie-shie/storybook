@@ -6,6 +6,7 @@ import BottomDrawer from '@/components/drawer/bottomDrawer';
 import { useNotificationStore } from '@/store/notificationStore';
 import FootballIcon from './img/football.svg';
 import style from './leagueDrawer.module.scss';
+import HotLeagueIcon from './img/hotLeague.svg';
 
 type GroupType = 'league' | 'country';
 
@@ -53,8 +54,11 @@ function RenderFilterList({
     );
 
     const hotContent = data?.hot ? (
-        <div key="hot">
-            <h3>热门</h3>
+        <div className={style.hotLeague} key="hot">
+            <h3>
+                <HotLeagueIcon />
+                热门
+            </h3>
             <ul>{data.hot.map(item => renderListItem(item))}</ul>
         </div>
     ) : null;
