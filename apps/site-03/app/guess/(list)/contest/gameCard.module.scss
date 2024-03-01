@@ -31,7 +31,8 @@
             border-right: 1px solid #f3f3f3;
             margin-top: 16px;
 
-            .odds {
+            .odds,
+            .oddsLightGray {
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
@@ -50,6 +51,16 @@
                     padding-right: 12px;
                     width: 40px;
                     color: #4a4a4a;
+                }
+            }
+
+            .oddsLightGray {
+                > div {
+                    color: #8d8d8d;
+                }
+
+                > p {
+                    color: #8d8d8d;
                 }
             }
         }

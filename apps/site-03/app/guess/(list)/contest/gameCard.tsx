@@ -83,7 +83,7 @@ function GameCard({ matchId }: { matchId: number }) {
                                     }
                                 />
                             </div>
-                            <div className={style.odds}>
+                            <div className={style.oddsLightGray}>
                                 <div>初盤大小</div>
                                 <CompareOdds
                                     defaultColor="#4A4A4A"
