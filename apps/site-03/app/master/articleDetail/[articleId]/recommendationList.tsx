@@ -78,7 +78,6 @@ function RecommendationItem({
                                             )}
                                         <span>{item.mentorName}</span>
                                     </div>
-
                                     <div className={style.leagueName}>
                                         <span className={style.name}>{item.leagueName}</span>
                                         <span>|</span>
