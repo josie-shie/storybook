@@ -82,7 +82,7 @@ function GameCard({ plan, onOpenPaidDialog, handleVIPUnlock }: GameCardProps) {
             <div className={style.detail}>
                 <Link
                     className={style.avatarLink}
-                    href={`/master/masterAvatar/${plan.memberId}?status=analysis`}
+                    href={`/master/memberAvatar/${plan.memberId}?status=guess`}
                 >
                     <Avatar shadow src={plan.avatarPath === '0' ? '' : plan.avatarPath} />
                 </Link>
