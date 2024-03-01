@@ -188,8 +188,8 @@ function ComparedProgress() {
                 <ComparedLineProgress
                     awayProgress={recentMatchCompare.away.overUnderWinRate}
                     awayValue={`${recentMatchCompare.away.overUnderWinRate}`}
-                    homeProgress={recentMatchCompare.home.handicapWinRate}
-                    homeValue={`${recentMatchCompare.home.handicapWinRate}`}
+                    homeProgress={recentMatchCompare.home.overUnderWinRate}
+                    homeValue={`${recentMatchCompare.home.overUnderWinRate}`}
                     title={`大率% ${overUnderStatus ? '▼' : '▲'}`}
                 />
             </div>

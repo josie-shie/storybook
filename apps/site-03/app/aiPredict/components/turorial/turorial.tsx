@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import AiAvatarSmall from '../../img/aiAvatarSmall.svg';
 import Close from '../../img/close.svg';
-import WaterMark from '../../img/waterMark.png';
+// import WaterMark from '../../img/waterMark.png';
 import Win from '../../img/aiWin.svg';
 import Home from '../../img/home.svg';
 import Away from '../../img/away.svg';
@@ -122,16 +122,14 @@ function Tutorial() {
             <Dialog
                 PaperProps={{
                     style: {
-                        borderRadius: '15px',
                         width: '100%',
-                        overflow: 'visible',
-                        backgroundImage: `url(${WaterMark.src})`,
-                        backgroundSize: 'cover',
-                        top: '54px',
-                        borderBottomLeftRadius: '0',
-                        borderBottomRightRadius: '0'
+                        margin: 0,
+                        overflow: 'initial',
+                        background: 'initial',
+                        boxShadow: 'initial'
                     }
                 }}
+                className={style.tutorialDialog}
                 onClose={handleClose}
                 open={open}
             >
@@ -140,53 +138,57 @@ function Tutorial() {
                     <span>关闭</span>
                 </div>
                 <div className={style.tutorialContent}>
-                    <div className={style.message}>
-                        <AiAvatarSmall className={style.icon} />
-                        <div className={style.text}>
-                            以下是我分析即将进行的2024年1月23日亚洲杯足球赛中 <span>队伍001</span>{' '}
-                            对 <span>队伍002</span> 的比赛。
+                    <div className={style.watermark}>
+                        <div className={style.message}>
+                            <AiAvatarSmall className={style.icon} />
+                            <div className={style.text}>
+                                以下是我分析即将进行的2024年1月23日亚洲杯足球赛中{' '}
+                                <span>队伍001</span> 对 <span>队伍002</span> 的比赛。
+                            </div>
                         </div>
-                    </div>
 
-                    <div className={style.teamTitle}>
-                        <div className={`${style.name} ${style.active}`}>
-                            <Win className={style.icon} />
-                            <Home />
-                            <span>队伍001</span>
+                        <div className={style.teamTitle}>
+                            <div className={`${style.name} ${style.active}`}>
+                                <Win className={style.icon} />
+                                <Home />
+                                <span>队伍001</span>
+                            </div>
+                            <div className={style.name}>
+                                <Away />
+                                <span>队伍002</span>
+                            </div>
                         </div>
-                        <div className={style.name}>
-                            <Away />
-                            <span>队伍002</span>
-                        </div>
-                    </div>
 
-                    <div className={style.information}>
-                        <div className={style.minTabBar}>
-                            {tabList.map(tab => (
+                        <div className={style.information}>
+                            <div className={style.minTabBar}>
+                                {tabList.map(tab => (
+                                    <motion.div
+                                        animate={
+                                            selectedOption === tab.value ? tabActive : tabDefault
+                                        }
+                                        className={style.tab}
+                                        key={tab.value}
+                                        onClick={() => {
+                                            setSelectedOption(tab.value);
+                                        }}
+                                    >
+                                        {tab.title}
+                                    </motion.div>
+                                ))}
+                            </div>
+                            <AnimatePresence mode="wait">
                                 <motion.div
-                                    animate={selectedOption === tab.value ? tabActive : tabDefault}
-                                    className={style.tab}
-                                    key={tab.value}
-                                    onClick={() => {
-                                        setSelectedOption(tab.value);
-                                    }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    className={style.content}
+                                    exit={{ opacity: 0, y: -4 }}
+                                    initial={{ opacity: 0, y: 4 }}
+                                    key={selectedOption}
+                                    transition={{ duration: 0.16 }}
                                 >
-                                    {tab.title}
+                                    {selectedMap[selectedOption]}
                                 </motion.div>
-                            ))}
+                            </AnimatePresence>
                         </div>
-                        <AnimatePresence mode="wait">
-                            <motion.div
-                                animate={{ opacity: 1, y: 0 }}
-                                className={style.content}
-                                exit={{ opacity: 0, y: -4 }}
-                                initial={{ opacity: 0, y: 4 }}
-                                key={selectedOption}
-                                transition={{ duration: 0.16 }}
-                            >
-                                {selectedMap[selectedOption]}
-                            </motion.div>
-                        </AnimatePresence>
                     </div>
                 </div>
             </Dialog>

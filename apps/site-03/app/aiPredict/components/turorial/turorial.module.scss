@@ -20,11 +20,20 @@
     }
 }
 
+.tutorialDialog {
+    width: 100%;
+
+    :global {
+        .MuiDialog-container {
+            align-items: flex-end;
+        }
+    }
+}
+
 .close {
-    position: absolute;
-    top: -52px;
-    left: 16px;
+    width: 82px;
     padding: 8px 16px;
+    margin-left: 16px;
     display: flex;
     align-items: center;
     gap: 10px;
@@ -39,11 +48,21 @@
 }
 
 .tutorialContent {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 24px;
-    padding: 12px 10px;
+    height: calc(100dvh - 52px);
+    background-color: #fff;
+    margin-top: 16px;
+    border-radius: 16px 16px 0 0;
+    overflow: scroll;
+
+    .watermark {
+        background-image: url('../../img/waterMark.png');
+        background-size: cover;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 24px;
+        padding: 12px 10px;
+    }
 
     .message {
         display: flex;
@@ -134,7 +153,6 @@
 
     .information {
         width: 100%;
-        min-height: calc(100dvh - 60vw - 80px);
         border: 1px solid #9fc2ff;
         border-radius: 12px;
         padding: 8px;
