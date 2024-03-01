@@ -154,8 +154,8 @@ function MixedLineChart({
                 borderWidth: 1,
                 borderRadius: 4,
                 barThickness: 64,
-                categoryPercentage: 0.1,
-                barPercentage: 0.1,
+                categoryPercentage: 1.0,
+                barPercentage: 0.8,
                 ...barColorConfig
             }
         ]
@@ -224,7 +224,8 @@ function MixedLineChart({
                 top: 20
             }
         },
-        responsive: false,
+        responsive: true,
+        maintainAspectRatio: false,
         interaction: {
             mode: 'index' as const,
             intersect: false
@@ -266,6 +267,7 @@ function MixedLineChart({
                 ticks: {
                     maxRotation: 0,
                     minRotation: 0,
+                    autoSkip: false,
                     color({ index }: { index: number }) {
                         if (index === clickedLabel) {
                             return 'red';
@@ -402,7 +404,10 @@ function MixedLineChart({
                     <div className={`${style.label} ${style.greyLabel}`}>50%</div>
                 </div>
                 <div className={style.chart} ref={node}>
-                    <div className={style.chartScroll}>
+                    <div
+                        className={style.chartScroll}
+                        style={{ minWidth: `${labels.length * 50}px` }}
+                    >
                         <Chart
                             data={chartConfigData}
                             options={options}
