@@ -368,7 +368,7 @@ function TopArea({
                 >
                     {contestInfo.leagueChsShort}
                 </div>
-                <div className={`${style.time}  ui-game-card-time`}>
+                <div className={`${style.time}  ui-game-card-time`} suppressHydrationWarning>
                     {contestInfo.matchTime ? currentMatchTime : null}
                 </div>
                 {status === 'result' && (
@@ -385,7 +385,7 @@ function TopArea({
                     />
                 </div>
             </div>
-            <div className={style.right}>
+            <div className={style.right} suppressHydrationWarning>
                 {(matchState > 0 || matchState === -1) && (
                     <div className={style.corner}>
                         <CornerIcon className={style.cornerIcon} />
@@ -410,13 +410,14 @@ function TopArea({
                                 )
                             ]
                         }`}
+                        suppressHydrationWarning
                     >
                         {contestInfo.hasHandicapInit ? null : (
                             <>
-                                <p className={style.handicap}>
+                                <p className={style.handicap} suppressHydrationWarning>
                                     {convertHandicap(contestInfo.handicapInit)}
                                 </p>
-                                <p className={style.result}>
+                                <p className={style.result} suppressHydrationWarning>
                                     {
                                         resultNameMap[
                                             handicapResult(

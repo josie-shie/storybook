@@ -58,7 +58,7 @@ function GameStatus({ startTime, status, ...props }: GameStatusProps) {
     const realTimeStatus = useGameTime({ startTime, status });
 
     return (
-        <div className={`${style.gameStatus} ui-game-status`} {...props}>
+        <div className={`${style.gameStatus} ui-game-status`} {...props} suppressHydrationWarning>
             <p
                 className={`${realTimeStatus.time ? style.point : ''} ${
                     style[realTimeStatus.state]
