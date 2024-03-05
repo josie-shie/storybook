@@ -56,7 +56,7 @@ function ExtraInfo({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId
     const extraObj = parseMatchInfo(syncData.extraExplain || contestInfo.extraExplain);
 
     return (
-        <div className={style.extraInfo}>
+        <div className={style.extraInfo} suppressHydrationWarning>
             {extraObj.regularTime?.minutes ? `${extraObj.regularTime.minutes} 分钟` : ''} [
             {extraObj.regularTime?.score}]
             {extraObj.extraTime?.type ? `${extraObj.extraTime.type},` : ''}
