@@ -1,22 +1,22 @@
-import Image from 'next/image';
 import { getMemberIndividualGuessMatches, type MemberIndividualGuessMatch } from 'data-center';
 import { useEffect, useState } from 'react';
 import { timestampToString } from 'lib';
 import { InfiniteScroll } from 'ui';
 import CircularProgress from '@mui/material/CircularProgress';
+import Link from 'next/link';
 import NoData from '@/components/baseNoData/noData';
-import IconWin from './img/win.png';
-import IconLose from './img/lose.png';
-import IconDraw from './img/draw.png';
+import IconWin from './img/win.svg';
+import IconLose from './img/lose.svg';
+import IconDraw from './img/draw.svg';
 import style from './bettingPlan.module.scss';
 import SkeletonLayout from './components/skeleton';
 
 type Tab = 0 | 1 | 2;
 
 const filterIcon = {
-    WIN: <Image alt="icon" className={style.iconWin} src={IconWin} />,
-    LOSE: <Image alt="icon" className={style.iconDefeat} src={IconLose} />,
-    DRAW: <Image alt="icon" className={style.iconDefeat} src={IconDraw} />
+    WIN: <IconWin />,
+    LOSE: <IconLose />,
+    DRAW: <IconDraw />
 };
 
 const filterPlay = {
@@ -125,15 +125,21 @@ function BettingPlan({
     return (
         <>
             {guessMatchesList.length === 0 && isNoData === null && <SkeletonLayout />}
-
             {guessMatchesList.length === 0 && isNoData ? (
                 <NoData text="暂无资料" />
             ) : (
                 <ul className={style.bettingPlanList}>
                     {guessMatchesList.map(item => {
                         return (
-                            <li className={style.bettingPlanCard} key={item.id}>
-                                {filterIcon[item.predictionResult]}
+                            <Link
+                                className={style.bettingPlanCard}
+                                href={`/football/${item.matchId}`}
+                                key={item.id}
+                            >
+                                {' '}
+                                <div className={style.iconBox}>
+                                    {filterIcon[item.predictionResult]}
+                                </div>
                                 <div className={style.top}>
                                     {item.leagueName}
                                     <span className={style.time}>
@@ -165,7 +171,7 @@ function BettingPlan({
                                         {messageFormat(item.predictedPlay, item)}
                                     </div>
                                 </div>
-                            </li>
+                            </Link>
                         );
                     })}
                     {guessMatchesList.length < totalPage ? (
