@@ -1,8 +1,10 @@
 'use client';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useEffect, useState, useRef } from 'react';
 import type { ContestInfo } from 'data-center';
 import { handleGameTime, soundDefault, soundSource, mqttService } from 'lib';
+import type { PanInfo } from 'framer-motion';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLiveContestStore } from '@/store/liveContestStore';
 import { useContestListGlobalStore } from '@/store/contestListGlobalStore';
@@ -13,6 +15,11 @@ import Football from './img/football.png';
 function GoalAlert() {
     const [alertList, setAlertList] = useState<ContestInfo[]>([]);
     const firstTimeRef = useRef(true);
+    const screenWidth = useRef(0);
+
+    const [startX, setStartX] = useState<number | null>(null);
+    const [isDragging, setIsDragging] = useState<boolean>(false);
+    const [opacity, setOpacity] = useState<number>(1);
 
     useEffect(() => {
         if (!firstTimeRef.current) return;
@@ -56,11 +63,12 @@ function GoalAlert() {
                 return updatedList;
             });
         };
+        screenWidth.current = window.innerWidth;
         mqttService.getMessage(handleAlertInfo);
     }, []);
 
-    const clearAlert = () => {
-        setAlertList([]);
+    const removeAlert = (matchId: number) => {
+        setAlertList(prevList => prevList.filter(matchInfo => matchInfo.matchId !== matchId));
     };
 
     const getStartTime = (startTime: number, state: number) => {
@@ -68,27 +76,70 @@ function GoalAlert() {
         return time;
     };
 
+    const handleDragStart = (event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+        setStartX(info.point.x);
+        setIsDragging(true);
+    };
+
+    const handleDrag = (event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+        if (startX === null) return;
+
+        if (info.point.x < startX && isDragging) {
+            setIsDragging(false);
+        }
+
+        const swipeDistance = Math.abs(info.point.x - startX);
+        const swipePercentage = swipeDistance / screenWidth.current;
+        const newOpacity = Math.max(1 - swipePercentage * 1.5, 0);
+
+        setOpacity(newOpacity);
+    };
+
+    const handleDragEnd = (
+        event: MouseEvent | TouchEvent | PointerEvent,
+        info: PanInfo,
+        matchId: number
+    ) => {
+        const swipeDistance = startX !== null ? Math.abs(info.point.x - startX) : 0;
+        const swipePercentage = (swipeDistance / screenWidth.current) * 100;
+
+        setIsDragging(false);
+        setStartX(null);
+        setOpacity(1);
+
+        if (swipePercentage > 60) {
+            removeAlert(matchId);
+        }
+    };
+
     return (
         <div className={style.goalAlert}>
-            {alertList.length > 0 && (
-                <div className={style.alertList} onClick={clearAlert}>
-                    <AnimatePresence>
-                        {alertList.map(item => {
-                            return (
-                                <motion.div
-                                    animate={{ y: 0, opacity: 1 }}
-                                    className={style.box}
-                                    exit={{
-                                        y: 50,
-                                        opacity: 0,
-                                        zIndex: -1
-                                    }}
-                                    initial={{ y: 50, opacity: 0 }}
-                                    key={item.matchId}
-                                    layout
-                                    style={{ position: 'relative', zIndex: 1 }}
-                                    transition={{ ease: 'easeOut', duration: 0.3 }}
-                                >
+            <div className={style.alertList}>
+                <AnimatePresence>
+                    {alertList.map((item, idx) => {
+                        return (
+                            <motion.div
+                                animate={{ y: 0, opacity: 1 }}
+                                drag="x"
+                                dragConstraints={{ left: 0, right: 0 }}
+                                dragElastic={0.6}
+                                exit={{
+                                    x: screenWidth.current,
+                                    opacity: 0,
+                                    zIndex: -1
+                                }}
+                                initial={{ y: 50, opacity: 0 }}
+                                key={`${item.matchId}${idx.toString()}`}
+                                layout
+                                onDrag={handleDrag}
+                                onDragEnd={(event, info) => {
+                                    handleDragEnd(event, info, item.matchId);
+                                }}
+                                onDragStart={handleDragStart}
+                                style={{ position: 'relative', zIndex: 1, opacity }}
+                                transition={{ ease: 'easeOut', duration: 0.3 }}
+                            >
+                                <Link className={style.box} href={`/football/${item.matchId}`}>
                                     <div className={style.left}>
                                         <Image
                                             alt="football"
@@ -164,12 +215,12 @@ function GoalAlert() {
                                             </div>
                                         </div>
                                     </div>
-                                </motion.div>
-                            );
-                        })}
-                    </AnimatePresence>
-                </div>
-            )}
+                                </Link>
+                            </motion.div>
+                        );
+                    })}
+                </AnimatePresence>
+            </div>
         </div>
     );
 }
