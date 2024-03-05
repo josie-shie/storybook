@@ -9,13 +9,25 @@ stages:
     - build
     - deploy
 
+default:
+    before_script:
+        -  # Create .ssh directory, save private key file and ensure permission
+        - mkdir -p ~/.ssh
+        - echo "$SSH_PRIVATE_KEY" | base64 -d > ~/.ssh/id_rsa
+        - chmod -R 400 ~/.ssh
+        # Add ssh config to skip host verification
+        - |
+            cat <<EOF>~/.ssh/config
+            Host *
+            StrictHostKeyChecking no
+            EOF
+
 variables:
     FUTURE_DOCKER_API_PORT: 13579
     FUTURE_SERVICE_HOST: stage-dev.frontend.newfuturetv.com
     FUTURE_SERVICE_NAME: sport-turborepo
     IMAGE_VERSION: sport-turborepo-${CI_COMMIT_SHORT_SHA}
     FUTURE_NODE_VERSION: 20
-
 
 init:
     stage: lint
