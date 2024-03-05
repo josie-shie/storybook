@@ -286,13 +286,13 @@ function TeamInfo({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId:
             <div className={`${style.homeTeam} ${style.team}`}>
                 <div className={style.cards}>
                     {(syncData.homeRed && syncData.homeRed > 0) || contestInfo.homeRed > 0 ? (
-                        <p className={`${style.redCard} ${style.card}`}>
+                        <p className={`${style.redCard} ${style.card}`} suppressHydrationWarning>
                             {syncData.homeRed || contestInfo.homeRed}
                         </p>
                     ) : null}
                     {(syncData.homeYellow && syncData.homeYellow > 0) ||
                     contestInfo.homeYellow > 0 ? (
-                        <p className={`${style.yellowCard} ${style.card}`}>
+                        <p className={`${style.yellowCard} ${style.card}`} suppressHydrationWarning>
                             {syncData.homeYellow || contestInfo.homeYellow}
                         </p>
                     ) : null}
@@ -305,6 +305,7 @@ function TeamInfo({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId:
                 className={`${style.score} ${
                     syncData.state === -1 || (contestInfo.state === -1 && style.finishScore)
                 } ui-game-card-score`}
+                suppressHydrationWarning
             >
                 {(syncData.state || contestInfo.state) !== 0 ? (
                     <>
