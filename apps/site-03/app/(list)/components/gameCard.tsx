@@ -359,7 +359,7 @@ function TopArea({
     const matchHalfStartTime = syncData.halfStartTime || contestInfo.halfStartTime;
 
     return (
-        <div className={style.topArea}>
+        <div className={style.topArea} suppressHydrationWarning>
             <div className={style.left}>
                 <div
                     className={style.league}
@@ -382,12 +382,13 @@ function TopArea({
                     <GameStatus
                         startTime={matchState === 1 ? matchStartTime : matchHalfStartTime}
                         status={syncData.state || contestInfo.state}
+                        suppressHydrationWarning
                     />
                 </div>
             </div>
             <div className={style.right} suppressHydrationWarning>
                 {(matchState > 0 || matchState === -1) && (
-                    <div className={style.corner}>
+                    <div className={style.corner} suppressHydrationWarning>
                         <CornerIcon className={style.cornerIcon} />
                         <span className={style.ratio} suppressHydrationWarning>
                             {syncData.homeCorner || contestInfo.homeCorner}
