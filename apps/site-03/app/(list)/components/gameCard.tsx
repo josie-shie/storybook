@@ -191,9 +191,9 @@ function OddsInfo({
                         <>
                             {HandicapIsClose ? (
                                 <>
-                                    <p>-</p>
-                                    <p>封</p>
-                                    <p>-</p>
+                                    <p suppressHydrationWarning>-</p>
+                                    <p suppressHydrationWarning>封</p>
+                                    <p suppressHydrationWarning>-</p>
                                 </>
                             ) : (
                                 <>
@@ -241,9 +241,9 @@ function OddsInfo({
                         <>
                             {OverUnderIsClose ? (
                                 <>
-                                    <p>-</p>
-                                    <p>封</p>
-                                    <p>-</p>
+                                    <p suppressHydrationWarning>-</p>
+                                    <p suppressHydrationWarning>封</p>
+                                    <p suppressHydrationWarning>-</p>
                                 </>
                             ) : (
                                 <>
