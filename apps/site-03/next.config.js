@@ -25,6 +25,7 @@ module.exports = {
 
         return config;
     },
+    productionBrowserSourceMaps: true,
     reactStrictMode: true,
     transpilePackages: ['ui', 'lib'],
     sassOptions: {
