@@ -489,6 +489,7 @@ function GameCard({
                 onClick={() => {
                     setInterceptData(targetContestInfo);
                 }}
+                suppressHydrationWarning
             >
                 <TopArea contestInfo={targetContestInfo} matchId={matchId} status={status} />
                 <TeamInfo contestInfo={targetContestInfo} matchId={matchId} />
