@@ -12,16 +12,22 @@ export interface GuessRecordList {
     recordList: MemberGuessViewingRecord[];
     pagination: Pagination;
 }
+
+export interface InitPlan {
+    0: GetMemberIndividualGuessMatchesResponse;
+    1: GetMemberIndividualGuessMatchesResponse;
+    2: GetMemberIndividualGuessMatchesResponse;
+}
 interface InitState {
     myGuess: {
-        myPlans: GetMemberIndividualGuessMatchesResponse;
+        initPlans: InitPlan;
         recentPerformance: GetMemberIndividualGuessResponse;
         guessRecordList: GuessRecordList;
     };
 }
 
 interface MyGuessState extends InitState {
-    setMyPlans: (myPlans: GetMemberIndividualGuessMatchesResponse) => void;
+    setInitPlans: (initPlans: InitPlan) => void;
     setRecentPerformance: (recentPerformance: GetMemberIndividualGuessResponse) => void;
     setGuessRecordList: (guessRecordList: GuessRecordList) => void;
 }
@@ -50,12 +56,30 @@ const initialState = (set: (updater: (state: MyGuessState) => Partial<MyGuessSta
                 size: { play: 0, win: 0, draw: 0, lose: 0 }
             }
         },
-        myPlans: {
-            guessType: 0 as GuessType,
-            guessMatchList: [],
-            pagination: {
-                pageCount: 0,
-                totalCount: 0
+        initPlans: {
+            0: {
+                guessType: 0 as GuessType,
+                guessMatchList: [],
+                pagination: {
+                    pageCount: 0,
+                    totalCount: 0
+                }
+            },
+            1: {
+                guessType: 1 as GuessType,
+                guessMatchList: [],
+                pagination: {
+                    pageCount: 0,
+                    totalCount: 0
+                }
+            },
+            2: {
+                guessType: 2 as GuessType,
+                guessMatchList: [],
+                pagination: {
+                    pageCount: 0,
+                    totalCount: 0
+                }
             }
         },
         guessRecordList: {
@@ -66,10 +90,10 @@ const initialState = (set: (updater: (state: MyGuessState) => Partial<MyGuessSta
             }
         }
     },
-    setMyPlans: (myPlans: GetMemberIndividualGuessMatchesResponse) => {
+    setInitPlans: (initPlans: InitPlan) => {
         set(state => ({
             ...state,
-            myGuess: { ...state.myGuess, myPlans }
+            myGuess: { ...state.myGuess, initPlans }
         }));
     },
     setRecentPerformance: (recentPerformance: GetMemberIndividualGuessResponse) => {

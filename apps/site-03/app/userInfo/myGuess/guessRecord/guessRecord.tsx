@@ -42,7 +42,7 @@ function RecordContent({ setPage, page }: ContentProps) {
                 <>
                     {guessRecordList.map(item => (
                         <RecordCard
-                            key={`${item.matchId}${item.predictedPlay}`}
+                            key={`${item.memberName}${item.matchId}${item.predictedPlay}`}
                             recordItem={item}
                         />
                     ))}
