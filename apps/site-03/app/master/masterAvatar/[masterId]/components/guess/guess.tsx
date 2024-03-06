@@ -7,12 +7,18 @@ import {
 } from 'data-center';
 import Record from '../record/record';
 import BettingPlan from '../bettingPlan/bettingPlan';
+import type { Tab, InitGuessData } from '../../page';
 import style from './guess.module.scss';
 
 type DateTab = 'byWeek' | 'byMonth' | 'byQuarter';
-type Tab = 0 | 1 | 2;
 
-function InfoTabs({ params }: { params: { masterId: string } }) {
+function InfoTabs({
+    params,
+    initGuessData
+}: {
+    params: { masterId: string };
+    initGuessData: InitGuessData;
+}) {
     const [guessLength, setGuessLength] = useState<number>(0);
     const [dateActiveTab, setDateActiveTab] = useState<DateTab>('byWeek');
     const [planActiveTab, setPlanActiveTab] = useState<Tab>(0);
@@ -140,6 +146,7 @@ function InfoTabs({ params }: { params: { masterId: string } }) {
                 </div>
                 <div className={style.bettingPlan}>
                     <BettingPlan
+                        initGuessData={initGuessData}
                         params={params}
                         planActiveTab={planActiveTab}
                         setGuessLength={setGuessLength}

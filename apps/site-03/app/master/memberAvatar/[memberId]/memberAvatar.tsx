@@ -7,12 +7,19 @@ import ScrollTop from '@/components/scrollTop/scrollTop';
 import style from './memberAvatar.module.scss';
 import Guess from './components/guess/guess';
 import MemberItem from './components/memberItem/memberItem';
+import type { InitGuessData } from './page';
 
 export const metadata: Metadata = {
     title: '专家预测 | FutureSport'
 };
 
-function MasterAvatar({ params }: { params: { memberId: string } }) {
+function MasterAvatar({
+    params,
+    initGuessData
+}: {
+    params: { memberId: string };
+    initGuessData: InitGuessData;
+}) {
     const [secondRender, setSecondRender] = useState(false);
 
     const searchParams = useSearchParams();
@@ -55,7 +62,9 @@ function MasterAvatar({ params }: { params: { memberId: string } }) {
                     tabs={tabList}
                 >
                     <div className={`${style.largeGap}`}>
-                        {secondRender || status === 'guess' ? <Guess params={params} /> : null}
+                        {secondRender || status === 'guess' ? (
+                            <Guess initGuessData={initGuessData} params={params} />
+                        ) : null}
                     </div>
                     <div className={`${style.largeGap}`}>
                         {secondRender || status === 'focus' ? <MemberItem params={params} /> : null}

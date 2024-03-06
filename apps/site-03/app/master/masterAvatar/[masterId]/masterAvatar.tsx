@@ -5,6 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Footer from '@/components/footer/footer';
 import ScrollTop from '@/components/scrollTop/scrollTop';
+import type { InitGuessData } from './page';
 import style from './masterAvatar.module.scss';
 import Guess from './components/guess/guess';
 import MasterItem from './components/masterItem/masterItem';
@@ -14,7 +15,13 @@ export const metadata: Metadata = {
     title: '专家预测 | FutureSport'
 };
 
-function MasterAvatar({ params }: { params: { masterId: string } }) {
+function MasterAvatar({
+    params,
+    initGuessData
+}: {
+    params: { masterId: string };
+    initGuessData: InitGuessData;
+}) {
     const [secondRender, setSecondRender] = useState(false);
     const [articleLength, setArticleLength] = useState(0);
 
@@ -64,7 +71,9 @@ function MasterAvatar({ params }: { params: { masterId: string } }) {
                     tabs={tabList}
                 >
                     <div className={`${style.largeGap}`}>
-                        {secondRender || status === 'guess' ? <Guess params={params} /> : null}
+                        {secondRender || status === 'guess' ? (
+                            <Guess initGuessData={initGuessData} params={params} />
+                        ) : null}
                     </div>
                     <div className={`${style.largeGap}`}>
                         {secondRender || status === 'analysis' ? (
