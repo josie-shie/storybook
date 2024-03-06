@@ -1,10 +1,9 @@
-import { initStore } from 'lib';
+import { initStore, getUTCDateTime } from 'lib';
 import type { StoreWithSelectors } from 'lib';
 import type { ContestInfoType, ContestListType } from 'data-center';
 import Cookies from 'js-cookie';
-import dayjs from 'dayjs';
 
-const endOfToday = dayjs().endOf('day').toDate();
+const expires = getUTCDateTime();
 
 interface InitState {
     contestList: ContestListType;
@@ -77,7 +76,7 @@ const initialState = (set: (updater: (state: ContestList) => Partial<ContestList
                 newPinned.push(matchId);
             }
             Cookies.set('pinnedContest', JSON.stringify(newPinned), {
-                expires: endOfToday
+                expires
             });
             return { pinnedContest: newPinned };
         });

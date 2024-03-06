@@ -571,7 +571,8 @@ export const getRecentBattleMatch = async ({
             },
             go: () => {
                 dashboard.bigSmallRate.go += 1;
-            }
+            },
+            none: () => void {}
         };
         const winLoseFactory = {
             win: () => {
@@ -582,7 +583,8 @@ export const getRecentBattleMatch = async ({
             },
             go: () => {
                 dashboard.winLoseRate.go += 1;
-            }
+            },
+            none: () => void {}
         };
 
         for (const match of matchList) {
@@ -599,9 +601,11 @@ export const getRecentBattleMatch = async ({
                 match.handicapResult = handicapResult(
                     match.homeScore,
                     match.awayScore,
-                    match.handicapInit
+                    match.handicapInit,
+                    match.handicapHomeCurrentOdds,
+                    match.handicapAwayCurrentOdds
                 );
-                winLoseFactory[match.handicapResult as 'win' | 'lose' | 'go']();
+                winLoseFactory[match.handicapResult as 'win' | 'lose' | 'go' | 'none']();
             } else {
                 // 進失球
                 dashboard.goalMissRate.goal += match.awayScore;
@@ -615,18 +619,22 @@ export const getRecentBattleMatch = async ({
                 match.handicapResult = handicapResult(
                     match.awayScore,
                     match.homeScore,
-                    match.handicapInit
+                    match.handicapInit,
+                    match.handicapHomeCurrentOdds,
+                    match.handicapAwayCurrentOdds
                 );
-                winLoseFactory[match.handicapResult as 'win' | 'lose' | 'go']();
+                winLoseFactory[match.handicapResult as 'win' | 'lose' | 'go' | 'none']();
             }
 
             // 進球 - 大小走
             match.overUnderResult = overUnderResult(
                 match.homeScore,
                 match.awayScore,
-                match.overUnderInit
+                match.overUnderInit,
+                match.overUnderOverCurrentOdds,
+                match.overUnderUnderCurrentOdds
             );
-            bigSmallFactory[match.overUnderResult as 'big' | 'small' | 'go']();
+            bigSmallFactory[match.overUnderResult as 'big' | 'small' | 'go' | 'none']();
         }
 
         return {
@@ -748,7 +756,8 @@ export const getRecentMatchData = async ({
             },
             go: (team: 'home' | 'away') => {
                 dashboard[team].bigSmallRate.go += 1;
-            }
+            },
+            none: () => void {}
         };
         const winLoseFactory = {
             win: (team: 'home' | 'away') => {
@@ -759,7 +768,8 @@ export const getRecentMatchData = async ({
             },
             go: (team: 'home' | 'away') => {
                 dashboard[team].winLoseRate.go += 1;
-            }
+            },
+            none: () => void {}
         };
 
         if (single !== 'home') {
@@ -777,9 +787,11 @@ export const getRecentMatchData = async ({
                     match.handicapResult = handicapResult(
                         match.homeScore,
                         match.awayScore,
-                        match.handicapInit
+                        match.handicapInit,
+                        match.handicapHomeCurrentOdds,
+                        match.handicapAwayCurrentOdds
                     );
-                    winLoseFactory[match.handicapResult as 'win' | 'lose' | 'go']('home');
+                    winLoseFactory[match.handicapResult as 'win' | 'lose' | 'go' | 'none']('home');
                 } else {
                     // 進失球
                     dashboard.home.goalMissRate.goal += match.awayScore;
@@ -794,18 +806,22 @@ export const getRecentMatchData = async ({
                         match.homeScore,
                         match.awayScore,
                         match.handicapInit,
+                        match.handicapHomeCurrentOdds,
+                        match.handicapAwayCurrentOdds,
                         false
                     );
-                    winLoseFactory[match.handicapResult as 'win' | 'lose' | 'go']('home');
+                    winLoseFactory[match.handicapResult as 'win' | 'lose' | 'go' | 'none']('home');
                 }
 
                 // 進球 - 大小走
                 match.overUnderResult = overUnderResult(
                     match.homeScore,
                     match.awayScore,
-                    match.overUnderInit
+                    match.overUnderInit,
+                    match.overUnderOverCurrentOdds,
+                    match.overUnderUnderCurrentOdds
                 );
-                bigSmallFactory[match.overUnderResult as 'big' | 'small' | 'go']('home');
+                bigSmallFactory[match.overUnderResult as 'big' | 'small' | 'go' | 'none']('home');
             }
         }
 
@@ -824,9 +840,11 @@ export const getRecentMatchData = async ({
                     match.handicapResult = handicapResult(
                         match.homeScore,
                         match.awayScore,
-                        match.handicapInit
+                        match.handicapInit,
+                        match.handicapHomeCurrentOdds,
+                        match.handicapAwayCurrentOdds
                     );
-                    winLoseFactory[match.handicapResult as 'win' | 'lose' | 'go']('away');
+                    winLoseFactory[match.handicapResult as 'win' | 'lose' | 'go' | 'none']('away');
                 } else {
                     // 進失球
                     dashboard.away.goalMissRate.goal += match.awayScore;
@@ -841,18 +859,22 @@ export const getRecentMatchData = async ({
                         match.homeScore,
                         match.awayScore,
                         match.handicapInit,
+                        match.handicapHomeCurrentOdds,
+                        match.handicapAwayCurrentOdds,
                         false
                     );
-                    winLoseFactory[match.handicapResult as 'win' | 'lose' | 'go']('away');
+                    winLoseFactory[match.handicapResult as 'win' | 'lose' | 'go' | 'none']('away');
                 }
 
                 // 進球 - 大小走
                 match.overUnderResult = overUnderResult(
                     match.homeScore,
                     match.awayScore,
-                    match.overUnderInit
+                    match.overUnderInit,
+                    match.overUnderOverCurrentOdds,
+                    match.overUnderUnderCurrentOdds
                 );
-                bigSmallFactory[match.overUnderResult as 'big' | 'small' | 'go']('away');
+                bigSmallFactory[match.overUnderResult as 'big' | 'small' | 'go' | 'none']('away');
             }
         }
 

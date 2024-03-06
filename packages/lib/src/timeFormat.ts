@@ -42,3 +42,15 @@ export const timestampToStringWeek = (unixTimestamp: number) => {
 
     return `${dayjs.unix(unixTimestamp).format('YYYY-MM-DD')} ${week}`;
 };
+
+export const getUTCDateTime = (hour = 4): Date => {
+    const now = new Date();
+    now.setUTCHours(hour, 0, 0, 0);
+
+    const currentTime = new Date();
+    if (currentTime >= now) {
+        now.setDate(now.getDate() + 1);
+    }
+
+    return now;
+};

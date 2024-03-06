@@ -20,7 +20,8 @@ enum ResultName {
     Goal = 'goal',
     Miss = 'miss',
     Big = 'big',
-    Small = 'small'
+    Small = 'small',
+    None = 'none'
 }
 
 const resultNameMap = {
@@ -33,7 +34,8 @@ const resultNameMap = {
     [ResultName.Goal]: '进',
     [ResultName.Miss]: '失',
     [ResultName.Big]: '大',
-    [ResultName.Small]: '小'
+    [ResultName.Small]: '小',
+    [ResultName.None]: '-'
 };
 
 function DashboardCard({ title, rate, details }) {
@@ -125,11 +127,11 @@ function TableRow({ match, homeName }: { match: RecentMatch; homeName: string })
                 </p>
             </div>
             <div className={`td ${match.handicapResult}`}>
-                <p>{handicapToString(match.handicapInit)}</p>
+                {match.handicapResult !== 'none' && <p>{handicapToString(match.handicapInit)}</p>}
                 <p>{resultNameMap[match.handicapResult as ResultName]}</p>
             </div>
             <div className={`td ${match.overUnderResult}`}>
-                <p>{match.overUnderInit}</p>
+                {match.overUnderResult !== 'none' && <p>{match.overUnderInit}</p>}
                 <p>{resultNameMap[match.overUnderResult as ResultName]}</p>
             </div>
             <div className="td">{match.homeCorner + match.awayCorner}</div>

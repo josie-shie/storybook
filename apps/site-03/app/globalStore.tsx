@@ -2,6 +2,7 @@
 import type { ReactNode } from 'react';
 import { useEffect } from 'react';
 import { getContestList } from 'data-center';
+import Cookies from 'js-cookie';
 import { createMessageStore } from '@/store/messageStore';
 import { createNotificationStore } from '@/store/notificationStore';
 import { createLiveContestStore } from '@/store/liveContestStore';
@@ -9,6 +10,7 @@ import { createAuthStore } from '@/store/authStore';
 import { createContestListGlobalStore } from '@/store/contestListGlobalStore';
 import { createInterceptPassStore } from '@/store/interceptPassStore';
 import { createAppStateStore } from '@/store/appStateStore';
+import { useContestListStore, createContestListStore } from './(list)/contestListStore';
 
 function GlobalStore({ children }: { children: ReactNode }) {
     createLiveContestStore({ contestInfo: {} });
@@ -34,15 +36,41 @@ function GlobalStore({ children }: { children: ReactNode }) {
         isClientSide: false
     });
 
-    useEffect(() => {
-        const fetchData = async () => {
-            const timestamp = Math.floor(Date.now() / 1000);
-            const todayContest = await getContestList(timestamp);
-            if (todayContest.success) {
-                createContestListGlobalStore(todayContest.data);
-            }
-        };
+    const fetchData = async (isWorker = false) => {
+        const timestamp = Math.floor(Date.now() / 1000);
+        const todayContest = await getContestList(timestamp);
+        if (todayContest.success) {
+            createContestListGlobalStore(todayContest.data);
 
+            if (typeof useContestListStore !== 'undefined' && isWorker) {
+                Cookies.remove('pinnedContest');
+                createContestListStore({
+                    ...todayContest.data,
+                    ...{ pinnedContest: [] as number[] }
+                });
+            }
+        }
+    };
+
+    useEffect(() => {
+        if (typeof Worker !== 'undefined') {
+            const worker = new Worker(new URL('lib/src/matchUpdateWorker.ts', import.meta.url));
+
+            worker.onmessage = event => {
+                if (event.data === 'updateMatchData') {
+                    void fetchData(true);
+                }
+            };
+
+            worker.postMessage('setMatchWorker');
+
+            return () => {
+                worker.terminate();
+            };
+        }
+    }, []);
+
+    useEffect(() => {
         void fetchData();
     }, []);
 

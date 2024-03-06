@@ -63,6 +63,7 @@ function GameStatus({ startTime, status, ...props }: GameStatusProps) {
                 className={`${realTimeStatus.time ? style.point : ''} ${
                     style[realTimeStatus.state]
                 }`}
+                suppressHydrationWarning
             >
                 {realTimeStatus.time || realTimeStatus.text}
                 {realTimeStatus.state === 'playing' && (

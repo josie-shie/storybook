@@ -77,8 +77,12 @@ export const convertOdds = (odds: number): [number, number] => {
 export const overUnderResult = (
     homeScore: number,
     awayScore: number,
-    overUnder: number
+    overUnder: number,
+    overOdd: number,
+    underOdd: number
 ): string => {
+    if (overUnder === 0 && overOdd === 0 && underOdd === 0) return 'none';
+
     const totalGoal = homeScore + awayScore;
     if (overUnder > totalGoal) {
         return 'small';
@@ -101,8 +105,12 @@ export const handicapResult = (
     homeScore: number,
     awayScore: number,
     handicap: number,
+    homeOdd: number,
+    awayOdd: number,
     isHomeTeam = true
 ): string => {
+    if (handicap === 0 && homeOdd === 0 && awayOdd === 0) return 'none';
+
     const targetValue = awayScore + handicap;
     if (isHomeTeam) {
         if (homeScore > targetValue) {

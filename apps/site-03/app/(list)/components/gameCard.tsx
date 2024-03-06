@@ -31,7 +31,8 @@ enum ResultName {
     Goal = 'goal',
     Miss = 'miss',
     Big = 'big',
-    Small = 'small'
+    Small = 'small',
+    None = 'none'
 }
 
 const resultNameMap = {
@@ -44,7 +45,8 @@ const resultNameMap = {
     [ResultName.Goal]: '进',
     [ResultName.Miss]: '失',
     [ResultName.Big]: '大',
-    [ResultName.Small]: '小'
+    [ResultName.Small]: '小',
+    [ResultName.None]: '-'
 };
 
 function ExtraInfo({ contestInfo, matchId }: { contestInfo: ContestInfo; matchId: number }) {
@@ -359,7 +361,7 @@ function TopArea({
     const matchHalfStartTime = syncData.halfStartTime || contestInfo.halfStartTime;
 
     return (
-        <div className={style.topArea} suppressHydrationWarning>
+        <div className={style.topArea}>
             <div className={style.left}>
                 <div
                     className={style.league}
@@ -389,7 +391,7 @@ function TopArea({
             <div className={style.right} suppressHydrationWarning>
                 {(matchState > 0 || matchState === -1) && (
                     <div className={style.corner} suppressHydrationWarning>
-                        <CornerIcon className={style.cornerIcon} />
+                        <CornerIcon className={style.cornerIcon} suppressHydrationWarning />
                         <span className={style.ratio} suppressHydrationWarning>
                             {syncData.homeCorner || contestInfo.homeCorner}
                         </span>
@@ -407,6 +409,8 @@ function TopArea({
                                 handicapResult(
                                     contestInfo.homeScore,
                                     contestInfo.awayScore,
+                                    contestInfo.handicapHomeCurrentOdds,
+                                    contestInfo.handicapAwayCurrentOdds,
                                     contestInfo.handicapInit
                                 )
                             ]
@@ -424,6 +428,8 @@ function TopArea({
                                             handicapResult(
                                                 contestInfo.homeScore,
                                                 contestInfo.awayScore,
+                                                contestInfo.handicapHomeCurrentOdds,
+                                                contestInfo.handicapAwayCurrentOdds,
                                                 contestInfo.handicapInit
                                             )
                                         ]
@@ -434,7 +440,7 @@ function TopArea({
                     </div>
                 ) : (
                     <>
-                        <div className={style.information} suppressHydrationWarning>
+                        <div className={style.information}>
                             {contestInfo.hasLineup !== '0' ? (
                                 <div className={style.text} suppressHydrationWarning>
                                     阵容

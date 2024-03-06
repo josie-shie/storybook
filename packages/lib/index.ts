@@ -26,7 +26,8 @@ export {
     timestampToMonthDay,
     timestampToTodayTime,
     daysFromToday,
-    timestampToStringWeek
+    timestampToStringWeek,
+    getUTCDateTime
 } from './src/timeFormat';
 export { handleStartTime, handleGameTime, handleMatchDateTime } from './src/gameStatus';
 export * from './src/mqttService';
