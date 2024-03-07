@@ -5,6 +5,7 @@ import {
     type GetMemberIndividualGuessResponse,
     type MemberIndividualGuessRecord
 } from 'data-center';
+import { slickOption } from 'ui';
 import Record from '../record/record';
 import BettingPlan from '../bettingPlan/bettingPlan';
 import type { Tab, InitGuessData } from '../../page';
@@ -59,6 +60,7 @@ function InfoTabs({
 
     const handlePlanTabClick = (tabName: Tab) => {
         setPlanActiveTab(tabName);
+        handleResetHeight();
     };
 
     const fetchGuess = async () => {
@@ -71,8 +73,15 @@ function InfoTabs({
         setIndividualGuessInfo(res.data.byWeek);
     };
 
+    const handleResetHeight = () => {
+        setTimeout(() => {
+            slickOption.masterTabResetHeight();
+        }, 600);
+    };
+
     useEffect(() => {
         void fetchGuess();
+        handleResetHeight();
     }, []);
 
     return (
@@ -146,6 +155,7 @@ function InfoTabs({
                 </div>
                 <div className={style.bettingPlan}>
                     <BettingPlan
+                        handleResetHeight={handleResetHeight}
                         initGuessData={initGuessData}
                         params={params}
                         planActiveTab={planActiveTab}
