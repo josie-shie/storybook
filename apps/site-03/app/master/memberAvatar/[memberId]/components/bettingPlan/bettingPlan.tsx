@@ -31,12 +31,14 @@ function BettingPlan({
     planActiveTab,
     setGuessLength,
     params,
-    initGuessData
+    initGuessData,
+    handleResetHeight
 }: {
     planActiveTab: Tab;
     setGuessLength: (val: number) => void;
     params: { memberId: string };
     initGuessData: InitGuessData;
+    handleResetHeight: () => void;
 }) {
     const [guessMatchesList, setGuessMatchesList] = useState<MemberIndividualGuessMatch[]>([]);
     const [isNoData, setIsNoData] = useState<boolean | null>(null);
@@ -54,7 +56,7 @@ function BettingPlan({
         }
         const res = await getMemberIndividualGuessMatches({
             memberId: Number(params.memberId),
-            currentPage,
+            currentPage: currentPage + 1,
             pageSize: 50,
             guessType: planActiveTab
         });
@@ -62,17 +64,18 @@ function BettingPlan({
         if (!res.success) {
             return new Error();
         }
-
         const updatedGuessMatchesList = guessMatchesList.concat(res.data.guessMatchList);
         setGuessMatchesList(updatedGuessMatchesList);
         setGuessLength(res.data.pagination.totalCount);
         setIsNoData(res.data.guessMatchList.length === 0);
-        setTotalPage(res.data.pagination.totalCount);
+        setTotalPage(res.data.pagination.pageCount);
     };
 
     const loadMoreList = () => {
         if (currentPage <= Math.round(guessMatchesList.length / 30) && currentPage < totalPage) {
             setCurrentPage(prevData => prevData + 1);
+            void fetchData();
+            handleResetHeight();
         }
     };
 
@@ -118,10 +121,6 @@ function BettingPlan({
     };
 
     useEffect(() => {
-        void fetchData();
-    }, [currentPage]);
-
-    useEffect(() => {
         setCurrentPage(1);
         void fetchData(true);
     }, [planActiveTab]);
@@ -138,7 +137,7 @@ function BettingPlan({
                             <Link
                                 className={style.bettingPlanCard}
                                 href={`/football/${item.matchId}`}
-                                key={item.id}
+                                key={`${item.id}`}
                             >
                                 <div className={style.iconBox}>
                                     {filterIcon[item.predictionResult]}
