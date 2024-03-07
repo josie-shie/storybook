@@ -67,6 +67,7 @@ function MasterAvatar({
                     className={style.slick}
                     initialSlide={initialSlide}
                     onSlickEnd={onSlickEnd}
+                    resetHeightKey="masterTab"
                     styling="underline"
                     tabs={tabList}
                 >

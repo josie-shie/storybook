@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     title: '专家预测 | FutureSport'
 };
 
-function MasterAvatar({
+function MemberAvatar({
     params,
     initGuessData
 }: {
@@ -58,6 +58,7 @@ function MasterAvatar({
                     className={style.slick}
                     initialSlide={initialSlide}
                     onSlickEnd={onSlickEnd}
+                    resetHeightKey="memberTab"
                     styling="underline"
                     tabs={tabList}
                 >
@@ -76,4 +77,4 @@ function MasterAvatar({
     );
 }
 
-export default MasterAvatar;
+export default MemberAvatar;
