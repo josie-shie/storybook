@@ -5,13 +5,12 @@ import { InfiniteScroll } from 'ui';
 import CircularProgress from '@mui/material/CircularProgress';
 import Link from 'next/link';
 import NoData from '@/components/baseNoData/noData';
+import type { InitGuessData, Tab } from '../../page';
 import IconWin from './img/win.svg';
 import IconLose from './img/lose.svg';
 import IconDraw from './img/draw.svg';
 import style from './bettingPlan.module.scss';
 import SkeletonLayout from './components/skeleton';
-
-type Tab = 0 | 1 | 2;
 
 const filterIcon = {
     WIN: <IconWin />,
@@ -40,11 +39,15 @@ const filterOdds = {
 function BettingPlan({
     planActiveTab,
     setGuessLength,
-    params
+    params,
+    initGuessData,
+    handleResetHeight
 }: {
     planActiveTab: Tab;
     setGuessLength: (val: number) => void;
     params: { masterId: string };
+    initGuessData: InitGuessData;
+    handleResetHeight: () => void;
 }) {
     const [guessMatchesList, setGuessMatchesList] = useState<MemberIndividualGuessMatch[]>([]);
     const [isNoData, setIsNoData] = useState<boolean | null>(null);
@@ -53,12 +56,17 @@ function BettingPlan({
 
     const fetchData = async (resetList = false) => {
         if (resetList) {
-            setGuessMatchesList([]);
+            const guessMatchListLength = initGuessData[planActiveTab].guessMatchList.length;
+            setGuessMatchesList(initGuessData[planActiveTab].guessMatchList);
+            setGuessLength(guessMatchListLength);
+            setIsNoData(guessMatchListLength === 0);
+            setTotalPage(initGuessData[planActiveTab].pagination.totalCount);
+            return;
         }
         const res = await getMemberIndividualGuessMatches({
             memberId: Number(params.masterId),
-            currentPage,
-            pageSize: 30,
+            currentPage: currentPage + 1,
+            pageSize: 50,
             guessType: planActiveTab
         });
 
@@ -66,24 +74,20 @@ function BettingPlan({
             return new Error();
         }
 
-        const updatedGuessMatchesList = resetList
-            ? res.data.guessMatchList
-            : guessMatchesList.concat(res.data.guessMatchList);
+        const updatedGuessMatchesList = guessMatchesList.concat(res.data.guessMatchList);
         setGuessMatchesList(updatedGuessMatchesList);
         setGuessLength(res.data.pagination.totalCount);
         setIsNoData(res.data.guessMatchList.length === 0);
-        setTotalPage(res.data.pagination.totalCount);
+        setTotalPage(res.data.pagination.pageCount);
     };
 
     const loadMoreList = () => {
         if (currentPage <= Math.round(guessMatchesList.length / 30) && currentPage < totalPage) {
             setCurrentPage(prevData => prevData + 1);
+            void fetchData();
+            handleResetHeight();
         }
     };
-
-    useEffect(() => {
-        void fetchData();
-    }, [currentPage]);
 
     useEffect(() => {
         setCurrentPage(1);
