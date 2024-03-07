@@ -140,24 +140,22 @@ function ArticleContent({
             <div className={style.articleLayout}>
                 <div className={style.container}>
                     <div className={style.topTitle}>
-                        <div className={style.time}>
-                            {!isNoArticleData ? (
-                                <>{timestampToTodayTime(article.createdAt)}</>
-                            ) : (
-                                <Skeleton animation="wave" height={20} variant="text" width={94} />
-                            )}
-                        </div>
                         <div className={style.leagueTeam}>
                             {!isNoArticleData ? (
                                 <>
                                     <span>{article.leagueName}</span>
                                     <span className={style.line}>|</span>
-                                    <span>
-                                        {article.homeTeam.name}VS{article.awayTeam.name}
-                                    </span>
+                                    <span>{timestampToTodayTime(article.matchTime)}</span>
                                 </>
                             ) : (
                                 <Skeleton animation="wave" height={20} variant="text" width={136} />
+                            )}
+                        </div>
+                        <div className={style.time}>
+                            {!isNoArticleData ? (
+                                <>發佈於 {timestampToTodayTime(article.createdAt)}</>
+                            ) : (
+                                <Skeleton animation="wave" height={20} variant="text" width={94} />
                             )}
                         </div>
                     </div>
@@ -195,7 +193,11 @@ function ArticleContent({
                                     )}
                                 </div>
                             </div>
-                            <div className={style.fight}>VS</div>
+                            <div className={style.fight}>
+                                {[1, 2, 3, 4, 5, -1, -12, -13].includes(article.state)
+                                    ? `${article.homeTeam.score}:${article.awayTeam.score}`
+                                    : 'VS'}
+                            </div>
                             <div className={style.team}>
                                 <Image
                                     alt=""

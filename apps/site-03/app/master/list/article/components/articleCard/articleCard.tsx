@@ -130,24 +130,17 @@ function ArticleCard({ article }: { article: RecommendPost }) {
 
         return filteredTags.slice(0, 3);
     };
+    const iconMap = {
+        WIN: <Win />,
+        LOSE: <Lose />,
+        Draw: <Draw />
+    };
 
     return (
         <>
             <li className={style.articleCard}>
                 {article.predictionResult === 'WIN' && (
-                    <div className={style.result}>
-                        <Win />
-                    </div>
-                )}
-                {article.predictionResult === 'LOSE' && (
-                    <div className={style.result}>
-                        <Lose />
-                    </div>
-                )}
-                {article.predictionResult === 'DRAW' && (
-                    <div className={style.result}>
-                        <Draw />
-                    </div>
+                    <div className={style.result}>{iconMap[article.predictionResult]}</div>
                 )}
 
                 {article.isUnlocked || article.price === 0 ? (
@@ -188,6 +181,7 @@ function ArticleCard({ article }: { article: RecommendPost }) {
                 <Link href={`/master/articleDetail/${article.id}`}>
                     <div className={style.game}>
                         <div className={style.leagueTeam}>
+                            <span>{timestampToTodayTime(article.matchTime)}</span>
                             <span>{article.leagueName}</span>
                             <span className={style.line}>|</span>
                             <span>

@@ -11,9 +11,8 @@
         .topTitle {
             display: flex;
             align-items: flex-start;
-            flex-direction: column;
             justify-content: space-between;
-            margin-bottom: 14px;
+            margin-bottom: 6px;
 
             .leagueTeam {
                 display: flex;
@@ -47,7 +46,7 @@
             position: relative;
             display: block;
             padding-left: 10px;
-            padding-bottom: 18px;
+            padding-bottom: 12px;
             font-size: 18px;
             font-weight: 600;
             color: #222;
