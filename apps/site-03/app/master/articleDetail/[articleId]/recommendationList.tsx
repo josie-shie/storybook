@@ -56,28 +56,26 @@ function RecommendationItem({
                                 )}
                                 <div className={style.left}>
                                     <div className={style.name}>
-                                        {item.mentorArticleCount.predictedPlay === 'HANDICAP' &&
-                                            item.mentorArticleCount.counts >= 10 && (
-                                                <Tag
-                                                    background="#f3f3f3"
-                                                    borderColor="#bfbfbf"
-                                                    color="#8d8d8d"
-                                                    text={`${getText(
-                                                        item.mentorArticleCount.predictedPlay
-                                                    )}`}
-                                                />
-                                            )}
-                                        {item.mentorArticleCount.predictedPlay === 'OVERUNDER' &&
-                                            item.mentorArticleCount.counts >= 10 && (
-                                                <Tag
-                                                    background="#f3f3f3"
-                                                    borderColor="#bfbfbf"
-                                                    color="#8d8d8d"
-                                                    text={`${getText(
-                                                        item.mentorArticleCount.predictedPlay
-                                                    )}`}
-                                                />
-                                            )}
+                                        {item.mentorArticleCount.predictedPlay === 'HANDICAP' && (
+                                            <Tag
+                                                background="#f3f3f3"
+                                                borderColor="#bfbfbf"
+                                                color="#8d8d8d"
+                                                text={`${getText(
+                                                    item.mentorArticleCount.predictedPlay
+                                                )}`}
+                                            />
+                                        )}
+                                        {item.mentorArticleCount.predictedPlay === 'OVERUNDER' && (
+                                            <Tag
+                                                background="#f3f3f3"
+                                                borderColor="#bfbfbf"
+                                                color="#8d8d8d"
+                                                text={`${getText(
+                                                    item.mentorArticleCount.predictedPlay
+                                                )}`}
+                                            />
+                                        )}
                                         <span>{item.mentorName}</span>
                                     </div>
                                     <div className={style.leagueName}>
