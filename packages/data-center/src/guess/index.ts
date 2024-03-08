@@ -375,7 +375,7 @@ export const getMemberIndividualGuess = async ({
                     play: monthRecord.handicapPlay,
                     win: monthRecord.handicapWin,
                     draw: monthRecord.handicapDraw,
-                    lose: monthRecord.handicapDraw
+                    lose: monthRecord.handicapLose
                 },
                 size: {
                     play: monthRecord.overUnderPlay,
