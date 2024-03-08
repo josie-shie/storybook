@@ -4,7 +4,6 @@ import type { ContestInfoType, ContestListType } from 'data-center';
 import Cookies from 'js-cookie';
 
 const expires = getUTCDateTime();
-
 interface InitState {
     contestList: ContestListType;
     contestInfo: ContestInfoType;

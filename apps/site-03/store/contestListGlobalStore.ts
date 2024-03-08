@@ -7,10 +7,17 @@ interface ContestList {
     contestInfo: ContestInfoType;
 }
 
-let isInit = true;
-let useContestListGlobalStore: StoreWithSelectors<ContestList>;
+interface ContestListGlobal extends ContestList {
+    setContestList: ({ contestList }: { contestList: ContestListType }) => void;
+    setContestInfo: ({ contestInfo }: { contestInfo: ContestInfoType }) => void;
+}
 
-const initialState = (set: (updater: (state: ContestList) => Partial<ContestList>) => void) => ({
+let isInit = true;
+let useContestListGlobalStore: StoreWithSelectors<ContestListGlobal>;
+
+const initialState = (
+    set: (updater: (state: ContestListGlobal) => Partial<ContestListGlobal>) => void
+) => ({
     contestList: [],
     contestInfo: {},
     setContestList: ({ contestList }: { contestList: ContestListType }) => {
@@ -31,7 +38,7 @@ const createContestListGlobalStore = (init: ContestList) => {
             contestInfo: init.contestInfo
         };
 
-        useContestListGlobalStore = initStore<ContestList>(initialState, params);
+        useContestListGlobalStore = initStore<ContestListGlobal>(initialState, params);
         isInit = false;
     }
 };
