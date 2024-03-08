@@ -17,7 +17,7 @@ import SkeletonLayout from './components/skeleton/skeleton';
 function MyAnalysis() {
     const router = useRouter();
     const scrollAnalysisRef = useRef<HTMLDivElement>(null);
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const userInfo = useUserStore.use.userInfo();
     const articleList = useArticleStore.use.unLockPostList().articleList;
