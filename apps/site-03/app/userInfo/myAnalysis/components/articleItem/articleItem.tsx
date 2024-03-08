@@ -1,15 +1,16 @@
 'use client';
 import { truncateFloatingPoint, timestampToTodayTime } from 'lib';
 import Image from 'next/image';
-import Tag from '@/components/tag/tag';
-import TagSplit from '@/components/tagSplit/tagSplit';
+import Link from 'next/link';
 import Avatar from '@/components/avatar/avatar';
+import TagSplit from '@/components/tagSplit/tagSplit';
+import Tag from '@/components/tag/tag';
 import Fire from '@/app/img/fire.png';
 import style from './articleItem.module.scss';
-import Link from 'next/link';
-import Win from './img/win.png';
-import Lose from './img/lose.png';
-import Draw from './img/draw.png';
+import Win from './img/win.svg';
+import Lose from './img/lose.svg';
+import Draw from './img/draw.svg';
+import Push from './img/push.svg';
 import Eye from './img/eye.svg';
 import LockOpen from './img/lockOpen.svg';
 import LockOpenBlue from './img/lockOpenBlue.svg';
@@ -95,27 +96,20 @@ function ArticleItem({ item }: GetUnlockPostProps) {
         }
     };
 
+    const iconMap = {
+        WIN: <Win />,
+        LOSE: <Lose />,
+        PUSH: <Push />,
+        DRAW: <Draw />
+    };
+
     return (
         <div className={style.articleItem}>
-            {item.predictionResult === 'WIN' && (
-                <div className={style.result}>
-                    <Image alt="" height={27} src={Win} width={27} />
-                </div>
-            )}
-            {item.predictionResult === 'LOSE' && (
-                <div className={style.result}>
-                    <Image alt="" height={27} src={Lose} width={27} />
-                </div>
-            )}
-            {item.predictionResult === 'DRAW' && (
-                <div className={style.result}>
-                    <Image alt="" height={27} src={Draw} width={27} />
-                </div>
-            )}
+            <div className={style.result}>{iconMap[item.predictionResult]} </div>
 
             <div className={style.unlockStatus}>
                 <span className={style.unlocked}>
-                    <LockOpenBlue width={16} height={16} />
+                    <LockOpenBlue height={16} width={16} />
                 </span>
             </div>
             <div className={style.user}>
@@ -157,9 +151,9 @@ function ArticleItem({ item }: GetUnlockPostProps) {
                             )}
                         {item.memberTags.weekHitRecentTen > 0 && (
                             <TagSplit
+                                hit
                                 isBlueBg={false}
                                 number={item.memberTags.weekHitRecentTen}
-                                hit={true}
                                 text="近"
                             />
                         )}
@@ -197,16 +191,13 @@ function ArticleItem({ item }: GetUnlockPostProps) {
                         {truncateFloatingPoint(item.memberTags.weekHitRate, 2)}
                         <i>%</i>
                     </span>
-                    {item.memberTags.weekHitRecentTen > 0 && (
-                        <span
-                            className={style.hitName}
-                        >{`近十中${item.memberTags.weekHitRecentTen}`}</span>
-                    )}
+                    <span className={style.hitName}>命中率</span>
                 </div>
             </div>
             <Link href={`/master/articleDetail/${item.postId}`}>
                 <div className={style.game}>
                     <div className={style.leagueTeam}>
+                        <span>{timestampToTodayTime(item.matchTime)}</span>
                         <span>{item.leagueName}</span>
                         <span className={style.line}>|</span>
                         <span>

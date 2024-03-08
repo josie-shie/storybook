@@ -2,6 +2,7 @@
     position: relative;
     padding: 12px 12px 0;
     border-bottom: 1px solid #f3f3f3;
+    overflow: hidden;
 
     &:last-child {
         border: none;
@@ -10,8 +11,8 @@
 
 .result {
     position: absolute;
-    top: 3px;
-    right: 3px;
+    top: -10px;
+    right: -8px;
 }
 
 .unlockStatus {
@@ -73,12 +74,12 @@
             align-items: center;
             gap: 2px;
             color: #e95e6b;
-            font-size: 20px;
+            font-size: 26px;
             font-weight: bold;
             line-height: 24px;
 
             i {
-                font-size: 12px;
+                font-size: 15px;
                 font-weight: bold;
             }
         }
@@ -95,6 +96,9 @@
 
 .leagueTeam {
     display: flex;
+    background-color: #f3f3f3;
+    border-radius: 4px;
+    padding: 2px 8px;
     align-items: center;
     justify-content: flex-start;
     gap: 4px;
@@ -124,7 +128,7 @@
 }
 
 .game {
-    padding: 10px 0;
+    padding: 12px 0;
     position: relative;
 }
 
