@@ -193,8 +193,12 @@ function ArticleContent({
                                     )}
                                 </div>
                             </div>
-                            <div className={style.fight}>
-                                {[1, 2, 3, 4, 5, -1, -12, -13].includes(article.state)
+                            <div
+                                className={`${style.fight} ${
+                                    article.state === -1 && style.scoreColor
+                                }`}
+                            >
+                                {article.state === -1
                                     ? `${article.homeTeam.score}:${article.awayTeam.score}`
                                     : 'VS'}
                             </div>
