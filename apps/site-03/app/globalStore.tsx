@@ -38,32 +38,36 @@ function GlobalStore({ children }: { children: ReactNode }) {
         isClientSide: false
     });
 
-    const fetchData = async (isWorker = false) => {
+    const fetchData = async (isUpdateMatch = false) => {
         const timestamp = Math.floor(Date.now() / 1000);
         const todayContest = await getContestList(timestamp);
         if (todayContest.success) {
-            if (!isWorker) {
+            if (!isUpdateMatch) {
                 createContestListGlobalStore(todayContest.data);
-            }
+            } else {
+                useContestListGlobalStore
+                    .getState()
+                    .setContestList({ contestList: todayContest.data.contestList });
+                useContestListGlobalStore
+                    .getState()
+                    .setContestInfo({ contestInfo: todayContest.data.contestInfo });
 
-            if (typeof useContestListStore !== 'undefined' && isWorker) {
-                useContestListGlobalStore
-                    .getState()
-                    .setContestList({ contestList: todayContest.data.contestList });
-                useContestListGlobalStore
-                    .getState()
-                    .setContestInfo({ contestInfo: todayContest.data.contestInfo });
-                useContestListStore
-                    .getState()
-                    .setContestList({ contestList: todayContest.data.contestList });
-                useContestListStore
-                    .getState()
-                    .setContestInfo({ contestInfo: todayContest.data.contestInfo });
+                if (typeof useContestListStore !== 'undefined') {
+                    useContestListStore
+                        .getState()
+                        .setContestList({ contestList: todayContest.data.contestList });
+                    useContestListStore
+                        .getState()
+                        .setContestInfo({ contestInfo: todayContest.data.contestInfo });
+                }
             }
         }
     };
 
     useEffect(() => {
+        void fetchData();
+
+        // utc 4點 更新今日賽事
         if (typeof Worker !== 'undefined') {
             const worker = new Worker(new URL('lib/src/matchUpdateWorker.ts', import.meta.url));
 
@@ -82,7 +86,17 @@ function GlobalStore({ children }: { children: ReactNode }) {
     }, []);
 
     useEffect(() => {
-        void fetchData();
+        const handleVisibilityChange = () => {
+            if (document.visibilityState === 'visible') {
+                void fetchData(true);
+            }
+        };
+
+        document.addEventListener('visibilitychange', handleVisibilityChange);
+
+        return () => {
+            document.removeEventListener('visibilitychange', handleVisibilityChange);
+        };
     }, []);
 
     return <>{children}</>;
