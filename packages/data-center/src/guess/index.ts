@@ -16,7 +16,8 @@ import {
     ADD_GUESS_MUTATION,
     PAY_FOR_PRO_DISTRIB_MUTATION,
     PAY_FOR_PRO_GUESS_MUTATION,
-    PAY_FOR_POST_MUTATION
+    PAY_FOR_POST_MUTATION,
+    GET_HOT_GUESS_MATCHES
 } from './graphqlQueries';
 
 const GetTodayGuessMatchSchema = z.object({
@@ -915,6 +916,75 @@ export const payForPost = async ({
         PayForPostResultSchema.parse(data);
 
         return { success: true, data: data.payForPost };
+    } catch (error) {
+        return handleApiError(error);
+    }
+};
+
+const GetHotGuessMatchSchema = z.object({
+    leagueLevel: z.number(),
+    proMemberNum: z.number(),
+    matchId: z.number(),
+    leagueId: z.number(),
+    color: z.string(),
+    leagueName: z.string(),
+    homeId: z.number(),
+    homeName: z.string(),
+    awayId: z.number(),
+    awayName: z.string(),
+    matchTime: z.number(),
+    homeScore: z.number(),
+    awayScore: z.number(),
+    handicap: z.number(),
+    handicapHomeOdds: z.number(),
+    handicapAwayOdds: z.number(),
+    overUnder: z.number(),
+    overUnderOverOdds: z.number(),
+    overUnderUnderOdds: z.number(),
+    totalNum: z.number(),
+    guessed: z.boolean(),
+    state: z.number(),
+    homeLogo: z.string(),
+    awayLogo: z.string(),
+    hasAiPredict: z.boolean()
+});
+
+const GetHotGuessMatchListResultSchema = z.object({
+    soccerGuess: z.object({
+        getHotGuessMatches: z.object({
+            list: z.array(GetHotGuessMatchSchema)
+        })
+    })
+});
+
+type GetHotGuessMatchListResult = z.infer<typeof GetHotGuessMatchListResultSchema>;
+export type GetHotGuessMatch = z.infer<typeof GetHotGuessMatchSchema>;
+export type GetHotGuessMatchListResponse = GetHotGuessMatch[];
+
+/**
+ * 取得熱門競猜列表
+ * - returns : {@link GetHotGuessMatchListResult}
+ */
+export const getHotGuessMatchList = async (): Promise<ReturnData<GetHotGuessMatchListResponse>> => {
+    try {
+        const { data, errors } = await fetcher<
+            FetchResultData<GetHotGuessMatchListResult>,
+            unknown
+        >(
+            {
+                data: {
+                    query: GET_HOT_GUESS_MATCHES
+                }
+            },
+            { cache: 'no-store' }
+        );
+
+        throwErrorMessage(errors);
+        GetHotGuessMatchListResultSchema.parse(data);
+        return {
+            success: true,
+            data: data.soccerGuess.getHotGuessMatches.list
+        };
     } catch (error) {
         return handleApiError(error);
     }

@@ -294,3 +294,39 @@ export const PAY_FOR_POST_MUTATION = `
         }
     }
 `;
+
+export const GET_HOT_GUESS_MATCHES = `
+    query getHotGuessMatches {
+        soccerGuess {
+            getHotGuessMatches {
+                list {
+                    matchId
+                    leagueId
+                    leagueName
+                    homeId
+                    homeName
+                    homeLogo
+                    awayId
+                    awayName
+                    awayLogo
+                    matchTime
+                    homeScore
+                    awayScore
+                    handicap
+                    handicapHomeOdds
+                    handicapAwayOdds
+                    overUnder
+                    overUnderOverOdds
+                    overUnderUnderOdds
+                    totalNum
+                    guessed
+                    state
+                    color
+                    hasAiPredict
+                    leagueLevel
+                    proMemberNum
+                }
+            }
+        }
+    }
+`;
