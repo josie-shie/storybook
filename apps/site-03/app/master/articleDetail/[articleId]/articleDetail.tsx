@@ -147,7 +147,6 @@ function ArticleDetail({ params }: { params: { articleId: string } }) {
             <ArticleContent
                 article={article}
                 fetchPostDetail={fetchPostDetail}
-                info={info}
                 isNoArticleData={isNoArticleData}
                 params={params}
             />
