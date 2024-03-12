@@ -340,7 +340,6 @@ export const getMemberIndividualGuess = async ({
         throwErrorMessage(errors);
         GetMemberIndividualGuessResultSchema.parse(data);
         const { weekRecord, monthRecord, quarterRecord } = data.getMemberIndividualGuess;
-
         const formattedData = {
             byWeek: {
                 rank: weekRecord.rank,
@@ -354,7 +353,7 @@ export const getMemberIndividualGuess = async ({
                     play: weekRecord.handicapPlay,
                     win: weekRecord.handicapWin,
                     draw: weekRecord.handicapDraw,
-                    lose: weekRecord.handicapDraw
+                    lose: weekRecord.handicapLose
                 },
                 size: {
                     play: weekRecord.overUnderPlay,
@@ -396,7 +395,7 @@ export const getMemberIndividualGuess = async ({
                     play: quarterRecord.handicapPlay,
                     win: quarterRecord.handicapWin,
                     draw: quarterRecord.handicapDraw,
-                    lose: quarterRecord.handicapDraw
+                    lose: quarterRecord.handicapLose
                 },
                 size: {
                     play: quarterRecord.overUnderPlay,
