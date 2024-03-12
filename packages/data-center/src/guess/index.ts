@@ -380,8 +380,8 @@ export const getMemberIndividualGuess = async ({
                 size: {
                     play: monthRecord.overUnderPlay,
                     win: monthRecord.overUnderWin,
-                    draw: monthRecord.handicapDraw,
-                    lose: monthRecord.handicapLose
+                    draw: monthRecord.overUnderDraw,
+                    lose: monthRecord.overUnderLose
                 }
             },
             byQuarter: {
@@ -401,8 +401,8 @@ export const getMemberIndividualGuess = async ({
                 size: {
                     play: quarterRecord.overUnderPlay,
                     win: quarterRecord.overUnderWin,
-                    draw: quarterRecord.handicapDraw,
-                    lose: quarterRecord.handicapLose
+                    draw: quarterRecord.overUnderDraw,
+                    lose: quarterRecord.overUnderLose
                 }
             }
         };
