@@ -359,8 +359,8 @@ export const getMemberIndividualGuess = async ({
                 size: {
                     play: weekRecord.overUnderPlay,
                     win: weekRecord.overUnderWin,
-                    draw: weekRecord.handicapDraw,
-                    lose: weekRecord.handicapLose
+                    draw: weekRecord.overUnderDraw,
+                    lose: weekRecord.overUnderLose
                 }
             },
             byMonth: {
