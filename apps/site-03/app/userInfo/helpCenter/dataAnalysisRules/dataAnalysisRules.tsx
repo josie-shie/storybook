@@ -11,37 +11,37 @@ function DataAnalysisRules() {
 
     return (
         <>
-            <Header back={back} title="數據分析規則說明" />
+            <Header back={back} title="数据分析规则说明" />
             <div className={style.detail}>
                 <div className={style.zoon}>
-                    <h2>讓球</h2>
+                    <h2>让球</h2>
                     <div className={style.dot}>
-                        在指定球賽中，預測經過讓球調整後的兩隊比賽結果，選擇主隊勝出或客隊勝出的投注方式。
+                        在指定球赛中，预测经过让球调整后的两队比赛结果，选择主队胜出或客队胜出的投注方式。
                     </div>
                 </div>
                 <div className={style.zoon}>
                     <h2>大小</h2>
                     <div className={style.dot}>
-                        在指定球賽中，預測兩隊的總進球數是大於或小於預設的球盤。若總進球數超過設定的“大球盤”，則下注大球盤勝出；若總進球數少於設定的“小球盤”，則下注小球盤勝出。
+                        在指定球赛中，预测两队的总进球数是大于或小于ｓ预设的球盘。若总进球数超过设定的“大球盘”，则下注大球盘胜出；若总进球数少于设定的“小球盘”，则下注小球盘胜出。
                     </div>
                 </div>
                 <div className={style.zoon}>
-                    <h2>15分鐘進球</h2>
+                    <h2>15分钟进球</h2>
                     <div className={style.dot}>
-                        在指定球賽中，預測特定15分鐘時間段內是否會有進球。{' '}
+                        在指定球赛中，预测特定15分钟时间段内是否会有进球。{' '}
                     </div>
-                    <div className={style.dot}>可以提供您參考，以便作出更加明智的競猜決策。</div>
+                    <div className={style.dot}>可以提供您参考，以便作出更加明智的竞猜决策。</div>
                 </div>
                 <div className={style.zoon}>
-                    <h2>進球數區間</h2>
+                    <h2>进球数区间</h2>
                     <div className={style.dot}>
-                        在指定球賽中，預測比賽的最終總進球數落入哪個特定的區間內。
+                        在指定球赛中，预测比赛的最终总进球数落入哪个特定的区间内。
                     </div>
                 </div>
                 <div className={style.zoon}>
-                    <h2>全場波膽</h2>
+                    <h2>全场波胆</h2>
                     <div className={style.dot}>
-                        在指定球賽中，預測最終的正確比分，選擇最終主隊勝出比分、客隊勝出比分或和局比分的投注方式。
+                        在指定球赛中，预测最终的正确比分，选择最终主队胜出比分、客队胜出比分或和局比分的投注方式。
                     </div>
                 </div>
             </div>

@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import LoginAndResign from './loginAndResign';
 
 export const metadata: Metadata = {
-    title: '帳號相關 | FutureSport'
+    title: '帐号相关 | FutureSport'
 };
 
 function Page() {

@@ -23,7 +23,7 @@ function HelpCenter() {
     const helpCenterList = {
         loginAndRegistration: [
             {
-                display: '帳號相關',
+                display: '帐号相关',
                 key: 'loginAndResign'
             }
         ],
@@ -70,7 +70,7 @@ function HelpCenter() {
 
     return (
         <>
-            <Header back={back} title="說明中心" />
+            <Header back={back} title="说明中心" />
             <div className={style.container}>
                 <div className={style.box}>
                     <h2>使用指南</h2>
@@ -85,13 +85,13 @@ function HelpCenter() {
                     ))}
                 </div>
                 <div className={style.box}>
-                    <h2>政策及協議</h2>
+                    <h2>政策及协议</h2>
                     {helpCenterList.policiesAndAgreements.map((item: ItemProps) => (
                         <SelectRow item={item} key={item.key} />
                     ))}
                 </div>
                 <div className={style.box}>
-                    <h2>常見問題</h2>
+                    <h2>常见问题</h2>
                     {helpCenterList.FAQ.map((item: ItemProps) => (
                         <SelectRow item={item} key={item.key} />
                     ))}

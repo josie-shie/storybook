@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import RankingRules from './rankingRules';
 
 export const metadata: Metadata = {
-    title: '榜單規則說明 | FutureSport'
+    title: '榜单规则说明 | FutureSport'
 };
 
 function Page() {

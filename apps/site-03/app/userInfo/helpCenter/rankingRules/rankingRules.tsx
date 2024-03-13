@@ -11,39 +11,39 @@ function RankingRules() {
 
     return (
         <>
-            <Header back={back} title="榜單規則說明" />
+            <Header back={back} title="榜单规则说明" />
             <div className={style.detail}>
                 <span>
-                    排行榜分為【周】【月】【季】【連紅】，所有榜單於每日中午12:00更新，根據勝率或連紅次數排名（只統計已結算的方案）。
+                    排行榜分为【周】【月】【季】【连红】，所有榜单于每日中午12:00更新，根据胜率或连红次数排名（只统计已结算的方案）。
                 </span>
                 <div className={style.zoon}>
                     <h2>周榜</h2>
-                    <div className={style.dot}>本榜單統計至當天起前7日內的競猜方案。</div>
+                    <div className={style.dot}>本榜单统计至当天起前7日内的竞猜方案。</div>
                     <div className={style.dot}>
-                        上榜條件：需發布超過15場（含）方案，勝率高於50％（含）以上。
+                        上榜条件：需发布超过15场（含）方案，胜率高于50％（含）以上。
                     </div>
-                    <div className={style.dot}>排序標準：按照胜率高低進行排行。</div>
+                    <div className={style.dot}>排序标准：按照胜率高低进行排行。</div>
                 </div>
                 <div className={style.zoon}>
                     <h2>月榜</h2>
-                    <div className={style.dot}>本榜單統計至當天起前30日內的競猜方案</div>
+                    <div className={style.dot}>本榜单统计至当天起前30日内的竞猜方案</div>
                     <div className={style.dot}>
-                        上榜條件：需發布超過30場（含）方案，勝率高於50％（含）以上。
+                        上榜条件：需发布超过30场（含）方案，胜率高于50％（含）以上。
                     </div>
-                    <div className={style.dot}>排序標準：按照胜率高低進行排行。</div>
+                    <div className={style.dot}>排序标准：按照胜率高低进行排行。</div>
                 </div>
                 <div className={style.zoon}>
                     <h2>周榜</h2>
-                    <div className={style.dot}>本榜單統計至當天起前90日內的競猜方案。</div>
+                    <div className={style.dot}>本榜单统计至当天起前90日内的竞猜方案。</div>
                     <div className={style.dot}>
-                        上榜條件：需發布超過90場（含）方案，勝率高於50％（含）以上。
+                        上榜条件：需发布超过90场（含）方案，胜率高于50％（含）以上。
                     </div>
-                    <div className={style.dot}>排序標準：按照胜率高低進行排行。</div>
+                    <div className={style.dot}>排序标准：按照胜率高低进行排行。</div>
                 </div>
                 <div className={style.zoon}>
-                    <h2>連紅榜</h2>
-                    <div className={style.dot}>本榜單統計至當天起前7日內的競猜方案。</div>
-                    <div className={style.dot}>上榜條件：連續競猜正確≥3場。</div>
+                    <h2>连红榜</h2>
+                    <div className={style.dot}>本榜单统计至当天起前7日内的竞猜方案。</div>
+                    <div className={style.dot}>上榜条件：连续竞猜正确≥3场。</div>
                 </div>
             </div>
         </>
