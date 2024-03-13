@@ -1,19 +1,26 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { getProDistrib, getProGuess, payForProGuess } from 'data-center';
+import {
+    getProDistrib,
+    getProGuess,
+    payForProGuess,
+    getHotGuessMatchList,
+    type GetHotGuessMatch
+} from 'data-center';
 import { useParams } from 'next/navigation';
 import CircularProgress from '@mui/material/CircularProgress';
 import ConfirmPayDrawer from '@/components/confirmPayDrawer/confirmPayDrawer';
 import { useUserStore } from '@/store/userStore';
 import { useAuthStore } from '@/store/authStore';
 import BaseNoData from '@/components/baseNoData/noData';
+import RechargeDialog from '@/components/rechargeDialog/rechargeDialog';
+import HotGameCard from '@/app/guess/(list)/contest/gameCard';
 import Rule from './components/rule/rule';
 import GameCard from './gameCard';
 import AnalyzeRow from './components/analyzeRow/analyze';
 import TitleIcon from './img/title.svg';
 import style from './masterPlan.module.scss';
 import { useGuessDetailStore } from './guessDetailStore';
-import RechargeDialog from '@/components/rechargeDialog/rechargeDialog';
 
 function Trend() {
     const highWinRateTrend = useGuessDetailStore.use.highWinRateTrend();
@@ -44,6 +51,16 @@ function Trend() {
                 <Rule />
             </div>
         </div>
+    );
+}
+
+function HotGuessList({ hotMatchList }: { hotMatchList: GetHotGuessMatch[] }) {
+    return (
+        <>
+            {hotMatchList.map((item: GetHotGuessMatch) => (
+                <HotGameCard key={item.matchId} matchId={item.matchId} />
+            ))}
+        </>
     );
 }
 
@@ -105,7 +122,8 @@ function MasterPlanList({
 function MasterPlan() {
     const matchId = useParams().matchId;
     const [isProDistribLoading, setIsProDistribLoading] = useState(true);
-    const [isPlanLoading, setIsPlanLoading] = useState(true);
+    const [isPlanLoading, setIsPlanLoading] = useState(false);
+    const [hotMatchList, setHotMatchList] = useState<GetHotGuessMatch[]>([]);
     const [selectedGameId, setSelectedGameId] = useState<number | null>(null);
     const [openPaid, setOpenPaid] = useState(false);
     const [isOpenRechargeDialog, setIsOpenRechargeDialog] = useState(false);
@@ -149,6 +167,21 @@ function MasterPlan() {
         }
     };
 
+    const displayList = () => {
+        return masterPlanList.length ? (
+            <MasterPlanList
+                handleVIPUnlock={handleVIPUnlock}
+                isLogin={isLogin}
+                setAmount={setAmount}
+                setIsOpenRechargeDialog={setIsOpenRechargeDialog}
+                setOpenPaid={setOpenPaid}
+                setSelectedGameId={setSelectedGameId}
+            />
+        ) : (
+            <HotGuessList hotMatchList={hotMatchList} />
+        );
+    };
+
     useEffect(() => {
         const memberId = isLogin ? userInfo.uid : 1;
         async function fetchProDistrib() {
@@ -161,19 +194,23 @@ function MasterPlan() {
         }
         async function fetchProGuess() {
             const proGuess = await getProGuess({ matchId: Number(matchId), memberId });
-            if (proGuess.success) {
+            if (proGuess.success && proGuess.data.proGuess.length) {
                 const data = proGuess.data;
                 setMasterPlanList(data.proGuess);
                 setMasterPlanPrice(data.unlockPrice);
                 setIsPlanLoading(false);
             } else {
-                setMasterPlanList([]);
+                const hotGuessMatchList = await getHotGuessMatchList();
+                if (hotGuessMatchList.success) {
+                    setHotMatchList(hotGuessMatchList.data);
+                }
             }
         }
+        setIsPlanLoading(true);
         void fetchProDistrib();
         void fetchProGuess();
+        setIsPlanLoading(false);
     }, [isLogin, matchId, userInfo.uid]);
-
     return (
         <div className={style.masterPlan}>
             {isProDistribLoading ? (
@@ -186,21 +223,18 @@ function MasterPlan() {
             <div className={`${style.area} ${style.masterPlanContainer}`}>
                 <div className={style.planList}>
                     <div className={style.title}>
-                        <span>同场猜球高手方案({masterPlanList.length})</span>
+                        {masterPlanList.length ? (
+                            <span>同场猜球高手方案({masterPlanList.length})</span>
+                        ) : (
+                            <span>其他熱門猜球</span>
+                        )}
                     </div>
                     {isPlanLoading ? (
                         <div className={style.planLoading}>
                             <CircularProgress size={24} />
                         </div>
                     ) : (
-                        <MasterPlanList
-                            handleVIPUnlock={handleVIPUnlock}
-                            isLogin={isLogin}
-                            setAmount={setAmount}
-                            setOpenPaid={setOpenPaid}
-                            setIsOpenRechargeDialog={setIsOpenRechargeDialog}
-                            setSelectedGameId={setSelectedGameId}
-                        />
+                        displayList()
                     )}
                 </div>
             </div>
@@ -216,8 +250,8 @@ function MasterPlan() {
                 price={amount}
             />
             <RechargeDialog
-                setRechargeDialogClose={setIsOpenRechargeDialog}
                 openDialog={isOpenRechargeDialog}
+                setRechargeDialogClose={setIsOpenRechargeDialog}
             />
         </div>
     );
