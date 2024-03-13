@@ -373,7 +373,7 @@ function UserInfo() {
                             <li>
                                 <ButtonBase>
                                     <QuestionIcon />
-                                    <Link href="">常见问题</Link>
+                                    <Link href="/userInfo/helpCenter">說明中心</Link>
                                 </ButtonBase>
                             </li>
                         </ul>
