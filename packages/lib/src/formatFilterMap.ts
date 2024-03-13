@@ -36,6 +36,7 @@ export const formatFilterMap = (
         hot: [],
         firstClass: []
     };
+    let temporaryHotList: { rating: number; name: string }[] = [];
 
     for (const key in currentInfo) {
         const value = currentInfo[key];
@@ -82,9 +83,9 @@ export const formatFilterMap = (
 
         if (value.rating !== undefined && value.rating <= 80) {
             if (Object.hasOwnProperty.call(extraMap, 'hot')) {
-                extraMap.hot.push(newObj);
+                temporaryHotList.push({ rating: value.rating, name: newObj });
             } else {
-                extraMap.hot = [newObj];
+                temporaryHotList = [{ rating: value.rating, name: newObj }];
             }
 
             if (value.rating <= 1) {
@@ -92,6 +93,9 @@ export const formatFilterMap = (
             }
         }
     }
+    temporaryHotList.sort((a, b) => a.rating - b.rating);
+    const hotStrings = temporaryHotList.map(item => item.name);
+    extraMap.hot = hotStrings;
 
     return { infoObj, countMap, extraMap };
 };

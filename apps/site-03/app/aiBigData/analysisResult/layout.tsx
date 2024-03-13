@@ -1,16 +1,17 @@
 'use client';
 import { useEffect, type ReactNode } from 'react';
 import Chip from '@mui/material/Chip';
+import type { GetFootballStatsRequest } from 'data-center';
+import { getFootballStats, getMemberInfo } from 'data-center';
+import dayjs from 'dayjs';
+import { useQueryFormStore } from '@/app/aiBigData/queryFormStore';
+import Header from '@/components/header/headerTransparent';
+import { useUserStore } from '@/store/userStore';
 import { useMatchFilterStore } from '../matchFilterStore';
 import { createAnalysisResultStore, useAnalyticsResultStore } from './analysisResultStore';
 import { creatMatchFilterStore } from './matchFilterStore';
 import style from './layout.module.scss';
 import CloseIcon from './img/close.svg';
-import { useQueryFormStore } from '@/app/aiBigData/queryFormStore';
-import Header from '@/components/header/headerTransparent';
-import { GetFootballStatsRequest, getFootballStats, getMemberInfo } from 'data-center';
-import dayjs from 'dayjs';
-import { useUserStore } from '@/store/userStore';
 
 type HandicapSideType = 'home' | 'away';
 
@@ -117,7 +118,7 @@ function QueryInfo({ children }: { children: ReactNode }) {
 
     return (
         <>
-            <Header title="分析结果" backHandler={back} />
+            <Header backHandler={back} title="分析结果" />
             <div className={style.bigDataGame}>
                 <div className={style.column}>
                     <div className={style.row}>
@@ -163,7 +164,7 @@ function QueryInfo({ children }: { children: ReactNode }) {
                     <div className={style.row}>
                         <span className={style.title}>全场大小</span>
                         <span className={style.name}>
-                            {overUnder ? handicapOddsSelected : '不挑選'}
+                            {overUnder ? handicapOddsSelected : '不挑选'}
                         </span>
                     </div>
                     <div className={style.row}>
