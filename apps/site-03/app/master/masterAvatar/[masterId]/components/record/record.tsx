@@ -1,7 +1,7 @@
 import ReactEcharts from 'echarts-for-react';
 import { type MemberIndividualGuessRecord } from 'data-center';
-import style from './record.module.scss';
 import { formatRate, sizeAndHandicapWinRate } from 'lib';
+import style from './record.module.scss';
 
 function Record({ individualGuessInfo }: { individualGuessInfo: MemberIndividualGuessRecord }) {
     const chartOption = {
@@ -142,15 +142,18 @@ function Record({ individualGuessInfo }: { individualGuessInfo: MemberIndividual
                         </div>
                     </div>
                     <div className={style.bot}>
+                        {individualGuessInfo.handicap.win}
+                        {individualGuessInfo.handicap.draw}
+                        {individualGuessInfo.handicap.lose}
                         <div className={style.percentage}>
                             <div className={style.win}>
-                                <i></i>胜 {individualGuessInfo.handicap.win}
+                                <i />胜 {individualGuessInfo.handicap.win}
                             </div>
                             <div className={style.walk}>
-                                <i></i>走 {individualGuessInfo.handicap.draw}
+                                <i />走 {individualGuessInfo.handicap.draw}
                             </div>
                             <div className={style.defeat}>
-                                <i></i>负 {individualGuessInfo.handicap.lose}
+                                <i />负 {individualGuessInfo.handicap.lose}
                             </div>
                         </div>
                     </div>
@@ -170,13 +173,13 @@ function Record({ individualGuessInfo }: { individualGuessInfo: MemberIndividual
                     <div className={style.bot}>
                         <div className={style.percentage}>
                             <div className={style.win}>
-                                <i></i>胜 {individualGuessInfo.size.win}
+                                <i />胜 {individualGuessInfo.size.win}
                             </div>
                             <div className={style.walk}>
-                                <i></i>走 {individualGuessInfo.size.draw}
+                                <i />走 {individualGuessInfo.size.draw}
                             </div>
                             <div className={style.defeat}>
-                                <i></i>负 {individualGuessInfo.size.lose}
+                                <i />负 {individualGuessInfo.size.lose}
                             </div>
                         </div>
                     </div>

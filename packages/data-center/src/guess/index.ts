@@ -340,7 +340,6 @@ export const getMemberIndividualGuess = async ({
         throwErrorMessage(errors);
         GetMemberIndividualGuessResultSchema.parse(data);
         const { weekRecord, monthRecord, quarterRecord } = data.getMemberIndividualGuess;
-
         const formattedData = {
             byWeek: {
                 rank: weekRecord.rank,
@@ -354,13 +353,13 @@ export const getMemberIndividualGuess = async ({
                     play: weekRecord.handicapPlay,
                     win: weekRecord.handicapWin,
                     draw: weekRecord.handicapDraw,
-                    lose: weekRecord.handicapDraw
+                    lose: weekRecord.handicapLose
                 },
                 size: {
                     play: weekRecord.overUnderPlay,
                     win: weekRecord.overUnderWin,
-                    draw: weekRecord.handicapDraw,
-                    lose: weekRecord.handicapLose
+                    draw: weekRecord.overUnderDraw,
+                    lose: weekRecord.overUnderLose
                 }
             },
             byMonth: {
@@ -380,8 +379,8 @@ export const getMemberIndividualGuess = async ({
                 size: {
                     play: monthRecord.overUnderPlay,
                     win: monthRecord.overUnderWin,
-                    draw: monthRecord.handicapDraw,
-                    lose: monthRecord.handicapLose
+                    draw: monthRecord.overUnderDraw,
+                    lose: monthRecord.overUnderLose
                 }
             },
             byQuarter: {
@@ -396,13 +395,13 @@ export const getMemberIndividualGuess = async ({
                     play: quarterRecord.handicapPlay,
                     win: quarterRecord.handicapWin,
                     draw: quarterRecord.handicapDraw,
-                    lose: quarterRecord.handicapDraw
+                    lose: quarterRecord.handicapLose
                 },
                 size: {
                     play: quarterRecord.overUnderPlay,
                     win: quarterRecord.overUnderWin,
-                    draw: quarterRecord.handicapDraw,
-                    lose: quarterRecord.handicapLose
+                    draw: quarterRecord.overUnderDraw,
+                    lose: quarterRecord.overUnderLose
                 }
             }
         };
