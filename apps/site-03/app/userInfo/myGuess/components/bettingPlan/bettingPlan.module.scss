@@ -5,6 +5,7 @@
     border-radius: 8px;
     margin-bottom: 8px;
     display: block;
+    overflow: hidden;
 }
 
 .top {
@@ -63,20 +64,10 @@
     }
 }
 
-.iconWin {
+.icon {
     position: absolute;
-    top: 8px;
-    right: 8px;
-    width: 36px;
+    bottom: -10px;
+    right: -8px;
+    width: 56px;
     height: auto;
-}
-
-.iconDefeat {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    width: 36px;
-    height: auto;
-    background: #bfbfbf;
-    border-radius: 50%;
 }
