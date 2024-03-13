@@ -11,7 +11,7 @@ function Disclaimer() {
 
     return (
         <>
-            <Header back={back} title="數據分析規則說明" />
+            <Header back={back} title="免責聲明" />
             <div className={style.detail}>
                 <div className={style.zoon}>
                     本公司依法律法规的规定承担相应义务，但无法对由于电力故障，罢工，暴乱，火灾，洪水，风暴，爆炸，战争，政府行为，司法行政机关的命令或其他不能预见、不能避免且不能克服的不可抗力因素给您造成的损害结果承担责任。
