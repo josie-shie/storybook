@@ -3,11 +3,7 @@
 import Image from 'next/image';
 import { timestampToTodayTime, convertHandicap } from 'lib';
 import { useEffect, useState } from 'react';
-import type {
-    GetMemberProfileWithMemberIdResponse,
-    GetPostDetailResponse,
-    RecommendPost
-} from 'data-center';
+import type { GetPostDetailResponse, RecommendPost } from 'data-center';
 import { getPostList, payForPost, getMemberInfo } from 'data-center';
 import Skeleton from '@mui/material/Skeleton';
 import { useUserStore } from '@/store/userStore';
@@ -26,7 +22,6 @@ import RecommendationList from './recommendationList';
 
 interface ArticleContentProps {
     article: GetPostDetailResponse;
-    info: GetMemberProfileWithMemberIdResponse;
     isNoArticleData: boolean;
     params: { articleId: string };
     fetchPostDetail: () => void;
@@ -34,7 +29,6 @@ interface ArticleContentProps {
 function ArticleContent({
     params,
     article,
-    info,
     isNoArticleData,
     fetchPostDetail
 }: ArticleContentProps) {
@@ -127,6 +121,8 @@ function ArticleContent({
     const getText = predictedPlay => {
         switch (predictedPlay) {
             case 'HANDICAP':
+                return '胜负';
+            case 'HOMEAWAY':
                 return '胜负';
             case 'OVERUNDER':
                 return '总进球';
@@ -256,7 +252,7 @@ function ArticleContent({
                                 {!isNoArticleData ? (
                                     <>
                                         <div className={style.play}>
-                                            {getText(info.mentorArticleCount.predictedPlay)}
+                                            {getText(article.playType)}
                                         </div>
                                         <div className={style.team}>
                                             <div
