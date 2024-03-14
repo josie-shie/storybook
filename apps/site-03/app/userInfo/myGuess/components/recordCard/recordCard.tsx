@@ -9,7 +9,7 @@ import Win from '../img/win.png';
 import BigWin from '../img/bigWin.png';
 import Lose from '../img/lose.png';
 import BigLose from '../img/bigLose.png';
-import BigGone from '../img/bigGone.png';
+import BigDraw from '../img/bigDraw.png';
 import Gone from '../img/gone.png';
 import Fire from '../img/fire.png';
 import style from './recordCard.module.scss';
@@ -21,7 +21,7 @@ function RecordCard({ recordItem }: { recordItem: MemberGuessViewingRecord }) {
         DRAW: <Image alt="icon" className={style.iconDefeat} src={Gone} width={18} />,
         BIGWIN: <Image alt="icon" className={style.iconDefeat} src={BigWin} width={36} />,
         BIGLOSE: <Image alt="icon" className={style.iconDefeat} src={BigLose} width={36} />,
-        BIGDRAW: <Image alt="icon" className={style.iconDefeat} src={BigGone} width={36} />
+        BIGDRAW: <Image alt="icon" className={style.iconDefeat} src={BigDraw} width={36} />
     };
 
     const guessMap = {

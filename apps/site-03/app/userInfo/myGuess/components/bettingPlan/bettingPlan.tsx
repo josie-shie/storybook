@@ -2,7 +2,7 @@ import Image from 'next/image';
 import { timestampToString } from 'lib';
 import { type MemberIndividualGuessMatch } from 'data-center';
 import Link from 'next/link';
-import BigGone from '../img/bigGone.png';
+import BigDraw from '../img/bigDraw.png';
 import BigWin from '../img/bigWin.png';
 import BigLose from '../img/bigLose.png';
 import style from './bettingPlan.module.scss';
@@ -12,9 +12,9 @@ interface PropsType {
 }
 
 const iconMap = {
-    WIN: <Image alt="icon" className={style.iconWin} src={BigWin} />,
-    LOSE: <Image alt="icon" className={style.iconDefeat} src={BigLose} />,
-    DRAW: <Image alt="icon" className={style.iconDefeat} src={BigGone} />,
+    WIN: <Image alt="icon" className={style.icon} src={BigWin} />,
+    LOSE: <Image alt="icon" className={style.icon} src={BigLose} />,
+    DRAW: <Image alt="icon" className={style.icon} src={BigDraw} />,
     NONE: null
 };
 
