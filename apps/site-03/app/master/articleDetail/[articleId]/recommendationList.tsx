@@ -4,10 +4,10 @@ import { timestampToTodayTime } from 'lib';
 import { type RecommendPost } from 'data-center';
 import Tag from '@/components/tag/tag';
 import NoData from '@/components/baseNoData/noData';
+import Draw from '@/public/resultIcon/bigDraw.svg';
+import Miss from '@/public/resultIcon/bigMiss.svg';
+import Hit from '@/public/resultIcon/bigHit.svg';
 import style from './recommendationList.module.scss';
-import Win from './img/win.svg';
-import Draw from './img/draw.svg';
-import Lose from './img/lose.svg';
 import Eye from './img/eye.svg';
 import LockOpen from './img/lockOpen.svg';
 import SkeletonLayout from './components/skeleton';
@@ -46,13 +46,13 @@ function RecommendationItem({
                                 key={item.id}
                             >
                                 {item.predictionResult === 'WIN' && (
-                                    <Win className={style.icon} height="45" width="45" />
+                                    <Hit className={style.icon} height="45" width="45" />
                                 )}
                                 {item.predictionResult === 'DRAW' && (
                                     <Draw className={style.icon} height="45" width="45" />
                                 )}
                                 {item.predictionResult === 'LOSE' && (
-                                    <Lose className={style.icon} height="45" width="45" />
+                                    <Miss className={style.icon} height="45" width="45" />
                                 )}
                                 <div className={style.left}>
                                     <div className={style.name}>

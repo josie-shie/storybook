@@ -5,16 +5,16 @@ import { InfiniteScroll } from 'ui';
 import CircularProgress from '@mui/material/CircularProgress';
 import Link from 'next/link';
 import NoData from '@/components/baseNoData/noData';
+import IconHit from '@/public/resultIcon/bigWin.svg';
+import IconMiss from '@/public/resultIcon/bigMiss.svg';
+import IconDraw from '@/public/resultIcon/bigDraw.svg';
 import type { InitGuessData, Tab } from '../../page';
-import IconWin from './img/win.svg';
-import IconLose from './img/lose.svg';
-import IconDraw from './img/draw.svg';
 import style from './bettingPlan.module.scss';
 import SkeletonLayout from './components/skeleton';
 
 const filterIcon = {
-    WIN: <IconWin />,
-    LOSE: <IconLose />,
+    WIN: <IconHit />,
+    LOSE: <IconMiss />,
     DRAW: <IconDraw />
 };
 

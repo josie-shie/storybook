@@ -7,11 +7,11 @@ import { InfiniteScroll } from 'ui';
 import CircularProgress from '@mui/material/CircularProgress';
 import NoData from '@/components/baseNoData/noData';
 import { useUserStore } from '@/store/userStore';
+import IconWin from '@/public/resultIcon/bigHit.svg';
+import IconDraw from '@/public/resultIcon/bigDraw.svg';
+import IconLose from '@/public/resultIcon/bigLose.svg';
+import IconPush from '@/public/resultIcon/bigPush.svg';
 import style from './analysisItem.module.scss';
-import IconWin from './img/win.svg';
-import IconDraw from './img/draw.svg';
-import IconLose from './img/lose.svg';
-import IconPush from './img/push.svg';
 import Eye from './img/eye.svg';
 import LockOpen from './img/lockOpen.svg';
 import SkeletonLayout from './components/skeleton';
@@ -72,10 +72,10 @@ function AnalysisItem({
     };
 
     const IconMap = {
-        PUSH: <IconPush />,
-        LOSE: <IconLose />,
-        DRAW: <IconDraw />,
-        WIN: <IconWin />
+        PUSH: <IconPush height="45px" width="45px" />,
+        LOSE: <IconLose height="45px" width="45px" />,
+        DRAW: <IconDraw height="45px" width="45px" />,
+        WIN: <IconWin height="45px" width="45px" />
     };
 
     return (
