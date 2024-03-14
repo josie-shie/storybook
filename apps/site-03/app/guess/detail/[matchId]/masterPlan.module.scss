@@ -115,10 +115,16 @@
                     font-weight: 600;
                 }
             }
+
+            .hotTitle {
+                margin-bottom: 16px;
+                display: inline-block;
+            }
         }
     }
 
     .masterPlanContainer {
         min-height: 236px;
+        height: 100%;
     }
 }

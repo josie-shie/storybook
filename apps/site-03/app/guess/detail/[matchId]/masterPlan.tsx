@@ -226,7 +226,7 @@ function MasterPlan() {
                         {masterPlanList.length ? (
                             <span>同场猜球高手方案({masterPlanList.length})</span>
                         ) : (
-                            <span>其他熱門猜球</span>
+                            <span className={style.hotTitle}>其他熱門猜球</span>
                         )}
                     </div>
                     {isPlanLoading ? (
