@@ -13,7 +13,6 @@ import Draw from './img/draw.svg';
 import Push from './img/push.svg';
 import Eye from './img/eye.svg';
 import LockOpen from './img/lockOpen.svg';
-import LockOpenBlue from './img/lockOpenBlue.svg';
 
 interface MentorArticleCount {
     predictedPlay: string;
@@ -106,12 +105,6 @@ function ArticleItem({ item }: GetUnlockPostProps) {
     return (
         <div className={style.articleItem}>
             <div className={style.result}>{iconMap[item.predictionResult]} </div>
-
-            <div className={style.unlockStatus}>
-                <span className={style.unlocked}>
-                    <LockOpenBlue height={16} width={16} />
-                </span>
-            </div>
             <div className={style.user}>
                 <Link
                     className={style.avatarContainer}

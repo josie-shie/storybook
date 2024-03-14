@@ -15,22 +15,6 @@
     right: -8px;
 }
 
-.unlockStatus {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 0;
-    height: 0;
-    border-top: 30px solid #e6effe;
-    border-right: 30px solid transparent;
-
-    .unlocked {
-        position: absolute;
-        top: -31px;
-        left: 1px;
-    }
-}
-
 .user {
     display: flex;
 
