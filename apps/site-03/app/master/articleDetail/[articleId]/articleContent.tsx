@@ -120,10 +120,16 @@ function ArticleContent({
 
     const getText = predictedPlay => {
         switch (predictedPlay) {
+            case 'AWAY':
+                return '胜负';
+            case 'HOME':
+                return '胜负';
             case 'HANDICAP':
                 return '胜负';
-            case 'HOMEAWAY':
-                return '胜负';
+            case 'OVER':
+                return '总进球';
+            case 'UNDER':
+                return '总进球';
             case 'OVERUNDER':
                 return '总进球';
             default:
@@ -252,7 +258,7 @@ function ArticleContent({
                                 {!isNoArticleData ? (
                                     <>
                                         <div className={style.play}>
-                                            {getText(article.playType)}
+                                            {getText(article.predictedPlay)}
                                         </div>
                                         <div className={style.team}>
                                             <div

@@ -21,8 +21,16 @@ function RecommendationItem({
 }) {
     const getText = predictedPlay => {
         switch (predictedPlay) {
+            case 'AWAY':
+                return '胜负';
+            case 'HOME':
+                return '胜负';
             case 'HANDICAP':
                 return '胜负';
+            case 'OVER':
+                return '总进球';
+            case 'UNDER':
+                return '总进球';
             case 'OVERUNDER':
                 return '总进球';
             default:
@@ -56,26 +64,12 @@ function RecommendationItem({
                                 )}
                                 <div className={style.left}>
                                     <div className={style.name}>
-                                        {item.mentorArticleCount.predictedPlay === 'HANDICAP' && (
-                                            <Tag
-                                                background="#f3f3f3"
-                                                borderColor="#bfbfbf"
-                                                color="#8d8d8d"
-                                                text={`${getText(
-                                                    item.mentorArticleCount.predictedPlay
-                                                )}`}
-                                            />
-                                        )}
-                                        {item.mentorArticleCount.predictedPlay === 'OVERUNDER' && (
-                                            <Tag
-                                                background="#f3f3f3"
-                                                borderColor="#bfbfbf"
-                                                color="#8d8d8d"
-                                                text={`${getText(
-                                                    item.mentorArticleCount.predictedPlay
-                                                )}`}
-                                            />
-                                        )}
+                                        <Tag
+                                            background="#f3f3f3"
+                                            borderColor="#bfbfbf"
+                                            color="#8d8d8d"
+                                            text={`${getText(item.predictedPlay)}`}
+                                        />
                                         <span>{item.mentorName}</span>
                                     </div>
                                     <div className={style.leagueName}>
