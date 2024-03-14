@@ -5,10 +5,10 @@ import { InfiniteScroll } from 'ui';
 import CircularProgress from '@mui/material/CircularProgress';
 import Link from 'next/link';
 import NoData from '@/components/baseNoData/noData';
+import IconWin from '@/public/resultIcon/bigWin.svg';
+import IconLose from '@/public/resultIcon/bigLose.svg';
+import IconDraw from '@/public/resultIcon/bigDraw.svg';
 import type { InitGuessData, Tab } from '../../page';
-import IconWin from './img/win.svg';
-import IconLose from './img/lose.svg';
-import IconDraw from './img/draw.svg';
 import style from './bettingPlan.module.scss';
 import SkeletonLayout from './components/skeleton';
 

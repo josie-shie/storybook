@@ -1,10 +1,9 @@
-import Image from 'next/image';
 import { timestampToString } from 'lib';
 import { type MemberIndividualGuessMatch } from 'data-center';
 import Link from 'next/link';
-import BigDraw from '../img/bigDraw.png';
-import BigWin from '../img/bigWin.png';
-import BigLose from '../img/bigLose.png';
+import BigDraw from '@/public/resultIcon/bigDraw.svg';
+import BigWin from '@/public/resultIcon/bigWin.svg';
+import BigLose from '@/public/resultIcon/bigLose.svg';
 import style from './bettingPlan.module.scss';
 
 interface PropsType {
@@ -12,9 +11,9 @@ interface PropsType {
 }
 
 const iconMap = {
-    WIN: <Image alt="icon" className={style.icon} src={BigWin} />,
-    LOSE: <Image alt="icon" className={style.icon} src={BigLose} />,
-    DRAW: <Image alt="icon" className={style.icon} src={BigDraw} />,
+    WIN: <BigWin />,
+    LOSE: <BigLose />,
+    DRAW: <BigDraw />,
     NONE: null
 };
 
@@ -77,7 +76,7 @@ const getPredictedPlayName = (predictedPlay: string) => {
 function BettingPlan({ rowData }: PropsType) {
     return (
         <Link className={style.bettingPlan} href={`/football/${rowData.matchId}`}>
-            {iconMap[rowData.predictionResult]}
+            <div className={style.icon}>{iconMap[rowData.predictionResult]}</div>
             <div className={style.top}>
                 {rowData.leagueName}{' '}
                 <span className={style.time}>

@@ -6,11 +6,10 @@ import Avatar from '@/components/avatar/avatar';
 import TagSplit from '@/components/tagSplit/tagSplit';
 import Tag from '@/components/tag/tag';
 import Fire from '@/app/img/fire.png';
+import Hit from '@/public/resultIcon/bigHit.svg';
+import Miss from '@/public/resultIcon/bigMiss.svg';
+import Draw from '@/public/resultIcon/bigDraw.svg';
 import style from './articleItem.module.scss';
-import Win from './img/win.svg';
-import Lose from './img/lose.svg';
-import Draw from './img/draw.svg';
-import Push from './img/push.svg';
 import Eye from './img/eye.svg';
 import LockOpen from './img/lockOpen.svg';
 
@@ -96,10 +95,9 @@ function ArticleItem({ item }: GetUnlockPostProps) {
     };
 
     const iconMap = {
-        WIN: <Win />,
-        LOSE: <Lose />,
-        PUSH: <Push />,
-        DRAW: <Draw />
+        WIN: <Hit height="46px" width="46px" />,
+        LOSE: <Miss height="46px" width="46px" />,
+        DRAW: <Draw height="46px" width="46px" />
     };
 
     return (

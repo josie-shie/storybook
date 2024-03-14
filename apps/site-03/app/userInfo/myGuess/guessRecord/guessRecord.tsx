@@ -36,7 +36,7 @@ function RecordContent({ setPage, page }: ContentProps) {
     return (
         <div className={style.guessRecord}>
             <div className={style.title}>
-                <span>竞猜浏览纪录</span>
+                <span>我解锁过的方案</span>
             </div>
             {guessRecordList.length > 0 ? (
                 <>

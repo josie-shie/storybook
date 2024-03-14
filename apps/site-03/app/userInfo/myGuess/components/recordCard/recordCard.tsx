@@ -5,23 +5,23 @@ import { convertHandicap } from 'lib';
 import Avatar from '@mui/material/Avatar';
 import Link from 'next/link';
 import Tag from '@/components/tag/tag';
-import Win from '../img/win.png';
-import BigWin from '../img/bigWin.png';
-import Lose from '../img/lose.png';
-import BigLose from '../img/bigLose.png';
-import BigDraw from '../img/bigDraw.png';
-import Gone from '../img/gone.png';
+import BigWin from '@/public/resultIcon/bigWin.svg';
+import BigLose from '@/public/resultIcon/bigLose.svg';
+import BigDraw from '@/public/resultIcon/bigDraw.svg';
+import Win from '@/public/resultIcon/hit.svg';
+import Gone from '@/public/resultIcon/draw.svg';
+import Miss from '@/public/resultIcon/miss.svg';
 import Fire from '../img/fire.png';
 import style from './recordCard.module.scss';
 
 function RecordCard({ recordItem }: { recordItem: MemberGuessViewingRecord }) {
     const iconMap = {
-        WIN: <Image alt="icon" className={style.iconWin} src={Win} width={18} />,
-        LOSE: <Image alt="icon" className={style.iconDefeat} src={Lose} width={18} />,
-        DRAW: <Image alt="icon" className={style.iconDefeat} src={Gone} width={18} />,
-        BIGWIN: <Image alt="icon" className={style.iconDefeat} src={BigWin} width={36} />,
-        BIGLOSE: <Image alt="icon" className={style.iconDefeat} src={BigLose} width={36} />,
-        BIGDRAW: <Image alt="icon" className={style.iconDefeat} src={BigDraw} width={36} />
+        WIN: <Win />,
+        LOSE: <Miss />,
+        DRAW: <Gone />,
+        BIGWIN: <BigWin height="36px" width="36px" />,
+        BIGLOSE: <BigLose height="36px" width="36px" />,
+        BIGDRAW: <BigDraw height="36px" width="36px" />
     };
 
     const guessMap = {
