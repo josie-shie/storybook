@@ -73,7 +73,7 @@ function HelpCenter() {
             <Header back={back} title="说明中心" />
             <div className={style.container}>
                 <div className={style.box}>
-                    <h2>註冊及登入</h2>
+                    <h2>注册及登入</h2>
                     {helpCenterList.loginAndRegistration.map((item: ItemProps) => (
                         <SelectRow item={item} key={item.key} />
                     ))}
