@@ -18,32 +18,59 @@ function RankingRules() {
                 </span>
                 <div className={style.zoon}>
                     <h2>周榜</h2>
-                    <div className={style.dot}>本榜单统计至当天起前7日内的竞猜方案。</div>
-                    <div className={style.dot}>
-                        上榜条件：需发布超过15场（含）方案，胜率高于50％（含）以上。
+                    <div className={style.dotBox}>
+                        <div className={style.dot} />
+                        <div>本榜单统计至当天起前7日内的竞猜方案。</div>
                     </div>
-                    <div className={style.dot}>排序标准：按照胜率高低进行排行。</div>
+                    <div className={style.dotBox}>
+                        <div className={style.dot} />
+                        <div>上榜条件：需发布超过15场（含）方案，胜率高于50％（含）以上。</div>
+                    </div>
+                    <div className={style.dotBox}>
+                        <div className={style.dot} />
+                        <div>排序标准：按照胜率高低进行排行。</div>
+                    </div>
                 </div>
                 <div className={style.zoon}>
                     <h2>月榜</h2>
-                    <div className={style.dot}>本榜单统计至当天起前30日内的竞猜方案</div>
-                    <div className={style.dot}>
-                        上榜条件：需发布超过30场（含）方案，胜率高于50％（含）以上。
+                    <div className={style.dotBox}>
+                        <div className={style.dot} />
+                        <div>本榜单统计至当天起前30日内的竞猜方案</div>
                     </div>
-                    <div className={style.dot}>排序标准：按照胜率高低进行排行。</div>
+                    <div className={style.dotBox}>
+                        <div className={style.dot} />
+                        <div>上榜条件：需发布超过30场（含）方案，胜率高于50％（含）以上。</div>
+                    </div>
+                    <div className={style.dotBox}>
+                        <div className={style.dot} />
+                        <div>排序标准：按照胜率高低进行排行。</div>
+                    </div>
                 </div>
                 <div className={style.zoon}>
-                    <h2>周榜</h2>
-                    <div className={style.dot}>本榜单统计至当天起前90日内的竞猜方案。</div>
-                    <div className={style.dot}>
-                        上榜条件：需发布超过90场（含）方案，胜率高于50％（含）以上。
+                    <h2>季榜</h2>
+                    <div className={style.dotBox}>
+                        <div className={style.dot} />
+                        <div> 本榜单统计至当天起前90日内的竞猜方案。</div>
                     </div>
-                    <div className={style.dot}>排序标准：按照胜率高低进行排行。</div>
+                    <div className={style.dotBox}>
+                        <div className={style.dot} />
+                        <div> 上榜条件：需发布超过90场（含）方案，胜率高于50％（含）以上。</div>
+                    </div>
+                    <div className={style.dotBox}>
+                        <div className={style.dot} />
+                        <div> 排序标准：按照胜率高低进行排行。</div>
+                    </div>
                 </div>
                 <div className={style.zoon}>
                     <h2>连红榜</h2>
-                    <div className={style.dot}>本榜单统计至当天起前7日内的竞猜方案。</div>
-                    <div className={style.dot}>上榜条件：连续竞猜正确≥3场。</div>
+                    <div className={style.dotBox}>
+                        <div className={style.dot} />
+                        <div>本榜单统计至当天起前7日内的竞猜方案。</div>
+                    </div>
+                    <div className={style.dotBox}>
+                        <div className={style.dot} />
+                        <div>上榜条件：连续竞猜正确≥3场。</div>
+                    </div>
                 </div>
             </div>
         </>
