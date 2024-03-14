@@ -142,9 +142,6 @@ function Record({ individualGuessInfo }: { individualGuessInfo: MemberIndividual
                         </div>
                     </div>
                     <div className={style.bot}>
-                        {individualGuessInfo.handicap.win}
-                        {individualGuessInfo.handicap.draw}
-                        {individualGuessInfo.handicap.lose}
                         <div className={style.percentage}>
                             <div className={style.win}>
                                 <i />胜 {individualGuessInfo.handicap.win}
