@@ -29,21 +29,31 @@
         color: red;
     }
 
-    .dot {
-        position: relative;
-        padding-left: 16px;
+    .pl2 {
+        padding-left: 2px;
     }
 
-    .dot::after {
-        content: '';
-        position: absolute;
-        left: 4px;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 4px;
-        height: 4px;
-        background-color: black;
-        border-radius: 50%;
+    .dotBox {
+        display: flex;
+        align-items: flex-start;
+
+        .dot {
+            position: relative;
+            min-width: 16px;
+            height: 16px;
+        }
+
+        .dot::after {
+            content: '';
+            position: absolute;
+            left: 4px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 4px;
+            background-color: black;
+            border-radius: 50%;
+        }
     }
 }
 
