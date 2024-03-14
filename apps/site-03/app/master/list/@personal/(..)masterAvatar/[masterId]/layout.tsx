@@ -3,7 +3,7 @@ import {
     getMemberIndividualGuessMatches,
     type GetMemberIndividualGuessMatchesResponse
 } from 'data-center';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Header from '@/components/header/headerTransparent';
 import Info from '@/app/master/masterAvatar/[masterId]/info';
 import style from '@/app/master/list/layout.module.scss';
@@ -13,14 +13,15 @@ import type { Tab, InitGuessData } from '@/app/master/masterAvatar/[masterId]/pa
 
 function Layout({ params }: { params: { masterId: string } }) {
     useLockBodyScroll();
-    const initGuessData: InitGuessData = {
-        0: {} as GetMemberIndividualGuessMatchesResponse,
-        1: {} as GetMemberIndividualGuessMatchesResponse,
-        2: {} as GetMemberIndividualGuessMatchesResponse
-    };
+    const [initGuessData, setInitGuessData] = useState<InitGuessData>({} as InitGuessData);
 
     useEffect(() => {
         const fetchData = async () => {
+            const tmpData: InitGuessData = {
+                0: {} as GetMemberIndividualGuessMatchesResponse,
+                1: {} as GetMemberIndividualGuessMatchesResponse,
+                2: {} as GetMemberIndividualGuessMatchesResponse
+            };
             await Promise.all(
                 [0, 1, 2].map(async (value: Tab) => {
                     const res = await getMemberIndividualGuessMatches({
@@ -33,9 +34,11 @@ function Layout({ params }: { params: { masterId: string } }) {
                     if (!res.success) {
                         throw new Error();
                     }
-                    initGuessData[value] = res.data;
+
+                    tmpData[value] = res.data;
                 })
             );
+            setInitGuessData(tmpData);
         };
 
         void fetchData();
@@ -46,7 +49,9 @@ function Layout({ params }: { params: { masterId: string } }) {
             <Header title="专家聊球" />
             <div className={style.masterAvatarLayout}>
                 <Info params={params} />
-                <MasterAvatar initGuessData={initGuessData} params={params} />
+                {Object.hasOwnProperty.call(initGuessData, 0) && (
+                    <MasterAvatar initGuessData={initGuessData} params={params} />
+                )}
             </div>
         </div>
     );
