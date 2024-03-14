@@ -57,7 +57,7 @@ function Trend() {
 function HotGuessList({ hotMatchList }: { hotMatchList: GetHotGuessMatch[] }) {
     return (
         <>
-            {hotMatchList.map((item: GetHotGuessMatch) => (
+            {hotMatchList.slice(0, 10).map((item: GetHotGuessMatch) => (
                 <HotGameCard key={item.matchId} matchId={item.matchId} />
             ))}
         </>
