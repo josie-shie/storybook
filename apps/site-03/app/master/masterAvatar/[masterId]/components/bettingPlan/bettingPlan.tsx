@@ -58,7 +58,7 @@ function BettingPlan({
         if (resetList) {
             const guessMatchListLength = initGuessData[planActiveTab].guessMatchList.length;
             setGuessMatchesList(initGuessData[planActiveTab].guessMatchList);
-            setGuessLength(guessMatchListLength);
+            setGuessLength(initGuessData[planActiveTab].pagination.totalCount);
             setIsNoData(guessMatchListLength === 0);
             setTotalPage(initGuessData[planActiveTab].pagination.totalCount);
             return;
