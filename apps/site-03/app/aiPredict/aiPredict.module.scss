@@ -1,4 +1,8 @@
 .aiPredict {
+    background: #fff;
+    border-radius: 16px 16px 0 0;
+    height: calc(100dvh - 164px);
+
     .title {
         display: flex;
         align-items: center;
@@ -12,13 +16,11 @@
 
     .content {
         position: relative;
+        height: calc(100dvh - 220px);
         width: 100%;
-        height: calc(100dvh - 162px);
         padding: 48px 0 16px;
         overflow-y: auto;
         touch-action: pan-y;
-        background: #fff;
-        border-radius: 16px 16px 0 0;
 
         .welcome {
             display: flex;
@@ -232,6 +234,8 @@
         }
 
         .chat {
+            margin-top: 48px;
+
             &.fadeIn {
                 animation: fadein 1s ease forwards;
             }

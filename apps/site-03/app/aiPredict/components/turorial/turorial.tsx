@@ -2,10 +2,10 @@
 import { Dialog } from '@mui/material';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import Win from '@/public/resultIcon/bigWin.svg';
 import AiAvatarSmall from '../../img/aiAvatarSmall.svg';
 import Close from '../../img/close.svg';
 // import WaterMark from '../../img/waterMark.png';
-import Win from '../../img/aiWin.svg';
 import Home from '../../img/home.svg';
 import Away from '../../img/away.svg';
 import IdeaIcon from '../../img/idea.svg';
