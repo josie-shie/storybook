@@ -13,7 +13,7 @@ import TeamLogo from '@/components/teamLogo/teamLogo';
 import Win from '@/public/resultIcon/bigWin.svg';
 import Draw from '@/public/resultIcon/bigDraw.svg';
 import { useAiPredictStore } from './aiPredictStore';
-import style from './aiPredict.module.scss';
+import style from './aiTodayMatches.module.scss';
 import AiAvatar from './img/aiAvatar.svg';
 import AiAvatarSmall from './img/aiAvatarSmall.svg';
 import Ai from './ai';
