@@ -99,7 +99,7 @@ function MatchItem({
             }}
         >
             <div className={style.league}>
-                <span className={style.name} style={{ color: match.Color as ColorType }}>
+                <span className={style.name} style={{ color: match.color as ColorType }}>
                     {match.leagueChs}
                 </span>
                 <span className={style.time}>
@@ -143,7 +143,11 @@ function AiPredict() {
 
     useEffect(() => {
         const getPredicativeAnalysisList = async () => {
-            const res = await getPredicativeAnalysisMatch({ matchId: 0, matchTime: 0 });
+            const res = await getPredicativeAnalysisMatch({
+                matchId: 0,
+                matchTime: 1709474400,
+                isFinished: true
+            });
 
             if (!res.success) {
                 return new Error();

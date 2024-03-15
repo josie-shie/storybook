@@ -302,6 +302,7 @@ export interface GetFootballStatsMatchesRequest {
 export interface GetPredicativeAnalysisMatchRequest {
     matchId: number;
     matchTime: number;
+    isFinished: boolean;
 }
 
 const GetPredicativeAnalysisMatchSchema = z.object({
@@ -312,7 +313,7 @@ const GetPredicativeAnalysisMatchSchema = z.object({
     leagueChs: z.string(),
     leagueCht: z.string(),
     leagueType: z.number(),
-    Color: z.string(),
+    color: z.string(),
     homeId: z.number(),
     homeEn: z.string(),
     homeChs: z.string(),
@@ -331,6 +332,7 @@ const GetPredicativeAnalysisMatchSchema = z.object({
     awayTacticalPerspective: z.string(),
     predictResult: z.string(),
     predictMatchResult: z.number(),
+    realMatchResult: z.number(),
     updatedAt: z.number()
 });
 
