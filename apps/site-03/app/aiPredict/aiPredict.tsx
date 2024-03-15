@@ -47,8 +47,8 @@ function TypingText({
     useEffect(() => {
         const fullMessage = `以下是我分析即将进行的${timestampToStringCh(
             matchTime,
-            'YYYY年MM月DD日'
-        )}${league}足球赛中 ${home} 对 ${away} 的比赛。`;
+            'YYYY年MM月DD日 HH:mm'
+        )} ${league}足球赛中 ${home} 对 ${away} 的比赛。`;
         let currentText = '';
         let currentIndex = 0;
 
@@ -66,12 +66,15 @@ function TypingText({
         typeCharacter();
     }, [matchTime, home, away, league]);
 
-    const parts = typedText.split(new RegExp(`(${home}|${away})`));
+    const parts = typedText.split(
+        new RegExp(`(${league}足球赛中|${timestampToStringCh(matchTime, 'YYYY年MM月DD日 HH:mm')})`)
+    );
 
     return (
         <>
             {parts.map(part =>
-                part === home || part === away ? (
+                part === `${league}足球赛中` ||
+                part === timestampToStringCh(matchTime, 'YYYY年MM月DD日 HH:mm') ? (
                     <span key={part} style={{ color: '#4489ff' }}>
                         {part}
                     </span>
@@ -145,8 +148,8 @@ function AiPredict() {
         const getPredicativeAnalysisList = async () => {
             const res = await getPredicativeAnalysisMatch({
                 matchId: 0,
-                matchTime: 1709474400,
-                isFinished: true
+                matchTime: 0,
+                isFinished: false
             });
 
             if (!res.success) {
