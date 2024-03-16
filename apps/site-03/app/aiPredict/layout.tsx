@@ -1,22 +1,15 @@
 'use client';
 import type { ReactNode } from 'react';
-import Footer from '@/components/footer/footer';
-import Header from '@/components/header/headerLogo';
 import style from './layout.module.scss';
 import { creatAiPredictStore } from './aiPredictStore';
 
 function AiPredictPageLayout({ children }: { children: ReactNode }) {
     creatAiPredictStore({
-        aiPredictList: []
+        aiPredictList: [],
+        aiHistoryList: []
     });
 
-    return (
-        <div className={style.aiPredictPageLayout}>
-            <Header />
-            {children}
-            <Footer />
-        </div>
-    );
+    return <div className={style.aiPredictPageLayout}>{children}</div>;
 }
 
 export default AiPredictPageLayout;
