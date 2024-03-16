@@ -1,5 +1,7 @@
 'use client';
 import { Slick } from 'ui';
+import Footer from '@/components/footer/footer';
+import Header from '@/components/header/headerLogo';
 import style from './aiPredict.module.scss';
 import AiTodayMatches from './aiTodayMatches';
 import AiHistory from './aiHistory';
@@ -10,14 +12,13 @@ function AiPredict() {
         { label: 'AI 历史预测', status: 'aiHistory' }
     ];
 
-    // const [currentStatus, setCurrentStatus] = useState<Status | null>(null);
-
     const scrollTop = () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
     return (
         <>
+            <Header />
             <div className={style.aiPredict}>
                 <Slick
                     autoHeight
@@ -54,6 +55,7 @@ function AiPredict() {
                 openDialog={openDialog}
                 srcImage={Wallet}
             /> */}
+            <Footer />
         </>
     );
 }
