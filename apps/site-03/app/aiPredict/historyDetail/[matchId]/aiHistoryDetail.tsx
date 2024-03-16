@@ -4,7 +4,6 @@ import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
 import Image from 'next/image';
-import { useNotificationStore } from '@/store/notificationStore';
 import TeamLogo from '@/components/teamLogo/teamLogo';
 import Win from '@/public/resultIcon/bigWin.svg';
 import Draw from '@/public/resultIcon/bigDraw.svg';
@@ -30,7 +29,7 @@ function Header() {
                         alt=""
                         height={24}
                         onClick={() => {
-                            router.push('/aiPredict');
+                            router.back();
                         }}
                         src={backLeftArrowImg}
                         width={24}
@@ -173,20 +172,10 @@ function TargetMatch({ target }: { target: GetPredicativeAnalysisMatch }) {
 }
 
 function AiHistoryDetail({ matchId }: { matchId: number }) {
-    const router = useRouter();
-
     const aiHistoryList = useAiPredictStore.use.aiHistoryList();
     const target = aiHistoryList.find(
         (item: GetPredicativeAnalysisMatch) => item.matchId === matchId
     );
-
-    if (!target) {
-        const setIsVisible = useNotificationStore.use.setIsVisible();
-        setIsVisible('查无资料', 'error');
-        setTimeout(() => {
-            router.push('/aiPredict');
-        }, 1000);
-    }
     return (
         <>
             <Header />

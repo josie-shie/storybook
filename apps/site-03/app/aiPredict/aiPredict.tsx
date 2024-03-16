@@ -1,20 +1,31 @@
 'use client';
 import { Slick } from 'ui';
+import { useSearchParams } from 'next/navigation';
 import Footer from '@/components/footer/footer';
 import Header from '@/components/header/headerLogo';
+import ScrollTop from '@/components/scrollTop/scrollTop';
 import style from './aiPredict.module.scss';
 import AiTodayMatches from './aiTodayMatches';
 import AiHistory from './aiHistory';
 
 function AiPredict() {
+    const searchParams = useSearchParams();
+    const status = searchParams.get('status');
+
     const tabList = [
-        { label: 'AI 今日赛事预测', status: 'aiTodayMatches' },
-        { label: 'AI 历史预测', status: 'aiHistory' }
+        {
+            label: 'AI 今日赛事预测',
+            href: '/aiPredict?status=today',
+            status: 'today'
+        },
+        {
+            label: 'AI 历史预测',
+            href: '/aiPredict?status=history',
+            status: 'history'
+        }
     ];
 
-    const scrollTop = () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    };
+    const initialSlide = status ? tabList.findIndex(tab => tab.status === status) : 0;
 
     return (
         <>
@@ -24,16 +35,19 @@ function AiPredict() {
                     autoHeight
                     className={style.slick}
                     fixedTabs
-                    initialSlide={0}
-                    onSlickEnd={scrollTop}
+                    initialSlide={initialSlide}
+                    onSlickEnd={() => {
+                        return null;
+                    }}
                     resetHeightKey="aiPredictContent"
                     styling="button"
                     tabs={tabList}
                 >
-                    <AiTodayMatches />
-                    <AiHistory />
+                    <div className={style.largeGap}>{status === 'today' && <AiTodayMatches />}</div>
+                    <div className={style.largeGap}>{status === 'history' && <AiHistory />}</div>
                 </Slick>
             </div>
+            <ScrollTop />
             {/* <ConfirmPayDrawer
                 isOpen={openPaid}
                 onClose={() => {
