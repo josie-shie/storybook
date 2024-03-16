@@ -1,0 +1,205 @@
+'use client';
+import type { GetPredicativeAnalysisMatch } from 'data-center';
+import { useRouter } from 'next/navigation';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useState } from 'react';
+import Image from 'next/image';
+import { useNotificationStore } from '@/store/notificationStore';
+import TeamLogo from '@/components/teamLogo/teamLogo';
+import Win from '@/public/resultIcon/bigWin.svg';
+import Draw from '@/public/resultIcon/bigDraw.svg';
+import NoData from '@/components/baseNoData/noData';
+import { useAiPredictStore } from '../../aiPredictStore';
+import HistoryCard from '../../components/historyCard/historyCard';
+import Ai from '../../components/analyzeContent/ai';
+import Analyze from '../../components/analyzeContent/analyze';
+import Cornor from '../../components/analyzeContent/cornor';
+import style from './aiHistoryDetail.module.scss';
+import Right from './img/right.svg';
+import Left from './img/left.svg';
+import backLeftArrowImg from './img/backLeftArrow.png';
+
+function Header() {
+    const router = useRouter();
+
+    return (
+        <div className={style.placeholder}>
+            <div className={style.headerDetail}>
+                <div className={style.headerTitle}>
+                    <Image
+                        alt=""
+                        height={24}
+                        onClick={() => {
+                            router.push('/aiPredict');
+                        }}
+                        src={backLeftArrowImg}
+                        width={24}
+                    />
+                    <div className={style.text}>AI 历史预测</div>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+function TargetMatchDetail({ target }: { target: GetPredicativeAnalysisMatch }) {
+    const [activeTab, setActiveTab] = useState('ai');
+    const tabActive = {
+        backgroundColor: '#4489FF',
+        color: '#fff'
+    };
+    const tabDefault = {
+        backgroundColor: '#f8f8f8',
+        color: '#8d8d8d'
+    };
+
+    const tabList = [
+        { title: 'AI 预测', value: 'ai' },
+        { title: '战略分析', value: 'analyze' },
+        { title: '战术角度', value: 'cornor' }
+    ];
+
+    const componentsMap = {
+        ai: (
+            <Ai
+                match={target}
+                // onUnlockArticle={() => {
+                //     handleUnlockArticle(target.matchId);
+                // }}
+            />
+        ),
+        analyze: (
+            <Analyze
+                match={target}
+                // onUnlockArticle={() => {
+                //     handleUnlockArticle(target.matchId);
+                // }}
+            />
+        ),
+        cornor: (
+            <Cornor
+                match={target}
+                // onUnlockArticle={() => {
+                //     handleUnlockArticle(target.matchId);
+                // }}
+            />
+        )
+    };
+
+    return (
+        <>
+            <div className={style.title}>
+                <Right heigh="4px" width="28px" /> <span>AI 过往预测分析</span>{' '}
+                <Left heigh="4px" width="28px" />
+            </div>
+            <div className={style.content}>
+                <div className={style.analyze}>
+                    <div className={style.teamTitle}>
+                        <div
+                            className={`${style.name} ${
+                                target.predictMatchResult === 1 ? style.win : ''
+                            } ${target.predictMatchResult === 0 ? style.active : ''}`}
+                        >
+                            {target.predictMatchResult === 1 ? (
+                                <Win className={style.icon} />
+                            ) : null}
+                            <TeamLogo
+                                alt={target.homeChs}
+                                height={30}
+                                src={target.homeLogo}
+                                width={30}
+                            />
+                            <span>{target.homeChs}</span>
+                        </div>
+                        {target.predictMatchResult === 0 ? <Draw className={style.draw} /> : null}
+                        <div
+                            className={`${style.name} ${
+                                target.predictMatchResult === 2 ? style.win : ''
+                            } ${target.predictMatchResult === 0 ? style.active : ''}`}
+                        >
+                            {target.predictMatchResult === 2 ? (
+                                <Win className={style.icon} />
+                            ) : null}
+                            <TeamLogo
+                                alt={target.awayChs}
+                                height={30}
+                                src={target.awayLogo}
+                                width={30}
+                            />
+                            <span>{target.awayChs}</span>
+                        </div>
+                    </div>
+                    <div className={style.information}>
+                        <div className={style.minTabBar}>
+                            {tabList.map(tab => (
+                                <motion.div
+                                    animate={activeTab === tab.value ? tabActive : tabDefault}
+                                    className={style.tab}
+                                    key={tab.value}
+                                    onClick={() => {
+                                        setActiveTab(tab.value);
+                                    }}
+                                >
+                                    {tab.title}
+                                </motion.div>
+                            ))}
+                        </div>
+                        <AnimatePresence mode="wait">
+                            <motion.div
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -4 }}
+                                initial={{ opacity: 0, y: 4 }}
+                                key={activeTab}
+                                transition={{ duration: 0.16 }}
+                            >
+                                {componentsMap[activeTab]}
+                            </motion.div>
+                        </AnimatePresence>
+                    </div>
+                </div>
+            </div>
+        </>
+    );
+}
+
+function TargetMatch({ target }: { target: GetPredicativeAnalysisMatch }) {
+    return (
+        <div className={style.top}>
+            <div className={style.rowBox}>
+                <HistoryCard item={target} />
+            </div>
+        </div>
+    );
+}
+
+function AiHistoryDetail({ matchId }: { matchId: number }) {
+    const router = useRouter();
+
+    const aiHistoryList = useAiPredictStore.use.aiHistoryList();
+    const target = aiHistoryList.find(
+        (item: GetPredicativeAnalysisMatch) => item.matchId === matchId
+    );
+
+    if (!target) {
+        const setIsVisible = useNotificationStore.use.setIsVisible();
+        setIsVisible('查无资料', 'error');
+        setTimeout(() => {
+            router.push('/aiPredict');
+        }, 1000);
+    }
+    return (
+        <>
+            <Header />
+            {target ? (
+                <div className={style.detailContent}>
+                    <TargetMatch target={target} />
+                    <TargetMatchDetail target={target} />
+                </div>
+            ) : (
+                <NoData text="暂无资料" />
+            )}
+        </>
+    );
+}
+
+export default AiHistoryDetail;
