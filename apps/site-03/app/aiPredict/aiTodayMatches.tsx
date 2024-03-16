@@ -16,9 +16,9 @@ import { useAiPredictStore } from './aiPredictStore';
 import style from './aiTodayMatches.module.scss';
 import AiAvatar from './img/aiAvatar.svg';
 import AiAvatarSmall from './img/aiAvatarSmall.svg';
-import Ai from './ai';
-import Analyze from './analyze';
-import Cornor from './cornor';
+import Ai from './components/analyzeContent/ai';
+import Analyze from './components/analyzeContent/analyze';
+import Cornor from './components/analyzeContent/cornor';
 // import Wallet from './img/wallet.png';
 import Tutorial from './components/turorial/turorial';
 
