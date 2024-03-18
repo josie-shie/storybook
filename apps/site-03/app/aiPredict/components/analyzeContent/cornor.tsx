@@ -1,5 +1,5 @@
 import type { GetPredicativeAnalysisMatch } from 'data-center';
-import IdeaIcon from '../../img/idea.svg';
+import IdeaIcon from '../../(list)/img/idea.svg';
 import style from './aiTab.module.scss';
 
 interface CornorProps {

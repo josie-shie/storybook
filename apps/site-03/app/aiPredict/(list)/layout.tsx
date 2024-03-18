@@ -1,7 +1,7 @@
 'use client';
 import type { ReactNode } from 'react';
+import { creatAiPredictStore } from '../aiPredictStore';
 import style from './layout.module.scss';
-import { creatAiPredictStore } from './aiPredictStore';
 
 function AiPredictPageLayout({ children }: { children: ReactNode }) {
     creatAiPredictStore({

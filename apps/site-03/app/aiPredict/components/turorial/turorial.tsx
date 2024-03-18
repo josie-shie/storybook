@@ -3,12 +3,12 @@ import { Dialog } from '@mui/material';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Win from '@/public/resultIcon/bigWin.svg';
-import AiAvatarSmall from '../../img/aiAvatarSmall.svg';
-import Close from '../../img/close.svg';
+import Close from '../../(list)/img/close.svg';
 // import WaterMark from '../../img/waterMark.png';
-import Home from '../../img/home.svg';
-import Away from '../../img/away.svg';
-import IdeaIcon from '../../img/idea.svg';
+import Home from '../../(list)/img/home.svg';
+import Away from '../../(list)/img/away.svg';
+import IdeaIcon from '../../(list)/img/idea.svg';
+import AiAvatarSmall from '../../(list)/img/aiAvatarSmall.svg';
 import style from './turorial.module.scss';
 
 function Ai() {

@@ -2,9 +2,9 @@ import Image from 'next/image';
 import { timestampToString } from 'lib';
 import type { GetPredicativeAnalysisMatch } from 'data-center';
 import defaultTeamLogo from '@/app/football/[matchId]/img/defaultTeamLogo.png';
-import Draw from '../../img/aiDraw.svg';
-import Hit from '../../img/aiHit.svg';
-import Miss from '../../img/aiMiss.svg';
+import Draw from '../../(list)/img/aiDraw.svg';
+import Hit from '../../(list)/img/aiHit.svg';
+import Miss from '../../(list)/img/aiMiss.svg';
 import style from './historyCard.module.scss';
 
 function TeamDisplay({ name, logo, value }: { name: string; logo: string; value: number }) {

@@ -5,9 +5,9 @@ import { CircularProgress } from '@mui/material';
 import Link from 'next/link';
 import BaseDatePicker from '@/app/(list)/components/baseDatePicker/baseDatePicker';
 import NoData from '@/components/baseNoData/noData';
+import HistoryCard from '../components/historyCard/historyCard';
+import { useAiPredictStore } from '../aiPredictStore';
 import style from './aiHistory.module.scss';
-import HistoryCard from './components/historyCard/historyCard';
-import { useAiPredictStore } from './aiPredictStore';
 
 function HistoryItem({ item }: { item: GetPredicativeAnalysisMatch }) {
     return (

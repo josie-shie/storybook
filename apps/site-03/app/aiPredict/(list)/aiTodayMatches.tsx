@@ -12,15 +12,15 @@ import { timestampToString, timestampToStringCh } from 'lib';
 import TeamLogo from '@/components/teamLogo/teamLogo';
 import Win from '@/public/resultIcon/bigWin.svg';
 import Draw from '@/public/resultIcon/bigDraw.svg';
-import { useAiPredictStore } from './aiPredictStore';
+import Ai from '../components/analyzeContent/ai';
+import Analyze from '../components/analyzeContent/analyze';
+import Cornor from '../components/analyzeContent/cornor';
+import { useAiPredictStore } from '../aiPredictStore';
+import Tutorial from '../components/turorial/turorial';
+import AiAvatarSmall from './img/aiAvatarSmall.svg';
 import style from './aiTodayMatches.module.scss';
 import AiAvatar from './img/aiAvatar.svg';
-import AiAvatarSmall from './img/aiAvatarSmall.svg';
-import Ai from './components/analyzeContent/ai';
-import Analyze from './components/analyzeContent/analyze';
-import Cornor from './components/analyzeContent/cornor';
 // import Wallet from './img/wallet.png';
-import Tutorial from './components/turorial/turorial';
 
 interface MatchTab {
     matchId: number;
