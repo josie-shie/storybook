@@ -17,7 +17,8 @@ export {
     convertOdds,
     overUnderResult,
     victoryMinusResult,
-    handicapResult
+    handicapResult,
+    getPredictedPlayDisplay
 } from './src/formatHandicap';
 export type { StoreWithSelectors } from './src/store';
 export {

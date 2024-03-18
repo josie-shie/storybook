@@ -631,8 +631,8 @@ const MemberTagsSchema = z.object({
 export type MemberTag = z.infer<typeof MemberTagsSchema>;
 
 const MentorArticleCountSchema = z.object({
-    predictedPlay: z.string(),
-    counts: z.number()
+    handicap: z.number(),
+    overUnder: z.number()
 });
 
 const GetUnlockedPostDataSchema = z.object({

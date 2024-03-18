@@ -65,8 +65,8 @@ function ArticleDetail({ params }: { params: { articleId: string } }) {
         fansCount: 0,
         unlockedCount: 0,
         mentorArticleCount: {
-            predictedPlay: '',
-            counts: 0
+            handicap: 0,
+            overUnder: 0
         },
         hitRate: 0,
         isFollowed: false,
