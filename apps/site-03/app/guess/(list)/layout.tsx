@@ -15,7 +15,7 @@ function InterceptingContent({ para }: { para: ReactNode }) {
 
     return (
         <>
-            {params.matchId || params.masterId ? (
+            {params.matchId ? (
                 <>
                     <motion.div
                         animate={{ left: '0%' }}

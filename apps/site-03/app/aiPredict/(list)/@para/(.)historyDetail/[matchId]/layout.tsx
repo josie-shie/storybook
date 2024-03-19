@@ -4,6 +4,7 @@ import { useLockBodyScroll } from '@/hooks/lockScroll';
 
 function AiHistoryDetailLayout({ params }: { params: { matchId: number } }) {
     useLockBodyScroll();
+
     return <AiHistoryDetail matchId={params.matchId} />;
 }
 

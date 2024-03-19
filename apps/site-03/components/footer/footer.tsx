@@ -32,7 +32,7 @@ const CategoryList = [
     },
     {
         label: 'FutureAI',
-        value: '/aiPredict?status=history',
+        value: '/aiPredict',
         includedRouters: ['/aiPredict'],
         icon: <AiPredictIcon className={`${style.icon} ${style.aiPredictIcon}`} />
     },
