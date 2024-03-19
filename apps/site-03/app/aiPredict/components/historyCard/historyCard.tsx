@@ -55,8 +55,16 @@ function HistoryDisplayContent({ item }: { item: GetPredicativeAnalysisMatch }) 
             </div>
             <div className={style.bottom}>
                 <div className={style.teamBox}>
-                    {TeamDisplay({ name: item.homeChs, logo: item.homeLogo, value: 2 })}
-                    {TeamDisplay({ name: item.awayChs, logo: item.awayLogo, value: 2 })}
+                    {TeamDisplay({
+                        name: item.homeChs,
+                        logo: item.homeLogo,
+                        value: item.homeScore
+                    })}
+                    {TeamDisplay({
+                        name: item.awayChs,
+                        logo: item.awayLogo,
+                        value: item.awayScore
+                    })}
                 </div>
                 <div className={style.icon}>
                     {compareResult(item.predictMatchResult, item.realMatchResult)}

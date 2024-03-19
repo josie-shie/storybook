@@ -136,7 +136,7 @@ function AiPredictDetail({ params }: { params: { matchId: string } }) {
         const getPredicativeAnalysisList = async () => {
             const res = await getPredicativeAnalysisMatch({
                 matchId: 0,
-                matchTime: 1709474400,
+                matchTime: 0,
                 isFinished: true
             });
 

@@ -17,9 +17,24 @@ function HistoryItem({ item }: { item: GetPredicativeAnalysisMatch }) {
     );
 }
 
+function ListContent() {
+    const aiHistoryList = useAiPredictStore.use.aiHistoryList();
+
+    return (
+        <div className={style.content}>
+            {aiHistoryList.length === 0 ? (
+                <NoData text="暂无资料" />
+            ) : (
+                aiHistoryList.map((item: GetPredicativeAnalysisMatch) => (
+                    <HistoryItem item={item} key={item.matchId} />
+                ))
+            )}
+        </div>
+    );
+}
+
 function AiHistory() {
     const [isLoading, setIsLoading] = useState(false);
-    const aiHistoryList = useAiPredictStore.use.aiHistoryList();
     const setAiHistoryList = useAiPredictStore.use.setAiHistoryList();
     const [resultsDate, setResultsDate] = useState(Date.now());
     const handleDate = (date: Date) => {
@@ -28,10 +43,10 @@ function AiHistory() {
     };
 
     const getPredicativeAnalysisList = useCallback(async () => {
+        setIsLoading(true);
         const res = await getPredicativeAnalysisMatch({
             matchId: 0,
-            matchTime: 1709474400,
-            // matchTime: resultsDate,
+            matchTime: resultsDate,
             isFinished: true
         });
 
@@ -47,12 +62,6 @@ function AiHistory() {
         void getPredicativeAnalysisList();
     }, [getPredicativeAnalysisList]);
 
-    if (isLoading)
-        return (
-            <div className={style.loadingBlock}>
-                <CircularProgress size={24} />
-            </div>
-        );
     return (
         <>
             <BaseDatePicker
@@ -62,15 +71,13 @@ function AiHistory() {
                     handleDate(date);
                 }}
             />
-            <div className={style.content}>
-                {aiHistoryList.length === 0 ? (
-                    <NoData text="暂无资料" />
-                ) : (
-                    aiHistoryList.map((item: GetPredicativeAnalysisMatch) => (
-                        <HistoryItem item={item} key={item.matchId} />
-                    ))
-                )}
-            </div>
+            {isLoading ? (
+                <div className={style.loadingBlock}>
+                    <CircularProgress size={24} />
+                </div>
+            ) : (
+                <ListContent />
+            )}
         </>
     );
 }

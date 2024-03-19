@@ -333,6 +333,8 @@ const GetPredicativeAnalysisMatchSchema = z.object({
     predictResult: z.string(),
     predictMatchResult: z.number(),
     realMatchResult: z.number(),
+    awayScore: z.number(),
+    homeScore: z.number(),
     updatedAt: z.number()
 });
 
