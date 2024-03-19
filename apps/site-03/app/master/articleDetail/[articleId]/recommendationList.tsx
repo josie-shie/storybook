@@ -5,8 +5,8 @@ import { type RecommendPost } from 'data-center';
 import Tag from '@/components/tag/tag';
 import NoData from '@/components/baseNoData/noData';
 import Draw from '@/public/resultIcon/bigDraw.svg';
-import Miss from '@/public/resultIcon/bigMiss.svg';
-import Hit from '@/public/resultIcon/bigHit.svg';
+import Lose from '@/public/resultIcon/bigLose.svg';
+import Win from '@/public/resultIcon/bigWin.svg';
 import style from './recommendationList.module.scss';
 import Eye from './img/eye.svg';
 import LockOpen from './img/lockOpen.svg';
@@ -54,13 +54,13 @@ function RecommendationItem({
                                 key={item.id}
                             >
                                 {item.predictionResult === 'WIN' && (
-                                    <Hit className={style.icon} height="45" width="45" />
+                                    <Win className={style.icon} height="45" width="45" />
                                 )}
                                 {item.predictionResult === 'DRAW' && (
                                     <Draw className={style.icon} height="45" width="45" />
                                 )}
                                 {item.predictionResult === 'LOSE' && (
-                                    <Miss className={style.icon} height="45" width="45" />
+                                    <Lose className={style.icon} height="45" width="45" />
                                 )}
                                 <div className={style.left}>
                                     <div className={style.name}>

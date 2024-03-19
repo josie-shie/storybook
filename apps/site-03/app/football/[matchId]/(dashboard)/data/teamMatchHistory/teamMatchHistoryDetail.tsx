@@ -18,7 +18,7 @@ enum ResultName {
     Go = 'go',
     Tie = 'tie',
     Goal = 'goal',
-    Miss = 'miss',
+    Lose = 'miss',
     Big = 'big',
     Small = 'small',
     None = 'none'
@@ -32,7 +32,7 @@ const resultNameMap = {
     [ResultName.Go]: '走',
     [ResultName.Tie]: '平',
     [ResultName.Goal]: '进',
-    [ResultName.Miss]: '失',
+    [ResultName.Lose]: '失',
     [ResultName.Big]: '大',
     [ResultName.Small]: '小',
     [ResultName.None]: '-'

@@ -6,7 +6,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Link from 'next/link';
 import NoData from '@/components/baseNoData/noData';
 import IconHit from '@/public/resultIcon/bigWin.svg';
-import IconMiss from '@/public/resultIcon/bigMiss.svg';
+import IconMiss from '@/public/resultIcon/bigLose.svg';
 import IconDraw from '@/public/resultIcon/bigDraw.svg';
 import type { InitGuessData, Tab } from '../../page';
 import style from './bettingPlan.module.scss';

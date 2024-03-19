@@ -7,7 +7,7 @@ import { InfiniteScroll } from 'ui';
 import CircularProgress from '@mui/material/CircularProgress';
 import NoData from '@/components/baseNoData/noData';
 import { useUserStore } from '@/store/userStore';
-import IconWin from '@/public/resultIcon/bigHit.svg';
+import IconWin from '@/public/resultIcon/bigWin.svg';
 import IconDraw from '@/public/resultIcon/bigDraw.svg';
 import IconLose from '@/public/resultIcon/bigLose.svg';
 import IconPush from '@/public/resultIcon/bigPush.svg';
