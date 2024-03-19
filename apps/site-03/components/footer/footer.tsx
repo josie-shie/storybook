@@ -31,7 +31,7 @@ const CategoryList = [
         icon: <RecommendIcon className={`${style.icon} ${style.recommendIcon}`} />
     },
     {
-        label: 'FutureAI',
+        label: 'AI 预测',
         value: '/aiPredict',
         includedRouters: ['/aiPredict'],
         icon: <AiPredictIcon className={`${style.icon} ${style.aiPredictIcon}`} />
