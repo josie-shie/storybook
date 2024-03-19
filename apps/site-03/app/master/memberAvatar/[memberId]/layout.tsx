@@ -2,9 +2,9 @@
 
 import type { ReactNode } from 'react';
 import Header from '@/components/header/headerTransparent';
+import Footer from '@/components/footer/footer';
 import Info from './info';
 import style from './layout.module.scss';
-import Footer from '@/components/footer/footer';
 
 function MasterAvatarLayout({
     params,
@@ -14,7 +14,7 @@ function MasterAvatarLayout({
     children: ReactNode;
 }) {
     const headerProps = {
-        title: '专家聊球'
+        title: '其他会员'
     };
 
     return (

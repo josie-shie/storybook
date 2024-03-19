@@ -47,7 +47,7 @@ function Layout({ params }: { params: { memberId: string } }) {
 
     return (
         <div className={style.layout}>
-            <Header title="专家聊球" />
+            <Header title="其他会员" />
             <div className={style.masterAvatarLayout}>
                 <Info params={params} />
                 <MemberAvatar initGuessData={initGuessData} params={params} />
