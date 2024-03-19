@@ -25,6 +25,7 @@ import MyAnalyze from './img/myAnalyze.png';
 import UserIcon from './img/user.svg';
 import UnlockIcon from './img/unlock.svg';
 import EditIcon from './img/edit.svg';
+import EditWhIcon from './img/editWh.svg';
 import StarIcon from './img/star.svg';
 import GiftIcon from './img/gift.png';
 import LockIcon from './img/lock.svg';
@@ -77,6 +78,17 @@ function UserInfo() {
     // const goSubscribe = () => {
     //     router.push('/userInfo/subscribe');
     // };
+
+    const showIntroduction = (introduction: string) => {
+        return introduction || introduction !== '' ? (
+            <div className={style.introduction}>{userInfo.description}</div>
+        ) : (
+            <div className={style.editIntroduction} onClick={editAccount}>
+                <p>来写点个人简介吧 ！</p>
+                <EditWhIcon />
+            </div>
+        );
+    };
 
     const logout = () => {
         Cookies.remove('access');
@@ -202,12 +214,12 @@ function UserInfo() {
                                         <span>{userInfo.unlocked}</span>
                                     </span>
                                 )}
-                                {tags.quarterHitRate > 0 ? (
+                                {tags.quarterHitRate > 0 && (
                                     <span className={style.item}>
                                         <span>猜球胜率</span>
                                         <span>{tags.quarterHitRate}%</span>
                                     </span>
-                                ) : null}
+                                )}
                             </div>
                         ) : (
                             <div className={style.bottom}>
@@ -215,7 +227,7 @@ function UserInfo() {
                             </div>
                         )}
                         {!loading ? (
-                            <div className={style.introduction}>{userInfo.description}</div>
+                            showIntroduction(userInfo.description)
                         ) : (
                             <div className={style.introduction}>
                                 <Skeleton
