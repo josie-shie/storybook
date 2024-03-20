@@ -6,8 +6,8 @@ import Avatar from '@/components/avatar/avatar';
 import TagSplit from '@/components/tagSplit/tagSplit';
 import Tag from '@/components/tag/tag';
 import Fire from '@/app/img/fire.png';
-import Hit from '@/public/resultIcon/bigHit.svg';
-import Miss from '@/public/resultIcon/bigMiss.svg';
+import Win from '@/public/resultIcon/bigWin.svg';
+import Lose from '@/public/resultIcon/bigLose.svg';
 import Draw from '@/public/resultIcon/bigDraw.svg';
 import style from './articleItem.module.scss';
 import Eye from './img/eye.svg';
@@ -96,8 +96,8 @@ function ArticleItem({ item }: GetUnlockPostProps) {
     };
 
     const iconMap = {
-        WIN: <Hit height="46px" width="46px" />,
-        LOSE: <Miss height="46px" width="46px" />,
+        WIN: <Win height="46px" width="46px" />,
+        LOSE: <Lose height="46px" width="46px" />,
         DRAW: <Draw height="46px" width="46px" />
     };
 

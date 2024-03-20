@@ -8,16 +8,16 @@ import Tag from '@/components/tag/tag';
 import BigWin from '@/public/resultIcon/bigWin.svg';
 import BigLose from '@/public/resultIcon/bigLose.svg';
 import BigDraw from '@/public/resultIcon/bigDraw.svg';
-import Win from '@/public/resultIcon/hit.svg';
 import Gone from '@/public/resultIcon/draw.svg';
-import Miss from '@/public/resultIcon/miss.svg';
+import Lose from '@/public/resultIcon/lose.svg';
+import Win from '@/public/resultIcon/win.svg';
 import Fire from '../img/fire.png';
 import style from './recordCard.module.scss';
 
 function RecordCard({ recordItem }: { recordItem: MemberGuessViewingRecord }) {
     const iconMap = {
         WIN: <Win />,
-        LOSE: <Miss />,
+        LOSE: <Lose />,
         DRAW: <Gone />,
         BIGWIN: <BigWin height="36px" width="36px" />,
         BIGLOSE: <BigLose height="36px" width="36px" />,

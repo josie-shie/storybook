@@ -5,16 +5,16 @@ import Avatar from '@/components/avatar/avatar';
 import Tag from '@/components/tag/tag';
 import TagSplit from '@/components/tagSplit/tagSplit';
 import { useUserStore } from '@/store/userStore';
-import Hit from '@/public/resultIcon/hit.svg';
-import Miss from '@/public/resultIcon/miss.svg';
 import Gone from '@/public/resultIcon/draw.svg';
-import BigHit from '@/public/resultIcon/bigHit.svg';
+import BigWin from '@/public/resultIcon/bigWin.svg';
 import BigGone from '@/public/resultIcon/bigDraw.svg';
-import BigMiss from '@/public/resultIcon/bigMiss.svg';
+import BigMiss from '@/public/resultIcon/bigLose.svg';
 import Fire from './img/hot.png';
 import Star from './img/coin.png';
 import style from './gameCard.module.scss';
 import { useGuessDetailStore } from './guessDetailStore';
+import Lose from '@/public/resultIcon/lose.svg';
+import Win from '@/public/resultIcon/win.svg';
 
 interface TagProps {
     type: 0 | 1 | 2 | 3;
@@ -55,12 +55,12 @@ function GameCard({ plan, onOpenPaidDialog, handleVIPUnlock }: GameCardProps) {
 
     const sortTags = sortHotStreakFirst(plan.highlights);
     const iconMap = {
-        WIN: <Hit />,
-        LOSE: <Miss />,
+        WIN: <Win />,
+        LOSE: <Lose />,
         DRAW: <Gone />
     };
     const resultIconMap = {
-        WIN: <BigHit height="36px" width="36px" />,
+        WIN: <BigWin height="36px" width="36px" />,
         LOSE: <BigMiss height="36px" width="36px" />,
         DRAW: <BigGone height="36px" width="36px" />
     };

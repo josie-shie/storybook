@@ -13,8 +13,8 @@ import type { GuessType } from '@/types/predict';
 import DefaultLogo from '@/app/football/[matchId]/img/defaultTeamLogo.png';
 import ConfirmPayDrawer from '@/components/confirmPayDrawer/confirmPayDrawer';
 import Push from '@/public/resultIcon/bigPush.svg';
-import Hit from '@/public/resultIcon/bigHit.svg';
-import Miss from '@/public/resultIcon/bigMiss.svg';
+import Win from '@/public/resultIcon/bigWin.svg';
+import Lose from '@/public/resultIcon/bigLose.svg';
 import Draw from '@/public/resultIcon/bigDraw.svg';
 import Star from './img/star.png';
 import style from './articleContent.module.scss';
@@ -78,9 +78,9 @@ function ArticleContent({
     const filterImage = (value: GuessType): JSX.Element => {
         const result = {
             NONE: <Push className={style.icon} height="36" width="36" />,
-            WIN: <Hit className={style.icon} height="36" width="36" />,
+            WIN: <Win className={style.icon} height="36" width="36" />,
             DRAW: <Draw className={style.icon} height="36" width="36" />,
-            LOSE: <Miss className={style.icon} height="36" width="36" />,
+            LOSE: <Lose className={style.icon} height="36" width="36" />,
             PUSH: <Push className={style.icon} height="36" width="36" />
         };
         return result[value];

@@ -11,8 +11,8 @@ import Avatar from '@/components/avatar/avatar';
 import RechargeDialog from '@/components/rechargeDialog/rechargeDialog';
 import { useUserStore } from '@/store/userStore';
 import ConfirmPayDrawer from '@/components/confirmPayDrawer/confirmPayDrawer';
-import Hit from '@/public/resultIcon/bigHit.svg';
-import Miss from '@/public/resultIcon/bigMiss.svg';
+import Win from '@/public/resultIcon/bigWin.svg';
+import Lose from '@/public/resultIcon/bigLose.svg';
 import Draw from '@/public/resultIcon/bigDraw.svg';
 import Eye from './img/eye.svg';
 import LockOpen from './img/lockOpen.svg';
@@ -131,8 +131,8 @@ function ArticleCard({ article }: { article: RecommendPost }) {
         return filteredTags.slice(0, 3);
     };
     const iconMap = {
-        WIN: <Hit height="46px" width="46px" />,
-        LOSE: <Miss height="46px" width="46px" />,
+        WIN: <Win height="46px" width="46px" />,
+        LOSE: <Lose height="46px" width="46px" />,
         Draw: <Draw height="46px" width="46px" />
     };
 
