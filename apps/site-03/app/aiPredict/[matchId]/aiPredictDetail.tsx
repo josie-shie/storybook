@@ -15,11 +15,11 @@ import Ai from '../components/analyzeContent/ai';
 import Analyze from '../components/analyzeContent/analyze';
 import Cornor from '../components/analyzeContent/cornor';
 // import Wallet from '../img/wallet.png';
-import Win from '../(list)/img/aiWin.svg';
+import Win from '../(list)/img/aiHit.svg';
 import Draw from '../(list)/img/aiDraw.svg';
 import AiAvatarSmall from '../(list)/img/aiAvatarSmall.svg';
-import AiAvatar from '../img/aiAvatar.svg';
-import style from '../aiPredict.module.scss';
+import AiAvatar from '../(list)/img/aiAvatar.svg';
+import style from '../(list)/aiPredict.module.scss';
 import Tutorial from '../components/turorial/turorial';
 
 interface MatchTab {

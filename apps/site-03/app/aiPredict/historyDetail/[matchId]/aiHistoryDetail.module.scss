@@ -61,6 +61,12 @@
         background-color: #fff;
         border-radius: 8px 8px 0 0;
         padding: 16px 10px;
+        background-image: url('./img/historyBg.png');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        height: 100%;
+        width: 100%;
 
         .analyze {
             display: flex;
