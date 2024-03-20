@@ -76,7 +76,7 @@ function HalfFullWinLose() {
     }, [leagueId, homeAway, dataCount]);
 
     return (
-        <div className={style.matchSchedule}>
+        <div className={style.halfFullWinLose}>
             <div className="topBar">
                 <h6 className="title">半全场胜负</h6>
             </div>
