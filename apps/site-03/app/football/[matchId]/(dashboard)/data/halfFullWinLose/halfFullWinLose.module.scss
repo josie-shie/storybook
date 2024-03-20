@@ -1,4 +1,4 @@
-.matchSchedule {
+.halfFullWinLose {
     width: 100%;
 
     .option {
@@ -50,10 +50,10 @@
                 .td {
                     padding: 0;
                     flex: 1;
-                    font-weight: initial;
                     flex-direction: column;
                     align-items: initial;
                     text-align: center;
+                    font-weight: 500;
 
                     .block {
                         padding: 10px 0;

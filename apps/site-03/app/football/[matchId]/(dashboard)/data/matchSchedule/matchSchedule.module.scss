@@ -39,7 +39,8 @@
             .tr {
                 .td {
                     flex: initial;
-                    font-weight: initial;
+
+                    // font-weight: 500;
 
                     &:first-of-type {
                         flex-direction: column;
