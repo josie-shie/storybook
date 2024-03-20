@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { timestampToTodayTime, convertHandicap } from 'lib';
+import { timestampToTodayTime, convertHandicap, getPredictedPlayDisplay } from 'lib';
 import { useEffect, useState } from 'react';
 import type { GetPostDetailResponse, RecommendPost } from 'data-center';
 import { getPostList, payForPost, getMemberInfo } from 'data-center';
@@ -117,25 +117,6 @@ function ArticleContent({
     useEffect(() => {
         void fetchData();
     }, [userInfo.uid, article]);
-
-    const getText = predictedPlay => {
-        switch (predictedPlay) {
-            case 'AWAY':
-                return '胜负';
-            case 'HOME':
-                return '胜负';
-            case 'HANDICAP':
-                return '胜负';
-            case 'OVER':
-                return '总进球';
-            case 'UNDER':
-                return '总进球';
-            case 'OVERUNDER':
-                return '总进球';
-            default:
-                return '';
-        }
-    };
 
     return (
         <div className={style.articleContent}>
@@ -258,7 +239,7 @@ function ArticleContent({
                                 {!isNoArticleData ? (
                                     <>
                                         <div className={style.play}>
-                                            {getText(article.predictedPlay)}
+                                            {getPredictedPlayDisplay(article.predictedPlay)}
                                         </div>
                                         <div className={style.team}>
                                             <div

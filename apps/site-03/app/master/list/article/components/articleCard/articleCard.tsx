@@ -58,37 +58,29 @@ function ArticleCard({ article }: { article: RecommendPost }) {
         router.push(`/master/articleDetail/${article.id}`);
     };
 
-    const getText = predictedPlay => {
-        switch (predictedPlay) {
-            case 'HANDICAP':
-                return '胜负';
-            case 'OVERUNDER':
-                return '总进球';
-            default:
-                return '';
-        }
-    };
-
-    const showHandicap =
-        article.mentorArticleCount.predictedPlay === 'HANDICAP' &&
-        article.mentorArticleCount.counts >= 10;
-    const showOverUnder =
-        article.mentorArticleCount.predictedPlay === 'OVERUNDER' &&
-        article.mentorArticleCount.counts >= 10;
+    const showHandicap = article.mentorArticleCount.handicap >= 10;
+    const showOverUnder = article.mentorArticleCount.overUnder >= 10;
 
     const getTagsToShow = (): JSX.Element[] => {
         const tagsData = [
-            showHandicap || showOverUnder ? (
+            showHandicap && (
                 <Tag
                     background="#f3f3f3"
                     borderColor="#bfbfbf"
                     color="#8d8d8d"
                     key="playType"
-                    text={`${getText(article.mentorArticleCount.predictedPlay)} ${
-                        article.mentorArticleCount.counts
-                    }场`}
+                    text={`胜负${article.mentorArticleCount.handicap}场`}
                 />
-            ) : null,
+            ),
+            showOverUnder && (
+                <Tag
+                    background="#f3f3f3"
+                    borderColor="#bfbfbf"
+                    color="#8d8d8d"
+                    key="playType"
+                    text={`总进球${article.mentorArticleCount.overUnder}场`}
+                />
+            ),
             article.tag.winMaxAccurateStreak > 0 ? (
                 <Tag
                     icon={<Fire size={10} />}

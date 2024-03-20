@@ -19,8 +19,8 @@ export interface GetIndexPostsRequest {
 }
 
 const MentorArticleCountSchema = z.object({
-    predictedPlay: z.string(),
-    counts: z.number()
+    handicap: z.number(),
+    overUnder: z.number()
 });
 
 const RecommendPostSchema = z.object({
@@ -76,6 +76,7 @@ const GetIndexPostsResultSchema = z.object({
     })
 });
 
+export type MentorArticleCount = z.infer<typeof MentorArticleCountSchema>;
 export type RecommendPost = z.infer<typeof RecommendPostSchema>;
 
 type GetIndexPostsResult = z.infer<typeof GetIndexPostsResultSchema>;

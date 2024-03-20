@@ -1,4 +1,4 @@
-import { timestampToTodayTime } from 'lib';
+import { timestampToTodayTime, getPredictedPlayDisplay } from 'lib';
 import { type RecommendPost } from 'data-center';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
@@ -60,17 +60,6 @@ function AnalysisItem({
         void fetchData();
     }, [currentPage]);
 
-    const getText = predictedPlay => {
-        switch (predictedPlay) {
-            case 'HANDICAP':
-                return '胜负';
-            case 'OVERUNDER':
-                return '总进球';
-            default:
-                return '';
-        }
-    };
-
     const IconMap = {
         PUSH: <IconPush height="45px" width="45px" />,
         LOSE: <IconLose height="45px" width="45px" />,
@@ -94,7 +83,7 @@ function AnalysisItem({
                                     <div className={style.userInfo}>
                                         <div className={style.userName}>
                                             <div className={style.plan}>
-                                                {getText(item.mentorArticleCount.predictedPlay)}
+                                                {getPredictedPlayDisplay(item.predictedPlay)}
                                             </div>
                                             {item.mentorName}
                                         </div>

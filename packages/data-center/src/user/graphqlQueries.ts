@@ -207,8 +207,8 @@ export const GET_UNLOCKED_QUERY = `
                 unlockCounts
                 seenCounts
                 mentorArticleCount {
-                    predictedPlay
-                    counts
+                    overUnder
+                    handicap
                 }
             }
             pagination {

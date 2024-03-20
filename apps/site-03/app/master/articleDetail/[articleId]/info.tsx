@@ -54,24 +54,6 @@ function Info({ article, info, isNoInfoData, setInfo }: InfoProps) {
         router.push(`/master/masterAvatar/${id}?status=guess`);
     };
 
-    const getText = predictedPlay => {
-        switch (predictedPlay) {
-            case 'HANDICAP':
-                return '胜负';
-            case 'OVERUNDER':
-                return '总进球';
-            default:
-                return '';
-        }
-    };
-
-    const showHandicap =
-        info.mentorArticleCount.predictedPlay === 'HANDICAP' &&
-        info.mentorArticleCount.counts >= 10;
-    const showOverUnder =
-        info.mentorArticleCount.predictedPlay === 'OVERUNDER' &&
-        info.mentorArticleCount.counts >= 10;
-
     return (
         <>
             {!isNoInfoData ? (
@@ -93,24 +75,22 @@ function Info({ article, info, isNoInfoData, setInfo }: InfoProps) {
                                 <span className={style.name}>{article.mentorName}</span>
                             </div>
                             <div className={style.tagsContainer}>
-                                {showHandicap ? (
+                                {info.mentorArticleCount.handicap >= 10 && (
                                     <Tag
-                                        background="rgba(255, 255, 255, 0.30)"
-                                        borderColor="#6e94d4"
-                                        text={`${getText(info.mentorArticleCount.predictedPlay)} ${
-                                            info.mentorArticleCount.counts
-                                        }場`}
+                                        background="#f3f3f3"
+                                        borderColor="#bfbfbf"
+                                        color="#8d8d8d"
+                                        text={`胜负${info.mentorArticleCount.handicap}場`}
                                     />
-                                ) : null}
-                                {showOverUnder ? (
+                                )}
+                                {info.mentorArticleCount.overUnder >= 10 && (
                                     <Tag
-                                        background="rgba(255, 255, 255, 0.30)"
-                                        borderColor="#6e94d4"
-                                        text={`${getText(info.mentorArticleCount.predictedPlay)} ${
-                                            info.mentorArticleCount.counts
-                                        }場`}
+                                        background="#f3f3f3"
+                                        borderColor="#bfbfbf"
+                                        color="#8d8d8d"
+                                        text={`总进球${info.mentorArticleCount.overUnder}場`}
                                     />
-                                ) : null}
+                                )}
                                 {info.highlights.weekHitRecentTen > 0 && (
                                     <TagSplit
                                         hit

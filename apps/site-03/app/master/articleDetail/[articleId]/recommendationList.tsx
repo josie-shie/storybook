@@ -1,6 +1,6 @@
 'use client';
 import Link from 'next/link';
-import { timestampToTodayTime } from 'lib';
+import { timestampToTodayTime, getPredictedPlayDisplay } from 'lib';
 import { type RecommendPost } from 'data-center';
 import Tag from '@/components/tag/tag';
 import NoData from '@/components/baseNoData/noData';
@@ -19,25 +19,6 @@ function RecommendationItem({
     recommendationList: RecommendPost[];
     isNoData: boolean | null;
 }) {
-    const getText = predictedPlay => {
-        switch (predictedPlay) {
-            case 'AWAY':
-                return '胜负';
-            case 'HOME':
-                return '胜负';
-            case 'HANDICAP':
-                return '胜负';
-            case 'OVER':
-                return '总进球';
-            case 'UNDER':
-                return '总进球';
-            case 'OVERUNDER':
-                return '总进球';
-            default:
-                return '';
-        }
-    };
-
     return (
         <>
             {recommendationList.length === 0 && isNoData === null && <SkeletonLayout />}
@@ -68,7 +49,7 @@ function RecommendationItem({
                                             background="#f3f3f3"
                                             borderColor="#bfbfbf"
                                             color="#8d8d8d"
-                                            text={`${getText(item.predictedPlay)}`}
+                                            text={`${getPredictedPlayDisplay(item.predictedPlay)}`}
                                         />
                                         <span>{item.mentorName}</span>
                                     </div>

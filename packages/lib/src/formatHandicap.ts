@@ -126,3 +126,27 @@ export const handicapResult = (
 
     return 'go';
 };
+
+/**
+ * 玩法的顯示
+ * - param (predictedPlay: string)
+ */
+
+export const getPredictedPlayDisplay = (predictedPlay: string) => {
+    switch (predictedPlay) {
+        case 'AWAY':
+            return '胜负';
+        case 'HOME':
+            return '胜负';
+        case 'HANDICAP':
+            return '胜负';
+        case 'OVER':
+            return '总进球';
+        case 'UNDER':
+            return '总进球';
+        case 'OVERUNDER':
+            return '总进球';
+        default:
+            return '';
+    }
+};

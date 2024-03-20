@@ -2,6 +2,7 @@
 import { truncateFloatingPoint, timestampToTodayTime } from 'lib';
 import Image from 'next/image';
 import Link from 'next/link';
+import type { MentorArticleCount } from 'data-center';
 import Avatar from '@/components/avatar/avatar';
 import TagSplit from '@/components/tagSplit/tagSplit';
 import Tag from '@/components/tag/tag';
@@ -13,11 +14,6 @@ import style from './articleItem.module.scss';
 import Eye from './img/eye.svg';
 import LockOpen from './img/lockOpen.svg';
 import LockOpenBlue from './img/lockOpenBlue.svg';
-
-interface MentorArticleCount {
-    predictedPlay: string;
-    counts: number;
-}
 
 interface Tags {
     id: number;
@@ -84,17 +80,6 @@ interface GetUnlockPostProps {
 }
 
 function ArticleItem({ item }: GetUnlockPostProps) {
-    const getText = predictedPlay => {
-        switch (predictedPlay) {
-            case 'HANDICAP':
-                return '胜负';
-            case 'OVERUNDER':
-                return '总进球';
-            default:
-                return '';
-        }
-    };
-
     const iconMap = {
         WIN: <Win height="46px" width="46px" />,
         LOSE: <Lose height="46px" width="46px" />,
@@ -125,28 +110,22 @@ function ArticleItem({ item }: GetUnlockPostProps) {
                         {item.mentorName}
                     </Link>
                     <div className={style.tagsContainer}>
-                        {item.mentorArticleCount.predictedPlay === 'HANDICAP' &&
-                            item.mentorArticleCount.counts >= 10 && (
-                                <Tag
-                                    background="#f3f3f3"
-                                    borderColor="#bfbfbf"
-                                    color="#8d8d8d"
-                                    text={`${getText(item.mentorArticleCount.predictedPlay)} ${
-                                        item.mentorArticleCount.counts
-                                    }場`}
-                                />
-                            )}
-                        {item.mentorArticleCount.predictedPlay === 'OVERUNDER' &&
-                            item.mentorArticleCount.counts >= 10 && (
-                                <Tag
-                                    background="#f3f3f3"
-                                    borderColor="#bfbfbf"
-                                    color="#8d8d8d"
-                                    text={`${getText(item.mentorArticleCount.predictedPlay)} ${
-                                        item.mentorArticleCount.counts
-                                    }場`}
-                                />
-                            )}
+                        {item.mentorArticleCount.handicap >= 10 && (
+                            <Tag
+                                background="#f3f3f3"
+                                borderColor="#bfbfbf"
+                                color="#8d8d8d"
+                                text={`胜负${item.mentorArticleCount.handicap}場`}
+                            />
+                        )}
+                        {item.mentorArticleCount.overUnder >= 10 && (
+                            <Tag
+                                background="#f3f3f3"
+                                borderColor="#bfbfbf"
+                                color="#8d8d8d"
+                                text={`总进球${item.mentorArticleCount.overUnder}場`}
+                            />
+                        )}
                         {item.memberTags.weekHitRecentTen > 0 && (
                             <TagSplit
                                 hit

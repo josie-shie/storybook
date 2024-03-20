@@ -27,8 +27,8 @@ function Info({ params }: { params: { masterId: string } }) {
         fansCount: 0,
         unlockedCount: 0,
         mentorArticleCount: {
-            predictedPlay: '',
-            counts: 0
+            handicap: 0,
+            overUnder: 0
         },
         hitRate: 0,
         isFollowed: false,
@@ -107,24 +107,6 @@ function Info({ params }: { params: { masterId: string } }) {
         setInfo(res.data);
     };
 
-    const getText = predictedPlay => {
-        switch (predictedPlay) {
-            case 'HANDICAP':
-                return '胜负';
-            case 'OVERUNDER':
-                return '總进球';
-            default:
-                return '';
-        }
-    };
-
-    const showHandicap =
-        info.mentorArticleCount.predictedPlay === 'HANDICAP' &&
-        info.mentorArticleCount.counts >= 10;
-    const showOverUnder =
-        info.mentorArticleCount.predictedPlay === 'OVERUNDER' &&
-        info.mentorArticleCount.counts >= 10;
-
     useEffect(() => {
         void fetchData();
     }, [userInfo.uid]);
@@ -142,24 +124,22 @@ function Info({ params }: { params: { masterId: string } }) {
                             <div className={style.content}>
                                 <span className={style.name}>{info.username}</span>
                                 <div className={style.tagsContainer}>
-                                    {showHandicap ? (
+                                    {info.mentorArticleCount.handicap >= 10 && (
                                         <Tag
-                                            background="rgba(255, 255, 255, 0.30)"
-                                            borderColor="#6e94d4"
-                                            text={`${getText(
-                                                info.mentorArticleCount.predictedPlay
-                                            )} ${info.mentorArticleCount.counts}場`}
+                                            background="#f3f3f3"
+                                            borderColor="#bfbfbf"
+                                            color="#8d8d8d"
+                                            text={`胜负${info.mentorArticleCount.handicap}場`}
                                         />
-                                    ) : null}
-                                    {showOverUnder ? (
+                                    )}
+                                    {info.mentorArticleCount.overUnder >= 10 && (
                                         <Tag
-                                            background="rgba(255, 255, 255, 0.30)"
-                                            borderColor="#6e94d4"
-                                            text={`${getText(
-                                                info.mentorArticleCount.predictedPlay
-                                            )} ${info.mentorArticleCount.counts}場`}
+                                            background="#f3f3f3"
+                                            borderColor="#bfbfbf"
+                                            color="#8d8d8d"
+                                            text={`总进球${info.mentorArticleCount.overUnder}場`}
                                         />
-                                    ) : null}
+                                    )}
                                     {info.highlights.weekHitRecentTen > 0 && (
                                         <TagSplit
                                             hit

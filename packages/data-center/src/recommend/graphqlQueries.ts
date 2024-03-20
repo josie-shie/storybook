@@ -313,8 +313,8 @@ export const GET_POST_LIST_QUERY = `
                 } 
                 isUnlocked
                 mentorArticleCount {
-                  predictedPlay
-                  counts
+                    handicap
+                    overUnder
                 } 
             }
             pagination {
@@ -335,8 +335,8 @@ export const GET_MEMBER_PROFILE_WITH_MEMBER_ID_QUERY = `
             fansCount
             unlockedCount
             mentorArticleCount {
-                predictedPlay
-                counts
+                handicap
+                overUnder
             }
             hitRate
             isFollowed
