@@ -31,12 +31,10 @@ interface AccountState extends InitState {
     submittedState: SubmittedState;
     imgSrc: string;
     imgUpload: string;
-    isSubmitted: boolean;
     setFormState: (formState: FormState) => void;
     setSubmittedState: (submittedState: SubmittedState) => void;
     setImgSrc: (imgSrc: string) => void;
     setImgUpload: (setImgUpload: string) => void;
-    setIsSubmitted: (isSubmitted: boolean) => void;
 }
 
 let useAccountStore: StoreWithSelectors<AccountState>;
@@ -64,7 +62,6 @@ const initialState = (set: (updater: (state: AccountState) => Partial<AccountSta
     },
     imgSrc: '',
     imgUpload: '',
-    isSubmitted: false,
     setFormState: (formState: FormState) => {
         set(state => ({ ...state, formState }));
     },
@@ -76,9 +73,6 @@ const initialState = (set: (updater: (state: AccountState) => Partial<AccountSta
     },
     setImgUpload: (imgUpload: string) => {
         set(state => ({ ...state, imgUpload }));
-    },
-    setIsSubmitted: (isSubmitted: boolean) => {
-        set(state => ({ ...state, isSubmitted }));
     }
 });
 
