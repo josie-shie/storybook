@@ -1,13 +1,11 @@
 'use client';
+import { useRef } from 'react';
 import type { ReactNode } from 'react';
 import { useParams } from 'next/navigation';
-import { useRef } from 'react';
 import { motion } from 'framer-motion';
-import Header from '@/components/header/headerLogo';
-import Footer from '@/components/footer/footer';
 import ScrollTop from '@/components/scrollTop/scrollTop';
+import { creatAiPredictStore } from '../aiPredictStore';
 import style from './layout.module.scss';
-import { creatRankStore } from './rankStore';
 
 function InterceptingContent({ para }: { para: ReactNode }) {
     const scrollContentRef = useRef<HTMLDivElement>(null);
@@ -15,7 +13,7 @@ function InterceptingContent({ para }: { para: ReactNode }) {
 
     return (
         <>
-            {params.matchId || params.memberId ? (
+            {params.matchId ? (
                 <>
                     <motion.div
                         animate={{ left: '0%' }}
@@ -42,17 +40,18 @@ function InterceptingContent({ para }: { para: ReactNode }) {
     );
 }
 
-function ContestLayout({ children, para }: { children: ReactNode; para: ReactNode }) {
-    creatRankStore({ weekRankList: [], monthRankList: [], seasonRankList: [], masterRankList: [] });
+function AiPredictPageLayout({ children, para }: { children: ReactNode; para: ReactNode }) {
+    creatAiPredictStore({
+        aiPredictList: [],
+        aiHistoryList: []
+    });
 
     return (
-        <div className={style.guessLayout}>
-            <Header link="/guess" title="猜球风向" />
-            <div className={style.guess}>{children}</div>
-            <Footer />
+        <div className={style.aiPredictPageLayout}>
+            {children}
             <InterceptingContent para={para} />
         </div>
     );
 }
 
-export default ContestLayout;
+export default AiPredictPageLayout;

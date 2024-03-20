@@ -11,13 +11,13 @@ import { timestampToString, timestampToStringCh } from 'lib';
 // import { useAuthStore } from '@/store/authStore';
 import TeamLogo from '@/components/teamLogo/teamLogo';
 import { useAiPredictStore } from '../aiPredictStore';
-import Ai from '../ai';
-import Analyze from '../analyze';
-import Cornor from '../cornor';
+import Ai from '../components/analyzeContent/ai';
+import Analyze from '../components/analyzeContent/analyze';
+import Cornor from '../components/analyzeContent/cornor';
 // import Wallet from '../img/wallet.png';
-import Win from '../img/aiWin.svg';
-import Draw from '../img/aiDraw.svg';
-import AiAvatarSmall from '../img/aiAvatarSmall.svg';
+import Win from '../(list)/img/aiWin.svg';
+import Draw from '../(list)/img/aiDraw.svg';
+import AiAvatarSmall from '../(list)/img/aiAvatarSmall.svg';
 import AiAvatar from '../img/aiAvatar.svg';
 import style from '../aiPredict.module.scss';
 import Tutorial from '../components/turorial/turorial';
@@ -136,7 +136,8 @@ function AiPredictDetail({ params }: { params: { matchId: string } }) {
         const getPredicativeAnalysisList = async () => {
             const res = await getPredicativeAnalysisMatch({
                 matchId: 0,
-                matchTime: 0
+                matchTime: 0,
+                isFinished: true
             });
 
             if (!res.success) {
@@ -198,7 +199,8 @@ function AiPredictDetail({ params }: { params: { matchId: string } }) {
     }, [selectedMatches]);
 
     useEffect(() => {
-        const paramMatchId = parseInt(params.matchId);
+        // const paramMatchId = parseInt(params.matchId);
+        const paramMatchId = 3936479;
         const matchedItem = aiPredictList.find(item => item.matchId === paramMatchId);
 
         if (matchedItem) {

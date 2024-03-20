@@ -1,0 +1,55 @@
+.top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #8d8d8d;
+    font-size: 12px;
+}
+
+.league {
+    min-width: 60px;
+}
+
+.bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .teamBox {
+        font-size: 14px;
+        font-weight: 500;
+        color: #222;
+        flex-grow: 1;
+        border-right: 1px solid #f3f3f3;
+        padding-right: 12px;
+    }
+
+    .team {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: #222;
+        margin-bottom: 4px;
+
+        span {
+            color: #4a4a4a;
+        }
+    }
+
+    .teamName {
+        display: flex;
+        align-items: center;
+
+        img {
+            margin-right: 4px;
+        }
+    }
+
+    .icon {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-left: 12px;
+        width: 62px;
+    }
+}

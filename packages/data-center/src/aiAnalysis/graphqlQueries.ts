@@ -253,6 +253,8 @@ export const GET_PREDICATIVE_ANALYSIS_MATCH_QUERY = `
             predictResult
             predictMatchResult
             realMatchResult
+            awayScore
+            homeScore
             updatedAt
           }
         }

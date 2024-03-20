@@ -10,16 +10,16 @@ import { timestampToString, timestampToStringCh } from 'lib';
 // import { useUserStore } from '@/store/userStore';
 // import { useAuthStore } from '@/store/authStore';
 import TeamLogo from '@/components/teamLogo/teamLogo';
-import { useAiPredictStore } from './aiPredictStore';
-import style from './aiPredict.module.scss';
-import Win from './img/aiWin.svg';
-import Draw from './img/aiDraw.svg';
-import AiAvatar from './img/aiAvatar.svg';
+import Win from '@/public/resultIcon/bigWin.svg';
+import Draw from '@/public/resultIcon/bigDraw.svg';
+import Ai from '../components/analyzeContent/ai';
+import Analyze from '../components/analyzeContent/analyze';
+import Cornor from '../components/analyzeContent/cornor';
+import { useAiPredictStore } from '../aiPredictStore';
+import Tutorial from '../components/turorial/turorial';
 import AiAvatarSmall from './img/aiAvatarSmall.svg';
-import Ai from './ai';
-import Analyze from './analyze';
-import Cornor from './cornor';
-import Tutorial from './components/turorial/turorial';
+import style from './aiTodayMatches.module.scss';
+import AiAvatar from './img/aiAvatar.svg';
 // import Wallet from './img/wallet.png';
 
 interface MatchTab {
@@ -47,8 +47,8 @@ function TypingText({
     useEffect(() => {
         const fullMessage = `以下是我分析即将进行的${timestampToStringCh(
             matchTime,
-            'YYYY年MM月DD日 HH:mm'
-        )} ${league}足球赛中 ${home} 对 ${away} 的比赛。`;
+            'YYYY年MM月DD日'
+        )}${league}足球赛中 ${home} 对 ${away} 的比赛。`;
         let currentText = '';
         let currentIndex = 0;
 
@@ -66,15 +66,12 @@ function TypingText({
         typeCharacter();
     }, [matchTime, home, away, league]);
 
-    const parts = typedText.split(
-        new RegExp(`(${league}足球赛中|${timestampToStringCh(matchTime, 'YYYY年MM月DD日 HH:mm')})`)
-    );
+    const parts = typedText.split(new RegExp(`(${home}|${away})`));
 
     return (
         <>
             {parts.map(part =>
-                part === `${league}足球赛中` ||
-                part === timestampToStringCh(matchTime, 'YYYY年MM月DD日 HH:mm') ? (
+                part === home || part === away ? (
                     <span key={part} style={{ color: '#4489ff' }}>
                         {part}
                     </span>
@@ -123,7 +120,7 @@ function MatchItem({
     );
 }
 
-function AiPredict() {
+function AiTodayMatches() {
     const matchRefs = useRef<Record<number, React.RefObject<HTMLDivElement>>>({});
 
     // const router = useRouter();
@@ -149,7 +146,7 @@ function AiPredict() {
             const res = await getPredicativeAnalysisMatch({
                 matchId: 0,
                 matchTime: 0,
-                isFinished: false
+                isFinished: true
             });
 
             if (!res.success) {
@@ -287,17 +284,143 @@ function AiPredict() {
 
     return (
         <>
-            <div className={style.aiPredict}>
-                <div className={style.content}>
-                    <div className={style.welcome}>
-                        <div className={style.row}>
-                            <AiAvatar />
-                            <div className={style.title}>FutureAI</div>
-                        </div>
-                        <div className={style.text}>您好，为您推荐以下赛事预测分析：</div>
+            <div className={style.content}>
+                <div className={style.welcome}>
+                    <div className={style.row}>
+                        <AiAvatar />
+                        <div className={style.title}>FutureAI</div>
                     </div>
+                    <div className={style.text}>您好，为您推荐以下赛事预测分析：</div>
+                </div>
+                <div className={`${style.chat} ${showChat ? style.fadeIn : style.hidden}`}>
+                    <div className={style.title}>今日精选赛事</div>
+                    <div className={style.wrapper}>
+                        <div className={style.contestList}>
+                            <div className={style.row}>
+                                {firstHalfMatches.map(match => (
+                                    <MatchItem
+                                        handleSelectMatch={handleSelectMatch}
+                                        key={`${match.matchId}-${match.leagueType}`}
+                                        match={match}
+                                    />
+                                ))}
+                            </div>
+                            <div className={style.row}>
+                                {secondHalfMatches.map(match => (
+                                    <MatchItem
+                                        handleSelectMatch={handleSelectMatch}
+                                        key={`${match.matchId}-${match.leagueType}`}
+                                        match={match}
+                                    />
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {selectedMatches.length > 0 ? <div className={style.start}>开始分析</div> : null}
+                {selectedMatches.map(match => {
+                    const currentTabKey = getMatchTabKey(match.matchId);
+                    matchRefs.current[match.matchId] = createRef<HTMLDivElement>();
+                    return (
+                        <div
+                            className={style.analyze}
+                            key={match.matchId}
+                            ref={matchRefs.current[match.matchId]}
+                        >
+                            <div className={style.message}>
+                                <AiAvatarSmall className={style.icon} />
+                                <div className={style.text}>
+                                    <TypingText
+                                        away={match.awayChs}
+                                        home={match.homeChs}
+                                        league={match.leagueChs}
+                                        matchTime={match.matchTime}
+                                        onTypingDone={() => {
+                                            handleTypingDone(match.matchId);
+                                        }}
+                                    />
+                                </div>
+                            </div>
+                            <div
+                                className={`${style.teamTitle} ${
+                                    showInformation[match.matchId] ? style.fadeIn : style.hidden
+                                }`}
+                            >
+                                <div
+                                    className={`${style.name} ${
+                                        match.predictMatchResult === 1 ? style.win : ''
+                                    } ${match.predictMatchResult === 0 ? style.active : ''}`}
+                                >
+                                    {match.predictMatchResult === 1 ? (
+                                        <Win className={style.icon} />
+                                    ) : null}
+                                    <TeamLogo
+                                        alt={match.homeChs}
+                                        height={30}
+                                        src={match.homeLogo}
+                                        width={30}
+                                    />
+                                    <span>{match.homeChs}</span>
+                                </div>
+                                {match.predictMatchResult === 0 ? (
+                                    <Draw className={style.draw} />
+                                ) : null}
+                                <div
+                                    className={`${style.name} ${
+                                        match.predictMatchResult === 2 ? style.win : ''
+                                    } ${match.predictMatchResult === 0 ? style.active : ''}`}
+                                >
+                                    {match.predictMatchResult === 2 ? (
+                                        <Win className={style.icon} />
+                                    ) : null}
+                                    <TeamLogo
+                                        alt={match.awayChs}
+                                        height={30}
+                                        src={match.awayLogo}
+                                        width={30}
+                                    />
+                                    <span>{match.awayChs}</span>
+                                </div>
+                            </div>
+                            <div
+                                className={`${style.information} ${
+                                    showInformation[match.matchId] ? style.fadeIn : style.hidden
+                                }`}
+                            >
+                                <div className={style.minTabBar}>
+                                    {tabList.map(tab => (
+                                        <motion.div
+                                            animate={
+                                                currentTabKey === tab.value ? tabActive : tabDefault
+                                            }
+                                            className={style.tab}
+                                            key={tab.value}
+                                            onClick={() => {
+                                                handleSetTabKey(match.matchId, tab.value);
+                                            }}
+                                        >
+                                            {tab.title}
+                                        </motion.div>
+                                    ))}
+                                </div>
+                                <AnimatePresence mode="wait">
+                                    <motion.div
+                                        animate={{ opacity: 1, y: 0 }}
+                                        exit={{ opacity: 0, y: -4 }}
+                                        initial={{ opacity: 0, y: 4 }}
+                                        key={currentTabKey}
+                                        transition={{ duration: 0.16 }}
+                                    >
+                                        {getSelectedComponent(currentTabKey, match)}
+                                    </motion.div>
+                                </AnimatePresence>
+                            </div>
+                        </div>
+                    );
+                })}
+                {selectedMatches.length > 0 ? (
                     <div className={`${style.chat} ${showChat ? style.fadeIn : style.hidden}`}>
-                        <div className={style.title}>今日精选赛事</div>
+                        <div className={style.title}>其他推荐赛事</div>
                         <div className={style.wrapper}>
                             <div className={style.contestList}>
                                 <div className={style.row}>
@@ -321,170 +444,11 @@ function AiPredict() {
                             </div>
                         </div>
                     </div>
-
-                    {selectedMatches.length > 0 ? (
-                        <div className={style.start}>开始分析</div>
-                    ) : null}
-
-                    {selectedMatches.map(match => {
-                        const currentTabKey = getMatchTabKey(match.matchId);
-                        matchRefs.current[match.matchId] = createRef<HTMLDivElement>();
-                        return (
-                            <div
-                                className={style.analyze}
-                                key={match.matchId}
-                                ref={matchRefs.current[match.matchId]}
-                            >
-                                <div className={style.message}>
-                                    <AiAvatarSmall className={style.icon} />
-                                    <div className={style.text}>
-                                        <TypingText
-                                            away={match.awayChs}
-                                            home={match.homeChs}
-                                            league={match.leagueChs}
-                                            matchTime={match.matchTime}
-                                            onTypingDone={() => {
-                                                handleTypingDone(match.matchId);
-                                            }}
-                                        />
-                                    </div>
-                                </div>
-
-                                <div
-                                    className={`${style.teamTitle} ${
-                                        showInformation[match.matchId] ? style.fadeIn : style.hidden
-                                    }`}
-                                >
-                                    <div
-                                        className={`${style.name} ${
-                                            match.predictMatchResult === 1 ? style.win : ''
-                                        } ${match.predictMatchResult === 0 ? style.active : ''}`}
-                                    >
-                                        {match.predictMatchResult === 1 ? (
-                                            <Win className={style.icon} />
-                                        ) : null}
-
-                                        <TeamLogo
-                                            alt={match.homeChs}
-                                            height={30}
-                                            src={match.homeLogo}
-                                            width={30}
-                                        />
-                                        <span>{match.homeChs}</span>
-                                    </div>
-                                    {match.predictMatchResult === 0 ? (
-                                        <Draw className={style.draw} />
-                                    ) : null}
-                                    <div
-                                        className={`${style.name} ${
-                                            match.predictMatchResult === 2 ? style.win : ''
-                                        } ${match.predictMatchResult === 0 ? style.active : ''}`}
-                                    >
-                                        {match.predictMatchResult === 2 ? (
-                                            <Win className={style.icon} />
-                                        ) : null}
-                                        <TeamLogo
-                                            alt={match.awayChs}
-                                            height={30}
-                                            src={match.awayLogo}
-                                            width={30}
-                                        />
-                                        <span>{match.awayChs}</span>
-                                    </div>
-                                </div>
-
-                                <div
-                                    className={`${style.information} ${
-                                        showInformation[match.matchId] ? style.fadeIn : style.hidden
-                                    }`}
-                                >
-                                    <div className={style.minTabBar}>
-                                        {tabList.map(tab => (
-                                            <motion.div
-                                                animate={
-                                                    currentTabKey === tab.value
-                                                        ? tabActive
-                                                        : tabDefault
-                                                }
-                                                className={style.tab}
-                                                key={tab.value}
-                                                onClick={() => {
-                                                    handleSetTabKey(match.matchId, tab.value);
-                                                }}
-                                            >
-                                                {tab.title}
-                                            </motion.div>
-                                        ))}
-                                    </div>
-                                    <AnimatePresence mode="wait">
-                                        <motion.div
-                                            animate={{ opacity: 1, y: 0 }}
-                                            exit={{ opacity: 0, y: -4 }}
-                                            initial={{ opacity: 0, y: 4 }}
-                                            key={currentTabKey}
-                                            transition={{ duration: 0.16 }}
-                                        >
-                                            {getSelectedComponent(currentTabKey, match)}
-                                        </motion.div>
-                                    </AnimatePresence>
-                                </div>
-                            </div>
-                        );
-                    })}
-
-                    {selectedMatches.length > 0 ? (
-                        <div className={`${style.chat} ${showChat ? style.fadeIn : style.hidden}`}>
-                            <div className={style.title}>其他推荐赛事</div>
-                            <div className={style.wrapper}>
-                                <div className={style.contestList}>
-                                    <div className={style.row}>
-                                        {firstHalfMatches.map(match => (
-                                            <MatchItem
-                                                handleSelectMatch={handleSelectMatch}
-                                                key={`${match.matchId}-${match.leagueType}`}
-                                                match={match}
-                                            />
-                                        ))}
-                                    </div>
-                                    <div className={style.row}>
-                                        {secondHalfMatches.map(match => (
-                                            <MatchItem
-                                                handleSelectMatch={handleSelectMatch}
-                                                key={`${match.matchId}-${match.leagueType}`}
-                                                match={match}
-                                            />
-                                        ))}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    ) : null}
-                </div>
-                <Tutorial />
+                ) : null}
             </div>
-            {/* <ConfirmPayDrawer
-                isOpen={openPaid}
-                onClose={() => {
-                    setOpenPaid(false);
-                }}
-                onOpen={() => {
-                    setOpenPaid(true);
-                }}
-                onPay={onSubmit}
-                price={80}
-            />
-            <NormalDialog
-                confirmText="去充值"
-                content={<div>余额不足，请充值</div>}
-                onClose={() => {
-                    setOpenDialog(false);
-                }}
-                onConfirm={goSubscribe}
-                openDialog={openDialog}
-                srcImage={Wallet}
-            /> */}
+            <Tutorial />
         </>
     );
 }
 
-export default AiPredict;
+export default AiTodayMatches;
