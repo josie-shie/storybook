@@ -21,7 +21,7 @@ function InterceptingContent({ para }: { para: ReactNode }) {
                         key="interceptingContent"
                         ref={scrollContentRef}
                         style={{
-                            background: '#fff',
+                            background: 'linear-gradient(91deg, #003c9f 0.72%, #2575fc 98.56%)',
                             width: '100%',
                             position: 'fixed',
                             top: 0,

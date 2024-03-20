@@ -174,8 +174,9 @@ function TargetMatch({ target }: { target: GetPredicativeAnalysisMatch }) {
 function AiHistoryDetail({ matchId }: { matchId: number }) {
     const aiHistoryList = useAiPredictStore.use.aiHistoryList();
     const target = aiHistoryList.find(
-        (item: GetPredicativeAnalysisMatch) => item.matchId === matchId
+        (item: GetPredicativeAnalysisMatch) => item.matchId === Number(matchId)
     );
+
     return (
         <>
             <Header />
