@@ -24,7 +24,7 @@ import MyGame from './img/myGame.png';
 import MyAnalyze from './img/myAnalyze.png';
 import UserIcon from './img/user.svg';
 import UnlockIcon from './img/unlock.svg';
-import EditIcon from './img/edit.svg';
+import Account from './img/account.svg';
 import EditWhIcon from './img/editWh.svg';
 import StarIcon from './img/star.svg';
 import GiftIcon from './img/gift.png';
@@ -140,8 +140,8 @@ function UserInfo() {
                                         />
                                     )}
                                     <div className={style.edit} onClick={editAccount}>
-                                        <EditIcon />
-                                        编辑
+                                        <Account />
+                                        个人档案
                                     </div>
                                 </div>
                                 {!loading ? (
