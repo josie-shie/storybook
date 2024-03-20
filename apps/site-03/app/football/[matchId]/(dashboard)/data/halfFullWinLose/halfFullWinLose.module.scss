@@ -17,6 +17,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+        gap: 24px;
 
         .team {
             display: flex;
@@ -26,7 +27,12 @@
         }
 
         .teamName {
-            font-size: 12px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .away > .teamName {
+            text-align: right;
         }
     }
 
