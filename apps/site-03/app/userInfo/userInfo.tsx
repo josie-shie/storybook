@@ -200,11 +200,11 @@ function UserInfo() {
                         </div>
                         {!loading ? (
                             <div className={style.bottom}>
-                                {userInfo.fans > 0 && (
+                                {userInfo.follow > 0 && (
                                     <span className={style.item}>
                                         <UserIcon className={style.icon} />
-                                        <span>粉丝</span>
-                                        <span>{userInfo.fans}</span>
+                                        <span>关注</span>
+                                        <span>{userInfo.follow}</span>
                                     </span>
                                 )}
                                 {userInfo.unlocked > 0 && (
@@ -214,10 +214,10 @@ function UserInfo() {
                                         <span>{userInfo.unlocked}</span>
                                     </span>
                                 )}
-                                {tags.quarterHitRate > 0 && (
+                                {userInfo.soccerGuessWinRate > 0 && (
                                     <span className={style.item}>
                                         <span>猜球胜率</span>
-                                        <span>{tags.quarterHitRate}%</span>
+                                        <span>{userInfo.soccerGuessWinRate}%</span>
                                     </span>
                                 )}
                             </div>

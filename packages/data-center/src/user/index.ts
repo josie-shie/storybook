@@ -134,6 +134,8 @@ const MemberInfoSchema = z.object({
     email: z.string(),
     description: z.string(),
     fans: z.number(),
+    soccerGuessWinRate: z.number(),
+    follow: z.number(),
     unlocked: z.number(),
     tags: TagSchema
 });
