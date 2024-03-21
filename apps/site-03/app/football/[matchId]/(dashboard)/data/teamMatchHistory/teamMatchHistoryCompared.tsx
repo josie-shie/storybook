@@ -100,15 +100,19 @@ function ComparedProgress() {
         <div className={style.progressContainer}>
             <ComparedLineProgress
                 awayProgress={formatNumberWithPercent(recentMatchCompare.away.goal || 0, totalGoal)}
-                awayValue={`(${truncateFloatingPoint(
-                    recentMatchCompare.away.goal / recentMatchCompare.home.matchCount,
-                    1
-                )})${recentMatchCompare.away.goal}`}
+                awayValue={`(${
+                    truncateFloatingPoint(
+                        recentMatchCompare.away.goal / recentMatchCompare.away.matchCount,
+                        1
+                    ) || 0
+                })${recentMatchCompare.away.goal}`}
                 homeProgress={formatNumberWithPercent(recentMatchCompare.home.goal || 0, totalGoal)}
-                homeValue={`${recentMatchCompare.home.goal}(${truncateFloatingPoint(
-                    recentMatchCompare.home.goal / recentMatchCompare.home.matchCount,
-                    1
-                )})`}
+                homeValue={`${recentMatchCompare.home.goal}(${
+                    truncateFloatingPoint(
+                        recentMatchCompare.home.goal / recentMatchCompare.home.matchCount,
+                        1
+                    ) || 0
+                })`}
                 title="进球"
             />
             <ComparedLineProgress
@@ -116,18 +120,22 @@ function ComparedProgress() {
                     recentMatchCompare.away.goalAgainst || 0,
                     totalGoal
                 )}
-                awayValue={`(${truncateFloatingPoint(
-                    recentMatchCompare.away.goalAgainst / recentMatchCompare.away.matchCount,
-                    1
-                )})${recentMatchCompare.away.goalAgainst}`}
+                awayValue={`(${
+                    truncateFloatingPoint(
+                        recentMatchCompare.away.goalAgainst / recentMatchCompare.away.matchCount,
+                        1
+                    ) || 0
+                })${recentMatchCompare.away.goalAgainst}`}
                 homeProgress={formatNumberWithPercent(
                     recentMatchCompare.home.goalAgainst || 0,
                     totalGoal
                 )}
-                homeValue={`${recentMatchCompare.home.goalAgainst}(${truncateFloatingPoint(
-                    recentMatchCompare.home.goalAgainst / recentMatchCompare.away.matchCount,
-                    1
-                )})`}
+                homeValue={`${recentMatchCompare.home.goalAgainst}(${
+                    truncateFloatingPoint(
+                        recentMatchCompare.home.goalAgainst / recentMatchCompare.home.matchCount,
+                        1
+                    ) || 0
+                })`}
                 title="失球"
             />
             <div
