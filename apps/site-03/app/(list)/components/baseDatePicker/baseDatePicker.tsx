@@ -16,7 +16,7 @@ import DateIcon from './img/date.svg';
 
 registerLocale('zh-CN', zhCN);
 
-type DateDirection = 'schedule' | 'result';
+type DateDirection = 'schedule' | 'result' | 'unLimited';
 
 interface BaseDatePickerProps {
     direction?: DateDirection;
@@ -109,8 +109,13 @@ function BaseDatePicker({
         handleDateSelection(dayjs(defaultDate).isValid() ? defaultDate : new Date());
     }, [dates, defaultDate, direction, handleDateSelection]);
 
-    const minDate =
-        direction === 'schedule' ? dayjs().toDate() : dayjs().subtract(30, 'day').toDate();
+    const minDate = (() => {
+        if (direction === 'unLimited') {
+            return undefined;
+        }
+        return direction === 'schedule' ? dayjs().toDate() : dayjs().subtract(30, 'day').toDate();
+    })();
+
     const maxDate = direction === 'schedule' ? dayjs().add(30, 'day').toDate() : dayjs().toDate();
 
     return (
