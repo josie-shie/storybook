@@ -85,6 +85,8 @@ export const GET_MEMBER_INFO_QUERY = `
                 winRanking
                 winHistoryMaxWinStreak
             }
+             follow
+             soccerGuessWinRate
         }
     }
 `;
