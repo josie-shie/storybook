@@ -1,7 +1,7 @@
 'use client';
 import Image from 'next/image';
 import type { TagType, MemberGuessViewingRecord } from 'data-center';
-import { convertHandicap } from 'lib';
+import { convertHandicap, timestampToString } from 'lib';
 import Avatar from '@mui/material/Avatar';
 import Link from 'next/link';
 import Tag from '@/components/tag/tag';
@@ -78,6 +78,10 @@ function RecordCard({ recordItem }: { recordItem: MemberGuessViewingRecord }) {
                         {tagListFormat(recordItem.highlights)}
                     </div>
                     <div className={style.league}>
+                        {recordItem.leagueName} <span>|</span>
+                        {timestampToString(recordItem.matchTime, 'MM-DD HH:mm')}
+                    </div>
+                    <div className={style.teamName}>
                         {recordItem.homeTeamName} VS {recordItem.awayTeamName}
                     </div>
                     <ul className={style.ballList}>
