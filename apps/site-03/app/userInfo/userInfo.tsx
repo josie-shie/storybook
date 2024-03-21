@@ -1,5 +1,6 @@
 'use client';
 import Link from 'next/link';
+import { truncateFloatingPoint, formatNumberWithCommas } from 'lib';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { getMemberInfo } from 'data-center';
@@ -7,7 +8,6 @@ import { ButtonBase } from '@mui/material';
 import Skeleton from '@mui/material/Skeleton';
 import Image from 'next/image';
 import Cookies from 'js-cookie';
-import { formatNumberWithCommas } from 'lib';
 import { useNotificationStore } from '@/store/notificationStore';
 import Tag from '@/components/tag/tag';
 import TagSplit from '@/components/tagSplit/tagSplit';
@@ -217,7 +217,9 @@ function UserInfo() {
                                 {userInfo.soccerGuessWinRate > 0 && (
                                     <span className={style.item}>
                                         <span>猜球胜率</span>
-                                        <span>{userInfo.soccerGuessWinRate}%</span>
+                                        <span>
+                                            {truncateFloatingPoint(userInfo.soccerGuessWinRate, 1)}%
+                                        </span>
                                     </span>
                                 )}
                             </div>
