@@ -137,7 +137,7 @@ function MyGuessMyPlans({ setIsOpenRecord }: MyGuessMyPlansProps) {
             <div className={style.guessTitle}>
                 <span>我猜过的</span>
                 <span className={style.record} onClick={handleOpenRecord}>
-                    我解锁过的方案
+                    查看解锁方案
                 </span>
             </div>
             <div className={style.title}>
