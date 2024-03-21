@@ -23,14 +23,14 @@
     }
 
     .recordList {
-        background: linear-gradient(91deg, #003c9f 0.72%, #2575fc 98.56%);
+        background: #fff;
+        padding: 12px;
     }
 
     .guessTitle {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 12px 12px 0;
         background: #fff;
         border-top-right-radius: 8px;
         border-top-left-radius: 8px;
@@ -151,6 +151,32 @@
             :global(.swiper-slide) {
                 padding: 12px !important;
             }
+        }
+    }
+
+    .tabText {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 8px;
+        margin: 8px 0;
+
+        span {
+            border: 1px solid #9b9b9b;
+            background-color: #fff;
+            color: #9b9b9b;
+            height: 36px;
+            width: 54px;
+            text-align: center;
+            line-height: 36px;
+            border-radius: 30px;
+            font-size: 12px;
+        }
+
+        span.active {
+            color: #4489ff;
+            border: 1px solid #4489ff;
+            background-color: #edf3ff;
         }
     }
 

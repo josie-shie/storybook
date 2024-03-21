@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { InfiniteScroll, Tab, Tabs } from 'ui';
+import { InfiniteScroll } from 'ui';
 import {
     getMemberIndividualGuessMatches,
     type GetMemberIndividualGuessMatchesResponse,
@@ -16,49 +16,59 @@ import { useMyGuessStore } from './myGuessStore';
 
 type Tab = 0 | 1 | 2;
 
-function PlansList({
-    planActiveTab,
-    setPage,
-    page
-}: {
-    setPage: (arg: number) => void;
-    page: number;
-    planActiveTab: Tab;
-}) {
+function PlansList({ planActiveTab }: { planActiveTab: Tab }) {
     const uid = useUserStore.use.userInfo().uid;
-    const myPlansData = useMyGuessStore.use.myGuess().initPlans[planActiveTab].guessMatchList;
     const initPlans = useMyGuessStore.use.myGuess().initPlans;
-    const pagination = useMyGuessStore.use.myGuess().initPlans[planActiveTab].pagination;
-    const [displayList, setDisplayList] = useState<MemberIndividualGuessMatch[]>(myPlansData);
-    const [disPlayPagination, setDisPlayPagination] = useState(pagination);
+    const [displayList, setDisplayList] = useState<MemberIndividualGuessMatch[]>([]);
+    const [isNoData, setIsNoData] = useState<boolean | null>(null);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalCount, setTotalCount] = useState(1);
 
-    const loadMoreList = async () => {
-        if (
-            page === disPlayPagination.pageCount ||
-            initPlans[planActiveTab].guessMatchList.length === pagination.totalCount
-        )
+    const fetchData = async (resetList = false) => {
+        if (resetList) {
+            const guessMatchListLength = initPlans[planActiveTab].guessMatchList.length;
+            setDisplayList(initPlans[planActiveTab].guessMatchList);
+            setIsNoData(guessMatchListLength === 0);
+            setTotalCount(initPlans[planActiveTab].pagination.totalCount);
             return;
-        const palns = await getMemberIndividualGuessMatches({
+        }
+        const res = await getMemberIndividualGuessMatches({
             memberId: uid,
-            guessType: planActiveTab,
-            currentPage: page + 1,
-            pageSize: 50
+            currentPage: currentPage + 1,
+            pageSize: 50,
+            guessType: planActiveTab
         });
-        if (palns.success) {
-            setDisplayList(myPlansData.concat(palns.data.guessMatchList));
-            setDisPlayPagination(palns.data.pagination);
-            setPage(page + 1);
+
+        if (!res.success) {
+            return new Error();
+        }
+
+        const updatedGuessMatchesList = displayList.concat(res.data.guessMatchList);
+        setDisplayList(updatedGuessMatchesList);
+        setIsNoData(res.data.guessMatchList.length === 0);
+        setTotalCount(res.data.pagination.totalCount);
+    };
+
+    const loadMoreList = () => {
+        if (currentPage <= Math.round(displayList.length / 30) && currentPage < totalCount) {
+            setCurrentPage(prevData => prevData + 1);
+            void fetchData();
         }
     };
 
-    if (!myPlansData.length) return <NoData text="暂无资料" />;
+    useEffect(() => {
+        setCurrentPage(1);
+        void fetchData(true);
+    }, [planActiveTab]);
+
+    if (isNoData) return <NoData text="暂无资料" />;
 
     return (
         <>
             {displayList.map(row => (
                 <BettingPlan key={row.id} rowData={row} />
             ))}
-            {displayList.length < pagination.totalCount ? (
+            {displayList.length < totalCount ? (
                 <InfiniteScroll onVisible={loadMoreList}>
                     <div className={style.loadMore}>
                         <CircularProgress size={24} />
@@ -72,20 +82,7 @@ function PlansList({
         </>
     );
 }
-const tabList = [
-    {
-        label: '全部',
-        value: '0'
-    },
-    {
-        label: '总胜负',
-        value: '1'
-    },
-    {
-        label: '总进球',
-        value: '2'
-    }
-];
+
 interface MyGuessMyPlansProps {
     setIsOpenRecord: (arg: boolean) => void;
 }
@@ -95,15 +92,13 @@ function MyGuessMyPlans({ setIsOpenRecord }: MyGuessMyPlansProps) {
     const setInitPlans = useMyGuessStore.use.setInitPlans();
     const [planActiveTab, setPlanActiveTab] = useState<Tab>(0);
     const [isMyPlanLoading, setIsMyPlanLoading] = useState(false);
-    const [page, setPage] = useState(1);
-
-    const handlePlanTabClick = (tabName: Tab) => {
-        setPage(1);
-        setPlanActiveTab(tabName);
-    };
 
     const handleOpenRecord = () => {
         setIsOpenRecord(true);
+    };
+
+    const handlePlanTabClick = (tabName: Tab) => {
+        setPlanActiveTab(tabName);
     };
 
     useEffect(() => {
@@ -145,34 +140,42 @@ function MyGuessMyPlans({ setIsOpenRecord }: MyGuessMyPlansProps) {
                     我解锁过的方案
                 </span>
             </div>
-            <div className={style.btnTab}>
-                <Tabs
-                    defaultValue={planActiveTab}
-                    gap={8}
-                    onTabChange={value => {
-                        handlePlanTabClick(Number(value) as Tab);
-                    }}
-                    position="center"
-                    styling="button"
-                >
-                    {tabList.map(item => {
-                        return (
-                            <Tab key={item.value} label={item.label} value={item.value}>
-                                {isMyPlanLoading ? (
-                                    <div className={style.loaderBox}>
-                                        <Loading />
-                                    </div>
-                                ) : (
-                                    <PlansList
-                                        page={page}
-                                        planActiveTab={planActiveTab}
-                                        setPage={setPage}
-                                    />
-                                )}
-                            </Tab>
-                        );
-                    })}
-                </Tabs>
+            <div className={style.title}>
+                <div className={style.tabText}>
+                    <span
+                        className={planActiveTab === 0 ? style.active : ''}
+                        onClick={() => {
+                            handlePlanTabClick(0);
+                        }}
+                    >
+                        全部
+                    </span>
+                    <span
+                        className={planActiveTab === 1 ? style.active : ''}
+                        onClick={() => {
+                            handlePlanTabClick(1);
+                        }}
+                    >
+                        胜负
+                    </span>
+                    <span
+                        className={planActiveTab === 2 ? style.active : ''}
+                        onClick={() => {
+                            handlePlanTabClick(2);
+                        }}
+                    >
+                        总进球
+                    </span>
+                </div>
+            </div>
+            <div className={style.bettingPlan}>
+                {isMyPlanLoading ? (
+                    <div className={style.loaderBox}>
+                        <Loading />
+                    </div>
+                ) : (
+                    <PlansList planActiveTab={planActiveTab} />
+                )}
             </div>
         </div>
     );
