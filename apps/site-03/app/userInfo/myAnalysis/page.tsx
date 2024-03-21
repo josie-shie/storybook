@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import MyAnalysis from './myAnalysis';
 
 export const metadata: Metadata = {
-    title: '解锁纪录 | FutureSport'
+    title: '文章解锁纪录 | FutureSport'
 };
 
 function Page() {

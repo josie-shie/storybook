@@ -81,6 +81,12 @@
             min-height: 20px;
             margin-top: 10px;
 
+            span {
+                color: #fff;
+                font-size: 12px;
+                font-weight: 400;
+            }
+
             .item {
                 display: flex;
                 align-items: center;
@@ -101,12 +107,6 @@
                     }
                 }
             }
-
-            span {
-                color: #fff;
-                font-size: 12px;
-                font-weight: 400;
-            }
         }
 
         .introduction {
@@ -115,6 +115,20 @@
             font-size: 14px;
             font-weight: 300;
             color: rgba(255 255 255 / 70%);
+        }
+
+        .editIntroduction {
+            display: flex;
+            color: #e6effe;
+            font-size: 14px;
+            font-weight: 400;
+            align-items: center;
+            margin-top: 25px;
+            gap: 4px;
+
+            p {
+                border-bottom: 1px solid #e6effe;
+            }
         }
 
         .trade {

@@ -24,7 +24,8 @@ import MyGame from './img/myGame.png';
 import MyAnalyze from './img/myAnalyze.png';
 import UserIcon from './img/user.svg';
 import UnlockIcon from './img/unlock.svg';
-import EditIcon from './img/edit.svg';
+import Account from './img/account.svg';
+import EditWhIcon from './img/editWh.svg';
 import StarIcon from './img/star.svg';
 import GiftIcon from './img/gift.png';
 import LockIcon from './img/lock.svg';
@@ -78,6 +79,17 @@ function UserInfo() {
     //     router.push('/userInfo/subscribe');
     // };
 
+    const showIntroduction = (introduction: string) => {
+        return introduction || introduction !== '' ? (
+            <div className={style.introduction}>{userInfo.description}</div>
+        ) : (
+            <div className={style.editIntroduction} onClick={editAccount}>
+                <p>来写点个人简介吧 ！</p>
+                <EditWhIcon />
+            </div>
+        );
+    };
+
     const logout = () => {
         Cookies.remove('access');
         setIsVisible('登出成功', 'success');
@@ -128,8 +140,8 @@ function UserInfo() {
                                         />
                                     )}
                                     <div className={style.edit} onClick={editAccount}>
-                                        <EditIcon />
-                                        编辑
+                                        <Account />
+                                        个人档案
                                     </div>
                                 </div>
                                 {!loading ? (
@@ -188,26 +200,26 @@ function UserInfo() {
                         </div>
                         {!loading ? (
                             <div className={style.bottom}>
-                                {userInfo.fans > 0 && (
+                                {userInfo.follow > 0 && (
                                     <span className={style.item}>
                                         <UserIcon className={style.icon} />
-                                        <span>粉丝</span>
-                                        <span>{userInfo.fans}</span>
+                                        <span>关注</span>
+                                        <span>{userInfo.follow}</span>
                                     </span>
                                 )}
                                 {userInfo.unlocked > 0 && (
                                     <span className={style.item}>
                                         <UnlockIcon className={style.icon} />
-                                        <span>解鎖</span>
+                                        <span>解锁</span>
                                         <span>{userInfo.unlocked}</span>
                                     </span>
                                 )}
-                                {tags.quarterHitRate > 0 ? (
+                                {userInfo.soccerGuessWinRate > 0 && (
                                     <span className={style.item}>
                                         <span>猜球胜率</span>
-                                        <span>{tags.quarterHitRate}%</span>
+                                        <span>{userInfo.soccerGuessWinRate}%</span>
                                     </span>
-                                ) : null}
+                                )}
                             </div>
                         ) : (
                             <div className={style.bottom}>
@@ -215,7 +227,7 @@ function UserInfo() {
                             </div>
                         )}
                         {!loading ? (
-                            <div className={style.introduction}>{userInfo.description}</div>
+                            showIntroduction(userInfo.description)
                         ) : (
                             <div className={style.introduction}>
                                 <Skeleton
@@ -237,7 +249,7 @@ function UserInfo() {
                                 <span className={style.text}>
                                     <StarIcon className={style.icon} />
                                     {/* <Image alt="" height={14} src={Star} width={14} /> */}
-                                    <span>平台幣馀额：</span>
+                                    <span>平台币馀额：</span>
                                     {!loading ? (
                                         <>{formatNumberWithCommas(userInfo.balance)}</>
                                     ) : (
@@ -251,7 +263,7 @@ function UserInfo() {
                                 </span>
                                 <span className={style.button}>获得更多</span>
                             </div>
-                            {/* 保留等充值開放時再開啟 */}
+                            {/* 保留等充值开放时再开启 */}
                             {/* <div className={`${style.item} ${style.second}`}>
                                 <span className={style.text}>
                                     <Image alt="" height={16} src={BuyBag} width={16} />
@@ -298,7 +310,7 @@ function UserInfo() {
                                             goSubscribe();
                                         }}
                                     >
-                                        續約
+                                        续约
                                     </span>
                                 )}
                             </div> */}
@@ -336,7 +348,7 @@ function UserInfo() {
                             <Link className={style.text} href="/userInfo/myAnalysis?status=unlock">
                                 <ButtonBase>
                                     <Image alt="" height={32} src={MyAnalyze} width={32} />
-                                    <span>解锁纪录</span>
+                                    <span>文章纪录</span>
                                 </ButtonBase>
                             </Link>
                         </div>
@@ -373,7 +385,7 @@ function UserInfo() {
                             <li>
                                 <ButtonBase>
                                     <QuestionIcon />
-                                    <Link href="/userInfo/helpCenter">說明中心</Link>
+                                    <Link href="/userInfo/helpCenter">说明中心</Link>
                                 </ButtonBase>
                             </li>
                         </ul>
