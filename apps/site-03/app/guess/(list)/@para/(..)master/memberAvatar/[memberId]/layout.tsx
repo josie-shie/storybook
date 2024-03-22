@@ -50,7 +50,9 @@ function Layout({ params }: { params: { memberId: string } }) {
             <Header title="其他会员" />
             <div className={style.masterAvatarLayout}>
                 <Info params={params} />
-                <MemberAvatar initGuessData={initGuessData} params={params} />
+                {Object.hasOwnProperty.call(initGuessData, 0) && (
+                    <MemberAvatar initGuessData={initGuessData} params={params} />
+                )}
             </div>
         </div>
     );
