@@ -51,7 +51,7 @@ function BettingPlan({
             setGuessMatchesList(initGuessData[planActiveTab].guessMatchList);
             setGuessLength(initGuessData[planActiveTab].pagination.totalCount);
             setIsNoData(guessMatchListLength === 0);
-            setTotalPage(initGuessData[planActiveTab].pagination.totalCount);
+            setTotalPage(initGuessData[planActiveTab].pagination.pageCount);
             return;
         }
         const res = await getMemberIndividualGuessMatches({
@@ -72,7 +72,7 @@ function BettingPlan({
     };
 
     const loadMoreList = () => {
-        if (currentPage <= Math.round(guessMatchesList.length / 30) && currentPage < totalPage) {
+        if (currentPage <= Math.round(guessMatchesList.length / 50) && currentPage < totalPage) {
             setCurrentPage(prevData => prevData + 1);
             void fetchData();
             handleResetHeight();

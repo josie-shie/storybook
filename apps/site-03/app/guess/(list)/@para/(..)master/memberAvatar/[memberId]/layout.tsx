@@ -10,6 +10,7 @@ import MemberAvatar from '@/app/master/memberAvatar/[memberId]/memberAvatar';
 import style from '@/app/master/masterAvatar/[masterId]/layout.module.scss';
 import { useLockBodyScroll } from '@/hooks/lockScroll';
 import type { Tab, InitGuessData } from '@/app/master/masterAvatar/[masterId]/page';
+import Footer from '@/components/footer/footer';
 
 function Layout({ params }: { params: { memberId: string } }) {
     useLockBodyScroll();
@@ -50,8 +51,11 @@ function Layout({ params }: { params: { memberId: string } }) {
             <Header title="其他会员" />
             <div className={style.masterAvatarLayout}>
                 <Info params={params} />
-                <MemberAvatar initGuessData={initGuessData} params={params} />
+                {Object.hasOwnProperty.call(initGuessData, 0) && (
+                    <MemberAvatar initGuessData={initGuessData} params={params} />
+                )}
             </div>
+            <Footer />
         </div>
     );
 }
