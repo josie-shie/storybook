@@ -22,7 +22,7 @@ import MyFans from './img/myFans.png';
 import MyGame from './img/myGame.png';
 // import VipTip from './img/vipTip.png';
 import MyAnalyze from './img/myAnalyze.png';
-import UserIcon from './img/user.svg';
+import Follow from './img/follow.svg';
 import UnlockIcon from './img/unlock.svg';
 import Account from './img/account.svg';
 import EditWhIcon from './img/editWh.svg';
@@ -202,7 +202,7 @@ function UserInfo() {
                             <div className={style.bottom}>
                                 {userInfo.follow > 0 && (
                                     <span className={style.item}>
-                                        <UserIcon className={style.icon} />
+                                        <Follow className={style.icon} />
                                         <span>关注</span>
                                         <span>{userInfo.follow}</span>
                                     </span>
