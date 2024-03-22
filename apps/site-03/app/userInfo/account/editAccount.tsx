@@ -106,6 +106,15 @@ function AditAccount({ setIsEdit }: { setIsEdit: (isEdit: boolean) => void }) {
             description: formState.description
         };
 
+        if (newInfo.username.length > 10) {
+            setIsVisible('暱称不可超过10个字', 'error');
+            return;
+        }
+        if (newInfo.description.length > 70) {
+            setIsVisible('简介不可超过10个字', 'error');
+            return;
+        }
+
         const res = await updateMemberInfo(newInfo);
 
         if (!res.success) {
