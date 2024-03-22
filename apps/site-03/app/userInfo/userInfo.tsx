@@ -32,8 +32,10 @@ import LockIcon from './img/lock.svg';
 import QuestionIcon from './img/question.svg';
 import style from './userInfo.module.scss';
 import defaultAvatar from './img/avatar.png';
+import { creatAccountStore, useAccountStore } from './account/accountStore';
 
 function UserInfo() {
+    creatAccountStore({ loading: false });
     const router = useRouter();
     const userInfo = useUserStore.use.userInfo();
     const tags = useUserStore.use.tags();
@@ -43,6 +45,7 @@ function UserInfo() {
     const setAuthQuery = useUserStore.use.setAuthQuery();
     const setIsLogin = useUserStore.use.setIsLogin();
     const setIsVisible = useNotificationStore.use.setIsVisible();
+    const setIsEdit = useAccountStore.use.setIsEdit();
     const [loading, setLoading] = useState(true);
 
     const headerProps = {
@@ -65,8 +68,11 @@ function UserInfo() {
         void getUserInfo();
     }, []);
 
-    const editAccount = () => {
-        router.push('/userInfo/account');
+    const editAccount = (editMood: boolean) => {
+        setIsEdit(editMood);
+        setTimeout(() => {
+            router.push('/userInfo/account');
+        }, 10);
     };
 
     /* 保留等充值開放時再開啟 */
@@ -83,7 +89,12 @@ function UserInfo() {
         return introduction || introduction !== '' ? (
             <div className={style.introduction}>{userInfo.description}</div>
         ) : (
-            <div className={style.editIntroduction} onClick={editAccount}>
+            <div
+                className={style.editIntroduction}
+                onClick={() => {
+                    editAccount(true);
+                }}
+            >
                 <p>来写点个人简介吧 ！</p>
                 <EditWhIcon />
             </div>
@@ -139,7 +150,12 @@ function UserInfo() {
                                             width={74}
                                         />
                                     )}
-                                    <div className={style.edit} onClick={editAccount}>
+                                    <div
+                                        className={style.edit}
+                                        onClick={() => {
+                                            editAccount(false);
+                                        }}
+                                    >
                                         <Account />
                                         个人档案
                                     </div>

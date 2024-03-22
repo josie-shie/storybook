@@ -31,13 +31,13 @@ function Account() {
 
     const imgSrc = useAccountStore.use.imgSrc();
 
+    const isEdit = useAccountStore.use.isEdit();
+    const setIsEdit = useAccountStore.use.setIsEdit();
     const setFormState = useAccountStore.use.setFormState();
     const setSubmittedState = useAccountStore.use.setSubmittedState();
     const setImgSrc = useAccountStore.use.setImgSrc();
     const setImgUpload = useAccountStore.use.setImgUpload();
     const setIsVisible = useNotificationStore.use.setIsVisible();
-
-    const [isEdit, setIsEdit] = useState(false);
     const [isAvatarCropperOpen, setIsAvatarCropperOpen] = useState(false);
     const [newAvatar, setNewAvatar] = useState<string>();
 
