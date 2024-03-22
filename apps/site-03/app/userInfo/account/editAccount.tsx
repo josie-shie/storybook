@@ -233,7 +233,7 @@ function AditAccount({ setIsEdit }: { setIsEdit: (isEdit: boolean) => void }) {
                     }`}
                     type="submit"
                 >
-                    修改
+                    保存资料
                 </button>
             </div>
         </form>
