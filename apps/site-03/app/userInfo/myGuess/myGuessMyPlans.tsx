@@ -22,6 +22,7 @@ function PlansList({ planActiveTab }: { planActiveTab: Tab }) {
     const [displayList, setDisplayList] = useState<MemberIndividualGuessMatch[]>([]);
     const [isNoData, setIsNoData] = useState<boolean | null>(null);
     const [currentPage, setCurrentPage] = useState(1);
+    const [pageCount, setPageCount] = useState(1);
     const [totalCount, setTotalCount] = useState(1);
 
     const fetchData = async (resetList = false) => {
@@ -30,6 +31,7 @@ function PlansList({ planActiveTab }: { planActiveTab: Tab }) {
             setDisplayList(initPlans[planActiveTab].guessMatchList);
             setIsNoData(guessMatchListLength === 0);
             setTotalCount(initPlans[planActiveTab].pagination.totalCount);
+            setPageCount(initPlans[planActiveTab].pagination.pageCount);
             return;
         }
         const res = await getMemberIndividualGuessMatches({
@@ -50,7 +52,7 @@ function PlansList({ planActiveTab }: { planActiveTab: Tab }) {
     };
 
     const loadMoreList = () => {
-        if (currentPage <= Math.round(displayList.length / 30) && currentPage < totalCount) {
+        if (currentPage <= Math.round(displayList.length / 50) && currentPage < pageCount) {
             setCurrentPage(prevData => prevData + 1);
             void fetchData();
         }
