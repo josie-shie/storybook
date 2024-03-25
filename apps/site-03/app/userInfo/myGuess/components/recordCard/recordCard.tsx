@@ -2,8 +2,8 @@
 import Image from 'next/image';
 import type { TagType, MemberGuessViewingRecord } from 'data-center';
 import { convertHandicap, timestampToString } from 'lib';
-import Avatar from '@mui/material/Avatar';
 import Link from 'next/link';
+import Avatar from '@/components/avatar/avatar';
 import Tag from '@/components/tag/tag';
 import BigWin from '@/public/resultIcon/bigWin.svg';
 import BigLose from '@/public/resultIcon/bigLose.svg';
@@ -64,7 +64,10 @@ function RecordCard({ recordItem }: { recordItem: MemberGuessViewingRecord }) {
                     className={style.avatar}
                     href={`/master/masterAvatar/${recordItem.recordMemberId}?status=guess`}
                 >
-                    <Avatar />
+                    <Avatar
+                        shadow
+                        src={recordItem.avatarPath === '0' ? '' : recordItem.avatarPath}
+                    />
                 </Link>
                 <div className={style.details}>
                     <div className={style.nameRow}>
