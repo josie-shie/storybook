@@ -25,7 +25,9 @@ function RechargeItem({ data }: PropsType) {
                 <Image alt="" height={32} src={recharge} width={32} />
             </div>
             <div className={style.center}>
-                <div className={style.title}>{data.changeTypeDisplayName}</div>
+                <div className={style.title}>
+                    {data.changeTypeCategoryDisplayName}-{data.changeTypeDisplayName}
+                </div>
                 {data.rechargeStatus !== 'FAIL' && (
                     <div className={style.content}>
                         {data.currencyCode}:平台币 = 1:{data.exchangeRate}
