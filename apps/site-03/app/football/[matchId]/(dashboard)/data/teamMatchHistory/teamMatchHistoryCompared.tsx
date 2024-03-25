@@ -1,5 +1,5 @@
 'use client';
-import { formatNumberWithPercent, truncateFloatingPoint } from 'lib';
+import { formatNumberWithPercent, roundToDecimalPlace, truncateFloatingPoint } from 'lib';
 import { getRecentMatchCompare } from 'data-center';
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
@@ -145,9 +145,9 @@ function ComparedProgress() {
             >
                 <ComparedLineProgress
                     awayProgress={recentMatchCompare.away.winRate}
-                    awayValue={`${recentMatchCompare.away.winRate}`}
+                    awayValue={`${roundToDecimalPlace(recentMatchCompare.away.winRate, 0)}`}
                     homeProgress={recentMatchCompare.home.winRate}
-                    homeValue={`${recentMatchCompare.home.winRate}`}
+                    homeValue={`${roundToDecimalPlace(recentMatchCompare.home.winRate, 0)}`}
                     title={`胜率% ${winStatus ? '▼' : '▲'}`}
                 />
             </div>
@@ -171,9 +171,10 @@ function ComparedProgress() {
                         recentMatchCompare.away.matchCount
                     )})${recentMatchCompare.away.handicapWinRate}`}
                     homeProgress={recentMatchCompare.home.handicapWinRate}
-                    homeValue={`${
-                        recentMatchCompare.home.handicapWinRate
-                    }(${formatNumberWithPercent(
+                    homeValue={`${roundToDecimalPlace(
+                        recentMatchCompare.home.handicapWinRate,
+                        0
+                    )}(${formatNumberWithPercent(
                         recentMatchCompare.home.handicapLose,
                         recentMatchCompare.home.matchCount
                     )})`}
@@ -195,9 +196,15 @@ function ComparedProgress() {
             >
                 <ComparedLineProgress
                     awayProgress={recentMatchCompare.away.overUnderWinRate}
-                    awayValue={`${recentMatchCompare.away.overUnderWinRate}`}
+                    awayValue={`${roundToDecimalPlace(
+                        recentMatchCompare.away.overUnderWinRate,
+                        0
+                    )}`}
                     homeProgress={recentMatchCompare.home.overUnderWinRate}
-                    homeValue={`${recentMatchCompare.home.overUnderWinRate}`}
+                    homeValue={`${roundToDecimalPlace(
+                        recentMatchCompare.home.overUnderWinRate,
+                        0
+                    )}`}
                     title={`大率% ${overUnderStatus ? '▼' : '▲'}`}
                 />
             </div>
