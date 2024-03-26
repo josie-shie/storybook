@@ -133,13 +133,13 @@ export const GET_RECENT_BATTLE_MATCH_QUERY = `
                     handicapInit
                     handicapHalfInit
                     handicapCurrent
+                    handicapHomeInitOdds
+                    handicapAwayInitOdds
                     handicapHomeCurrentOdds
                     handicapAwayCurrentOdds
                     overUnderInit
                     overUnderHalfInit
                     overUnderCurrent
-                    overUnderOverCurrentOdds
-                    overUnderUnderCurrentOdds
                     status
                     hasAnimation
                     leagueLevel
@@ -181,13 +181,13 @@ export const GET_RECENT_MATCH_QUERY = `
                     handicapInit
                     handicapHalfInit
                     handicapCurrent
+                    handicapHomeInitOdds
+                    handicapAwayInitOdds
                     handicapHomeCurrentOdds
                     handicapAwayCurrentOdds
                     overUnderInit
                     overUnderHalfInit
                     overUnderCurrent
-                    overUnderOverCurrentOdds
-                    overUnderUnderCurrentOdds
                     status
                     hasAnimation
                     leagueLevel
@@ -219,13 +219,13 @@ export const GET_RECENT_MATCH_QUERY = `
                     handicapInit
                     handicapHalfInit
                     handicapCurrent
+                    handicapHomeInitOdds
+                    handicapAwayInitOdds
                     handicapHomeCurrentOdds
                     handicapAwayCurrentOdds
                     overUnderInit
                     overUnderHalfInit
                     overUnderCurrent
-                    overUnderOverCurrentOdds
-                    overUnderUnderCurrentOdds
                     status
                     hasAnimation
                     leagueLevel

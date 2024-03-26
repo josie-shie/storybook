@@ -93,6 +93,8 @@ const RecentBattleMatchSchema = z.object({
     overUnderInit: z.number(),
     overUnderHalfInit: z.number(),
     overUnderCurrent: z.number(),
+    handicapHomeInitOdds: z.number(),
+    handicapAwayInitOdds: z.number(),
     overUnderOverCurrentOdds: z.number(),
     overUnderUnderCurrentOdds: z.number(),
     status: z.number(),
@@ -146,6 +148,8 @@ const RecentMatchSchema = z.object({
     handicapInit: z.number(),
     handicapHalfInit: z.number(),
     handicapCurrent: z.number(),
+    handicapHomeInitOdds: z.number(),
+    handicapAwayInitOdds: z.number(),
     handicapHomeCurrentOdds: z.number(),
     handicapAwayCurrentOdds: z.number(),
     overUnderInit: z.number(),
@@ -602,8 +606,8 @@ export const getRecentBattleMatch = async ({
                     match.homeScore,
                     match.awayScore,
                     match.handicapInit,
-                    match.handicapHomeCurrentOdds,
-                    match.handicapAwayCurrentOdds
+                    match.handicapHomeInitOdds,
+                    match.handicapAwayInitOdds
                 );
                 winLoseFactory[match.handicapResult as 'win' | 'lose' | 'go' | 'none']();
             } else {
@@ -690,7 +694,6 @@ export const getRecentMatchData = async ({
         throwErrorMessage(errors);
 
         const matchList = data.soccerData.getRecentMatch;
-
         const dashboard = {
             home: {
                 goalMissRate: {
@@ -788,8 +791,8 @@ export const getRecentMatchData = async ({
                         match.homeScore,
                         match.awayScore,
                         match.handicapInit,
-                        match.handicapHomeCurrentOdds,
-                        match.handicapAwayCurrentOdds
+                        match.handicapHomeInitOdds,
+                        match.handicapAwayInitOdds
                     );
                     winLoseFactory[match.handicapResult as 'win' | 'lose' | 'go' | 'none']('home');
                 } else {
