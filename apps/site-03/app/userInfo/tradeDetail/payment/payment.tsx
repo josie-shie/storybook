@@ -24,7 +24,7 @@ function Payment({ data }: PropsType) {
             </div>
             <div className={style.center}>
                 <div className={`${style.title} ${isPayment && style.black}`}>
-                    {data.changeTypeDisplayName}
+                    {data.changeTypeCategoryDisplayName}-{data.changeTypeDisplayName}
                 </div>
                 <div className={style.content}>
                     {timestampToString(data.createdAt, 'YYYY/MM/DD HH:mm')}

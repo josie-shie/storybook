@@ -24,7 +24,7 @@ interface UploadS3Response {
 
 function Account() {
     const headerProps = {
-        title: '个人资料编辑'
+        title: '个人档案'
     };
     const router = useRouter();
     const userInfo = useUserStore.use.userInfo();

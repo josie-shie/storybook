@@ -111,7 +111,7 @@ function AditAccount({ setIsEdit }: { setIsEdit: (isEdit: boolean) => void }) {
             return;
         }
         if (newInfo.description.length > 70) {
-            setIsVisible('简介不可超过10个字', 'error');
+            setIsVisible('简介不可超过70个字', 'error');
             return;
         }
 

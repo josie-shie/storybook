@@ -279,7 +279,6 @@ function UserInfo() {
                                         />
                                     )}
                                 </span>
-                                <span className={style.button}>获得更多</span>
                             </div>
                             {/* 保留等充值开放时再开启 */}
                             {/* <div className={`${style.item} ${style.second}`}>
