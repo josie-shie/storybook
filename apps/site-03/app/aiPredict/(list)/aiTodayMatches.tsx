@@ -146,7 +146,7 @@ function AiTodayMatches() {
             const res = await getPredicativeAnalysisMatch({
                 matchId: 0,
                 matchTime: 0,
-                isFinished: true
+                isFinished: false
             });
 
             if (!res.success) {
@@ -222,11 +222,6 @@ function AiTodayMatches() {
     //     }
     //     setOpenPaid(false);
     //     setPayLock(false);
-    // };
-
-    // const goSubscribe = () => {
-    //     setOpenDialog(false);
-    //     router.push('/userInfo/subscribe');
     // };
 
     const halfLength = Math.ceil(aiPredictList.length / 2);
