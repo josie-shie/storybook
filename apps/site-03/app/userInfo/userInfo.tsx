@@ -261,6 +261,7 @@ function UserInfo() {
                     <div className={style.trade}>
                         <button className={style.tradeDetail} type="button">
                             <Link href="/userInfo/tradeDetail">我的交易明细</Link>
+                            {/* {userInfo.hasUnread && <div className={style.redDot} />} */}
                         </button>
                         <div className={style.list}>
                             <div className={style.item}>

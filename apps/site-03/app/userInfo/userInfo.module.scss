@@ -136,6 +136,7 @@
             margin-top: 12px;
 
             .tradeDetail {
+                position: relative;
                 display: block;
                 margin-left: auto;
                 padding: 4px 12px;
@@ -146,6 +147,16 @@
 
                 > a {
                     color: #4489ff;
+                }
+
+                .redDot {
+                    position: absolute;
+                    top: -3px;
+                    right: 0;
+                    background-color: #f85640;
+                    width: 10px;
+                    height: 10px;
+                    border-radius: 50%;
                 }
             }
 
