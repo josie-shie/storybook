@@ -1,0 +1,59 @@
+.lockMood {
+    width: 100%;
+    height: 171px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 8px 0;
+    background-image: url('./img/blur.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+
+    .paidButton {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 32px;
+        color: #4489ff;
+        border: 1px solid #4489ff;
+        border-radius: 20px;
+        font-size: 14px;
+        font-weight: 500;
+        background-color: #fff;
+        gap: 4px;
+
+        .line {
+            text-decoration: line-through;
+        }
+
+        .freeIcon {
+            position: absolute;
+            right: 0;
+            top: -18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            padding: 0 12px;
+            text-wrap: nowrap;
+            font-size: 14px;
+            gap: 2px;
+            width: 124px;
+            height: 22px;
+            font-family: YouSheBiaoTiHei, sans-serif;
+            border-radius: 24px 6px;
+            background: linear-gradient(90deg, #ff844f 6.1%, #ff5a36 72.87%, #ff4c25 95.12%);
+        }
+
+        .paddingLess {
+            width: 72px;
+            padding: 0 10px;
+        }
+
+        .opacity {
+            opacity: 0.5;
+        }
+    }
+}
