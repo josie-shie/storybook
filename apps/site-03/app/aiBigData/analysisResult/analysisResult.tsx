@@ -89,13 +89,14 @@ function InsufficientBalance() {
 function EmptyResponseError() {
     const router = useRouter();
     const setOpenNormalDialog = useAnalyticsResultStore.use.setOpenNormalDialog();
-    const isVip = useUserStore.use.memberSubscribeStatus().planId;
+    // 目前沒有導入VIP
+    // const isVip = useUserStore.use.memberSubscribeStatus().planId;
 
     return (
         <>
             <div className={style.dialogMessage}>
                 <EmptyDataImage />
-                {!isVip && <p className={style.refund}>已退款</p>}
+                {/* {!isVip && <p className={style.refund}>已退款</p>} */}
                 <p>
                     此條件查无资料
                     <br />

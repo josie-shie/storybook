@@ -8,6 +8,8 @@ import CloseIcon from './img/close.svg';
 
 interface ConfirmPayDrawerProps {
     title?: string;
+    discount?: number;
+    hasDiscount?: boolean;
     price: number;
     isOpen: boolean;
     onClose: () => void;
@@ -21,6 +23,8 @@ function ConfirmPayDrawer({
     onOpen,
     onPay,
     price,
+    hasDiscount = false,
+    discount,
     title = '解锁本场?'
 }: ConfirmPayDrawerProps) {
     const userInfo = useUserStore.use.userInfo();
@@ -49,10 +53,17 @@ function ConfirmPayDrawer({
                 <div className={style.payContent}>
                     <div className={style.price}>
                         <span className={style.text}>支付</span>
-                        <span className={style.number}>
+                        <div className={style.number}>
                             <Coin className={style.star} />
-                            {price}
-                        </span>
+                            {hasDiscount && discount?.toString() ? (
+                                <>
+                                    <div>{discount}</div>
+                                    <p>{price}</p>
+                                </>
+                            ) : (
+                                <>{price}</>
+                            )}
+                        </div>
                     </div>
                     <span className={style.text}>{title}</span>
                 </div>

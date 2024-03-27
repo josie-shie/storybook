@@ -18,6 +18,7 @@ import Tips from './components/tips/tips';
 import LeagueDrawer from './components/leagueDrawer/leagueDrawer';
 import Form from './components/form/form';
 import CoinIcon from './img/coin.svg';
+import Lightning from './img/lightning.svg';
 import RechargeIcon from './img/rechargeIcon.png';
 
 function RechargeAlert() {
@@ -102,14 +103,32 @@ function CheckLeague({ leagueIdList }: { leagueIdList: number[] }) {
     );
 }
 
+function NoLoginMood() {
+    return (
+        <div className={style.noLoginBtn}>
+            <div className={style.skewLeft} />
+            <div className={style.skewRight} />
+            <div className={style.textLeft}>
+                <CoinIcon className={style.coin} />
+                <div>80 获得分析</div>
+            </div>
+            <div className={style.textRight}>
+                <p className={style.opacityText}>注册会员</p>
+                <div>限时免费</div>
+                <Lightning />
+            </div>
+        </div>
+    );
+}
+
 function SubmitButton({ setZeroMatchList }: { setZeroMatchList: (list: number[]) => void }) {
     const router = useRouter();
-    const userInfo = useUserStore.use.userInfo();
     const isLogin = useUserStore.use.isLogin();
     const setAuthQuery = useUserStore.use.setAuthQuery();
     const setIsDrawerOpen = useAuthStore.use.setIsDrawerOpen();
 
-    const isVip = useUserStore.use.memberSubscribeStatus().planId; // 1是VIP
+    // 目前沒有要導入vip
+    // const isVip = useUserStore.use.memberSubscribeStatus().planId; // 1是VIP
     const setOpenNormalDialog = useQueryFormStore.use.setOpenNormalDialog();
     const setIsOpenPayDrawer = useQueryFormStore.use.setIsOpenPayDrawer();
     const setIsAnalysisBySearch = useQueryFormStore.use.setIsAnalysisBySearch();
@@ -139,19 +158,10 @@ function SubmitButton({ setZeroMatchList }: { setZeroMatchList: (list: number[])
             setOpenNormalDialog(true);
             return;
         }
+        setIsOpenPayDrawer(true);
 
-        if (!isVip) {
-            if (userInfo.balance < 80) {
-                setDialogContentType('recharge');
-                setOpenNormalDialog(true);
-                return;
-            }
-
-            setIsOpenPayDrawer(true);
-        } else {
-            setIsAnalysisBySearch(true);
-            router.push('/aiBigData/analysisResult');
-        }
+        // setIsAnalysisBySearch(true);
+        // router.push('/aiBigData/analysisResult');
     };
 
     const normalMemberToResultPage = () => {
@@ -192,23 +202,34 @@ function SubmitButton({ setZeroMatchList }: { setZeroMatchList: (list: number[])
         return zeroMatchList;
     };
 
+    const buttonLayout = () => {
+        return !isLogin ? (
+            <NoLoginMood />
+        ) : (
+            <>
+                <CoinIcon className={style.coin} />
+                <p>0</p>
+                <span>80</span>
+                <div className={style.text}>获得分析</div>
+                <Lightning />
+                <div className={style.icon}>会员限时免费</div>
+            </>
+        );
+    };
+
     return (
         <div className={style.submit}>
             <motion.button
-                className={style.search}
+                className={`${style.search} ${isLogin && style.bgBlue}`}
                 onClick={submit}
                 type="button"
                 whileTap={{ scale: 0.9 }}
             >
-                {!isVip ? (
-                    <>
-                        <CoinIcon />
-                        <span>80</span>
-                    </>
-                ) : null}
-                <span>获得趋势分析</span>
+                {buttonLayout()}
             </motion.button>
             <ConfirmPayDrawer
+                discount={0}
+                hasDiscount
                 isOpen={isOpenPayDrawer}
                 onClose={() => {
                     setIsOpenPayDrawer(false);
