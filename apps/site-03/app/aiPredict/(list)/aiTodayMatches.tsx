@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { getPredicativeAnalysisMatch } from 'data-center';
 import type { GetPredicativeAnalysisMatchResponse, GetPredicativeAnalysisMatch } from 'data-center';
 import { timestampToString } from 'lib';
-// import ConfirmPayDrawer from '@/components/confirmPayDrawer/confirmPayDrawer';
+import ConfirmPayDrawer from '@/components/confirmPayDrawer/confirmPayDrawer';
 // import NormalDialog from '@/components/normalDialog/normalDialog';
 // import { useUserStore } from '@/store/userStore';
 // import { useAuthStore } from '@/store/authStore';
@@ -132,6 +132,8 @@ function AiTodayMatches() {
 
     const aiPredictList = useAiPredictStore.use.aiPredictList();
     const setAiPredictList = useAiPredictStore.use.setAiPredictList();
+    const isOpenPayDrawer = useAiPredictStore.use.isOpenPayDrawer();
+    const setIsOpenPayDrawer = useAiPredictStore.use.setIsOpenPayDrawer();
     // const setPayLock = useAiPredictStore.use.setPayLock();
 
     // const [openPaid, setOpenPaid] = useState(false);
@@ -319,6 +321,8 @@ function AiTodayMatches() {
                 </div>
                 {selectedMatches.length > 0 ? <div className={style.start}>开始分析</div> : null}
                 {selectedMatches.map(match => {
+                    // 要判斷有沒有已讀
+                    // const isRead = false;
                     const currentTabKey = getMatchTabKey(match.matchId);
                     matchRefs.current[match.matchId] = createRef<HTMLDivElement>();
                     return (
@@ -447,6 +451,22 @@ function AiTodayMatches() {
                 ) : null}
             </div>
             <Tutorial />
+            <ConfirmPayDrawer
+                discount={0}
+                hasDiscount
+                isOpen={isOpenPayDrawer}
+                onClose={() => {
+                    setIsOpenPayDrawer(false);
+                }}
+                onOpen={() => {
+                    setIsOpenPayDrawer(true);
+                }}
+                onPay={() => {
+                    return 123;
+                }}
+                price={80}
+                title="获得智能盘路分析？"
+            />
         </>
     );
 }

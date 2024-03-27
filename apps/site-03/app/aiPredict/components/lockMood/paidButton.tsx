@@ -1,12 +1,27 @@
 import { useUserStore } from '@/store/userStore';
+import { useAuthStore } from '@/store/authStore';
+import { useAiPredictStore } from '../../aiPredictStore';
 import style from './lockMood.module.scss';
 import StarIcon from './img/starIcon.svg';
 import Lightning from './img/lightning.svg';
 
 function PaidButton() {
     const isLogin = useUserStore.use.isLogin();
+    const setIsOpenPayDrawer = useAiPredictStore.use.setIsOpenPayDrawer();
+    const setAuthQuery = useUserStore.use.setAuthQuery();
+    const setIsDrawerOpen = useAuthStore.use.setIsDrawerOpen();
+
+    const openLoginDrawer = () => {
+        setAuthQuery('login');
+        setIsDrawerOpen(true);
+    };
+
+    const handleClick = () => {
+        isLogin ? setIsOpenPayDrawer(true) : openLoginDrawer();
+    };
+
     return (
-        <div className={style.paidButton}>
+        <div className={style.paidButton} onClick={handleClick}>
             <StarIcon />
             {isLogin ? <div>0</div> : null}
             <div className={`${isLogin ? style.line : ''}`}>30</div>
@@ -17,7 +32,7 @@ function PaidButton() {
                     <Lightning />
                 </div>
             ) : (
-                <div className={style.freeIcon}>
+                <div className={style.freeIcon} onClick={openLoginDrawer}>
                     <div className={style.opacity}>会员</div>
                     <div>限时免费</div>
                     <Lightning />

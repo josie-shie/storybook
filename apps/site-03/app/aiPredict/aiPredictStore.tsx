@@ -8,6 +8,8 @@ interface InitState {
 }
 
 interface AiPredictState extends InitState {
+    isOpenPayDrawer: boolean;
+    setIsOpenPayDrawer: (isOpenPayDrawer: boolean) => void;
     setAiPredictList: (aiPredictList: GetPredicativeAnalysisMatchResponse) => void;
     setAiHistoryList: (aiPredictList: GetPredicativeAnalysisMatchResponse) => void;
 }
@@ -17,6 +19,10 @@ let useAiPredictStore: StoreWithSelectors<AiPredictState>;
 const initialState = (set: (data: Partial<AiPredictState>) => void) => ({
     aiPredictList: [],
     aiHistoryList: [],
+    isOpenPayDrawer: false,
+    setIsOpenPayDrawer: (isOpenPayDrawer: boolean) => {
+        set({ isOpenPayDrawer });
+    },
     setAiPredictList: (aiPredictList: GetPredicativeAnalysisMatchResponse) => {
         set({ aiPredictList });
     },
