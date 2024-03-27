@@ -1,6 +1,6 @@
 .lockMood {
     width: 100%;
-    height: 171px;
+    height: 137px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -8,6 +8,7 @@
     background-image: url('./img/blur.png');
     background-size: cover;
     background-repeat: no-repeat;
+    background-origin: content-box;
 
     .paidButton {
         position: relative;

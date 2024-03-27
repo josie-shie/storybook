@@ -1,5 +1,7 @@
 import type { GetPredicativeAnalysisMatch } from 'data-center';
 import TeamLogo from '@/components/teamLogo/teamLogo';
+import { useUserStore } from '@/store/userStore';
+import LockMood from '../lockMood/lockMood';
 import style from './aiTab.module.scss';
 
 interface AnalyzeProps {
@@ -8,25 +10,50 @@ interface AnalyzeProps {
 }
 
 function Analyze({ match }: AnalyzeProps) {
+    const isLogin = useUserStore.use.isLogin();
+    // 還要判斷是否已讀
+    const isShow = isLogin;
     return (
         <div className={style.aiTab}>
-            {/* <div className={style.detail}>
-                    从像米克尔-阿尔特塔这样的战术思维角度来看，这场比赛对于双方来说都至关重要，特别是考虑到他们在比赛中的当前表现和排名。
-                </div> */}
-            <div className={style.info}>
-                <div className={style.titleLogo}>
-                    <TeamLogo alt={match.homeChs} height={24} src={match.homeLogo} width={24} />
-                    <span>{match.homeChs}</span>
+            {isShow ? (
+                <>
+                    <div className={style.info}>
+                        <div className={style.titleLogo}>
+                            <TeamLogo
+                                alt={match.homeChs}
+                                height={24}
+                                src={match.homeLogo}
+                                width={24}
+                            />
+                            <span>{match.homeChs}</span>
+                        </div>
+                        <div className={style.content}>{match.homeStrategicAnalysis}</div>
+                    </div>
+                    <div className={style.info}>
+                        <div className={style.titleLogo}>
+                            <TeamLogo
+                                alt={match.awayChs}
+                                height={24}
+                                src={match.awayLogo}
+                                width={24}
+                            />
+                            <span>{match.awayChs}</span>
+                        </div>
+                        <div className={style.content}>{match.awayStrategicAnalysis}</div>
+                    </div>
+                </>
+            ) : (
+                <div className={style.info}>
+                    <div className={style.titleLogo}>
+                        <TeamLogo alt={match.homeChs} height={24} src={match.homeLogo} width={24} />
+                        <span>{match.homeChs}</span>
+                    </div>
+                    <div className={`${style.content} ${style.ellipsis}`}>
+                        考虑到伯恩利在本赛季的出色表现以及伯恩茅斯的不稳定状态，加之比赛地将在伯恩利的主场进行
+                    </div>
+                    <LockMood />
                 </div>
-                <div className={style.content}>{match.homeStrategicAnalysis}</div>
-            </div>
-            <div className={style.info}>
-                <div className={style.titleLogo}>
-                    <TeamLogo alt={match.awayChs} height={24} src={match.awayLogo} width={24} />
-                    <span>{match.awayChs}</span>
-                </div>
-                <div className={style.content}>{match.awayStrategicAnalysis}</div>
-            </div>
+            )}
         </div>
     );
 }

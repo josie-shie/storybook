@@ -12,6 +12,7 @@ import { timestampToString } from 'lib';
 import TeamLogo from '@/components/teamLogo/teamLogo';
 import Win from '@/public/resultIcon/bigWin.svg';
 import Draw from '@/public/resultIcon/bigDraw.svg';
+import { useUserStore } from '@/store/userStore';
 import Ai from '../components/analyzeContent/ai';
 import Analyze from '../components/analyzeContent/analyze';
 import Cornor from '../components/analyzeContent/cornor';
@@ -125,6 +126,7 @@ function MatchItem({
 
 function AiTodayMatches() {
     const matchRefs = useRef<Record<number, React.RefObject<HTMLDivElement>>>({});
+    const isLogin = useUserStore.use.isLogin();
 
     // const router = useRouter();
 
@@ -383,7 +385,7 @@ function AiTodayMatches() {
                             <div
                                 className={`${style.information} ${
                                     showInformation[match.matchId] ? style.fadeIn : style.hidden
-                                }`}
+                                } ${isLogin && style.hasMinHeight}`}
                             >
                                 <div className={style.minTabBar}>
                                     {tabList.map(tab => (
