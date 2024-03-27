@@ -46,7 +46,7 @@ function AiHistory() {
         setIsLoading(true);
         const res = await getPredicativeAnalysisMatch({
             matchId: 0,
-            matchTime: resultsDate,
+            matchTime: Math.floor(Number(resultsDate) / 1000),
             isFinished: true
         });
 
