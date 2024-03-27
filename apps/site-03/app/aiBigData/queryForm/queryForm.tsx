@@ -159,9 +159,6 @@ function SubmitButton({ setZeroMatchList }: { setZeroMatchList: (list: number[])
             return;
         }
         setIsOpenPayDrawer(true);
-
-        // setIsAnalysisBySearch(true);
-        // router.push('/aiBigData/analysisResult');
     };
 
     const normalMemberToResultPage = () => {
