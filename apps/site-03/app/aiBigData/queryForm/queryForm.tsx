@@ -228,6 +228,8 @@ function SubmitButton({ setZeroMatchList }: { setZeroMatchList: (list: number[])
                 {buttonLayout()}
             </motion.button>
             <ConfirmPayDrawer
+                discount={0}
+                hasDiscount
                 isOpen={isOpenPayDrawer}
                 onClose={() => {
                     setIsOpenPayDrawer(false);
