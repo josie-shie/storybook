@@ -343,7 +343,7 @@ function AiTodayMatches() {
                             >
                                 <div
                                     className={`${style.name} ${
-                                        match.predictMatchResult === 1 ? style.win : ''
+                                        [1, 0].includes(match.predictMatchResult) ? style.win : ''
                                     } ${match.predictMatchResult === 0 ? style.active : ''}`}
                                 >
                                     {match.predictMatchResult === 1 ? (
@@ -362,7 +362,7 @@ function AiTodayMatches() {
                                 ) : null}
                                 <div
                                     className={`${style.name} ${
-                                        match.predictMatchResult === 2 ? style.win : ''
+                                        [2, 0].includes(match.predictMatchResult) ? style.win : ''
                                     } ${match.predictMatchResult === 0 ? style.active : ''}`}
                                 >
                                     {match.predictMatchResult === 2 ? (

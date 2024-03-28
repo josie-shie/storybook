@@ -1,7 +1,7 @@
 import Image from 'next/image';
-import { timestampToString } from 'lib';
 import type { GetPredicativeAnalysisMatch } from 'data-center';
 import defaultTeamLogo from '@/app/football/[matchId]/img/defaultTeamLogo.png';
+import { useFormattedTime } from '@/hooks/useFormattedTime';
 import Draw from '../../(list)/img/aiDraw.svg';
 import Hit from '../../(list)/img/aiHit.svg';
 import Miss from '../../(list)/img/aiMiss.svg';
@@ -49,7 +49,12 @@ function HistoryDisplayContent({ item }: { item: GetPredicativeAnalysisMatch }) 
                     <span className={style.league} style={{ color: `${item.color}` }}>
                         {item.leagueChs}
                     </span>
-                    <span> {timestampToString(item.matchTime)}</span>
+                    <span>
+                        {useFormattedTime({
+                            timeStamp: item.matchTime,
+                            formattedString: 'HH:mm'
+                        })}
+                    </span>
                 </div>
                 <span> 160人解鎖</span>
             </div>
