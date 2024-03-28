@@ -3,7 +3,7 @@ import { useEffect, useRef, useState, createRef } from 'react';
 // import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { getPredicativeAnalysisMatch } from 'data-center';
-import type { GetPredicativeAnalysisMatchResponse, GetPredicativeAnalysisMatch } from 'data-center';
+import type { GetPredicativeAnalysisMatch } from 'data-center';
 import { timestampToString } from 'lib';
 import ConfirmPayDrawer from '@/components/confirmPayDrawer/confirmPayDrawer';
 // import NormalDialog from '@/components/normalDialog/normalDialog';
@@ -144,7 +144,9 @@ function AiTodayMatches() {
     // const setIsDrawerOpen = useAuthStore.use.setIsDrawerOpen();
 
     const [showChat, setShowChat] = useState(false);
-    const [selectedMatches, setSelectedMatches] = useState<GetPredicativeAnalysisMatchResponse>([]);
+    const [selectedMatches, setSelectedMatches] = useState<
+        Record<number, GetPredicativeAnalysisMatch>
+    >({});
     const [showInformation, setShowInformation] = useState<Record<number, boolean>>({});
     const [matchTabs, setMatchTabs] = useState<MatchTab[]>([]);
 
@@ -165,16 +167,15 @@ function AiTodayMatches() {
     }, []);
 
     const handleSelectMatch = (match: GetPredicativeAnalysisMatch) => {
-        const isMatchExists = selectedMatches.some(
-            existingMatch => existingMatch.matchId === match.matchId
-        );
-
-        if (!isMatchExists) {
-            setSelectedMatches(prevSelectedMatches => [...prevSelectedMatches, match]);
-        } else {
+        if (Object.hasOwnProperty.call(selectedMatches, match.matchId)) {
             const matchRef = matchRefs.current[match.matchId];
             matchRef.current?.scrollIntoView({ behavior: 'smooth' });
+            return;
         }
+        setSelectedMatches(prevSelectedMatches => ({
+            ...prevSelectedMatches,
+            [match.matchId]: match
+        }));
     };
 
     const handleSetTabKey = (matchId: number, value: string) => {
@@ -205,9 +206,10 @@ function AiTodayMatches() {
     }, []);
 
     useEffect(() => {
-        if (selectedMatches.length > 0) {
-            const latestMatch = selectedMatches[selectedMatches.length - 1];
-            const matchRef = matchRefs.current[latestMatch.matchId];
+        const keys = Object.keys(selectedMatches);
+        if (keys.length > 0) {
+            const target = Number(keys[keys.length - 1]);
+            const matchRef = matchRefs.current[target];
             matchRef.current?.scrollIntoView({ behavior: 'smooth' });
         }
     }, [selectedMatches]);
@@ -319,8 +321,10 @@ function AiTodayMatches() {
                         </div>
                     </div>
                 </div>
-                {selectedMatches.length > 0 ? <div className={style.start}>开始分析</div> : null}
-                {selectedMatches.map(match => {
+                {Object.keys(selectedMatches).length > 0 ? (
+                    <div className={style.start}>开始分析</div>
+                ) : null}
+                {Object.entries(selectedMatches).map(([matchId, match]) => {
                     // 要判斷有沒有已讀
                     // const isRead = false;
                     const currentTabKey = getMatchTabKey(match.matchId);
@@ -328,7 +332,7 @@ function AiTodayMatches() {
                     return (
                         <div
                             className={style.analyze}
-                            key={match.matchId}
+                            key={matchId}
                             ref={matchRefs.current[match.matchId]}
                         >
                             <div className={style.message}>
@@ -422,7 +426,7 @@ function AiTodayMatches() {
                         </div>
                     );
                 })}
-                {selectedMatches.length > 0 ? (
+                {Object.keys(selectedMatches).length > 0 ? (
                     <div className={`${style.chat} ${showChat ? style.fadeIn : style.hidden}`}>
                         <div className={style.title}>其他推荐赛事</div>
                         <div className={style.wrapper}>

@@ -11,7 +11,7 @@ interface CornorProps {
 
 function Cornor({ match }: CornorProps) {
     const isLogin = useUserStore.use.isLogin();
-    // 還要判斷是否已讀
+    // const isRead = false;
     const isShow = isLogin;
     return (
         <div className={style.aiTab}>

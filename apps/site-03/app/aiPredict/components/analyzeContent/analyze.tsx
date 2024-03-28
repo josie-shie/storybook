@@ -11,6 +11,7 @@ interface AnalyzeProps {
 
 function Analyze({ match }: AnalyzeProps) {
     const isLogin = useUserStore.use.isLogin();
+    // const isRead = false;
     // 還要判斷是否已讀
     const isShow = isLogin;
     return (

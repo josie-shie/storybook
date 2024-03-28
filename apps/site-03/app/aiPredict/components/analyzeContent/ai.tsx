@@ -10,7 +10,7 @@ interface AiProps {
 
 function Ai({ match }: AiProps) {
     const isLogin = useUserStore.use.isLogin();
-    // 還要判斷是否已讀
+    // const isRead = false;
     const isShow = isLogin;
 
     return (
