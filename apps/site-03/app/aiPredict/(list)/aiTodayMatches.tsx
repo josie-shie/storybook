@@ -120,6 +120,7 @@ function MatchItem({
                     {match.awayChs}
                 </span>
             </div>
+            <div className={style.lock}>160人解鎖</div>
         </div>
     );
 }

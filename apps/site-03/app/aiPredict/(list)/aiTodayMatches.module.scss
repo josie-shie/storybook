@@ -294,11 +294,16 @@
             .item {
                 display: flex;
                 flex-direction: column;
-                gap: 6px;
                 min-width: 164px;
                 border: 1px solid #e6eeee;
                 border-radius: 8px;
                 padding: 10px;
+
+                .lock {
+                    color: #bfbfbf;
+                    font-size: 12px;
+                    font-weight: 500;
+                }
 
                 .league {
                     display: flex;
@@ -306,6 +311,7 @@
                     justify-content: space-between;
                     font-size: 12px;
                     font-weight: 600;
+                    margin-bottom: 10px;
 
                     .time {
                         color: #8d8d8d;
@@ -317,6 +323,7 @@
                     flex-direction: column;
                     justify-content: center;
                     gap: 4px;
+                    margin-bottom: 2px;
 
                     .name {
                         display: flex;
