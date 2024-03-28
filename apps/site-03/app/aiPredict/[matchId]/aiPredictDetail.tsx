@@ -3,7 +3,7 @@ import { useEffect, useRef, useState, createRef } from 'react';
 // import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { getPredicativeAnalysisMatch } from 'data-center';
-import type { GetPredicativeAnalysisMatchResponse, GetPredicativeAnalysisMatch } from 'data-center';
+import type { GetPredicativeAnalysisMatch } from 'data-center';
 import { timestampToString, timestampToStringCh } from 'lib';
 // import ConfirmPayDrawer from '@/components/confirmPayDrawer/confirmPayDrawer';
 // import NormalDialog from '@/components/normalDialog/normalDialog';
@@ -129,7 +129,9 @@ function AiPredictDetail({ params }: { params: { matchId: string } }) {
 
     const [showChat, setShowChat] = useState(false);
     const [showInformation, setShowInformation] = useState<Record<number, boolean>>({});
-    const [selectedMatches, setSelectedMatches] = useState<GetPredicativeAnalysisMatchResponse>([]);
+    const [selectedMatches, setSelectedMatches] = useState<
+        Record<number, GetPredicativeAnalysisMatch>
+    >({});
     const [matchTabs, setMatchTabs] = useState<MatchTab[]>([]);
 
     useEffect(() => {
@@ -149,18 +151,15 @@ function AiPredictDetail({ params }: { params: { matchId: string } }) {
     }, []);
 
     const handleSelectMatch = (match: GetPredicativeAnalysisMatch) => {
-        setSelectedMatches(prevSelectedMatches => {
-            const isMatchExists = prevSelectedMatches.some(
-                existingMatch => existingMatch.matchId === match.matchId
-            );
-
-            if (!isMatchExists) {
-                return [...prevSelectedMatches, match];
-            }
+        if (Object.hasOwnProperty.call(selectedMatches, match.matchId)) {
             const matchRef = matchRefs.current[match.matchId];
             matchRef.current?.scrollIntoView({ behavior: 'smooth' });
-            return prevSelectedMatches;
-        });
+            return;
+        }
+        setSelectedMatches(prevSelectedMatches => ({
+            ...prevSelectedMatches,
+            [match.matchId]: match
+        }));
     };
 
     const handleSetTabKey = (matchId: number, value: string) => {
@@ -180,44 +179,6 @@ function AiPredictDetail({ params }: { params: { matchId: string } }) {
         return matchTab ? matchTab.value : tabList[0].value;
     };
 
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            setShowChat(true);
-        }, 5000);
-
-        return () => {
-            clearTimeout(timer);
-        };
-    }, []);
-
-    useEffect(() => {
-        if (selectedMatches.length > 0) {
-            const latestMatch = selectedMatches[selectedMatches.length - 1];
-            const matchRef = matchRefs.current[latestMatch.matchId];
-            matchRef.current?.scrollIntoView({ behavior: 'smooth' });
-        }
-    }, [selectedMatches]);
-
-    useEffect(() => {
-        // const paramMatchId = parseInt(params.matchId);
-        const paramMatchId = 3936479;
-        const matchedItem = aiPredictList.find(item => item.matchId === paramMatchId);
-
-        if (matchedItem) {
-            setTimeout(() => {
-                setSelectedMatches(prevMatches => {
-                    const isMatchExists = prevMatches.some(
-                        match => match.matchId === matchedItem.matchId
-                    );
-                    if (!isMatchExists) {
-                        return [...prevMatches, matchedItem];
-                    }
-                    return prevMatches;
-                });
-            }, 2500);
-        }
-    }, [params.matchId, aiPredictList]);
-
     // const handleUnlockArticle = (matchId: number) => {
     //     if (!isLogin) {
     //         setAuthQuery('login');
@@ -235,11 +196,6 @@ function AiPredictDetail({ params }: { params: { matchId: string } }) {
     //     }
     //     setOpenPaid(false);
     //     setPayLock(false);
-    // };
-
-    // const goSubscribe = () => {
-    //     setOpenDialog(false);
-    //     router.push('/userInfo/subscribe');
     // };
 
     const halfLength = Math.ceil(aiPredictList.length / 2);
@@ -295,6 +251,41 @@ function AiPredictDetail({ params }: { params: { matchId: string } }) {
         setShowInformation(prev => ({ ...prev, [matchId]: true }));
     };
 
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setShowChat(true);
+        }, 5000);
+
+        return () => {
+            clearTimeout(timer);
+        };
+    }, []);
+
+    useEffect(() => {
+        const keys = Object.keys(selectedMatches);
+        if (keys.length > 0) {
+            const target = Number(keys[keys.length - 1]);
+            const matchRef = matchRefs.current[target];
+            matchRef.current?.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, [selectedMatches]);
+
+    useEffect(() => {
+        const paramMatchId = parseInt(params.matchId);
+        const matchedItem = aiPredictList.find(item => item.matchId === paramMatchId);
+
+        if (matchedItem) {
+            setTimeout(() => {
+                setSelectedMatches(prevMatches => {
+                    if (Object.hasOwnProperty.call(selectedMatches, paramMatchId)) {
+                        return { ...prevMatches, [paramMatchId]: matchedItem };
+                    }
+                    return prevMatches;
+                });
+            }, 2500);
+        }
+    }, [params.matchId, aiPredictList]);
+
     return (
         <>
             <div className={style.aiPredict}>
@@ -307,12 +298,12 @@ function AiPredictDetail({ params }: { params: { matchId: string } }) {
                         <div className={style.text}>您好，为您推荐以下赛事预测分析：</div>
                     </div>
 
-                    {selectedMatches.length > 0 ? (
+                    {Object.keys(selectedMatches).length > 0 ? (
                         <div className={style.start}>开始分析</div>
                     ) : null}
 
-                    {selectedMatches.map(match => {
-                        const currentTabKey = getMatchTabKey(match.matchId);
+                    {Object.entries(selectedMatches).map(([matchId, match]) => {
+                        const currentTabKey = getMatchTabKey(Number(matchId));
                         matchRefs.current[match.matchId] = createRef<HTMLDivElement>();
                         return (
                             <div
@@ -445,18 +436,7 @@ function AiPredictDetail({ params }: { params: { matchId: string } }) {
                 </div>
                 <Tutorial />
             </div>
-            {/* <ConfirmPayDrawer
-                isOpen={openPaid}
-                onClose={() => {
-                    setOpenPaid(false);
-                }}
-                onOpen={() => {
-                    setOpenPaid(true);
-                }}
-                onPay={onSubmit}
-                price={80}
-            />
-            <NormalDialog
+            {/* <NormalDialog
                 confirmText="去充值"
                 content={<div>余额不足，请充值</div>}
                 onClose={() => {
