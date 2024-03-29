@@ -624,8 +624,8 @@ export const getRecentBattleMatch = async ({
                     match.awayScore,
                     match.homeScore,
                     match.handicapInit,
-                    match.handicapHomeCurrentOdds,
-                    match.handicapAwayCurrentOdds
+                    match.handicapHomeInitOdds,
+                    match.handicapAwayInitOdds
                 );
                 winLoseFactory[match.handicapResult as 'win' | 'lose' | 'go' | 'none']();
             }
@@ -809,8 +809,8 @@ export const getRecentMatchData = async ({
                         match.homeScore,
                         match.awayScore,
                         match.handicapInit,
-                        match.handicapHomeCurrentOdds,
-                        match.handicapAwayCurrentOdds,
+                        match.handicapHomeInitOdds,
+                        match.handicapAwayInitOdds,
                         false
                     );
                     winLoseFactory[match.handicapResult as 'win' | 'lose' | 'go' | 'none']('home');
@@ -844,8 +844,8 @@ export const getRecentMatchData = async ({
                         match.homeScore,
                         match.awayScore,
                         match.handicapInit,
-                        match.handicapHomeCurrentOdds,
-                        match.handicapAwayCurrentOdds
+                        match.handicapHomeInitOdds,
+                        match.handicapAwayInitOdds
                     );
                     winLoseFactory[match.handicapResult as 'win' | 'lose' | 'go' | 'none']('away');
                 } else {
@@ -862,8 +862,8 @@ export const getRecentMatchData = async ({
                         match.homeScore,
                         match.awayScore,
                         match.handicapInit,
-                        match.handicapHomeCurrentOdds,
-                        match.handicapAwayCurrentOdds,
+                        match.handicapHomeInitOdds,
+                        match.handicapAwayInitOdds,
                         false
                     );
                     winLoseFactory[match.handicapResult as 'win' | 'lose' | 'go' | 'none']('away');
