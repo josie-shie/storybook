@@ -1,18 +1,17 @@
-import type { GetPredicativeAnalysisMatch } from 'data-center';
+import type { GetPredicativeAnalysisMatchByIdResult } from 'data-center';
 import { useUserStore } from '@/store/userStore';
 import IdeaIcon from '../../(list)/img/idea.svg';
 import LockMood from '../lockMood/lockMood';
 import style from './aiTab.module.scss';
 
 interface CornorProps {
-    match: GetPredicativeAnalysisMatch;
+    match: GetPredicativeAnalysisMatchByIdResult;
     // onUnlockArticle: (matchId: number) => void;
 }
 
 function Cornor({ match }: CornorProps) {
     const isLogin = useUserStore.use.isLogin();
-    // const isRead = false;
-    const isShow = isLogin;
+    const isShow = isLogin && match.isPurchase;
     return (
         <div className={style.aiTab}>
             {isShow ? (

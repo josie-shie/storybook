@@ -226,6 +226,7 @@ export const GET_PREDICATIVE_ANALYSIS_MATCH_QUERY = `
       soccerAi {
         getPredicativeAnalysisMatch(input: $input) {
           list {
+            id
             matchId
             matchTime
             leagueId
@@ -255,6 +256,8 @@ export const GET_PREDICATIVE_ANALYSIS_MATCH_QUERY = `
             realMatchResult
             awayScore
             homeScore
+            purchaseCount
+            isPurchase
             updatedAt
           }
         }

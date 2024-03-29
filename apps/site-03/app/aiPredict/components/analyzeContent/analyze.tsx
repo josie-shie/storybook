@@ -1,19 +1,17 @@
-import type { GetPredicativeAnalysisMatch } from 'data-center';
+import type { GetPredicativeAnalysisMatchByIdResult } from 'data-center';
 import TeamLogo from '@/components/teamLogo/teamLogo';
 import { useUserStore } from '@/store/userStore';
 import LockMood from '../lockMood/lockMood';
 import style from './aiTab.module.scss';
 
 interface AnalyzeProps {
-    match: GetPredicativeAnalysisMatch;
+    match: GetPredicativeAnalysisMatchByIdResult;
     // onUnlockArticle: (matchId: number) => void;
 }
 
 function Analyze({ match }: AnalyzeProps) {
     const isLogin = useUserStore.use.isLogin();
-    // const isRead = false;
-    // 還要判斷是否已讀
-    const isShow = isLogin;
+    const isShow = isLogin && match.isPurchase;
     return (
         <div className={style.aiTab}>
             {isShow ? (

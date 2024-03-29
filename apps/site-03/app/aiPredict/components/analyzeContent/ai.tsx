@@ -1,17 +1,16 @@
-import type { GetPredicativeAnalysisMatch } from 'data-center';
+import type { GetPredicativeAnalysisMatchByIdResult } from 'data-center';
 import { useUserStore } from '@/store/userStore';
 import LockMood from '../lockMood/lockMood';
 import style from './aiTab.module.scss';
 
 interface AiProps {
-    match: GetPredicativeAnalysisMatch;
+    match: GetPredicativeAnalysisMatchByIdResult;
     // onUnlockArticle: (matchId: number) => void;
 }
 
 function Ai({ match }: AiProps) {
     const isLogin = useUserStore.use.isLogin();
-    // const isRead = false;
-    const isShow = isLogin;
+    const isShow = isLogin && match.isPurchase;
 
     return (
         <div className={style.aiTab}>

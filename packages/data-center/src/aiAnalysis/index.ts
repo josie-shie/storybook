@@ -544,6 +544,7 @@ export interface GetPredicativeAnalysisMatchRequest {
 }
 
 const GetPredicativeAnalysisMatchSchema = z.object({
+    id: z.number(),
     matchId: z.number(),
     matchTime: z.number(),
     leagueId: z.number(),
@@ -573,6 +574,7 @@ const GetPredicativeAnalysisMatchSchema = z.object({
     realMatchResult: z.number(),
     awayScore: z.number(),
     homeScore: z.number(),
+    purchaseCount: z.number(),
     updatedAt: z.number()
 });
 
@@ -631,7 +633,6 @@ export const getPredicativeAnalysisMatch = async (
 
 const GetPredicativeAnalysisMatchByIdSchema = z.object({
     id: z.number(),
-    purchaseCount: z.number(),
     matchId: z.number(),
     matchTime: z.number(),
     leagueId: z.number(),
@@ -661,6 +662,8 @@ const GetPredicativeAnalysisMatchByIdSchema = z.object({
     realMatchResult: z.number(),
     awayScore: z.number(),
     homeScore: z.number(),
+    purchaseCount: z.number(),
+    isPurchase: z.boolean(),
     updatedAt: z.number()
 });
 

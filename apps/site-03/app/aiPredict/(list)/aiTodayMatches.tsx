@@ -2,8 +2,11 @@
 import { useEffect, useRef, useState, createRef } from 'react';
 // import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { getPredicativeAnalysisMatch } from 'data-center';
-import type { GetPredicativeAnalysisMatch } from 'data-center';
+import { getPredicativeAnalysisMatch, getPredicativeAnalysisMatchById } from 'data-center';
+import type {
+    GetPredicativeAnalysisMatch,
+    GetPredicativeAnalysisMatchByIdResult
+} from 'data-center';
 import { timestampToString } from 'lib';
 import ConfirmPayDrawer from '@/components/confirmPayDrawer/confirmPayDrawer';
 // import NormalDialog from '@/components/normalDialog/normalDialog';
@@ -23,8 +26,50 @@ import style from './aiTodayMatches.module.scss';
 import AiAvatar from './img/aiAvatar.svg';
 // import Wallet from './img/wallet.png';
 
+const fake = {
+    id: 60006,
+    matchId: 4084029,
+    matchTime: 1711565100,
+    leagueId: 615,
+    leagueEn: 'KSA Division 1',
+    leagueChs: '沙特甲',
+    leagueCht: '沙特甲',
+    leagueType: 1,
+    color: '#2cb116',
+    homeId: 22391,
+    homeEn: 'Al Najma(KSA)',
+    homeChs: '阿尔纳泽马',
+    homeCht: '阿爾納澤馬',
+    awayId: 48912,
+    awayEn: 'Al Bukayriyah',
+    awayChs: '布凯里耶',
+    awayCht: '布凱里耶',
+    homeLogo: 'https://cdn.sportnanoapi.com/football/team/fde877e452f79f75955ad4e4f326c654.png',
+    awayLogo: 'https://cdn.sportnanoapi.com/football/team/608b8974ad512df1293585825bef3cee.png',
+    predict:
+        '考虑到阿尔纳泽马与布凯里耶在沙特甲联赛中的表现，此场比赛预计将呈现高竞争性。阿尔纳泽马拥有主场优势，而布凯里耶则不容小觑。初盘显示没有明显的让球优势和总进球数预测，表明比赛有可能十分接近。',
+    summary:
+        '综合来看，阿尔纳泽马与布凯里耶的比赛预计将非常激烈，两队都有机会取得胜利。虽然主场优势可能对阿尔纳泽马有所帮助，但布凯里耶的坚韧不拔不应被低估。预计是一场充满战术较量的比赛，最终可能以平局告终或微弱优势取胜。',
+    homeStrategicAnalysis:
+        '阿尔纳泽马的战略可能会集中在利用主场优势和控球策略。他们倾向于在主场展现出更强的侵略性和进攻欲望，可能会尝试从比赛一开始就对布凯里耶施加压力，利用快速边路突破和中场的紧密配合来创造进球机会。',
+    awayStrategicAnalysis:
+        '布凯里耶则可能采取更加谨慎的战略，重点放在防守反击上。作为客场作战的一方，他们可能会布置紧密的防守阵型，试图限制阿尔纳泽马的进攻空间，同时依靠快速前锋的反击机会寻求进球。',
+    homeTacticalPerspective:
+        '从战术层面看，阿尔纳泽马或许会强调中场控制，寻找创造进球的机会。他们可能会利用高位逼抢来回收球权，并通过快速的一触传球突破对手的防线。',
+    awayTacticalPerspective:
+        '布凯里耶在战术上可能更侧重于防守稳固和快速转换。他们的防守球员需要保持高度集中，同时中场球员的快速下沉协助防守也是关键。在抢回球权后，通过长传和边路突破来发起反击将是他们的主要策略之一。',
+    predictResult: '平局',
+    predictMatchResult: 0,
+    realMatchResult: 1,
+    homeScore: 3,
+    awayScore: 1,
+    purchaseCount: 1,
+    isPurchase: false,
+    updatedAt: 1711523521
+};
+
 interface MatchTab {
-    matchId: number;
+    id: number;
     value: string;
 }
 
@@ -146,10 +191,11 @@ function AiTodayMatches() {
 
     const [showChat, setShowChat] = useState(false);
     const [selectedMatches, setSelectedMatches] = useState<
-        Record<number, GetPredicativeAnalysisMatch>
+        Record<number, GetPredicativeAnalysisMatchByIdResult>
     >({});
     const [showInformation, setShowInformation] = useState<Record<number, boolean>>({});
     const [matchTabs, setMatchTabs] = useState<MatchTab[]>([]);
+    const [purchaseId, setPurchaseId] = useState<number>(0);
 
     useEffect(() => {
         const getPredicativeAnalysisList = async () => {
@@ -168,31 +214,42 @@ function AiTodayMatches() {
     }, []);
 
     const handleSelectMatch = (match: GetPredicativeAnalysisMatch) => {
-        if (Object.hasOwnProperty.call(selectedMatches, match.matchId)) {
-            const matchRef = matchRefs.current[match.matchId];
+        if (Object.hasOwnProperty.call(selectedMatches, match.id)) {
+            const matchRef = matchRefs.current[match.id];
             matchRef.current?.scrollIntoView({ behavior: 'smooth' });
             return;
         }
+        // const res = await getPredicativeAnalysisMatchById({ id: match.id });
+
+        // if (!res.success) {
+        //     return new Error();
+        // }
+        // setSelectedMatches(prevSelectedMatches => ({
+        //     ...prevSelectedMatches,
+        //     [match.id]: match
+        // }));
+        setPurchaseId(match.id);
         setSelectedMatches(prevSelectedMatches => ({
             ...prevSelectedMatches,
-            [match.matchId]: match
+            [match.id]: fake
         }));
+        setPurchaseId(fake.id);
     };
 
-    const handleSetTabKey = (matchId: number, value: string) => {
+    const handleSetTabKey = (id: number, value: string) => {
         setMatchTabs(prev => {
-            const index = prev.findIndex(tab => tab.matchId === matchId);
+            const index = prev.findIndex(tab => tab.id === id);
             if (index >= 0) {
                 const newTabs = [...prev];
-                newTabs[index] = { matchId, value };
+                newTabs[index] = { id, value };
                 return newTabs;
             }
-            return [...prev, { matchId, value }];
+            return [...prev, { id, value }];
         });
     };
 
-    const getMatchTabKey = (matchId: number) => {
-        const matchTab = matchTabs.find(tab => tab.matchId === matchId);
+    const getMatchTabKey = (id: number) => {
+        const matchTab = matchTabs.find(tab => tab.id === id);
         return matchTab ? matchTab.value : tabList[0].value;
     };
 
@@ -253,7 +310,7 @@ function AiTodayMatches() {
         { title: '战术角度', value: 'cornor' }
     ];
 
-    const getSelectedComponent = (key: string, match: GetPredicativeAnalysisMatch) => {
+    const getSelectedComponent = (key: string, match: GetPredicativeAnalysisMatchByIdResult) => {
         const components: Record<string, JSX.Element> = {
             ai: (
                 <Ai
@@ -287,6 +344,18 @@ function AiTodayMatches() {
         setShowInformation(prev => ({ ...prev, [matchId]: true }));
     };
 
+    const onPurchase = async () => {
+        const res = await getPredicativeAnalysisMatchById({ id: purchaseId });
+        if (!res.success) {
+            return new Error();
+        }
+        // 會不會買的瞬間完賽？
+        setSelectedMatches(prevSelectedMatches => ({
+            ...prevSelectedMatches,
+            [purchaseId]: res.data
+        }));
+    };
+
     return (
         <>
             <div className={style.content}>
@@ -305,7 +374,7 @@ function AiTodayMatches() {
                                 {firstHalfMatches.map(match => (
                                     <MatchItem
                                         handleSelectMatch={handleSelectMatch}
-                                        key={`${match.matchId}-${match.leagueType}`}
+                                        key={`${match.id}`}
                                         match={match}
                                     />
                                 ))}
@@ -325,15 +394,13 @@ function AiTodayMatches() {
                 {Object.keys(selectedMatches).length > 0 ? (
                     <div className={style.start}>开始分析</div>
                 ) : null}
-                {Object.entries(selectedMatches).map(([matchId, match]) => {
-                    // 要判斷有沒有已讀
-                    // const isRead = false;
-                    const currentTabKey = getMatchTabKey(match.matchId);
-                    matchRefs.current[match.matchId] = createRef<HTMLDivElement>();
+                {Object.entries(selectedMatches).map(([id, match]) => {
+                    const currentTabKey = getMatchTabKey(match.id);
+                    matchRefs.current[match.id] = createRef<HTMLDivElement>();
                     return (
                         <div
                             className={style.analyze}
-                            key={matchId}
+                            key={id}
                             ref={matchRefs.current[match.matchId]}
                         >
                             <div className={style.message}>
@@ -405,7 +472,7 @@ function AiTodayMatches() {
                                             className={style.tab}
                                             key={tab.value}
                                             onClick={() => {
-                                                handleSetTabKey(match.matchId, tab.value);
+                                                handleSetTabKey(match.id, tab.value);
                                             }}
                                         >
                                             {tab.title}
@@ -466,9 +533,7 @@ function AiTodayMatches() {
                 onOpen={() => {
                     setIsOpenPayDrawer(true);
                 }}
-                onPay={() => {
-                    return 123;
-                }}
+                onPay={onPurchase}
                 price={80}
                 title="获得智能盘路分析？"
             />
