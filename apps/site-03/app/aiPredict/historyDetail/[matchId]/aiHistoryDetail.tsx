@@ -96,7 +96,7 @@ function TargetMatchDetail({ target }: { target: GetPredicativeAnalysisMatch }) 
                     <div className={style.teamTitle}>
                         <div
                             className={`${style.name} ${
-                                target.predictMatchResult === 1 ? style.win : ''
+                                [1, 0].includes(target.predictMatchResult) ? style.win : ''
                             } ${target.predictMatchResult === 0 ? style.active : ''}`}
                         >
                             {target.predictMatchResult === 1 ? (
@@ -113,7 +113,7 @@ function TargetMatchDetail({ target }: { target: GetPredicativeAnalysisMatch }) 
                         {target.predictMatchResult === 0 ? <Draw className={style.draw} /> : null}
                         <div
                             className={`${style.name} ${
-                                target.predictMatchResult === 2 ? style.win : ''
+                                [2, 0].includes(target.predictMatchResult) ? style.win : ''
                             } ${target.predictMatchResult === 0 ? style.active : ''}`}
                         >
                             {target.predictMatchResult === 2 ? (

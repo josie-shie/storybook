@@ -65,7 +65,8 @@
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
-        height: 100%;
+        height: fit-content;
+        min-height: calc(100dvh - 223px);
         width: 100%;
 
         .analyze {
@@ -122,7 +123,6 @@
 
                 .draw {
                     position: absolute;
-                    top: 6px;
                     left: 50%;
                     transform: translateX(-50%);
                     z-index: 100;
@@ -172,7 +172,6 @@
 
             .information {
                 width: 100%;
-                min-height: calc(100dvh - 60vw - 107px);
                 border: 1px solid #9fc2ff;
                 border-radius: 12px;
                 padding: 8px;
