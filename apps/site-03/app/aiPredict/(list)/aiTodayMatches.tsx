@@ -98,14 +98,14 @@ function MatchItem({
     handleSelectMatch
 }: {
     match: GetPredicativeAnalysisMatch;
-    handleSelectMatch: (match: GetPredicativeAnalysisMatch) => void;
+    handleSelectMatch: (id: number) => void;
 }) {
     return (
         <div
             className={style.item}
             key={match.matchId}
             onClick={() => {
-                handleSelectMatch(match);
+                handleSelectMatch(match.id);
             }}
         >
             <div className={style.league}>
@@ -174,22 +174,22 @@ function AiTodayMatches() {
         void getPredicativeAnalysisList();
     }, []);
 
-    const handleSelectMatch = async (match: GetPredicativeAnalysisMatch) => {
-        if (Object.hasOwnProperty.call(selectedMatches, match.id)) {
-            const matchRef = matchRefs.current[match.id];
+    const handleSelectMatch = async (id: number) => {
+        if (Object.hasOwnProperty.call(selectedMatches, id)) {
+            const matchRef = matchRefs.current[id];
             matchRef.current?.scrollIntoView({ behavior: 'smooth' });
             return;
         }
-        const res = await getPredicativeAnalysisMatchById({ id: match.id });
 
+        const res = await getPredicativeAnalysisMatchById({ id });
         if (!res.success) {
             return new Error();
         }
         setSelectedMatches(prevSelectedMatches => ({
             ...prevSelectedMatches,
-            [match.id]: match
+            [id]: res.data
         }));
-        setPurchaseId(match.id);
+        setPurchaseId(id);
     };
 
     const handleSetTabKey = (id: number, value: string) => {
@@ -249,30 +249,9 @@ function AiTodayMatches() {
 
     const getSelectedComponent = (key: string, match: GetPredicativeAnalysisMatchByIdResult) => {
         const components: Record<string, JSX.Element> = {
-            ai: (
-                <Ai
-                    match={match}
-                    // onUnlockArticle={() => {
-                    //     handleUnlockArticle(match.matchId);
-                    // }}
-                />
-            ),
-            analyze: (
-                <Analyze
-                    match={match}
-                    // onUnlockArticle={() => {
-                    //     handleUnlockArticle(match.matchId);
-                    // }}
-                />
-            ),
-            cornor: (
-                <Cornor
-                    match={match}
-                    // onUnlockArticle={() => {
-                    //     handleUnlockArticle(match.matchId);
-                    // }}
-                />
-            )
+            ai: <Ai match={match} />,
+            analyze: <Analyze match={match} />,
+            cornor: <Cornor match={match} />
         };
         return components[key];
     };
