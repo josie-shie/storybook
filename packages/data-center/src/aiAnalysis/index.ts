@@ -575,6 +575,7 @@ const GetPredicativeAnalysisMatchSchema = z.object({
     awayScore: z.number(),
     homeScore: z.number(),
     purchaseCount: z.number(),
+    isMemberPurchased: z.boolean(),
     updatedAt: z.number()
 });
 
@@ -663,7 +664,7 @@ const GetPredicativeAnalysisMatchByIdSchema = z.object({
     awayScore: z.number(),
     homeScore: z.number(),
     purchaseCount: z.number(),
-    isPurchase: z.boolean(),
+    isMemberPurchased: z.boolean(),
     updatedAt: z.number()
 });
 
@@ -710,7 +711,7 @@ export const getPredicativeAnalysisMatchById = async (
         );
 
         throwErrorMessage(errors);
-        GetPredicativeAnalysisMatchResultSchema.parse(data);
+        GetPredicativeAnalysisMatchByIdResultSchema.parse(data);
 
         return {
             success: true,

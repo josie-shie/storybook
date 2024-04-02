@@ -11,7 +11,7 @@ interface CornorProps {
 
 function Cornor({ match }: CornorProps) {
     const isLogin = useUserStore.use.isLogin();
-    const isShow = isLogin && match.isPurchase;
+    const isShow = isLogin && match.isMemberPurchased;
     return (
         <div className={style.aiTab}>
             {isShow ? (
@@ -38,7 +38,7 @@ function Cornor({ match }: CornorProps) {
                         <span>{match.homeChs}的策略</span>
                     </div>
                     <div className={`${style.content} ${style.ellipsis}`}>
-                        考虑到伯恩利在本赛季的出色表现以及伯恩茅斯的不稳定状态，加之比赛地将在伯恩利的主场进行
+                        {match.homeTacticalPerspective}
                     </div>
                     <LockMood />
                 </div>
