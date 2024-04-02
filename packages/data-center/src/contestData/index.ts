@@ -621,11 +621,12 @@ export const getRecentBattleMatch = async ({
 
                 // 贏率 - 贏輸走
                 match.handicapResult = handicapResult(
-                    match.awayScore,
                     match.homeScore,
+                    match.awayScore,
                     match.handicapInit,
                     match.handicapHomeInitOdds,
-                    match.handicapAwayInitOdds
+                    match.handicapAwayInitOdds,
+                    false
                 );
                 winLoseFactory[match.handicapResult as 'win' | 'lose' | 'go' | 'none']();
             }
