@@ -2,7 +2,11 @@
 import { useEffect, useRef, useState, createRef } from 'react';
 // import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { getPredicativeAnalysisMatch, getPredicativeAnalysisMatchById } from 'data-center';
+import {
+    getPredicativeAnalysisMatch,
+    getPredicativeAnalysisMatchById,
+    payForPost
+} from 'data-center';
 import type {
     GetPredicativeAnalysisMatch,
     GetPredicativeAnalysisMatchByIdResult
@@ -25,49 +29,6 @@ import AiAvatarSmall from './img/aiAvatarSmall.svg';
 import style from './aiTodayMatches.module.scss';
 import AiAvatar from './img/aiAvatar.svg';
 // import Wallet from './img/wallet.png';
-
-const fake = {
-    id: 60006,
-    matchId: 4084029,
-    matchTime: 1711565100,
-    leagueId: 615,
-    leagueEn: 'KSA Division 1',
-    leagueChs: '沙特甲',
-    leagueCht: '沙特甲',
-    leagueType: 1,
-    color: '#2cb116',
-    homeId: 22391,
-    homeEn: 'Al Najma(KSA)',
-    homeChs: '阿尔纳泽马',
-    homeCht: '阿爾納澤馬',
-    awayId: 48912,
-    awayEn: 'Al Bukayriyah',
-    awayChs: '布凯里耶',
-    awayCht: '布凱里耶',
-    homeLogo: 'https://cdn.sportnanoapi.com/football/team/fde877e452f79f75955ad4e4f326c654.png',
-    awayLogo: 'https://cdn.sportnanoapi.com/football/team/608b8974ad512df1293585825bef3cee.png',
-    predict:
-        '考虑到阿尔纳泽马与布凯里耶在沙特甲联赛中的表现，此场比赛预计将呈现高竞争性。阿尔纳泽马拥有主场优势，而布凯里耶则不容小觑。初盘显示没有明显的让球优势和总进球数预测，表明比赛有可能十分接近。',
-    summary:
-        '综合来看，阿尔纳泽马与布凯里耶的比赛预计将非常激烈，两队都有机会取得胜利。虽然主场优势可能对阿尔纳泽马有所帮助，但布凯里耶的坚韧不拔不应被低估。预计是一场充满战术较量的比赛，最终可能以平局告终或微弱优势取胜。',
-    homeStrategicAnalysis:
-        '阿尔纳泽马的战略可能会集中在利用主场优势和控球策略。他们倾向于在主场展现出更强的侵略性和进攻欲望，可能会尝试从比赛一开始就对布凯里耶施加压力，利用快速边路突破和中场的紧密配合来创造进球机会。',
-    awayStrategicAnalysis:
-        '布凯里耶则可能采取更加谨慎的战略，重点放在防守反击上。作为客场作战的一方，他们可能会布置紧密的防守阵型，试图限制阿尔纳泽马的进攻空间，同时依靠快速前锋的反击机会寻求进球。',
-    homeTacticalPerspective:
-        '从战术层面看，阿尔纳泽马或许会强调中场控制，寻找创造进球的机会。他们可能会利用高位逼抢来回收球权，并通过快速的一触传球突破对手的防线。',
-    awayTacticalPerspective:
-        '布凯里耶在战术上可能更侧重于防守稳固和快速转换。他们的防守球员需要保持高度集中，同时中场球员的快速下沉协助防守也是关键。在抢回球权后，通过长传和边路突破来发起反击将是他们的主要策略之一。',
-    predictResult: '平局',
-    predictMatchResult: 0,
-    realMatchResult: 1,
-    homeScore: 3,
-    awayScore: 1,
-    purchaseCount: 1,
-    isPurchase: false,
-    updatedAt: 1711523521
-};
-
 interface MatchTab {
     id: number;
     value: string;
@@ -213,27 +174,22 @@ function AiTodayMatches() {
         void getPredicativeAnalysisList();
     }, []);
 
-    const handleSelectMatch = (match: GetPredicativeAnalysisMatch) => {
+    const handleSelectMatch = async (match: GetPredicativeAnalysisMatch) => {
         if (Object.hasOwnProperty.call(selectedMatches, match.id)) {
             const matchRef = matchRefs.current[match.id];
             matchRef.current?.scrollIntoView({ behavior: 'smooth' });
             return;
         }
-        // const res = await getPredicativeAnalysisMatchById({ id: match.id });
+        const res = await getPredicativeAnalysisMatchById({ id: match.id });
 
-        // if (!res.success) {
-        //     return new Error();
-        // }
-        // setSelectedMatches(prevSelectedMatches => ({
-        //     ...prevSelectedMatches,
-        //     [match.id]: match
-        // }));
-        setPurchaseId(match.id);
+        if (!res.success) {
+            return new Error();
+        }
         setSelectedMatches(prevSelectedMatches => ({
             ...prevSelectedMatches,
-            [match.id]: fake
+            [match.id]: match
         }));
-        setPurchaseId(fake.id);
+        setPurchaseId(match.id);
     };
 
     const handleSetTabKey = (id: number, value: string) => {
@@ -345,15 +301,20 @@ function AiTodayMatches() {
     };
 
     const onPurchase = async () => {
-        const res = await getPredicativeAnalysisMatchById({ id: purchaseId });
+        const res = await payForPost({ postId: Number(purchaseId), purchaseType: 2 });
         if (!res.success) {
+            return new Error();
+        }
+        const predicativeAnalysisDetail = await getPredicativeAnalysisMatchById({ id: purchaseId });
+        if (!predicativeAnalysisDetail.success) {
             return new Error();
         }
         // 會不會買的瞬間完賽？
         setSelectedMatches(prevSelectedMatches => ({
             ...prevSelectedMatches,
-            [purchaseId]: res.data
+            [purchaseId]: predicativeAnalysisDetail.data
         }));
+        setIsOpenPayDrawer(false);
     };
 
     return (
@@ -395,6 +356,7 @@ function AiTodayMatches() {
                     <div className={style.start}>开始分析</div>
                 ) : null}
                 {Object.entries(selectedMatches).map(([id, match]) => {
+                    const isShow = isLogin && match.isMemberPurchased;
                     const currentTabKey = getMatchTabKey(match.id);
                     matchRefs.current[match.id] = createRef<HTMLDivElement>();
                     return (
@@ -461,7 +423,7 @@ function AiTodayMatches() {
                             <div
                                 className={`${style.information} ${
                                     showInformation[match.matchId] ? style.fadeIn : style.hidden
-                                } ${isLogin && style.hasMinHeight}`}
+                                } ${isShow && style.hasMinHeight}`}
                             >
                                 <div className={style.minTabBar}>
                                     {tabList.map(tab => (
