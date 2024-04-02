@@ -228,25 +228,6 @@ function AiTodayMatches() {
         }
     }, [selectedMatches]);
 
-    // const handleUnlockArticle = (matchId: number) => {
-    //     if (!isLogin) {
-    //         setAuthQuery('login');
-    //         setIsDrawerOpen(true);
-    //         return;
-    //     }
-    //     setOpenPaid(true);
-    // };
-
-    // const onSubmit = () => {
-    //     if (userInfo.balance < 80) {
-    //         setOpenPaid(false);
-    //         setOpenDialog(true);
-    //         return;
-    //     }
-    //     setOpenPaid(false);
-    //     setPayLock(false);
-    // };
-
     const halfLength = Math.ceil(aiPredictList.length / 2);
     const firstHalfMatches = aiPredictList.slice(0, halfLength);
     const secondHalfMatches = aiPredictList.slice(halfLength);
@@ -335,7 +316,7 @@ function AiTodayMatches() {
                                 {firstHalfMatches.map(match => (
                                     <MatchItem
                                         handleSelectMatch={handleSelectMatch}
-                                        key={`${match.id}`}
+                                        key={match.id}
                                         match={match}
                                     />
                                 ))}
@@ -344,7 +325,7 @@ function AiTodayMatches() {
                                 {secondHalfMatches.map(match => (
                                     <MatchItem
                                         handleSelectMatch={handleSelectMatch}
-                                        key={`${match.matchId}-${match.leagueType}`}
+                                        key={match.id}
                                         match={match}
                                     />
                                 ))}
@@ -358,12 +339,12 @@ function AiTodayMatches() {
                 {Object.entries(selectedMatches).map(([id, match]) => {
                     const isShow = isLogin && match.isMemberPurchased;
                     const currentTabKey = getMatchTabKey(match.id);
-                    matchRefs.current[match.id] = createRef<HTMLDivElement>();
+                    matchRefs.current[id] = createRef<HTMLDivElement>();
                     return (
                         <div
                             className={style.analyze}
-                            key={id}
-                            ref={matchRefs.current[match.matchId]}
+                            key={match.id}
+                            ref={matchRefs.current[match.id]}
                         >
                             <div className={style.message}>
                                 <AiAvatarSmall className={style.icon} />
@@ -465,7 +446,7 @@ function AiTodayMatches() {
                                     {firstHalfMatches.map(match => (
                                         <MatchItem
                                             handleSelectMatch={handleSelectMatch}
-                                            key={`${match.matchId}-${match.leagueType}`}
+                                            key={match.id}
                                             match={match}
                                         />
                                     ))}
@@ -474,7 +455,7 @@ function AiTodayMatches() {
                                     {secondHalfMatches.map(match => (
                                         <MatchItem
                                             handleSelectMatch={handleSelectMatch}
-                                            key={`${match.matchId}-${match.leagueType}`}
+                                            key={match.id}
                                             match={match}
                                         />
                                     ))}
