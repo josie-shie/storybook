@@ -254,10 +254,10 @@ export const GET_PREDICATIVE_ANALYSIS_MATCH_QUERY = `
             predictResult
             predictMatchResult
             realMatchResult
-            awayScore
             homeScore
+            awayScore
             purchaseCount
-            isPurchase
+            isMemberPurchased
             updatedAt
           }
         }
@@ -300,6 +300,7 @@ export const GET_PREDICATIVE_ANALYSIS_MATCH_BY_ID = `
           homeScore
           awayScore
           purchaseCount
+          isMemberPurchased
           updatedAt
         }
       }

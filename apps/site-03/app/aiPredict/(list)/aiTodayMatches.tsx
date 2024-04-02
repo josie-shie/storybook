@@ -165,7 +165,7 @@ function MatchItem({
                     {match.awayChs}
                 </span>
             </div>
-            <div className={style.lock}>160人解鎖</div>
+            <div className={style.lock}>{match.purchaseCount}人解鎖</div>
         </div>
     );
 }
