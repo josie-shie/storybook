@@ -4,7 +4,7 @@ import { useEffect, useRef, useState, createRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { getPredicativeAnalysisMatch } from 'data-center';
 import type { GetPredicativeAnalysisMatchResponse, GetPredicativeAnalysisMatch } from 'data-center';
-import { timestampToString, timestampToStringCh } from 'lib';
+import { timestampToString } from 'lib';
 // import ConfirmPayDrawer from '@/components/confirmPayDrawer/confirmPayDrawer';
 // import NormalDialog from '@/components/normalDialog/normalDialog';
 // import { useUserStore } from '@/store/userStore';
@@ -45,10 +45,10 @@ function TypingText({
     const [typedText, setTypedText] = useState('');
 
     useEffect(() => {
-        const fullMessage = `以下是我分析即将进行的${timestampToStringCh(
+        const fullMessage = `以下是我分析即将进行的${timestampToString(
             matchTime,
-            'YYYY年MM月DD日'
-        )}${league}足球赛中 ${home} 对 ${away} 的比赛。`;
+            'YYYY年MM月DD日 HH:ss'
+        )} ${league}足球赛中 ${home} 对 ${away} 的比赛。`;
         let currentText = '';
         let currentIndex = 0;
 
@@ -67,14 +67,14 @@ function TypingText({
     }, [matchTime, home, away, league]);
 
     const parts = typedText.split(
-        new RegExp(`(${league}足球赛中|${timestampToStringCh(matchTime, 'YYYY年MM月DD日')})`)
+        new RegExp(`(${league}足球赛中|${timestampToString(matchTime, 'YYYY年MM月DD日 HH:ss')})`)
     );
 
     return (
         <>
             {parts.map(part =>
                 part === `${league}足球赛中` ||
-                part === timestampToStringCh(matchTime, 'YYYY年MM月DD日') ? (
+                part === timestampToString(matchTime, 'YYYY年MM月DD日 HH:ss') ? (
                     <span key={part} style={{ color: '#4489ff' }}>
                         {part}
                     </span>
@@ -106,7 +106,7 @@ function MatchItem({
                     {match.leagueChs}
                 </span>
                 <span className={style.time}>
-                    {timestampToString(match.matchTime, 'MM-DD HH:mm')}
+                    {timestampToString(match.matchTime, 'MM/DD HH:mm')}
                 </span>
             </div>
             <div className={style.team}>
