@@ -43,7 +43,7 @@ function ArticleCard({ article }: { article: RecommendPost }) {
             return;
         }
 
-        const res = await payForPost({ postId: Number(article.id) });
+        const res = await payForPost({ postId: Number(article.id), purchaseType: 1 });
 
         if (!res.success) {
             return new Error();

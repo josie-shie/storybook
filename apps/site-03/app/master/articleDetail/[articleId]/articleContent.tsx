@@ -57,7 +57,7 @@ function ArticleContent({
             setIsOpenRechargeDialog(true);
             return;
         }
-        const res = await payForPost({ postId: Number(params.articleId) });
+        const res = await payForPost({ postId: Number(params.articleId), purchaseType: 1 });
 
         if (!res.success) {
             return new Error();

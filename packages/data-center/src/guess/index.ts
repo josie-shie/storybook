@@ -871,8 +871,10 @@ export const payForProGuess = async ({
     }
 };
 
+// 購買類型 1:專家文章 2:AI預測
 export interface PayForPostRequest {
     postId: number;
+    purchaseType: number;
 }
 
 const PayForPostSchema = z.object({
@@ -889,12 +891,13 @@ type PayForPostResult = z.infer<typeof PayForPostResultSchema>;
 export type PayForPostResponse = z.infer<typeof PayForPostSchema>;
 
 /**
- * 買料
+ * 買料 購買類型 1:專家文章 2:AI預測
  * - params {@link PayForPostRequest}
  * - returns {@link PayForPostResponse}
  */
 export const payForPost = async ({
-    postId
+    postId,
+    purchaseType
 }: PayForPostRequest): Promise<ReturnData<PayForPostResponse>> => {
     try {
         const { data, errors } = await fetcher<FetchResultData<PayForPostResult>, unknown>(
@@ -903,7 +906,8 @@ export const payForPost = async ({
                     query: PAY_FOR_POST_MUTATION,
                     variables: {
                         input: {
-                            postId
+                            postId,
+                            purchaseType
                         }
                     }
                 }
