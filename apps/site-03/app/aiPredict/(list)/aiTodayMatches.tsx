@@ -253,7 +253,6 @@ function AiTodayMatches() {
         if (!predicativeAnalysisDetail.success) {
             return new Error();
         }
-        // 會不會買的瞬間完賽？
         setSelectedMatches(prevSelectedMatches => ({
             ...prevSelectedMatches,
             [purchaseId]: predicativeAnalysisDetail.data
