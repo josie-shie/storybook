@@ -1,6 +1,5 @@
 'use client';
 import { useEffect, useRef, useState, createRef } from 'react';
-// import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
     getPredicativeAnalysisMatch,
@@ -13,9 +12,6 @@ import type {
 } from 'data-center';
 import { timestampToString } from 'lib';
 import ConfirmPayDrawer from '@/components/confirmPayDrawer/confirmPayDrawer';
-// import NormalDialog from '@/components/normalDialog/normalDialog';
-// import { useUserStore } from '@/store/userStore';
-// import { useAuthStore } from '@/store/authStore';
 import TeamLogo from '@/components/teamLogo/teamLogo';
 import Win from '@/public/resultIcon/bigWin.svg';
 import Draw from '@/public/resultIcon/bigDraw.svg';
@@ -28,7 +24,7 @@ import Tutorial from '../components/turorial/turorial';
 import AiAvatarSmall from './img/aiAvatarSmall.svg';
 import style from './aiTodayMatches.module.scss';
 import AiAvatar from './img/aiAvatar.svg';
-// import Wallet from './img/wallet.png';
+
 interface MatchTab {
     id: number;
     value: string;
@@ -134,22 +130,10 @@ function MatchItem({
 function AiTodayMatches() {
     const matchRefs = useRef<Record<number, React.RefObject<HTMLDivElement>>>({});
     const isLogin = useUserStore.use.isLogin();
-
-    // const router = useRouter();
-
     const aiPredictList = useAiPredictStore.use.aiPredictList();
     const setAiPredictList = useAiPredictStore.use.setAiPredictList();
     const isOpenPayDrawer = useAiPredictStore.use.isOpenPayDrawer();
     const setIsOpenPayDrawer = useAiPredictStore.use.setIsOpenPayDrawer();
-    // const setPayLock = useAiPredictStore.use.setPayLock();
-
-    // const [openPaid, setOpenPaid] = useState(false);
-    // const [openDialog, setOpenDialog] = useState(false);
-    // const userInfo = useUserStore.use.userInfo();
-    // const isLogin = useUserStore.use.isLogin();
-    // const setAuthQuery = useUserStore.use.setAuthQuery();
-    // const setIsDrawerOpen = useAuthStore.use.setIsDrawerOpen();
-
     const [showChat, setShowChat] = useState(false);
     const [selectedMatches, setSelectedMatches] = useState<
         Record<number, GetPredicativeAnalysisMatchByIdResult>
