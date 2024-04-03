@@ -144,8 +144,8 @@ function Tutorial() {
                         <div className={style.message}>
                             <AiAvatarSmall className={style.icon} />
                             <div className={style.text}>
-                                以下是我分析即将进行的2024年1月23日亚洲杯足球赛中{' '}
-                                <span>队伍001</span> 对 <span>队伍002</span> 的比赛。
+                                以下是我分析即将进行的<span>2024年1月23日 13:00 亚洲杯足球赛</span>
+                                中 队伍001 对队伍002的比赛。
                             </div>
                         </div>
 
