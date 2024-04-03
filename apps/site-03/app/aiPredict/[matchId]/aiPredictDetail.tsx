@@ -1,25 +1,27 @@
 'use client';
 import { useEffect, useRef, useState, createRef } from 'react';
-// import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { getPredicativeAnalysisMatch } from 'data-center';
-import type { GetPredicativeAnalysisMatch } from 'data-center';
-import { timestampToString, timestampToStringCh } from 'lib';
-// import ConfirmPayDrawer from '@/components/confirmPayDrawer/confirmPayDrawer';
-// import NormalDialog from '@/components/normalDialog/normalDialog';
-// import { useUserStore } from '@/store/userStore';
-// import { useAuthStore } from '@/store/authStore';
+import {
+    getPredicativeAnalysisMatch,
+    getPredicativeAnalysisMatchById,
+    payForPost
+} from 'data-center';
+import type {
+    GetPredicativeAnalysisMatch,
+    GetPredicativeAnalysisMatchByIdResult
+} from 'data-center';
+import { timestampToString } from 'lib';
 import TeamLogo from '@/components/teamLogo/teamLogo';
+import { useUserStore } from '@/store/userStore';
+import ConfirmPayDrawer from '@/components/confirmPayDrawer/confirmPayDrawer';
 import { useAiPredictStore } from '../aiPredictStore';
 import Ai from '../components/analyzeContent/ai';
 import Analyze from '../components/analyzeContent/analyze';
 import Cornor from '../components/analyzeContent/cornor';
-// import Wallet from '../img/wallet.png';
 import Win from '../(list)/img/aiHit.svg';
 import Draw from '../(list)/img/aiDraw.svg';
 import AiAvatarSmall from '../(list)/img/aiAvatarSmall.svg';
-import AiAvatar from '../(list)/img/aiAvatar.svg';
-import style from '../(list)/aiPredict.module.scss';
+import style from '../(list)/aiTodayMatches.module.scss';
 import Tutorial from '../components/turorial/turorial';
 
 interface MatchTab {
@@ -43,10 +45,10 @@ function TypingText({
     const [typedText, setTypedText] = useState('');
 
     useEffect(() => {
-        const fullMessage = `以下是我分析即将进行的${timestampToStringCh(
+        const fullMessage = `以下是我分析即将进行的${timestampToString(
             matchTime,
-            'YYYY年MM月DD日'
-        )}${league}足球赛中 ${home} 对 ${away} 的比赛。`;
+            'YYYY年MM月DD日 HH:ss'
+        )} ${league}足球赛中 ${home} 对 ${away} 的比赛。`;
         let currentText = '';
         let currentIndex = 0;
 
@@ -64,8 +66,9 @@ function TypingText({
         typeCharacter();
     }, [matchTime, home, away, league]);
 
-    const parts = typedText.split(new RegExp(`(${home}|${away})`));
-
+    const parts = typedText.split(
+        new RegExp(`(${league}足球赛中|${timestampToString(matchTime, 'YYYY年MM月DD日 HH:ss')})`)
+    );
     return (
         <>
             {parts.map(part =>
@@ -86,14 +89,14 @@ function MatchItem({
     handleSelectMatch
 }: {
     match: GetPredicativeAnalysisMatch;
-    handleSelectMatch: (match: GetPredicativeAnalysisMatch) => void;
+    handleSelectMatch: (id: number) => void;
 }) {
     return (
         <div
             className={style.item}
             key={match.matchId}
             onClick={() => {
-                handleSelectMatch(match);
+                handleSelectMatch(match.id);
             }}
         >
             <div className={style.league}>
@@ -114,25 +117,18 @@ function MatchItem({
 }
 
 function AiPredictDetail({ params }: { params: { matchId: string } }) {
+    const isLogin = useUserStore.use.isLogin();
     const matchRefs = useRef<Record<number, React.RefObject<HTMLDivElement>>>({});
-    // const router = useRouter();
-
     const aiPredictList = useAiPredictStore.use.aiPredictList();
     const setAiPredictList = useAiPredictStore.use.setAiPredictList();
-
-    // const [openPaid, setOpenPaid] = useState(false);
-    // const [openDialog, setOpenDialog] = useState(false);
-    // const userInfo = useUserStore.use.userInfo();
-    // const isLogin = useUserStore.use.isLogin();
-    // const setAuthQuery = useUserStore.use.setAuthQuery();
-    // const setIsDrawerOpen = useAuthStore.use.setIsDrawerOpen();
-
     const [showChat, setShowChat] = useState(false);
     const [showInformation, setShowInformation] = useState<Record<number, boolean>>({});
     const [selectedMatches, setSelectedMatches] = useState<
-        Record<number, GetPredicativeAnalysisMatch>
+        Record<number, GetPredicativeAnalysisMatchByIdResult>
     >({});
     const [matchTabs, setMatchTabs] = useState<MatchTab[]>([]);
+    const [purchaseId, setPurchaseId] = useState<number>(0);
+    const [isOpenPayDrawer, setIsOpenPayDrawer] = useState(false);
 
     useEffect(() => {
         const getPredicativeAnalysisList = async () => {
@@ -150,16 +146,22 @@ function AiPredictDetail({ params }: { params: { matchId: string } }) {
         void getPredicativeAnalysisList();
     }, []);
 
-    const handleSelectMatch = (match: GetPredicativeAnalysisMatch) => {
-        if (Object.hasOwnProperty.call(selectedMatches, match.matchId)) {
-            const matchRef = matchRefs.current[match.matchId];
+    const handleSelectMatch = async (id: number) => {
+        if (Object.hasOwnProperty.call(selectedMatches, id)) {
+            const matchRef = matchRefs.current[id];
             matchRef.current?.scrollIntoView({ behavior: 'smooth' });
             return;
         }
+
+        const res = await getPredicativeAnalysisMatchById({ id });
+        if (!res.success) {
+            return new Error();
+        }
         setSelectedMatches(prevSelectedMatches => ({
             ...prevSelectedMatches,
-            [match.matchId]: match
+            [id]: res.data
         }));
+        setPurchaseId(id);
     };
 
     const handleSetTabKey = (matchId: number, value: string) => {
@@ -178,25 +180,6 @@ function AiPredictDetail({ params }: { params: { matchId: string } }) {
         const matchTab = matchTabs.find(tab => tab.matchId === matchId);
         return matchTab ? matchTab.value : tabList[0].value;
     };
-
-    // const handleUnlockArticle = (matchId: number) => {
-    //     if (!isLogin) {
-    //         setAuthQuery('login');
-    //         setIsDrawerOpen(true);
-    //         return;
-    //     }
-    //     setOpenPaid(true);
-    // };
-
-    // const onSubmit = () => {
-    //     if (userInfo.balance < 80) {
-    //         setOpenPaid(false);
-    //         setOpenDialog(true);
-    //         return;
-    //     }
-    //     setOpenPaid(false);
-    //     setPayLock(false);
-    // };
 
     const halfLength = Math.ceil(aiPredictList.length / 2);
     const firstHalfMatches = aiPredictList.slice(0, halfLength);
@@ -219,36 +202,33 @@ function AiPredictDetail({ params }: { params: { matchId: string } }) {
 
     const getSelectedComponent = (key: string, match: GetPredicativeAnalysisMatch) => {
         const components: Record<string, JSX.Element> = {
-            ai: (
-                <Ai
-                    match={match}
-                    // onUnlockArticle={() => {
-                    //     handleUnlockArticle(match.matchId);
-                    // }}
-                />
-            ),
-            analyze: (
-                <Analyze
-                    match={match}
-                    // onUnlockArticle={() => {
-                    //     handleUnlockArticle(match.matchId);
-                    // }}
-                />
-            ),
-            cornor: (
-                <Cornor
-                    match={match}
-                    // onUnlockArticle={() => {
-                    //     handleUnlockArticle(match.matchId);
-                    // }}
-                />
-            )
+            ai: <Ai match={match} />,
+            analyze: <Analyze match={match} />,
+            cornor: <Cornor match={match} />
         };
         return components[key];
     };
 
     const handleTypingDone = (matchId: number) => {
         setShowInformation(prev => ({ ...prev, [matchId]: true }));
+    };
+
+    const onPurchase = async () => {
+        const res = await payForPost({ postId: Number(purchaseId), purchaseType: 2 });
+        if (!res.success) {
+            return new Error();
+        }
+        const predicativeAnalysisDetail = await getPredicativeAnalysisMatchById({
+            id: purchaseId
+        });
+        if (!predicativeAnalysisDetail.success) {
+            return new Error();
+        }
+        setSelectedMatches(prevSelectedMatches => ({
+            ...prevSelectedMatches,
+            [purchaseId]: predicativeAnalysisDetail.data
+        }));
+        setIsOpenPayDrawer(false);
     };
 
     useEffect(() => {
@@ -273,16 +253,25 @@ function AiPredictDetail({ params }: { params: { matchId: string } }) {
     useEffect(() => {
         const paramMatchId = parseInt(params.matchId);
         const matchedItem = aiPredictList.find(item => item.matchId === paramMatchId);
+        const fetchArticleData = async (articleId: number) => {
+            const res = await getPredicativeAnalysisMatchById({ id: articleId });
+            if (!res.success) {
+                return new Error();
+            }
 
-        if (matchedItem) {
+            setPurchaseId(articleId);
             setTimeout(() => {
                 setSelectedMatches(prevMatches => {
-                    if (Object.hasOwnProperty.call(selectedMatches, paramMatchId)) {
-                        return { ...prevMatches, [paramMatchId]: matchedItem };
+                    if (Object.hasOwnProperty.call(selectedMatches, articleId)) {
+                        return { ...prevMatches, [articleId]: res.data };
                     }
                     return prevMatches;
                 });
             }, 2500);
+        };
+        if (matchedItem) {
+            const articleId = matchedItem.id;
+            void fetchArticleData(articleId);
         }
     }, [params.matchId, aiPredictList]);
 
@@ -290,26 +279,15 @@ function AiPredictDetail({ params }: { params: { matchId: string } }) {
         <>
             <div className={style.aiPredict}>
                 <div className={style.content}>
-                    <div className={style.welcome}>
-                        <div className={style.row}>
-                            <AiAvatar />
-                            <div className={style.title}>FutureAI</div>
-                        </div>
-                        <div className={style.text}>您好，为您推荐以下赛事预测分析：</div>
-                    </div>
-
-                    {Object.keys(selectedMatches).length > 0 ? (
-                        <div className={style.start}>开始分析</div>
-                    ) : null}
-
-                    {Object.entries(selectedMatches).map(([matchId, match]) => {
-                        const currentTabKey = getMatchTabKey(Number(matchId));
-                        matchRefs.current[match.matchId] = createRef<HTMLDivElement>();
+                    {Object.entries(selectedMatches).map(([id, match]) => {
+                        const currentTabKey = getMatchTabKey(Number(id));
+                        matchRefs.current[id] = createRef<HTMLDivElement>();
+                        const isShow = isLogin && match.isMemberPurchased;
                         return (
                             <div
                                 className={style.analyze}
                                 key={match.matchId}
-                                ref={matchRefs.current[match.matchId]}
+                                ref={matchRefs.current[match.id]}
                             >
                                 <div className={style.message}>
                                     <AiAvatarSmall className={style.icon} />
@@ -372,7 +350,7 @@ function AiPredictDetail({ params }: { params: { matchId: string } }) {
                                 <div
                                     className={`${style.information} ${
                                         showInformation[match.matchId] ? style.fadeIn : style.hidden
-                                    }`}
+                                    } ${isShow && style.hasMinHeight}`}
                                 >
                                     <div className={style.minTabBar}>
                                         {tabList.map(tab => (
@@ -436,16 +414,20 @@ function AiPredictDetail({ params }: { params: { matchId: string } }) {
                 </div>
                 <Tutorial />
             </div>
-            {/* <NormalDialog
-                confirmText="去充值"
-                content={<div>余额不足，请充值</div>}
+            <ConfirmPayDrawer
+                discount={0}
+                hasDiscount
+                isOpen={isOpenPayDrawer}
                 onClose={() => {
-                    setOpenDialog(false);
+                    setIsOpenPayDrawer(false);
                 }}
-                onConfirm={goSubscribe}
-                openDialog={openDialog}
-                srcImage={Wallet}
-            /> */}
+                onOpen={() => {
+                    setIsOpenPayDrawer(true);
+                }}
+                onPay={onPurchase}
+                price={80}
+                title="获得智能盘路分析？"
+            />
         </>
     );
 }
