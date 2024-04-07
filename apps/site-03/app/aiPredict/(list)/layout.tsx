@@ -4,7 +4,7 @@ import type { ReactNode } from 'react';
 import { useParams } from 'next/navigation';
 import { motion } from 'framer-motion';
 import ScrollTop from '@/components/scrollTop/scrollTop';
-import { creatAiPredictStore } from './aiPredictStore';
+import { creatAiPredictStore } from '../aiPredictStore';
 import style from './layout.module.scss';
 
 function InterceptingContent({ para }: { para: ReactNode }) {

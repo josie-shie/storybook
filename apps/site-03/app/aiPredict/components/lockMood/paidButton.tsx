@@ -4,11 +4,7 @@ import style from './lockMood.module.scss';
 import StarIcon from './img/starIcon.svg';
 import Lightning from './img/lightning.svg';
 
-function PaidButton({
-    setIsOpenPayDrawer
-}: {
-    setIsOpenPayDrawer: (isOpenPayDrawer: boolean) => void;
-}) {
+function PaidButton({ onPay }: { onPay: () => void }) {
     const isLogin = useUserStore.use.isLogin();
     const setAuthQuery = useUserStore.use.setAuthQuery();
     const setIsDrawerOpen = useAuthStore.use.setIsDrawerOpen();
@@ -19,7 +15,7 @@ function PaidButton({
     };
 
     const handleClick = () => {
-        isLogin ? setIsOpenPayDrawer(true) : openLoginDrawer();
+        isLogin ? onPay() : openLoginDrawer();
     };
 
     return (

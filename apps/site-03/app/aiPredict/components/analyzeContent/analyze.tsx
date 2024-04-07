@@ -6,12 +6,18 @@ import style from './aiTab.module.scss';
 
 interface AnalyzeProps {
     match: GetPredicativeAnalysisMatchByIdResult;
-    setIsOpenPayDrawer: (isOpenPayDrawer: boolean) => void;
+    isHistory?: boolean;
+    setIsOpenPayDrawer?: (isOpenPayDrawer: boolean) => void;
 }
 
-function Analyze({ match, setIsOpenPayDrawer }: AnalyzeProps) {
+function Analyze({ match, isHistory = false, setIsOpenPayDrawer }: AnalyzeProps) {
     const isLogin = useUserStore.use.isLogin();
-    const isShow = isLogin && match.isMemberPurchased;
+    const isShow = isHistory || (isLogin && match.isMemberPurchased);
+    const onPay = () => {
+        if (!isHistory && setIsOpenPayDrawer) {
+            setIsOpenPayDrawer(true);
+        }
+    };
     return (
         <div className={style.aiTab}>
             {isShow ? (
@@ -50,7 +56,7 @@ function Analyze({ match, setIsOpenPayDrawer }: AnalyzeProps) {
                     <div className={`${style.content} ${style.ellipsis}`}>
                         {match.homeStrategicAnalysis}
                     </div>
-                    <LockMood setIsOpenPayDrawer={setIsOpenPayDrawer} />
+                    <LockMood onPay={onPay} />
                 </div>
             )}
         </div>

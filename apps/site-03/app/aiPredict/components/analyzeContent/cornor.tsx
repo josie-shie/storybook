@@ -6,12 +6,18 @@ import style from './aiTab.module.scss';
 
 interface CornorProps {
     match: GetPredicativeAnalysisMatchByIdResult;
-    setIsOpenPayDrawer: (isOpenPayDrawer: boolean) => void;
+    isHistory?: boolean;
+    setIsOpenPayDrawer?: (isOpenPayDrawer: boolean) => void;
 }
 
-function Cornor({ match, setIsOpenPayDrawer }: CornorProps) {
+function Cornor({ match, isHistory = false, setIsOpenPayDrawer }: CornorProps) {
     const isLogin = useUserStore.use.isLogin();
-    const isShow = isLogin && match.isMemberPurchased;
+    const isShow = isHistory || (isLogin && match.isMemberPurchased);
+    const onPay = () => {
+        if (!isHistory && setIsOpenPayDrawer) {
+            setIsOpenPayDrawer(true);
+        }
+    };
     return (
         <div className={style.aiTab}>
             {isShow ? (
@@ -40,7 +46,7 @@ function Cornor({ match, setIsOpenPayDrawer }: CornorProps) {
                     <div className={`${style.content} ${style.ellipsis}`}>
                         {match.homeTacticalPerspective}
                     </div>
-                    <LockMood setIsOpenPayDrawer={setIsOpenPayDrawer} />
+                    <LockMood onPay={onPay} />
                 </div>
             )}
         </div>

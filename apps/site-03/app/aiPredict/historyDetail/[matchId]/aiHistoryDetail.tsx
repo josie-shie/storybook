@@ -59,30 +59,9 @@ function TargetMatchDetail({ target }: { target: GetPredicativeAnalysisMatch }) 
     ];
 
     const componentsMap = {
-        ai: (
-            <Ai
-                match={target}
-                // onUnlockArticle={() => {
-                //     handleUnlockArticle(target.matchId);
-                // }}
-            />
-        ),
-        analyze: (
-            <Analyze
-                match={target}
-                // onUnlockArticle={() => {
-                //     handleUnlockArticle(target.matchId);
-                // }}
-            />
-        ),
-        cornor: (
-            <Cornor
-                match={target}
-                // onUnlockArticle={() => {
-                //     handleUnlockArticle(target.matchId);
-                // }}
-            />
-        )
+        ai: <Ai isHistory match={target} />,
+        analyze: <Analyze isHistory match={target} />,
+        cornor: <Cornor isHistory match={target} />
     };
 
     return (
