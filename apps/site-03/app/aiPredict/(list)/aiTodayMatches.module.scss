@@ -340,6 +340,11 @@
     }
 }
 
+.aiPredictDetail .content {
+    padding: 0;
+    height: calc(100dvh - 124px);
+}
+
 @keyframes fadein {
     from {
         opacity: 0;
