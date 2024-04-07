@@ -5,10 +5,9 @@ import style from './aiTab.module.scss';
 
 interface AiProps {
     match: GetPredicativeAnalysisMatchByIdResult;
-    // onUnlockArticle: (matchId: number) => void;
+    setIsOpenPayDrawer: (isOpenPayDrawer: boolean) => void;
 }
-
-function Ai({ match }: AiProps) {
+function Ai({ match, setIsOpenPayDrawer }: AiProps) {
     const isLogin = useUserStore.use.isLogin();
     const isShow = isLogin && match.isMemberPurchased;
 
@@ -33,7 +32,7 @@ function Ai({ match }: AiProps) {
                         <span className={style.text}>FutureAI</span> 预测
                     </div>
                     <div className={`${style.content} ${style.ellipsis}`}>{match.predict}</div>
-                    <LockMood />
+                    <LockMood setIsOpenPayDrawer={setIsOpenPayDrawer} />
                 </div>
             )}
         </div>

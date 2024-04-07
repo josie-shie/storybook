@@ -26,7 +26,6 @@ function AiPredict() {
                     autoHeight
                     className={style.slick}
                     fixedTabs
-                    // initialSlide={initialSlide}
                     onSlickEnd={() => {
                         return null;
                     }}
@@ -42,27 +41,6 @@ function AiPredict() {
                     </div>
                 </Slick>
             </div>
-            {/* <ConfirmPayDrawer
-                isOpen={openPaid}
-                onClose={() => {
-                    setOpenPaid(false);
-                }}
-                onOpen={() => {
-                    setOpenPaid(true);
-                }}
-                onPay={onSubmit}
-                price={80}
-            />
-            <NormalDialog
-                confirmText="去充值"
-                content={<div>余额不足，请充值</div>}
-                onClose={() => {
-                    setOpenDialog(false);
-                }}
-                onConfirm={goSubscribe}
-                openDialog={openDialog}
-                srcImage={Wallet}
-            /> */}
             <Footer />
         </>
     );

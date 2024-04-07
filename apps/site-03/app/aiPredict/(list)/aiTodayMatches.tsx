@@ -233,9 +233,9 @@ function AiTodayMatches() {
 
     const getSelectedComponent = (key: string, match: GetPredicativeAnalysisMatchByIdResult) => {
         const components: Record<string, JSX.Element> = {
-            ai: <Ai match={match} />,
-            analyze: <Analyze match={match} />,
-            cornor: <Cornor match={match} />
+            ai: <Ai match={match} setIsOpenPayDrawer={setIsOpenPayDrawer} />,
+            analyze: <Analyze match={match} setIsOpenPayDrawer={setIsOpenPayDrawer} />,
+            cornor: <Cornor match={match} setIsOpenPayDrawer={setIsOpenPayDrawer} />
         };
         return components[key];
     };

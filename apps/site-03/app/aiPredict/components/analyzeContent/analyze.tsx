@@ -6,10 +6,10 @@ import style from './aiTab.module.scss';
 
 interface AnalyzeProps {
     match: GetPredicativeAnalysisMatchByIdResult;
-    // onUnlockArticle: (matchId: number) => void;
+    setIsOpenPayDrawer: (isOpenPayDrawer: boolean) => void;
 }
 
-function Analyze({ match }: AnalyzeProps) {
+function Analyze({ match, setIsOpenPayDrawer }: AnalyzeProps) {
     const isLogin = useUserStore.use.isLogin();
     const isShow = isLogin && match.isMemberPurchased;
     return (
@@ -50,7 +50,7 @@ function Analyze({ match }: AnalyzeProps) {
                     <div className={`${style.content} ${style.ellipsis}`}>
                         {match.homeStrategicAnalysis}
                     </div>
-                    <LockMood />
+                    <LockMood setIsOpenPayDrawer={setIsOpenPayDrawer} />
                 </div>
             )}
         </div>

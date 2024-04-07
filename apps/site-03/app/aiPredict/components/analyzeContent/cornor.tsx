@@ -6,10 +6,10 @@ import style from './aiTab.module.scss';
 
 interface CornorProps {
     match: GetPredicativeAnalysisMatchByIdResult;
-    // onUnlockArticle: (matchId: number) => void;
+    setIsOpenPayDrawer: (isOpenPayDrawer: boolean) => void;
 }
 
-function Cornor({ match }: CornorProps) {
+function Cornor({ match, setIsOpenPayDrawer }: CornorProps) {
     const isLogin = useUserStore.use.isLogin();
     const isShow = isLogin && match.isMemberPurchased;
     return (
@@ -40,7 +40,7 @@ function Cornor({ match }: CornorProps) {
                     <div className={`${style.content} ${style.ellipsis}`}>
                         {match.homeTacticalPerspective}
                     </div>
-                    <LockMood />
+                    <LockMood setIsOpenPayDrawer={setIsOpenPayDrawer} />
                 </div>
             )}
         </div>

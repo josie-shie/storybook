@@ -1,13 +1,15 @@
 import { useUserStore } from '@/store/userStore';
 import { useAuthStore } from '@/store/authStore';
-import { useAiPredictStore } from '../../aiPredictStore';
 import style from './lockMood.module.scss';
 import StarIcon from './img/starIcon.svg';
 import Lightning from './img/lightning.svg';
 
-function PaidButton() {
+function PaidButton({
+    setIsOpenPayDrawer
+}: {
+    setIsOpenPayDrawer: (isOpenPayDrawer: boolean) => void;
+}) {
     const isLogin = useUserStore.use.isLogin();
-    const setIsOpenPayDrawer = useAiPredictStore.use.setIsOpenPayDrawer();
     const setAuthQuery = useUserStore.use.setAuthQuery();
     const setIsDrawerOpen = useAuthStore.use.setIsDrawerOpen();
 
