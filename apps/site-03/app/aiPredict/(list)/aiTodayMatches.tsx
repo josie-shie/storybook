@@ -136,30 +136,14 @@ function AiTodayMatches() {
     const setIsOpenPayDrawer = useAiPredictStore.use.setIsOpenPayDrawer();
     const [showChat, setShowChat] = useState(false);
     const [selectedMatches, setSelectedMatches] = useState<
-        Record<number, GetPredicativeAnalysisMatchByIdResult>
-    >({});
+        Map<number, GetPredicativeAnalysisMatchByIdResult>
+    >(new Map());
     const [showInformation, setShowInformation] = useState<Record<number, boolean>>({});
     const [matchTabs, setMatchTabs] = useState<MatchTab[]>([]);
     const [purchaseId, setPurchaseId] = useState<number>(0);
 
-    useEffect(() => {
-        const getPredicativeAnalysisList = async () => {
-            const res = await getPredicativeAnalysisMatch({
-                matchId: 0,
-                matchTime: 0,
-                isFinished: false
-            });
-
-            if (!res.success) {
-                return new Error();
-            }
-            setAiPredictList(res.data);
-        };
-        void getPredicativeAnalysisList();
-    }, []);
-
     const handleSelectMatch = async (id: number) => {
-        if (Object.hasOwnProperty.call(selectedMatches, id)) {
+        if (selectedMatches.has(id)) {
             const matchRef = matchRefs.current[id];
             matchRef.current?.scrollIntoView({ behavior: 'smooth' });
             return;
@@ -167,12 +151,13 @@ function AiTodayMatches() {
 
         const res = await getPredicativeAnalysisMatchById({ id });
         if (!res.success) {
-            return new Error();
+            throw new Error();
         }
-        setSelectedMatches(prevSelectedMatches => ({
-            ...prevSelectedMatches,
-            [id]: res.data
-        }));
+        setSelectedMatches(prevSelectedMatches => {
+            const updatedMatches = new Map(prevSelectedMatches);
+            updatedMatches.set(id, res.data);
+            return updatedMatches;
+        });
         setPurchaseId(id);
     };
 
@@ -192,25 +177,6 @@ function AiTodayMatches() {
         const matchTab = matchTabs.find(tab => tab.id === id);
         return matchTab ? matchTab.value : tabList[0].value;
     };
-
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            setShowChat(true);
-        }, 2500);
-
-        return () => {
-            clearTimeout(timer);
-        };
-    }, []);
-
-    useEffect(() => {
-        const keys = Object.keys(selectedMatches);
-        if (keys.length > 0) {
-            const target = Number(keys[keys.length - 1]);
-            const matchRef = matchRefs.current[target];
-            matchRef.current?.scrollIntoView({ behavior: 'smooth' });
-        }
-    }, [selectedMatches]);
 
     const halfLength = Math.ceil(aiPredictList.length / 2);
     const firstHalfMatches = aiPredictList.slice(0, halfLength);
@@ -260,6 +226,42 @@ function AiTodayMatches() {
         setIsOpenPayDrawer(false);
     };
 
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setShowChat(true);
+        }, 2500);
+
+        return () => {
+            clearTimeout(timer);
+        };
+    }, []);
+
+    useEffect(() => {
+        if (selectedMatches.size > 0) {
+            const lastKey = Array.from(selectedMatches.keys()).pop();
+            if (lastKey) {
+                const matchRef = matchRefs.current[lastKey];
+                matchRef.current?.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+    }, [selectedMatches]);
+
+    useEffect(() => {
+        const getPredicativeAnalysisList = async () => {
+            const res = await getPredicativeAnalysisMatch({
+                matchId: 0,
+                matchTime: 0,
+                isFinished: false
+            });
+
+            if (!res.success) {
+                return new Error();
+            }
+            setAiPredictList(res.data);
+        };
+        void getPredicativeAnalysisList();
+    }, []);
+
     return (
         <>
             <div className={style.content}>
@@ -295,13 +297,11 @@ function AiTodayMatches() {
                         </div>
                     </div>
                 </div>
-                {Object.keys(selectedMatches).length > 0 ? (
-                    <div className={style.start}>开始分析</div>
-                ) : null}
-                {Object.entries(selectedMatches).map(([id, match]) => {
+                {selectedMatches.size > 0 && <div className={style.start}>开始分析</div>}
+                {Array.from(selectedMatches.values()).map(match => {
                     const isShow = isLogin && match.isMemberPurchased;
                     const currentTabKey = getMatchTabKey(match.id);
-                    matchRefs.current[id] = createRef<HTMLDivElement>();
+                    matchRefs.current[match.id] = createRef<HTMLDivElement>();
                     return (
                         <div
                             className={style.analyze}
@@ -399,7 +399,7 @@ function AiTodayMatches() {
                         </div>
                     );
                 })}
-                {Object.keys(selectedMatches).length > 0 ? (
+                {selectedMatches.size > 0 ? (
                     <div className={`${style.chat} ${showChat ? style.fadeIn : style.hidden}`}>
                         <div className={style.title}>其他推荐赛事</div>
                         <div className={style.wrapper}>
