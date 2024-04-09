@@ -133,6 +133,7 @@ function AiPredictDetail({ params }: { params: { matchId: string } }) {
     const [isOpenPayDrawer, setIsOpenPayDrawer] = useState(false);
 
     const handleSelectMatch = async (id: number) => {
+        setPurchaseId(id);
         if (selectedMatches.has(id)) {
             const matchRef = matchRefs.current[id];
             matchRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -148,7 +149,6 @@ function AiPredictDetail({ params }: { params: { matchId: string } }) {
             updatedMatches.set(id, res.data);
             return updatedMatches;
         });
-        setPurchaseId(id);
     };
 
     const handleSetTabKey = (id: number, value: string) => {
@@ -189,9 +189,27 @@ function AiPredictDetail({ params }: { params: { matchId: string } }) {
 
     const getSelectedComponent = (key: string, match: GetPredicativeAnalysisMatch) => {
         const components: Record<string, JSX.Element> = {
-            ai: <Ai match={match} setIsOpenPayDrawer={setIsOpenPayDrawer} />,
-            analyze: <Analyze match={match} setIsOpenPayDrawer={setIsOpenPayDrawer} />,
-            cornor: <Cornor match={match} setIsOpenPayDrawer={setIsOpenPayDrawer} />
+            ai: (
+                <Ai
+                    match={match}
+                    setIsOpenPayDrawer={setIsOpenPayDrawer}
+                    setPurchaseId={setPurchaseId}
+                />
+            ),
+            analyze: (
+                <Analyze
+                    match={match}
+                    setIsOpenPayDrawer={setIsOpenPayDrawer}
+                    setPurchaseId={setPurchaseId}
+                />
+            ),
+            cornor: (
+                <Cornor
+                    match={match}
+                    setIsOpenPayDrawer={setIsOpenPayDrawer}
+                    setPurchaseId={setPurchaseId}
+                />
+            )
         };
         return components[key];
     };
@@ -231,14 +249,17 @@ function AiPredictDetail({ params }: { params: { matchId: string } }) {
     }, []);
 
     useEffect(() => {
-        if (selectedMatches.size > 0) {
-            const lastKey = Array.from(selectedMatches.keys()).pop();
-            if (lastKey) {
-                const matchRef = matchRefs.current[lastKey];
-                matchRef.current?.scrollIntoView({ behavior: 'smooth' });
-            }
+        if (selectedMatches.size > 0 && selectedMatches.has(purchaseId)) {
+            const matchRef = matchRefs.current[purchaseId];
+            matchRef.current?.scrollIntoView({ behavior: 'smooth' });
+            return;
         }
-    }, [selectedMatches]);
+        const lastKey = Array.from(selectedMatches.keys()).pop();
+        if (lastKey) {
+            const matchRef = matchRefs.current[lastKey];
+            matchRef.current?.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, [purchaseId, selectedMatches]);
 
     useEffect(() => {
         const fetchData = async () => {

@@ -8,14 +8,16 @@ interface AnalyzeProps {
     match: GetPredicativeAnalysisMatchByIdResult;
     isHistory?: boolean;
     setIsOpenPayDrawer?: (isOpenPayDrawer: boolean) => void;
+    setPurchaseId?: (id: number) => void;
 }
 
-function Analyze({ match, isHistory = false, setIsOpenPayDrawer }: AnalyzeProps) {
+function Analyze({ match, isHistory = false, setIsOpenPayDrawer, setPurchaseId }: AnalyzeProps) {
     const isLogin = useUserStore.use.isLogin();
     const isShow = isHistory || (isLogin && match.isMemberPurchased);
     const onPay = () => {
-        if (!isHistory && setIsOpenPayDrawer) {
+        if (!isHistory && setIsOpenPayDrawer && setPurchaseId) {
             setIsOpenPayDrawer(true);
+            setPurchaseId(match.id);
         }
     };
     return (
