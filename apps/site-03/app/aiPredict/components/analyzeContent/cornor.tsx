@@ -8,14 +8,16 @@ interface CornorProps {
     match: GetPredicativeAnalysisMatchByIdResult;
     isHistory?: boolean;
     setIsOpenPayDrawer?: (isOpenPayDrawer: boolean) => void;
+    setPurchaseId?: (id: number) => void;
 }
 
-function Cornor({ match, isHistory = false, setIsOpenPayDrawer }: CornorProps) {
+function Cornor({ match, isHistory = false, setIsOpenPayDrawer, setPurchaseId }: CornorProps) {
     const isLogin = useUserStore.use.isLogin();
     const isShow = isHistory || (isLogin && match.isMemberPurchased);
     const onPay = () => {
-        if (!isHistory && setIsOpenPayDrawer) {
+        if (!isHistory && setIsOpenPayDrawer && setPurchaseId) {
             setIsOpenPayDrawer(true);
+            setPurchaseId(match.id);
         }
     };
     return (
