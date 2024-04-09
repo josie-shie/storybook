@@ -53,6 +53,7 @@ function BettingPlan({
     const [isNoData, setIsNoData] = useState<boolean | null>(null);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPage, setTotalPage] = useState(1);
+    const [totalCount, setTotalCount] = useState(1);
 
     const fetchData = async (resetList = false) => {
         if (resetList) {
@@ -60,7 +61,8 @@ function BettingPlan({
             setGuessMatchesList(initGuessData[planActiveTab].guessMatchList);
             setGuessLength(initGuessData[planActiveTab].pagination.totalCount);
             setIsNoData(guessMatchListLength === 0);
-            setTotalPage(initGuessData[planActiveTab].pagination.totalCount);
+            setTotalPage(initGuessData[planActiveTab].pagination.pageCount);
+            setTotalCount(initGuessData[planActiveTab].pagination.totalCount);
             return;
         }
         const res = await getMemberIndividualGuessMatches({
@@ -79,13 +81,14 @@ function BettingPlan({
         setGuessLength(res.data.pagination.totalCount);
         setIsNoData(res.data.guessMatchList.length === 0);
         setTotalPage(res.data.pagination.pageCount);
+        setTotalCount(res.data.pagination.totalCount);
+        handleResetHeight();
     };
 
     const loadMoreList = () => {
         if (currentPage <= Math.round(guessMatchesList.length / 30) && currentPage < totalPage) {
             setCurrentPage(prevData => prevData + 1);
             void fetchData();
-            handleResetHeight();
         }
     };
 
@@ -161,7 +164,7 @@ function BettingPlan({
                             </Link>
                         );
                     })}
-                    {guessMatchesList.length < totalPage ? (
+                    {guessMatchesList.length < totalCount ? (
                         <InfiniteScroll onVisible={loadMoreList}>
                             <div className={style.loadMore}>
                                 <CircularProgress size={24} />
