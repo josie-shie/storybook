@@ -18,6 +18,7 @@ function Auth({ userInfo }: { userInfo: null | GetMemberInfoResponse }) {
     createUserStore({
         inviteCode: invite ? invite : '',
         authQuery: query ? query : '',
+        isTradeListUnread: false,
         userInfo: userInfo || ({} as GetMemberInfoResponse),
         tags: userInfo ? userInfo.tags : ({} as TagType),
         memberSubscribeStatus: {} as GetMemberSubscriptionStatusResponse,

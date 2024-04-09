@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { truncateFloatingPoint, formatNumberWithCommas } from 'lib';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { getMemberInfo } from 'data-center';
+import { getMemberInfo, getMemberNotificationReadStatus } from 'data-center';
 import { ButtonBase } from '@mui/material';
 import Skeleton from '@mui/material/Skeleton';
 import Image from 'next/image';
@@ -38,10 +38,12 @@ function UserInfo() {
     creatAccountStore({ loading: false });
     const router = useRouter();
     const userInfo = useUserStore.use.userInfo();
+    const isTradeListUnread = useUserStore.use.isTradeListUnread();
     const tags = useUserStore.use.tags();
     // const memberSubscribeStatus = useUserStore.use.memberSubscribeStatus();
     const openChangePasswordDrawer = useAuthStore.use.setIsDrawerOpen();
     const setUserInfo = useUserStore.use.setUserInfo();
+    const setIsTradeListUnread = useUserStore.use.setIsTradeListUnread();
     const setAuthQuery = useUserStore.use.setAuthQuery();
     const setIsLogin = useUserStore.use.setIsLogin();
     const setIsVisible = useNotificationStore.use.setIsVisible();
@@ -64,9 +66,12 @@ function UserInfo() {
         }
     };
 
-    useEffect(() => {
-        void getUserInfo();
-    }, []);
+    const getReadStatus = async () => {
+        const res = await getMemberNotificationReadStatus({ readType: [1] });
+        if (res.success) {
+            setIsTradeListUnread(res.data.list[0].unread);
+        }
+    };
 
     const editAccount = (editMood: boolean) => {
         setIsEdit(editMood);
@@ -110,6 +115,13 @@ function UserInfo() {
             window.location.href = '/?auth=login';
         }, 1000);
     };
+
+    useEffect(() => {
+        setLoading(true);
+        void getUserInfo();
+        void getReadStatus();
+        setLoading(false);
+    }, []);
 
     return (
         <div className={style.wrapper} style={{ backgroundImage: `url(${userInfoBg.src})` }}>
@@ -261,7 +273,7 @@ function UserInfo() {
                     <div className={style.trade}>
                         <button className={style.tradeDetail} type="button">
                             <Link href="/userInfo/tradeDetail">我的交易明细</Link>
-                            {/* {userInfo.hasUnread && <div className={style.redDot} />} */}
+                            {isTradeListUnread ? <div className={style.redDot} /> : null}
                         </button>
                         <div className={style.list}>
                             <div className={style.item}>

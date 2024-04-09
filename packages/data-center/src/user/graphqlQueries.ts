@@ -393,3 +393,16 @@ export const SEND_VERIFICATION_SMS_MUTATION = `
         }
     }
 `;
+
+export const GET_MEMBER_NOTIFICATION_READ_STATUS = `
+    query getMemberNotificationReadStatus($input: GetMemberNotificationReadStatusInput) {
+        sportMember {
+            GetMemberNotificationReadStatus(input: $input) {
+                list {
+                    readType
+                    unread
+                } 
+            }
+        }
+    }
+`;
