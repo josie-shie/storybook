@@ -9,6 +9,7 @@ import type {
 interface InitState {
     token: string;
     userInfo: GetMemberInfoResponse;
+    isTradeListUnread: boolean;
     tags: TagType;
     memberSubscribeStatus: GetMemberSubscriptionStatusResponse;
     isLogin: boolean;
@@ -20,6 +21,7 @@ interface UserState extends InitState {
     userInfoIsLoading: boolean;
     isVipUseAnalysis: boolean;
     setIsLogin: (isLogin: boolean) => void;
+    setIsTradeListUnread: (isTradeListUnread: boolean) => void;
     setUserInfoIsLoading: (userInfoIsLoading: boolean) => void;
     setToken: (token: string) => void;
     setAuthQuery: (authQuery: string) => void;
@@ -34,6 +36,7 @@ let useUserStore: StoreWithSelectors<UserState>;
 
 const initialState = (set: (updater: (state: UserState) => Partial<UserState>) => void) => ({
     userInfo: {} as GetMemberInfoResponse,
+    isTradeListUnread: false,
     tags: {} as TagType,
     memberSubscribeStatus: {} as GetMemberSubscriptionStatusResponse,
     userInfoIsLoading: false,
@@ -41,6 +44,14 @@ const initialState = (set: (updater: (state: UserState) => Partial<UserState>) =
     isLogin: false,
     token: '',
     inviteCode: '',
+    setIsTradeListUnread: (isTradeListUnread: boolean) => {
+        set(state => {
+            return {
+                ...state,
+                isTradeListUnread
+            };
+        });
+    },
     setIsLogin: (isLogin: boolean) => {
         set(state => {
             return {

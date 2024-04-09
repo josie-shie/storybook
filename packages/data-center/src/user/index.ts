@@ -16,6 +16,7 @@ import {
     SEND_VERIFICATION_CODE_MUTATION,
     SEND_VERIFICATION_CODE_IN_LOGGED_MUTATION,
     LOGIN_MUTATION,
+    GET_MEMBER_NOTIFICATION_READ_STATUS,
     GET_MEMBER_INFO_QUERY,
     FORGET_PASSWORD_RESET_MUTATION,
     UPDATE_PASSWORD_MUTATION,
@@ -119,6 +120,31 @@ export interface UpdatePasswordRequest {
     newPassword: string;
     verifyToken: string;
 }
+
+export interface MemberNotificationReadStatusRequest {
+    readType: number[];
+}
+
+const MemberNotificationReadStatusSchema = z.object({
+    list: z.array(z.object({ readType: z.number(), unread: z.boolean() }))
+});
+
+export type MemberNotificationReadStatusResponse = z.infer<
+    typeof MemberNotificationReadStatusSchema
+>;
+
+const GetMemberNotificationReadStatusResponseSchema = z.object({
+    sportMember: z.object({
+        GetMemberNotificationReadStatus: MemberNotificationReadStatusSchema
+    })
+});
+
+type GetMemberNotificationReadStatusResult = z.infer<
+    typeof GetMemberNotificationReadStatusResponseSchema
+>;
+export type GetMemberNotificationReadStatusResponse = z.infer<
+    typeof MemberNotificationReadStatusSchema
+>;
 
 const MemberInfoSchema = z.object({
     uid: z.number(),
@@ -376,6 +402,42 @@ export const getMemberInfo = async (token?: string): Promise<ReturnData<GetMembe
         return {
             success: true,
             data: data.getMemberInfo
+        };
+    } catch (error) {
+        return handleApiError(error);
+    }
+};
+
+/**
+ * 獲取會員訊息讀取狀態
+ * - returns : {@link GetMemberNotificationReadStatusResponse}
+ */
+export const getMemberNotificationReadStatus = async ({
+    readType
+}: MemberNotificationReadStatusRequest): Promise<
+    ReturnData<MemberNotificationReadStatusResponse>
+> => {
+    try {
+        const { data, errors } = await fetcher<
+            FetchResultData<GetMemberNotificationReadStatusResult>,
+            unknown
+        >({
+            data: {
+                query: GET_MEMBER_NOTIFICATION_READ_STATUS,
+                variables: {
+                    input: {
+                        readType
+                    }
+                }
+            }
+        });
+
+        throwErrorMessage(errors);
+        GetMemberNotificationReadStatusResponseSchema.parse(data);
+
+        return {
+            success: true,
+            data: data.sportMember.GetMemberNotificationReadStatus
         };
     } catch (error) {
         return handleApiError(error);

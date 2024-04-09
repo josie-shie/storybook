@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Skeleton } from '@mui/material';
 import ScrollTop from '@/components/scrollTop/scrollTop';
 import Header from '@/components/header/headerTitleDetail';
+import { useUserStore } from '@/store/userStore';
 import style from './tradeDetail.module.scss';
 import FilterIcon from './img/filterIcon.svg';
 import TradeDetailList from './tradeDetailList';
@@ -34,12 +35,14 @@ function DetailSkeleton() {
 }
 
 function TradeDetail() {
+    const setTradeDetailList = useTardeDetailStore.use.setTradeDetailList();
+    const setIsTradeListUnread = useUserStore.use.setIsTradeListUnread();
     const router = useRouter();
     const scrollTradeRef = useRef<HTMLDivElement>(null);
     const back = () => {
+        setIsTradeListUnread(false);
         router.push('/userInfo');
     };
-    const setTradeDetailList = useTardeDetailStore.use.setTradeDetailList();
     const [isLoading, setIsLoading] = useState(false);
     const [isDateRangeOpen, setIsDateRangeOpen] = useState(false);
     const [isTradeTypeOpen, setIsTradeTypeOpen] = useState(false);
