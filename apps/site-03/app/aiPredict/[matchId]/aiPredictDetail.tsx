@@ -113,6 +113,7 @@ function MatchItem({
                 </span>
                 <span className={style.name}>VS {match.awayChs}</span>
             </div>
+            <div className={style.lock}>{match.purchaseCount}人解鎖</div>
         </div>
     );
 }
@@ -125,14 +126,14 @@ function AiPredictDetail({ params }: { params: { matchId: string } }) {
     const [showChat, setShowChat] = useState(false);
     const [showInformation, setShowInformation] = useState<Record<number, boolean>>({});
     const [selectedMatches, setSelectedMatches] = useState<
-        Record<number, GetPredicativeAnalysisMatchByIdResult>
-    >({});
+        Map<number, GetPredicativeAnalysisMatchByIdResult>
+    >(new Map());
     const [matchTabs, setMatchTabs] = useState<MatchTab[]>([]);
     const [purchaseId, setPurchaseId] = useState<number>(0);
     const [isOpenPayDrawer, setIsOpenPayDrawer] = useState(false);
 
     const handleSelectMatch = async (id: number) => {
-        if (Object.hasOwnProperty.call(selectedMatches, id)) {
+        if (selectedMatches.has(id)) {
             const matchRef = matchRefs.current[id];
             matchRef.current?.scrollIntoView({ behavior: 'smooth' });
             return;
@@ -142,10 +143,11 @@ function AiPredictDetail({ params }: { params: { matchId: string } }) {
         if (!res.success) {
             return new Error();
         }
-        setSelectedMatches(prevSelectedMatches => ({
-            ...prevSelectedMatches,
-            [id]: res.data
-        }));
+        setSelectedMatches(prevSelectedMatches => {
+            const updatedMatches = new Map(prevSelectedMatches);
+            updatedMatches.set(id, res.data);
+            return updatedMatches;
+        });
         setPurchaseId(id);
     };
 
@@ -199,7 +201,7 @@ function AiPredictDetail({ params }: { params: { matchId: string } }) {
     };
 
     const onPurchase = async () => {
-        const res = await payForPost({ postId: Number(purchaseId), purchaseType: 2 });
+        const res = await payForPost({ postId: purchaseId, purchaseType: 2 });
         if (!res.success) {
             return new Error();
         }
@@ -209,10 +211,12 @@ function AiPredictDetail({ params }: { params: { matchId: string } }) {
         if (!predicativeAnalysisDetail.success) {
             return new Error();
         }
-        setSelectedMatches(prevSelectedMatches => ({
-            ...prevSelectedMatches,
-            [purchaseId]: predicativeAnalysisDetail.data
-        }));
+        setPurchaseId(purchaseId);
+        setSelectedMatches(prevSelectedMatches => {
+            const updatedMatches = new Map(prevSelectedMatches);
+            updatedMatches.set(purchaseId, predicativeAnalysisDetail.data);
+            return updatedMatches;
+        });
         setIsOpenPayDrawer(false);
     };
 
@@ -227,11 +231,12 @@ function AiPredictDetail({ params }: { params: { matchId: string } }) {
     }, []);
 
     useEffect(() => {
-        const keys = Object.keys(selectedMatches);
-        if (keys.length > 0) {
-            const target = Number(keys[keys.length - 1]);
-            const matchRef = matchRefs.current[target];
-            matchRef.current?.scrollIntoView({ behavior: 'smooth' });
+        if (selectedMatches.size > 0) {
+            const lastKey = Array.from(selectedMatches.keys()).pop();
+            if (lastKey) {
+                const matchRef = matchRefs.current[lastKey];
+                matchRef.current?.scrollIntoView({ behavior: 'smooth' });
+            }
         }
     }, [selectedMatches]);
 
@@ -260,7 +265,11 @@ function AiPredictDetail({ params }: { params: { matchId: string } }) {
             }
             const target = articleRes.data;
             setPurchaseId(target.id);
-            setSelectedMatches({ [target.id]: target });
+            setSelectedMatches(prevSelectedMatches => {
+                const updatedMatches = new Map(prevSelectedMatches);
+                updatedMatches.set(target.id, articleRes.data);
+                return updatedMatches;
+            });
         };
 
         void fetchData();
@@ -270,10 +279,10 @@ function AiPredictDetail({ params }: { params: { matchId: string } }) {
         <>
             <div className={style.aiPredictDetail}>
                 <div className={style.content}>
-                    {Object.entries(selectedMatches).map(([id, match]) => {
-                        const currentTabKey = getMatchTabKey(Number(id));
-                        matchRefs.current[id] = createRef<HTMLDivElement>();
+                    {Array.from(selectedMatches.values()).map(match => {
                         const isShow = isLogin && match.isMemberPurchased;
+                        const currentTabKey = getMatchTabKey(match.id);
+                        matchRefs.current[match.id] = createRef<HTMLDivElement>();
                         return (
                             <div
                                 className={style.analyze}

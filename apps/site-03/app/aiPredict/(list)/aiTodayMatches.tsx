@@ -211,7 +211,7 @@ function AiTodayMatches() {
     };
 
     const onPurchase = async () => {
-        const res = await payForPost({ postId: Number(purchaseId), purchaseType: 2 });
+        const res = await payForPost({ postId: purchaseId, purchaseType: 2 });
         if (!res.success) {
             return new Error();
         }
@@ -219,10 +219,11 @@ function AiTodayMatches() {
         if (!predicativeAnalysisDetail.success) {
             return new Error();
         }
-        setSelectedMatches(prevSelectedMatches => ({
-            ...prevSelectedMatches,
-            [purchaseId]: predicativeAnalysisDetail.data
-        }));
+        setSelectedMatches(prevSelectedMatches => {
+            const updatedMatches = new Map(prevSelectedMatches);
+            updatedMatches.set(purchaseId, predicativeAnalysisDetail.data);
+            return updatedMatches;
+        });
         setIsOpenPayDrawer(false);
     };
 
