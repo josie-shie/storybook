@@ -56,7 +56,7 @@ function HistoryDisplayContent({ item }: { item: GetPredicativeAnalysisMatch }) 
                         })}
                     </span>
                 </div>
-                <span> 160人解鎖</span>
+                <span>{item.purchaseCount}人解鎖</span>
             </div>
             <div className={style.bottom}>
                 <div className={style.teamBox}>

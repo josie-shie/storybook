@@ -226,6 +226,7 @@ export const GET_PREDICATIVE_ANALYSIS_MATCH_QUERY = `
       soccerAi {
         getPredicativeAnalysisMatch(input: $input) {
           list {
+            id
             matchId
             matchTime
             leagueId
@@ -253,10 +254,54 @@ export const GET_PREDICATIVE_ANALYSIS_MATCH_QUERY = `
             predictResult
             predictMatchResult
             realMatchResult
-            awayScore
             homeScore
+            awayScore
+            purchaseCount
+            isMemberPurchased
             updatedAt
           }
+        }
+      }
+    }
+`;
+
+export const GET_PREDICATIVE_ANALYSIS_MATCH_BY_ID = `
+    query getPredicativeAnalysisMatchById($input: GetPredicativeAnalysisMatchByIdInput) {
+      soccerAi {
+        getPredicativeAnalysisMatchById(input: $input) {
+          id
+          matchId
+          matchTime
+          leagueId
+          leagueEn
+          leagueChs
+          leagueCht
+          leagueType
+          color
+          homeId
+          homeEn
+          homeChs
+          homeCht
+          awayId
+          awayEn
+          awayChs
+          awayCht
+          homeLogo
+          awayLogo
+          predict
+          summary
+          homeStrategicAnalysis
+          awayStrategicAnalysis
+          homeTacticalPerspective
+          awayTacticalPerspective
+          predictResult
+          predictMatchResult
+          realMatchResult
+          homeScore
+          awayScore
+          purchaseCount
+          isMemberPurchased
+          updatedAt
         }
       }
     }

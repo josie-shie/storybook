@@ -1,29 +1,31 @@
 'use client';
 import { useEffect, useRef, useState, createRef } from 'react';
-// import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { getPredicativeAnalysisMatch } from 'data-center';
-import type { GetPredicativeAnalysisMatchResponse, GetPredicativeAnalysisMatch } from 'data-center';
-import { timestampToString, timestampToStringCh } from 'lib';
-// import ConfirmPayDrawer from '@/components/confirmPayDrawer/confirmPayDrawer';
-// import NormalDialog from '@/components/normalDialog/normalDialog';
-// import { useUserStore } from '@/store/userStore';
-// import { useAuthStore } from '@/store/authStore';
+import {
+    getPredicativeAnalysisMatch,
+    getPredicativeAnalysisMatchById,
+    payForPost
+} from 'data-center';
+import type {
+    GetPredicativeAnalysisMatch,
+    GetPredicativeAnalysisMatchByIdResult
+} from 'data-center';
+import { timestampToString } from 'lib';
 import TeamLogo from '@/components/teamLogo/teamLogo';
-import { useAiPredictStore } from '../aiPredictStore';
+import { useUserStore } from '@/store/userStore';
+import ConfirmPayDrawer from '@/components/confirmPayDrawer/confirmPayDrawer';
+import { useNotificationStore } from '@/store/notificationStore';
+import Win from '@/public/resultIcon/bigWin.svg';
+import Draw from '@/public/resultIcon/bigDraw.svg';
 import Ai from '../components/analyzeContent/ai';
 import Analyze from '../components/analyzeContent/analyze';
 import Cornor from '../components/analyzeContent/cornor';
-// import Wallet from '../img/wallet.png';
-import Win from '../(list)/img/aiHit.svg';
-import Draw from '../(list)/img/aiDraw.svg';
 import AiAvatarSmall from '../(list)/img/aiAvatarSmall.svg';
-import AiAvatar from '../(list)/img/aiAvatar.svg';
-import style from '../(list)/aiPredict.module.scss';
+import style from '../(list)/aiTodayMatches.module.scss';
 import Tutorial from '../components/turorial/turorial';
 
 interface MatchTab {
-    matchId: number;
+    id: number;
     value: string;
 }
 
@@ -43,10 +45,10 @@ function TypingText({
     const [typedText, setTypedText] = useState('');
 
     useEffect(() => {
-        const fullMessage = `以下是我分析即将进行的${timestampToStringCh(
+        const fullMessage = `以下是我分析即将进行的${timestampToString(
             matchTime,
-            'YYYY年MM月DD日'
-        )}${league}足球赛中 ${home} 对 ${away} 的比赛。`;
+            'YYYY年MM月DD日 HH:ss'
+        )} ${league}足球赛中 ${home} 对 ${away} 的比赛。`;
         let currentText = '';
         let currentIndex = 0;
 
@@ -64,12 +66,14 @@ function TypingText({
         typeCharacter();
     }, [matchTime, home, away, league]);
 
-    const parts = typedText.split(new RegExp(`(${home}|${away})`));
-
+    const parts = typedText.split(
+        new RegExp(`(${league}足球赛|${timestampToString(matchTime, 'YYYY年MM月DD日 HH:ss')})`)
+    );
     return (
         <>
             {parts.map(part =>
-                part === home || part === away ? (
+                part === `${league}足球赛` ||
+                part === timestampToString(matchTime, 'YYYY年MM月DD日 HH:ss') ? (
                     <span key={part} style={{ color: '#4489ff' }}>
                         {part}
                     </span>
@@ -86,14 +90,14 @@ function MatchItem({
     handleSelectMatch
 }: {
     match: GetPredicativeAnalysisMatch;
-    handleSelectMatch: (match: GetPredicativeAnalysisMatch) => void;
+    handleSelectMatch: (id: number) => void;
 }) {
     return (
         <div
             className={style.item}
             key={match.matchId}
             onClick={() => {
-                handleSelectMatch(match);
+                handleSelectMatch(match.id);
             }}
         >
             <div className={style.league}>
@@ -109,138 +113,60 @@ function MatchItem({
                 </span>
                 <span className={style.name}>VS {match.awayChs}</span>
             </div>
+            <div className={style.lock}>{match.purchaseCount}人解鎖</div>
         </div>
     );
 }
 
 function AiPredictDetail({ params }: { params: { matchId: string } }) {
+    const isLogin = useUserStore.use.isLogin();
+    const setIsVisible = useNotificationStore.use.setIsVisible();
     const matchRefs = useRef<Record<number, React.RefObject<HTMLDivElement>>>({});
-    // const router = useRouter();
-
-    const aiPredictList = useAiPredictStore.use.aiPredictList();
-    const setAiPredictList = useAiPredictStore.use.setAiPredictList();
-
-    // const [openPaid, setOpenPaid] = useState(false);
-    // const [openDialog, setOpenDialog] = useState(false);
-    // const userInfo = useUserStore.use.userInfo();
-    // const isLogin = useUserStore.use.isLogin();
-    // const setAuthQuery = useUserStore.use.setAuthQuery();
-    // const setIsDrawerOpen = useAuthStore.use.setIsDrawerOpen();
-
+    const [aiPredictList, setAiPredictList] = useState<GetPredicativeAnalysisMatch[]>([]);
     const [showChat, setShowChat] = useState(false);
     const [showInformation, setShowInformation] = useState<Record<number, boolean>>({});
-    const [selectedMatches, setSelectedMatches] = useState<GetPredicativeAnalysisMatchResponse>([]);
+    const [selectedMatches, setSelectedMatches] = useState<
+        Map<number, GetPredicativeAnalysisMatchByIdResult>
+    >(new Map());
     const [matchTabs, setMatchTabs] = useState<MatchTab[]>([]);
+    const [purchaseId, setPurchaseId] = useState<number>(0);
+    const [isOpenPayDrawer, setIsOpenPayDrawer] = useState(false);
 
-    useEffect(() => {
-        const getPredicativeAnalysisList = async () => {
-            const res = await getPredicativeAnalysisMatch({
-                matchId: 0,
-                matchTime: 0,
-                isFinished: true
-            });
-
-            if (!res.success) {
-                return new Error();
-            }
-            setAiPredictList(res.data);
-        };
-        void getPredicativeAnalysisList();
-    }, []);
-
-    const handleSelectMatch = (match: GetPredicativeAnalysisMatch) => {
-        setSelectedMatches(prevSelectedMatches => {
-            const isMatchExists = prevSelectedMatches.some(
-                existingMatch => existingMatch.matchId === match.matchId
-            );
-
-            if (!isMatchExists) {
-                return [...prevSelectedMatches, match];
-            }
-            const matchRef = matchRefs.current[match.matchId];
+    const handleSelectMatch = async (id: number) => {
+        if (selectedMatches.has(id)) {
+            const matchRef = matchRefs.current[id];
             matchRef.current?.scrollIntoView({ behavior: 'smooth' });
-            return prevSelectedMatches;
+            return;
+        }
+
+        const res = await getPredicativeAnalysisMatchById({ id });
+        if (!res.success) {
+            return new Error();
+        }
+        setSelectedMatches(prevSelectedMatches => {
+            const updatedMatches = new Map(prevSelectedMatches);
+            updatedMatches.set(id, res.data);
+            return updatedMatches;
         });
+        setPurchaseId(id);
     };
 
-    const handleSetTabKey = (matchId: number, value: string) => {
+    const handleSetTabKey = (id: number, value: string) => {
         setMatchTabs(prev => {
-            const index = prev.findIndex(tab => tab.matchId === matchId);
+            const index = prev.findIndex(tab => tab.id === id);
             if (index >= 0) {
                 const newTabs = [...prev];
-                newTabs[index] = { matchId, value };
+                newTabs[index] = { id, value };
                 return newTabs;
             }
-            return [...prev, { matchId, value }];
+            return [...prev, { id, value }];
         });
     };
 
-    const getMatchTabKey = (matchId: number) => {
-        const matchTab = matchTabs.find(tab => tab.matchId === matchId);
+    const getMatchTabKey = (id: number) => {
+        const matchTab = matchTabs.find(tab => tab.id === id);
         return matchTab ? matchTab.value : tabList[0].value;
     };
-
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            setShowChat(true);
-        }, 5000);
-
-        return () => {
-            clearTimeout(timer);
-        };
-    }, []);
-
-    useEffect(() => {
-        if (selectedMatches.length > 0) {
-            const latestMatch = selectedMatches[selectedMatches.length - 1];
-            const matchRef = matchRefs.current[latestMatch.matchId];
-            matchRef.current?.scrollIntoView({ behavior: 'smooth' });
-        }
-    }, [selectedMatches]);
-
-    useEffect(() => {
-        // const paramMatchId = parseInt(params.matchId);
-        const paramMatchId = 3936479;
-        const matchedItem = aiPredictList.find(item => item.matchId === paramMatchId);
-
-        if (matchedItem) {
-            setTimeout(() => {
-                setSelectedMatches(prevMatches => {
-                    const isMatchExists = prevMatches.some(
-                        match => match.matchId === matchedItem.matchId
-                    );
-                    if (!isMatchExists) {
-                        return [...prevMatches, matchedItem];
-                    }
-                    return prevMatches;
-                });
-            }, 2500);
-        }
-    }, [params.matchId, aiPredictList]);
-
-    // const handleUnlockArticle = (matchId: number) => {
-    //     if (!isLogin) {
-    //         setAuthQuery('login');
-    //         setIsDrawerOpen(true);
-    //         return;
-    //     }
-    //     setOpenPaid(true);
-    // };
-
-    // const onSubmit = () => {
-    //     if (userInfo.balance < 80) {
-    //         setOpenPaid(false);
-    //         setOpenDialog(true);
-    //         return;
-    //     }
-    //     setOpenPaid(false);
-    //     setPayLock(false);
-    // };
-
-    // const goSubscribe = () => {
-    //     setOpenDialog(false);
-    //     router.push('/userInfo/subscribe');
-    // };
 
     const halfLength = Math.ceil(aiPredictList.length / 2);
     const firstHalfMatches = aiPredictList.slice(0, halfLength);
@@ -263,30 +189,9 @@ function AiPredictDetail({ params }: { params: { matchId: string } }) {
 
     const getSelectedComponent = (key: string, match: GetPredicativeAnalysisMatch) => {
         const components: Record<string, JSX.Element> = {
-            ai: (
-                <Ai
-                    match={match}
-                    // onUnlockArticle={() => {
-                    //     handleUnlockArticle(match.matchId);
-                    // }}
-                />
-            ),
-            analyze: (
-                <Analyze
-                    match={match}
-                    // onUnlockArticle={() => {
-                    //     handleUnlockArticle(match.matchId);
-                    // }}
-                />
-            ),
-            cornor: (
-                <Cornor
-                    match={match}
-                    // onUnlockArticle={() => {
-                    //     handleUnlockArticle(match.matchId);
-                    // }}
-                />
-            )
+            ai: <Ai match={match} setIsOpenPayDrawer={setIsOpenPayDrawer} />,
+            analyze: <Analyze match={match} setIsOpenPayDrawer={setIsOpenPayDrawer} />,
+            cornor: <Cornor match={match} setIsOpenPayDrawer={setIsOpenPayDrawer} />
         };
         return components[key];
     };
@@ -295,30 +200,94 @@ function AiPredictDetail({ params }: { params: { matchId: string } }) {
         setShowInformation(prev => ({ ...prev, [matchId]: true }));
     };
 
+    const onPurchase = async () => {
+        const res = await payForPost({ postId: purchaseId, purchaseType: 2 });
+        if (!res.success) {
+            return new Error();
+        }
+        const predicativeAnalysisDetail = await getPredicativeAnalysisMatchById({
+            id: purchaseId
+        });
+        if (!predicativeAnalysisDetail.success) {
+            return new Error();
+        }
+        setPurchaseId(purchaseId);
+        setSelectedMatches(prevSelectedMatches => {
+            const updatedMatches = new Map(prevSelectedMatches);
+            updatedMatches.set(purchaseId, predicativeAnalysisDetail.data);
+            return updatedMatches;
+        });
+        setIsOpenPayDrawer(false);
+    };
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setShowChat(true);
+        }, 5000);
+
+        return () => {
+            clearTimeout(timer);
+        };
+    }, []);
+
+    useEffect(() => {
+        if (selectedMatches.size > 0) {
+            const lastKey = Array.from(selectedMatches.keys()).pop();
+            if (lastKey) {
+                const matchRef = matchRefs.current[lastKey];
+                matchRef.current?.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+    }, [selectedMatches]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const res = await getPredicativeAnalysisMatch({
+                matchId: 0,
+                matchTime: 0,
+                isFinished: false
+            });
+
+            if (!res.success) {
+                throw new Error();
+            }
+            setAiPredictList(res.data);
+            const matchedItem = res.data.find(item => item.matchId === parseInt(params.matchId));
+            if (!matchedItem) {
+                setIsVisible('该场赛事可能已经结束,可以前往AI预测历史查看', 'error');
+                return;
+            }
+            const articleRes = await getPredicativeAnalysisMatchById({
+                id: matchedItem.id
+            });
+            if (!articleRes.success) {
+                throw new Error();
+            }
+            const target = articleRes.data;
+            setPurchaseId(target.id);
+            setSelectedMatches(prevSelectedMatches => {
+                const updatedMatches = new Map(prevSelectedMatches);
+                updatedMatches.set(target.id, articleRes.data);
+                return updatedMatches;
+            });
+        };
+
+        void fetchData();
+    }, []);
+
     return (
         <>
-            <div className={style.aiPredict}>
+            <div className={style.aiPredictDetail}>
                 <div className={style.content}>
-                    <div className={style.welcome}>
-                        <div className={style.row}>
-                            <AiAvatar />
-                            <div className={style.title}>FutureAI</div>
-                        </div>
-                        <div className={style.text}>您好，为您推荐以下赛事预测分析：</div>
-                    </div>
-
-                    {selectedMatches.length > 0 ? (
-                        <div className={style.start}>开始分析</div>
-                    ) : null}
-
-                    {selectedMatches.map(match => {
-                        const currentTabKey = getMatchTabKey(match.matchId);
-                        matchRefs.current[match.matchId] = createRef<HTMLDivElement>();
+                    {Array.from(selectedMatches.values()).map(match => {
+                        const isShow = isLogin && match.isMemberPurchased;
+                        const currentTabKey = getMatchTabKey(match.id);
+                        matchRefs.current[match.id] = createRef<HTMLDivElement>();
                         return (
                             <div
                                 className={style.analyze}
-                                key={match.matchId}
-                                ref={matchRefs.current[match.matchId]}
+                                key={match.id}
+                                ref={matchRefs.current[match.id]}
                             >
                                 <div className={style.message}>
                                     <AiAvatarSmall className={style.icon} />
@@ -381,7 +350,7 @@ function AiPredictDetail({ params }: { params: { matchId: string } }) {
                                 <div
                                     className={`${style.information} ${
                                         showInformation[match.matchId] ? style.fadeIn : style.hidden
-                                    }`}
+                                    } ${isShow && style.hasMinHeight}`}
                                 >
                                     <div className={style.minTabBar}>
                                         {tabList.map(tab => (
@@ -394,7 +363,7 @@ function AiPredictDetail({ params }: { params: { matchId: string } }) {
                                                 className={style.tab}
                                                 key={tab.value}
                                                 onClick={() => {
-                                                    handleSetTabKey(match.matchId, tab.value);
+                                                    handleSetTabKey(match.id, tab.value);
                                                 }}
                                             >
                                                 {tab.title}
@@ -416,7 +385,6 @@ function AiPredictDetail({ params }: { params: { matchId: string } }) {
                             </div>
                         );
                     })}
-
                     <div className={`${style.chat} ${showChat ? style.fadeIn : style.hidden}`}>
                         <div className={style.title}>精选赛事</div>
                         <div className={style.wrapper}>
@@ -443,29 +411,22 @@ function AiPredictDetail({ params }: { params: { matchId: string } }) {
                         </div>
                     </div>
                 </div>
-                <Tutorial />
             </div>
-            {/* <ConfirmPayDrawer
-                isOpen={openPaid}
+            <Tutorial />
+            <ConfirmPayDrawer
+                discount={0}
+                hasDiscount
+                isOpen={isOpenPayDrawer}
                 onClose={() => {
-                    setOpenPaid(false);
+                    setIsOpenPayDrawer(false);
                 }}
                 onOpen={() => {
-                    setOpenPaid(true);
+                    setIsOpenPayDrawer(true);
                 }}
-                onPay={onSubmit}
+                onPay={onPurchase}
                 price={80}
+                title="获得智能盘路分析？"
             />
-            <NormalDialog
-                confirmText="去充值"
-                content={<div>余额不足，请充值</div>}
-                onClose={() => {
-                    setOpenDialog(false);
-                }}
-                onConfirm={goSubscribe}
-                openDialog={openDialog}
-                srcImage={Wallet}
-            /> */}
         </>
     );
 }

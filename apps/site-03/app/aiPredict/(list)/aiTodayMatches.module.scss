@@ -188,7 +188,7 @@
 
         .information {
             width: 100%;
-            min-height: calc(100dvh - 60vw - 107px);
+            min-height: fit-content;
             border: 1px solid #9fc2ff;
             border-radius: 12px;
             padding: 8px;
@@ -223,6 +223,10 @@
                     white-space: nowrap;
                 }
             }
+        }
+
+        .hasMinHeight {
+            min-height: calc(100dvh - 60vw - 107px);
         }
     }
 
@@ -290,11 +294,17 @@
             .item {
                 display: flex;
                 flex-direction: column;
-                gap: 6px;
                 min-width: 164px;
                 border: 1px solid #e6eeee;
                 border-radius: 8px;
                 padding: 10px;
+
+                .lock {
+                    color: #bfbfbf;
+                    font-size: 12px;
+                    font-weight: 500;
+                    margin-top: 2px;
+                }
 
                 .league {
                     display: flex;
@@ -302,6 +312,7 @@
                     justify-content: space-between;
                     font-size: 12px;
                     font-weight: 600;
+                    margin-bottom: 10px;
 
                     .time {
                         color: #8d8d8d;
@@ -313,6 +324,7 @@
                     flex-direction: column;
                     justify-content: center;
                     gap: 4px;
+                    margin-bottom: 2px;
 
                     .name {
                         display: flex;
@@ -326,6 +338,11 @@
             }
         }
     }
+}
+
+.aiPredictDetail .content {
+    padding: 0;
+    height: calc(100dvh - 124px);
 }
 
 @keyframes fadein {

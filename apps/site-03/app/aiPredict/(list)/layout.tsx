@@ -45,7 +45,6 @@ function AiPredictPageLayout({ children, para }: { children: ReactNode; para: Re
         aiPredictList: [],
         aiHistoryList: []
     });
-
     return (
         <div className={style.aiPredictPageLayout}>
             {children}
