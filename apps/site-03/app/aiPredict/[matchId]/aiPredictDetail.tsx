@@ -67,12 +67,12 @@ function TypingText({
     }, [matchTime, home, away, league]);
 
     const parts = typedText.split(
-        new RegExp(`(${league}足球赛中|${timestampToString(matchTime, 'YYYY年MM月DD日 HH:ss')})`)
+        new RegExp(`(${league}足球赛|${timestampToString(matchTime, 'YYYY年MM月DD日 HH:ss')})`)
     );
     return (
         <>
             {parts.map(part =>
-                part === `${league}足球赛中` ||
+                part === `${league}足球赛` ||
                 part === timestampToString(matchTime, 'YYYY年MM月DD日 HH:ss') ? (
                     <span key={part} style={{ color: '#4489ff' }}>
                         {part}
