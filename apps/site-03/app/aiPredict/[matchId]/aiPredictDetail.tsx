@@ -112,7 +112,7 @@ function MatchItem({
                 </span>
                 <span className={style.name}>VS {match.awayChs}</span>
             </div>
-            <div className={style.lock}>{match.purchaseCount}人解鎖</div>
+            <div className={style.lock}>{match.purchaseCount}人解锁</div>
         </div>
     );
 }
