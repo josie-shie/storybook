@@ -16,9 +16,9 @@ function MessageAlert() {
     return (
         <Link className={style.newMessageBox} href="/notice/chat">
             <div className={style.message}>
-                <div>來自</div>
+                <div>来自</div>
                 <div className={style.bold}> {newMessageNotify.sender}</div>
-                <div className={style.content}> 的 {unreadMessageNotify.totalCount} 訊息</div>
+                <div className={style.content}> 的 {unreadMessageNotify.totalCount} 讯息</div>
             </div>
             <p className={style.goSingle}>查看</p>
         </Link>
@@ -29,7 +29,7 @@ function TradeAlert() {
         <Link className={style.newMessageBox} href="/userInfo/tradeDetail">
             <div className={style.message}>
                 <Bill />
-                <div>您有新的交易明細</div>
+                <div>您有新的交易明细</div>
             </div>
             <p className={style.goSingle}>查看</p>
         </Link>
