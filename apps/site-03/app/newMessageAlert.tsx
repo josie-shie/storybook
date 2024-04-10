@@ -16,8 +16,9 @@ function MessageAlert() {
     return (
         <Link className={style.newMessageBox} href="/notice/chat">
             <div className={style.message}>
-                <div>來自 {newMessageNotify.sender}</div>
-                <div className={style.content}> 的{unreadMessageNotify.totalCount}訊息</div>
+                <div>來自</div>
+                <div className={style.bold}> {newMessageNotify.sender}</div>
+                <div className={style.content}> 的 {unreadMessageNotify.totalCount} 訊息</div>
             </div>
             <p className={style.goSingle}>查看</p>
         </Link>

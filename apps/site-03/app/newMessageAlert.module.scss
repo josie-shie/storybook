@@ -30,11 +30,16 @@
             align-items: center;
             column-gap: 4px;
             width: calc(100% - 72px);
+            font-weight: 400;
+
+            .bold {
+                font-weight: 600;
+            }
 
             .content {
                 overflow: hidden;
                 text-overflow: ellipsis;
-                font-weight: 600;
+                font-weight: 400;
                 color: #8d8d8d;
             }
         }
