@@ -11,6 +11,7 @@ import type {
     GetPredicativeAnalysisMatchByIdResult
 } from 'data-center';
 import { timestampToString } from 'lib';
+import { useUserStore } from '@/store/userStore';
 import ConfirmPayDrawer from '@/components/confirmPayDrawer/confirmPayDrawer';
 import TeamLogo from '@/components/teamLogo/teamLogo';
 import Win from '@/public/resultIcon/bigWin.svg';
@@ -127,6 +128,7 @@ function MatchItem({
 }
 
 function AiTodayMatches() {
+    const isLogin = useUserStore.use.isLogin();
     const matchRefs = useRef<Record<number, React.RefObject<HTMLDivElement>>>({});
     const aiPredictList = useAiPredictStore.use.aiPredictList();
     const setAiPredictList = useAiPredictStore.use.setAiPredictList();
@@ -321,6 +323,7 @@ function AiTodayMatches() {
                 </div>
                 {selectedMatches.size > 0 && <div className={style.start}>开始分析</div>}
                 {Array.from(selectedMatches.values()).map(match => {
+                    const isShow = isLogin && match.isMemberPurchased;
                     const currentTabKey = getMatchTabKey(match.id);
                     matchRefs.current[match.id] = createRef<HTMLDivElement>();
                     return (
@@ -353,7 +356,7 @@ function AiTodayMatches() {
                                         [1, 0].includes(match.predictMatchResult) ? style.win : ''
                                     } ${match.predictMatchResult === 0 ? style.active : ''}`}
                                 >
-                                    {match.predictMatchResult === 1 ? (
+                                    {isShow && match.predictMatchResult === 1 ? (
                                         <Win className={style.icon} />
                                     ) : null}
                                     <TeamLogo
@@ -364,7 +367,7 @@ function AiTodayMatches() {
                                     />
                                     <span>{match.homeChs}</span>
                                 </div>
-                                {match.predictMatchResult === 0 ? (
+                                {isShow && match.predictMatchResult === 0 ? (
                                     <Draw className={style.draw} />
                                 ) : null}
                                 <div
@@ -372,7 +375,7 @@ function AiTodayMatches() {
                                         [2, 0].includes(match.predictMatchResult) ? style.win : ''
                                     } ${match.predictMatchResult === 0 ? style.active : ''}`}
                                 >
-                                    {match.predictMatchResult === 2 ? (
+                                    {isShow && match.predictMatchResult === 2 ? (
                                         <Win className={style.icon} />
                                     ) : null}
                                     <TeamLogo
