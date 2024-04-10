@@ -1,8 +1,8 @@
 'use client';
 import { timestampToStringWeek, timestampToString } from 'lib';
 import type { ReactElement, Ref } from 'react';
-import { getContestList } from 'data-center';
-import type { ContestListType } from 'data-center';
+import { getBannerList, getContestList } from 'data-center';
+import type { BannerInfo, ContestListType } from 'data-center';
 import { useEffect, useState, forwardRef, useCallback } from 'react';
 import { InfiniteScroll, slickOption } from 'ui';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -102,6 +102,7 @@ function ContestList({
     });
     const [isMounted, setIsMounted] = useState(false);
     const [isStreamline, setIsStreamline] = useState(true);
+    const [bannerList, setBannerList] = useState<BannerInfo[]>([]);
     let changeDayLine: string | null = null;
     let matchFinishLine = true;
 
@@ -159,7 +160,16 @@ function ContestList({
             }
         };
 
+        const fetchBannerList = async () => {
+            const res = await getBannerList({ location: 'MATCH' });
+            if (!res.success) {
+                return new Error();
+            }
+            setBannerList(res.data.banners);
+        };
+
         void fetchContestData(Math.floor(Number(dateString) / 1000));
+        void fetchBannerList();
     }, [resultsDate, scheduleDate]);
 
     const statusTable: Record<string, (state: number) => boolean> = {
@@ -351,7 +361,10 @@ function ContestList({
                             content.push(
                                 <GameCard key={matchId} matchId={matchId} status={status}>
                                     {status === 'all' && index === 3 && (
-                                        <BaseBanner className={style.banner} />
+                                        <BaseBanner
+                                            bannerList={bannerList}
+                                            className={style.banner}
+                                        />
                                     )}
                                 </GameCard>
                             );

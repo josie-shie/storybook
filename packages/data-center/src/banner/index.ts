@@ -64,7 +64,7 @@ export const getBannerList = async ({
         );
 
         throwErrorMessage(errors);
-        GetBannerListResultSchema.parse(data);
+        GetBannerListResultSchema.parse(data.getBannerList);
         return {
             success: true,
             data: data.getBannerList

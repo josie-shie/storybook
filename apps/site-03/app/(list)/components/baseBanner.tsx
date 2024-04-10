@@ -2,6 +2,9 @@ import Image from 'next/image';
 import { getRandomInt } from 'lib';
 import { memo } from 'react';
 import Link from 'next/link';
+import type { BannerInfo } from 'data-center';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination, Scrollbar, A11y, EffectFade } from 'swiper';
 import { useUserStore } from '@/store/userStore';
 import style from './baseBanner.module.scss';
 import GuessBannerImage from './img/guessBanner.jpg';
@@ -42,7 +45,7 @@ function getRandomImageConfig(isLogin: boolean) {
     return config;
 }
 
-function BaseBanner({ className }: { className: string }) {
+function DefaultBanner() {
     const isLogin = useUserStore.use.isLogin();
 
     const randomImage = getRandomImageConfig(isLogin);
@@ -52,19 +55,55 @@ function BaseBanner({ className }: { className: string }) {
     const randomMap = randomImage[randomNumberInit];
 
     return (
-        <div className={`${style.baseBanner} ${className}`}>
-            <Link
-                className={style.banner}
-                href={randomMap?.link || defaultConfig.link}
+        <Link
+            className={style.banner}
+            href={randomMap?.link || defaultConfig.link}
+            suppressHydrationWarning
+        >
+            <Image
+                alt={randomMap?.label || defaultConfig.label}
+                priority
+                src={randomMap?.image || defaultConfig.image}
                 suppressHydrationWarning
-            >
-                <Image
-                    alt={randomMap?.label || defaultConfig.label}
-                    priority
-                    src={randomMap?.image || defaultConfig.image}
-                    suppressHydrationWarning
-                />
-            </Link>
+            />
+        </Link>
+    );
+}
+
+function SwiperBanner({ bannerList }: { bannerList: BannerInfo[] }) {
+    const displayBanner = bannerList.filter((banner: BannerInfo) => banner.isActive);
+    return (
+        <Swiper
+            effect="fade"
+            fadeEffect={{ crossFade: true }}
+            modules={[Navigation, Pagination, Scrollbar, A11y, EffectFade]}
+            slidesPerView={1}
+        >
+            {displayBanner.map((banner: BannerInfo) => (
+                <SwiperSlide key={banner.id}>
+                    <Link className={style.banner} href={banner.link} suppressHydrationWarning>
+                        <Image
+                            alt={banner.title}
+                            priority
+                            src={banner.imgPath}
+                            suppressHydrationWarning
+                        />
+                    </Link>
+                </SwiperSlide>
+            ))}
+        </Swiper>
+    );
+}
+
+interface BaseBannerProps {
+    className: string;
+    bannerList: BannerInfo[];
+}
+
+function BaseBanner({ className, bannerList }: BaseBannerProps) {
+    return (
+        <div className={`${style.baseBanner} ${className}`}>
+            {bannerList.length ? <SwiperBanner bannerList={bannerList} /> : <DefaultBanner />}
         </div>
     );
 }
