@@ -1,33 +1,24 @@
 .newMessageAlert {
     margin: 0 auto;
-    width: 320px;
+    width: 366px;
 
     .newMessageBox {
         height: 44px;
-        border-radius: 50px;
-        background: linear-gradient(88deg, #3074e7 0%, #065ff5 100%);
-        box-shadow: 0 8px 12px 0 rgb(0 16 36 / 25%);
-        color: #fff;
+        border-radius: 8px;
+        background: #fff;
+        box-shadow: 1px 2px 9px 0 rgb(0 0 0 / 15%);
+        color: #4a4a4a;
         line-height: 32px;
         display: flex;
-        width: 320px;
+        width: 366px;
         align-items: center;
         font-size: 14px;
-        padding: 8px 20px;
+        padding: 0 16px 0 10px;
         justify-content: space-between;
         gap: 10px;
 
-        :global {
-            .MuiBadge-badge {
-                height: 16px;
-                min-width: 16px;
-                padding: 0 4px;
-                background-color: #f85640;
-            }
-        }
-
         .goSingle {
-            color: #9fc2ff;
+            color: #4489ff;
             font-size: 12px;
             font-weight: 600;
             white-space: nowrap;
@@ -36,7 +27,6 @@
         .message {
             display: flex;
             white-space: nowrap;
-            justify-content: center;
             align-items: center;
             column-gap: 4px;
             width: calc(100% - 72px);
@@ -45,6 +35,7 @@
                 overflow: hidden;
                 text-overflow: ellipsis;
                 font-weight: 600;
+                color: #8d8d8d;
             }
         }
     }
