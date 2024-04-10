@@ -178,7 +178,7 @@ function BettingRow({ detail, leftLabel, rightLabel }: BettingProps) {
                                 <CircularProgress size={12} style={{ color: '#b3c4d5' }} />
                             </div>
                         ) : (
-                            <span className={style.user}>{rightPercent}%</span>
+                            <span className={style.user}>{leftPercent}%</span>
                         )}
                         {(guessStatus === 'home' || guessStatus === 'over') && (
                             <Image alt="" height={20} src={selectDecoration} width={20} />
