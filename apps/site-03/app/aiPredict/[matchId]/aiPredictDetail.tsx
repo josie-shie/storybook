@@ -12,7 +12,6 @@ import type {
 } from 'data-center';
 import { timestampToString } from 'lib';
 import TeamLogo from '@/components/teamLogo/teamLogo';
-import { useUserStore } from '@/store/userStore';
 import ConfirmPayDrawer from '@/components/confirmPayDrawer/confirmPayDrawer';
 import { useNotificationStore } from '@/store/notificationStore';
 import Win from '@/public/resultIcon/bigWin.svg';
@@ -119,7 +118,6 @@ function MatchItem({
 }
 
 function AiPredictDetail({ params }: { params: { matchId: string } }) {
-    const isLogin = useUserStore.use.isLogin();
     const setIsVisible = useNotificationStore.use.setIsVisible();
     const matchRefs = useRef<Record<number, React.RefObject<HTMLDivElement>>>({});
     const [aiPredictList, setAiPredictList] = useState<GetPredicativeAnalysisMatch[]>([]);
@@ -229,13 +227,14 @@ function AiPredictDetail({ params }: { params: { matchId: string } }) {
         if (!predicativeAnalysisDetail.success) {
             return new Error();
         }
-        setPurchaseId(purchaseId);
-        setSelectedMatches(prevSelectedMatches => {
-            const updatedMatches = new Map(prevSelectedMatches);
-            updatedMatches.set(purchaseId, predicativeAnalysisDetail.data);
-            return updatedMatches;
-        });
         setIsOpenPayDrawer(false);
+        setTimeout(() => {
+            setSelectedMatches(prevSelectedMatches => {
+                const updatedMatches = new Map(prevSelectedMatches);
+                updatedMatches.set(purchaseId, predicativeAnalysisDetail.data);
+                return updatedMatches;
+            });
+        }, 2500);
     };
 
     useEffect(() => {
@@ -301,7 +300,6 @@ function AiPredictDetail({ params }: { params: { matchId: string } }) {
             <div className={style.aiPredictDetail}>
                 <div className={style.content}>
                     {Array.from(selectedMatches.values()).map(match => {
-                        const isShow = isLogin && match.isMemberPurchased;
                         const currentTabKey = getMatchTabKey(match.id);
                         matchRefs.current[match.id] = createRef<HTMLDivElement>();
                         return (
@@ -371,7 +369,7 @@ function AiPredictDetail({ params }: { params: { matchId: string } }) {
                                 <div
                                     className={`${style.information} ${
                                         showInformation[match.matchId] ? style.fadeIn : style.hidden
-                                    } ${isShow && style.hasMinHeight}`}
+                                    }`}
                                 >
                                     <div className={style.minTabBar}>
                                         {tabList.map(tab => (

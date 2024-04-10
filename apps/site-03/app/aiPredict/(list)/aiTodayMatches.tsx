@@ -15,7 +15,6 @@ import ConfirmPayDrawer from '@/components/confirmPayDrawer/confirmPayDrawer';
 import TeamLogo from '@/components/teamLogo/teamLogo';
 import Win from '@/public/resultIcon/bigWin.svg';
 import Draw from '@/public/resultIcon/bigDraw.svg';
-import { useUserStore } from '@/store/userStore';
 import Ai from '../components/analyzeContent/ai';
 import Analyze from '../components/analyzeContent/analyze';
 import Cornor from '../components/analyzeContent/cornor';
@@ -129,7 +128,6 @@ function MatchItem({
 
 function AiTodayMatches() {
     const matchRefs = useRef<Record<number, React.RefObject<HTMLDivElement>>>({});
-    const isLogin = useUserStore.use.isLogin();
     const aiPredictList = useAiPredictStore.use.aiPredictList();
     const setAiPredictList = useAiPredictStore.use.setAiPredictList();
     const isOpenPayDrawer = useAiPredictStore.use.isOpenPayDrawer();
@@ -237,12 +235,14 @@ function AiTodayMatches() {
         if (!predicativeAnalysisDetail.success) {
             return new Error();
         }
-        setSelectedMatches(prevSelectedMatches => {
-            const updatedMatches = new Map(prevSelectedMatches);
-            updatedMatches.set(purchaseId, predicativeAnalysisDetail.data);
-            return updatedMatches;
-        });
         setIsOpenPayDrawer(false);
+        setTimeout(() => {
+            setSelectedMatches(prevSelectedMatches => {
+                const updatedMatches = new Map(prevSelectedMatches);
+                updatedMatches.set(purchaseId, predicativeAnalysisDetail.data);
+                return updatedMatches;
+            });
+        }, 2500);
     };
 
     useEffect(() => {
@@ -321,7 +321,6 @@ function AiTodayMatches() {
                 </div>
                 {selectedMatches.size > 0 && <div className={style.start}>开始分析</div>}
                 {Array.from(selectedMatches.values()).map(match => {
-                    const isShow = isLogin && match.isMemberPurchased;
                     const currentTabKey = getMatchTabKey(match.id);
                     matchRefs.current[match.id] = createRef<HTMLDivElement>();
                     return (
@@ -388,7 +387,7 @@ function AiTodayMatches() {
                             <div
                                 className={`${style.information} ${
                                     showInformation[match.matchId] ? style.fadeIn : style.hidden
-                                } ${isShow && style.hasMinHeight}`}
+                                }`}
                             >
                                 <div className={style.minTabBar}>
                                     {tabList.map(tab => (
