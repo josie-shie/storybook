@@ -1,22 +1,50 @@
 'use client';
-import Image from 'next/image';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { mqttService } from 'lib';
-import { Badge } from '@mui/material';
 import { motion } from 'framer-motion';
 import type { NotifyMessage } from 'lib';
 import Link from 'next/link';
 import { useMessageStore } from '@/store/messageStore';
 import { useUserStore } from '@/store/userStore';
 import style from './newMessageAlert.module.scss';
-import MessageInfo from './img/messageInfo.png';
+import Bill from './img/bill.svg';
+
+function MessageAlert() {
+    const newMessageNotify = useMessageStore.use.newMessageNotify();
+    const unreadMessageNotify = useMessageStore.use.unreadMessageNotify();
+
+    return (
+        <Link className={style.newMessageBox} href="/notice/chat">
+            <div className={style.message}>
+                <div>來自</div>
+                <div className={style.bold}> {newMessageNotify.sender}</div>
+                <div className={style.content}> 的 {unreadMessageNotify.totalCount} 訊息</div>
+            </div>
+            <p className={style.goSingle}>查看</p>
+        </Link>
+    );
+}
+function TradeAlert() {
+    return (
+        <Link className={style.newMessageBox} href="/userInfo/tradeDetail">
+            <div className={style.message}>
+                <Bill />
+                <div>您有新的交易明細</div>
+            </div>
+            <p className={style.goSingle}>查看</p>
+        </Link>
+    );
+}
 
 function NewMessageAlert() {
+    const [notifyType, setNotifyType] = useState(0);
     const timerRef = useRef<NodeJS.Timeout | null>(null);
     const firstTimeRef = useRef(true);
-    const newMessageNotify = useMessageStore.use.newMessageNotify();
     const isNewMessageVisible = useMessageStore.use.isNewMessageVisible();
-    const unreadMessageNotify = useMessageStore.use.unreadMessageNotify();
+
+    const getAlertComponent = () => {
+        return notifyType === 2 ? <MessageAlert /> : <TradeAlert />;
+    };
 
     useEffect(() => {
         const updateNewMessageNotify = useMessageStore.getState().updateNewMessageNotify;
@@ -35,6 +63,7 @@ function NewMessageAlert() {
                 });
             }
             if (notify.notifyType === 2) {
+                setNotifyType(notify.notifyType);
                 const pathname = window.location.pathname;
                 timerRef.current && clearTimeout(timerRef.current);
                 updateNewMessageNotify({
@@ -51,6 +80,14 @@ function NewMessageAlert() {
             if (notify.notifyType === 3) {
                 getNewMailMessage();
             }
+            if (notify.notifyType === 4) {
+                setNotifyType(notify.notifyType);
+                timerRef.current && clearTimeout(timerRef.current);
+                setIsNewMessageVisible(true);
+                timerRef.current = setTimeout(() => {
+                    setIsNewMessageVisible(false);
+                }, 2000);
+            }
         };
         mqttService.getNotifyMessage(syncGlobalNotifyStore);
     }, []);
@@ -65,17 +102,7 @@ function NewMessageAlert() {
                     style={{ position: 'fixed', top: '74px', zIndex: 20 }}
                     transition={{ ease: 'easeOut', duration: 0.3 }}
                 >
-                    <Link className={style.newMessageBox} href="/notice/chat">
-                        <Badge badgeContent={unreadMessageNotify.totalCount} color="primary">
-                            <Image alt="football" src={MessageInfo} width={21} />
-                        </Badge>
-                        <div className={style.message}>
-                            <div>來自</div>
-                            <div className={style.content}>{newMessageNotify.sender}</div>
-                            <div>的新訊息</div>
-                        </div>
-                        <p className={style.goSingle}>查看</p>
-                    </Link>
+                    {getAlertComponent()}
                 </motion.div>
             ) : null}
         </div>
