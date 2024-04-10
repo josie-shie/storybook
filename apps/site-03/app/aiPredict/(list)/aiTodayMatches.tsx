@@ -353,8 +353,12 @@ function AiTodayMatches() {
                             >
                                 <div
                                     className={`${style.name} ${
-                                        [1, 0].includes(match.predictMatchResult) ? style.win : ''
-                                    } ${match.predictMatchResult === 0 ? style.active : ''}`}
+                                        isShow && [1, 0].includes(match.predictMatchResult)
+                                            ? style.win
+                                            : ''
+                                    } ${
+                                        isShow && match.predictMatchResult === 0 ? style.active : ''
+                                    }`}
                                 >
                                     {isShow && match.predictMatchResult === 1 ? (
                                         <Win className={style.icon} />
@@ -372,8 +376,12 @@ function AiTodayMatches() {
                                 ) : null}
                                 <div
                                     className={`${style.name} ${
-                                        [2, 0].includes(match.predictMatchResult) ? style.win : ''
-                                    } ${match.predictMatchResult === 0 ? style.active : ''}`}
+                                        isShow && [2, 0].includes(match.predictMatchResult)
+                                            ? style.win
+                                            : ''
+                                    } ${
+                                        isShow && match.predictMatchResult === 0 ? style.active : ''
+                                    }`}
                                 >
                                     {isShow && match.predictMatchResult === 2 ? (
                                         <Win className={style.icon} />

@@ -333,8 +333,14 @@ function AiPredictDetail({ params }: { params: { matchId: string } }) {
                                 >
                                     <div
                                         className={`${style.name} ${
-                                            match.predictMatchResult === 1 ? style.win : ''
-                                        } ${match.predictMatchResult === 0 ? style.active : ''}`}
+                                            isShow && match.predictMatchResult === 1
+                                                ? style.win
+                                                : ''
+                                        } ${
+                                            isShow && match.predictMatchResult === 0
+                                                ? style.active
+                                                : ''
+                                        }`}
                                     >
                                         {isShow && match.predictMatchResult === 1 ? (
                                             <Win className={style.icon} />
@@ -353,8 +359,14 @@ function AiPredictDetail({ params }: { params: { matchId: string } }) {
                                     ) : null}
                                     <div
                                         className={`${style.name} ${
-                                            match.predictMatchResult === 2 ? style.win : ''
-                                        } ${match.predictMatchResult === 0 ? style.active : ''}`}
+                                            isShow && match.predictMatchResult === 2
+                                                ? style.win
+                                                : ''
+                                        } ${
+                                            isShow && match.predictMatchResult === 0
+                                                ? style.active
+                                                : ''
+                                        }`}
                                     >
                                         {isShow && match.predictMatchResult === 2 ? (
                                             <Win className={style.icon} />
