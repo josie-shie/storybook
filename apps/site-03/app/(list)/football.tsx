@@ -9,6 +9,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { useLiveContestStore } from '@/store/liveContestStore';
 import type { FilterList } from '@/components/contestFilter/contestFilter';
 import NoData from '@/components/baseNoData/noData';
+import BaseBanner from '@/components/baseBanner/baseBanner';
 import GameCard from './components/gameCard';
 import style from './football.module.scss';
 import { useContestListStore } from './contestListStore';
@@ -16,7 +17,6 @@ import BaseDatePicker from './components/baseDatePicker/baseDatePicker';
 import SettingIcon from './img/setting.svg';
 import Setting from './components/setting';
 import FootballFilter from './components/footballFilter';
-import BaseBanner from './components/baseBanner';
 
 type Status = 'all' | 'progress' | 'schedule' | 'result';
 

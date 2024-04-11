@@ -2,16 +2,17 @@
 import React, { useEffect, useState, forwardRef } from 'react';
 import { InfiniteScroll } from 'ui';
 import CircularProgress from '@mui/material/CircularProgress';
-import { getTodayGuessMatches, type GetTodayGuessMatchesResponse } from 'data-center';
-import Image from 'next/image';
+import { getBannerList, getTodayGuessMatches } from 'data-center';
+import type { BannerInfo, GetTodayGuessMatchesResponse } from 'data-center';
 import type { Ref } from 'react';
 import BaseNoData from '@/components/baseNoData/noData';
-import NewBanner from '../img/newBanner.png';
+import BaseBanner from '@/components/baseBanner/baseBanner';
 import { creatGuessContestListStore, useGuessContestListStore } from './contestStore';
 import GameCard from './gameCard';
 import style from './contest.module.scss';
 
 function ContestList() {
+    const [bannerList, setBannerList] = useState<BannerInfo[]>([]);
     const [rows, setRows] = useState({ full: 20, notYet: 0, finish: 0 });
     const contestList = useGuessContestListStore.use.contestGuessList();
     const setContestList = useGuessContestListStore.use.setContestGuessList();
@@ -29,9 +30,17 @@ function ContestList() {
             return new Error();
         }
     };
+    const fetchBannerList = async () => {
+        const res = await getBannerList({ location: 'SOCCERGUESS' });
+        if (!res.success) {
+            return new Error();
+        }
+        setBannerList(res.data.banners);
+    };
 
     useEffect(() => {
         void fetchContestGuessData();
+        void fetchBannerList();
     }, []);
 
     const displayList = contestList.slice(0, rows.full);
@@ -59,7 +68,7 @@ function ContestList() {
                 if (idx === 5) {
                     return (
                         <React.Fragment key={matchId}>
-                            <Image alt="" className={style.banner} src={NewBanner} />
+                            <BaseBanner bannerList={bannerList} className={style.banner} />
                             <GameCard matchId={matchId} />
                         </React.Fragment>
                     );

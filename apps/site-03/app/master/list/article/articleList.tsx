@@ -1,25 +1,26 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { getPostList } from 'data-center';
-import Image from 'next/image';
-import { type RecommendPost } from 'data-center';
+import type { BannerInfo, RecommendPost } from 'data-center';
+import { getBannerList, getPostList } from 'data-center';
 import { InfiniteScroll } from 'ui';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useUserStore } from '@/store/userStore';
 import NoData from '@/components/baseNoData/noData';
 import ScrollTop from '@/components/scrollTop/scrollTop';
+import BaseBanner from '@/components/baseBanner/baseBanner';
 import style from './articleList.module.scss';
 import { creatArticleStore } from './articleStore';
 import ArticleCard from './components/articleCard/articleCard';
 import SkeletonLayout from './components/skeleton/skeleton';
-import banner from './img/banner.png';
+// import banner from './img/banner.png';
 
 function ArticleList() {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPage, setTotalPage] = useState(1);
     const [isNoData, setIsNoData] = useState<boolean | null>(null);
     const [articleList, setArticleList] = useState<RecommendPost[]>([]);
+    const [bannerList, setBannerList] = useState<BannerInfo[]>([]);
 
     const userInfo = useUserStore.use.userInfo();
 
@@ -68,6 +69,14 @@ function ArticleList() {
         setIsNoData(res.data.pagination.totalCount === 0);
     };
 
+    const fetchBannerList = async () => {
+        const res = await getBannerList({ location: 'SOCCERANALYSIS' });
+        if (!res.success) {
+            return new Error();
+        }
+        setBannerList(res.data.banners);
+    };
+
     const loadMoreList = () => {
         if (currentPage <= Math.round(articleList.length / 30) && currentPage < totalPage) {
             setCurrentPage(prevData => prevData + 1);
@@ -76,11 +85,12 @@ function ArticleList() {
 
     useEffect(() => {
         void fetchData();
+        void fetchBannerList();
     }, [userInfo.uid, currentPage]);
 
     return (
         <>
-            <Image alt="banner" className={style.banner} height={60} src={banner} width={390} />
+            <BaseBanner bannerList={bannerList} className={style.banner} />
             <div className={style.recommendPredict}>
                 {articleList.length === 0 && isNoData === null && <SkeletonLayout />}
 
