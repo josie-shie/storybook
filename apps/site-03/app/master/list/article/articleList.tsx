@@ -1,5 +1,5 @@
 'use client';
-
+import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import type { BannerInfo, RecommendPost } from 'data-center';
 import { getBannerList, getPostList } from 'data-center';
@@ -13,7 +13,7 @@ import style from './articleList.module.scss';
 import { creatArticleStore } from './articleStore';
 import ArticleCard from './components/articleCard/articleCard';
 import SkeletonLayout from './components/skeleton/skeleton';
-// import banner from './img/banner.png';
+import banner from './img/banner.png';
 
 function ArticleList() {
     const [currentPage, setCurrentPage] = useState(1);
@@ -90,7 +90,11 @@ function ArticleList() {
 
     return (
         <>
-            <BaseBanner bannerList={bannerList} className={style.banner} />
+            {bannerList.length ? (
+                <BaseBanner bannerList={bannerList} className={style.banner} />
+            ) : (
+                <Image alt="banner" className={style.banner} height={60} src={banner} width={390} />
+            )}
             <div className={style.recommendPredict}>
                 {articleList.length === 0 && isNoData === null && <SkeletonLayout />}
 

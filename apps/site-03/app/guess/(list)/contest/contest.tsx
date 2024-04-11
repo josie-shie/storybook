@@ -2,11 +2,13 @@
 import React, { useEffect, useState, forwardRef } from 'react';
 import { InfiniteScroll } from 'ui';
 import CircularProgress from '@mui/material/CircularProgress';
+import Image from 'next/image';
 import { getBannerList, getTodayGuessMatches } from 'data-center';
 import type { BannerInfo, GetTodayGuessMatchesResponse } from 'data-center';
 import type { Ref } from 'react';
 import BaseNoData from '@/components/baseNoData/noData';
 import BaseBanner from '@/components/baseBanner/baseBanner';
+import NewBanner from '../img/newBanner.png';
 import { creatGuessContestListStore, useGuessContestListStore } from './contestStore';
 import GameCard from './gameCard';
 import style from './contest.module.scss';
@@ -68,7 +70,11 @@ function ContestList() {
                 if (idx === 5) {
                     return (
                         <React.Fragment key={matchId}>
-                            <BaseBanner bannerList={bannerList} className={style.banner} />
+                            {bannerList.length ? (
+                                <BaseBanner bannerList={bannerList} className={style.banner} />
+                            ) : (
+                                <Image alt="" className={style.banner} src={NewBanner} />
+                            )}
                             <GameCard matchId={matchId} />
                         </React.Fragment>
                     );
