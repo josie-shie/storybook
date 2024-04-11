@@ -12,4 +12,5 @@ export * from './src/guess';
 export * from './src/aiAnalysis';
 export * from './src/recommend';
 export * from './src/commonType';
+export * from './src/banner';
 export * from './src/contestData';

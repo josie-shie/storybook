@@ -445,18 +445,14 @@ const MemberIndividualGuessMatchSchema = z.object({
 
 export type MemberIndividualGuessMatch = z.infer<typeof MemberIndividualGuessMatchSchema>;
 
-const PaginationSchema = z.object({
-    pageCount: z.number(),
-    totalCount: z.number()
-});
-
-export type Pagination = z.infer<typeof PaginationSchema>;
-
 const GetMemberIndividualGuessMatchesSchema = z.object({
     guessType: z.union([z.literal(-1), z.literal(0), z.literal(1), z.literal(2)]),
     // 競猜玩法 ( 0: 全部, 1: 讓球, 2: 大小球 )
     guessMatchList: z.array(MemberIndividualGuessMatchSchema),
-    pagination: PaginationSchema
+    pagination: z.object({
+        pageCount: z.number(),
+        totalCount: z.number()
+    })
 });
 
 const GetMemberIndividualGuessMatchesResultSchema = z.object({
