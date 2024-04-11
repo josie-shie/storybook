@@ -11,6 +11,7 @@ import type {
     GetPredicativeAnalysisMatchByIdResult
 } from 'data-center';
 import { timestampToString } from 'lib';
+import { useUserStore } from '@/store/userStore';
 import TeamLogo from '@/components/teamLogo/teamLogo';
 import ConfirmPayDrawer from '@/components/confirmPayDrawer/confirmPayDrawer';
 import { useNotificationStore } from '@/store/notificationStore';
@@ -118,6 +119,7 @@ function MatchItem({
 }
 
 function AiPredictDetail({ params }: { params: { matchId: string } }) {
+    const isLogin = useUserStore.use.isLogin();
     const setIsVisible = useNotificationStore.use.setIsVisible();
     const matchRefs = useRef<Record<number, React.RefObject<HTMLDivElement>>>({});
     const [aiPredictList, setAiPredictList] = useState<GetPredicativeAnalysisMatch[]>([]);
@@ -300,6 +302,7 @@ function AiPredictDetail({ params }: { params: { matchId: string } }) {
             <div className={style.aiPredictDetail}>
                 <div className={style.content}>
                     {Array.from(selectedMatches.values()).map(match => {
+                        const isShow = isLogin && match.isMemberPurchased;
                         const currentTabKey = getMatchTabKey(match.id);
                         matchRefs.current[match.id] = createRef<HTMLDivElement>();
                         return (
@@ -330,10 +333,16 @@ function AiPredictDetail({ params }: { params: { matchId: string } }) {
                                 >
                                     <div
                                         className={`${style.name} ${
-                                            match.predictMatchResult === 1 ? style.win : ''
-                                        } ${match.predictMatchResult === 0 ? style.active : ''}`}
+                                            isShow && match.predictMatchResult === 1
+                                                ? style.win
+                                                : ''
+                                        } ${
+                                            isShow && match.predictMatchResult === 0
+                                                ? style.active
+                                                : ''
+                                        }`}
                                     >
-                                        {match.predictMatchResult === 1 ? (
+                                        {isShow && match.predictMatchResult === 1 ? (
                                             <Win className={style.icon} />
                                         ) : null}
 
@@ -345,15 +354,21 @@ function AiPredictDetail({ params }: { params: { matchId: string } }) {
                                         />
                                         <span>{match.homeChs}</span>
                                     </div>
-                                    {match.predictMatchResult === 0 ? (
+                                    {isShow && match.predictMatchResult === 0 ? (
                                         <Draw className={style.draw} />
                                     ) : null}
                                     <div
                                         className={`${style.name} ${
-                                            match.predictMatchResult === 2 ? style.win : ''
-                                        } ${match.predictMatchResult === 0 ? style.active : ''}`}
+                                            isShow && match.predictMatchResult === 2
+                                                ? style.win
+                                                : ''
+                                        } ${
+                                            isShow && match.predictMatchResult === 0
+                                                ? style.active
+                                                : ''
+                                        }`}
                                     >
-                                        {match.predictMatchResult === 2 ? (
+                                        {isShow && match.predictMatchResult === 2 ? (
                                             <Win className={style.icon} />
                                         ) : null}
                                         <TeamLogo
