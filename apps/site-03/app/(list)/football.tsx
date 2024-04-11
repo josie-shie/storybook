@@ -1,15 +1,18 @@
 'use client';
-import { timestampToStringWeek, timestampToString } from 'lib';
+import { timestampToStringWeek, timestampToString, getRandomInt } from 'lib';
 import type { ReactElement, Ref } from 'react';
 import { getBannerList, getContestList } from 'data-center';
 import type { BannerInfo, ContestListType } from 'data-center';
 import { useEffect, useState, forwardRef, useCallback } from 'react';
 import { InfiniteScroll, slickOption } from 'ui';
 import CircularProgress from '@mui/material/CircularProgress';
+import Link from 'next/link';
+import Image from 'next/image';
 import { useLiveContestStore } from '@/store/liveContestStore';
 import type { FilterList } from '@/components/contestFilter/contestFilter';
 import NoData from '@/components/baseNoData/noData';
 import BaseBanner from '@/components/baseBanner/baseBanner';
+import { useUserStore } from '@/store/userStore';
 import GameCard from './components/gameCard';
 import style from './football.module.scss';
 import { useContestListStore } from './contestListStore';
@@ -17,8 +20,68 @@ import BaseDatePicker from './components/baseDatePicker/baseDatePicker';
 import SettingIcon from './img/setting.svg';
 import Setting from './components/setting';
 import FootballFilter from './components/footballFilter';
+import GuessBannerImage from './img/guessBanner.jpg';
+import RegisterBannerImage from './img/registerBanner.jpg';
 
 type Status = 'all' | 'progress' | 'schedule' | 'result';
+
+interface StaticImageData {
+    label: string;
+    image: typeof GuessBannerImage;
+    link: string;
+}
+
+function DefaultBanner() {
+    const defaultConfig = {
+        label: 'guessBanner',
+        image: GuessBannerImage,
+        link: '/guess'
+    };
+
+    function getRandomImageConfig(isLogin: boolean) {
+        const config: {
+            1: StaticImageData;
+            2?: StaticImageData;
+        } = {
+            1: {
+                label: 'guessBanner',
+                image: GuessBannerImage,
+                link: '/guess'
+            }
+        };
+
+        if (!isLogin) {
+            config[2] = {
+                label: 'registerBanner',
+                image: RegisterBannerImage,
+                link: '/?auth=register'
+            };
+        }
+
+        return config;
+    }
+    const isLogin = useUserStore.use.isLogin();
+    const randomImage = getRandomImageConfig(isLogin);
+    const maxRandomNumber = isLogin ? 1 : 2;
+    const randomNumberInit = getRandomInt(1, maxRandomNumber) as 1 | 2;
+
+    const randomMap = randomImage[randomNumberInit];
+
+    return (
+        <Link
+            className={style.banner}
+            href={randomMap?.link || defaultConfig.link}
+            suppressHydrationWarning
+        >
+            <Image
+                alt={randomMap?.label || defaultConfig.label}
+                priority
+                src={randomMap?.image || defaultConfig.image}
+                suppressHydrationWarning
+            />
+        </Link>
+    );
+}
 
 function DatePicker({
     status,
@@ -111,6 +174,14 @@ function ContestList({
         progress: contestInfo,
         schedule: scheduleContestInfo,
         result: resultContestInfo
+    };
+
+    const getBannerComponent = () => {
+        return bannerList.length ? (
+            <BaseBanner bannerList={bannerList} className={style.banner} />
+        ) : (
+            <DefaultBanner />
+        );
     };
 
     const updateFilterList = (newList: FilterList) => {
@@ -360,12 +431,7 @@ function ContestList({
 
                             content.push(
                                 <GameCard key={matchId} matchId={matchId} status={status}>
-                                    {status === 'all' && index === 3 && (
-                                        <BaseBanner
-                                            bannerList={bannerList}
-                                            className={style.banner}
-                                        />
-                                    )}
+                                    {status === 'all' && index === 3 && getBannerComponent()}
                                 </GameCard>
                             );
 
