@@ -9,7 +9,7 @@ import { useEffect } from 'react';
 import { initWebSocket, messageService, mqttService } from 'lib';
 import {
     VertifyCodeByImage,
-    Aggrement,
+    Agreement,
     SubmitButton,
     CountryCodeInput,
     PhoneNumberInput,
@@ -180,8 +180,8 @@ function Login() {
                     />
                 </FormControl>
                 <TokenInput verifyToken={verifyToken} />
-                <div className={style.aggrement}>
-                    <Aggrement />
+                <div className={style.agreement}>
+                    <Agreement />
                 </div>
                 <FormControl fullWidth>
                     <SubmitButton disabled={isLoginDisable} label="登入" />
