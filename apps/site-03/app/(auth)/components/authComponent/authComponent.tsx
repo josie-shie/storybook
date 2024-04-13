@@ -62,7 +62,9 @@ export function NicknameInput({
                 </div>
             </div>
             <div className={style.errorMessage}>
-                {error ? <span>昵称2-10位中文、英文或数字</span> : null}
+                {error ? (
+                    <span>! {error.message ? error.message : '昵称2-10位中文、英文或数字'}</span>
+                ) : null}
             </div>
         </>
     );
@@ -315,7 +317,7 @@ export function PasswordInput({ children, placeholder, field, error, id }: Passw
                 </div>
             </div>
 
-            {error ? <div className={style.errorMessage}>{placeholder}</div> : null}
+            {error ? <div className={style.errorMessage}>! {placeholder}</div> : null}
         </>
     );
 }
@@ -353,26 +355,29 @@ export function PhoneNumberInput({
     };
 
     return (
-        <div
-            className={style.phoneNumber}
-            style={{
-                borderBottom: `1px solid rgba(255, 255, 255, ${
-                    field.value || isFocused ? '1' : '0.3'
-                })`
-            }}
-        >
-            <Input
-                {...field}
-                className={style.phoneInput}
-                disableUnderline
-                error={Boolean(error)}
-                id="mobileNumber"
-                onBlur={handleBlur}
-                onFocus={handleFocus}
-                placeholder="手机号码"
-                type="number"
-            />
-        </div>
+        <>
+            <div
+                className={style.phoneNumber}
+                style={{
+                    borderBottom: `1px solid rgba(255, 255, 255, ${
+                        field.value || isFocused ? '1' : '0.3'
+                    })`
+                }}
+            >
+                <Input
+                    {...field}
+                    className={style.phoneInput}
+                    disableUnderline
+                    error={Boolean(error)}
+                    id="mobileNumber"
+                    onBlur={handleBlur}
+                    onFocus={handleFocus}
+                    placeholder="手机号码"
+                    type="number"
+                />
+            </div>
+            {error ? <div className={style.errorMessage}>! {error.message}</div> : null}
+        </>
     );
 }
 

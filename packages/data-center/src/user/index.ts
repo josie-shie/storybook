@@ -13,6 +13,8 @@ import {
 } from '../commonType';
 import {
     REGISTER_MUTATION,
+    GET_RANDOM_USERNAME,
+    CHECK_USER_NAME_CAN_USE,
     SEND_VERIFICATION_CODE_MUTATION,
     SEND_VERIFICATION_CODE_IN_LOGGED_MUTATION,
     LOGIN_MUTATION,
@@ -1212,6 +1214,134 @@ export const sendVerificationSms = async (
 
         throwErrorMessage(errors);
         return { success: true, data: data.sendVerificationSms };
+    } catch (error) {
+        return handleApiError(error);
+    }
+};
+
+const GetRandomUserNameSchema = z.object({
+    userName: z.array(z.string())
+});
+
+const GetRandomUserNameResultSchema = z.object({
+    getRandomUserName: GetRandomUserNameSchema
+});
+
+export type GetRandomUserNameResponse = z.infer<typeof GetRandomUserNameSchema>;
+
+type GetRandomUserNameResult = z.infer<typeof GetRandomUserNameResultSchema>;
+
+export interface GetRandomUserNameRequest {
+    quantity: number;
+}
+
+/**
+ * 取得隨機暱稱
+ * - params {@link GetRandomUserNameRequest}
+ * - returns {@link GetRandomUserNameResponse}
+ */
+export const getRandomUserName = async (
+    input: GetRandomUserNameRequest
+): Promise<ReturnData<GetRandomUserNameResponse>> => {
+    try {
+        const { data, errors } = await fetcher<FetchResultData<GetRandomUserNameResult>, unknown>(
+            {
+                data: {
+                    query: GET_RANDOM_USERNAME,
+                    variables: {
+                        input
+                    }
+                }
+            },
+            { cache: 'no-store' }
+        );
+
+        GetRandomUserNameResultSchema.parse(data);
+
+        throwErrorMessage(errors);
+        return { success: true, data: data.getRandomUserName };
+    } catch (error) {
+        return handleApiError(error);
+    }
+};
+
+const GetCheckUserNameCanUseResultSchema = z.object({
+    checkUserNameCanUse: z.boolean()
+});
+
+export type CheckUserNameCanUseResult = z.infer<typeof GetCheckUserNameCanUseResultSchema>;
+
+export interface CheckUserNameCanUseRequest {
+    userName: string;
+}
+
+/**
+ * 驗證暱稱是否可以用
+ * - params {@link CheckUserNameCanUseRequest}
+ * - returns {@link CheckUserNameCanUseResponse}
+ */
+export const checkUserNameCanUse = async (
+    input: CheckUserNameCanUseRequest
+): Promise<ReturnData<boolean>> => {
+    try {
+        const { data, errors } = await fetcher<FetchResultData<CheckUserNameCanUseResult>, unknown>(
+            {
+                data: {
+                    query: CHECK_USER_NAME_CAN_USE,
+                    variables: {
+                        input
+                    }
+                }
+            },
+            { cache: 'no-store' }
+        );
+        throwErrorMessage(errors);
+        GetRandomUserNameResultSchema.parse(data);
+
+        return { success: true, data: data.checkUserNameCanUse };
+    } catch (error) {
+        return handleApiError(error);
+    }
+};
+
+const GetCheckPhoneNumberCanUseResultSchema = z.object({
+    checkPhoneNumberCanUse: z.boolean()
+});
+
+export type CheckPhoneNumberCanUseResult = z.infer<typeof GetCheckPhoneNumberCanUseResultSchema>;
+
+export interface CheckPhoneNumberCanUseRequest {
+    phoneNumber: string;
+}
+
+/**
+ * 驗證手機是否可以用
+ * - params {@link CheckPhoneNumberCanUseRequest}
+ * - returns {@link CheckUserNameCanUseResponse}
+ */
+export const checkPhoneNumberCanUse = async (
+    input: CheckPhoneNumberCanUseRequest
+): Promise<ReturnData<boolean>> => {
+    try {
+        const { data, errors } = await fetcher<
+            FetchResultData<CheckPhoneNumberCanUseResult>,
+            unknown
+        >(
+            {
+                data: {
+                    query: CHECK_USER_NAME_CAN_USE,
+                    variables: {
+                        input
+                    }
+                }
+            },
+            { cache: 'no-store' }
+        );
+
+        throwErrorMessage(errors);
+        GetRandomUserNameResultSchema.parse(data);
+
+        return { success: true, data: data.checkPhoneNumberCanUse };
     } catch (error) {
         return handleApiError(error);
     }

@@ -406,3 +406,17 @@ export const GET_MEMBER_NOTIFICATION_READ_STATUS = `
         }
     }
 `;
+
+export const GET_RANDOM_USERNAME = `
+    query getRandomUserName($input: GetRandomUserNameInput) {
+        getRandomUserName(input: $input) {
+            userName
+        }
+    }
+`;
+
+export const CHECK_USER_NAME_CAN_USE = `
+    query checkUserNameCanUse($input: CheckUserNameCanUseInput) {
+        checkUserNameCanUse(input: $input )
+    }
+`;

@@ -4,15 +4,24 @@ import * as yup from 'yup';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import type { RegisterRequest } from 'data-center';
-import { sendVerificationSms, register } from 'data-center';
+import {
+    getRandomUserName,
+    register,
+    getVerificationCaptcha,
+    checkUserNameCanUse,
+    checkPhoneNumberCanUse
+} from 'data-center';
 import { useSearchParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import type { ReturnData } from 'data-center/src/common';
 import {
     PhoneNumberInput,
-    VertifyCode,
+    NicknameInput,
     PasswordInput,
-    Aggrement,
+    Agreement,
     SubmitButton,
     CountryCodeInput,
+    VertifyCodeByImage,
     TokenInput
 } from '@/app/(auth)/components/authComponent/authComponent';
 import { useUserStore } from '@/store/userStore';
@@ -21,14 +30,21 @@ import { useAuthStore } from '@/store/authStore';
 import style from './register.module.scss';
 
 const schema = yup.object().shape({
-    mobileNumber: yup.string().required(),
+    mobileNumber: yup
+        .string()
+        .matches(/^\d{10,11}$/)
+        .required(),
+    username: yup
+        .string()
+        .matches(/^[\u4e00-\u9fa5a-zA-Z0-9]{2,10}$/)
+        .required(),
     password: yup
         .string()
         .matches(/^(?=.*\d)(?=.*[a-zA-Z])[a-zA-Z0-9]{6,16}$/)
         .required(),
-    verificationCode: yup.string().required(),
     countryCode: yup.string().required(),
-    verifyToken: yup.string().required()
+    verifyToken: yup.string().required(),
+    verificationCode: yup.string().required()
 });
 
 function Register() {
@@ -37,70 +53,135 @@ function Register() {
     const inviteCode = searchParams.get('inviteCode');
     const setIsDrawerOpen = useAuthStore.use.setIsDrawerOpen();
     const setIsVisible = useNotificationStore.use.setIsVisible();
-    const registerStore = useAuthStore.use.register();
-    const { sendCodeSuccess, setSendCodeSuccess, countDownNumber, setCountDownNumber } =
-        registerStore;
     const removeAuthQuery = useAuthStore.use.removeAuthQuery();
+    const registerStore = useAuthStore.use.register();
+    const [isRotating, setIsRotating] = useState(false);
+    const [randomUserNameList, setRandomUserNameList] = useState<string[]>([]);
+    const [randomUserNameIdx, setRandomUserNameIdx] = useState<number>(0);
+    const { verifyPhoto, setVerifyPhoto } = registerStore;
 
     const {
         control,
         handleSubmit,
         watch,
         setValue,
+        setError,
         formState: { errors }
     } = useForm({
         resolver: yupResolver(schema),
         defaultValues: {
             mobileNumber: '',
+            username: '',
             password: '',
-            verificationCode: '',
             countryCode: '+86',
-            verifyToken: ''
+            verifyToken: '',
+            verificationCode: ''
         },
         mode: 'onChange'
     });
 
-    const { countryCode, mobileNumber, password, verificationCode, verifyToken } = watch();
+    const { countryCode, mobileNumber, password, username, verifyToken, verificationCode } =
+        watch();
 
-    const getVerificationCode = async () => {
-        const res = await sendVerificationSms({
-            countryCode,
-            mobileNumber,
-            checkExistingAccount: true
-        });
+    const changeRandomUsername = async () => {
+        setIsRotating(true);
+        if (randomUserNameList.length && randomUserNameIdx < randomUserNameList.length) {
+            setValue('username', randomUserNameList[randomUserNameIdx + 1]);
+            setRandomUserNameIdx(randomUserNameIdx + 1);
+        } else {
+            const res = await getRandomUserName({ quantity: 100 });
+            if (!res.success) throw Error();
+            setValue('username', res.data.userName[0]);
+            setRandomUserNameList(res.data.userName);
+            setRandomUserNameIdx(0);
+        }
+        setTimeout(() => {
+            setIsRotating(false);
+        }, 1000);
+    };
+
+    const getCaptcha = async () => {
+        const res = await getVerificationCaptcha();
 
         if (!res.success) {
-            const errorMessage = res.error ? res.error : '取得验证码失败';
+            const errorMessage = res.error ? res.error : '取得验证图形失败';
             setIsVisible(errorMessage, 'error');
             return;
         }
-
-        setSendCodeSuccess(true);
-        setCountDown();
+        setVerifyPhoto(res.data.captcha);
         setValue('verifyToken', res.data.verifyToken);
     };
 
-    const setCountDown = () => {
-        let currentSeconds = countDownNumber;
+    // const setCountDown = () => {
+    //     let currentSeconds = countDownNumber;
 
-        const interval = setInterval(() => {
-            currentSeconds = currentSeconds === 0 ? 60 : currentSeconds - 1;
-            setCountDownNumber(currentSeconds);
+    //     const interval = setInterval(() => {
+    //         currentSeconds = currentSeconds === 0 ? 60 : currentSeconds - 1;
+    //         setCountDownNumber(currentSeconds);
 
-            if (currentSeconds === 0) {
-                clearInterval(interval);
-                setSendCodeSuccess(false);
+    //         if (currentSeconds === 0) {
+    //             clearInterval(interval);
+    //             setSendCodeSuccess(false);
+    //         }
+    //     }, 1000);
+
+    //     return () => {
+    //         clearInterval(interval);
+    //         setSendCodeSuccess(false);
+    //         setCountDownNumber(60);
+    //     };
+    // };
+    const formatErrorMessage = ({
+        isUsernameAccept,
+        isPhoneNumberAccept
+    }: {
+        isUsernameAccept: ReturnData<boolean>;
+        isPhoneNumberAccept: ReturnData<boolean>;
+    }) => {
+        const messageMap = {
+            username: {
+                canUse: true,
+                message: ''
+            },
+            phoneNumber: {
+                canUse: true,
+                message: ''
             }
-        }, 1000);
-
-        return () => {
-            clearInterval(interval);
-            setSendCodeSuccess(false);
-            setCountDownNumber(60);
         };
+
+        if (!isUsernameAccept.success || !isUsernameAccept.data) {
+            messageMap.username = {
+                canUse: false,
+                message: '此昵称已有人使用'
+            };
+        }
+        if (!isPhoneNumberAccept.success || !isPhoneNumberAccept.data) {
+            messageMap.phoneNumber = {
+                canUse: false,
+                message: '此號碼已有人使用'
+            };
+        }
+
+        if (!messageMap.username.canUse)
+            setError('username', { type: 'duplicate', message: '此昵称已有人使用' });
+        if (!messageMap.phoneNumber.canUse)
+            setError('mobileNumber', { type: 'duplicate', message: '此號碼已有人使用' });
+
+        return messageMap.username.canUse && messageMap.username.canUse;
     };
 
     const onSubmit = async (data: RegisterRequest) => {
+        const [isUsernameAccept, isPhoneNumberAccept] = await Promise.all([
+            checkUserNameCanUse({ userName: data.username }),
+            checkPhoneNumberCanUse({ phoneNumber: data.mobileNumber })
+        ]);
+
+        const canSubmit = !formatErrorMessage({
+            isUsernameAccept,
+            isPhoneNumberAccept
+        });
+        if (!canSubmit) return;
+
         const res = await register({
             ...data,
             ...(inviteCode && { invitationCode: inviteCode })
@@ -121,7 +202,16 @@ function Register() {
 
     const isSendVerificationCodeDisable = !countryCode || !mobileNumber;
     const isRegisterDisable =
-        isSendVerificationCodeDisable || !verificationCode || !password || !verifyToken;
+        isSendVerificationCodeDisable ||
+        !password ||
+        !username ||
+        !verificationCode ||
+        !verifyToken ||
+        !verifyPhoto;
+
+    useEffect(() => {
+        void getCaptcha();
+    }, []);
 
     return (
         <form className={style.register} onSubmit={handleSubmit(onSubmit)}>
@@ -144,7 +234,7 @@ function Register() {
                     <div className={style.errorMessage}>请输入手机号码</div>
                 ) : null}
             </div>
-            <FormControl fullWidth>
+            {/* <FormControl fullWidth>
                 <Controller
                     control={control}
                     name="verificationCode"
@@ -156,6 +246,21 @@ function Register() {
                             getVerificationCode={getVerificationCode}
                             sendCodeSuccess={sendCodeSuccess}
                             vertifyDisable={isSendVerificationCodeDisable}
+                        />
+                    )}
+                />
+            </FormControl> */}
+            <FormControl fullWidth>
+                <Controller
+                    control={control}
+                    name="username"
+                    render={({ field }) => (
+                        <NicknameInput
+                            changeRandomUsername={changeRandomUsername}
+                            error={errors.username}
+                            field={field}
+                            isRotating={isRotating}
+                            isShowDice
                         />
                     )}
                 />
@@ -173,8 +278,24 @@ function Register() {
                     )}
                 />
             </FormControl>
+            <FormControl fullWidth>
+                <Controller
+                    control={control}
+                    name="verificationCode"
+                    render={({ field }) => (
+                        <VertifyCodeByImage
+                            error={errors.verificationCode}
+                            field={field}
+                            getVerificationCode={getCaptcha}
+                            placeholder="验证码"
+                            verifyPhoto={verifyPhoto}
+                            vertifyDisable={false}
+                        />
+                    )}
+                />
+            </FormControl>
             <TokenInput verifyToken={verifyToken} />
-            <Aggrement />
+            <Agreement />
             <FormControl className={style.registerButton} fullWidth>
                 <SubmitButton disabled={isRegisterDisable} label="注册" />
             </FormControl>
