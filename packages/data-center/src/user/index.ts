@@ -13,6 +13,7 @@ import {
 } from '../commonType';
 import {
     REGISTER_MUTATION,
+    GET_RANDOM_USERNAME,
     SEND_VERIFICATION_CODE_MUTATION,
     SEND_VERIFICATION_CODE_IN_LOGGED_MUTATION,
     LOGIN_MUTATION,
@@ -46,7 +47,7 @@ type RegisterResult = z.infer<typeof RegisterResultSchema>;
 export interface RegisterRequest {
     countryCode: string;
     mobileNumber: string;
-    username: string;
+    userName: string;
     password: string;
     verificationCode: string;
     invitationCode?: string;
@@ -201,7 +202,7 @@ type UpdateMemberInfoResult = z.infer<typeof UpdateMemberInfoResultSchema>;
 export const register = async ({
     countryCode,
     mobileNumber,
-    username,
+    userName,
     password,
     verificationCode,
     invitationCode,
@@ -215,7 +216,7 @@ export const register = async ({
                     input: {
                         countryCode,
                         mobileNumber,
-                        username,
+                        userName,
                         password: btoa(password),
                         verificationCode,
                         invitationCode,
@@ -1216,3 +1217,59 @@ export const sendVerificationSms = async (
         return handleApiError(error);
     }
 };
+
+const GetRandomUserNameSchema = z.object({
+    userName: z.array(z.string())
+});
+
+const GetRandomUserNameResultSchema = z.object({
+    getRandomUserName: GetRandomUserNameSchema
+});
+
+export type GetRandomUserNameResponse = z.infer<typeof GetRandomUserNameSchema>;
+
+type GetRandomUserNameResult = z.infer<typeof GetRandomUserNameResultSchema>;
+
+export interface GetRandomUserNameRequest {
+    quantity: number;
+}
+
+/**
+ * 取得隨機暱稱
+ * - params {@link GetRandomUserNameRequest}
+ * - returns {@link GetRandomUserNameResponse}
+ */
+export const getRandomUserName = async (
+    input: GetRandomUserNameRequest
+): Promise<ReturnData<GetRandomUserNameResponse>> => {
+    try {
+        const { data, errors } = await fetcher<FetchResultData<GetRandomUserNameResult>, unknown>(
+            {
+                data: {
+                    query: GET_RANDOM_USERNAME,
+                    variables: {
+                        input
+                    }
+                }
+            },
+            { cache: 'no-store' }
+        );
+
+        GetRandomUserNameResultSchema.parse(data);
+
+        throwErrorMessage(errors);
+        return { success: true, data: data.getRandomUserName };
+    } catch (error) {
+        return handleApiError(error);
+    }
+};
+
+const GetCheckUserNameCanUseResultSchema = z.object({
+    checkUserNameCanUse: z.boolean()
+});
+
+export type CheckUserNameCanUseResult = z.infer<typeof GetCheckUserNameCanUseResultSchema>;
+
+export interface CheckUserNameCanUseRequest {
+    userName: string;
+}

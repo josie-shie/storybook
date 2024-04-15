@@ -4,15 +4,17 @@ import * as yup from 'yup';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import type { RegisterRequest } from 'data-center';
-import { sendVerificationSms, register } from 'data-center';
+import { getRandomUserName, register, getVerificationCaptcha } from 'data-center';
 import { useSearchParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import {
     PhoneNumberInput,
-    VertifyCode,
+    NicknameInput,
     PasswordInput,
-    Aggrement,
+    Agreement,
     SubmitButton,
     CountryCodeInput,
+    VertifyCodeByImage,
     TokenInput
 } from '@/app/(auth)/components/authComponent/authComponent';
 import { useUserStore } from '@/store/userStore';
@@ -21,14 +23,21 @@ import { useAuthStore } from '@/store/authStore';
 import style from './register.module.scss';
 
 const schema = yup.object().shape({
-    mobileNumber: yup.string().required(),
+    mobileNumber: yup
+        .string()
+        .matches(/^\d{10,11}$/, '手機號碼格式錯誤')
+        .required(),
+    userName: yup
+        .string()
+        .matches(/^[\u4e00-\u9fa5a-zA-Z0-9]{2,10}$/, '暱稱格式錯誤')
+        .required(),
     password: yup
         .string()
-        .matches(/^(?=.*\d)(?=.*[a-zA-Z])[a-zA-Z0-9]{6,16}$/)
+        .matches(/^(?=.*\d)(?=.*[a-zA-Z])[a-zA-Z0-9]{6,16}$/, '密碼格式錯誤')
         .required(),
-    verificationCode: yup.string().required(),
     countryCode: yup.string().required(),
-    verifyToken: yup.string().required()
+    verifyToken: yup.string().required(),
+    verificationCode: yup.string().required()
 });
 
 function Register() {
@@ -37,68 +46,85 @@ function Register() {
     const inviteCode = searchParams.get('inviteCode');
     const setIsDrawerOpen = useAuthStore.use.setIsDrawerOpen();
     const setIsVisible = useNotificationStore.use.setIsVisible();
-    const registerStore = useAuthStore.use.register();
-    const { sendCodeSuccess, setSendCodeSuccess, countDownNumber, setCountDownNumber } =
-        registerStore;
     const removeAuthQuery = useAuthStore.use.removeAuthQuery();
+    const registerStore = useAuthStore.use.register();
+    const [isRotating, setIsRotating] = useState(false);
+    const [randomUserNameList, setRandomUserNameList] = useState<string[]>([]);
+    const [randomUserNameIdx, setRandomUserNameIdx] = useState<number>(0);
+    const { verifyPhoto, setVerifyPhoto } = registerStore;
 
     const {
         control,
         handleSubmit,
         watch,
         setValue,
+        setError,
         formState: { errors }
     } = useForm({
         resolver: yupResolver(schema),
         defaultValues: {
             mobileNumber: '',
+            userName: '',
             password: '',
-            verificationCode: '',
             countryCode: '+86',
-            verifyToken: ''
+            verifyToken: '',
+            verificationCode: ''
         },
         mode: 'onChange'
     });
 
-    const { countryCode, mobileNumber, password, verificationCode, verifyToken } = watch();
+    const { countryCode, mobileNumber, password, userName, verifyToken, verificationCode } =
+        watch();
 
-    const getVerificationCode = async () => {
-        const res = await sendVerificationSms({
-            countryCode,
-            mobileNumber,
-            checkExistingAccount: true
-        });
+    const changeRandomUsername = async () => {
+        setIsRotating(true);
+        if (randomUserNameList.length && randomUserNameIdx < randomUserNameList.length - 1) {
+            const newIndex = randomUserNameIdx + 1;
+            setValue('userName', randomUserNameList[newIndex]);
+            setRandomUserNameIdx(newIndex);
+        } else {
+            const res = await getRandomUserName({ quantity: 100 });
+            if (!res.success) throw Error();
+            setValue('userName', res.data.userName[0]);
+            setRandomUserNameList(res.data.userName);
+            setRandomUserNameIdx(0);
+        }
+        setTimeout(() => {
+            setIsRotating(false);
+        }, 1000);
+    };
+
+    const getCaptcha = async () => {
+        const res = await getVerificationCaptcha();
 
         if (!res.success) {
-            const errorMessage = res.error ? res.error : '取得验证码失败';
+            const errorMessage = res.error ? res.error : '取得验证图形失败';
             setIsVisible(errorMessage, 'error');
             return;
         }
-
-        setSendCodeSuccess(true);
-        setCountDown();
+        setVerifyPhoto(res.data.captcha);
         setValue('verifyToken', res.data.verifyToken);
     };
 
-    const setCountDown = () => {
-        let currentSeconds = countDownNumber;
+    // const setCountDown = () => {
+    //     let currentSeconds = countDownNumber;
 
-        const interval = setInterval(() => {
-            currentSeconds = currentSeconds === 0 ? 60 : currentSeconds - 1;
-            setCountDownNumber(currentSeconds);
+    //     const interval = setInterval(() => {
+    //         currentSeconds = currentSeconds === 0 ? 60 : currentSeconds - 1;
+    //         setCountDownNumber(currentSeconds);
 
-            if (currentSeconds === 0) {
-                clearInterval(interval);
-                setSendCodeSuccess(false);
-            }
-        }, 1000);
+    //         if (currentSeconds === 0) {
+    //             clearInterval(interval);
+    //             setSendCodeSuccess(false);
+    //         }
+    //     }, 1000);
 
-        return () => {
-            clearInterval(interval);
-            setSendCodeSuccess(false);
-            setCountDownNumber(60);
-        };
-    };
+    //     return () => {
+    //         clearInterval(interval);
+    //         setSendCodeSuccess(false);
+    //         setCountDownNumber(60);
+    //     };
+    // };
 
     const onSubmit = async (data: RegisterRequest) => {
         const res = await register({
@@ -107,8 +133,17 @@ function Register() {
         });
 
         if (!res.success) {
-            const errorMessage = res.error ? res.error : '注册失败，请确认资料无误';
-            setIsVisible(errorMessage, 'error');
+            if (!res.error) {
+                return '注册失败，请确认资料无误';
+            }
+            if (res.error.includes('手机号码')) {
+                setError('mobileNumber', { type: 'duplicate', message: res.error });
+                return;
+            } else if (res.error.includes('暱稱')) {
+                setError('userName', { type: 'duplicate', message: res.error });
+                return;
+            }
+            setIsVisible(res.error, 'error');
             return;
         }
 
@@ -121,7 +156,16 @@ function Register() {
 
     const isSendVerificationCodeDisable = !countryCode || !mobileNumber;
     const isRegisterDisable =
-        isSendVerificationCodeDisable || !verificationCode || !password || !verifyToken;
+        isSendVerificationCodeDisable ||
+        !password ||
+        !userName ||
+        !verificationCode ||
+        !verifyToken ||
+        !verifyPhoto;
+
+    useEffect(() => {
+        void getCaptcha();
+    }, []);
 
     return (
         <form className={style.register} onSubmit={handleSubmit(onSubmit)}>
@@ -141,10 +185,10 @@ function Register() {
                     </FormControl>
                 </div>
                 {errors.mobileNumber ? (
-                    <div className={style.errorMessage}>请输入手机号码</div>
+                    <div className={style.errorMessage}>! {errors.mobileNumber.message}</div>
                 ) : null}
             </div>
-            <FormControl fullWidth>
+            {/* <FormControl fullWidth>
                 <Controller
                     control={control}
                     name="verificationCode"
@@ -156,6 +200,21 @@ function Register() {
                             getVerificationCode={getVerificationCode}
                             sendCodeSuccess={sendCodeSuccess}
                             vertifyDisable={isSendVerificationCodeDisable}
+                        />
+                    )}
+                />
+            </FormControl> */}
+            <FormControl fullWidth>
+                <Controller
+                    control={control}
+                    name="userName"
+                    render={({ field }) => (
+                        <NicknameInput
+                            changeRandomUsername={changeRandomUsername}
+                            error={errors.userName}
+                            field={field}
+                            isRotating={isRotating}
+                            isShowDice
                         />
                     )}
                 />
@@ -173,8 +232,24 @@ function Register() {
                     )}
                 />
             </FormControl>
+            <FormControl fullWidth>
+                <Controller
+                    control={control}
+                    name="verificationCode"
+                    render={({ field }) => (
+                        <VertifyCodeByImage
+                            error={errors.verificationCode}
+                            field={field}
+                            getVerificationCode={getCaptcha}
+                            placeholder="验证码"
+                            verifyPhoto={verifyPhoto}
+                            vertifyDisable={isSendVerificationCodeDisable}
+                        />
+                    )}
+                />
+            </FormControl>
             <TokenInput verifyToken={verifyToken} />
-            <Aggrement />
+            <Agreement />
             <FormControl className={style.registerButton} fullWidth>
                 <SubmitButton disabled={isRegisterDisable} label="注册" />
             </FormControl>

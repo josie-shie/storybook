@@ -15,10 +15,12 @@ interface AuthState extends InitState {
     setIsDrawerOpen: (isOpen: boolean) => void;
     removeAuthQuery: () => void;
     register: {
-        sendCodeSuccess: boolean;
-        setSendCodeSuccess: (sendCodeSuccess: boolean) => void;
-        countDownNumber: number;
-        setCountDownNumber: (countDownNumber: number) => void;
+        // sendCodeSuccess: boolean;
+        // setSendCodeSuccess: (sendCodeSuccess: boolean) => void;
+        // countDownNumber: number;
+        // setCountDownNumber: (countDownNumber: number) => void;
+        verifyPhoto: string;
+        setVerifyPhoto: (verifyPhoto: string) => void;
     };
     login: {
         verifyPhoto: string;
@@ -77,24 +79,35 @@ const initialState = (set: (updater: (state: AuthState) => Partial<AuthState>) =
         history.pushState({}, '', url);
     },
     register: {
-        sendCodeSuccess: false,
-        setSendCodeSuccess: (sendCodeSuccess: boolean) => {
+        // sendCodeSuccess: false,
+        // setSendCodeSuccess: (sendCodeSuccess: boolean) => {
+        //     set(state => {
+        //         return {
+        //             register: {
+        //                 ...state.register,
+        //                 sendCodeSuccess
+        //             }
+        //         };
+        //     });
+        // },
+        // countDownNumber: 60,
+        // setCountDownNumber: (countDownNumber: number) => {
+        //     set(state => {
+        //         return {
+        //             register: {
+        //                 ...state.register,
+        //                 countDownNumber
+        //             }
+        //         };
+        //     });
+        // }
+        verifyPhoto: '',
+        setVerifyPhoto: (verifyPhoto: string) => {
             set(state => {
                 return {
                     register: {
                         ...state.register,
-                        sendCodeSuccess
-                    }
-                };
-            });
-        },
-        countDownNumber: 60,
-        setCountDownNumber: (countDownNumber: number) => {
-            set(state => {
-                return {
-                    register: {
-                        ...state.register,
-                        countDownNumber
+                        verifyPhoto
                     }
                 };
             });

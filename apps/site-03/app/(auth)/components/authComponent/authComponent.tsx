@@ -17,6 +17,7 @@ import ShowPasswordIcon from './img/showPassword.png';
 import HidePasswordIcon from './img/hidePassword.png';
 import lockIcon from './img/lockIcon.png';
 import shieldIcon from './img/shieldIcon.png';
+import Dice from './img/dice.svg';
 
 export function TokenInput({ verifyToken }: { verifyToken: string }) {
     return (
@@ -27,10 +28,16 @@ export function TokenInput({ verifyToken }: { verifyToken: string }) {
 }
 
 export function NicknameInput({
+    isShowDice = false,
+    isRotating,
+    changeRandomUsername,
     field,
     error
 }: {
+    isShowDice?: boolean;
     field: FieldValues;
+    changeRandomUsername: () => void;
+    isRotating: boolean;
     error: FieldError | undefined;
 }) {
     return (
@@ -46,10 +53,18 @@ export function NicknameInput({
                         id="username"
                         placeholder="昵称2-10位中文、英文或数字"
                     />
+                    {isShowDice ? (
+                        <Dice
+                            className={`${style.dice} ${isRotating && style.rotate}`}
+                            onClick={changeRandomUsername}
+                        />
+                    ) : null}
                 </div>
             </div>
             <div className={style.errorMessage}>
-                {error ? <span>昵称2-10位中文、英文或数字</span> : null}
+                {error ? (
+                    <span>! {error.message ? error.message : '昵称2-10位中文、英文或数字'}</span>
+                ) : null}
             </div>
         </>
     );
@@ -73,7 +88,7 @@ export function SubmitButton({ label, disabled }: SubmitButtonPropsType) {
     );
 }
 
-export function Aggrement() {
+export function Agreement() {
     return <p className={style.agreement}>{`登入即同意<智球网隐私条款>、<智球网用户服务协议>`}</p>;
 }
 
@@ -170,7 +185,6 @@ export function VertifyCodeByImage({
     const handleBlur = () => {
         setIsFocused(false);
     };
-
     return (
         <div
             className={style.vertifyCodeByImage}
@@ -303,7 +317,7 @@ export function PasswordInput({ children, placeholder, field, error, id }: Passw
                 </div>
             </div>
 
-            {error ? <div className={style.errorMessage}>{placeholder}</div> : null}
+            {error ? <div className={style.errorMessage}>! {placeholder}</div> : null}
         </>
     );
 }
@@ -339,7 +353,6 @@ export function PhoneNumberInput({
     const handleBlur = () => {
         setIsFocused(false);
     };
-
     return (
         <div
             className={style.phoneNumber}

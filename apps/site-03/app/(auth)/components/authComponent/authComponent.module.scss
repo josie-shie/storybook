@@ -5,7 +5,7 @@ $border-bottom: 1px solid rgb(255 255 255 / 30%);
     display: flex;
     align-items: center;
     gap: 6px;
-    border-bottom: 1px solid rgb(255, 255, 255);
+    border-bottom: 1px solid rgb(255 255 255);
     min-height: 44px;
 }
 
@@ -111,9 +111,17 @@ $border-bottom: 1px solid rgb(255 255 255 / 30%);
     min-height: 44px;
     border-bottom: $border-bottom;
 
+    .dice {
+        cursor: pointer;
+        display: inline-block;
+        transition: transform 0.5s ease-in-out;
+    }
+
     .nicknameBlock {
+        width: 100%;
         display: flex;
         align-items: center;
+        justify-content: space-between;
 
         .nicknameInput {
             width: 246px;
@@ -124,6 +132,14 @@ $border-bottom: 1px solid rgb(255 255 255 / 30%);
                 font-size: 14px;
                 font-weight: 400;
             }
+        }
+
+        .dice {
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .rotate {
+            animation: rotate 0.3s linear;
         }
     }
 }
@@ -183,7 +199,7 @@ $border-bottom: 1px solid rgb(255 255 255 / 30%);
 .disableButton:global(.Mui-disabled) {
     opacity: 0.5;
     color: #fff !important;
-    background-color: rgba(255, 255, 255, 0.3);
+    background-color: rgb(255 255 255 / 30%);
 }
 
 .ableButton {
@@ -217,4 +233,14 @@ $border-bottom: 1px solid rgb(255 255 255 / 30%);
     width: 0;
     height: 0;
     overflow: hidden;
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
 }
