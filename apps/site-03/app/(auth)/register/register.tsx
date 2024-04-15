@@ -184,7 +184,7 @@ function Register() {
                     </FormControl>
                 </div>
                 {errors.mobileNumber ? (
-                    <div className={style.errorMessage}>{errors.mobileNumber.message}</div>
+                    <div className={style.errorMessage}>! {errors.mobileNumber.message}</div>
                 ) : null}
             </div>
             {/* <FormControl fullWidth>
