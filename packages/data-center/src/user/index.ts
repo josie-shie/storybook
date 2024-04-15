@@ -14,7 +14,6 @@ import {
 import {
     REGISTER_MUTATION,
     GET_RANDOM_USERNAME,
-    CHECK_USER_NAME_CAN_USE,
     SEND_VERIFICATION_CODE_MUTATION,
     SEND_VERIFICATION_CODE_IN_LOGGED_MUTATION,
     LOGIN_MUTATION,
@@ -1274,75 +1273,3 @@ export type CheckUserNameCanUseResult = z.infer<typeof GetCheckUserNameCanUseRes
 export interface CheckUserNameCanUseRequest {
     userName: string;
 }
-
-/**
- * 驗證暱稱是否可以用
- * - params {@link CheckUserNameCanUseRequest}
- * - returns {@link CheckUserNameCanUseResponse}
- */
-export const checkUserNameCanUse = async (
-    input: CheckUserNameCanUseRequest
-): Promise<ReturnData<boolean>> => {
-    try {
-        const { data, errors } = await fetcher<FetchResultData<CheckUserNameCanUseResult>, unknown>(
-            {
-                data: {
-                    query: CHECK_USER_NAME_CAN_USE,
-                    variables: {
-                        input
-                    }
-                }
-            },
-            { cache: 'no-store' }
-        );
-        throwErrorMessage(errors);
-        GetRandomUserNameResultSchema.parse(data);
-
-        return { success: true, data: data.checkUserNameCanUse };
-    } catch (error) {
-        return handleApiError(error);
-    }
-};
-
-const GetCheckPhoneNumberCanUseResultSchema = z.object({
-    checkPhoneNumberCanUse: z.boolean()
-});
-
-export type CheckPhoneNumberCanUseResult = z.infer<typeof GetCheckPhoneNumberCanUseResultSchema>;
-
-export interface CheckPhoneNumberCanUseRequest {
-    phoneNumber: string;
-}
-
-/**
- * 驗證手機是否可以用
- * - params {@link CheckPhoneNumberCanUseRequest}
- * - returns {@link CheckUserNameCanUseResponse}
- */
-export const checkPhoneNumberCanUse = async (
-    input: CheckPhoneNumberCanUseRequest
-): Promise<ReturnData<boolean>> => {
-    try {
-        const { data, errors } = await fetcher<
-            FetchResultData<CheckPhoneNumberCanUseResult>,
-            unknown
-        >(
-            {
-                data: {
-                    query: CHECK_USER_NAME_CAN_USE,
-                    variables: {
-                        input
-                    }
-                }
-            },
-            { cache: 'no-store' }
-        );
-
-        throwErrorMessage(errors);
-        GetRandomUserNameResultSchema.parse(data);
-
-        return { success: true, data: data.checkPhoneNumberCanUse };
-    } catch (error) {
-        return handleApiError(error);
-    }
-};

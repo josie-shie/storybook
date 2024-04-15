@@ -414,9 +414,3 @@ export const GET_RANDOM_USERNAME = `
         }
     }
 `;
-
-export const CHECK_USER_NAME_CAN_USE = `
-    query checkUserNameCanUse($input: CheckUserNameCanUseInput) {
-        checkUserNameCanUse(input: $input )
-    }
-`;

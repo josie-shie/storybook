@@ -4,16 +4,9 @@ import * as yup from 'yup';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import type { RegisterRequest } from 'data-center';
-import {
-    getRandomUserName,
-    register,
-    getVerificationCaptcha,
-    checkUserNameCanUse,
-    checkPhoneNumberCanUse
-} from 'data-center';
+import { getRandomUserName, register, getVerificationCaptcha } from 'data-center';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import type { ReturnData } from 'data-center/src/common';
 import {
     PhoneNumberInput,
     NicknameInput,
@@ -131,65 +124,19 @@ function Register() {
     //         setCountDownNumber(60);
     //     };
     // };
-    const formatErrorMessage = ({
-        isUsernameAccept,
-        isPhoneNumberAccept
-    }: {
-        isUsernameAccept: ReturnData<boolean>;
-        isPhoneNumberAccept: ReturnData<boolean>;
-    }) => {
-        const messageMap = {
-            username: {
-                canUse: true,
-                message: ''
-            },
-            phoneNumber: {
-                canUse: true,
-                message: ''
-            }
-        };
-
-        if (!isUsernameAccept.success || !isUsernameAccept.data) {
-            messageMap.username = {
-                canUse: false,
-                message: '此昵称已有人使用'
-            };
-        }
-        if (!isPhoneNumberAccept.success || !isPhoneNumberAccept.data) {
-            messageMap.phoneNumber = {
-                canUse: false,
-                message: '此號碼已有人使用'
-            };
-        }
-
-        if (!messageMap.username.canUse)
-            setError('username', { type: 'duplicate', message: '此昵称已有人使用' });
-        if (!messageMap.phoneNumber.canUse)
-            setError('mobileNumber', { type: 'duplicate', message: '此號碼已有人使用' });
-
-        return messageMap.username.canUse && messageMap.username.canUse;
-    };
 
     const onSubmit = async (data: RegisterRequest) => {
-        const [isUsernameAccept, isPhoneNumberAccept] = await Promise.all([
-            checkUserNameCanUse({ userName: data.username }),
-            checkPhoneNumberCanUse({ phoneNumber: data.mobileNumber })
-        ]);
-
-        const canSubmit = !formatErrorMessage({
-            isUsernameAccept,
-            isPhoneNumberAccept
-        });
-        if (!canSubmit) return;
-
         const res = await register({
             ...data,
             ...(inviteCode && { invitationCode: inviteCode })
         });
 
         if (!res.success) {
-            const errorMessage = res.error ? res.error : '注册失败，请确认资料无误';
-            setIsVisible(errorMessage, 'error');
+            if (res.error) {
+                return '注册失败，请确认资料无误';
+            }
+            const errorType = res.error.includes('手机号码') ? 'mobileNumber' : 'username';
+            setError(errorType, { type: 'duplicate', message: res.error });
             return;
         }
 
