@@ -353,31 +353,27 @@ export function PhoneNumberInput({
     const handleBlur = () => {
         setIsFocused(false);
     };
-
     return (
-        <>
-            <div
-                className={style.phoneNumber}
-                style={{
-                    borderBottom: `1px solid rgba(255, 255, 255, ${
-                        field.value || isFocused ? '1' : '0.3'
-                    })`
-                }}
-            >
-                <Input
-                    {...field}
-                    className={style.phoneInput}
-                    disableUnderline
-                    error={Boolean(error)}
-                    id="mobileNumber"
-                    onBlur={handleBlur}
-                    onFocus={handleFocus}
-                    placeholder="手机号码"
-                    type="number"
-                />
-            </div>
-            {error ? <div className={style.errorMessage}>! {error.message}</div> : null}
-        </>
+        <div
+            className={style.phoneNumber}
+            style={{
+                borderBottom: `1px solid rgba(255, 255, 255, ${
+                    field.value || isFocused ? '1' : '0.3'
+                })`
+            }}
+        >
+            <Input
+                {...field}
+                className={style.phoneInput}
+                disableUnderline
+                error={Boolean(error)}
+                id="mobileNumber"
+                onBlur={handleBlur}
+                onFocus={handleFocus}
+                placeholder="手机号码"
+                type="number"
+            />
+        </div>
     );
 }
 

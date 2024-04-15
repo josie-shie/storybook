@@ -47,7 +47,7 @@ type RegisterResult = z.infer<typeof RegisterResultSchema>;
 export interface RegisterRequest {
     countryCode: string;
     mobileNumber: string;
-    username: string;
+    userName: string;
     password: string;
     verificationCode: string;
     invitationCode?: string;
@@ -202,7 +202,7 @@ type UpdateMemberInfoResult = z.infer<typeof UpdateMemberInfoResultSchema>;
 export const register = async ({
     countryCode,
     mobileNumber,
-    username,
+    userName,
     password,
     verificationCode,
     invitationCode,
@@ -216,7 +216,7 @@ export const register = async ({
                     input: {
                         countryCode,
                         mobileNumber,
-                        username,
+                        userName,
                         password: btoa(password),
                         verificationCode,
                         invitationCode,

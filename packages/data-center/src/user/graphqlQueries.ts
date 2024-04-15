@@ -408,9 +408,9 @@ export const GET_MEMBER_NOTIFICATION_READ_STATUS = `
 `;
 
 export const GET_RANDOM_USERNAME = `
-    query getRandomUserName($input: GetRandomUserNameInput) {
+    query getRandomUserName($input: GetRandomUserNameInput!) {
         getRandomUserName(input: $input) {
             userName
         }
-    }
+}
 `;

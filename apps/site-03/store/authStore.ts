@@ -106,7 +106,7 @@ const initialState = (set: (updater: (state: AuthState) => Partial<AuthState>) =
             set(state => {
                 return {
                     register: {
-                        ...state.login,
+                        ...state.register,
                         verifyPhoto
                     }
                 };
