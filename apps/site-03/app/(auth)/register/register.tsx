@@ -78,9 +78,10 @@ function Register() {
 
     const changeRandomUsername = async () => {
         setIsRotating(true);
-        if (randomUserNameList.length && randomUserNameIdx < randomUserNameList.length) {
-            setValue('userName', randomUserNameList[randomUserNameIdx + 1]);
-            setRandomUserNameIdx(randomUserNameIdx + 1);
+        if (randomUserNameList.length && randomUserNameIdx < randomUserNameList.length - 1) {
+            const newIndex = randomUserNameIdx + 1;
+            setValue('userName', randomUserNameList[newIndex]);
+            setRandomUserNameIdx(newIndex);
         } else {
             const res = await getRandomUserName({ quantity: 100 });
             if (!res.success) throw Error();
