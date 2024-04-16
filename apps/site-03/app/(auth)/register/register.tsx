@@ -139,7 +139,7 @@ function Register() {
             if (res.error.includes('手机号码')) {
                 setError('mobileNumber', { type: 'duplicate', message: res.error });
                 return;
-            } else if (res.error.includes('暱稱')) {
+            } else if (res.error.includes('昵称')) {
                 setError('userName', { type: 'duplicate', message: res.error });
                 return;
             }
