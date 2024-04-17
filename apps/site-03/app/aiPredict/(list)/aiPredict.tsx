@@ -2,11 +2,14 @@
 import { Slick } from 'ui';
 import Footer from '@/components/footer/footer';
 import Header from '@/components/header/headerLogo';
+import { useUserStore } from '@/store/userStore';
 import style from './aiPredict.module.scss';
 import AiTodayMatches from './aiTodayMatches';
 import AiHistory from './aiHistory';
+import AiPredictDetail from './aiPredictDetail';
 
 function AiPredict() {
+    const aiPredictMatchId = useUserStore.use.aiPredictMatchId();
     const tabList = [
         {
             label: 'AI 今日赛事预测',
@@ -34,7 +37,11 @@ function AiPredict() {
                     tabs={tabList}
                 >
                     <div className={style.largeGap}>
-                        <AiTodayMatches />
+                        {aiPredictMatchId ? (
+                            <AiPredictDetail aiPredictMatchId={aiPredictMatchId} />
+                        ) : (
+                            <AiTodayMatches />
+                        )}
                     </div>
                     <div className={style.largeGap}>
                         <AiHistory />

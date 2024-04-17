@@ -1,9 +1,12 @@
 import Image from 'next/image';
 import { convertHandicap } from 'lib';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import type { MouseEvent } from 'react';
 import { useLiveContestStore } from '@/store/liveContestStore';
 import { useFormattedTime } from '@/hooks/useFormattedTime';
 import defaultTeamLogo from '@/app/football/[matchId]/img/defaultTeamLogo.png';
+import { useUserStore } from '@/store/userStore';
 import MasterIcon from '../img/master.svg';
 import AiIcon from '../img/aiButtom.svg';
 import { CompareOdds } from './compareOdds';
@@ -11,6 +14,8 @@ import { useGuessContestListStore } from './contestStore';
 import style from './gameCard.module.scss';
 
 function GameCard({ matchId }: { matchId: number }) {
+    const router = useRouter();
+    const setAiPredictMatchId = useUserStore.use.setAiPredictMatchId();
     const contestInfo = useGuessContestListStore.use.contestGuessInfo()[matchId];
     const globalStore = useLiveContestStore.use.contestInfo();
     const syncData = Object.hasOwnProperty.call(globalStore, matchId) ? globalStore[matchId] : {};
@@ -19,6 +24,12 @@ function GameCard({ matchId }: { matchId: number }) {
         timeStamp: contestInfo.matchTime,
         formattedString: 'HH:mm'
     });
+    const handelAiPredict = (e: MouseEvent<HTMLDivElement>, id: number) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setAiPredictMatchId(id);
+        router.push('./aiPredict');
+    };
 
     return (
         <section>
@@ -33,10 +44,13 @@ function GameCard({ matchId }: { matchId: number }) {
                         </span>
                     </div>
                     {contestInfo.hasAiPredict ? (
-                        <div className={style.aiTitle}>
-                            <Link href={`/aiPredict/${matchId}`}>
-                                <AiIcon />
-                            </Link>
+                        <div
+                            className={style.aiTitle}
+                            onClick={e => {
+                                handelAiPredict(e, contestInfo.matchId);
+                            }}
+                        >
+                            <AiIcon />
                         </div>
                     ) : null}
                 </div>
