@@ -128,6 +128,7 @@ function MatchItem({
 }
 
 function AiTodayMatches() {
+    const aiPredictMatchId = useUserStore.use.aiPredictMatchId();
     const isLogin = useUserStore.use.isLogin();
     const matchRefs = useRef<Record<number, React.RefObject<HTMLDivElement>>>({});
     const aiPredictList = useAiPredictStore.use.aiPredictList();
@@ -282,6 +283,10 @@ function AiTodayMatches() {
                 return new Error();
             }
             setAiPredictList(res.data);
+            if (aiPredictMatchId) {
+                const target = res.data.find(item => item.matchId === aiPredictMatchId);
+                if (target) void handleSelectMatch(target.id);
+            }
         };
         void getPredicativeAnalysisList();
     }, []);
