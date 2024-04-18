@@ -4,7 +4,7 @@ import * as yup from 'yup';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import type { RegisterRequest } from 'data-center';
-import { getRandomUserName, register, getVerificationCaptcha } from 'data-center';
+import { getRandomUserName, register } from 'data-center';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import {
@@ -14,13 +14,26 @@ import {
     Agreement,
     SubmitButton,
     CountryCodeInput,
-    VertifyCodeByImage,
+    // VertifyCodeByImage,
     TokenInput
 } from '@/app/(auth)/components/authComponent/authComponent';
 import { useUserStore } from '@/store/userStore';
 import { useNotificationStore } from '@/store/notificationStore';
 import { useAuthStore } from '@/store/authStore';
 import style from './register.module.scss';
+
+interface TurnstileMethods {
+    render: (
+        selector: string,
+        options: { sitekey: string; theme: string; callback: (token: string) => void }
+    ) => void;
+}
+
+declare global {
+    interface Window {
+        turnstile?: TurnstileMethods;
+    }
+}
 
 const schema = yup.object().shape({
     mobileNumber: yup
@@ -47,11 +60,11 @@ function Register() {
     const setIsDrawerOpen = useAuthStore.use.setIsDrawerOpen();
     const setIsVisible = useNotificationStore.use.setIsVisible();
     const removeAuthQuery = useAuthStore.use.removeAuthQuery();
-    const registerStore = useAuthStore.use.register();
     const [isRotating, setIsRotating] = useState(false);
     const [randomUserNameList, setRandomUserNameList] = useState<string[]>([]);
     const [randomUserNameIdx, setRandomUserNameIdx] = useState<number>(0);
-    const { verifyPhoto, setVerifyPhoto } = registerStore;
+    // const registerStore = useAuthStore.use.register();
+    // const { verifyPhoto, setVerifyPhoto } = registerStore;
 
     const {
         control,
@@ -68,7 +81,7 @@ function Register() {
             password: '',
             countryCode: '+86',
             verifyToken: '',
-            verificationCode: ''
+            verificationCode: '00'
         },
         mode: 'onChange'
     });
@@ -94,17 +107,17 @@ function Register() {
         }, 1000);
     };
 
-    const getCaptcha = async () => {
-        const res = await getVerificationCaptcha();
+    // const getCaptcha = async () => {
+    //     const res = await getVerificationCaptcha();
 
-        if (!res.success) {
-            const errorMessage = res.error ? res.error : '取得验证图形失败';
-            setIsVisible(errorMessage, 'error');
-            return;
-        }
-        setVerifyPhoto(res.data.captcha);
-        setValue('verifyToken', res.data.verifyToken);
-    };
+    //     if (!res.success) {
+    //         const errorMessage = res.error ? res.error : '取得验证图形失败';
+    //         setIsVisible(errorMessage, 'error');
+    //         return;
+    //     }
+    //     setVerifyPhoto(res.data.captcha);
+    //     setValue('verifyToken', res.data.verifyToken);
+    // };
 
     // const setCountDown = () => {
     //     let currentSeconds = countDownNumber;
@@ -160,11 +173,25 @@ function Register() {
         !password ||
         !userName ||
         !verificationCode ||
-        !verifyToken ||
-        !verifyPhoto;
+        !verifyToken; // || !verifyPhoto;
+
+    // useEffect(() => {
+    //     void getCaptcha();
+    // }, []);
 
     useEffect(() => {
-        void getCaptcha();
+        const _turnstileCb = () => {
+            if (window.turnstile) {
+                window.turnstile.render('#myWidget', {
+                    sitekey: '0x4AAAAAAAXX3mVYJPj3EcnA',
+                    theme: 'light',
+                    callback(token) {
+                        setValue('verifyToken', token);
+                    }
+                });
+            }
+        };
+        _turnstileCb();
     }, []);
 
     return (
@@ -232,7 +259,7 @@ function Register() {
                     )}
                 />
             </FormControl>
-            <FormControl fullWidth>
+            {/* <FormControl fullWidth>
                 <Controller
                     control={control}
                     name="verificationCode"
@@ -247,6 +274,9 @@ function Register() {
                         />
                     )}
                 />
+            </FormControl> */}
+            <FormControl fullWidth>
+                <div id="myWidget" style={{ width: '100%' }} />
             </FormControl>
             <TokenInput verifyToken={verifyToken} />
             <Agreement />
