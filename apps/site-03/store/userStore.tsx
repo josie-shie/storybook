@@ -21,7 +21,7 @@ interface UserState extends InitState {
     userInfoIsLoading: boolean;
     isVipUseAnalysis: boolean;
     aiPredictMatchId: number | null;
-    setAiPredictMatchId: (id: number) => void;
+    setAiPredictMatchId: (id: number | null) => void;
     setIsLogin: (isLogin: boolean) => void;
     setIsTradeListUnread: (isTradeListUnread: boolean) => void;
     setUserInfoIsLoading: (userInfoIsLoading: boolean) => void;
@@ -47,7 +47,7 @@ const initialState = (set: (updater: (state: UserState) => Partial<UserState>) =
     token: '',
     inviteCode: '',
     aiPredictMatchId: null,
-    setAiPredictMatchId: (aiPredictMatchId: number) => {
+    setAiPredictMatchId: (aiPredictMatchId: number | null) => {
         set(state => {
             return {
                 ...state,

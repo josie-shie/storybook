@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { usePathname } from 'next/navigation';
+import { useUserStore } from '@/store/userStore';
 import style from './footer.module.scss';
 import GameIcon from './img/game.svg';
 import GuessIcon from './img/guess.svg';
@@ -58,6 +59,7 @@ const CategoryList = [
 
 function FooterComponent() {
     const pathname = usePathname();
+    const setAiPredictMatchId = useUserStore.use.setAiPredictMatchId();
 
     const [activeItem, setActiveItem] = useState(pathname);
 
@@ -70,6 +72,9 @@ function FooterComponent() {
     };
 
     const updateActive = (path: string) => {
+        if (path === '/aiPredict') {
+            setAiPredictMatchId(null);
+        }
         setActiveItem(path);
     };
 
