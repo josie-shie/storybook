@@ -81,6 +81,10 @@ async function RootLayout({ children }: { children: ReactNode }) {
     return (
         <html lang="zh-Hans">
             <head>
+                <Script
+                    src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=_turnstileCb"
+                    strategy="afterInteractive"
+                />
                 <meta content="yes" name="apple-mobile-web-app-capable" />
                 <link href="/logo/launch-192.png" rel="apple-touch-icon" />
                 <link

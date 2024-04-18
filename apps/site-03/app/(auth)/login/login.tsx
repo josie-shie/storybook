@@ -4,11 +4,11 @@ import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, FormControl } from '@mui/material';
 import type { LoginRequest } from 'data-center';
-import { getVerificationCaptcha, login, getMemberInfo } from 'data-center';
+import { login, getMemberInfo } from 'data-center';
 import { useEffect } from 'react';
 import { initWebSocket, messageService, mqttService } from 'lib';
 import {
-    VertifyCodeByImage,
+    // VertifyCodeByImage,
     Agreement,
     SubmitButton,
     CountryCodeInput,
@@ -39,9 +39,9 @@ function Login() {
     const setToken = useUserStore.use.setToken();
     const setUserInfo = useUserStore.use.setUserInfo();
     const setIsLogin = useUserStore.use.setIsLogin();
-    const loginStore = useAuthStore.use.login();
     const setIsDrawerOpen = useAuthStore.use.setIsDrawerOpen();
-    const { verifyPhoto, setVerifyPhoto } = loginStore;
+    // const loginStore = useAuthStore.use.login();
+    // const { verifyPhoto, setVerifyPhoto } = loginStore;
     const setIsVisible = useNotificationStore.use.setIsVisible();
     const setAuthQuery = useUserStore.use.setAuthQuery();
     const removeAuthQuery = useAuthStore.use.removeAuthQuery();
@@ -57,7 +57,7 @@ function Login() {
         defaultValues: {
             mobileNumber: '',
             password: '',
-            verificationCode: '',
+            verificationCode: '00',
             countryCode: '+86',
             verifyToken: ''
         },
@@ -107,26 +107,40 @@ function Login() {
         void getUserInfo();
     };
 
-    const getCaptcha = async () => {
-        const res = await getVerificationCaptcha();
+    // const getCaptcha = async () => {
+    //     const res = await getVerificationCaptcha();
 
-        if (!res.success) {
-            const errorMessage = res.error ? res.error : '取得验证图形失败';
-            setIsVisible(errorMessage, 'error');
-            return;
-        }
+    //     if (!res.success) {
+    //         const errorMessage = res.error ? res.error : '取得验证图形失败';
+    //         setIsVisible(errorMessage, 'error');
+    //         return;
+    //     }
 
-        setVerifyPhoto(res.data.captcha);
-        setValue('verifyToken', res.data.verifyToken);
-    };
+    //     setVerifyPhoto(res.data.captcha);
+    //     setValue('verifyToken', res.data.verifyToken);
+    // };
+
+    // useEffect(() => {
+    //     void getCaptcha();
+    // }, []);
 
     useEffect(() => {
-        void getCaptcha();
+        const _turnstileCb = () => {
+            if (window.turnstile) {
+                window.turnstile.render('#myWidget', {
+                    sitekey: '0x4AAAAAAAXX3mVYJPj3EcnA',
+                    theme: 'light',
+                    callback(token) {
+                        setValue('verifyToken', token);
+                    }
+                });
+            }
+        };
+        _turnstileCb();
     }, []);
 
     const isSendVerificationCodeDisable = !countryCode || !mobileNumber || !password;
-    const isLoginDisable =
-        isSendVerificationCodeDisable || !verificationCode || !verifyPhoto || !verifyToken;
+    const isLoginDisable = isSendVerificationCodeDisable || !verificationCode || !verifyToken; //|| !verifyPhoto ;
 
     return (
         <div className={style.login}>
@@ -163,7 +177,7 @@ function Login() {
                         )}
                     />
                 </FormControl>
-                <FormControl fullWidth>
+                {/* <FormControl fullWidth>
                     <Controller
                         control={control}
                         name="verificationCode"
@@ -178,7 +192,10 @@ function Login() {
                             />
                         )}
                     />
-                </FormControl>
+                </FormControl> */}
+                {/* <FormControl fullWidth> */}
+                <div id="myWidget" style={{ width: '100%' }} />
+                {/* </FormControl> */}
                 <TokenInput verifyToken={verifyToken} />
                 <div className={style.agreement}>
                     <Agreement />
