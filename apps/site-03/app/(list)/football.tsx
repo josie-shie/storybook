@@ -69,7 +69,7 @@ function DefaultBanner() {
 
     return (
         <Link
-            className={style.banner}
+            className={style.baseBanner}
             href={randomMap?.link || defaultConfig.link}
             suppressHydrationWarning
         >
