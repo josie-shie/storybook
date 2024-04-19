@@ -11,6 +11,7 @@ type Styling = 'text' | 'underline' | 'button';
 type TabsType = { label: string; href?: string; status: string | null }[];
 interface SlickProps {
     autoHeight?: boolean;
+    isSliderMove?: boolean;
     fixedTabs?: boolean;
     tabs: TabsType;
     children: ReactNode;
@@ -132,6 +133,7 @@ function Slick({
     styling = 'button',
     initialSlide = 0,
     className,
+    isSliderMove = true,
     onSlickEnd,
     resetHeightKey = 'slickDefault'
 }: SlickProps) {
@@ -198,6 +200,7 @@ function Slick({
                     transitionEnd(swiper.activeIndex, swiper.previousIndex);
                 }}
                 onSliderMove={swiper => {
+                    if (!isSliderMove) return;
                     updateTabPosition(swiper);
                 }}
                 onSwiper={swiper => {

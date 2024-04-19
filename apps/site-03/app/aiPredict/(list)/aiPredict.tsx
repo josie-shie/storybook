@@ -26,6 +26,7 @@ function AiPredict() {
                     autoHeight
                     className={style.slick}
                     fixedTabs
+                    isSliderMove={false}
                     onSlickEnd={() => {
                         return null;
                     }}
