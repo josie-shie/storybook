@@ -83,10 +83,31 @@
 }
 
 .banner {
+    border-top: 1px solid #f3f3f3;
+    aspect-ratio: 6 / 1;
+    width: 100%;
+    padding: 0 12px;
+}
+
+.baseBanner {
+    font-size: 0;
     padding: 0 12px;
     border-top: 1px solid #f3f3f3;
     aspect-ratio: 6 / 1;
     width: 100%;
+    display: inline-block;
+
+    .banner {
+        border-radius: 8px;
+        width: calc(100% - 24px);
+        aspect-ratio: 366 / 61;
+    }
+
+    img {
+        width: 100%;
+        height: auto;
+        border-radius: 8px;
+    }
 }
 
 .contestList {
