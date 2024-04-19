@@ -81,7 +81,7 @@ function Register() {
             password: '',
             countryCode: '+86',
             verifyToken: '',
-            verificationCode: '00'
+            verificationCode: '000000'
         },
         mode: 'onChange'
     });

@@ -57,7 +57,7 @@ function Login() {
         defaultValues: {
             mobileNumber: '',
             password: '',
-            verificationCode: '00',
+            verificationCode: '000000',
             countryCode: '+86',
             verifyToken: ''
         },
