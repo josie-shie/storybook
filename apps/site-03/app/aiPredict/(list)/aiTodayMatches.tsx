@@ -245,7 +245,7 @@ function AiTodayMatches() {
                 updatedMatches.set(purchaseId, predicativeAnalysisDetail.data);
                 return updatedMatches;
             });
-        }, 2500);
+        }, 1500);
     };
 
     useEffect(() => {
