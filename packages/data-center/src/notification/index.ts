@@ -4,56 +4,79 @@ import { handleApiError, throwErrorMessage } from '../common';
 import type { ReturnData, FetchResultData } from '../common';
 import {
     GET_MAIL_MEMBER_LIST_QUERY,
-    GET_MAIL_MEMBER_QUERY,
-    DELETE_MAIL_MEMBER_MUTATION
+    DELETE_MAIL_MEMBER_MUTATION,
+    UPDATE_MAIL_READ_AT_MUTATION
 } from './graphqlQueries';
 
 const Tag = z.object({
-    id: z.number(),
+    tagId: z.number(),
     tagName: z.string(),
-    colorCode: z.string()
+    tagColor: z.string()
 });
-
-const GetMailMemberSchema = z.object({
-    mailMemberId: z.number(),
+const Message = z.object({
     title: z.string(),
     content: z.string(),
     coverImage: z.string(),
     contentImage: z.string(),
-    ctaButtonName: z.string(),
-    ctaLink: z.string(),
-    isRead: z.boolean(),
-    createdAt: z.number(),
-    tag: Tag,
     senderName: z.string(),
-    senderAvatar: z.string()
+    senderAvatar: z.string(),
+    sentAt: z.number()
+});
+const Cta = z.object({
+    label: z.string(),
+    url: z.string()
 });
 
-const GetMailMemberListSchema = z.array(GetMailMemberSchema);
+const GetMailMemberSchema = z.object({
+    notifyId: z.string(),
+    memberId: z.number(),
+    eventTypeId: z.number(),
+    mrlId: z.number(),
+    tag: Tag,
+    message: Message,
+    cta: Cta,
+    readAt: z.number(),
+    notifyAt: z.number()
+});
+
+const GetMailMemberListSchema = z.object({
+    list: z.array(GetMailMemberSchema),
+    pagination: z.object({
+        pageCount: z.number(),
+        totalCount: z.number()
+    })
+});
 export type GetMailMemberResponse = z.infer<typeof GetMailMemberSchema>;
 
 const GetMailMemberListResultSchema = z.object({
-    getMailMemberList: z.object({
-        mailMemberList: z.array(GetMailMemberSchema)
+    messageCenterQuery: z.object({
+        GetMemberNotifyMessageList: z.object({
+            list: z.array(GetMailMemberSchema),
+            pagination: z.object({
+                pageCount: z.number(),
+                totalCount: z.number()
+            })
+        })
     })
 });
 
 type GetMailMemberListResult = z.infer<typeof GetMailMemberListResultSchema>;
 
 export type GetMailMemberListResponse = z.infer<typeof GetMailMemberListSchema>;
-
-export interface GetMailMemberRequest {
-    mailMemberId: number;
+export interface GetMailMemberListRequest {
+    eventTypeId: number[];
+    pagination: {
+        currentPage: number;
+        perPage: number;
+    };
 }
-
-const GetMailMemberResultSchema = z.object({
-    getMailMember: GetMailMemberSchema
-});
-
-type GetMailMemberResult = z.infer<typeof GetMailMemberResultSchema>;
 
 export interface DeleteMailMemberRequest {
     mailMemberIds: number[];
+}
+
+export interface UpdateMailReadAtRequest {
+    id: number[];
 }
 
 /**
@@ -61,12 +84,17 @@ export interface DeleteMailMemberRequest {
  * - returns : {@link GetMailMemberListResponse}
  * - {@link GetMailMemberResponse}
  */
-export const getMailMemberList = async (): Promise<ReturnData<GetMailMemberListResponse>> => {
+export const getMailMemberList = async (
+    input: GetMailMemberListRequest
+): Promise<ReturnData<GetMailMemberListResponse>> => {
     try {
         const { data, errors } = await fetcher<FetchResultData<GetMailMemberListResult>, unknown>(
             {
                 data: {
-                    query: GET_MAIL_MEMBER_LIST_QUERY
+                    query: GET_MAIL_MEMBER_LIST_QUERY,
+                    variables: {
+                        input
+                    }
                 }
             },
             { cache: 'no-store' }
@@ -77,42 +105,10 @@ export const getMailMemberList = async (): Promise<ReturnData<GetMailMemberListR
 
         return {
             success: true,
-            data: data.getMailMemberList.mailMemberList
-        };
-    } catch (error) {
-        return handleApiError(error);
-    }
-};
-
-/**
- * 取得站內信
- * - params : {@link GetMailMemberRequest}
- * - returns : {@link GetMailMemberResponse}
- */
-export const getMailMember = async ({
-    mailMemberId
-}: GetMailMemberRequest): Promise<ReturnData<GetMailMemberResponse>> => {
-    try {
-        const { data, errors } = await fetcher<FetchResultData<GetMailMemberResult>, unknown>(
-            {
-                data: {
-                    query: GET_MAIL_MEMBER_QUERY,
-                    variables: {
-                        input: {
-                            mailMemberId
-                        }
-                    }
-                }
-            },
-            { cache: 'no-store' }
-        );
-
-        throwErrorMessage(errors);
-        GetMailMemberResultSchema.parse(data);
-
-        return {
-            success: true,
-            data: data.getMailMember
+            data: {
+                list: data.messageCenterQuery.GetMemberNotifyMessageList.list,
+                pagination: data.messageCenterQuery.GetMemberNotifyMessageList.pagination
+            }
         };
     } catch (error) {
         return handleApiError(error);
@@ -134,6 +130,36 @@ export const deleteMailMember = async ({
                     variables: {
                         input: {
                             mailMemberIds
+                        }
+                    }
+                }
+            },
+            { cache: 'no-store' }
+        );
+
+        throwErrorMessage(errors);
+
+        return { success: true, data };
+    } catch (error) {
+        return handleApiError(error);
+    }
+};
+
+/**
+ * 刪除站內信
+ * - params : {@link DeleteMailMemberRequest}
+ */
+export const updateMailReadAtRequest = async ({
+    id
+}: UpdateMailReadAtRequest): Promise<ReturnData<null>> => {
+    try {
+        const { data, errors } = await fetcher<FetchResultData<null>, unknown>(
+            {
+                data: {
+                    query: UPDATE_MAIL_READ_AT_MUTATION,
+                    variables: {
+                        input: {
+                            id
                         }
                     }
                 }

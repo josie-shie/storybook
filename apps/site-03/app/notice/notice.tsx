@@ -18,23 +18,29 @@ function MailList() {
 
     useEffect(() => {
         const setMailList = useNoticeStore.getState().setMailList;
-        const getMailList = async () => {
-            const res = await getMailMemberList();
+        const getMailList = async (currentPage: number) => {
+            const res = await getMailMemberList({
+                eventTypeId: [1, 2, 3, 4, 5],
+                pagination: {
+                    currentPage,
+                    perPage: 10
+                }
+            });
             if (!res.success) {
                 console.error(res.error);
                 return;
             }
-            setMailList(res.data);
-            setIsNoData(res.data.length === 0);
+            setMailList(res.data.list);
+            setIsNoData(res.data.list.length === 0);
         };
 
         const refetchMailList = async (notify?: NotifyMessage) => {
             if (notify?.notifyType === 3) {
-                await getMailList();
+                await getMailList(1);
             }
         };
 
-        void getMailList();
+        void getMailList(1);
         mqttService.getNotifyMessage(refetchMailList);
     }, []);
 
@@ -87,7 +93,7 @@ function MailList() {
             ) : (
                 <ul className={`${style.noticeList} ${editStatus ? style.isEdit : ''}`}>
                     {filteredMailList.map(mail => (
-                        <MailCard key={mail.mailMemberId} mailData={mail} />
+                        <MailCard key={mail.notifyId} mailData={mail} />
                     ))}
                 </ul>
             )}

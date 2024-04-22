@@ -1,15 +1,15 @@
 import { initStore } from 'lib';
 import type { StoreWithSelectors, MessageRoomType } from 'lib';
-import type { GetMailMemberListResponse, GetMailMemberResponse } from 'data-center';
+import type { GetMailMemberResponse } from 'data-center';
 
 interface Tags {
-    id: number;
+    tagId: number;
     tagName: string;
-    colorCode: string;
+    tagColor: string;
 }
 
 interface InitState {
-    mailList: GetMailMemberListResponse;
+    mailList: GetMailMemberResponse[];
 }
 
 interface NoticeInfo extends InitState {
@@ -19,7 +19,7 @@ interface NoticeInfo extends InitState {
     selectedMailData: GetMailMemberResponse;
     selectMailTag: Tags;
     selectedChatData: MessageRoomType;
-    setMailList: (data: GetMailMemberListResponse) => void;
+    setMailList: (data: GetMailMemberResponse[]) => void;
     setChatList: (data: MessageRoomType[]) => void;
     setEditStatus: (editStatus: boolean) => void;
     setSelected: (selectId: number | string, action: string) => void;
@@ -42,7 +42,7 @@ const initialState = (
     selectedMailData: {} as GetMailMemberResponse,
     selectMailTag: {} as Tags,
     selectedChatData: {} as MessageRoomType,
-    setMailList: (mailList: GetMailMemberListResponse) => {
+    setMailList: (mailList: GetMailMemberResponse[]) => {
         set(() => ({ mailList }));
     },
     setChatList: (chatList: MessageRoomType[]) => {
@@ -67,15 +67,15 @@ const initialState = (
                     newSelected.clear();
                     break;
                 case 'allMail':
-                    for (const notice of state.mailList) newSelected.add(notice.mailMemberId);
+                    for (const notice of state.mailList) newSelected.add(notice.notifyId);
                     break;
                 case 'allChat':
                     for (const chat of state.chatList) newSelected.add(chat.roomId);
                     break;
                 case 'counterMail':
                     for (const notice of state.mailList) {
-                        if (!newSelected.has(notice.mailMemberId)) {
-                            scratchPool.add(notice.mailMemberId);
+                        if (!newSelected.has(notice.notifyId)) {
+                            scratchPool.add(notice.notifyId);
                         }
                     }
                     return { selected: scratchPool };
