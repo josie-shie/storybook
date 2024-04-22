@@ -14,13 +14,14 @@ import { timestampToString } from 'lib';
 import { useUserStore } from '@/store/userStore';
 import ConfirmPayDrawer from '@/components/confirmPayDrawer/confirmPayDrawer';
 import TeamLogo from '@/components/teamLogo/teamLogo';
-import Win from '@/public/resultIcon/bigWin.svg';
-import Draw from '@/public/resultIcon/bigDraw.svg';
 import Ai from '../components/analyzeContent/ai';
 import Analyze from '../components/analyzeContent/analyze';
 import Cornor from '../components/analyzeContent/cornor';
 import { useAiPredictStore } from '../aiPredictStore';
 import Tutorial from '../components/turorial/turorial';
+import Draw from './img/draw.svg';
+import HomeWin from './img/homeWin.svg';
+import AwyayWin from './img/awayWin.svg';
 import AiAvatarSmall from './img/aiAvatarSmall.svg';
 import style from './aiTodayMatches.module.scss';
 import AiAvatar from './img/aiAvatar.svg';
@@ -366,7 +367,7 @@ function AiTodayMatches() {
                                     }`}
                                 >
                                     {isShow && match.predictMatchResult === 1 ? (
-                                        <Win className={style.icon} />
+                                        <HomeWin className={style.icon} />
                                     ) : null}
                                     <TeamLogo
                                         alt={match.homeChs}
@@ -389,7 +390,7 @@ function AiTodayMatches() {
                                     }`}
                                 >
                                     {isShow && match.predictMatchResult === 2 ? (
-                                        <Win className={style.icon} />
+                                        <AwyayWin className={style.icon} />
                                     ) : null}
                                     <TeamLogo
                                         alt={match.awayChs}

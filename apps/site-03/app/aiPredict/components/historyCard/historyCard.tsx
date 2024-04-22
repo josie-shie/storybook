@@ -2,7 +2,6 @@ import Image from 'next/image';
 import type { GetPredicativeAnalysisMatch } from 'data-center';
 import defaultTeamLogo from '@/app/football/[matchId]/img/defaultTeamLogo.png';
 import { useFormattedTime } from '@/hooks/useFormattedTime';
-import Draw from '../../(list)/img/aiDraw.svg';
 import Hit from '../../(list)/img/aiHit.svg';
 import Miss from '../../(list)/img/aiMiss.svg';
 import style from './historyCard.module.scss';
@@ -34,11 +33,11 @@ function HistoryDisplayContent({ item }: { item: GetPredicativeAnalysisMatch }) 
         if (predictMatchResult === 1) {
             if (realMatchResult === 1) return <Hit />;
             if (realMatchResult === 2) return <Miss />;
-            if (realMatchResult === 3) return <Draw />;
+            if (realMatchResult === 3) return <Miss />;
         } else if (predictMatchResult === 2) {
             if (realMatchResult === 1) return <Miss />;
             if (realMatchResult === 2) return <Hit />;
-            if (realMatchResult === 3) return <Draw />;
+            if (realMatchResult === 3) return <Miss />;
         }
     };
 
