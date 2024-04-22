@@ -23,10 +23,10 @@ function AiPredict() {
             <Header />
             <div className={style.aiPredict}>
                 <Slick
+                    allowTouchMove={false}
                     autoHeight
                     className={style.slick}
                     fixedTabs
-                    isSliderMove={false}
                     onSlickEnd={() => {
                         return null;
                     }}
