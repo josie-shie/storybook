@@ -15,6 +15,21 @@
     }
 }
 
+.loadMore {
+    display: flex;
+    justify-content: center;
+}
+
+.listEnd {
+    text-align: center;
+
+    p {
+        color: #bfbfbf;
+        font-size: 12px;
+        padding: 16px 0;
+    }
+}
+
 .typeList {
     display: flex;
     align-items: center;
