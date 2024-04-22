@@ -122,7 +122,7 @@ function MatchItem({
                     {match.awayChs}
                 </span>
             </div>
-            <div className={style.lock}>{match.purchaseCount}人解鎖</div>
+            <div className={style.lock}>{match.purchaseCount}人解锁</div>
         </div>
     );
 }
@@ -476,8 +476,8 @@ function AiTodayMatches() {
                     setIsOpenPayDrawer(true);
                 }}
                 onPay={onPurchase}
-                price={80}
-                title="获得智能盘路分析？"
+                price={30}
+                title="查看本场预测？"
             />
         </>
     );
