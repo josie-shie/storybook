@@ -31,6 +31,5 @@
         "tsconfig": "workspace:*",
         "turbo": "latest"
     },
-    "packageManager": "pnpm@9.0.4",
-    "package-manager-strict": false
+    "packageManager": "pnpm@9.0.5"
 }
