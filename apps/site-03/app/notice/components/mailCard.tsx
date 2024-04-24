@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Checkbox from '@mui/material/Checkbox';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
-import { getMailMember } from 'data-center';
+import { updateMailReadAtRequest } from 'data-center';
 import { timestampToString } from 'lib';
 import type { GetMailMemberResponse } from 'data-center';
 import { useMessageStore } from '@/store/messageStore';
@@ -18,19 +18,18 @@ function MailCard({ mailData }: { mailData: GetMailMemberResponse }) {
     const selected = useNoticeStore.use.selected();
     const setSelected = useNoticeStore.use.setSelected();
     const readMailMessage = useMessageStore.use.readMailMessage();
-    const [isRead, setIsRead] = useState(mailData.isRead);
+    const [isRead, setIsRead] = useState(mailData.readAt === 0);
 
     const handleMailInfo = () => {
         setSelectedMailData(mailData);
         setSelectMailTag(mailData.tag);
-        if (!mailData.isRead) {
+        if (!mailData.readAt) {
             void readMail();
             readMailMessage();
         }
     };
-
     const readMail = async () => {
-        const res = await getMailMember({ mailMemberId: mailData.mailMemberId });
+        const res = await updateMailReadAtRequest({ id: [mailData.mrlId] });
         if (!res.success) {
             console.error(res.error);
         }
@@ -38,10 +37,10 @@ function MailCard({ mailData }: { mailData: GetMailMemberResponse }) {
     };
 
     const handleChange = () => {
-        if (selected.has(mailData.mailMemberId)) {
-            setSelected(mailData.mailMemberId, 'delete');
+        if (selected.has(mailData.notifyId)) {
+            setSelected(mailData.notifyId, 'delete');
         } else {
-            setSelected(mailData.mailMemberId, 'add');
+            setSelected(mailData.notifyId, 'add');
         }
     };
 
@@ -50,7 +49,7 @@ function MailCard({ mailData }: { mailData: GetMailMemberResponse }) {
             className={`${style.mailCard}  ${editStatus && style.isEdit} ${isRead && style.isRead}`}
         >
             <Checkbox
-                checked={selected.has(mailData.mailMemberId)}
+                checked={selected.has(mailData.notifyId)}
                 checkedIcon={<CheckCircleOutlineIcon />}
                 className={style.check}
                 icon={<RadioButtonUncheckedIcon />}
@@ -58,24 +57,24 @@ function MailCard({ mailData }: { mailData: GetMailMemberResponse }) {
             />
             <div className={style.card} onClick={handleMailInfo}>
                 <div className={style.topBar}>
-                    <div className={style.tag} style={{ background: mailData.tag.colorCode }}>
+                    <div className={style.tag} style={{ background: mailData.tag.tagColor }}>
                         {mailData.tag.tagName || '站內信'}
                     </div>
                     <p className={style.date}>
-                        {timestampToString(mailData.createdAt, 'YYYY-M-DD HH:mm')}
+                        {timestampToString(mailData.notifyAt, 'YYYY-M-DD HH:mm')}
                     </p>
                 </div>
-                <h6 className={style.title}>{mailData.title}</h6>
+                <h6 className={style.title}>{mailData.message.title}</h6>
                 <div className={style.bottomBar}>
-                    <p className={style.content}>{mailData.content}</p>
+                    <p className={style.content}>{mailData.message.content}</p>
                 </div>
-                {mailData.coverImage ? (
+                {mailData.message.coverImage ? (
                     <div className={style.coverImage}>
                         <Image
                             alt="cover"
-                            layout="responsive"
                             height={180}
-                            src={mailData.coverImage}
+                            layout="responsive"
+                            src={mailData.message.coverImage}
                             width={342}
                         />
                     </div>

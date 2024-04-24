@@ -1,47 +1,38 @@
 export const GET_MAIL_MEMBER_LIST_QUERY = `
-    query getMailMemberList {
-        getMailMemberList {
-            mailMemberList {
-                mailMemberId
-                title
-                content
-                coverImage
-                contentImage
-                ctaButtonName
-                ctaLink
-                isRead
-                createdAt
-                tag {
-                    id
-                    tagName
-                    colorCode
+    query getMailMember($input: GetNotifyMessageListRequest)  {
+        messageCenterQuery {
+            GetMemberNotifyMessageList(input: $input ) {
+                list {
+                    notifyId
+                    memberId
+                    eventTypeId
+                    mrlId
+                    tag {
+                        tagId
+                        tagName
+                        tagColor
+                    } 
+                    message {
+                        title
+                        content
+                        coverImage
+                        contentImage
+                        senderName
+                        senderAvatar
+                        sentAt
+                    } 
+                    cta {
+                        label
+                        url
+                    } 
+                    readAt
+                    notifyAt
                 }
-                senderName
-                senderAvatar
+                pagination {
+                    pageCount
+                    totalCount
+                }
             }
-        }
-    }
-`;
-
-export const GET_MAIL_MEMBER_QUERY = `
-    query getMailMember($input: GetMailMemberInput) {
-        getMailMember(input: $input) {
-            mailMemberId
-            title
-            content
-            coverImage
-            contentImage
-            ctaButtonName
-            ctaLink
-            isRead
-            createdAt
-            tag {
-                id
-                tagName
-                colorCode
-            }
-            senderName
-            senderAvatar
         }
     }
 `;
@@ -49,5 +40,15 @@ export const GET_MAIL_MEMBER_QUERY = `
 export const DELETE_MAIL_MEMBER_MUTATION = `
     mutation deleteMailMember($input: DeleteMailMemberInput!) {
         deleteMailMember(input: $input)
+    }
+`;
+
+export const UPDATE_MAIL_READ_AT_MUTATION = `
+    mutation updateMessageReadAt($input: UpdateMessageReadAtInput!){
+        messageCenterMutation {
+                updateMessageReadAt(input: $input) {
+                responseCode
+            }
+        }
     }
 `;

@@ -34,11 +34,11 @@ function EditBar() {
             if (res.success) {
                 setIsVisible('刪除成功！', 'success');
                 setEditStatus(false);
-                const newList = mailList.filter(notice => !selected.has(notice.mailMemberId));
+                const newList = mailList.filter(notice => !selected.has(notice.notifyId));
                 const unreadMessageNotify = useMessageStore.getState().unreadMessageNotify;
 
                 const unReadCount = newList.reduce((previousValue, currentValue) => {
-                    if (!currentValue.isRead) {
+                    if (currentValue.readAt === 0) {
                         return previousValue + 1;
                     }
                     return previousValue;

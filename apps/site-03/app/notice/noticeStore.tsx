@@ -3,13 +3,21 @@ import type { StoreWithSelectors, MessageRoomType } from 'lib';
 import type { GetMailMemberListResponse, GetMailMemberResponse } from 'data-center';
 
 interface Tags {
-    id: number;
+    tagId: number;
     tagName: string;
-    colorCode: string;
+    tagColor: string;
+}
+
+export interface InitMailData {
+    全部: GetMailMemberListResponse;
+    系统通知: GetMailMemberListResponse;
+    交易明细: GetMailMemberListResponse;
+    最新活动: GetMailMemberListResponse;
 }
 
 interface InitState {
-    mailList: GetMailMemberListResponse;
+    mailList: GetMailMemberResponse[];
+    initMailData: InitMailData;
 }
 
 interface NoticeInfo extends InitState {
@@ -19,7 +27,8 @@ interface NoticeInfo extends InitState {
     selectedMailData: GetMailMemberResponse;
     selectMailTag: Tags;
     selectedChatData: MessageRoomType;
-    setMailList: (data: GetMailMemberListResponse) => void;
+    setMailList: (data: GetMailMemberResponse[]) => void;
+    setInitMailData: (data: InitMailData) => void;
     setChatList: (data: MessageRoomType[]) => void;
     setEditStatus: (editStatus: boolean) => void;
     setSelected: (selectId: number | string, action: string) => void;
@@ -35,6 +44,7 @@ let useNoticeStore: StoreWithSelectors<NoticeInfo>;
 const initialState = (
     set: (updater: (state: NoticeInfo) => Partial<NoticeInfo>) => void
 ): NoticeInfo => ({
+    initMailData: {} as InitMailData,
     mailList: [],
     chatList: [],
     editStatus: false,
@@ -42,7 +52,10 @@ const initialState = (
     selectedMailData: {} as GetMailMemberResponse,
     selectMailTag: {} as Tags,
     selectedChatData: {} as MessageRoomType,
-    setMailList: (mailList: GetMailMemberListResponse) => {
+    setInitMailData: (initMailData: InitMailData) => {
+        set(() => ({ initMailData }));
+    },
+    setMailList: (mailList: GetMailMemberResponse[]) => {
         set(() => ({ mailList }));
     },
     setChatList: (chatList: MessageRoomType[]) => {
@@ -67,15 +80,15 @@ const initialState = (
                     newSelected.clear();
                     break;
                 case 'allMail':
-                    for (const notice of state.mailList) newSelected.add(notice.mailMemberId);
+                    for (const notice of state.mailList) newSelected.add(notice.notifyId);
                     break;
                 case 'allChat':
                     for (const chat of state.chatList) newSelected.add(chat.roomId);
                     break;
                 case 'counterMail':
                     for (const notice of state.mailList) {
-                        if (!newSelected.has(notice.mailMemberId)) {
-                            scratchPool.add(notice.mailMemberId);
+                        if (!newSelected.has(notice.notifyId)) {
+                            scratchPool.add(notice.notifyId);
                         }
                     }
                     return { selected: scratchPool };
