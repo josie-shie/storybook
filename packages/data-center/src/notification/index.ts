@@ -146,15 +146,33 @@ export const deleteMailMember = async ({
     }
 };
 
+export interface UpdateMailReadAtRequest {
+    id: number[];
+}
+
+export interface UpdateMailReadAtResponse {
+    responseCode: number;
+}
+
+const UpdateMailReadAtSchema = z.object({
+    messageCenterMutation: z.object({
+        updateMessageReadAt: z.object({
+            responseCode: z.number()
+        })
+    })
+});
+
+type UpdateMailReadAtResult = z.infer<typeof UpdateMailReadAtSchema>;
 /**
  * 更新站內信閱讀狀態
- * - params : {@link DeleteMailMemberRequest}
+ * - params : {@link UpdateMailReadAtRequest}
+ * - returns : {@link UpdateMailReadAtResult}
  */
-export const updateMailReadAtRequest = async ({
+export const updateMailReadAt = async ({
     id
-}: UpdateMailReadAtRequest): Promise<ReturnData<null>> => {
+}: UpdateMailReadAtRequest): Promise<ReturnData<UpdateMailReadAtResponse>> => {
     try {
-        const { data, errors } = await fetcher<FetchResultData<null>, unknown>(
+        const { data, errors } = await fetcher<FetchResultData<UpdateMailReadAtResult>, unknown>(
             {
                 data: {
                     query: UPDATE_MAIL_READ_AT_MUTATION,
@@ -170,7 +188,7 @@ export const updateMailReadAtRequest = async ({
 
         throwErrorMessage(errors);
 
-        return { success: true, data };
+        return { success: true, data: data.messageCenterMutation.updateMessageReadAt };
     } catch (error) {
         return handleApiError(error);
     }

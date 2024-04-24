@@ -44,7 +44,7 @@ export const DELETE_MAIL_MEMBER_MUTATION = `
 `;
 
 export const UPDATE_MAIL_READ_AT_MUTATION = `
-    mutation updateMessageReadAt($input: UpdateMessageReadAt!){
+    mutation updateMessageReadAt($input: UpdateMessageReadAtInput!){
         messageCenterMutation {
                 updateMessageReadAt(input: $input) {
                 responseCode

@@ -5,6 +5,7 @@ import Drawer from '@mui/material/Drawer';
 import Image from 'next/image';
 import Link from 'next/link';
 import { timestampToString } from 'lib';
+import { updateMailReadAt } from 'data-center';
 import { useNoticeStore } from '../noticeStore';
 import backLeftArrowImg from '../img/backLeftArrow.png';
 import edit from '../img/edit.png';
@@ -37,9 +38,19 @@ function MailInfo() {
     const selectedMailData = useNoticeStore.use.selectedMailData();
     const selectMailTag = useNoticeStore.use.selectMailTag();
 
+    const readMail = async () => {
+        if (selectedMailData.mrlId) {
+            const res = await updateMailReadAt({ id: [selectedMailData.mrlId] });
+            if (!res.success) {
+                return new Error();
+            }
+        }
+    };
+
     useEffect(() => {
         if (selectedMailData.notifyId) {
             setInfoStatus(true);
+            void readMail();
         } else {
             setInfoStatus(false);
         }
@@ -48,7 +59,7 @@ function MailInfo() {
     if (Object.keys(selectedMailData).length === 0) {
         return null;
     }
-    const showCta = selectedMailData.cta.label || selectedMailData.cta.url; // 簡化 showCta 的條件
+    const showCta = selectedMailData.cta.label || selectedMailData.cta.url;
 
     return (
         <div className={style.mailInfo}>
