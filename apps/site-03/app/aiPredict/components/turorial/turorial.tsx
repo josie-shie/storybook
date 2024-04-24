@@ -2,7 +2,7 @@
 import { Dialog } from '@mui/material';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import Win from '@/public/resultIcon/bigWin.svg';
+import Win from '../../(list)/img/homeWin.svg';
 import Close from '../../(list)/img/close.svg';
 // import WaterMark from '../../img/waterMark.png';
 import Home from '../../(list)/img/home.svg';

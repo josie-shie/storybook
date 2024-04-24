@@ -5,9 +5,10 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
 import Image from 'next/image';
 import TeamLogo from '@/components/teamLogo/teamLogo';
-import Win from '@/public/resultIcon/bigWin.svg';
 import Draw from '@/public/resultIcon/bigDraw.svg';
 import NoData from '@/components/baseNoData/noData';
+import HomeWin from '../../(list)/img/homeWin.svg';
+import AwayWin from '../../(list)/img/awayWin.svg';
 import { useAiPredictStore } from '../../aiPredictStore';
 import HistoryCard from '../../components/historyCard/historyCard';
 import Ai from '../../components/analyzeContent/ai';
@@ -79,7 +80,7 @@ function TargetMatchDetail({ target }: { target: GetPredicativeAnalysisMatch }) 
                             } ${target.predictMatchResult === 0 ? style.active : ''}`}
                         >
                             {target.predictMatchResult === 1 ? (
-                                <Win className={style.icon} />
+                                <HomeWin className={style.icon} />
                             ) : null}
                             <TeamLogo
                                 alt={target.homeChs}
@@ -96,7 +97,7 @@ function TargetMatchDetail({ target }: { target: GetPredicativeAnalysisMatch }) 
                             } ${target.predictMatchResult === 0 ? style.active : ''}`}
                         >
                             {target.predictMatchResult === 2 ? (
-                                <Win className={style.icon} />
+                                <AwayWin className={style.icon} />
                             ) : null}
                             <TeamLogo
                                 alt={target.awayChs}
