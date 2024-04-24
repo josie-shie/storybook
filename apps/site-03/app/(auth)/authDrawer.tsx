@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { getMemberSubscriptionStatus } from 'data-center';
 import Cookies from 'js-cookie';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import Script from 'next/script';
 import Register from '@/app/(auth)/register/register';
 import Login from '@/app/(auth)/login/login';
 import { useUserStore } from '@/store/userStore';
@@ -133,6 +134,10 @@ function AuthDrawer() {
             topLineDisplay="none"
         >
             <div className={style.loginDrawer}>
+                <Script
+                    src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=_turnstileCb"
+                    strategy="afterInteractive"
+                />
                 <div className={style.header} style={{ backgroundImage: `url(${headerBg.src})` }}>
                     <div className={style.title}>{title}</div>
                     <Image
