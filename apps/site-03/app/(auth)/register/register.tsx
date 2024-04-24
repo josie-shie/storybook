@@ -63,6 +63,7 @@ function Register() {
     const [isRotating, setIsRotating] = useState(false);
     const [randomUserNameList, setRandomUserNameList] = useState<string[]>([]);
     const [randomUserNameIdx, setRandomUserNameIdx] = useState<number>(0);
+    const [isTurnstileLoaded, setIsTurnstileLoaded] = useState(false);
     // const registerStore = useAuthStore.use.register();
     // const { verifyPhoto, setVerifyPhoto } = registerStore;
 
@@ -179,20 +180,34 @@ function Register() {
     //     void getCaptcha();
     // }, []);
 
-    useEffect(() => {
-        const _turnstileCb = () => {
-            if (window.turnstile) {
-                window.turnstile.render('#myWidget', {
-                    sitekey: '0x4AAAAAAAXX3mVYJPj3EcnA',
-                    theme: 'light',
-                    callback(token) {
-                        setValue('verifyToken', token);
-                    }
-                });
+    const _turnstileCb = () => {
+        window.turnstile?.render('#myWidget', {
+            sitekey: '0x4AAAAAAAXX3mVYJPj3EcnA',
+            theme: 'light',
+            callback(token) {
+                setValue('verifyToken', token);
             }
+        });
+    };
+
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            if (window.turnstile) {
+                clearInterval(intervalId);
+                setIsTurnstileLoaded(true);
+            }
+        }, 100);
+
+        return () => {
+            clearInterval(intervalId);
         };
-        _turnstileCb();
     }, []);
+
+    useEffect(() => {
+        if (isTurnstileLoaded) {
+            _turnstileCb();
+        }
+    }, [isTurnstileLoaded]);
 
     return (
         <form className={style.register} onSubmit={handleSubmit(onSubmit)}>
@@ -275,9 +290,7 @@ function Register() {
                     )}
                 />
             </FormControl> */}
-            <FormControl fullWidth>
-                <div id="myWidget" style={{ width: '100%' }} />
-            </FormControl>
+            <div id="myWidget" />
             <TokenInput verifyToken={verifyToken} />
             <Agreement />
             <FormControl className={style.registerButton} fullWidth>

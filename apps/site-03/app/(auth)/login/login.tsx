@@ -5,7 +5,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, FormControl } from '@mui/material';
 import type { LoginRequest } from 'data-center';
 import { login, getMemberInfo } from 'data-center';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { initWebSocket, messageService, mqttService } from 'lib';
 import {
     // VertifyCodeByImage,
@@ -36,6 +36,8 @@ const schema = yup.object().shape({
 });
 
 function Login() {
+    const [isTurnstileLoaded, setIsTurnstileLoaded] = useState(false);
+
     const setToken = useUserStore.use.setToken();
     const setUserInfo = useUserStore.use.setUserInfo();
     const setIsLogin = useUserStore.use.setIsLogin();
@@ -83,6 +85,7 @@ function Login() {
         if (!res.success) {
             const errorMessage = res.error ? res.error : '登录失败，请确认资料无误';
             setIsVisible(errorMessage, 'error');
+            _turnstileCb();
             return;
         }
 
@@ -124,20 +127,34 @@ function Login() {
     //     void getCaptcha();
     // }, []);
 
-    useEffect(() => {
-        const _turnstileCb = () => {
-            if (window.turnstile) {
-                window.turnstile.render('#myWidget', {
-                    sitekey: '0x4AAAAAAAXX3mVYJPj3EcnA',
-                    theme: 'light',
-                    callback(token) {
-                        setValue('verifyToken', token);
-                    }
-                });
+    const _turnstileCb = () => {
+        window.turnstile?.render('#myWidget', {
+            sitekey: '0x4AAAAAAAXX3mVYJPj3EcnA',
+            theme: 'light',
+            callback(token) {
+                setValue('verifyToken', token);
             }
+        });
+    };
+
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            if (window.turnstile) {
+                clearInterval(intervalId);
+                setIsTurnstileLoaded(true);
+            }
+        }, 100);
+
+        return () => {
+            clearInterval(intervalId);
         };
-        _turnstileCb();
     }, []);
+
+    useEffect(() => {
+        if (isTurnstileLoaded) {
+            _turnstileCb();
+        }
+    }, [isTurnstileLoaded]);
 
     const isSendVerificationCodeDisable = !countryCode || !mobileNumber || !password;
     const isLoginDisable = isSendVerificationCodeDisable || !verificationCode || !verifyToken; //|| !verifyPhoto ;
@@ -193,9 +210,7 @@ function Login() {
                         )}
                     />
                 </FormControl> */}
-                {/* <FormControl fullWidth> */}
-                <div id="myWidget" style={{ width: '100%' }} />
-                {/* </FormControl> */}
+                <div id="myWidget" />
                 <TokenInput verifyToken={verifyToken} />
                 <div className={style.agreement}>
                     <Agreement />
