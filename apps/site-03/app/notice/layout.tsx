@@ -82,7 +82,37 @@ function NoticeTabs({ children }: { children: ReactNode }) {
 
 function CreateNoticeStore({ children }: { children: ReactNode }) {
     createNoticeStore({
-        mailList: []
+        mailList: [],
+        initMailData: {
+            全部: {
+                pagination: {
+                    totalCount: 0,
+                    pageCount: 0
+                },
+                list: []
+            },
+            系统通知: {
+                pagination: {
+                    totalCount: 0,
+                    pageCount: 0
+                },
+                list: []
+            },
+            交易明细: {
+                pagination: {
+                    totalCount: 0,
+                    pageCount: 0
+                },
+                list: []
+            },
+            最新活动: {
+                pagination: {
+                    totalCount: 0,
+                    pageCount: 0
+                },
+                list: []
+            }
+        }
     });
 
     return <>{children}</>;

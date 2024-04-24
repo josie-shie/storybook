@@ -60,11 +60,12 @@ const GetMailMemberListResultSchema = z.object({
     })
 });
 
-type GetMailMemberListResult = z.infer<typeof GetMailMemberListResultSchema>;
+export type GetMailMemberListResult = z.infer<typeof GetMailMemberListResultSchema>;
 
 export type GetMailMemberListResponse = z.infer<typeof GetMailMemberListSchema>;
 export interface GetMailMemberListRequest {
     eventTypeId: number[];
+    tagName: string[];
     pagination: {
         currentPage: number;
         perPage: number;
@@ -146,7 +147,7 @@ export const deleteMailMember = async ({
 };
 
 /**
- * 刪除站內信
+ * 更新站內信閱讀狀態
  * - params : {@link DeleteMailMemberRequest}
  */
 export const updateMailReadAtRequest = async ({

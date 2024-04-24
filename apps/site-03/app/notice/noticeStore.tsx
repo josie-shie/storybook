@@ -1,6 +1,6 @@
 import { initStore } from 'lib';
 import type { StoreWithSelectors, MessageRoomType } from 'lib';
-import type { GetMailMemberResponse } from 'data-center';
+import type { GetMailMemberListResponse, GetMailMemberResponse } from 'data-center';
 
 interface Tags {
     tagId: number;
@@ -8,8 +8,16 @@ interface Tags {
     tagColor: string;
 }
 
+export interface InitMailData {
+    全部: GetMailMemberListResponse;
+    系统通知: GetMailMemberListResponse;
+    交易明细: GetMailMemberListResponse;
+    最新活动: GetMailMemberListResponse;
+}
+
 interface InitState {
     mailList: GetMailMemberResponse[];
+    initMailData: InitMailData;
 }
 
 interface NoticeInfo extends InitState {
@@ -20,6 +28,7 @@ interface NoticeInfo extends InitState {
     selectMailTag: Tags;
     selectedChatData: MessageRoomType;
     setMailList: (data: GetMailMemberResponse[]) => void;
+    setInitMailData: (data: InitMailData) => void;
     setChatList: (data: MessageRoomType[]) => void;
     setEditStatus: (editStatus: boolean) => void;
     setSelected: (selectId: number | string, action: string) => void;
@@ -35,6 +44,7 @@ let useNoticeStore: StoreWithSelectors<NoticeInfo>;
 const initialState = (
     set: (updater: (state: NoticeInfo) => Partial<NoticeInfo>) => void
 ): NoticeInfo => ({
+    initMailData: {} as InitMailData,
     mailList: [],
     chatList: [],
     editStatus: false,
@@ -42,6 +52,9 @@ const initialState = (
     selectedMailData: {} as GetMailMemberResponse,
     selectMailTag: {} as Tags,
     selectedChatData: {} as MessageRoomType,
+    setInitMailData: (initMailData: InitMailData) => {
+        set(() => ({ initMailData }));
+    },
     setMailList: (mailList: GetMailMemberResponse[]) => {
         set(() => ({ mailList }));
     },
