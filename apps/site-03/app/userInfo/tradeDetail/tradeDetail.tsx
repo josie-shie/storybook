@@ -25,7 +25,7 @@ function DetailSkeleton() {
                         <Skeleton animation="wave" height={16} width={120} />
                     </div>
                     <div className={style.right}>
-                        <h1>平台币 0</h1>
+                        <h1>球币 0</h1>
                         <p>可用馀额：0</p>
                     </div>
                 </div>

@@ -31,7 +31,7 @@ function Payment({ data }: PropsType) {
                 </div>
             </div>
             <div className={style.right}>
-                <div className={`${style.money} ${isPayment && style.black}`}>平台币 {money}</div>
+                <div className={`${style.money} ${isPayment && style.black}`}>球币 {money}</div>
                 <div className={style.overage}>可用馀额：{data.balanceAfter}</div>
             </div>
         </div>

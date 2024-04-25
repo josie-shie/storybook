@@ -257,7 +257,7 @@ function Subscribe({ backHistory }: { backHistory: boolean }) {
                                                         <span className={style.bold}>
                                                             {plan.rechargeAmount}
                                                         </span>
-                                                        <span className={style.light}>平台币</span>
+                                                        <span className={style.light}>球币</span>
                                                     </div>
                                                     <div className={style.text}>
                                                         <span>{plan.paymentAmount}</span> 元

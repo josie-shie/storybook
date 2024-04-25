@@ -58,7 +58,7 @@ function Wechat() {
                                     <Image alt="wechat" height={32} src={WechatIcon} width={32} />
                                     <input
                                         onChange={handleAmountChange}
-                                        placeholder="1~99999平台币"
+                                        placeholder="1~99999球币"
                                         type="number"
                                         value={amount}
                                     />

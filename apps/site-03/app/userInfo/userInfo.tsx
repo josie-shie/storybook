@@ -280,7 +280,7 @@ function UserInfo() {
                                 <span className={style.text}>
                                     <StarIcon className={style.icon} />
                                     {/* <Image alt="" height={14} src={Star} width={14} /> */}
-                                    <span>平台币馀额：</span>
+                                    <span>球币馀额：</span>
                                     {!loading ? (
                                         <>{formatNumberWithCommas(userInfo.balance)}</>
                                     ) : (

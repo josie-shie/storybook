@@ -30,7 +30,7 @@ function RechargeItem({ data }: PropsType) {
                 </div>
                 {data.rechargeStatus !== 'FAIL' && (
                     <div className={style.content}>
-                        {data.currencyCode}:平台币 = 1:{data.exchangeRate}
+                        {data.currencyCode}:球币 = 1:{data.exchangeRate}
                     </div>
                 )}
                 <div className={style.content}>
@@ -40,7 +40,7 @@ function RechargeItem({ data }: PropsType) {
             </div>
             <div className={style.right}>
                 <div className={`${style.money} ${data.rechargeStatus === 'FAIL' && style.grey}`}>
-                    平台币 {money}
+                    球币 {money}
                 </div>
                 <div className={style.result}>
                     <div className={`${style.status} ${statusStyle}`}>{statusLabel}</div>
