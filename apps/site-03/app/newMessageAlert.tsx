@@ -99,7 +99,7 @@ function NewMessageAlert() {
                     animate={{ transform: 'translateX(0)', opacity: 1 }}
                     exit={{ transform: 'translateX(100%)', opacity: 0 }}
                     initial={{ transform: 'translateX(100%)', opacity: 0 }}
-                    style={{ position: 'fixed', top: '74px', zIndex: 20 }}
+                    style={{ position: 'fixed', top: '74px', zIndex: 10001 }}
                     transition={{ ease: 'easeOut', duration: 0.3 }}
                 >
                     {getAlertComponent()}
