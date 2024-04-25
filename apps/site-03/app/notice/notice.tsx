@@ -8,6 +8,7 @@ import ButtonBase from '@mui/material/ButtonBase';
 import { CircularProgress } from '@mui/material';
 import { InfiniteScroll } from 'ui';
 import NoData from '@/components/baseNoData/noData';
+import { useMessageStore } from '@/store/messageStore';
 import MailCard from './components/mailCard';
 import style from './notice.module.scss';
 import { useNoticeStore } from './noticeStore';
@@ -25,6 +26,8 @@ function ListContent({ activeTag }: { activeTag: InitMailDataKeys }) {
     const [page, setPage] = useState(1);
     const [pagination, setPagination] = useState({ totalCount: 0, pageCount: 0 });
     const [isNoData, setIsNoData] = useState<boolean | null>(null);
+    const updateUnreadMessageNotify = useMessageStore.use.updateUnreadMessageNotify();
+    const unreadMessageNotify = useMessageStore.getState().unreadMessageNotify;
 
     const getMailList = async (currentPage: number, resetList = false) => {
         if (resetList) {
@@ -58,6 +61,11 @@ function ListContent({ activeTag }: { activeTag: InitMailDataKeys }) {
     };
 
     useEffect(() => {
+        updateUnreadMessageNotify({
+            ...unreadMessageNotify,
+            totalCount: 0,
+            mailCount: 0
+        });
         setMailList([]);
         setPage(1);
         void getMailList(1, true);
