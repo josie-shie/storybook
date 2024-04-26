@@ -17,7 +17,7 @@ import banner from './img/banner.png';
 
 function ArticleList() {
     const [currentPage, setCurrentPage] = useState(1);
-    const [totalPage, setTotalPage] = useState(1);
+    const [pagination, setPagination] = useState({ pageCount: 1, totalCount: 1 });
     const [isNoData, setIsNoData] = useState<boolean | null>(null);
     const [articleList, setArticleList] = useState<RecommendPost[]>([]);
     const [bannerList, setBannerList] = useState<BannerInfo[]>([]);
@@ -26,13 +26,13 @@ function ArticleList() {
 
     creatArticleStore({ filterIsOpen: false });
 
-    const fetchData = async () => {
+    const fetchData = async ({ page }: { page: number }) => {
         const res = await getPostList({
             memberId: userInfo.uid ? userInfo.uid : 0,
             postFilter: ['all'],
             pagination: {
-                currentPage: 1,
-                perPage: 30
+                currentPage: page,
+                perPage: 20
             }
         });
 
@@ -40,33 +40,16 @@ function ArticleList() {
             return new Error();
         }
 
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-
-        const sortPosts = (a: RecommendPost, b: RecommendPost) => {
-            const matchTimeA = new Date(a.matchTime) < today ? 0 : 1;
-            const matchTimeB = new Date(b.matchTime) < today ? 0 : 1;
-            if (matchTimeA !== matchTimeB) {
-                return matchTimeA - matchTimeB;
-            }
-
-            const createdAtA = new Date(a.createdAt).getTime();
-            const createdAtB = new Date(b.createdAt).getTime();
-            if (createdAtA !== createdAtB) {
-                return createdAtB - createdAtA;
-            }
-
-            const weekHitRateA = Number(a.tag.weekHitRateDisplay);
-            const weekHitRateB = Number(b.tag.weekHitRateDisplay);
-            return weekHitRateB - weekHitRateA;
-        };
-
-        const sortedPosts = res.data.posts.sort(sortPosts);
-
-        const updatedArticleList = articleList.concat(sortedPosts);
+        if (!res.data.posts.length) {
+            setIsNoData(true);
+            setArticleList([]);
+            setPagination(res.data.pagination);
+            return;
+        }
+        const updatedArticleList = articleList.concat(res.data.posts);
         setArticleList(updatedArticleList);
-        setTotalPage(res.data.pagination.pageCount);
-        setIsNoData(res.data.pagination.totalCount === 0);
+        setPagination(res.data.pagination);
+        setIsNoData(false);
     };
 
     const fetchBannerList = async () => {
@@ -78,51 +61,73 @@ function ArticleList() {
     };
 
     const loadMoreList = () => {
-        if (currentPage <= Math.round(articleList.length / 30) && currentPage < totalPage) {
+        if (
+            currentPage <= Math.round(articleList.length / 20) &&
+            currentPage < pagination.totalCount
+        ) {
             setCurrentPage(prevData => prevData + 1);
+            void fetchData({ page: currentPage + 1 });
         }
     };
 
     useEffect(() => {
-        void fetchData();
+        void fetchData({ page: 1 });
         void fetchBannerList();
-    }, [userInfo.uid, currentPage]);
+    }, [userInfo.uid]);
+
+    const renderContent = () => {
+        if (articleList.length === 0 && isNoData === null) {
+            return (
+                <div className={style.recommendPredict}>
+                    <SkeletonLayout />
+                </div>
+            );
+        }
+
+        if (articleList.length > 0) {
+            return (
+                <div className={style.recommendPredict}>
+                    <ul className={style.article}>
+                        {articleList.map(article => (
+                            <ArticleCard article={article} key={article.id} />
+                        ))}
+                    </ul>
+                    {articleList.length < pagination.totalCount ? (
+                        <InfiniteScroll onVisible={loadMoreList}>
+                            <div className={style.loadMore}>
+                                <CircularProgress size={24} />
+                            </div>
+                        </InfiniteScroll>
+                    ) : (
+                        <div className={style.listEnd}>
+                            <p>已滑到底啰</p>
+                        </div>
+                    )}
+                </div>
+            );
+        }
+
+        return (
+            <div className={style.recommendPredict}>
+                <NoData text="暂无资料" />
+            </div>
+        );
+    };
 
     return (
         <>
             {bannerList.length ? (
                 <BaseBanner bannerList={bannerList} className={style.banner} />
             ) : (
-                <Image alt="banner" className={style.banner} height={60} src={banner} width={390} />
+                <Image
+                    alt="banner"
+                    className={style.defaultBanner}
+                    height={60}
+                    src={banner}
+                    width={390}
+                />
             )}
-            <div className={style.recommendPredict}>
-                {articleList.length === 0 && isNoData === null && <SkeletonLayout />}
-
-                {articleList.length === 0 && isNoData ? (
-                    <NoData text="暂无资料" />
-                ) : (
-                    <div className={style.list}>
-                        {articleList.length !== 0 ? (
-                            <ul className={style.article}>
-                                {articleList.map(article => {
-                                    return <ArticleCard article={article} key={article.id} />;
-                                })}
-                            </ul>
-                        ) : null}
-                        {currentPage < totalPage ? (
-                            <InfiniteScroll onVisible={loadMoreList}>
-                                <div className={style.loadMore}>
-                                    <CircularProgress size={24} />
-                                </div>
-                            </InfiniteScroll>
-                        ) : (
-                            <div className={style.listEnd}>
-                                <p>已滑到底啰</p>
-                            </div>
-                        )}
-                    </div>
-                )}
-            </div>
+            {renderContent()}
             <ScrollTop />
         </>
     );

@@ -53,7 +53,7 @@ function MyAnalysis() {
 
     const loadMoreList = () => {
         if (
-            currentPage <= Math.round(articleList.length / 30) &&
+            currentPage <= Math.round(articleList.length / 20) &&
             currentPage < pagination.totalCount
         ) {
             setCurrentPage(prevData => prevData + 1);
