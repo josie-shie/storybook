@@ -87,7 +87,7 @@ function Invite() {
                             <span>多邀多得无上限</span>
                             <span>
                                 每邀请一人，最高获得<span className={style.money}>200</span>
-                                平台币
+                                球币
                             </span>
                         </div>
                         <div className={style.success}>
@@ -130,7 +130,7 @@ function Invite() {
                             <div className={style.title}>[ 奖励规则 ]</div>
                             <ol className={style.text}>
                                 <li>
-                                    每成功邀请一位朋友注册成为本平台用户，您将获得200平台币奖励，上不封顶
+                                    每成功邀请一位朋友注册成为本平台用户，您将获得200球币奖励，上不封顶
                                 </li>
                                 <li>邀请奖励将于注册成功后，自动发放至您的帐户中</li>
                             </ol>
