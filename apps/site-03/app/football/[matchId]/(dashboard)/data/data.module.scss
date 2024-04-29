@@ -6,3 +6,14 @@
     border-radius: 12px;
     padding: 8px;
 }
+
+.loading {
+    padding: 10px;
+
+    .team {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        margin: 8px 0 12px;
+    }
+}

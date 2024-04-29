@@ -64,7 +64,7 @@ function detailLoader() {
                     ))}
                 </div>
                 <AnimatePresence mode="wait">
-                    <motion.div className={style.content} key="详情">
+                    <motion.div className={style.content}>
                         <Loader />
                         <Loader />
                     </motion.div>
