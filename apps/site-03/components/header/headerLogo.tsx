@@ -15,12 +15,14 @@ function HeaderLogo({
     title,
     link = '/',
     children,
-    back = false
+    back = false,
+    onClickBack
 }: {
     title?: string;
     link?: string;
     children?: ReactNode;
     back?: boolean;
+    onClickBack?: () => void;
 }) {
     const isClientSide = appStateStore.use.isClientSide();
 
@@ -31,10 +33,19 @@ function HeaderLogo({
         }
     }, [isClientSide]);
 
+    const handleClickBack = () => {
+        if (onClickBack) onClickBack();
+    };
+
     return (
         <div className={style.placeholder}>
             <div className={`${style.header} ${style.headerTransparent}`}>
-                <Link aria-label="智球网" className={style.logo} href={link}>
+                <Link
+                    aria-label="智球网"
+                    className={style.logo}
+                    href={link}
+                    onClick={handleClickBack}
+                >
                     {back ? (
                         <Image alt="" height={24} src={backLeftArrowImg} width={24} />
                     ) : (
