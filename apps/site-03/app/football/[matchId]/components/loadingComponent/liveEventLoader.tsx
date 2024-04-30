@@ -1,8 +1,8 @@
 'use client';
 import { motion } from 'framer-motion';
 import { Skeleton } from '@mui/material';
-import TipBar from '../../liveEvent/tipBar';
-import style from '../../liveEvent/textLive.module.scss';
+import TipBar from '../../(dashboard)/liveEvent/tipBar';
+import style from '../../(dashboard)/liveEvent/textLive.module.scss';
 
 function Loader() {
     return (

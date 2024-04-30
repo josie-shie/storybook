@@ -1,7 +1,7 @@
 'use client';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Skeleton } from '@mui/material';
-import style from '../../data/data.module.scss';
+import style from '../../(dashboard)/data/data.module.scss';
 
 function Loader() {
     const row = ['总', '主', '客', '近'];

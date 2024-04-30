@@ -1,5 +1,5 @@
-import { motion, AnimatePresence } from 'framer-motion';
-import style from '../../exponent/exponent.module.scss';
+import { motion } from 'framer-motion';
+import style from '../../(dashboard)/exponent/exponent.module.scss';
 
 function OddBar() {
     return (
@@ -45,25 +45,14 @@ function ExponentLoader() {
     ];
     return (
         <div className={style.exponent}>
-            <div className="minTabBar">
+            <div className="minTabBar" style={{ marginBottom: '8px' }}>
                 {tabList.map(tab => (
                     <motion.div className="tab" key={tab.value}>
                         {tab.title}
                     </motion.div>
                 ))}
             </div>
-            <AnimatePresence mode="wait">
-                <motion.div
-                    animate={{ opacity: 1, y: 0 }}
-                    className={style.content}
-                    exit={{ opacity: 0, y: -4 }}
-                    initial={{ opacity: 0, y: 4 }}
-                    key="handicap"
-                    transition={{ duration: 0.16 }}
-                >
-                    <Loader />
-                </motion.div>
-            </AnimatePresence>
+            <Loader />
         </div>
     );
 }
