@@ -73,11 +73,18 @@ export interface GetMailMemberListRequest {
 }
 
 export interface DeleteMailMemberRequest {
-    mailMemberIds: number[];
+    notifyIds: string[];
 }
 
-export interface UpdateMailReadAtRequest {
-    id: number[];
+export interface DeleteMailMemberResponse {
+    messageCenterMutation: {
+        delNotifyMessages: {
+            responseCode: number;
+        };
+    };
+}
+export interface DeleteMailMemberResult {
+    responseCode: number;
 }
 
 /**
@@ -121,16 +128,16 @@ export const getMailMemberList = async (
  * - params : {@link DeleteMailMemberRequest}
  */
 export const deleteMailMember = async ({
-    mailMemberIds
-}: DeleteMailMemberRequest): Promise<ReturnData<null>> => {
+    notifyIds
+}: DeleteMailMemberRequest): Promise<ReturnData<DeleteMailMemberResult>> => {
     try {
-        const { data, errors } = await fetcher<FetchResultData<null>, unknown>(
+        const { data, errors } = await fetcher<FetchResultData<DeleteMailMemberResponse>, unknown>(
             {
                 data: {
                     query: DELETE_MAIL_MEMBER_MUTATION,
                     variables: {
                         input: {
-                            mailMemberIds
+                            notifyIds
                         }
                     }
                 }
@@ -140,7 +147,7 @@ export const deleteMailMember = async ({
 
         throwErrorMessage(errors);
 
-        return { success: true, data };
+        return { success: true, data: data.messageCenterMutation.delNotifyMessages };
     } catch (error) {
         return handleApiError(error);
     }

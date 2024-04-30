@@ -3,12 +3,14 @@
 import { useEffect } from 'react';
 import Button from '@mui/material/Button';
 import { deleteMailMember } from 'data-center';
+import type { GetMailMemberListResponse } from 'data-center';
 import { usePathname } from 'next/navigation';
 import type { MessageResponse } from 'lib';
 import { messageService, getMessageResponse, cancelMessage } from 'lib';
 import { useNotificationStore } from '@/store/notificationStore';
 import { useMessageStore } from '@/store/messageStore';
 import style from './editBar.module.scss';
+import type { InitMailData } from './noticeStore';
 import { useNoticeStore } from './noticeStore';
 
 function EditBar() {
@@ -18,6 +20,8 @@ function EditBar() {
     const setEditStatus = useNoticeStore.use.setEditStatus();
     const selected = useNoticeStore.use.selected();
     const setSelected = useNoticeStore.use.setSelected();
+    const initMailData = useNoticeStore.use.initMailData();
+    const setInitMailData = useNoticeStore.use.setInitMailData();
     const setIsVisible = useNotificationStore.use.setIsVisible();
     const setChatList = useNoticeStore.use.setChatList();
     const updateUnreadMessageNotify = useMessageStore.use.updateUnreadMessageNotify();
@@ -25,16 +29,35 @@ function EditBar() {
     const route = usePathname().split('/');
     const pathName = route[route.length - 1];
 
+    const filterInitMailData = (): Record<keyof InitMailData, GetMailMemberListResponse> => {
+        const newInitMap = {
+            全部: { list: [], pagination: { pageCount: 0, totalCount: 0 } },
+            系统通知: { list: [], pagination: { pageCount: 0, totalCount: 0 } },
+            交易明细: { list: [], pagination: { pageCount: 0, totalCount: 0 } },
+            最新活动: { list: [], pagination: { pageCount: 0, totalCount: 0 } }
+        };
+
+        Object.entries(initMailData).forEach(
+            ([key, value]: [string, GetMailMemberListResponse]) => {
+                const newList = value.list.filter(item => !selected.has(item.notifyId));
+                newInitMap[key] = { ...value, list: newList };
+            }
+        );
+
+        return newInitMap;
+    };
+
     const handleDeleteMail = async () => {
         if (selected.size === 0) return;
 
         if (pathName === 'notice') {
-            const params = { mailMemberIds: Array.from(selected) };
-            const res = await deleteMailMember(params as { mailMemberIds: number[] });
-            if (res.success) {
+            const params = { notifyIds: Array.from(selected) };
+            const res = await deleteMailMember(params as { notifyIds: string[] });
+            if (res.success && res.data.responseCode) {
                 setIsVisible('刪除成功！', 'success');
                 setEditStatus(false);
                 const newList = mailList.filter(notice => !selected.has(notice.notifyId));
+                const newInitMailData = filterInitMailData();
                 const unreadMessageNotify = useMessageStore.getState().unreadMessageNotify;
 
                 const unReadCount = newList.reduce((previousValue, currentValue) => {
@@ -50,6 +73,7 @@ function EditBar() {
                     mailCount: unReadCount
                 });
                 setMailList(newList);
+                setInitMailData(newInitMailData);
             }
         } else {
             void messageService.send({
