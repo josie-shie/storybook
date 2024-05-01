@@ -40,6 +40,9 @@ import Data from './(dashboard)/data/data';
 import Exponent from './(dashboard)/exponent/exponent';
 import Information from './(dashboard)/information/information';
 import { useContestDetailStore } from './contestDetailStore';
+import DetailLoader from './components/loadingComponent/detailLoader';
+import ExponentLoader from './components/loadingComponent/exponentLoader';
+import LiveEventLoader from './components/loadingComponent/liveEventLoader';
 
 interface FetchInitData {
     data?: {
@@ -57,6 +60,8 @@ interface FetchInitData {
     textLive?: GetLiveTextResponse;
     lineUpData?: GetLineUpInfoResponse;
 }
+
+type ComponentMap = Record<string, JSX.Element>;
 
 function TabContent({
     matchId,
@@ -381,7 +386,6 @@ function TabContent({
         fetchSecondRenderData();
     }, [secondRender, matchDetail]);
 
-    const initialSlide = status ? tabList.findIndex(tab => tab.status === status) : 0;
     const shouldShowPredict = fetchData.predict.posts.length > 0;
     const shouldShowLineUp =
         fetchData.lineUpData.teams.home.players.length > 0 ||
@@ -406,11 +410,25 @@ function TabContent({
         }
     });
 
+    const initialSlide = status ? filteredTabList.findIndex(tab => tab.status === status) : 0;
+
     const onSlickEnd = () => {
         window.scrollTo({
             top: 0,
             behavior: 'smooth'
         });
+    };
+
+    const LoaderMap: ComponentMap = {
+        data: <DetailLoader />,
+        exponent: <ExponentLoader />
+    };
+
+    const getRoader = (): JSX.Element | null => {
+        if (status && status !== 'liveEvent') {
+            return LoaderMap[status];
+        }
+        return <LiveEventLoader />;
     };
 
     return (
@@ -430,7 +448,9 @@ function TabContent({
                             matchId={matchId}
                             textLive={fetchInitData?.textLive || fetchData.textLive}
                         />
-                    ) : null}
+                    ) : (
+                        getRoader()
+                    )}
                 </div>
                 <div className={`${style.largeGap} ${style.rimless}`}>
                     {secondRender || !status || status === 'messageBoard' ? (
@@ -462,7 +482,9 @@ function TabContent({
                             exponentData={fetchInitData?.exponent || fetchData.exponent}
                             matchId={matchId}
                         />
-                    ) : null}
+                    ) : (
+                        getRoader()
+                    )}
                 </div>
                 {shouldShowInformation ? (
                     <div className={style.largeGap}>
@@ -505,7 +527,9 @@ function TabContent({
                                 fetchData.data.recentMatchSchedule
                             }
                         />
-                    ) : null}
+                    ) : (
+                        getRoader()
+                    )}
                 </div>
             </Slick>
             <div className={style.homeIndicatorPlaceHolder} />
