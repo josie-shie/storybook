@@ -38,8 +38,12 @@ export const GET_MAIL_MEMBER_LIST_QUERY = `
 `;
 
 export const DELETE_MAIL_MEMBER_MUTATION = `
-    mutation deleteMailMember($input: DeleteMailMemberInput!) {
-        deleteMailMember(input: $input)
+    mutation delNotifyMessages($input: DelNotifyMessagesInput!){
+        messageCenterMutation {
+                delNotifyMessages(input: $input) {
+                responseCode
+            }
+        }
     }
 `;
 

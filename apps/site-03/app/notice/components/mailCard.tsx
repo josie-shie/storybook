@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Checkbox from '@mui/material/Checkbox';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
-import { updateMailReadAtRequest } from 'data-center';
+import { updateMailReadAt } from 'data-center';
 import { timestampToString } from 'lib';
 import type { GetMailMemberResponse } from 'data-center';
 import { useMessageStore } from '@/store/messageStore';
@@ -29,7 +29,7 @@ function MailCard({ mailData }: { mailData: GetMailMemberResponse }) {
         }
     };
     const readMail = async () => {
-        const res = await updateMailReadAtRequest({ id: [mailData.mrlId] });
+        const res = await updateMailReadAt({ id: [mailData.mrlId] });
         if (!res.success) {
             console.error(res.error);
         }
