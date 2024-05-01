@@ -289,7 +289,7 @@ function Subscribe({ backHistory }: { backHistory: boolean }) {
                                         } ${planId === 4 ? style.lastRaduis : ''} `}
                                     >
                                         <div className={style.descript}>
-                                            充值金币可以购买以下内容
+                                            充值球币可以购买以下内容
                                         </div>
                                         <ul className={style.list}>
                                             <li>- 赛事高手，球赛群众风向指引</li>
