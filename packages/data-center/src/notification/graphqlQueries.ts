@@ -56,3 +56,14 @@ export const UPDATE_MAIL_READ_AT_MUTATION = `
         }
     }
 `;
+
+export const GET_MEMBER_MESSAGE_CENTER_UNREAD_COUNT = `
+    query getMemberMessageCenterUnreadCount($input: getMemberMessageCenterUnreadCount!){
+        messageCenterQuery {
+            GetMemberMessageCenterUnreadCount {
+                notifyMessageCount
+                chatRoomCount
+            }
+        }
+    }
+`;
