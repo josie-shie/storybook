@@ -4,11 +4,15 @@ import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, FormControl } from '@mui/material';
 import type { LoginRequest } from 'data-center';
-import { login, getMemberInfo } from 'data-center';
+import {
+    login,
+    getMemberInfo,
+    // getVerificationCaptcha,
+    getMemberMessageCenterUnreadCount
+} from 'data-center';
 import { useEffect, useState } from 'react';
 import { initWebSocket, messageService, mqttService } from 'lib';
 import {
-    // VertifyCodeByImage,
     Agreement,
     SubmitButton,
     CountryCodeInput,
@@ -17,7 +21,7 @@ import {
     TokenInput
 } from '@/app/(auth)/components/authComponent/authComponent';
 import { useNotificationStore } from '@/store/notificationStore';
-// import { useMessageStore } from '@/store/messageStore';
+import { useMessageStore } from '@/store/messageStore';
 import { useUserStore } from '@/store/userStore';
 import { useAuthStore } from '@/store/authStore';
 import style from './login.module.scss';
@@ -38,8 +42,8 @@ const schema = yup.object().shape({
 
 function Login() {
     const [isTurnstileLoaded, setIsTurnstileLoaded] = useState(false);
-    // const updateUnreadMessageNotify = useMessageStore.getState().updateUnreadMessageNotify;
-    // const unreadMessageNotify = useMessageStore.getState().unreadMessageNotify;
+    const updateUnreadMessageNotify = useMessageStore.getState().updateUnreadMessageNotify;
+    const unreadMessageNotify = useMessageStore.getState().unreadMessageNotify;
 
     const setToken = useUserStore.use.setToken();
     const setUserInfo = useUserStore.use.setUserInfo();
@@ -82,16 +86,16 @@ function Login() {
         }
     };
 
-    // const getUnreadMessage = async () => {
-    //     const res = await getUnreadMessage();
-    //     if (res.success) {
-    //         updateUnreadMessageNotify({
-    //             ...unreadMessageNotify,
-    //             mailCount: res.mailCount,
-    //             totalCount: res.mailCount
-    //         });
-    //     }
-    // };
+    const getUnreadMessage = async () => {
+        const res = await getMemberMessageCenterUnreadCount();
+        if (res.success) {
+            updateUnreadMessageNotify({
+                ...unreadMessageNotify,
+                mailCount: res.data.notifyMessageCount,
+                totalCount: res.data.chatRoomCount + res.data.notifyMessageCount
+            });
+        }
+    };
 
     const onSubmit = async (data: LoginRequest) => {
         const res = await login(data);
@@ -122,7 +126,7 @@ function Login() {
             });
         }, 400);
         void getUserInfo();
-        // void getUnreadMessage();
+        void getUnreadMessage();
     };
 
     // const getCaptcha = async () => {
@@ -172,7 +176,7 @@ function Login() {
     }, [isTurnstileLoaded]);
 
     const isSendVerificationCodeDisable = !countryCode || !mobileNumber || !password;
-    const isLoginDisable = isSendVerificationCodeDisable || !verificationCode || !verifyToken; //|| !verifyPhoto ;
+    const isLoginDisable = isSendVerificationCodeDisable || !verificationCode || !verifyToken; // || !verifyPhoto;
 
     return (
         <div className={style.login}>

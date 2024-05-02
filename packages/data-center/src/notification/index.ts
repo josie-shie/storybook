@@ -203,7 +203,7 @@ export const updateMailReadAt = async ({
 };
 
 const GetMemberMessageCenterUnreadCountSchema = z.object({
-    messageCenterMutation: z.object({
+    messageCenterQuery: z.object({
         GetMemberMessageCenterUnreadCount: z.object({
             notifyMessageCount: z.number(),
             chatRoomCount: z.number()
@@ -247,7 +247,7 @@ export const getMemberMessageCenterUnreadCount = async (): Promise<
 
         return {
             success: true,
-            data: data.messageCenterMutation.GetMemberMessageCenterUnreadCount
+            data: data.messageCenterQuery.GetMemberMessageCenterUnreadCount
         };
     } catch (error) {
         return handleApiError(error);
