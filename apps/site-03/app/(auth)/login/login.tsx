@@ -17,6 +17,7 @@ import {
     TokenInput
 } from '@/app/(auth)/components/authComponent/authComponent';
 import { useNotificationStore } from '@/store/notificationStore';
+// import { useMessageStore } from '@/store/messageStore';
 import { useUserStore } from '@/store/userStore';
 import { useAuthStore } from '@/store/authStore';
 import style from './login.module.scss';
@@ -37,6 +38,8 @@ const schema = yup.object().shape({
 
 function Login() {
     const [isTurnstileLoaded, setIsTurnstileLoaded] = useState(false);
+    // const updateUnreadMessageNotify = useMessageStore.getState().updateUnreadMessageNotify;
+    // const unreadMessageNotify = useMessageStore.getState().unreadMessageNotify;
 
     const setToken = useUserStore.use.setToken();
     const setUserInfo = useUserStore.use.setUserInfo();
@@ -79,6 +82,17 @@ function Login() {
         }
     };
 
+    // const getUnreadMessage = async () => {
+    //     const res = await getUnreadMessage();
+    //     if (res.success) {
+    //         updateUnreadMessageNotify({
+    //             ...unreadMessageNotify,
+    //             mailCount: res.mailCount,
+    //             totalCount: res.mailCount
+    //         });
+    //     }
+    // };
+
     const onSubmit = async (data: LoginRequest) => {
         const res = await login(data);
 
@@ -108,6 +122,7 @@ function Login() {
             });
         }, 400);
         void getUserInfo();
+        // void getUnreadMessage();
     };
 
     // const getCaptcha = async () => {
