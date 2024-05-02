@@ -47,7 +47,7 @@ function TeamInfo() {
                 className={`${style.score} ui-game-card-score ${style.finishScore} `}
                 suppressHydrationWarning
             >
-                0 - 0
+                0-0
             </div>
             <div className={`${style.awayTeam} ${style.team}`}>
                 <div className={style.teamName} suppressHydrationWarning>
