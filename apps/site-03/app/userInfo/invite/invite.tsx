@@ -101,7 +101,7 @@ function Invite() {
                                 <span>累积获得</span>
                                 <span>
                                     <span className={style.number}>{totalCoins}</span>
-                                    金币
+                                    球币
                                 </span>
                             </div>
                         </div>

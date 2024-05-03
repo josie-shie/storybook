@@ -68,7 +68,7 @@ function ConfirmPayDrawer({
                     <span className={style.text}>{title}</span>
                 </div>
                 <div className={style.balance}>
-                    我的余额: {userInfo.balance ? userInfo.balance : 0}金币
+                    我的余额: {userInfo.balance ? userInfo.balance : 0}球币
                 </div>
                 <Button className={style.payBtn} fullWidth onClick={onPay}>
                     <Coin className={style.star} />

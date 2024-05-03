@@ -82,6 +82,7 @@ function NewMessageAlert() {
             }
             if (notify.notifyType === 4) {
                 setNotifyType(notify.notifyType);
+                getNewMailMessage();
                 timerRef.current && clearTimeout(timerRef.current);
                 setIsNewMessageVisible(true);
                 timerRef.current = setTimeout(() => {
