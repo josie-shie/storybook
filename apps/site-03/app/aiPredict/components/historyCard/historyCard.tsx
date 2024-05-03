@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import type { GetPredicativeAnalysisMatch } from 'data-center';
+import Link from 'next/link';
 import defaultTeamLogo from '@/app/football/[matchId]/img/defaultTeamLogo.png';
 import { useFormattedTime } from '@/hooks/useFormattedTime';
 import Hit from '../../(list)/img/aiHit.svg';
@@ -42,7 +43,7 @@ function HistoryDisplayContent({ item }: { item: GetPredicativeAnalysisMatch }) 
     };
 
     return (
-        <>
+        <Link className={style.historyRow} href={`/aiPredict/historyDetail/${item.matchId}`}>
             <div className={style.top}>
                 <div>
                     <span className={style.league} style={{ color: `${item.color}` }}>
@@ -74,7 +75,7 @@ function HistoryDisplayContent({ item }: { item: GetPredicativeAnalysisMatch }) 
                     {compareResult(item.predictMatchResult, item.realMatchResult)}
                 </div>
             </div>
-        </>
+        </Link>
     );
 }
 

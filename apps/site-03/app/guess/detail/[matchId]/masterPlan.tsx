@@ -60,6 +60,11 @@ function HotGuessList({ hotMatchList }: { hotMatchList: GetHotGuessMatch[] }) {
             {hotMatchList.slice(0, 10).map((item: GetHotGuessMatch) => (
                 <HotGameCard key={item.matchId} matchId={item.matchId} />
             ))}
+            {hotMatchList.length ? (
+                <div className={style.listEnd}>
+                    <p>已滑到底啰</p>
+                </div>
+            ) : null}
         </>
     );
 }
@@ -115,6 +120,11 @@ function MasterPlanList({
                     plan={el}
                 />
             ))}
+            {masterPlanList.length ? (
+                <div className={style.listEnd}>
+                    <p>已滑到底啰</p>
+                </div>
+            ) : null}
         </>
     );
 }

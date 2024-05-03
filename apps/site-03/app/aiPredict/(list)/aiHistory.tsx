@@ -1,20 +1,15 @@
 import { useCallback, useEffect, useState } from 'react';
 import { getPredicativeAnalysisMatch } from 'data-center';
 import type { GetPredicativeAnalysisMatch } from 'data-center';
-import { CircularProgress } from '@mui/material';
-import Link from 'next/link';
 import BaseDatePicker from '@/app/(list)/components/baseDatePicker/baseDatePicker';
 import NoData from '@/components/baseNoData/noData';
 import HistoryCard from '../components/historyCard/historyCard';
 import { useAiPredictStore } from '../aiPredictStore';
 import style from './aiHistory.module.scss';
+import AiHistoryLoader from './aiHistoryLoader';
 
 function HistoryItem({ item }: { item: GetPredicativeAnalysisMatch }) {
-    return (
-        <Link className={style.historyRow} href={`/aiPredict/historyDetail/${item.matchId}`}>
-            <HistoryCard item={item} />
-        </Link>
-    );
+    return <HistoryCard item={item} />;
 }
 
 function ListContent() {
@@ -71,13 +66,7 @@ function AiHistory() {
                     handleDate(date);
                 }}
             />
-            {isLoading ? (
-                <div className={style.loadingBlock}>
-                    <CircularProgress size={24} />
-                </div>
-            ) : (
-                <ListContent />
-            )}
+            {isLoading ? <AiHistoryLoader /> : <ListContent />}
         </>
     );
 }

@@ -124,6 +124,16 @@
     }
 
     .masterPlanContainer {
-        min-height: 236px;
+        min-height: calc(100dvh - 191px - 327px - 54px);
+    }
+
+    .listEnd {
+        text-align: center;
+
+        p {
+            color: #bfbfbf;
+            font-size: 12px;
+            padding: 8px 0 18px;
+        }
     }
 }

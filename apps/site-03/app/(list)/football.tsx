@@ -5,9 +5,9 @@ import { getBannerList, getContestList } from 'data-center';
 import type { BannerInfo, ContestListType } from 'data-center';
 import { useEffect, useState, forwardRef, useCallback } from 'react';
 import { InfiniteScroll, slickOption } from 'ui';
-import CircularProgress from '@mui/material/CircularProgress';
 import Link from 'next/link';
 import Image from 'next/image';
+import CircularProgress from '@mui/material/CircularProgress';
 import { useLiveContestStore } from '@/store/liveContestStore';
 import type { FilterList } from '@/components/contestFilter/contestFilter';
 import NoData from '@/components/baseNoData/noData';
@@ -22,6 +22,7 @@ import Setting from './components/setting';
 import FootballFilter from './components/footballFilter';
 import GuessBannerImage from './img/guessBanner.jpg';
 import RegisterBannerImage from './img/registerBanner.jpg';
+import GameCardLoader from './components/gameCardLoader';
 
 type Status = 'all' | 'progress' | 'schedule' | 'result';
 
@@ -391,9 +392,7 @@ function ContestList({
                 </div>
             </div>
             {isLoading ? (
-                <div className={style.loading}>
-                    {isMounted ? <CircularProgress size={24} /> : null}
-                </div>
+                <ul className={style.contestList}>{isMounted ? <GameCardLoader /> : null}</ul>
             ) : (
                 <>
                     <ul className={style.contestList}>
