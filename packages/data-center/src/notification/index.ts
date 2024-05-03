@@ -5,7 +5,8 @@ import type { ReturnData, FetchResultData } from '../common';
 import {
     GET_MAIL_MEMBER_LIST_QUERY,
     DELETE_MAIL_MEMBER_MUTATION,
-    UPDATE_MAIL_READ_AT_MUTATION
+    UPDATE_MAIL_READ_AT_MUTATION,
+    GET_MEMBER_MESSAGE_CENTER_UNREAD_COUNT
 } from './graphqlQueries';
 
 const Tag = z.object({
@@ -196,6 +197,58 @@ export const updateMailReadAt = async ({
         throwErrorMessage(errors);
 
         return { success: true, data: data.messageCenterMutation.updateMessageReadAt };
+    } catch (error) {
+        return handleApiError(error);
+    }
+};
+
+const GetMemberMessageCenterUnreadCountSchema = z.object({
+    messageCenterQuery: z.object({
+        GetMemberMessageCenterUnreadCount: z.object({
+            notifyMessageCount: z.number(),
+            chatRoomCount: z.number()
+        })
+    })
+});
+
+const GetMemberMessageCenterUnreadCountResultSchema = z.object({
+    notifyMessageCount: z.number(),
+    chatRoomCount: z.number()
+});
+
+type GetMemberMessageCenterUnreadCountResponse = z.infer<
+    typeof GetMemberMessageCenterUnreadCountSchema
+>;
+type GetMemberMessageCenterUnreadCountResult = z.infer<
+    typeof GetMemberMessageCenterUnreadCountResultSchema
+>;
+
+/**
+ * 獲取站內信未讀數量
+ * - returns : {@link GetMemberMessageCenterUnreadCountResult}
+ */
+export const getMemberMessageCenterUnreadCount = async (): Promise<
+    ReturnData<GetMemberMessageCenterUnreadCountResult>
+> => {
+    try {
+        const { data, errors } = await fetcher<
+            FetchResultData<GetMemberMessageCenterUnreadCountResponse>,
+            unknown
+        >(
+            {
+                data: {
+                    query: GET_MEMBER_MESSAGE_CENTER_UNREAD_COUNT
+                }
+            },
+            { cache: 'no-store' }
+        );
+
+        throwErrorMessage(errors);
+
+        return {
+            success: true,
+            data: data.messageCenterQuery.GetMemberMessageCenterUnreadCount
+        };
     } catch (error) {
         return handleApiError(error);
     }
