@@ -14,15 +14,15 @@ type Story = StoryObj<typeof CustomSelect>;
 
 export const Normal: Story = {
     args: {
-        title: '主队进球声音',
+        title: 'Set notification tone',
         options: [
-            { label: '哨子声', value: 'whistle' },
-            { label: '鼓声', value: 'drum' },
-            { label: '号角声', value: 'horn' }
+            { label: 'Whistle', value: 'whistle' },
+            { label: 'Drum', value: 'drum' },
+            { label: 'Horn', value: 'horn' }
         ],
         value: null,
         showDragBar: false,
         showCloseButton: true,
-        placeholder: '請選擇...'
+        placeholder: 'Set notification sound'
     }
 };

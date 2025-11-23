@@ -22,7 +22,7 @@ function CustomSelect({
     value: initialValue,
     options,
     title,
-    placeholder = '請選擇',
+    placeholder = 'Choose notification sound',
     showDragBar,
     showCloseButton,
     onChange
@@ -104,7 +104,7 @@ function CustomSelect({
                                     }}
                                     type="button"
                                 >
-                                    取消
+                                    Cancel
                                 </button>
                             </li>
                         ) : null}

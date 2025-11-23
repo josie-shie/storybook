@@ -3,7 +3,7 @@ import { Button, Slider } from '@mui/material';
 import Image from 'next/image';
 import type { ReactCropperElement } from 'react-cropper';
 import Cropper from 'react-cropper';
-import 'cropperjs/dist/cropper.css';
+// import 'cropperjs/dist/cropper.css';
 import type { ChangeEvent, DragEvent } from 'react';
 import { useRef, useState } from 'react';
 import style from './baseCropper.module.scss';
@@ -132,7 +132,7 @@ function BaseCropper({
                     >
                         <div className={style['previewImage--noImg']}>
                             <IconCloudUpload color="#333" size={70} strokeWidth={1} />
-                            點擊或拖曳上傳圖片
+                            click or drag your fiel here
                         </div>
                     </div>
                 </label>

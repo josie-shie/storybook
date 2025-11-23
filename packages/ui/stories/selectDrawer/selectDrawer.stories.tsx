@@ -23,10 +23,10 @@ export const Normal: Story = {
 };
 
 const exampleData = [
-    { label: '全場大小球', value: 1 },
-    { label: '半場大小球', value: 2 },
-    { label: '全場让分', value: 3 },
-    { label: '半場让分', value: 4 }
+    { label: 'option1', value: 1 },
+    { label: 'option2', value: 2 },
+    { label: 'option3', value: 3 },
+    { label: 'option4', value: 4 }
 ];
 
 function DemoComponent(args: ComponentProps<typeof SelectDrawer>) {

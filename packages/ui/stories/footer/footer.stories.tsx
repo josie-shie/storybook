@@ -29,22 +29,28 @@ export const Normal: Story = {
 function NormalComponent(args: FooterProps) {
     const menuList = [
         {
-            label: '首頁',
+            label: 'Home',
             icon: <CallToActionIcon />,
-            value: '/',
+            value: 'home',
             includedRouters: ['/']
         },
         {
-            label: '首頁',
+            label: 'News',
             icon: <CallToActionIcon />,
-            value: '/index1',
+            value: 'index1',
             includedRouters: ['index1']
         },
         {
-            label: '首頁',
+            label: 'Chat',
             icon: <CallToActionIcon />,
-            value: '/index2',
+            value: 'index2',
             includedRouters: ['index2']
+        },
+        {
+            label: 'My',
+            icon: <CallToActionIcon />,
+            value: 'index3',
+            includedRouters: ['index3']
         }
     ];
 

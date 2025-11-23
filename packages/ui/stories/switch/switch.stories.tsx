@@ -29,9 +29,9 @@ function NormalComponent(args: SwitchProps) {
             {...args}
             onChange={setCurrentSwitch}
             options={[
-                { label: '選項1', value: 'option1' },
-                { label: '選項2', value: 'option2' },
-                { label: '選項3', value: 'option3' }
+                { label: 'none', value: '0' },
+                { label: 'option1', value: '1' },
+                { label: 'option2', value: '3' }
             ]}
             value={currentSwitch}
         />
