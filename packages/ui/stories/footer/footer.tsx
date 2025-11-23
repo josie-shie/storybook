@@ -1,7 +1,7 @@
 import type { ReactElement } from 'react';
 import { cloneElement, useEffect, useState } from 'react';
-import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+// import Link from 'next/link';
+// import { usePathname, useRouter } from 'next/navigation';
 import style from './footer.module.scss';
 
 interface Menu {
@@ -47,8 +47,8 @@ function Footer({
     isShow = true,
     activeRouter = menuList[0].value
 }: FooterProps) {
-    const router = useRouter();
-    const pathname = usePathname();
+    // const router = useRouter();
+    // const pathname = usePathname();
     const [activedItem, setActivedItem] = useState(activeRouter);
     const [isFirstActived, setIsFirstActived] = useState(true);
 
@@ -84,9 +84,9 @@ function Footer({
         setActivedItem(activeRouter);
     }, [activeRouter]);
 
-    useEffect(() => {
-        changeActivedItem(pathname);
-    }, [router]);
+    // useEffect(() => {
+    //     changeActivedItem(pathname);
+    // }, []);
 
     return (
         <>
@@ -97,14 +97,43 @@ function Footer({
                             <div className={style.menuList}>
                                 {menuList.map(menu => {
                                     return (
-                                        <Link
+                                        // waite for router
+                                        // <Link
+                                        //     className={`${style.listItem} ${
+                                        //         activedItem === menu.value && !isFirstActived
+                                        //             ? style.actived
+                                        //             : ''
+                                        //     }`}
+                                        //     href={menu.value}
+                                        //     key={menu.value}
+                                        //     style={{ backgroundColor: bgColor }}
+                                        // >
+                                        //     {menu.icon ? (
+                                        //         <div className={style.icon}>{getIcon(menu)}</div>
+                                        //     ) : null}
+                                        //     <div
+                                        //         className={style.textLabel}
+                                        //         style={{
+                                        //             color:
+                                        //                 activedItem === menu.value ||
+                                        //                 menu.includedRouters.some(str =>
+                                        //                     activedItem.includes(str)
+                                        //                 )
+                                        //                     ? activeColor
+                                        //                     : defaultColor
+                                        //         }}
+                                        //     >{`${menu.label}`}</div>
+                                        // </Link>
+                                        <div
                                             className={`${style.listItem} ${
                                                 activedItem === menu.value && !isFirstActived
                                                     ? style.actived
                                                     : ''
                                             }`}
-                                            href={menu.value}
                                             key={menu.value}
+                                            onClick={() => {
+                                                changeActivedItem(menu.value);
+                                            }}
                                             style={{ backgroundColor: bgColor }}
                                         >
                                             {menu.icon ? (
@@ -122,7 +151,7 @@ function Footer({
                                                             : defaultColor
                                                 }}
                                             >{`${menu.label}`}</div>
-                                        </Link>
+                                        </div>
                                     );
                                 })}
                             </div>

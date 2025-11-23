@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { useRouter, usePathname, useSearchParams } from 'next/navigation';
+// import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import React, { useState, useEffect, useRef, Children, isValidElement } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import type { Swiper as SwiperCore } from 'swiper';
@@ -101,24 +101,24 @@ function Tabs({
     const headerLinerRef = useRef<HTMLDivElement>(null);
     const swiperRef = useRef<SwiperCore | null>(null);
     const [contentFade, setContentFade] = useState(false);
-    const router = useRouter();
-    const pathname = usePathname();
-    const searchParams = useSearchParams();
+    // const router = useRouter();
+    // const pathname = usePathname();
+    // const searchParams = useSearchParams();
 
-    useEffect(() => {
-        if (pathname) {
-            let foundIndex = React.Children.toArray(props.children).findIndex(child => {
-                if (React.isValidElement(child)) {
-                    const element = child as React.ReactElement<{ to?: string }>;
-                    return element.props.to === pathname;
-                }
-                return false;
-            });
+    // useEffect(() => {
+    //     if (pathname) {
+    //         let foundIndex = React.Children.toArray(props.children).findIndex(child => {
+    //             if (React.isValidElement(child)) {
+    //                 const element = child as React.ReactElement<{ to?: string }>;
+    //                 return element.props.to === pathname;
+    //             }
+    //             return false;
+    //         });
 
-            foundIndex = foundIndex !== -1 ? foundIndex : 0;
-            setActiveIndex(foundIndex);
-        }
-    }, [pathname, props.children]);
+    //         foundIndex = foundIndex !== -1 ? foundIndex : 0;
+    //         setActiveIndex(foundIndex);
+    //     }
+    // }, [pathname, props.children]);
 
     const handleTabClick = (index: number, value?: string) => {
         const headerLiner = headerLinerRef.current;
@@ -149,41 +149,41 @@ function Tabs({
         }, 100);
     };
 
-    useEffect(() => {
-        const getSearchParams = Array.from(searchParams.entries());
-        if (Array.isArray(props.children)) {
-            const pathsArray = React.Children.toArray(props.children)
-                .map(child => {
-                    return (child as React.ReactElement<{ to: string }>).props.to;
-                })
-                .filter(path => typeof path === 'string' && path.length > 0);
+    // useEffect(() => {
+    //     const getSearchParams = Array.from(searchParams.entries());
+    //     if (Array.isArray(props.children)) {
+    //         const pathsArray = React.Children.toArray(props.children)
+    //             .map(child => {
+    //                 return (child as React.ReactElement<{ to: string }>).props.to;
+    //             })
+    //             .filter(path => typeof path === 'string' && path.length > 0);
 
-            if (pathsArray.length === 0) {
-                return;
-            }
+    //         if (pathsArray.length === 0) {
+    //             return;
+    //         }
 
-            let defaultActiveIndex = pathsArray.findIndex(path => {
-                const [basePath, pathQueryString] = path.split('?');
-                if (basePath === pathname) {
-                    if (getSearchParams.length > 0) {
-                        const [queryKey, queryValue] = getSearchParams[0];
-                        if (pathQueryString) {
-                            const [pathQueryKey, pathQueryValue] = pathQueryString.split('=');
-                            return queryKey === pathQueryKey && queryValue === pathQueryValue;
-                        }
-                    } else {
-                        return !pathQueryString;
-                    }
-                }
-                return false;
-            });
+    //         let defaultActiveIndex = pathsArray.findIndex(path => {
+    //             const [basePath, pathQueryString] = path.split('?');
+    //             if (basePath === pathname) {
+    //                 if (getSearchParams.length > 0) {
+    //                     const [queryKey, queryValue] = getSearchParams[0];
+    //                     if (pathQueryString) {
+    //                         const [pathQueryKey, pathQueryValue] = pathQueryString.split('=');
+    //                         return queryKey === pathQueryKey && queryValue === pathQueryValue;
+    //                     }
+    //                 } else {
+    //                     return !pathQueryString;
+    //                 }
+    //             }
+    //             return false;
+    //         });
 
-            if (defaultActiveIndex === -1) {
-                defaultActiveIndex = pathsArray.findIndex(path => pathname.startsWith(path));
-            }
-            setActiveIndex(defaultActiveIndex);
-        }
-    }, [pathname, props.children, searchParams]);
+    //         if (defaultActiveIndex === -1) {
+    //             defaultActiveIndex = pathsArray.findIndex(path => pathname.startsWith(path));
+    //         }
+    //         setActiveIndex(defaultActiveIndex);
+    //     }
+    // }, [pathname, props.children, searchParams]);
 
     useEffect(() => {
         const updateHeaderLinerStyle = (index: number) => {
@@ -403,9 +403,9 @@ function Tabs({
                                     currentSearchParams.set(key, value);
                                 });
 
-                                const search = currentSearchParams.toString();
-                                const url = `${tab.props.to.split('?')[0]}?${search}`;
-                                router.push(url);
+                                // const search = currentSearchParams.toString();
+                                // const url = `${tab.props.to.split('?')[0]}?${search}`;
+                                // router.push(url);
                             }
                         }
                     }}
