@@ -33,7 +33,7 @@ import {
 } from 'data-center';
 import style from './tabContent.module.scss';
 import LiveBox from './(dashboard)/liveEvent/liveEvent';
-import MessageBoard from './(dashboard)/messageBoard/messageBoard';
+// import MessageBoard from './(dashboard)/messageBoard/messageBoard';
 import LineUp from './(dashboard)/lineUp/lineUp';
 import Predict from './(dashboard)/predict/predict';
 import Data from './(dashboard)/data/data';
@@ -453,9 +453,9 @@ function TabContent({
                     )}
                 </div>
                 <div className={`${style.largeGap} ${style.rimless}`}>
-                    {secondRender || !status || status === 'messageBoard' ? (
+                    {/* {secondRender || !status || status === 'messageBoard' ? (
                         <MessageBoard matchId={matchId} />
-                    ) : null}
+                    ) : null} */}
                 </div>
                 {shouldShowPredict ? (
                     <div className={style.largeGap}>
