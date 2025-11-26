@@ -1,6 +1,6 @@
 import ReactECharts from 'echarts-for-react';
 
-interface SeriesData {
+interface BarChartSeriesData {
     name: string;
     type: string;
     data: (string | number)[];
@@ -49,7 +49,7 @@ interface BarChartProps {
     /**
      * Drawer content padding
      */
-    series: SeriesData[];
+    series: BarChartSeriesData[];
     /**
      * Cover background color
      */
