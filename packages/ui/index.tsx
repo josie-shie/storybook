@@ -7,5 +7,6 @@ export { GameStatus } from './stories/gameStatus/gameStatus';
 export { CustomSelect } from './stories/select/select';
 export { InfiniteScroll } from './stories/infiniteScroll/infiniteScroll';
 export { BarChart } from './stories/barChart/barChart';
+export { LineChart } from './stories/lineChart/lineChart';
 export { Slick, slickOption } from './stories/slickPro/slick';
 export { BaseCropper } from './stories/baseCropper/baseCropper';
