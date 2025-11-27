@@ -31,18 +31,19 @@ function LineChart({
     coverBackground = false,
     series
 }: LineChartProps) {
-    const newSeries = coverBackground
-        ? series
-        : series.map(item => ({ ...item, areaStyle: { opacity: 0.4 } }));
+    const newSeries = series.map(item => ({
+        ...item,
+        areaStyle: coverBackground ? item.areaStyle : { opacity: 0.4 }
+    }));
 
     const option = {
         title: {
             text: title,
-            ...(subtext && { subtext: subtext }),
-            ...(sublink && { sublink: sublink })
+            ...(subtext && { subtext }),
+            ...(sublink && { sublink })
         },
         tooltip: {
-            trigger: trigger,
+            trigger,
             axisPointer: {
                 type: triggerType
             }
