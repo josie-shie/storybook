@@ -8,5 +8,6 @@ export { CustomSelect } from './stories/select/select';
 export { InfiniteScroll } from './stories/infiniteScroll/infiniteScroll';
 export { BarChart } from './stories/barChart/barChart';
 export { LineChart } from './stories/lineChart/lineChart';
+export { PieChart } from './stories/pieChart/pieChart';
 export { Slick, slickOption } from './stories/slickPro/slick';
 export { BaseCropper } from './stories/baseCropper/baseCropper';
