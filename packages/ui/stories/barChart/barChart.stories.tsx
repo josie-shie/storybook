@@ -20,7 +20,7 @@ type Story = StoryObj<typeof BarChart>;
 
 const demoData = [
     {
-        name: 'Auxiliary',
+        title: 'Auxiliary',
         type: 'bar',
         stack: 'total',
         itemStyle: {
@@ -34,7 +34,7 @@ const demoData = [
         data: [0, 900, 1245, 1530, 1376, 1376, 1511, 1689, 1856, 1495, 1292]
     },
     {
-        name: 'spend',
+        title: 'spend',
         type: 'bar',
         stack: 'total',
         label: {
@@ -46,7 +46,7 @@ const demoData = [
         data: [900, 345, 393, '-', '-', 135, 178, 286, '-', '-', '-']
     },
     {
-        name: 'income',
+        title: 'income',
         type: 'bar',
         stack: 'total',
         label: {

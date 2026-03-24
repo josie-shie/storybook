@@ -1,7 +1,7 @@
 import ReactECharts from 'echarts-for-react';
 
 interface BarChartSeriesData {
-    name: string;
+    title: string;
     type: string;
     data: (string | number)[];
     stack?: string;
