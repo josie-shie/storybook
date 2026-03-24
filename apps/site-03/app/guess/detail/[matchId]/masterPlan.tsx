@@ -62,7 +62,7 @@ function HotGuessList({ hotMatchList }: { hotMatchList: GetHotGuessMatch[] }) {
             ))}
             {hotMatchList.length ? (
                 <div className={style.listEnd}>
-                    <p>已滑到底啰</p>
+                    <p>List end</p>
                 </div>
             ) : null}
         </>
@@ -122,7 +122,7 @@ function MasterPlanList({
             ))}
             {masterPlanList.length ? (
                 <div className={style.listEnd}>
-                    <p>已滑到底啰</p>
+                    <p>List end</p>
                 </div>
             ) : null}
         </>

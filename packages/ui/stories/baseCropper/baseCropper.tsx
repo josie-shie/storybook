@@ -186,9 +186,9 @@ function BaseCropper({
                             </div>
                         ) : null}
                         <div className={style.buttonGroup}>
-                            <Button onClick={handleButtonClick}>重新上傳</Button>
+                            <Button onClick={handleButtonClick}>Upload</Button>
                             <Button onClick={handleConfirm}>
-                                {showCropper ? '確定裁切' : '確定'}
+                                {showCropper ? 'Cancel' : 'Crop'}
                             </Button>
                         </div>
                     </div>

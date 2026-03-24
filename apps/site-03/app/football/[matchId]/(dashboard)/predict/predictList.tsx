@@ -73,7 +73,7 @@ function LastPlaceHolder({ matchId }: { matchId: number }) {
 
     return (
         <div className={style.isLast} ref={lastPredictRef}>
-            {isLast ? '已滑到底啰' : null}
+            {isLast ? 'List end' : null}
             {isLoading ? <CircularProgress size={24} /> : null}
         </div>
     );

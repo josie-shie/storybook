@@ -83,7 +83,7 @@ function MyAnalysis() {
                         </InfiniteScroll>
                     ) : (
                         <div className={style.listEnd}>
-                            <p>已滑到底啰</p>
+                            <p>List end</p>
                         </div>
                     )}
                 </div>

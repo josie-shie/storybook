@@ -451,7 +451,7 @@ function ContestList({
                             </div>
                         </InfiniteScroll>
                     ) : (
-                        <div className={style.scrollEnd}>已滑到底啰</div>
+                        <div className={style.scrollEnd}>List end</div>
                     )}
                 </>
             )}
