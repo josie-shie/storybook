@@ -38,7 +38,6 @@ function WebsocketService({ children }: { children: ReactNode }) {
                 setForbiddenWords({ forbiddenWords: forbiddenWordList });
             }
         };
-
         void fetchForbiddenWords();
     }, []);
 

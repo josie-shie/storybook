@@ -68,7 +68,6 @@ function NoticeTabs({ children }: { children: ReactNode }) {
                         return (
                             <Tab key={item.id} label={item.label} to={item.to}>
                                 {item.status === pathName && children}
-
                                 {editStatus ? <div className={style.placeholder} /> : null}
                             </Tab>
                         );
